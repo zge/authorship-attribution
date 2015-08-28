@@ -1,0 +1,298 @@
+Okay, so now we're going to talk about 
+Parameter estimation in log-linear 
+models. 
+This is the problem of taking a set of 
+training examples as input and producing 
+as output. 
+A setting for the v parameters that I 
+showed you in the previous part of this 
+lecture. 
+So a first key idea in parameter 
+estimation is going to be the following. 
+I'm going to assume I have some set of 
+training examples. 
+So each training sample consists of an 
+x,y pair, so I'll write xi, yi to be the 
+ith example of my training set, going to 
+assume I have little n training examples. 
+Each xy pair is such that the xi is a 
+member of the set of inputs, the yi is 
+this, a member of the set of possible 
+labels. 
+So, as one example in the language 
+modeling problem, each xi would be a 
+sequence of words, such as the dog saw. 
+We have three words in this case, and 
+each yi would be a single word, which was 
+seen following the sequence of words. 
+Okay, and you can see, it's easy enough 
+given a large amount of text to gather 
+training examples of this form, which 
+basically consist of contexts together 
+with the word appearing as the next word 
+in that particular context. 
+So, we're again going to employ maximum 
+likelihood estimation in this scenario, 
+at least, as I first passed through this 
+problem. 
+A little later, we will see how to smooth 
+these estimates, how to regularize them, 
+but for now, let's consider 
+Maximum-Likelihood estimation. 
+And that means the Maximum-Likelihood 
+Parameters V sub ML are going to be the 
+parameter values, out of the space of all 
+possible n-dimensional vectors that 
+maximize some function L of v. 
+So L of v is going to be a function that 
+takes a parameter vector as input and 
+returns some value, which is basically 
+going to be a measure of how well those 
+parameters fit the data. 
+More precisely, it's going to be the log 
+likelihood of the data under the 
+parameters. 
+So what does that mean? 
+L of v is defined as follows, so we have 
+a sum over the n training examples. 
+I have a sum from i equals 1 to n, and 
+then, I have the log probability of the 
+ith training example, so that's log of p 
+of yi given xi under parameters v. 
+Okay, so the training sample is fixed, 
+but as we vary the parameters v, these 
+probabilities will change, they'll become 
+higher or lower. 
+And so, here, we just have a sum over all 
+of these log probabilities. 
+One log probability for each item in the 
+training set and that's how we define L 
+of v. 
+Now, intuitively, we would like these 
+probabilities to be as high as possible, 
+reflecting the fact that our parameters v 
+fit the data well. 
+And so, if we maximize this function L of 
+v, we'll have put high probability on the 
+training samples that we actually see. 
+More formally, there are many nice 
+properties you can derive of 
+Maximum-Likelihood Estimation which apply 
+quite generally and certainly apply to 
+this particular case. 
+Okay, so just to remind you, p takes the 
+full length form, it's ev dot f, dot dot 
+dot, over some normalization term. 
+Takes this kind of form. 
+If we take log of this whole thing, we 
+end up, as I showed you just previously 
+on this lecture, e v dot f minus log 
+something, okay? 
+And so, this expression here, to be more 
+explicit, has this form where I have sum 
+i equals 1 to n, v dot f, xi yi. 
+So this is actually the feature vector on 
+the ith training sample. 
+And here, I have these kind of log 
+normalization terms, I have the sum i 
+equals 1 to n, log. 
+Here, I have a second sum over possible 
+labels y primed, e or v dot f of xi, 
+conjoined with i primed, y primed. 
+Okay. 
+So, that is the basic definition of the 
+Maximum-Likelihood Estimation problem. 
+We're going to try to choose the 
+parameters v to make this function L of v 
+as large as possible. 
+And so, that the big remaining question 
+is how do we actually optimize L of v? 
+How do we find these Maximum-Likelihood 
+Estimates? 
+Before we get to that, I want to talk 
+about one critical property of L of v, 
+which is the following. 
+Lv is concave, and this means 
+essentially, it is a very nicely behaved 
+function. 
+So although, in the general case, finding 
+a closed form solution to this arg max is 
+not going to be possible. 
+Because, Lv is concave it's fairly easy 
+to optimize it. 
+So what's it mean to be concave? 
+Imagine, we just have a single parameter, 
+v1, in case we have the one-dimensional 
+parameter, a vector in this case, and I 
+have a graph of v1 versus Lv. 
+The concave function looks like the 
+following. 
+But basically, if you take any two 
+points, so two points here, then this 
+line goes underneath the function, and in 
+particular, this means that if we find a 
+local optimum of this particular 
+function, Lv, it's also going to be the 
+global optimum. 
+Intuitively, this means we use any kind 
+of hill-climbing technique. 
+It is going to reach the global maximum 
+of this function. 
+So this is a concave function, and in 
+some sense, it's relatively easy to 
+optimize. 
+There have been many results in 
+optimization showing that we can 
+efficiently find the maximum of this kind 
+of function. 
+Here's a function which is not concave. 
+So this function has multiple local 
+optima which are not actually global. 
+So this is the global optimum, these are 
+local optima, which are not globally 
+optimal and this is hard, this is 
+nonconcave. 
+Very roughly speaking, this is generally 
+a much harder optimization problem. 
+So, the beauty or one beautiful thing 
+about this function, Lv, is that it is 
+actually a concave function. 
+Of course, we're going to generalize this 
+to the multidimensional case, but similar 
+definitions apply, and so, this is a 
+concave function, which means that if we 
+use some kind of hill-climbing technique, 
+we will in general, converge the global 
+optimum of this function that we're 
+trying to optimize. 
+So again, to recap. 
+Unfortunately, it's difficult to find 
+closed form solutions for this 
+maximization problem. 
+However, the fact that this function is 
+concave means we can use hill-climbing 
+methods, for example, as we'll see in a 
+moment, gradient ascent as a way of 
+ultimizing this function. 
+So we will in fact, use gradient-based 
+methods to optimize this function. 
+What does that mean? 
+So now let's imagine, we have L of v 
+where v actually has two parameters. 
+Okay. 
+So what I want to do here is sketch a, 
+some set of contour lines for a 
+hypothetical version of l of v, so these 
+are contour lines exactly as you'd see, 
+see on a map. 
+Okay, so that the peak of this function 
+is right here and these are, lines of 
+equal value of L of v. 
+So a gradient-based method looks like the 
+following. 
+We start at some point, maybe we'd start 
+at the origin, or someone might start 
+with all parameters equal to 0, and we 
+calculate the gradient, which just means 
+we calculate a direction which is the 
+steepest direction from this point. 
+And we might move as far as possible in 
+that direction. 
+So we might, for example in this case, 
+move to here, which is the optimal point, 
+if we restrict it to move in this 
+direction. 
+So basically if you think of as climbing 
+a hill, you start at some point, you look 
+at the steepest way up the hill, and you 
+walk. 
+the distance in that direction, which 
+takes you to the maximum on this 
+particular line, and then you have a new 
+point. 
+Again, we calculate the gradient we move 
+in this direction, and that point we 
+might be fairly close to the optimal 
+point here, okay? 
+so that's the basic idea behind 
+gradient-based methods, or gradient 
+ascent at each point, we calculate the 
+gradients then move in that direction, 
+move in the steepest direction until 
+we're we've, we're sufficiently close to 
+the optimum of this function. 
+So the gradients actually take a fairly 
+convenient form. 
+So remember again, L of v is the 
+following, so sum i equals 1 to n of v 
+dot f, sum i equals 1 to n of this log 
+function. 
+And let's see what happens when we 
+differentiate this, with respect to a 
+particular parameter v sub k. 
+Okay. 
+So if I differentiate at this term, I 
+simply get sum of i equals 1 to n of fk. 
+Okay so this is, this is, this is very 
+easy to calculate, this first term. 
+I simply sum over all the training 
+samples. 
+Calculating the value of the k feature. 
+In that case we have the first component 
+of this derivative. 
+The derivative through respect to k. 
+This log term takes a little bit more 
+work to differentiate, and I won't take 
+you through these steps in all the gory 
+details. 
+Again, you can refer to the notes that 
+are provided for this class, for a 
+detailed explanation. 
+But what we end up with is actually a 
+fairly simple expression. 
+So we have a sum i equals 1 to n. 
+And now I have a sum of all labels y 
+primed. 
+I have the feature value fk applied to 
+xi, which we're summing over in 
+conjunction with y prime which rules are 
+summing over. 
+And now, remarkably, all I have here is 
+in fact the conditional probability of y 
+primed under our current model. 
+So these terms are often referred to as 
+empirical counts, because if these fk's 
+or indicator functions zero one. 
+This is basically the number of times 
+this particular, particular question for 
+the kth feature has been true on our 
+training sample, and these are often 
+referred to as expected counts. 
+Because they kind of the expected number 
+of times the feature has fired under our 
+current model. 
+Most importantly, both of these terms are 
+fairly easy to calculate. 
+Calculating these empirical counts, we 
+just sum over the training samples, 
+calculating the fk's for the expected 
+counts is a little bit more work. 
+We have to sum over the training samples, 
+calculate the probability distribution 
+over the labels under our current 
+parameters on that particular training 
+sample, and multiply that in with the 
+feature vector definition fk of xi and y 
+primed. 
+But nevertheless, this is fairly 
+straightforward to calculate. 
+So given these definitions, I can 
+calculate the derivative through the 
+respective v1, v2 right up to vm. 
+So in this particular example, I 
+calculate the derivative of the 
+respective to v1, v2, and that will give 
+me the direction in which I move the 
+gradient I'm trying to move. 
+. 
+

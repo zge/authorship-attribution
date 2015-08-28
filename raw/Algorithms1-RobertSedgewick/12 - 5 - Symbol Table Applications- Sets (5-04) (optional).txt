@@ -1,0 +1,110 @@
+Welcome back. Today we are going to look
+at some symbol table applications, give
+you some idea of how symbol tables might
+be used, by client program for practical
+problems. First when we look at, seems
+even simpler than the regular symbol
+tables, and that's about sets. So, a
+mathematical set is just a collection of
+distinct keys. And so, there are plenty of
+applications where we want to just be able
+to implement, this really simple API. I
+want to be able to create an empty set,
+we've got methods to add a key to the set,
+and to check whether a given key is in the
+set or not. To remove a key, and maybe
+return the number of keys in the set, and
+also have an iterator to iterate through
+keys in the set. This is simpler than
+symbol tables because it's got no
+associated value. So, it's a very simple
+API but of course, we're going to be able
+to do these operations efficiently, how
+we'd we go ahead and implement that. Well,
+if you think about it for just a minute,
+you see that what you need to do is just
+remove all references to value from any of
+the symbol table implementations that we'd
+look at. The implementation is easy. Take
+one of our symbol table implementations
+and get rid of the code that refers to
+values. Okay, so let's look at a couple of
+applications where this set API might be
+useful in client programs. One thing that
+is very common is the idea of an exception
+filter. So the way we'll set that up is to
+think about having a list of files a list
+of words in a file that are exceptional in
+some way. In this case, we'll have the
+word, the file list.text that has these
+four words in it: was, it, the, and of. So
+this two, complimentary ways to look at
+this. One is so-called White Listing where
+we want to take the words in that file
+and, and then we have some other much
+bigger file. And what we want to do is
+print out all the occurrences of our
+exceptional words in our given file. Those
+are the ones that we care about, that we
+want to get through. So in this case,
+tinyTale.txt the first couple of words
+from "A Tale of Two Cities." and these
+words appear often, "It was the of, it was
+the of." another, A complementary approach
+is to think of these words as words that
+we don't want to ever see. They're
+blacklist, and we want to take them out of
+our source file. So a blacklist client
+would print out all the words in our
+source file, tinyTale.txt except was, it,
+be, and of. In this case, best times,
+worst times, and so forth. So that's the
+exception filter, and that's useful in
+lots of applications such as the ones
+listed here. For example, you might have a
+spellchecker where you want to identify
+misspelled words. So, then your key would
+be a word or a string. And in your
+exceptional list would be words that are
+in the dictionary. And you'd want to print
+out all the words that are not in the
+dictionary. That's an example of a, an
+exception filter. Or in a browser you
+might want to mark your visited pages or
+block sites and so forth. Or like the one
+at the bottom credit cards. Maybe, you run
+a credit card company and you want to
+check for stolen cards then your keys
+would be numbers. I. And in your list,
+might be kind of short, which would be the
+stolen cards that you know about, and
+you'd want to run a, a white list filter
+for those cards and print out in your long
+list of transactions which ever
+transactions have that stolen cards, So,
+that's just a couple of examples of
+exception filters. What's the
+implementation of an exception filters?
+Here's a simple one using the said API
+that we just articulated. So, we start by
+creating an empty set of strings, and
+again since we don't have associated
+values, we just have the one generic for
+strings, and then create a new input
+stream from, from the first argument so
+that's the name of the file that contains
+the exceptional words and so this just
+reads the strings while the input string
+is not empty and then adds the m to the
+set. So that now, we have our set of
+exceptional words. And now, from standard
+input we read words, as long as our set
+contains the word, we print it out. And if
+doesn't contain it, we don't print it out.
+So that's an example of a white list
+filter. And to implement black list we
+just this call to contains, we just change
+that to a, a not. If it's not in the
+exceptional list, then we print it out. So
+that's a simple example of a filter using
+sets.

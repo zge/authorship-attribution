@@ -1,0 +1,360 @@
+Welcome back.
+The main drawback of the Continuous
+Fourier Transform with the
+discrete signal is that this is not a
+computable transform.
+Unless the image has a close form
+expression, its Fourier Transform cannot
+be computed.
+Based on the material of the previous
+segment, we'll
+go show in the segment that a sample
+version
+of one period of the continuous Fourier
+Transfer is
+all that is needed to represent the
+discrete image.
+This represents the Discrete Fourier
+Transform, or
+DFT, which maps m by m samples of
+an image in the spatial domain, into m
+by m samples in the discrete frequency
+domain.
+In addition, what makes the DFT such a
+useful tool is that there are fast ways to
+compute it, collectively referred as Fast
+Fourier transforms or FFTs.
+We will look at some examples of spectra
+of images in this segment using FFTs.
+So, let us proceed with this interesting
+and useful material.
+[BLANK_AUDIO]
+Let us in more detail some of the parts we
+covered in the previous slide.
+Here, again, is the definition of the
+continuous Fourier
+transform of a discrete time signal x N1
+N2.
+It's an N1 by N2, signal.
+That's a support of the signal.
+This is, a very useful transform, and
+we'll spend quite some time talking about
+it because it allows us to describe,
+characterize, analyze images in the
+frequency domain.
+The main drawback of it however is that it
+is not a computable transform.
+I have to find X at all possible
+frequencies omega 1, omega 2 are
+continuous quantities.
+So, if I have an analytic for x N1, N2,
+then it is possible to find a closed form
+expression
+for x omega 1 omega 2, as was the case
+with the simple examples we did in the
+previous slides.
+If, however, I want to find the continuous
+Fourier transform of an
+image that I acquired with my digital
+camera then clearly I don't
+have an analytical expression for the
+image and therefore am not able
+to find an analytical expression for x
+omega 1 omega mega 2.
+So what you saw in the previous slide is
+that I can sample the
+Fourier transform x omega 1 omega 2 at
+equally spaced frequencies.
+And the spacing between frequencies is 2
+pi over N1 in
+the horizontal direction and 2 pi over N2
+in the vertical direction.
+And by doing this sampling of the
+frequency domain I only keep one period.
+So, k1 is from zero to N1 minus one, k2
+between zero
+and N2 minus one and again this is for a
+N1 by N2 image.
+So, if I substitute two pi over N one for
+omega one, and two pi over N
+two for omega two here, I end up with
+this expression, which is the fourier
+Discrete Fourier Transform, DFT.
+It gives me a description of the image and
+the discrete frequency
+domain, k one, k two when k one, k two
+range over
+one period is shown here and this is
+clearly a computable transfer because
+it only involves the finite summation,
+therefore in finite number of operations.
+The inverse Fourier transform shown here,
+takes me from the
+frequency, the discrete frequency domain,
+back to the discrete spatial domain.
+Algorithmically, it has the same structure
+as the Fourier transform.
+The only difference being that here I have
+e to the plus j.
+The exponential while is to the minus j.
+And I also have this normalization factor
+in the front.
+So this here is the Discrete Fourier
+Transform pair.
+[SOUND] That maps N1 by N2 discrete space
+images, samples, to N1 by N2 samples
+of the Fourier domain, of the Fourier
+transform in the frequency domain.
+It's an exact transform.
+I can go back and forth between x k1 k2
+and x N1 N2 with, with no error.
+And it makes sense, since an N1 by N2
+image is mounted to another N1 by N2
+image,
+both discrete, and therefore I don't need
+infinitely many
+frequencies to represent the signal in the
+frequency domain.
+Actually, even if the image is real, the
+DFT is complex, so it seems
+that a mapping N1 by N2 real numbers into
+N1 by N2 complex numbers.
+However, the property of the Fourier
+transform that the emission property that
+we start, started holds through here for
+the DFT that is when x N1 N2 is real.
+The magnitute of x k1 k2 has even symmetry
+while the phase has odd symmetry.
+Therefore I'm mapping N1 by N2 real
+numbers
+into N1 by N2 over four complex numbers.
+And assuming that one complex number
+corresponds to two real numbers,
+I have the same number of numbers in, in
+both domains.
+The DFT and the Fourier transform share
+many, if not all, of their properties.
+One main difference, however, is that the
+linear shifts [SOUND]
+in the Fourier transform become when it
+comes to DFT circular shift.
+[SOUND] One way to perform in the extend
+fourier shift is to
+periodically extend the image, and then
+they form linear
+shift, but only keep the central part of
+the image, the base bond
+or the image that is defined by N1, N2, in
+this window here.
+[SOUND]
+By knowing the description of a Fourier
+Transform
+it is clear that it is a computable
+transform.
+It involves a finite number of compu,
+computations.
+The same statement is true also for the
+inverse discrete Fourier transform.
+However, what made the DFT, very popular,
+you
+might say, transform is the fact that
+there
+exists efficient computation, efficient
+algorithms to compute it,
+which collectively are referred to as Fast
+Fourier Transforms.
+So an FFT is not yet another transform,
+it's simply an efficient way to compute
+the DFT.
+So let's see how many multiplications we
+need if we directly compute the DFT.
+So we see that for each frequency k1 k2 we
+need N1 N2
+complex multiplications to do the
+multiplication
+of the signal by this complex exponential.
+Since I have N1 N2 frequencies, I
+need N1 squared N2 squared complex
+multiplications.
+Clearly if N1 equals N2 equals N, then I
+need in this case N to the fourth complex
+multiplications.
+I can do better than that by rewriting,
+reorganizing the terms in the definition
+of the DFT.
+So I see that what's inside the brackets
+is
+that one dimensional DFTof the signal with
+respect to n2.
+So if here is my image.
+So N1, N2 is the rotation of the axis, so
+X n1,
+n2, what the summation inside, inside the
+bracket is doing is computing
+the one dimension of the DFT of the rows
+of the image.
+This signal then inside the bracket is I
+can call it G
+is a function of N1 Nk2.
+With this I can then rewrite the DFT as
+shown here.
+And what this last expression tells me is
+that if I take G N1,
+k2 is a function of N1 and k2, according
+to this summation
+I know but form the one dimensional DFT of
+each of the columns of the signal.
+Here's the name Row-Column Decomposition.
+First, we take one dimension of the FFTs
+of the
+rows, followed by one one dimension of the
+FFTs columns.
+So let's see how many computations we need
+of this Row-Column
+Decomposition if I direct the compute the
+one dimension the FFTs.
+So what we've done is to first take N1 and
+2.1dimensional
+FFTs and if again directly computed I need
+N2 squared multiplications.
+And then we take N2 and N 1.0
+DFTs, and for that I need N1 squared
+multiplications.
+This is clearly equal to this.
+[BLANK_AUDIO]
+So again for N1 equals N2 equals N, I
+see that I need 2N to the third
+multiplications.
+So, by just exploiting this
+decomposability
+structure of the DFT, I see
+I can bring the number of multiplications
+down by an order of magnitude.
+I can do even better than that since I
+have fast Fourier transforms
+to compute one dimension of the FFTs and
+this transfers date back to the mid60s.
+So 1965, Couley [SOUND]
+and Turkey were the first people to invent
+such
+fast Fourier transforms and by enlarge
+they developed meant gave a big push to
+the whole field of DFT since now we were
+able to
+efficiently maybe real time in some cases,
+implement algorithms that were very
+hard to implement before that.
+So, using one of those, FFTs, I can
+compute them N1.1
+dimensional DFT by using N 2 over 2, locg
+2, N2 multiplications.
+And then for computing the n1 point
+DFTs I need n1 over 2 [SOUND] log n1.
+And this is clearly equal to n1 n2 over 2
+[SOUND] log n1 n2.
+So we see here that for N1 equals N2
+equals
+N, I need N squared log 2 N
+multiplications.
+So we brought down the number of
+multiplications by anoth, another order of
+magnitude.
+And this is actually in most cases the way
+to implement the two-dimensional DFT
+by following the Row-Column Decomposition
+and then
+utilizing efficient algorithms to compute
+the one-dimensional DFT.
+I can do better than that if I use a
+so-called
+radix [SOUND] two by two FFT [SOUND] and I
+bring down the
+computations to three fourths N squared,
+log 2 N.
+And with the DFT, which is a computable
+transfer, and even
+more specifically with an FFT, a fast way
+to implement it.
+I can see how an image looks in the
+frequency domain.
+So here is the orientation of the axis,
+N1, N2.
+And this is a 392 by 294 pixel image.
+And they are 8 bits per pixel.
+So here in the middle, I see the DFT of
+this image.
+So, it's a 392 by 294 point DFT.
+So here is point 2 pi
+because half of this 196 is the point pi
+and about here one forty seven is the
+point pi.
+So here in the middle is the highest
+frequency, the pi pi frequency.
+So in the middle you see the mesh plot of
+the DFT, the magnitude of the DFT
+while on the right you see an image
+version and it's cover code.
+And so, red, here, is high values, and
+blue are the lower code values.
+So we can see that there is a lot of
+energy at low frequencies.
+This is the zero zero.
+There's a pink there, and the magnitude of
+the DFT drops off as I approach higher
+frequencies.
+[SOUND]
+So here we see the same image again on the
+left, but often it's
+more informative if the magnitude of the
+spectrum of the image is centered.
+So, in other words, the zero, zero point
+is around about here.
+And therefore here is minus pi, pi, and
+minus pi, pi in the other direction.
+So we see here more clearly that there's a
+peak at zero,
+zero and then as I move away from that
+frequency as the frequencies
+increase in all directions the magnitude
+drops or becomes much smaller.
+The question is how can I center the
+spectrum I've shown here.
+And one way to do that is by multiplying
+the image by minus one to the N1 plus N2.
+So this is a checkerboard pattern.
+It alternates between minus one and one.
+And y would search a multiplication center
+of the spectrum, because
+this is clearly to, e to the minus j pi,
+N1 plus N2.
+So, in the spacial domain, I multiply my
+signal with this complex exponential.
+And, one of the properties of the DFT is
+that
+this introduces a circular shift of the
+DFT by pi pi.
+We saw this property actually, I believe,
+when
+we talked about the Fourier transformed
+and there the
+complex explanation, the spetial domain
+gave rise to
+a linear shift but here it's a circular
+shift.
+So, circular shift, one of the ways again
+to look
+at it is that I take the spectrum, I
+periodically
+extend it, I shift it linearly by pi pi in
+both directions but then I only maintain
+the base period.
+The one shown here, right, from zero to
+three ninety two and zero to two ninety
+four.
+And again here you see the spectrum as an
+image so the high value is at
+zero zero centered and again this provides
+in
+most cases a better visualization of the
+spectrum.
+

@@ -1,0 +1,165 @@
+So this is short optional video, 
+really just for fun, I want to point
+out an interesting consequence tracking
+algorithm has about a
+problem that is in pure graph theory. So,
+to motivate the question, I want to remind
+you of something we discussed in passing,
+which is that a graph may have more than
+one minimum cut. So, there may be distinct
+cuts which are tied for the fewest number
+of crossing edges. For a concrete example,
+you could think about a tree. So, if you
+just look at a star graph, that is hubs and
+spokes, it's evident that if you isolate
+any leaf by itself, then you get a minimum
+cut with exactly one crossing edge. In
+fact, if you think about it for a little
+while, you'll see that in any tree you'll
+have N-1 different minimum cuts,
+each with exactly one crossing edge. >>The
+question concerns counting the number of
+minimum cuts. Namely, given that a graph
+may have more than one minimum cut, what
+is the largest number of minimum cuts that
+a graph with N vertices can have? We know
+the answer is at least N-1. We
+already discussed how trees have N-1 distinct minimum cuts. We know the
+answer at most something like 2^N,
+because a graph only has roughly 2^N
+cuts. In fact, the answer is both
+very nice and wedged in between. So the
+answer is exactly N choose 2, where N is
+the number of vertices. This is also known
+as N(N-1)/2. So
+it can be bigger than it is in trees, but
+not a lot bigger. In particular, graphs
+have only; undirected graphs have only
+polynomially many minimum cuts.
+And that's been a useful fact in a number
+of different applications. So, I'm going
+to prove this back to you. All I need is
+one short slide on the lower bound and
+then one slide for the upper bound, which
+follows from properties of the random
+contraction algorithm. >>So for the lower
+bound, we don't have to look much beyond
+our trees example. We're just gonna look
+at cycles. So for any value of N, consider
+the N cycle. So here, for example, is the N
+cycle with N = 8. That would be
+an octagon. And the key observation is
+that, just like in the tree, how
+moving each of the N-1 edges
+breaks the tree into two pieces and
+defines the cut. With a cycle, if you
+remove just one edge, you don't get a cut.
+The thing remains connected, but if you
+remove any pair of edges, then that
+induces a cut of the graph, corresponding
+to the two pieces that will remain. No matter
+which pair of edges you remove, you get a
+distinct pair of groups, distinct cuts.
+So ranging overall N choose 2
+choices of pairs of edges, you generate
+N choose 2 different cuts. Each of
+these cuts has exactly two crossing edges,
+and it's easy to see that's the fewest
+possible. >>So that's the lower bound, which
+was simple enough. Let's now move on to
+the upper bound, which, a purely
+count-all fact will follow from an
+algorithm. So consider any graph that has
+N vertices, and let's think about the
+different minimum cuts of that graph. What
+we're going to use is that the analysis of
+the contraction algorithm proceeded in a
+fairly curious way. So remember how we
+define the success probability of a
+contraction algorithm. We fixed up front,
+some min cut (A, B). And we defined the
+contraction algorithm, the basic
+contraction algorithm, before the repeated
+trials. We defined the contraction
+algorithm as successful, if and only if it
+output the minimum cut (A, B) that we
+designated upfront. If it output some
+other minimum cut, we didn't count it. We
+said nope, that's a failure. So we
+actually analyzed a stronger property than
+what we were trying to solve, which is
+outputting a given min cut (A, B) rather than
+just any/all min cut. So how is that
+useful? Well, let's apply it here. For each
+of these T minimum cuts of this graph, we
+can think about the probability that the
+contraction algorithm outputs that particular
+min cut. So we're gonna instantiate the
+analysis with a particular minimum cut (Ai, Bi). And what we proved in the analysis
+is that the probability that the algorithm
+outputs the cut (Ai, Bi), not just any/all
+min cut. But, in fact, this exact
+cut (Ai, Bi) is bounded below by. We, in
+the end, we made a sloppy inequality. We
+said it's at least 1/(N^2). But
+if you go back to the analysis, you'll see
+that it was, in fact, 2/N(N-1),
+also known as 1/(N choose 2).
+So instantiating the contraction
+algorithm success probability analysis
+without all of the repeated trials
+business, we show that for each of these T
+cuts, for each fixed cut (Ai, Bi), the
+probability that this algorithm outputs
+that particular cut is at least 1/(N choose 2).
+>>Let's introduce a name for
+this event, the event that the contraction
+algorithm outputs the Ith min cut. Let's
+call this Si. The key observation is that
+the Sis are disjoint events. Remember an
+event is just a subset of stuff that could
+happen. So one thing that could happen is
+that the algorithm outputs the Ith main
+cuts, and by this joint, we just mean that
+there is no outcome that in a given pair
+of events. And that's because the
+contraction algorithm at N to the [inaudible],
+once it makes its conflicts, it
+outputs a single cut is a distinct cut. It
+can only output a dest one of them. >>Why is
+it important that these Sis are disjoint
+events? Well, with disjoint events, the
+probabilities <i>add</i> the probability of the
+union of a bunch of disjoint events is the
+sum of the probabilities of constituent
+events. If you want to think about this
+pictorially, and just draw a big box,
+denoting everything that could happen
+omega, and then these SIs just these
+[inaudible] that don't overlap. So S1, S2, S3,
+and so on. Now the sum or probabilities of
+this joint events can sum to, at most,
+1, right? The probability of all of
+omega is 1, and these SIs have not
+overlap and are packed into omega, so the
+sum of their probabilities is gonna be
+smaller. >>We're adding up formally. We have
+that the sum of the probabilities. Which
+we can lower bound by the number of
+different events. And remember there are T
+different min cuts for some parameter T.
+For each min cut (Ai, Bi), a lower bound of
+the probability that, that could spit out
+as output is 1/(N choose 2). So a
+lower bound on the sum of all of these
+probabilities is the number of them, T
+times the probability lower bound,
+1/(N choose 2), and this has got to be
+at most 1. Rearranging, what do we find?
+T, the number of different mid-cuts, is
+bounded above by N choose 2. Exactly the
+lower bound provided by the N cycle. The N
+cycle has N choose 2 distinct minimum
+cuts. No other graph has more. Every graph
+has only a polynomial number indeed, at
+most a quadratic number of minimum cuts.

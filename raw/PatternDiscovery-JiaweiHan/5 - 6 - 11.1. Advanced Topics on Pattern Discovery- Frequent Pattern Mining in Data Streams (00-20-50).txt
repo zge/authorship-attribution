@@ -1,0 +1,494 @@
+Hi now we come down to the very
+last lecture of this course,
+Advance Topics on Pattern Discovery.
+There have been lots of research
+papers published pattern
+discovery in data mining and also lots of
+applications developed in many fields.
+It is impossible in this short course
+to cover every corner of this field.
+But here in this very last lecture,
+I'm going to introduce a few
+interesting topics including
+frequent pattern mining in data
+streams Spatiotemporal and
+Trajectory data mining.
+And also, Pattern Discovery for
+Software Bug Mining Pattern Discovery for
+Image Analysis, and Pattern Mining.
+In this society, the privacy issues.
+We also look forward to see, you know,
+how this Pattern Discovery
+will be applied, and
+how the research will
+develop in the future.
+So let's first discuss frequent
+pattern mining in Data Streams.
+We know in current big data euro.
+Besides, we've got a huge amount of
+data stored in database systems,
+in fire system, on the web, but
+also we have Internet of Things,
+or Internet of Sensors.
+So, in those kind of scenarios,
+there are lots of stream data.
+The stream data, the feature usually
+is they come in and go continuously.
+They are ordered in a sequence,
+but they are changing dynamically.
+They come in and go very fast but
+in very huge volume, okay.
+This is very different from
+traditional finance persistent data
+sets stored in the fire systems, in
+database management system or on the web.
+So now let's look at the major
+Characteristics of Data Streams.
+First, Data Streams usually represent
+huge volumes of continuous data.
+They could be potentially infinite.
+Like, the online censors.
+They have no ending at this point.
+So, they, they are fast changing.
+They may also require faster
+real-time response like anomalies or
+emergency handling, okay?
+And then, for data stream usually,
+it capture nicely off our data
+processing needs of today.
+Because even in database systems
+the data could be so huge,
+you may only want to scan them in
+a sequential manner like Data Streams.
+Or you can want to keep a repeating,
+getting them back again.
+So to that extent even in the large
+data stored you may also process them.
+In the data stream manner,
+not to say you really have to
+enter large amount of sensor data.
+So in general we say for
+processing data streams,
+random access is expensive
+because of the data come and go.
+You don't want to fetch back or
+you can now fetch forward as well.
+So usually we call these algorithm
+developing data streams called
+single scan algorithm.
+That means, for any particular data set,
+particular page,
+you can only have one look.
+So, another interesting thing is
+the data stream, in many cases you may
+like to store some kind of sketch to
+store a summary of the data seen so far.
+Instead of storing the detailed data
+because you don't have such volume or
+such processing power.
+Then another important
+challenge is most data streams,
+actually are coming at the very low
+level like the particular sensors and
+they also come in multi-dimensional
+feature for example, even for the data.
+They may come, some part could be
+the temperature, some part could be video,
+some part could be audio,
+some could be the text date, okay?
+So it's multi-dimensional in nature.
+But for the information processing needs,
+usually you will want to summarize or
+process the data and pattern, in
+a multi-level and multi-dimensional way.
+So we can see there are lots of research
+challenges data stream processes.
+If we look at the architecture of
+Data Stream Processing System,
+usually we call this Stream Data
+Management System, what we have,
+is we have a Stream Query processor,
+you get multiple data streams
+streaming into this processor at
+the same time in a continuous way.
+But even for user application programs,
+we usually posts continuous
+query rather than ADHOC queries.
+It's like a watch dogs.
+They won't see anything abnormal.
+They won't summarize the data
+in a multi-dimensional space.
+And then, for the,
+this stream query processor.
+Usually you have some scratch space,
+it could be a big main memory or
+even plus some disks.
+These multiple streams coming down
+here where we summarize the process,
+especially answer the continuous query.
+The results will be streaming back
+to the users application programs.
+So this is a typical way to process
+streaming data online in the real time,
+okay?
+The problem becomes for
+frequent pattern mining.
+How can we find a frequent
+pattern in this data streams?
+Actually it's pretty challenge.
+Then we look at the, the major differences
+between stream mining versus stream query.
+The first thing is the stream mining and
+the stream querying,
+they share many common difficulties.
+For example you can only do single-scan,
+you need a fast response,
+you have to handle dynamic and noisy data.
+But for stream mining usually you
+want to see the global picture,
+you want to see patterns,
+you want to find the clusters.
+It often requires less precision
+than the stream querying.
+Because stream querying on the pin
+point to a particular point,
+you may need to perform join grouping,
+sorting which acting in streams join and
+the sorting, those algorithms are actually
+pretty difficult because you cannot
+see the past data, you cannot, you know,
+predicted future of incoming data as well.
+But patterns are hidden,
+they are more general than querying,
+so their processing is different.
+Actually, for stream data mining,
+there are lots of research and
+development activities already, okay.
+One branch actually studied
+pattern mining data streams.
+Another is doing the multi-dimensional,
+multi-level online
+summary of data streams.
+And also data streams can
+be clustered dynamically.
+Can do dynamic classification.
+Can find outliers and, and anomalies.
+So there are lots of
+research in data mining.
+All these frontiers.
+So what we are studying in this lecture.
+We will only touch pattern
+mining in data streams.
+So one important thing is for
+mining frequent patterns.
+In stream data it is
+unrealistic to try to find
+precise frequent pattern
+simply says the pass.
+Precise thing may already been gone.
+It's pretty hard to capture them.
+The future one may not be coming yet,
+so it's pretty hard to predict them.
+And even for the one you can hold,
+just because they are so
+big, you can not store them even in
+the compressed form like FPtree.
+So, what we expect is trying
+to find approximate answers.
+But in many cases, approximate answers may
+be sufficient for our analysis purpose.
+For example, you may find a router,
+could be interested in finding the flows.
+Those flow in the network,
+you may find whose frequency is at least
+1% of the entire traffic stream seen so
+far.
+If you identified those patterns,
+those frequent occurring flows,
+you could probably be pretty happy.
+On the other hand, you may say,
+if you for this sigma,
+if you give me the count, it's probably
+a little less like over 1 over 10 or
+you would say the error rate is 0.1%.
+You probably feel it's very comfortable.
+You're thinking you're,
+you're doing good thing already.
+In that case, we may develop
+some very efficient algorithm
+to mine such patterns with
+good approximation like this.
+Then in this lecture, I'm going to
+only introduce one algorithm on this,
+which is called Lossy Counting Algorithm,
+developed by Manku and Motwani in 2002.
+Okay?
+The major idea is not
+to keep all the items,
+especially not to keep the items
+with very low support count.
+That means, if they are very low,
+they unlikely will reach
+the frequency's threshold.
+You do not even keep them.
+Okay?
+The advantage is you can
+guarantee some error bound,
+that means I actively find
+all the frequent items.
+Okay?
+But of, of course you need still to
+keep really large set of traces.
+Your buffer size should be rather big.
+Let's look at lossy counting algorithm,
+but
+we only introduce frequent single items.
+Okay.
+They didn't study multiple item sets for
+the simple explanation of the idea.
+We first look at the frequent
+single item counting.
+Okay?
+Suppose you get a very, very huge,
+you know, data streams.
+You may di,
+divide the stream into buckets, but
+the bucket size could be one over epsilon,
+because your epsilon is 0.1% error bound.
+Then the bucket size could be 1 over
+epsilon, means 1 over 0.1% is 1000,
+means each bucket should have 1000 item,
+okay?
+Then, this one's on the item
+we assume that the,
+the main memory, the size, is big enough.
+You can easily hold this one bucket.
+Then at the very beginning,
+when the first bucket comes, the,
+the main memory, at the very beginning,
+you can see for this part is empty.
+Okay, this summary is empty.
+But then, you come, you get the first
+bucket, you get 1000 items, okay?
+Then you start counting them.
+For example, you may count that they are
+four red ones there are two yellow ones,
+it's one green one, one blue one,
+one black, and so on, okay?
+So, at the end of this bucket boundary,
+we will decrease all the counters by one.
+You probably can see, there are many,
+if they only appear once, like the green
+one, a blue one, the black one.
+They all gone because one you decrease
+a counter by 1, the counter is zero,
+they're all gone.
+Even for red ones, you get four,
+now you become, you get,
+the counter becomes three.
+You get two yellow ones,
+the counter actually is only one.
+Okay?
+So that means you final, your counter
+actually get a less than the real one.
+With the next bucket of the stream coming,
+okay,
+you'll probably see you'll actually empty
+a lot of space because the counter was not
+existing there too, there are too
+few items in this color, okay?
+Then you may get additional red ones and
+yellow ones or, or even black ones.
+Okay?
+So you can see at the end of this bucket,
+okay,
+then you will do the same,
+you decrease all the counters by one.
+So those, not frequent the,
+they, they are gone again, so
+the the yellow one you can see, originally
+you get a 1, you get a one more but
+you decrease by 1 and still keep one.
+The black one is one,
+the red one you get a little more
+because the, the red one is so frequent.
+After, you know, you, you're thi,
+thinking bucket by bucket you get many,
+many buckets if you, you, you, you still
+keep this counter, you know, 1000 counters
+okay, at, because you get 1000 buckets and
+most of you have 1000 counters.
+You only get a number, so the space,
+actually, is quite limited.
+Okay.
+Then, we finally,
+we want to output the frequent patterns.
+The interesting thing is,
+whether we will be able to
+output all the frequent patterns if
+they are frequent in this data streams.
+But maybe we have some reduced count,
+okay?
+So actually,
+suppose the support threshold is sigma,
+the error threshold is epsilon, and
+the stream length is N, so far.
+Okay, then the output of those items
+with frequency count exceeding
+sigma minus epsilon times N,
+simply says if for
+any item you finally found its
+counter with this number of bigger,
+your output as a frequent items, okay.
+So the key is because at,
+at end of each bucket,
+we decrease the counter by 1, okay.
+So we, we, we're undercount something, so
+the question becomes how
+much do we undercount?
+So if the stream length seen so far is N,
+the bucket size is 1 over epsilon.
+We can easily, you know, determine
+the frequency count error should
+be no more than number of buckets.
+Why?
+Because for each item, for
+every bucket, you decrease a count by one.
+Okay.
+If some item come even later,
+at the very beginning they did not come,
+you did not d, decrease them.
+So, to that extent,
+you decrease less than number of buckets.
+So if they come even at the very
+beginning, the first bucket they stay
+along the way, you will decrease
+the count by number of buckets.
+But how, what is the number
+of buckets you will see?
+Because you have seen N elements, okay.
+And the bucket size is 1 over epsilon,
+so N elements over bucket
+size is number of buckets,
+which is N over 1 over epsilon.
+So you get epsilon times N.
+That means the, the frequency count
+error at most is epsilon times N.
+We know each one is pretty small, so
+the error con arrow is not that big.
+Okay.
+Then we look at the last accounting,
+they have some
+interesting property we call
+approximation guarantee.
+The first thing is there's
+no forced negatives.
+Simply it says, if the item is frequent,
+it will be captured and output.
+Why?
+As we can see is if your item is frequent,
+that means your total support threshold
+should be sigma times n or more.
+Then because we output the frequent item
+exceeding sigma minus epsilon times n.
+We know we already under count,
+count this part at most.
+That means after you've outputted
+all these, you were output
+every item who's a poor count is
+no less than sig, sigma amount n.
+So there's no false not negatives.
+Okay.
+But there could be false positives.
+Where the false positives comes,
+just because probably
+sometimes they come later
+like you may have one color.
+Okay.
+Suppose orange become at a very late
+stage.
+Okay.
+So they actually the previous decrement
+by one actually did not touch them.
+So now, they really have this suppose,
+their support is sigma
+minus epsilon times n?
+You, you actually output this.
+Say, this one could be a frequent item.
+Okay.
+But this orange one,
+actually you the real supported is this.
+Okay.
+They do not suffer the decrement, so
+or only suffer one.
+So then, your support count.
+This way acting principle is
+not frequent in rear, but
+you think of frequently just output as a,
+as a frequent item.
+Okay.
+So the false positive has a true
+frequency at least of this, so
+that means that the orange one has
+the true frequency of this one,
+you still count them as a frequent item.
+So you do have some false positives.
+But frequency count underestimated
+by at most and sometimes N,
+because we already have this.
+So you have some nice guarantee for,
+you know, finally,
+you have, just a,
+this bucket size as your main memory.
+You actually can return you know,
+all the frequent items and
+it may contain some false positive.
+May have some underestimated of your
+frequent count, frequency count.
+But still it is a nice elegant
+algorithm with very limited resources
+that can handle data streams.
+Of course, after this,
+there are lots of studies by improving,
+for example,
+improving lossy counting algorithm.
+One interesting study
+is by Metwally in 2005.
+They do space saving computation
+of frequent and top-k elements.
+The general philosophy is they
+may try to use more memory space.
+If you really have bigger memory,
+you don't have to restrict it down to
+1 over epsilon as your bucket size.
+But we are not going to
+discuss this in more detail.
+Another interesting thing
+is in this lecture,
+we only discuss frequent one itemset.
+That means for frequent singer item we
+discussed how to mine the approximate one.
+Actually in Manku and Metwally paper,
+they also discussed frequent k-itemsets.
+How to maintain counter.
+How to do you know, lossy counting.
+But due to limited time,
+we were not introduced to this algorithm.
+You may like to read the paper
+by you know, yourself.
+Then there are also some
+subsequent studies of how to
+mine sequential patterns in data streams.
+It is a pretty challenging task, as well.
+Okay.
+So, I'm going to only
+introduce you two papers.
+One is Manku and Motwani's paper,
+another is Metwally's paper.
+You may want to see you know,
+in, how to mine
+the streams in the patterns in
+streams in a very interesting way.
+Thank you.
+[MUSIC]
+

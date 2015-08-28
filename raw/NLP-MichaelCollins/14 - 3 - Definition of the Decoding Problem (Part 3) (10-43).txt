@@ -1,0 +1,245 @@
+So just a final word on this idea of the 
+set of possible derivations. 
+So, remember y of x is the set of valid 
+derivations for a particular input 
+sentence x. 
+This will in general be exponential in 
+size. 
+[SOUND]. 
+or a little more precisely the number of 
+elements or the number of valid 
+derivations is going to grow 
+exponentially fast with respect to the 
+sentence length. 
+OK. 
+That's a usual observation. 
+So this is going to be a very, very large 
+set of possible derivations. 
+[BLANK_AUDIO]. 
+Okay, so we're almost there with the 
+definition of the decoding problem of 
+phrase based models. 
+the final definition is the following. 
+So, for a given sentence x, again x is 
+going to be some sequence of words x1 
+through xn, this is going to be some 
+German sentence in our particular 
+examples. 
+we generate from this a set of valid 
+derivations, so each of these is going to 
+be a sequence of phrases. 
+Okay? 
+and the set, as I said before, could be 
+extremely large. 
+And the translation problem is going to 
+be to try to find the derivation in the 
+set which has the highest score on the 
+subfunction f of y. 
+Okay? 
+And fy is roughly speaking something like 
+log p of y. 
+P of x given y, where this is a trigram 
+language model and this is the 
+translation model. 
+I say roughly speaking because it's 
+actually questionable whether 
+phrase-based models as we'll define them 
+really rigorously define a model of this 
+form, but that's roughly the intuition, 
+okay? 
+But a good translation, remember y is 
+going to be a derivation, is going to 
+both have good probability under a 
+trigram language model and also have good 
+probability under this, this translation 
+model. 
+but let's be absolutely explicit about 
+what f of y is. 
+So, if we score a derivation, we're 
+going to take into account three terms. 
+And again I'm going to give the abstract 
+definition here. 
+We'll go into this in considerable detail 
+on the next slide with an example. 
+But the three terms are the following. 
+So firstly remember e of y is the, the 
+sequence of words in the translation, so 
+this could for example be we must 
+also[SOUND] take these criticisms 
+seriously and h of e of y, is just 
+going to be the score under a trigram 
+language model. 
+Okay? 
+So, this score h is going to score our 
+English sentence. 
+Sorry. 
+This is maybe not so clear, but this is 
+an English sequence of words. 
+This is going to be, actually, the log 
+probability under a trigram language 
+model score. 
+Okay second term. 
+So now, remember our derivation y 
+consists of a sequence of phrases P1, P2, 
+up to PL. 
+each of these phrases is going to have 
+some score and so g of P1, for example, 
+might be the score of the first phrase, 
+might be minus 2.3 or something. 
+And we're going to sum up the scores of 
+the individual phrases, okay? 
+So that's the second part of the of the 
+score, and then finally we're going to 
+have what is called a distortion score. 
+So, in add-, in addition to the strict 
+limit on distortion distances, as I 
+showed you on the previous slides, we are 
+actually going to have a cost associated 
+with distortions. 
+So, we're going to take eta times this 
+distance that we calculated before, 
+basically the distance between each 
+phrase and the next phrase, and eta is 
+some parameter that's typically negative, 
+which penalizes re-orderings. 
+So, it penalizes large values for this 
+difference between two phrases. 
+So, eta is typically negative. 
+It might take some value like minus 1 or 
+minus 2 or something like this. 
+And it's typically chosen to optimize 
+translation performance, okay? 
+So, there are various ways to choose eta 
+in a way that optimizes translation 
+quality. 
+Okay. 
+Let's look at how this expression is 
+calculated using a particular example. 
+So, this is the definition of f of y. 
+And the decoding problem is going to be 
+to try to find the derivation that 
+maximizes the sum of these three 
+different scores. 
+Okay. 
+So, lets illustrate this with an example. 
+this is our input sentence. 
+this is one possible derivation y. 
+And I'm going to calculate f of y, which 
+is going to be the score for this 
+particular derivation. 
+Okay. 
+So and as I said, this is going to 
+consist of the sum of 3 terms. 
+A language model score, so at first we 
+have the language model. 
+[SOUND]. 
+Secondly, we have what are called the 
+phrase scores. 
+[SOUND]. 
+And finally, we have the distortion 
+scores. 
+[SOUND]. 
+Okay. 
+So, let's go through these in turn, to 
+firstly, the language model. 
+So, I'm going to have a sum of terms. 
+So firstly, I'm going to have log of q of 
+we given star star. 
+[SOUND]. 
+And then I'm going to have log of a must 
+given star we, because must is the second 
+word in this translation. 
+And then log of also, given we must. 
+And then log of take given must 
+also,[SOUND] and so on, and so on. 
+So, this is because, under this 
+derivation, the translation is, We must 
+also take this criticism seriously. 
+And so I have basically a sum of terms. 
+in each case, I take the trigram 
+parameter. 
+I take its log and I sum it all together, 
+all these logs. 
+Okay. 
+So, that's the language model score. 
+And again, this is going to reflect how 
+likely this final translation is as a 
+sentence of English. 
+So, we're making critical use of a 
+language model and scoring this 
+derivation as to how plausible a sentence 
+of English it is. 
+So, that's the first component. 
+Now, let's look at the phrase scores. 
+So, now I'm going to have a set of terms, 
+so g of 1, 3, we must also plus g of 7, 
+7, take plus g 4,5, this criticism and so 
+on and so on. 
+So remember g was a function that takes a 
+phrase and gives it a score, typically a 
+log probability. 
+And again, we're going to have one of 
+these g terms for each of these phrases. 
+So, the 1, 2, 3, 4 phrases, we're 
+going to have four g terms. 
+So, that's the phrase scores. 
+Finally, let's look at how the distortion 
+scores scored for this particular 
+example. 
+Okay. 
+So, I'm going to go through each phrase 
+in turn looking at how far it is from the 
+previous ph-, phrase. 
+The first thing we're going to do is look 
+at the start point of this first phrase. 
+And just look at one minus one. 
+That's absolute value times eta. 
+so that corresponds to, that's the first 
+term, which is basically eta times 1 
+minus s of P1. 
+So this is penalizing how far the first 
+phrase is from the phrase start of the 
+German sentence, this is actually zero in 
+this case. 
+And then let's look at the next term. 
+So, now I'm going to compare 3 to 7, the 
+end of this phrase to the start of this 
+one. 
+And I'm going to take 3 plus 1 minus 7, 
+take its absolute value times eta. 
+Okay. 
+and then I'm going to look at 7 versus 4. 
+So, I'm going to look at 7 plus 1 minus 4 
+times eta and 5 versus 6. 
+So 5 plus 1 minus 6 times eta. 
+And again, eta might take some negative 
+value, for example eta equals minus 1, 
+typically chosen to optimize the 
+performance of the translation model. 
+So, you can see that these terms are 
+basically going to give penalties 
+whenever we see a distortion that's 
+nonzero. 
+So this is zero, this is zero. 
+I think this value is 3 and this value is 
+4. 
+And so, the final cost in this case is 7 
+times 8 eta, as the final distortion cost 
+of this particular example. 
+Okay, but to jump to back, back to the 
+high level, we have a sum of three 
+different types of scores, language 
+model, phrase scores and distortion 
+scores. 
+The language model scores how likely the 
+resulting translation is as a sentence of 
+English. 
+The phrase stores, scores can be thought 
+of a measure how well these English 
+phrases match the underlying German. 
+For an example, how well we must also 
+matches wir mussen auch. 
+And then finally these distortion scores 
+penalize phrases moving long distances in 
+these translations. 
+

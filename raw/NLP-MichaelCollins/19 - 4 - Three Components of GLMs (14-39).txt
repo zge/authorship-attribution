@@ -1,0 +1,352 @@
+So, next, we're going to describe global 
+linear models. 
+And we'll focus on the three components 
+of these models. 
+So firstly, we'll see that we have 
+feature vectors. 
+So f is going to be some function that 
+actually maps and entire xy pair to some 
+feature vector in some d dimensional 
+space. 
+So x might, for example, be a sentence. 
+And y it might be a parse tree, for 
+example. 
+And so f will be a function that maps an 
+input output pair to a feature vector, 
+again these feature vectors are going to 
+be somewhat similar To the feature 
+vectors you've seen in log linear models. 
+But the difference is, they now take in 
+entire structures as their input. 
+The second component is a function called 
+GEN. 
+Which takes an input x, and maps the 
+input to a set of candidates. 
+So, for example, we might take a 
+sentence. 
+We have some function that maps that 
+sentence to a set of candidate possible 
+policies for that sentence. 
+And we'll see there are several ways of 
+essentially doing this. 
+Finally, we have a parameter vector v, 
+that's the third component. 
+This is also going to be in D dimensions. 
+We have the, the same number of 
+parameters as we do features. 
+And in general the functions F and Gen 
+will be fixed, so they'll be defined 
+ahead of time. 
+And our training data will be used to set 
+the parameter values v. 
+And the parameters v are very similar to 
+the kind of parameters we saw in the log 
+linear models. 
+So let me talk about these three 
+components in turn, in a little more 
+detail. 
+So here's f, so again sticking with the 
+pausing problem F takes an entire XY 
+pairs input. 
+So in pausing K, we would have a 
+sentence, which you can see at the fringe 
+of this tree, paired with some past tree. 
+And we're going to define some function 
+that takes this parse tree's input and 
+returns a feature vector as a power put. 
+So in this case the dimensionality, D, 
+the number of features. 
+Is equal to 1, 2, 3, 4, 5, 6, 7. 
+So we have a, a seven dimensional 
+representation. 
+In practice in many of these models, d 
+can be very large. 
+You can often have tens of thousands or 
+hundreds of thousands of features in 
+these models. 
+Particularly in the parsing case, if 
+these features start to take into account 
+the lexical information. 
+The identify of these individual words. 
+F is going to play a critical role. 
+And it defines how a candidate structure 
+is represented, this is going to be the 
+information which goes into the learning 
+algorithm, this is going to be the 
+information which the learning algorithm 
+leverage's in choosing between good and 
+bad structures for particular input In 
+general, we'll construct a feature 
+vector. 
+But by defining a number of individual 
+features. 
+So each feature is going to be some 
+function that takes an entire structure 
+as input, and returns some real value. 
+As its output. 
+A very common type of feature will be a 
+feature which counts some kind of a 
+substructure within the structure we're 
+looking at. 
+So for the parsing case for example, it'd 
+be very natural to define a feature which 
+counts the number of times a particular 
+rule, say A goes to BC or S goes to NP VP 
+or VP goes to Vt NP. 
+Okay so we could have a whole number o 
+features which track counts of different 
+rules in our grammar. 
+SO in this particular example if I define 
+HXRY to be the encumber of times the rule 
+A goes to BC as seen in the structure. 
+For this particular tree we'll return the 
+value one, and for this tree we'll return 
+the value two because we have two 
+instances of this rule here... 
+And one instance of this rule here. 
+So in general, we will define a feature 
+vector by defining a whole set of 
+functions. 
+We'll actually have little d these 
+functions h1 through hd and will 
+concatenate these to get a feature vector 
+representation of a parse string. 
+So each one might count the number of 
+times the rule a goes to bc is seen 
+within the tree. 
+H2 might count the number of times some 
+other rule is seen within the tree and so 
+on and so on. 
+In fact a very simple representation of 
+parse trees would be to simply have one 
+feature for every possible context free 
+rule in our underlying grammar. 
+And so now, you can see that one parse 
+tree might get mapped to one feature 
+vector. 
+Another parse tree might get mapped to 
+another feature vector like this. 
+And again, I'll stress that these feature 
+vector mappings are the input to the 
+learning algorithm. 
+So it's really important to come up with 
+a good definition of these features. 
+So the second component of global linear 
+models is this function GEN which 
+essintially takes an x as input and 
+enumerates a set Of candidate structures. 
+And so the learning model is actually 
+going to choose between one of these 
+structures but Gen is critical in that's 
+it's going to enumerate the full set of 
+candidates that is going to be considered 
+for a particular input. 
+So in the pausing case Gen would take a 
+sentence's input... 
+And produce a set of candidate pause 
+trees for that sentence. 
+And we'll then see how we can use the 
+feature vectors in combination with 
+parameter vector to choose between these 
+different pause trees. 
+So there are a number of different ways 
+of defining GEN. 
+Here are a few. 
+So, for parsing, we could define GEN x to 
+be the set of all possible parses for x 
+under a grammar for example, a context 
+free grammar. 
+[SOUND] And notice in this case, GEN is 
+large. 
+Because, in general, the number of parse 
+trees for a sentence can easily grow 
+exponentially with respect to the size of 
+the sentence. 
+Actually, later in this segment on global 
+linear models, and probably in next 
+week's lectures. 
+We will see ways of dealing with cases 
+where GEN(x) is a very large set, like 
+this one. 
+Another scenario which is quite common 
+within these models is to define GEN(x) 
+to be the top N most probable parses 
+under a history-based model. 
+So that means we can think of the 
+history-based model as being a baseline 
+approach Which for a given sentence will 
+produce may be 20 or 30 or a 100 
+different parses. 
+And so in this case the size of GEN is 
+fairly manageable, it is relatively 
+rather small The motivation in this kind 
+of setting is that, the history based 
+model will do a pretty good job of 
+generating 100 reasonably good parses. 
+And in particular, one of those parses 
+may be the correct one. 
+And then the global linear model will be 
+used to select within these different 
+parses. 
+Using more powerful features than were 
+seen in the underlying history based 
+model. 
+In tacking we could define gen x to be 
+the syllable possible tax sequences for 
+an in protectance so if we have say the 
+dog barks and the sort of text we have is 
+DNV. 
+Then we have, basically every possible 
+tax sequence as GEN, again this set is 
+quickly going to get very, very large, 
+it's going to grow exponentially quickly 
+respective to the length of the sentence. 
+And finally in a translation setting, GEN 
+x might be the set of all possible 
+english translations. 
+For some friend sentence, maybe all 
+possible translations, for example, under 
+a phrase based lexicon, with some 
+particular distortion limit. 
+But abstractly, the important thing to 
+remember is that gen, in general, in some 
+way, we have, of the new rating, a set of 
+candidates, for an input sentence X. 
+The final component of global linear 
+models is the paramiter vector, and this 
+is what is going to be actually learned 
+From the training examples. 
+So I'll use little v to refer to a 
+parameter vector which is also in d 
+dimensions. 
+Remember that the feature vector has d 
+features. 
+And we'll use f and v together. 
+To map a candidate structure to 
+real-valued score. 
+So if we take some XY pair, in this case, 
+it's a sentence paired with a pause tree. 
+We can first map that structure to a 
+feature vector through this function F. 
+And then secondly we can take the inner 
+product between F and V, the dot product, 
+in exactly the same way as we saw for log 
+linear models, to get an overall score 
+for the parse tree. 
+So here we have the feature vector F. 
+And here I have the perimeter that to 
+which it says. 
+For example the first feature you get to 
+weigh 1.9. 
+The second has weight minus 0.3, third 
+has 0.2, and so on and so on. 
+I take the inner product of these two 
+vectors. 
+I get some score. 
+For example 5.8 in this particular 
+example. 
+Now the score is going to have an 
+interpretation. 
+As being some measure of the plausibility 
+of this particular structure y when 
+paired with x. 
+More likely structures are going to have 
+higher scores. 
+And in particular we'll see soon that the 
+output from the global linear model will 
+be the structure y that maximizes this 
+inner product. 
+So again I want to stress that we've made 
+a rather radical move here. 
+We've basically taken the technology we 
+saw with log linear models, but now 
+applied it to entire structures. 
+So now an entire pause structure, gets 
+mapped through some feature vector, to 
+some some feature vector representation. 
+an then the entire paul structure gets a 
+score which is the inner product of f and 
+v and this score is essentially going to 
+replace what wed seen in other models in 
+tehis class which was either a joint 
+probability of y and x or a condition 
+probability of y given x. 
+well see that this school product Plays a 
+rather similar role to these 
+probabilities. 
+Now that I've given you these three parts 
+to the model, we can put things together 
+and see how the global linear model 
+defines a function from the set of inputs 
+to the set of outputs y so what's this 
+function capitol f so this going to take 
+some input x and its going to return some 
+structure y and that calculation is 
+actually very simple. 
+We simply, search for the y in the set of 
+candidates gen x, that maximizes the 
+score I show, I showed you on the 
+previous slide. 
+And so, it's really a very simple idea. 
+We simply choose the highest scoring 
+candidate as the most plausible 
+structure. 
+So this critically Is how a function from 
+inputs to outputs is defined, and you can 
+see it depends on all three components, 
+on GEN and f and v. 
+Now, as I said before, GEN and f will in 
+general be fixed, they'll be chosen 
+before we see the training examples A 
+critical question we'll address is that 
+given training examples xiyi for i goes 1 
+to n. 
+So given examples of the xy mapping. 
+How do we set these parameters v. 
+And this is something we'll come too 
+shortly. 
+So this line may help us to visualize the 
+entire process a little bit better. 
+We have some input sentence and we want 
+to map that to a parse tree. 
+This function GEN first enumerates some 
+set of candidate parse trees for this 
+input sentence, in this case there are 
+one, two, three, four, five, six possible 
+parse trees. 
+Each of these pause trees gets mapped 
+through a different feature vector 
+through the function f. 
+So we have one, two, three, four, five, 
+six feature vectors, one for each of 
+these pause trees. 
+And then given a parameter of vector v, 
+we can take the inner product of f and v 
+to give a score For each of these 
+different postries. 
+So we have one two three four five six 
+scores. 
+So this tree gets score 13.6. 
+This tree gets scored 12.2 12.1 3.3 9.4 
+11.1. 
+And then finally, we find the highest 
+scoring postries. 
+So 13.6 is the highest of these scores. 
+So this parse tree is actually selected 
+as the output of the models. 
+This arg max operation picks the highest 
+scoring tree. 
+You can see that, as you vary these 
+parameter values, V. 
+You're going to affect the scores given 
+to these different parse trees. 
+And you're going to, going to affect the 
+ranking given to these different parse 
+trees and most importantly you can effect 
+the output of the model, this arg max, so 
+the training procedure is essentially 
+going to somehow manipulate these 
+parameters in a way that we do well in 
+recovering the structures on these, on 
+our training or test examples. 
+

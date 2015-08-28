@@ -1,0 +1,323 @@
+In this video, I'm going to talk about the
+mixture of experts model that was
+developed in the early 1990s.
+The idea of this model is to train a
+number of neural nets, each of which
+specializes in a different part of the
+data.
+That is, we assume we have a data set
+which comes from a number of different
+regimes,
+And we train a system in which one neural
+net will specialize in each regime, and a
+managing neural net will look at the input
+data, and decide which specialist to give
+it to.
+This kind of system, doesn't make very
+efficient use of data, because the data
+is, fractionated over all these different
+experts.
+And so with small data sets, it can't be
+expected to do very well.
+But as data sets get bigger, this kind of
+system may well come into its own, because
+it can make very good use of extremely
+large data sets.
+In boosting, the weights on the models are
+not all equal,
+But after we finish training, each model
+has the same weight for every test case.
+We don't make the weights on the
+individual models depend on which
+particular case we're dealing with.
+In mixture of experts, we do.
+So the idea is that we can look at the
+input data for a particular case during
+both training and testing to help us
+decide which model we can rely on.
+During training this will allow models to
+specialize on a subset of the cases.
+They then will not learn on cases for
+which they're not picked.
+So they can ignore stuff they're not good
+at modeling.
+This will lead to individual models that
+are very good at some things and very bad
+at other things.
+The key idea is to make each model, or
+expert as we call it, focus on predicting
+the right answer for cases where it's
+already doing better than the other
+experts.
+That will cause specialization.
+So there's a spectrum of models from very
+local models to very global models.
+Nearest neighbors, for example, is a very
+local model.
+To fit it, you just store the training
+cases.
+So, that's really simple,
+And then if you have to predict Y from X,
+you simply find the stored value of X
+that's closest to the test value of X,
+then you predict the value of Y that's the
+same as for the stored value.
+The result of that is that the curve
+relating the input to the output consists
+of lots of horizontal lines connected by
+cliffs.
+It would clearly make more sense to smooth
+things out a bit.
+At the other extreme, we have fully global
+models, like fitting one polynomial to all
+the data.
+They're much harder to fit to data, and
+they may also be unstable.
+That is, small changes in the data may
+cause big changes in the model you fit.
+That's because each parameter depends on
+all the data.
+In between these two ends of the spectrum,
+we have multiple local models, that are of
+intermediate complexity.
+This is good if the data set contains
+several different regimes and those
+different regimes have different
+input/output relationships.
+In financial data for example the state of
+the economy has a big effect on
+determining the mappings between inputs
+and outputs, and you might want to have
+different models for different states of
+the economy.
+But you might not know in advance how to
+decide what constitutes different states
+of the economy, you're going to have to
+learn that too.
+So we have this problem if we're going to
+use different models for different
+regimes, of how do we partition the data
+session to these different regimes.
+In order to fit different models to
+different regimes we need to cluster the
+training data into subsets, one for each
+of these regimes.
+But we don't want to cluster the data
+based on the similarity of input vectors.
+All we're interested in is the similarity
+of input-output mappings.
+So if you look at the case on the right,
+there's four data points that are nicely
+fitted by the red parabola and another
+four data points that are nicely fitted by
+the green parabola If she partition the
+data based on the input I put mapping,
+that is based on the idea that a parabola
+will fit the data nicely, then you
+partition the data where that brown line
+is.
+If however you partitioned the data by
+just clustering the inputs, we partition
+where the blue line is, and then if you
+looked to the left of that blue line,
+you'll be stuck with a subset of data that
+can't be modeled nicely by a simple model.
+So I'm going to explain an error function
+that encourages models to cooperate.
+And then I'm going to explain an error
+function that encourages models to
+specialize.
+And I'm going to try to give you a good
+intuition for why these two different
+functions have these very different
+effects.
+So if you want to encourage cooperation,
+what you should do is compare the average
+predictors with the target and train all
+the predictors together to reduce the
+difference between the target and their
+average.
+So using angle back as for expectation
+again, the error would be the difference
+between the target and the average of all
+the predictors of what they predict.
+That will overfit badly.
+It will make the model much more powerful
+in training each predictor separately,
+because the models will learn to fix up
+the error is that other models make.
+So, if you're averaging models during
+training, and training so that the average
+works nicely, you have to consider cases
+like this.
+On the right, we have the average of all
+the models except for model I.
+So, that's what everybody else is saying
+when their votes are averaged together.
+On the left, we have the output of model
+I.
+Now if we'd like the overall average to be
+closer to the target, what do we have to
+do to the output of the Ith model?
+We have to move it away from the target.
+That will take the overall average towards
+the target.
+You can see that what's happening is model
+I is learning to compensate for the errors
+made by all the other models.
+But do we really want to move model I in
+the wrong direction?
+Intuitively it seems better to move model
+I towards the target.
+So here is an arrow function that
+encourages specialization, and it's not
+very different.
+To encourage specialization, we compare
+the output of each model with the target
+separately.
+We also need to use a manager to determine
+the weight we put on each of these models,
+which we can think of as the probability
+of picking each model, if we have to pick
+one.
+So now, our error is the expectation over
+all the different models of the squared
+error made by that model times the
+probability of picking that model,
+Where the manager or gating network, is
+determining that probability by looking at
+the input for this particular case.
+What will happen if you try to minimize
+this error is that most of the experts
+will end up ignoring most of the targets.
+Each expert will only deal with the small
+subset of the training cases and it will
+learn to do very well on that small
+subset.
+So here's a picture of the mixture of
+expert's architecture.
+Our cost function is the squared
+difference between the output of each
+expert in the target averaged over all the
+experts.
+But with the weights in that average
+determined by the manager.
+It's actually a better cost function will
+come to later, based on the mixture model.
+But this was a cost function I first
+thought of, and I think it's easier to
+explain the intuition with this cost
+function.
+So we have an input.
+Our different experts will look at that
+input.
+They all make their predictions based on
+that input.
+In addition we have a manager, a manager
+might have multiple layers and the last
+layer for manager is a soft max layer, so
+the manager outputs as many probabilities
+as there are experts,
+And using the outputs of the manger and
+outputs of the experts, we can then
+compute the value of that error fraction.
+If we look at the derivative of that other
+function,
+The outputs of the manager are determined
+by the inputs xi to the soft max group in
+the final layer of the manager.
+And then the error is determined by the
+outputs of the experts, and also the
+probabilities output by the manager.
+If we differentiate that error with
+respect to the outputs of an expert, we
+get a signal for training that expert and
+that gradient that we get with respect to
+the output of an expert is just the
+probability of picking that expert, times
+the difference between what that expert
+says in the target.
+So if the manager decides that there's a
+very low probability of picking that
+expert for that particular training case,
+the expert will get a very small gradient,
+and the parameters inside that expert
+won't get disturbed by that training case.
+It'll be able to save its parameters for
+modeling the training cases where the
+manager gives it a big probability.
+We can differentiate with respect to the
+outputs of the gating network.
+And actually what we're gonna do is
+differentiate with respect to, the
+quantity that goes into the soft max.
+That's called the low jet, that's xi,
+And if we take the derivative with respect
+to xi, we get the probability that, that
+expert was picked times the difference
+between the squared arrow made by that
+expert and the average overall experts
+when you use the weighting provided by the
+manager of the squared arrow.
+So what that means is, if expert I makes a
+lower squared error than the average of
+the other experts, then we'll try to raise
+the probability of expert i.
+But if expert I makes a higher squared
+error than the other experts, we'll try
+and lower his probability.
+That's what causes specialization.
+Now there's actually a better cost
+function.
+It's just more complicated.
+It depends on mixture models, which I
+haven't explained in this course.
+Again, those will be well explained in
+Andrew Ing's course.
+I did explain, however, the interpretation
+of maximum likelihood, when you're doing
+regression, as the idea that the network
+is actually making a Gaussian prediction.
+That is the network outputs a particular
+value, say Y1 and we think of it as making
+bets about what the target value might be
+that are a Gaussian distribution around Y1
+with unit variance.
+So the red expert makes a Gaussian
+distribution of predictions around by Y1
+and the green expert makes a prediction
+around Y2.
+The manager then decides probabilities for
+the two experts and those probabilities
+are used to scale down the Gaussians.
+Those probabilities have to add to one and
+they are called mixing proportions.
+And so once we scale down the Gaussians we
+get to distribution that's no longer a
+Gaussian, is the sum of the scale down red
+Gaussian and the scale down green
+Gaussian.
+And that's the predictive distribution
+from share experts.
+What we want to do now is maximize the log
+probability of the target value under that
+black curve and remember the black curve
+is just the sum of the red curve and the
+green curve.
+So that leads to the following model for
+the probability re-target, given a mixture
+of experts.
+The probability, is on the left,
+And it's the sum over all the experts, of
+the mixing proportion assigned to that
+expert by the manager or gating network
+times e squared the squared difference
+between the target and the output of that
+expert,
+Scaled by the normalization term for a
+Gaussian with a variance of one.
+And so our cost function is simply going
+to be the negative log of that probability
+on the left.
+We're going to try and minimize the
+negative log of that probability.

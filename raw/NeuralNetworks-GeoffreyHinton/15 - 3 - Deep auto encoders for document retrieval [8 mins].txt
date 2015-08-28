@@ -1,0 +1,209 @@
+In this video, I'm going to talk about 
+applying deep autoencoders to document 
+retrieval. 
+There was a method developed some time 
+ago called latent semantic analysis, that 
+amounts to applying principal components 
+analysis to vectors of word counts 
+extracted from documents. 
+The codes produced by latent semantic 
+analysis can then be used for judging 
+similarity between documents so they can 
+be used for document retrieval. 
+Obviously, if deep autoencoders work much 
+better than PCA, we would expect to be 
+able to extract much better codes using a 
+deep autoencoder than using latent 
+semantic analysis. 
+And Rus-lan Salakhutdinov and I showed 
+that, that was indeed the case. 
+Using a big database of documents, we 
+showed that ten components extracted with 
+a deep autoencoder are actually worth 
+more than 50 components extracted with a 
+linear method, like latent semantic 
+analysis. 
+We also showed that if you make the code 
+very small, having just two components, 
+you can use those two components for 
+visualizing documents as a point in a 
+two-dimensional map. 
+And this, again, works much better than 
+just extracting the first two principal 
+components. 
+To find documents that are similar to a 
+query document, 
+the first thing we do is convert each 
+document into a big bag of words. 
+In other words, we have a vector of word 
+counts that ignores the order of the 
+words. 
+This clearly throws away quite a lot of 
+information. 
+But it also retains a lot of information 
+about the topic of the document. 
+We ignore words like the or over" which 
+are called stop words," because they 
+don't have much information about the 
+topic. 
+So if you look on the right, I've done 
+the counts for various words, and they're 
+actually the counts for the document on 
+the left. 
+So, if you look at what words we have 
+nonzero counts for, 
+they are vector, and count, and query, 
+and reduce, and bag, and a word, 
+that tells you quite a lot about what the 
+document is about. 
+Now, we could compare the word counts of 
+the query document with the word counts 
+of millions of other documents. 
+But that would involve comparing quite 
+big vectors. 
+In fact, we use vectors of size 2000. 
+So, that would be slow. 
+Alternatively, we could use each query 
+vector to a much smaller vector that 
+still contained most of the information 
+about the content. 
+So, here's how we do the reduction. 
+We take the deep autoencoder and we 
+compress the 2,000-word counts down to 
+ten real numbers, from which we can 
+reconstruct the 2,000-word counts, 
+although we can't reconstruct them very 
+well. 
+We train the neural network to reproduce 
+its input vector as its output vector as 
+well as possible. 
+And that forces it to put as much 
+information about the input into those 
+ten numbers as possible. 
+We can then compare documents using just 
+ten numbers. 
+That's going to be much faster. 
+So, there's one problem with this, which 
+is word counts aren't quite the same as 
+pixels or real values. 
+What we do is we divide the counts in a 
+bag of words by the total number of 
+non-stop words and that converts the 
+vector of counts into a probability 
+vector where the numbers add up to one. 
+You can think of it as the probability of 
+getting a particular word if you picked a 
+word at random in the document, as long 
+as that is not a stop word. 
+So, the output of the autoencoder, we're 
+using a great, big 2,000-way softmax. 
+And our target values are the 
+probabilities of words when we reduce the 
+count vector to a probability factor. 
+There's one further trick we have to do. 
+We treat the word counts as probabilities 
+when we're reconstructing them. 
+But when we're using them to activate the 
+first hidden layer, we multiply all the 
+weights by N. 
+And that's because we have N different 
+observations from that probability 
+distribution. 
+If we left them as probabilities, the 
+input units would have very small 
+activities and wouldn't provide much 
+input to the first hidden layer. 
+So, we have this funny property that for 
+the first restricted Boltzmann machine, 
+the bottom up weights, are N times bigger 
+than the top down weights. 
+So, how well does this work? 
+We trained using bags of 2,000 words on 
+4,000 business documents from the Reuters 
+data set. 
+And these documents had been hand 
+labelled with about a 100 different 
+categories. 
+We first trained a stack of restricted 
+Boltzmann machines, and then, we fine 
+tuned with back propagation using a 
+2,000-way softmax as the output. 
+And then, we test it on a different set 
+of 4,000 documents. 
+And to test, you pick one document to be 
+the query, one of the test documents, 
+and then you rank order all the other 
+test documents by using the cosine of the 
+angles between the ten-dimensional 
+vectors that the ordering code gives you. 
+You repeat this for each of the 4,000 
+possible test documents and then you plot 
+the number of documents you're going to 
+retrieve, that is how far down that rank 
+list you're going to go, against the 
+proportion that are in the same hand 
+labelled class as the query document. 
+This is not a very good measure of the 
+quality of the retrieval. 
+But we're going to use the same measure 
+for comparing the LSA. 
+And so, at least, it's a fair comparison. 
+So, here's the accuracy of the retrieval 
+as a function of the number of retrieved 
+documents. 
+When you see that an autoencoder was just 
+using a code with ten real numbers is 
+doing better than latent emantic 
+analysis, using 50 real numbers. 
+And, of course, it's five times less work 
+per document after you've got the code. 
+Latent semantic analysis with ten real 
+numbers is much worse. 
+We can also do the same thing where we 
+reduce to two real numbers, and then, 
+instead of doing retrieval, we're just 
+going to plot all the documents in a map 
+but we're going to color that 
+two-dimensional point that corresponds to 
+the two numbers produced by PCA by the 
+class of the document. 
+So, we took the major classes of the 
+documents. 
+We gave those major classes different 
+colors. 
+And then, we used PCA on log of one plus 
+the count. 
+The point of doing that is that it 
+suppresses counts with very big numbers 
+which tends to make PCA work better. 
+This is the distribution you get. 
+As you can see, there is some separation 
+of the classes. 
+The green class is in one place. 
+The red class is in a slightly different 
+place. 
+But the classes are very mixed up. 
+Then, we did the same thing by using a 
+deep autoencoder to reduce the documents 
+to two numbers, and, again, plotting the 
+documents in a two-dimensional space 
+using those two numbers as the 
+coordinates. 
+And here's what we got. 
+It's a much better layout. 
+It tells you much more about the 
+structure of the data set. 
+You can see the different classes, and 
+you can see that they're quite 
+well-separated. 
+We assume that the documents in the 
+middle are ones which didn't have many 
+words in them, and therefore, it was hard 
+to distinguish between the classes. 
+A visual display like this could be very 
+useful. If, for example, you saw one of 
+green dots was the accounts and earning 
+reports from Enron, you probably wouldn't 
+want to buy shares in a company that has 
+a green dot nearby. 
+

@@ -1,0 +1,112 @@
+So, here's a quick reminder of what is 
+entailed in tagging problems. 
+So abstractly, the tagging problem is to 
+take some sequence of words or letters in 
+this case as input, and as output produce 
+a tagged sequence, where each element in 
+the sequence, how it now has an 
+associated tag for example, CDC an so on. 
+One of the very first examples we saw was 
+part-of-speech tagging. 
+So in this case the input is a sentence, 
+an the output from the tagger is a tagged 
+sentence, where each word now gets a tag. 
+For example, profits Is tagged as an n 
+for noun, soared is tagged as a v, for 
+verb, at is tagged as a preposition and 
+so on, and so on. 
+The second crucial example we looked at, 
+was the problem of named entity 
+recognition. 
+So, in this problem again, the input to 
+the model is a sentence, a sequence of 
+words and the output is a tagged 
+sequence. 
+The tags now encode the named entities 
+found within the sentence. 
+So, for any word which is not an entity, 
+we have this tag NA, whereas for words 
+which the start of a company, we have the 
+tag SC. 
+For words which are the continuation of 
+the company, we have this tag, CC. 
+And similarly, we have stop location, 
+continue location, stop person, and 
+continue person, and so on. 
+And we've seen two basic models for 
+tagging problem, hit mark up models HMMs, 
+and more recently we saw log linear 
+taggers. 
+[SOUND] So those are the first two 
+methods we've seen. 
+In this lecture, we are going to see a 
+third method, which is how global linear 
+models GLMs and the percetron, can be 
+applied to tagging problems. 
+So how are we going to set up the GLM for 
+tagging? 
+Okay, so as input to a model we have some 
+sentence. 
+So let's say n equals 3 for example, we 
+might have a sentence w1 through 3 which 
+is equal to W1, W2, W3. 
+You might have some sentence like the dog 
+barks, for example. 
+Now, define T to be the set of possible 
+tags. 
+So, let's assume we have three, three 
+parts of speech tags D, N, V. 
+the first thing we're going to define is 
+the function GEN. 
+So, remember GEN is going to take some 
+sentence's input and map it to a set of 
+candidate structures. 
+And in this particular case, we're 
+going to use this definition, where GEN 
+for any sentence, simply returns all 
+possible tag sequences of length n. 
+So, in this particular example, GEN of 
+this sentence W1, W2, W3 would be the set 
+which consists of all tag sequences of 
+length three using these three tags and 
+so on, and so on. 
+Okay, so they're actually 3 to the 3, 
+that's 27 members of Gen in this case. 
+Okay, so Gen is really the most simple 
+function you could think of, which simply 
+just lists all possible tag sequences for 
+the input sentence. 
+Now, critically, the size of Gen is going 
+to be exponential in the length of the 
+sentence. 
+So in fact, the size of GEN for some 
+sentence X, is going to be the number of 
+possible tags, so this is the size of 
+the, of the set T, that's the number of 
+possible tags raised to the power n, 
+where n is the length of the sentence. 
+Because I have T possible tags at the 
+first position, T possible tags at the 
+second position, T possible tags at the 
+third position, and so on, and so on. 
+So, if you think about global linear 
+models, as we've presented them so far 
+the algorithms we've looked at have had 
+to explicitly enumerate all of the 
+different members of GEN, and score them 
+under this function v.f of x,y. 
+And this clearly isn't going to be 
+tractable for this definition of GEN. 
+Once n gets to any appreciable length, 
+the size of the set will simply be too 
+large for us to brute force numerate all 
+of the different elements of this set 
+GEN. 
+What we'll see, though, is that under 
+particular definition of our function f, 
+things work out. 
+We can actually apply global linear 
+models in a, in an efficient way. 
+And this is what I'm going to talk about 
+next. 
+

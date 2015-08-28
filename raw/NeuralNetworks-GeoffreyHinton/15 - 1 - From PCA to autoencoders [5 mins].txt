@@ -1,0 +1,206 @@
+In this video, I'm going to introduce 
+Principal Component Analysis, which is a 
+very widely used technique in signal 
+processing. 
+The idea of principal components 
+analysis, is that high dimensional data 
+can often be represented using a much 
+lower dimensional code. 
+This happens when the data lies near a 
+linear manifold in the high dimensional 
+space. 
+So the idea is, if we can find this 
+linear manifold, we can project the data 
+onto the manifold, 
+and then just represent where it is on 
+the manifold. 
+And we haven't lost much, 
+because in the directions orthogonal to 
+the manifold, there's not much variation 
+in the data. 
+As we'll see, we can do this operation 
+efficiently using standard principle 
+components methods, 
+or we can do it inefficiently using a 
+neural net with one hidden layer, where 
+both the hidden units and the output 
+units are linear. 
+The advantage of doing it with the neural 
+net is that we can then generalize the 
+technique to using deep neural nets in 
+which the code is a nonlinear function of 
+the input. 
+And our reconstruction of the data from 
+the code is also a nonlinear function of 
+the code. 
+This enables us to deal with curved 
+manifolds in the input space. 
+So we represent data by where it gets 
+projected on the curve manifold. 
+And this is a much more powerful 
+representation. 
+In principal components analysis, we have 
+N dimensional data, and we want to 
+represent it using less than N numbers. 
+And so we find M orthagonal directions in 
+which the data has the most variance. 
+And we ignore the directions in which the 
+data doesn't vary much. 
+The M principal dimensions form a lower 
+dimensional subspace, and we represent an 
+N dimensional data point by its 
+projections onto these M dimensions in 
+the lower dimensional space. 
+So we've lost all information about where 
+the data point is located in the 
+remaining orthogonal directions. 
+But since these don't have much variance, 
+we haven't lost that much information. 
+If we wanted to reconstruct the data 
+point, from our representation in terms 
+of M numbers, we reduce the mean value 
+for all the N minus M directions that are 
+not represented, and then the area in our 
+reconstruction. 
+Would be the sum over all these 
+unrepresented directions of the square 
+difference between the value of the data 
+point count on that direction, and the 
+mean value on that direction. 
+This is most easily seen in the picture. 
+So consider 2-dimensional data. 
+This distributed according to an 
+elongated Gaussian like this. 
+The ellipse is meant to show kind of one 
+standard deviation contour of the 
+Gaussian. 
+And consider a data point like that red 
+one. 
+If we used principal components analysis 
+with a single component. 
+That component would be the direction in 
+the data that had the greatest variance. 
+And so to represent the red point, we'd 
+represent how far along that direction it 
+lay. 
+In other words we'd represent the 
+projection of the red point onto that 
+line, i.e. 
+the green point. 
+When we need to reconstruct the red 
+point, 
+what we'll do is simply use the mean 
+value of all the data points, in the 
+direction that we've ignored. 
+In other words you'll represent a point 
+on that black line. 
+And so the lost in the reconstruction 
+will be the squared difference between 
+the red point and the green point. 
+That is, would have lost the difference 
+between the data point and the mean value 
+of all the data, in the direction we're 
+not representing, which is the direction 
+of least variance. 
+And so we obviously have minimized our 
+loss if we choose to ignore the direction 
+of least variance. 
+Now, we can actually implement PCA, or a 
+version of it, using back propagation, 
+but it's not very efficient. 
+So what we do is we make a network in 
+which the output of the network is the 
+reconstruction of the data. 
+And we try and minimize the squared error 
+in the reconstruction. 
+The network has a central bottleneck that 
+only has M hidden units. 
+And those are going to correspond to the 
+principal components, or something like 
+them. 
+So it looks like this. 
+We have an input vector. 
+We project that onto a code vector. 
+And from the code vector, we construct an 
+output vector. 
+And the aim is to make the output vector 
+as similar as possible to the input 
+vector. 
+The activities of the hidden units in the 
+code vector from a bottleneck. 
+So the code vector is a compressed 
+representation of the input vector. 
+If the hidden units and the output units 
+are linear, then ordering coder like 
+this, 
+we'll learn codes that minimize the 
+squared reconstruction error. 
+And that's exactly what principle 
+components analysis does. 
+It will get exactly the same 
+reconstruction error as principle 
+components analysis does. 
+But it won't necessarily have hidden 
+units that correspond exactly the, the 
+principle components. 
+They will span the same space as the 
+first N-principal components, but there 
+may be a rotation and skewing of those 
+axes. 
+So the incoming weight vectors of the 
+code units, which are what represent the 
+directions of the components, may not be 
+orthogonal. 
+And unlike principal components analysis, 
+they will typically have equal variances. 
+But the space spanned by the incoming 
+weight vectors of those code units will 
+be exactly the same as the space spanned 
+by the M principal components. 
+So in that sense this network will do an 
+equivalent thing to principal components. 
+It's just if we use to cast the great 
+descend learning for this network, it 
+will typically much less sufficient than 
+the algorithm used for principle 
+components. 
+Although if there's a huge amount of 
+data, it might actually be more 
+efficient. 
+The main point of implementing principal 
+component analysis using back-propagation 
+in a neural net is that it allows us to 
+generalize principal component analysis. 
+If we use a neural net that has nonlinear 
+layers before and after the code layer, 
+it should be possible to represent data 
+that lies on a curved manifold rather 
+than a linear manifold in a 
+high-dimensional space. 
+And this is much more general. 
+So our network will look something like 
+this, the B input vector, and then one or 
+more, layer of non-linear hidden unit, 
+typically we use logistic units. 
+Then there'll be a code layer which might 
+be linear units. 
+And then following the code layer, 
+there'll be one or more layers of 
+non-linear hidden units. 
+And then there'll be an output vector, 
+which we train to be as similar as 
+possible to the input vector. 
+So this is a curious network in which 
+we're using a supervised learning 
+algorithm to do unsupervised learning. 
+The bottom part of the network is an 
+encoder. 
+Which takes the input vector and convert 
+it into a code using a non-linear method. 
+The top part of the network is a decoder, 
+which takes the nonlinear code and maps 
+it back to a reconstruction of the input 
+vector. 
+So after we've done the learning, we have 
+mappings in both directions. 
+

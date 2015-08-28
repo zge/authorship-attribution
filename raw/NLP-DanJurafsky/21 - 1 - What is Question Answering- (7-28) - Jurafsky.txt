@@ -1,0 +1,181 @@
+Welcome back. Today we're gonna look at
+question answering, one of the oldest
+applications in natural language
+processing. Some of the first NLP tasks
+built on punch card systems in the early
+60's include the Simmons et al system from
+1964. Let's look at that. So that answered
+questions like, what do worms eat?
+by taking the question, parsing it into
+a dependency format, so we have
+a relationship between eat and worms, and
+eat and what. And then looking for a
+matching dependency sentence somewhere in
+a large database of answers. So they had
+sentences like worms eat grass, and birds
+eat worms, and horses with worms eat
+grass, and so on. And the idea is that
+this dependency tree-let, worms eat what,
+matched worms eat grass, and even, grass
+is eaten by worms, but not horses eat
+grass. Or birds eat worms. So the idea of
+answering a question by finding a sentence
+that looks like the question but answers
+it is an old intuition that we're
+gonna see underlies many modern systems as
+well. You may know that last year, IBM's
+Watson won the Jeopardy challenge,
+answering questions about, for example,
+this Bram Stoker novel that was inspired
+by William Wilkinson's book. So the novel
+of course was Dracula, and the author was
+Bram Stoker. And you may also know about
+Apple's Siri, another question answering
+application. So you can ask questions like
+do I need an umbrella tomorrow in San
+Francisco, and it will check the weather
+for you and tell you which days it's gonna
+rain. Another question answering
+application, Wolfram Alpha, you can ask
+questions like, how many calories are in
+two slices of banana cream pie? And not
+only will it give the answer, but it'll
+give you, little variables that it lets,
+it'll tell you the semantics of the answer.
+So we're looking for an amount of pie 
+that's two slices of banana cream type.
+And we're asking about the total calories, 
+and there's the answer, 702 calories.
+So these kind of questions are
+factoid questions. So questions like how
+many calories are there in two slices of
+apple pie, or who wrote the Universal
+Declaration of Human Rights, or what is
+the average age of the onset of autism.
+These kind of questions; pretty simple 
+questions, can be answered by a simple fact,
+often a named entity. Modern systems
+also deal with complex or narrative
+questions. So, in children with an acute
+febrile illness, what is the efficacy of
+acetaminophen in reducing fever? Or what
+do scholars think about Jefferson's
+position on dealing with pirates? So
+these, these complex questions are
+generally answered more in research
+systems. Whereas, factoid question
+answering is a widely used commercial
+application. What are these kind of
+factoid questions? So they can be
+questions about locations. So the Louvre
+being located in Paris, France. Or, what an
+abbreviation means. Or the names of the
+ravens of Odin. Names of a currency, or an
+ingredient, or an instrument or a phone number.
+So, they're all simple answers often with 
+a, with a single phrase or named entity.
+There are two main paradigms for question
+answering. The IR-based approach,
+which we'll spend a lot of time
+on today. And that's pioneered in the
+annual TREC evaluations, and used in
+commercial systems like IBM's and
+Google's. And the IR based approach is go
+find the answer in some string on the web.
+The knowledge based approach is build an
+answer from understanding a parse of the question.
+And hybrid approaches take a combination 
+of these approaches. So we might use
+some online databases and we might use 
+some information retrieval approaches to
+find sentences and build answers. And 
+most modern systems I would say are
+some kind of hybrid of knowledge and 
+information retrieval. A few of them, like perhaps
+Wolfram Alpha, are purely knowledge based, 
+but most systems use a little bit of both.
+So simple web search actually answers 
+a lot of questions already.
+And that's really the intuition underlying 
+the IR based approach to question answering
+that we'll talk about the most. So
+if I asked into Google, what are the names
+of Odin's ravens, the first page I get has
+the answer. And in the snippet
+that Google returns, there is the answer. 
+So it's in the title of this page
+and it talks about the names of the re, ravens.
+Other kinds of simple questions like 
+where is the Louvre Museum located,
+are also answerable by methods like 
+Google. And here in fact Google applies
+modern question answering techniques 
+to give you the, its best guess for the location
+by it pulling out of semi-structured 
+resources like Wikipedia or answers.com.
+So, let's see how this factoid 
+question-answering algorithm works.
+The general algorithm for IR-based 
+factoid question answering starts
+with a question, and begins by extracting
+information from the question itself.
+And the two most important and common things
+to extract from the question are a query
+that's going to be sent to an IR engine,
+and the type of the answer that tells us
+what kind of named entity we're looking for.
+In advance, we take a whole lot of
+documents, we index them, so that when we
+have a query we can return a whole lot of
+documents. From those documents we extract
+passages, so parts of those documents. And
+then, those passages are then processed,
+in answer processing, looking for the type
+of the answer that we know we're looking
+for. And then, then returning an actual
+answer. So that's the general process, and
+we'll walk through the pieces today.
+So, another way of looking at the same set of
+processes, three bigs parts of the
+algorithm. Question processing, so we're
+detecting the question type, formulating
+the queries. Passage retrieval, given
+these queries, retrieve documents and break
+them into pieces. And then answer
+processing, extracting answers from
+the text snippets, and rank those
+candidates using evidence from the text
+and from other kinds of sources. So by
+contrast, the knowledge based approach,
+which we'll talk about less today, builds
+a pure semantic representation of the
+query, and this is true of Siri or Wolfram
+Alpha, where they're gonna come up with a
+semantic representation language for
+questions that they understand. And you
+might pick some sub-domain that you're
+able to build a perfect semantic representation for:
+times, dates, locations, scientific questions,
+mathematical questions.
+And from this semantics, we can then map 
+to structured databases or structured
+resources, geospatial databases, or 
+ontologies, or restaurant review systems;
+these things where we can build up 
+pure semantics of the approach.
+Hybrid approaches, and IBM
+Watson is a good example of this, but lots
+of others do this now, build some shallow
+semantic representation of the query, so
+they do some processing of the query, use
+IR methods to generate many candidate
+answers, but then use these more
+knowledge-based approaches to use spatial
+databases or temporal reasoning to score
+the candidates. So, IR methods to find
+possible candidates, knowledge based
+methods to score them.
+So question answering is both one of the 
+oldest topics in natural language processing
+and also one of the newest and most exciting
+research areas with commercial potential.

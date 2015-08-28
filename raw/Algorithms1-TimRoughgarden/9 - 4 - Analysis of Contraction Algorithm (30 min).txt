@@ -1,0 +1,733 @@
+So in the last video I left you with a
+cliffhanger. I introduced you to the
+minimum cut problem. I introduced you to a
+very simple algorithm, randomized
+algorithm, in the form of contraction
+algorithm. We observed that sometimes it
+finds the main cut and sometimes it
+doesn't. And so the $64000 question is
+just how frequently does it succeed and
+just how frequently does it fail. So now
+that I hope you've brushed up the
+conditional probability and independence,
+we are gonna give a very precise answer to
+that question in this lecture. >>So
+recalling this problem we are given as
+input in undirected graph, possibly with
+parallel edges, and that the goal is to
+compute among the exponential number of
+possible different cuts, that's with the
+fewest number of crossing edges. So, for
+example in this graph here, which you've
+seen in a previous video, the goal is to
+compute the cut (A, B). Here, cuz there are
+only two crossing edges, and that's as
+small as it gets. That's the minimum cut
+problem and Karger proposed the following
+random contraction algorithm based on
+random sampling, so we have N-2
+iterations, and the number of vertices
+gets decremented by 1 in each iteration.
+So we start with N vertices, we get down
+to 2. And how do we decrease the number
+of vertices? We do it by contracting or
+fusing two vertices together. How do we
+pick which pair of edges, which pair of
+vertices to fuse? Well we pick one of the
+remaining edges, uniformly at random. So
+there's [inaudible] many edges there are
+remaining. We pick each one, equally
+likely. What, if the endpoints of that
+edge are (u, v), then we collapse u and v
+together into a single super node. So
+that's what we mean by contracting two
+nodes into a single vertex and then if
+that causes any self-loops, and as we saw
+the examples, we will in general have
+self-loops, then we delete them before
+proceeding. After the N-2
+generations, only two vertices remain.
+You'll recall that two vertices
+naturally correspond to a cut. The first
+group of the cut A corresponds to the
+vertices that were fused into one of the
+super vertices remaining at the end. The
+other super vertex corresponds to the set
+B the other original vertices of the
+graph. >>So the goal of this lec, of this
+video is to give an answer to the
+following question: What is the
+probability of success? Where by success,
+we mean outputs a particular min cut (A, B).
+So let's set up the basic notation. We're
+gonna fix any with input graph, undirected
+graph. As usual we use N to denote the
+number of vertices and M to denote the
+number of edges. We're also going to fix a
+minimum cuts (A, B). If a graph has
+only one minimum cut, then it's clear what
+I'm talking about here. If a graph has
+multiple minimum cuts, I'm actually
+selecting just one of them. Because I'm gonna
+focus on a distinguished minimum cut (A, B),
+and we're only gonna define the
+algorithm as successful if it outputs this
+particular minimum cut (A, B). If it outputs
+some other minimum cut, we don't count it.
+We don't count it as successful. Okay. So,
+we really want this distinguished minimum
+cut (A, B). In addition to N and M,
+we're gonna have a parameter K, which is
+the size of the minimum cut. That is, it's
+the number of crossing edges of a minimum
+cut. For example, that cross (A, B). The K
+edges that cross the minimum cut (A, B); we're
+going to call capital F. So the picture
+you wanna have in mind is, there is, out
+there in the world, this minimum cut (A, B).
+There's lots of edges with both end points
+in A, lots of edges possibly with both
+endpoints in B. But, there's not a whole
+lot of edges with one endpoint in A and
+one in endpoint in B. So the edges F,
+would be precisely, these three crossing
+edges here. >>So our next step is to get a
+very clear understanding of exactly when
+the execution of the contraction algorithm
+can go wrong, and exactly when it's gonna
+work, exactly when we're going to succeed.
+So let me redraw the same picture from the
+previous slide. So given they were hoping
+that the contraction algorithm outputs
+this cut (A, B) at the end of the day, what
+could possibly go wrong? Well, to see what
+could go wrong, suppose,, at some iteration,
+one of the edges in capital F, remember F
+are the edges crossing the min cut (A, B), so
+it's these three magenta edges in the
+picture. Suppose at some iteration one of
+the edges of F gets chosen for
+contraction. Well because this edge of F
+has one endpoint in A and one endpoint in
+B, when it gets chosen for contraction, it
+causes this node from A and this node from
+B to be fused together. What does that
+mean? That means, in the cut that the
+contraction algorithm finally outputs, this
+node from A and this node from B will be
+on the same side of the output cut. Okay,
+so the cut output by the contraction
+algorithm will have on one side both the
+node from A and the node from B.
+Therefore, the output of the contraction
+algorithm if this happens will be a
+different cut than (A, B), okay? It will not
+output (A, B) if some edge of F is contracted.
+>>And if you think about it, the converse is
+also true. So let's assume now, that in
+each of the N-2 iterations, the contraction
+algorithm never contracts an edge from
+capital F. Remember capital F are exactly
+the edges with one endpoint in A and one
+endpoint in B. So if it never contracts
+any edge of F, then it only contracts
+edges where both endpoints lie in capital
+A or both endpoints lie in capital B.
+Well, if this is the case then, vertices
+from A always stick together in the fused
+nodes, and vertices from B always stick
+together in the fused nodes. There is
+never A iteration where a node from A and
+a node from B are fused together. What
+does that mean? That means that when the
+algorithm outputs <i>cuts</i> all of the
+nodes in A have been grouped together, all
+of the nodes in B have been grouped
+together, in each of the two super nodes,
+which means that the output of the
+algorithm is indeed the desired
+cut (A, B). Summarizing, the
+contraction algorithm will do what we
+want. It will succeed and output the cut
+(A, B), if and only if it never chooses an
+edge from capital F for contraction.
+Therefore, the probability of success,
+that is, the probability that the output
+is the distinguished min cut (A, B), is
+exactly the probability that never
+contracts an edge of capital F. >>So, this
+is what we're gonna be interested in here.
+This really is the object of our mathematical
+analysis, the probability that in all of
+the N-2 iterations we never
+contact an edge of capital F. So, to think
+about that, let's think about each
+iteration in isolation, and actually define
+some events describing that. So for an
+iteration I, let Si denote the event, that
+we screw up an iteration I. With this
+notation, we can succinctly say what our
+goal is, so, to compute the probability of
+success. What we wanna do is we wanna
+compute the probability that <i>none</i> of the
+events, S1, S2 up to N minus, S(N-2)
+never occur. So, I'm gonna use this NOT(¬)
+symbol to say that S1 does not happen. So
+we don't screw up in iteration 1, we
+don't screw up in iteration 2, we don't
+screw up in iteration 3, and so on. All
+the way up to, we don't screw up, we don't
+contract anything from capital F, in the
+final iteration, either. So summarizing,
+analyzing the success probability of the
+contraction algorithm boils down to
+analyzing the probability of this event,
+the intersection of the NOT Sis
+with I ranging from iteration 1 to
+iteration N-2. >>So we're gonna take
+this in baby steps, and the next quiz will
+lead you through the first one, which is,
+let's have a more modest goal. Let's just
+think about iteration 1. Let's
+try and understand, what's the chance we
+screw up, what's the chance we don't screw
+up, just in the first iteration? So the
+answer to this quiz is the second option.
+The probability is K/M, where K is the
+number edges crossing the cut (A, B),
+and M is the total number of edges. And
+that's just because the probability of S1, the probability we screw up, is just the
+number of crossing edges. That's the
+number of outcomes which are bad, which
+cause which trigger S1, divided by the
+number of edges. That's the total number
+of things that could happen. And since all
+edges are equally likely, it just boils
+down to this. And by the definition of our
+notation, this is exactly K/M. So this
+gives us an exact calculation of the
+failure probability in the first
+iteration, as a function of the number of
+crossing edges, and the number of overall
+edges. Now, it turns out it's gonna be
+more useful for us to have a bound not
+quite as exact, an inequality. That's in
+terms of the number of vertices N, rather
+than the number of edges, M. The reason
+for that is, it's a little hard to
+understand how the number of edges is
+changing in each iteration. It's certainly
+going down by 1 in each iteration, because we
+contract that in each iteration, but it
+might go down by more than 1 when we
+delete self-loops. By contrast the number
+of vertices is this very steady obvious
+process. One less vertex with each
+successive iteration. >>So, let's rewrite
+this bound in terms of the number of
+vertices N. To do that in a useful way,
+we make the following key observation. I
+claim that, in the original graph G,
+we are given as input, every vertex has at
+least K edges incident on it, that is in
+graph theoretic terminology, every edge
+has degree at least K. Where, recall, K is
+the number of edges crossing our favorite
+min cut (A, B). So why is that true? Why
+must every vertex have a decent number of
+neighbors, a decent number of edges
+incident to it. Well, it's because, if you
+think about it, each vertex defines a cut
+by itself. Remember, a cut is just any
+grouping into other vertices into two
+groups, that are not empty, that don't
+overlap. So one cut is to take a single
+vertex, and make that the first group, A,
+and take the other N-1 vertices,
+and make that the second group, capital B.
+So how many edges cross this cut? Well,
+it's exactly the edges that are incident
+on the first note, on the note on the left
+side. So every single cut, fall
+exponentially many cuts, have at least
+K crossing edges, then certainly the
+N cuts defined by single vertices have at
+least K crossing edges, so therefore, the
+degree of a vertex is at least K. So
+our assumption that every single cut in
+the graph has at least K crossing edges
+because it's a lower bound on the number
+edges incident on each possible vertex.
+>>So, why is that usual? Well let's recall
+the following general facts about any graph; which
+is that if you sum up over the degrees of
+the nodes, so if you go node by node, look
+at how many edges are insident on that
+node, that's the degree of V, and then sum
+them up over all vertices. What will you
+get? You'll get exactly twice the number of
+edges, okay? So this is true for any
+undirected graph, that the sum of the
+degrees of the vertices is exactly double-
+the number of edges. To see this, you
+might think about taking a graph, starting
+with the empty set of edges, and then
+adding the edges of the graph one at a
+time. Each time you add a new edge to a
+graph, obviously the number of edges goes
+up by 1, and the degree of each of the
+endpoints of that edge also go up by 1,
+and there are, of course, two endpoints.
+So every time you add an edge, the number
+of edges goes up by 1, the sum of those
+degrees goes up by 2. Therefore, when
+you've added all the edges, the sum of the
+degrees is double the number of edges that
+you've added. That's why this is true.
+Now, in this graph, at that we have a hand here,
+every degree is at least K, and there's N
+nodes. So this left hand side, of course,
+is at least KN for us. So therefore if we
+just divide through by 2, and flip the
+inequality around, we have the number of
+edges has to be at least the size of the
+crossing cut, so the degrees of every
+vertex times the number of vertices
+divided by 2. So this is just the
+primitive inequality rearranging. Putting
+this together with your answer on the quiz,
+since the probability of S1 is exactly K/M,
+and M is at least KN/2, if
+we substitute, we get that the probability
+of S1 is at worst 2/N, 2 over
+the number of vertices, and the K cancels out.
+So that's, sort of, our first
+milestone. We've figured out the chance
+that we screw up in the first iteration,
+that we pick some edge from the
+crosses the cut (A, B). And things look good.
+This is a, this is a small number, right?
+So, in general, the number of vertices
+might be quite big. And this says that
+the probability we screw up is only 2
+over the number of vertices. So, so far,
+so good. Of course, this was only the
+first iteration. Who knows what happens
+later? >>So now that we understand the
+chances of screwing up in the first
+iteration, let's take our next baby step,
+and understand the probability that we
+don't screw up in either of the first two
+iterations. That is, we're gonna be
+interested. And the following probability.
+The probability that we don't screw up in
+the first iteration nor in the second
+iteration. Now, as you go back to the
+definition of a conditional probability,
+to realize that we can rewrite an
+intersection like this in terms of
+conditional probabilities. Namely, as the
+probability that we don't screw up in the
+second iteration, given that we didn't do
+it already, times the probability that we
+didn't screw up in the first iteration.
+Okay? So the probability that we miss all of
+these K vulnerable edges and in the second
+iteration given that we didn't contract
+any of them in the first iteration. Now
+notice this, we already have a good
+understanding on the previous slide. We are
+given a nice lower bound of this. We say
+there's a good chance that we don't screw
+up, probably at least 1-2/N. And in some sense we also have a
+very good understanding of this
+probability. We know this is 1 minus the
+chance that we do screw up. And what's the
+chance that we do screw up? Well, these K
+edges are still hanging out in the graph.
+Remember we didn't contract any, in the
+first iteration that's what's given. So
+there are K ways to screw up, and we choose
+an edge to contract uniformly at random, so
+the total number of choices is the number
+of remaining edges. >>Now the problem is,
+what's nice is we have an exact
+understanding of this probability. This is
+an equality. The problem is we don't have
+a good understanding of this denominator.
+How many remaining edges are there? We
+have an upper bound on this. We know this
+is at most N-1, assuming we got
+rid of one edge in the previous iteration,
+but actually what, if you think about it,
+what we need of this quantity is a lower
+bound and that's a little unclear because
+in addition to contracting the one edge
+and getting that out of the graph, we
+might have created a bunch of self loops
+and deleted all events. So it's hard to
+understand exactly what this quantity is.
+So instead we're gonna rewrite this bound
+in terms of the numbers of the remaining
+vertices, and of course we know it's
+exactly N-1 vertices remaining. We
+took two of the last iterations and
+contracted down to 1. So how do we
+relate the number of edges to the number of
+vertices? Well we do it just in exactly
+the same way as in the first iteration. We'll
+make some more general observation. In
+the first iteration, we observed that every
+node in the original graph induces a cut.
+Okay, with that node was on one side, the
+other N-1 edges were on the other
+side. But the fact that's a more general
+statement, even after we've done a bunch
+of contractions, any single node in the
+contracted graph, even if it represents a
+union of a bunch of nodes in the original
+graph, we can still think of that as a cut
+in the original graph. Right? So if
+there's some super node in the contracted
+graph, which is the result of fusing
+twelve different things together, that
+corresponds to a cut where those twelve
+nodes in the original graph are on the one
+side A, and the other N-12
+vertices are on the other side of the cut,
+B. So, even after contractions, as long as
+we have at least two nodes in our
+contracted graph, you can take any node
+and think of it as half of a cut, one side
+of a cut in the original graph.
+>>Now remember, K is the number of edges
+crossing our minimum cut (A, B), so
+any cuts in the original graph G has to
+have K crossing edges. So, since every
+node in the contracted graph naturally
+maps over to a cut in the original graph
+with at least K edges crossing it, that
+means, in the contracted graph, all of the
+degrees have to be at least K. If you ever
+had a node in the contracted graph that
+had only say K-1 incident edges,
+well then you'd have a cut in the original
+graph with only K-1 edges
+contradiction. So just like in the first
+iteration, now that we have a lower bound
+on the degree of every single vertex, we
+can derive a lower bound on the number of
+edges that remain in the graph. The number
+of remaining edges is at least 1/2,
+that's because when you sum over the
+degrees of the vertices, you double count
+the edges, times the degree of each
+vertex, that we just argued that that's at
+least K in this contracted graph, times
+the number of vertices, that we know
+there's exactly N-1 vertices left in
+the graph at this point. So now what we do
+is to plug this inequality, to plug this
+lower bound of the number of remaining
+edges, on, as we'll substitute that for
+this denominator, so in lower bounding the
+denominator, we upper bound this fraction,
+which gives us a lower bound on 1 minus
+that fraction, and that's what we want. So
+what we find is that the probability that
+we don't screw up in the second iteration
+given that we didn't screw up in the first
+iteration. Where again, by screwing up
+means picking one of these K edges
+crossing (A, B) to contract is at least
+1-(2/(N-1)). So, that's pretty cool. We
+took the first iteration, we analyzed it,
+we showed the probability that we screw up
+is pretty low, we succeed with probability of
+at least 1-(2/N). In the
+second iteration, our success probability
+has dropped a little bit, but it's still
+looking pretty good for reasonable values
+of N, 1-(2/(N-1)). >>Now,
+as I hope you've picked up, we can
+generalize this pattern to any number of
+iterations, so that the degree of every node of
+the contracted graph remains at least K.
+The only thing which is changing is the
+number of vertices is dropping by 1. So,
+extending this pattern to its logical
+conclusion, we get the following lower
+bound on the probability that the
+contraction algorithm succeeds. The
+probability that the contraction algorithm
+outputs the cut (A, B), you recall we argued,
+is exactly the same thing as the
+probability that it doesn't contract
+anything, any of the K crossing edges, any
+of the set F in the first iteration, nor in
+the second iteration, nor in the third
+iteration, and then so on, all the way up to
+the final (N-2)th iteration. Using the
+definition of conditional probability,
+this is just the probability that we
+don't screw up in the first iteration,
+times the probability that we don't screw
+up in the second iteration given that we
+didn't screw up in the first iteration,
+and so on. In the previous two slides, we
+showed that, we don't screw up in the
+first iteration, with probability of at
+least 1-(2/N). In the second
+iteration, with probability at least 1-(2/(N-1)). And of course,
+you can guess what that pattern looks
+like. And that results in the following
+product. Now, because we stop when we get
+down to two nodes remaining, the last
+iteration in which we actually make a
+contraction, there are three nodes. And
+then, the second to last iteration in
+which we make a contraction, there are
+four nodes. So that's where these last two
+terms come from. Rewriting, this is just
+(N-2)/N times (N-3)/(N-1), and so on. And now something
+very cool happens, which is massive
+cancellation, and to this day, this is
+always just incredibly satisfying to be
+able to cross out so many terms. So you
+get N-2, cross it out here and now here,
+there's going to be a pair of N-3s that
+get crossed out, and N-4s, and so on. On the
+other side, there's going to be a pair of
+4s that get crossed out, and a pair of 3s
+that get crossed out. And we'll be left
+with only the two largest terms on the
+denominator, and the two smallest terms in
+the numerator, which is exactly 2/N(N-1). And to keep things
+simple among friends, let's just be sloppy
+and lower bound this by 1/(N^2).
+So that's it. That's our analysis
+of the success probability of Karger's
+contraction algorithm. Pretty cool, pretty
+slick, huh? >>Okay, I'll concede, probably
+you're thinking "Hey, wait a minute. We're
+analyzing the probability that the
+algorithm succeeds, and we're thinking of
+the number of vertices N as being big, so
+we'll see here as a success probability of
+only 1/(N^2), and that kinda sucks."
+So that's a good point. Let me
+address that problem. This is a low
+success probability. So that's
+disappointing. So why are we talking about
+this algorithm, or this analysis? Well,
+here's something I want to point out.
+Maybe this is not so good, 1/(N^2) you're going to succeed, but
+this is still actually shockingly high for
+an brute-forth algorithm which honestly
+seems to be doing almost nothing. This is
+a nontrivial lower bound and non trivial
+success probability, because don't forget,
+there's an exponential number of cuts in
+the graph. So if you try to just pick a
+random cut i.e you put every vertex 50:50
+left or right, you'll be doing way worse
+than this. You'll have a success
+probability of like 1/(2^N).
+So this is way, way better than that. And
+the fact that its inverse polynomial
+means is that using repeated trials, we can
+turn a success probability that's
+incredibly small into a failure
+probability that's incredibly small. So
+lemme show you how to do that next. >>So,
+we're gonna boost the success probability
+of the contraction algorithm in, if you
+think about it a totally obvious way.
+We're gonna run it a bunch of times, each
+one independently using a fresh batch of
+random coins. And we're just going to
+remember the smallest cut that we ever see,
+and that's what we're gonna return, the
+best of a bunch of repeated trials. Now
+the question is, how many trials are we
+gonna need before we're pretty confident
+that we actually find the meant cut that we're
+looking for? To answer this question
+vigorously, let's define some suitable
+events. So by Ti, I mean the event at the
+Ith trail succeeds, that is the Ith
+time we run the contraction
+algorithm which does output that desired meant
+cut (A, B). For those of you that watched
+the part II of the probability review, I
+said a rule of thumb for dealing with
+independents is that, you should maybe, as
+a working hypothesis, assume granted
+variables are dependent, unless they're
+explicitly constructed to be independent.
+So here's a case where we're just gonna
+define the random variables to be
+independent. We're just gonna say that we
+run [inaudible] the contraction algorithm
+over and over again with fresh randomness
+so that they're gonna be independent trials.
+Now, we know that the, probability that a
+single trial fails can be pretty big, could be as big as 1-1/(N^2). But,
+here, now, with repeated trials, we're
+only in trouble if every single trial
+fails. If even one succeeds, then we find
+the meant cut. So a different way of saying
+that is we're interested in the
+intersection of T1 and T2 and so on,
+that's the event that every single trial
+fails. And now we use the fact that the
+trials are independent. So, the
+probability that all of these things
+happen is just the product of the relevant
+probabilities. So, the product from I=1
+to capital N of the probability of
+not TI. Recall that we argued that the
+success probability of a single trial was
+bounded below by 1/(N^2). So
+the failure probability is bounded above
+by 1-1/(N^2). So since
+that's true for each of the capital N
+terms, you get an overall failure
+probability for all capital N trials of
+1 minus 1/(n^2) raised
+to the capital of N. Alright, so that's a
+little calculation. Don't lose sight of
+why we're doing the calculation. We want
+to answer this question, how many trials
+do we need? How big does capital N need to
+be before are confident that we get the
+answer that we want? >>Okay, so to answer that
+question I need a quick calculus fact,
+which is both very simple and very useful.
+So for all real numbers X, we have the
+following inequality, 1+x is bound
+above by e^x. So I'll just
+give you a quick proof via picture. So
+first think about the line 1+x. What
+does that cross through? Well, that
+crosses through the points when x is -1,
+y is 0, and when x is 0, y is 1.
+And it's a line, so this looks like this
+blue line here. What does e^x look
+like? Well, if you substitute x = 0,
+it's gonna be 1. So in fact two curves
+kiss each other at x = 0. But
+exponentials grow really quickly, so as you
+jack up x to higher positive numbers, it
+becomes very, very steep. And for x
+negative numbers it stays non-negative the
+whole way. So this sort of flattens out
+for the negative numbers. So, pictorially,
+and I encourage you to, you know, type
+this into your own favorite graphing
+program. You see the e^x
+bounds above everywhere, the line, the 1+x.
+For those of you who want
+something more rigorous, there's a bunch
+of ways to do it. For example, you can
+look at the [inaudible] expansion of
+e^x at the point 0. >>What's the
+point? The point is this allows us to do
+some very simple calculations on our
+previous upper bound on the failure
+probability by working with exponentials
+instead of working with these ugly one
+minus whatevers raised to the whatever
+term. So, let's combine our upper bound
+from the previous slide with the upper
+bound provided by the calculus fact. And
+to be concrete, let's substitute some
+particular number of capital N. So, let's
+use little n^2 trials, where little
+n is the number of vertices of the graph.
+In which case, the probability that every
+single trial fails to recover the cut (A, B)
+is bounded above by e to the -1/(N^2). That's using the calculus
+fact applied with X = -1/(N^2). And then we inherit the
+capital N and the exponent which we just
+substantiated to little n^2. So of
+course the N^2 are gonna cancel,
+this is gonna give us E^(-1),
+also known as 1/E. So if we're
+willing to do little n^2 trials,
+then our failure probability has gone
+from something very close to 1, to
+something which is more like, say, 30 some
+more percent. Now, once you get to a
+constant success probability, it's very
+easy to boost it further by just doing a
+few more trials. So if we just add a
+natural log factor, so instead of a little
+n^2 trials, we do little n^2
+times the natural log of the little n.
+Now, the probability that everything fails
+is bound and above by the 1/e that we
+had last time, but still with the residual
+natural log of N up top. And this is now,
+merely 1/N. So I hope it's clear
+what happened. We took a very simple, very
+elegant algorithm, that almost always
+didn't do what we want. It almost always
+failed to output the cut (A, B). It did it
+with only probability 1/(n^2).
+But, 1/(n^2) is
+still big enough that we can boost it, so
+that it almost always succeeds just by
+doing repeated trials. And the number of
+repeated trials that we need is the
+reciprocal of its original success
+probability boosted by, for the
+logarithmic factor. So that transformed
+this almost always failing algorithm into
+an almost always succeeding algorithm. And
+that's a more general less, more general
+algorithm technique, which is certainly
+worth remembering. >>Let me conclude with a
+couple comments about the running time.
+This is probably the first algorithm of a
+course, of the course where we haven't
+obsessed over just what the running time
+is. And I said, it's simple enough. It's
+not hard to figure out what it is, but
+it's actually not that impressive. And
+that's why I haven't been obsessing over
+it. This is not almost linear. This is not
+a for free primitive as I've described it
+here. So it's certainly a polynomial-time
+algorithm; its running time is bounded
+above by some polynomial in n and m. So
+it's way better than the exponential time
+you get from brute-force search through
+all 2^n possible cuts. But it is
+certainly, the way I've described it, we
+gotta to n^2 trials, plus a log
+factor, which I'm not even going to bother
+writing down. And also, each trial, while
+at the very least, you look at all the
+edges, so that's going to be another
+factor of M. So this is a bigger
+polynomial than in any, almost any of the
+algorithms that we're going to see. Now, I
+don't wanna undersell this application of
+random sampling in computing cuts because
+I've just shown you the simplest, most
+elegant, most basic, but therefore also
+the slowest implementation of using
+contractions to compute cuts. There's been
+follow-up work with a lot of extra
+optimizations, in particular, doing stuff
+much more clever than just repeated
+trials, so basically using work that you
+did in previous trials to inform how you
+look for cuts in subsequent trials. And
+you can shave large factors off of the
+running time. So there are much better
+implementations of this randomized
+contraction algorithm than what I'm
+showing you here. Those are, however,
+outside the course, scope of this course.

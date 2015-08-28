@@ -1,0 +1,175 @@
+Welcome back. Today, we're gonna take a
+look at a number of interesting
+applications of symbol tables and the
+binary search tree data structure to
+address problems with processing geometric
+data. So let's take a look at it. The idea
+is that we're gonna be talking about
+geometric objects, not simple keys like
+strings and numbers. So here's an example.
+So say your geometric objects are points
+in the plane and you specify a rectangle
+that's oriented with the
+horizontal/vertical axes. And you might
+wanna ask, which points are inside the
+rectangle or how many points are inside
+the rectangle? Or maybe what you are
+processing is rectangles. You have a set
+of rectangles, and we want to know which
+of these rectangles intersect? Or how many
+rectangles intersections are there? These
+are interesting problems that have lots
+and lots of applications, from
+computerated design, to games and movies
+and also in abstractions such as data
+bases and other situations where you might
+have multiple keys or multiple dimensions.
+And it's a very interesting extension of
+the ideas that we've looked at for symbol
+tables for all sorts of familiar
+applications. And, surprisingly binary
+search trees and these associated
+algorithms that we've looked at are going
+to provide very efficient solutions to a
+number of important problems in this area.
+And really have enabled a new developments
+and new technology in all of these kinds
+of applications. So, to get started, we're
+going to look at a simple problem called
+one-dimensional range search. And it
+really forms the basis for what we're
+going to do. It's a little bit of an
+extension of the ordered symbol table API
+that we gave before and we're going to
+have operations range-search and
+range-count. So, a one-dimensional just
+means we have one key, so we'll insert a
+key value pairs before and what we want to
+do is to be able to search for a key, and
+a value associated with it, want to b e
+able to delete. But then we want these
+operations range-search and range-count.
+So, find all the keys that are between two
+given keys, or give how many keys are
+there between two given keys. So, for this
+example at right we have insert a number
+of keys and, and we're just showing them
+in sorted order. But then, you might say,
+well, how many keys are there that are
+between g and k? In this case, there's
+just two. And then the client might say,
+well, what are those keys and you want to
+be able to return them. And this is a very
+common operation, say, in databases. You
+want to return how many taxpayers have
+salaries between one million and ten
+million and then which ones are they and
+so forth. So, range searching is a very
+important fundamental operation. Now, in
+geometric interpretation, we just think
+that the keys as points on a line. And so,
+the key values well, are just specified as
+points on a line. We might convert the
+letters to numbers, or we might, keys
+might be numbers. And then, what we're
+looking for is to find or count the points
+in a given interval in one dimension. So
+how we're going ti implement that? Well
+this is the basic problem that is very
+similar to our symbol table problem. We
+might consider keeping the things in an
+unordered array. Just put them in an
+array, and then, well, insertion is, is
+fast. We just add it to the end of the
+array. We might have to use resizing to
+make the array grow. But this is
+unattractive because for large numbers of
+keys, in order to count the keys that fall
+within a given range, you have to go
+through all the keys and test whether
+they're in the range or not and to return
+them the same way. So take linear time for
+large number of keys. If you keep the
+things in order like in a binary search
+situation then to insert in order to keep
+it in order in an array, you might need to
+move the larger ones over one pos ition
+and so forth or elementary implementation
+of binary search when we did symbol tables
+did this. So, the insertion time might be
+linear, but then you can use binary
+search, to look for the two endpoints,
+that's only going to take time
+proportional to log in. And then from
+that, you can figure out how many keys
+there are or return them all between the
+index, the lowest one in the range, index
+the highest one in the range. So, those
+elementary implementations are no
+acceptable for a large numbers of keys cuz
+they have the linear time operation. So,
+what we really want is to have time
+proportional to log in. For insert and,
+and for counting. For range search, of
+course, we, we have to touch every key
+that we return, so the running time is
+going to be proportional to the number of
+keys that match. But anyway, those are
+reasonable goals. And they're easy to
+achieve. So [cough] so, for example what
+about one-dimensional range counting?
+Well, what we're going to do is just keep
+the keys in a binary search tree and we
+looked at the implementation of the rank
+function for binary search trees where for
+every key, we can compute how many keys
+are there that are strictly less than that
+key. So in this case, the rank of e is two
+and h is three and so forth. So, in a
+binary search tree, those rank numbers go
+in an increasing order as we do in an
+ordered traversal and that's easy to
+compute. You need to keep that rank tree
+as a field, or keep a field which has the
+size of the tree and it's easy to complete
+the rank from that. So how many keys
+between, say e and s? Well one, two,
+three, four, five. It's actually just the
+difference between the ranks plus one if
+the high [cough] entry in the range query
+is in the table and not +one over. So,
+there's the same number of keys between e
+and s as there are between e and t five.
+Between f and t, there's only f our. So,
+that's a, a really 1d range count is a
+very easy computation to perform in, in
+log time with a binary search tree. The
+[cough] number of nodes examined when we
+do a search is the length of the search
+path to low plus the length of the search
+path to high to [cough] find their ranks
+and that's going to be time proportional
+to log N. [cough]. So and a range search.
+Well, we just do a recursive search and to
+find all the keys between low and high you
+look in the left subtree if any of them
+could fall in the range. You look at the
+current node and you look at the right
+subtree, if any of them could fall in the
+range. And it's easy to tell whether any
+of them could fall in the range by just
+checking whether they're range overlaps
+the root or not. So, if we are looking for
+all the keys between f and t then we have
+to look at both the subtrees of the root
+s. But we don't to look at the left
+subtree of e because all of those are less
+than e and therefore are less than f. So,
+we don't have to have to look there. But
+otherwise, it's a simple modification of
+recursive tree search to find all the keys
+and it's easy to see the running time to
+that is going to be proportional to the
+number of keys returned plus log N. So,
+that's one dimensional range search using
+binary search trees.

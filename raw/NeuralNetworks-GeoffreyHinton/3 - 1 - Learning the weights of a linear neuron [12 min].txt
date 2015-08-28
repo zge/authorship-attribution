@@ -1,0 +1,286 @@
+This video introduces the learning
+algorithm for a linear neuron.
+This is quite like the learning algorithm
+for a perceptron, but it achieves
+something different.
+In a perceptron, what's happening is the
+weight, so always getting closer to a good
+set of weights.
+In a linear neuron, the outputs are always
+getting closer to the target outputs.
+The perception convergence procedure works
+by ensuring that when we change the
+weights, we get closer to a good set of
+weights.
+That type of guarantee cannot be extended
+to more complex networks.
+Because in more complex networks when you
+average two good set of weights, you might
+get a bad set of weights.
+So for multilayer neural networks, we
+don't use the perceptron learning
+procedure.
+And to prove that when they're learning
+something is improving, we don't use the
+same kind of proof at all.
+They should never have been called
+multilayer perceptrons.
+It's partly my fault and I'm sorry.
+For multilayer nets we're gonna need a
+different way to show that the learning
+procedure makes progress.
+Instead of showing that the weights get
+closer to a good set of weights, we're
+gonna show that the actual output values
+get closer to the target output values.
+This can be true even for non-convex
+problems in which averaging the weights of
+two good solutions does not give you a
+good solution.
+It's not true for perceptual learning.
+In perceptual learning, the outputs as a
+whole can get further away from the target
+outputs even though the weights are
+getting closer to good sets of weights.
+The simplest example of learning in which
+you're making the outputs get closer to
+the target outputs is learning in a linear
+neuron with a squared error measure.
+Linear neurons, which are also called
+linear filters in electrical engineering,
+have a real valued output that's simply
+the weighted sum of their outputs.
+So the output Y, which is the neuron's
+estimate of the target value, is the sum
+over all the inputs i of a weight vector
+times an input vector.
+So we can write it in summation form or we
+can write it in vector notation.
+The aim of the learning is to minimize the
+error summed over all training cases.
+We need a measure of that error and to
+keep life simple, we use the square
+difference between the target output and
+the actual output.
+So one question is why don't we just solve
+it analytically.
+It's straightforward to write down a set
+of equations with one equation per
+training case, and to solve for the best
+set of weights.
+That's the standard engineering approach,
+and so why don't we use it?
+The first answer, and the scientific
+answer, is we'd like to understand what
+real neurons might be doing, and they're
+probably not solving a set of equations
+symbolically.
+An engineering answer is that we want a
+method that we can then generalize to
+multilayer, nonlinear networks.
+The analytic solution relies on it being
+linear and having a squared error measure.
+An iterative method, which we're gonna see
+next, is usually less efficient, but much
+easier to generalize to more complex
+systems.
+So I'm now gonna go through a toy example
+that illustrates an iterative method for
+finding the weights of a linear neuron.
+Suppose that every day, you get lunch at a
+cafeteria.
+And your diet consists entirely of fish,
+chips, and ketchup.
+Each day, you order several portions of
+each, but on different days, it's
+different numbers of portions.
+The cashier only shows you the total price
+of the meal, but after a few days, you
+ought to be able to figure out what the
+price is for each portion of each kind of
+thing.
+In the iterative approach, you start with
+random guesses for the prices of portions.
+And then you adjust these guesses so that
+you get a better fit to the prices that
+the cashier tells you.
+Those are the observed prices of whole
+meals.
+So each meal, you get a price and that
+gives you a linear constraint on the
+prices of the individual portions.
+It looks like this, the price of the whole
+meal is the number of portion of fish, x
+fish, times the cost of a portion of fish,
+w fish.
+And the same for chips and ketchup.
+So the prices of the portions are like the
+weights of a linear neuron.
+And we can think of the whole weight
+vector as being the price of a portion of
+fish, the price of a portion of chips, and
+the price of a portion of ketchup.
+We're going to start with guesses for
+these prices and then we're going to
+adjust the guesses slightly, so that we
+agree better with what the cashier says.
+So let's suppose that the true weights
+that the cashier using to figure out the
+price, are 150 for a portion of fish, 50
+for portion of chips and a 100 for a
+portion of Ketchup.
+For the meals shown here, that will lead
+to a price of 850.
+So that's going to be our target value.
+That suppose that we start with guesses,
+but each portion costs 50.
+So for the meal with two portions of fish,
+five of chips, and three of ketchup, we're
+going to initially think that the price
+should be 500.
+That gives us a residual error of 350.
+The residual error is the difference
+between what the cashier says and what we
+think the price should be with our current
+weights.
+We're then gonna use the delta rule for
+revising our prices of portions.
+We make the change in a weight, delta WI
+be equal to a learning rate, epsilon times
+the number of portions of the i-th thing,
+times the residual error.
+The difference between the target and our
+estimate.
+So if we make the learning rate be one
+over 35, so the maths stays simple, then
+the learning rate times the residual error
+for this particular example is ten.
+And so, our change in the weight for fish
+will be two times ten.
+We'll increase that weight by twenty.
+Our change in the weight for chips will be
+five times ten.
+And our change in the weight for ketchup
+will be three times ten.
+That'll give us new weights of 70, 100,
+and 80.
+And notice, the weight for chips actually
+got worse.
+There's no guarantee with this kind of
+learning that the individual weights will
+keep getting better.
+What's getting better is the difference
+between what the cashier says and our
+estimate.
+So now, we're going to derive the delta
+rule.
+We start by defining the arrow measure,
+which is simply our squared residual
+summed over all training cases.
+That is the squared difference between the
+target and what the neural net predicts.
+Or the linear neuron predicts.
+Squared, in some liberal training cases.
+And we put a one-half in front, which will
+cancel the two, when we differentiate.
+We now differentiate that error measure
+with respect to one of the weights, WI.
+To do that differentiation we need to use
+the chain rule.
+The chain rule says that how the error
+changes as we change a weight, will be how
+the output changes as we change the
+weight, times how the error changes as we
+change the output.
+The chain rule is easy to remember, you
+just cancel those two DYs but you can only
+do that when there's no mathematicians
+looking.
+The reason the first one, DY by DW is
+written with a curly D is because it's a
+partial derivative.
+That is, there's many different weights
+you can change to change the output.
+And here, we're just considering the
+change to weight i.
+So, DY by DWi, is actually equal to Xi,
+and that's because Y is just Wi times Xi,
+and DE by DY, is just T minus Y, because
+when we differentiate that T minus Y
+squared, and use the half to cancel the
+two we just get T minus Y.
+So our learning rule is now, we change the
+weights by an amount that's equal to the
+learning rate epsilon times the derivative
+of the error with respect to a weight, to
+E by DWi.
+And with a minus sign in front cuz we want
+the error to go down.
+And that minus sign cancels the minus sign
+in the line above and we get that.
+The change in a weight is the sum of all
+training cases of the learning rate times
+the input value times the difference
+between the target and actual outputs.
+Now we can ask how does this learning
+procedure, this delta rule, behave?
+Does this, for example, eventually get the
+right answer?
+There may be no perfect answer.
+It may be that we give the linear neuron a
+bunch of training cases with desired
+answers.
+And there's no set of weights that'll give
+the desired answer.
+There's still some set of weights that
+gets the best approximation on all those
+training cases, minimizes that error
+measure.
+Some that are all training cases.
+And if we make the learning rate small
+enough and we learn for long enough, we
+can get as close as we like to that best
+answer.
+Another question is, how quickly do we get
+towards the best answer.
+And even for a linear system.
+The learning can be quite slow in this
+kind of intricate learning.
+If two input dimensions are highly
+correlated, its very hard to tell how much
+of the sum of the weight on both input
+dimensions should be attributed to each
+input dimension.
+So if for example, you always get the same
+number of portions of ketchup and chips
+is, we can't decide how much of the price
+is due to the ketchup and how much is used
+to the chips.
+And if they're almost always the same, it
+can take a long time for the learning to
+correctly attribute the price to the
+ketchup and the chips.
+There's an interesting relationship
+between the delta rule and the learning
+rule for perceptrons.
+So, if you, you use the online version of
+the delta rule, but we change the weights
+after each training case, it's quite
+similar to the perceptron learning rule.
+In perceptron learning, we increment or
+decrement the weight vector by the input
+vector, but we only change the input
+vector when we make an error.
+In the online version of the delta rule,
+we increment or decrement the weight
+vector by the imperfector.
+But we scale that by both the residual
+error and the learning rate.
+And one annoying thing about this is we
+have to choose a learning rate.
+If we choose a learning rate that's too
+big, the system will be unstable.
+And if we choose a learning rate that's
+too small, it will take an unnecessarily
+long time to, to learn a sensible set of
+weights

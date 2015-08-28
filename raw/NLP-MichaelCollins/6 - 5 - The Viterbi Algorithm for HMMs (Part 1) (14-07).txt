@@ -1,0 +1,289 @@
+Okay.
+So, so far, we've given basic definitions
+of HMM's, I've just described how to
+estimate the parameters of an HMM.
+So, you basically know everything there is
+to learn of a hidden Markov model from a
+set of training examples.
+The final critical problem is how do we
+apply this model to new test data
+sentences?
+And this is where we see the Viterbi
+algorithm, come into play, which is a very
+famous algorithm.
+It's an example of dynamic programming, a
+critical idea from algorithms and Computer
+Sscience.
+And it's really a rather beautiful way of
+applying these models to test data
+sentences.
+So, what's the problem that we're left
+with?
+It's the following.
+So, we have some input sentence, x
+thorough xn.
+For example, it could be the dog laughs.
+And this is a new sentence, it's, it's a
+new test data sentence.
+And, of course, I would like to map this
+to a sequence of tags, for example, D, N,
+V.
+And, to do that, I have my model.
+So, this probability is defined by an HMM
+through the parameters estimated from a
+training corpus.
+And the task is to find the
+highest-scoring tag sequence under this
+model for this particular sentence, x1
+through xn.
+Okay.
+So again, S is going to be defined to be
+the set of possible tags.
+Let's say, for sake of argument, we have
+these three tags here, D, N, and V.
+And so, we're going to search over all
+valid tag sequences where yi is in S for i
+equals 1 to n, and yn plus 1 is equal to
+STOP.
+We're going to assume that p takes the
+form I showed you for a trigram HMM.
+So, this is this structure again.
+So, just to recap, I have a product of q
+terms, from i equals 1 to n plus 1.
+Remember, yn plus 1 is always equal to the
+STOP symbol and then, I have a product of
+e terms.
+So, this is going to be terms such as e of
+the given that I have determined as the
+tag.
+So.
+First critical thing to realize and a
+critical motivation for the Viterbi
+algorithm is the observation that brute
+force search is going to be hopelessly
+inefficient in this scenario.
+And by brute force search, I mean, search
+through all possible tag sequences where
+we simply enumerate each tag sequence in
+turn.
+Let me illustrate this with an example.
+Say, again, we have the dog laughs as the
+input, so that is x1 through xn in this
+case.
+And let's say that S, the set of possible
+part of speech tags, is the size just 3.
+So, we have D, N, and V, for example.
+Then, I can list all possible tag
+sequences.
+So, here it goes.
+We have D, D, D STOP, D, D N STOP, D, D V
+STOP, and D N D STOP, and so on and so on.
+Okay, so each valid tag sequence simply
+has one of these three tags, three
+possible tags, at each of these positions
+followed by the STOP sign.
+And so, we could conceivably just go
+through each of these tag sequences in
+turn.
+For each tag sequence, evaluate the value
+for P.
+So, for example, we might find that this
+is 0.3, this is 0.01, this is 0.0001 and
+so on.
+I'm just making these numbers up.
+So, we could just simply list all these
+possible tag sequences, apply the model or
+the form of the model to calculate these
+probabilities and then, return the highest
+one, just, say, this one for the sake of
+example.
+The problem with this approach is that the
+number of possible sequences grows very
+quickly with the length of the sentence.
+So, in this particular case, I have 3 to
+the power of 3 possible sequences because
+there are 3 choices here.
+Choice of the first tag, second tag, and
+the third tag and each of those choices
+have 3 possibilities.
+So, in the general case, we have the size,
+number of tags, size, the set S raised to
+the power n as the number of possible
+sequences.
+So, the number of possible sequences
+obviously grows exponentially, quickly,
+with respect to the sentence length n.
+And for any appreciable value for n, say,
+n is equal to 10 or 20 or 40, this number
+quickly gets very, very out of control,
+and it becomes hopelessly inefficient to
+do brute force search.
+So, if we go back to this slide, the
+critical thing we're going to leverage in
+getting around this problem is that our
+probability distribution takes this form
+and critically, these trigram parameters
+only depend on subsequences of length 3.
+So, this model has a particular structure,
+and that will actually allow us to do
+search for the most likely tag sequence,
+solve this problem much, much more
+efficiently than brute force search.
+Okay.
+So now, let's give some definitions
+underlying the Viterbi algorithm, which
+will be the efficient algorithm that
+solves these problems with brute force
+search.
+So, I'll define n to be the length of the
+input sentence.
+So, I have some input sentence x1, x2, X3,
+up to xn.
+And then, a central definition is going to
+be this function r.
+So, r is going to take a sequence of tags
+as input.
+So, we always have star, star as y minus 1
+and y0.
+These are the start symbols.
+And then, we could have some sequence of
+tags for y1, y2, y3 and so k is the length
+of the sequence.
+In this case, k equals 3.
+So, r takes in a sequence such as star,
+star, D, N, V and basically calculates its
+probability under the HMM using what is
+basically a, a truncated expression.
+We just have the first k terms, a
+truncated version of the expression we saw
+for full HMMs.
+So, I have products i equals 1 to k, we
+have these q parameters, and a product
+from i, i equals to k of these admission
+parameters.
+And so, this is essentially a probability
+of just the sequence, which is of length
+k, k equals 3 in this particular example.
+Now, we're going to define a dynamic
+programming table.
+So pi k, u, v, is going to be the maximum
+probability of a tag sequence ending in
+tags u, v at position k.
+[unknown] to be completely precise, we
+need a couple of other definitions.
+So, I'm going to, to define S sub k, for k
+equals minus 1 to n, to be the set of
+possible tags at each position k.
+So, again, if we think about this input
+sentence, x1, x2, x3, up to xn and let's
+say, S is all set of possible tags, say,
+D, N, V, P.
+Then, at any of these positions 1, 2, and
+so on, up to n, we have 4 possible tags,
+D, N, V, P.
+And at positions 0 and minus 1, we have a
+single possible symbol, star and these
+definitions reflect that.
+So, S minus 1 is equal to S0, star, so the
+set of possible symbols or tags at
+position minus 1 and 0, which is the star
+start symbol.
+And for any k and 1 to n, S sub k is equal
+to S, so it's the full set of tags.
+So, this notation will just make things
+cleaner when we get to full definitions.
+Okay.
+So, pi k, u, v, k can take any value in 1,
+2, up to n, u takes any value in Sk minus
+1 and v takes any value in Sk.
+So, this is going to be the maximum
+probability of any tag sequence ending in
+tags u, v at position k.
+More precisely, pi k, u, v is here, I have
+a max of all sequences with k tags y1
+through k proceeded by y minus 1, y0.
+These are both star, always assumed to be
+star.
+Such that yk minus 1 equals u, yk equals
+v, of this r function I've shown you here.
+So, that's the formal definition.
+Let me give you a particular example, on
+the next slide.
+So, let's number these words.
+So, 1, 2, 3, 4, 5, 6, 7, 8.
+And let's say, we consider the entry pi 7
+of P and D, what does that correspond to
+intuitively?
+So, I'm going to fix these 2 tags here to
+be P and D, and let's just assume that our
+set S is equal to D, N, V, P.
+So, if we look at any of the preceding
+positions, we have 4 possible tags at each
+position.
+So, we have all of these possibilities,
+let me just write these out.
+And we always have star, star as these two
+start symbols.
+And so, there are many possible different
+sequences of tags which end in P, D at
+position 6 and 7.
+For example, I could have D, N, V, P, P,
+P, D, that's one possible sequence.
+And there are many others, each of them
+will have a probability, which is
+calculated by multiplying to, multiplying
+together the trigram probabilities, and
+the emission probabilities, these q terms
+and these e terms.
+And pi 7, P, D is going to be the maximum
+probability for any of these tag sequences
+which ends in tags P and D at position 6
+and 7.
+So now, let's give a recursive definition.
+The critical idea here is going to be that
+these pi values can actually be calculated
+efficiently using a recursive definition,
+which is given on this slide.
+So firstly, the base case is going to be,
+let's say, that pi of 0 star, star is
+equal to 1.
+This basically just reflects the fact that
+every text sequence starts with star, star
+at its very beginning.
+And then, we have a second definition
+which is more interesting.
+This is the recursive definition.
+So, it's saying for any value of k, for
+any u and Sk minus 1, and v and Sk.
+So remember, k can take any value, value
+in the range 1 to n, u is always going to
+be in the set Sk minus 1 so this is going
+to be one of the tags which are possible
+at position Sk minus 1.
+And, similarly, v can take any value in
+Sk.
+Remember, Sk is the set of possible tags
+allowable at position k.
+And so, what do we say?
+We say that this is equal to the max of
+all tags at position k minus 2.
+So again, this is the set of possible tags
+at position k minus 2.
+We take a max over that.
+We compute pi of k minus 1, w, u.
+And then, we have q of v given w, u and we
+have e of xk given v.
+On the next slide, I'll illustrate an
+example which justifies this recursive
+definition.
+It is recursive though because this pi
+value depends on a set of previous pi
+values, the pi values at position k minus
+1.
+And so, we have a recursive definition
+where we're defining the pi's in terms of
+other pi's, more specifically, pi's at
+position k minus 1.
+So, this is rather abstract.
+Let me describe exactly how it is
+justified.

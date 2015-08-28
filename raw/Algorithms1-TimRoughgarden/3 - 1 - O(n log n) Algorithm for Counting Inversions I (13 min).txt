@@ -1,0 +1,346 @@
+In this next series of videos, we'll get
+some more practice applying the divide and
+conquer algorithm and design paradigm to
+various problems. This will also give us a
+glimpse of the kinds of application
+[inaudible] to which it's been
+successfully applied. We're gonna start by
+extending the merge sort algorithm to
+solve a problem involving counting the
+number of inversions of an array. Before
+we tackle the specific problem of counting
+the number of inversions in an array, let
+me say a few words about the divide and
+conquer paradigm in general. So again,
+you've already seen the totally canonical
+example of divide and conquer, namely
+merge sort. So the following three
+conceptual steps will be familiar to you.
+The first step, no prizes for guessing is
+you divide. The problem. Into smaller
+sub-problems. Sometimes this division
+happens only in your mind. It's really
+more of a conceptual step than part of
+your code. Sometimes you really do copy
+over parts of the input into say new
+arrays to pass on to your recursive calls.
+The second step, again no prizes here, is
+you conquer the sub-problems just using
+recursion. So for example, in Merge Sort,
+you conceptually divide the array into two
+different pieces. And then you [inaudible]
+with the conquer or sort to the first half
+of the array. And you, you do the same
+thing with the second half of the array.
+Now, of course, it's not quite as easy as
+just doing these two steps. Dividing the
+problem, and then solving the sub problems
+recursively. Usually, you have some extra
+cleanup work after the recursive calls,
+and to stitch together the solutions to
+the sub problems into one for the big
+problem, the problem that you actually
+care about. Recall, for example, in Merge
+Sort, after our recursive calls, the left
+half of the array was sorted, the right
+half of the array was sorted. But we still
+had to stitch those together. Merge into a
+sorted version of the entire array. So the
+[inaudible] step is to combine. The
+solutions to the subproblem into one
+problem. Generally the largest amount of
+ingenuity happens in the third step. How
+do you actually quickly combine solutions
+to subproblems into one to the original
+problem? Sometimes you also get some
+cleverness in the first step with
+division. Sometimes it's as simple as just
+spliting a ray in two. But there are cases
+where the division step also has some
+ingenuity. Now let's move on to the
+specific problem of counting inversions
+and see how to apply this divide and
+conquer paradygm. So let begin by defining
+the problem formally now. We're given as
+input an array A with a length N. And you
+can define the problem so that the array a
+contains any ole distinct numbers. But,
+let's just keep thing simple and assume
+that it contains the numbers one through
+n. The integers in that range in some
+order. That captures the essence of the
+problem. And the goal is to compute the
+number of inversions of this array so
+what's an inversion you may ask well an
+inversion is just a pair of array
+[inaudible] I and J with I smaller than J
+so that earlier array entry the I entry is
+bigger than the latter one the Jake one so
+one thing that should be evident is that
+if the array contains these numbers in
+sorted order if the array is simply one
+two three four all the way up to N then
+the number of inversions is zero. The
+converse you might also want to think
+through if the array has any other
+ordering of the numbers between one and N
+other than the assorted one, then it's
+going to have a non. Of zero number of
+inversions. Let's look at another example.
+So'spose we have an array of six entries.
+So the numbers one thru six in the
+following order. One, three, five followed
+by two, four, six. So how many inversions
+does this array have? So again what we
+need to look for are pairs of array
+entries so that the earlier or left entry
+is bigger than the later or right entry.
+So one example which we see right here
+would five and two. Those are right next
+to each other and out of order, the
+earlier entry is bigger than the other
+one. But there's others, there's three and
+two for example Those are out of order.
+And, five and four are also out of order.
+And I'll leave it to you to check that
+those are the only three pairs that are
+out of order. So summarizing the
+inversions in this array of length six are
+3-2, 5-2, and 5-4. Corresponding to the
+array entries, 2-4, 3-4, and 3-5.
+Pictorially, we can think of it thusly, we
+can first. Write down the numbers in
+order, one up to six. And then we can
+write down the numbers again but, ordered
+in the way that their given in the input
+array. So, one three five two four six.
+And then we can connect the dots, meaning
+we connect one to one. Reconnect two to
+two, and so on. It turns out, and I'll
+leave to for you to, to think this
+through, that the number of crossing pairs
+of line segments prescisely correspond to
+the number of inversions. So we see that
+there are one, two, three crossing line
+segments. And these are exactly in
+correspondence with the three inversions,
+we found earlier. Five and two, three and
+two, and five and four. Now, [inaudible]
+wanna solve this problem you might ask.
+Well there's few reasons that come up. One
+would be to have a numerical similarity
+measure that quantifies how close to
+[inaudible] lists are to each other. So
+for example, suppose I took you and a
+friend, and I took, identified ten movies
+that both of you had seen. And I asked
+each of you to order, or to rank these
+movies from your most favorite to your
+least favorite. Now I can form an array,
+and compute inversions. And it quantifies,
+in some sense, how dissimilar your two
+rankings are to each other. So in more
+detail, in the first entry of this array,
+I would put down the ranking that your
+friend gave to your favorite movie. So if
+you had your favorite movie, Star Wars or
+whatever. And your friend only thought it
+was the fifth best out of the ten, then I
+would write down a five in the first entry
+of this array. Generally, I would take
+your second favorite movie. I would look
+at how your friend ranked that. I would
+put that in the second entry of the array
+and so on, all the way up to the tenth
+entry of the array, where I would put your
+friend's ranking of your least favorite
+movie. Now, if you have exactly identical
+preferences, if you rank them exactly the
+same way, the number of inversions of this
+array would be zero. And in general, the
+more inversions this array has, it
+quantifies that your lists look more and
+more different from each other. Now why
+might you want to do this why might you
+want to know whether two different people
+ranked things in the similar way had
+similar preferences well one reason might
+be what's called collaborative filtering,
+probably many of you have had the
+experience of going to a website and if
+you've made a few purchases through this
+website it starts recommending further
+purchases for you, so one way to solve
+this problem under the hood, is to look at
+your purchases look at what you seem to
+like, find other people who have similar
+preferences similar history look at things
+they've bought that you haven't, and then
+recommend. New products to you based on
+what similar customers seemed to have
+bought. So this problem captures some of
+the essence of identifying which customers
+or which people are similar based on data
+about what they prefer. So just to make
+sure we're all on the same page, let me
+pause for a brief quiz. We've already
+noticed that a given array will have zero
+inversions, if and only if it's in sorted
+order. If it only contains the numbers of
+one through N in order. So, on the other
+side, what is the largest number of
+inversions an array could possibly have?
+Let's say, just for an array of size six,
+like the one in this example here. So the
+answer to this question is the first one.
+Fifteen. Or in general in an N. Element
+array the largest number of inversions is
+N. Choose two. Also known as N times N
+minus one over two. Which, again, in the
+case of a [inaudible] is going to evaluate
+to fifteen. The reason is, the worst case
+is when the array is in backwards order,
+reverse [inaudible] order, and every
+single pair of [inaudible] indices is
+inverted. And so the number of indices IJ,
+with I less than J is precisely
+[inaudible] too. Let's now turn our
+attention to the problem of computing the
+number of inversions of an array as
+quickly as possible. So one option that is
+certainly available to us is the brute
+force algorithm. And by brute force I just
+mean we could set up a double four loop.
+One which goes through I, one which goes
+through J bigger than I, and we just check
+each pair IJ individually with I less than
+J whether that particular pair of array
+entities AI and AJ is inverted and if it
+is then we add it to our running count.
+And then we return the final count at the
+end of the double four loop. That's
+certainly correct. The only problem is, as
+we just observed, there's N [inaudible]
+two or a quadratic number of potential
+inversions so this algorithm's almost
+going to run in time quadratic in the
+array link. Now remember the mantra of any
+good algorithm designer. Can we do better?
+And the answer is yes. And the method
+we'll be using, divide and conquer. The
+way in which we'll divide will be
+motivated directly by merge sort where we
+recurs e separately on the left and the
+right half's of the array. We're gonna do
+the same thing here. To understand how
+much progress we can make purely using
+recursion let's classify the inversions of
+array into one of three types. So suppose
+we have an inversion of an array I, J, and
+remember in an inversion you always have I
+less than J. We're gonna call it a left
+inversion. If both of the array indices
+are at most N over two, where N is the
+array length. We're gonna call it a right
+inversion if they're both strictly greater
+than N over two. And we're gonna call it a
+split inversion if the smaller index is at
+most N over two and the larger index is
+bigger than N over two. We can discuss the
+progress made by recursion in these terms.
+When we recurse on the left-half of an
+array, if we implement our algorithm
+correctly, we'll successfully be able to
+count all of the inversions located purely
+in that first half. Those are precisely
+the left inversions. Similarly, a second
+recursive call on just the right half of
+an array, the second half of an
+[inaudible] array will successfully count
+all of the right inversions. There remains
+the questions of how to count the split
+inversions. But we shouldn't be surprised
+there's some residual work left over, even
+after the recursive calls do their job.
+That, of course, was the case at Merge
+Short, where [inaudible] magically took
+care of sorting the left half of the
+array, sorting the right half of the
+array. But there was still, after their
+return, the matter of merging those two
+sorted lists into one. And here again,
+after the recursion is gonna be the matter
+of cleaning up and counting the number of
+split inversions. So for example if you go
+back to the six element array we worked
+through before, 135246, you'll notice that
+there, in fact, all of the inversions are
+split. So the recursive calls will both
+come back counting zero inversions. And
+all of the work for that example will be
+done by the count split inversions
+subroutine. So let's summarize where
+things stand given underspecified high
+level description of the algorithm as we
+envision it. There is a base case. I'll go
+ahead and write it down for completeness,
+which is if we're given a one element
+array, then there's certainly no inversion
+so we can just immediately return the
+answer zero. For any bigger array, we're
+going to divde and conquer. So we'll count
+the left inversions with a recursive call.
+The right inversions with a recursive
+call. And then we'll have some currently
+unimplemented subroutine that counts the
+split inversions. Since every inversion is
+either left or right, or split, and can't
+be any more than one of those three, then,
+having done these three things, we can
+simply return their sum. So that's our
+high level attack on how we're gonna count
+up the number of inversions. And of
+course, we need to specify how we're gonna
+count the number of split inversions. And
+moreover, we lack that subroutine to run
+quickly. An analogy to emerge short,
+where, outside the recursive calls, we did
+merely linear work. Outs-, in the merge
+subroutine. Here, we'd like to do only
+linear work in counting up the number of
+split inversions. If we succeed in this
+goal, if we produce a correct and linear
+time of limitation to count up the number
+of split incursions, then this entire
+recursive algorithm will run in big O. Of
+N. Log in time. The reason the overall out
+rhythm will run in O. Of N. Log in time is
+exactly the same reason that merge short
+ran in N. Log in time. There's two
+recursive calls. Each on a problem of
+one-half the size. And outside of the
+recursive calls we would be doing linear
+work. So you could copy down exactly the
+same recursion tree argument we used for
+merge short. It would apply equally well
+here. Alternatively, very soon we will
+cover the master method, and as one very
+special case it will prove that this
+algorithm, if we can implement it thusly,
+will run in O. Of N. Log in time. Now one
+thing to realize, is this is a fairly
+ambitious goal, to count up the number of
+split inversions in linear time. It's not
+that there can't be too many split
+inversions. There can actually be a lot of
+them. If you have an array where the first
+half of the array contains the numbers N
+over two plus one, up to N. Whereas the
+second part of the array contains the
+numbers one up to N over two, that has a
+quadratic number of inversions, all of
+which are split. So, what we're attempting
+to do here is count up a quadratic number
+of things using only linear time. Can it
+really be done? Yes is can, as we'll see
+in the next video.

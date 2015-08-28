@@ -1,0 +1,380 @@
+Welcome back, to the course on Audio Signal
+Processing for Music Applications.
+In this week that we are talking
+about the sinusoidal model,
+in the programming lectures we have been
+trying to put together a whole system for
+analyzing and synthesizing a sound
+using the sinusoidal model.
+So in the first programming lecture,
+we talked about the peak detection or
+how to detect the peaks of a spectrum,
+which hopefully are going to be sinusoids.
+Then in the last programming lecture
+we talk about how to synthesize
+sinusoids from those values.
+From the peak values.
+And now in this lecture we
+want to put it all together and
+add the missing components in order
+to actually analyze a complete sound.
+So we start from signal of x and
+then we do the standard windowing,
+FFT, and these are the things that
+we talked about this week.
+So the peak detection, and
+how to get the amplitude
+frequency and phases of the peaks.
+Then today we're going to talk
+about the sinusoidal tracking.
+So how to build tracks out of those peaks.
+Then once we have these sinusoidal tracks
+we can do the synthesis.
+So we can synthesize the spectral peaks, with
+the shape of the sinusoids
+in the spectral domain.
+And then we can do the inverse FFT and
+do the Overlap-add so
+that we can add 
+the time varying aspect of the sound and
+we can reconstruct very complex sounds.
+Let's open up the file
+that includes most of
+the functions that are needed
+in the sinusoidal analysis,
+which is the sineModel.py,
+which is part of the sms-tools package.
+In this file we have several
+functions that are of use for
+the sinusodal modeling.
+For example this first one
+is the sinusoidal tracking.
+Then there is another one
+which is cleaning sine tracks,
+that we'll talk about.
+Then there is one that implements
+the whole sinusoidal model, analysis and
+synthesis, but does not include
+the tracking aspect because this is
+meant to be used in real time.
+So it cannot do tracking and allow some
+memory in the process.
+So we do not recommend
+to use that unless you
+want to develop some real
+time kind of concept.
+So what we're going to be using, and
+we recommend to use, is the sinusoidal
+sineModelAnal function,
+that just performs the analysis part,
+and is able to do sinusoidal tracking,
+because it allows to have 
+all the tracks in one place and
+then do some post-processing on them.
+'Kay?
+So in here we the input is
+the whole input sound x, the sampling
+rate, the window, the FFT size,
+the hop size, then the threshold for
+the peak detection, and
+then a number of parameters that
+are important to control 
+the kind of these time varying
+aspects of the sinusoidal tracking.
+So for example,
+one is the maximum number of
+sines that will be
+allowed at the same time,
+default is 100, so
+normally you put quite a lot of them, so
+to allow for creating and
+and disappearing sine waves.
+And then we control the minimum
+duration of a track.
+So the default 0.01, so
+the tracks that they're going to be
+shorter than this value are going to
+be deleted, and then we're going to
+control the allowed deviation, from one
+frame to the next of a given track.
+So in this case, this deviation
+which is in hertz, 20 hertz, it means
+that in the lowest frequency
+it allows, from one frame to the next, for
+a peak to change frequency by 20 hertz,
+and still be part of the same track.
+And then this freqDevSlope
+is a way to allow for
+this deviation to increase as
+the frequencies are higher.
+In higher frequencies normally, you would
+like this deviation to get higher, so
+we can change that by
+controlling this slope.
+The bigger this the bigger the slope and
+therefore the bigger 
+the change with the higher
+frequencies will be.
+Okay, and then in the function,
+it's not that long,
+Of course it has a lot of the 
+parameters and the functions that we
+already have seen,
+the core is this while loop that
+basically what it does is it
+iterates over the whole sound,
+and it performs all the blocks
+that we talked about.
+So it performs the DFT, using the FFT algorithm,
+it performs peak detection,
+then it performed the peak interpolation.
+And then it it puts
+these peaks into tracks.
+And this is what we're talking about now.
+So let's look into this function,
+the sinusoidal tracks which is right here,
+okay?
+And this function from the peaks,
+that the algorithm has found in a particular
+frame, and from the concept of tracks.
+The concept of a series of incoming
+tracks with specific frequencies.
+We are building tracks.
+We are basically continuing
+the incoming tracks, or
+creating new tracks,
+according to these deviation parameters.
+So this function is a little bit long,
+but it's 
+a lot of cleaning and
+and setting up things.
+The whole concept
+is not that complicated.
+It's simply the idea that
+if there is incoming tracks and
+if not tracks will be created.
+But from these incoming tracks,
+it finds 
+the peaks that are closest
+to those tracks.
+And then if it's close enough
+according to the deviation,
+they will become part of the track.
+Okay?
+So
+if these deviation is small,
+we will add it.
+And otherwise we can also
+create new tracks here.
+Okay?
+So, if there are peaks that are left,
+that have not been assigned to any
+existing track, we can create new tracks.
+So tracks will be created and
+will be disappearing if they are not used
+in the following frame.
+Okay.
+So this returns a series of tracks.
+Okay, so if we go back to the function
+of the sineModelAnal, okay?
+After this tracking it's done.
+Well again there is a whole bunch of
+variables needed to handle these tracks
+and how to pack them and clean
+the matrixes so that we save space.
+But then this is done until then.
+And then once everything is done,
+before returning the tracks,
+there is a cleaning step.
+So this cleaning step receives all
+the tracks that have been computed for
+the whole sound, and
+it will delete the ones that
+are shorter than what we specify.
+So if we go to this function,
+the cleaning of the tracks,
+cleaningSineTracks, it's a very simple,
+it just simply goes through all
+the tracks that have been created.
+It looks for the beginning and
+endings of each track fragment, let's say.
+And if a track fragment is below a given
+length, then it will
+simply delete the track.
+It will set the frequencies to zero.
+And that's what it means
+to clean the tracks.
+Okay?
+And that's all the sinusoidal
+model does, the analysis of that.
+So let's use a function that, or
+a script, that calls
+the sinusoidalModelAnal, okay?
+So this is a script that calls
+the sinusoidalModelAnal and
+with a given set of parameters, with a
+sound, the oboe sound, with a given window,
+given an FFT size, et cetera.
+All the parameters that we talked about.
+So let's run this function, or
+this script, and well it will print 
+the actual tracks.
+let's run this then.
+Run test6.
+Okay.
+So this of course will take a little
+bit more than a single short time
+fourier transform.
+So this is the result.
+Here we have all the tracks, and
+we see the tracks in different colors, and
+things that are important to notice here,
+is that for example,
+even if we see a single line,
+we can see that they are several colors.
+That means that a track will start,
+was was alive for some time,
+and then it disappears, so a new track
+started, and then it disappears,
+a new track starts and
+disappears, etcetera, etcetera.
+So this is the idea that tracks
+can appear and disappear.
+Then also we see that
+most of the tracks correspond to the
+harmonics of the sound, but some do not.
+For example here in the high frequencies,
+clearly we see tracks that
+are quite short lived and they may
+be tracking some noise component or
+they may be tracking some side
+lobe of the analysis and
+this is something that with the sine
+model we cannot do anything about it.
+Of course we can control the length,
+and so all these tracks, the
+the minimum length was the one that we
+established, which was 0.1 seconds.
+So all the tracks here
+at least are 0.1 seconds.
+If we had set this to a different
+value, for example 
+let's leave it to 0.0, 
+and now we can run it again.
+It will do the same analysis, but
+it will allow to do many more tracks.
+So now, we'll only track things higher up.
+But if we zoom into the area
+where we were looking at, yeah.
+We see many tracks that are very short,
+and presumably correspond
+to fragments of little sounds, or
+site lobes, or things like that.
+So the cleaning of the tracks is a good
+way to get rid of all these kind of,
+that typically may be
+corresponding to artifacts.
+Okay.
+Then we can do the synthesis.
+So the sineModelSynthesis
+is this function here,
+and it will receive these
+tracks to be analyzed.
+And from then it will call, basically
+the generation of the spectral sines.
+So it will iterate over all of them,
+and it will generate the main lobes of
+the Blackman-Harris windows, here there is some
+consideration for the phase,
+we might want to not pass any phase here,
+it passes the analysis phase.
+But in some cases the phases will
+be reconstructed from scratch.
+And it allows for reconstruction of
+the phase and the synthesis stage.
+Anyway, so this sineModel function,
+which is in the actual function that
+is called by the interface
+that we used in the demo class.
+It has one function, main,
+that calls the analysis and
+synthesis of
+a given sound using this sinusoidal model.
+So, the parameters,
+the default parameters, it uses, these
+bendir sound, and
+then it that's the analysis, and
+then performs the synthesis and
+it outputs the sound file.
+And it also plots the input sound,
+the sinusoidal tracks,
+and the output sound.
+So let's just call this function.
+Let's close this one first.
+And if we run, sineModel function,
+so we copied it in our directory and
+we have to change
+a few of the relative paths of files.
+Okay, so now it's computing the analysis
+and synthesis of this bendir sound.
+Okay, so this is the original sound, and
+here we see these trajectories,
+and the re synthesis from that.
+So if we zoom into here, for example,
+let’s zoom to a particular area.
+We will see all these quite messy
+sinusoids that are coming in and
+out and in this type of sound
+that's quite normal,
+because there is a lot of very
+partials that are very unstable and
+they disappear and appear 
+in a short fragment.
+Okay.
+So we can listen to those sounds.
+For example let's listen to 
+the resulting sounds. We created
+a file in this directory, synthesized,
+and it's called, bendir sineModel.
+So we can use the play system
+command to play this sound.
+[SOUND] Okay.
+And it's not that different from
+the original file that the bendir we inputted.
+So anyway that gives
+you an idea of how to
+use the sms-tool code and
+how to understand it.
+So now the idea is that, by yourself, you
+can play around with these parameters and
+really go into the different functions and
+understand what they do.
+so, let's finish with that and
+we have seen 
+the whole sinusoidal model from
+a programming perspective.
+And within the sms-tools package we have
+seen all the functions that perform all
+these different analysis task and
+synthesis task.
+So we have pretty good code base
+with which we can do a lot of
+very interesting things.
+Again this is just one step into further
+complications on these models.
+So now we have seen
+the sinusoidal model 
+as a model that will allow
+us to do quite a few things.
+But we can do more, and so next week we
+will be talking about the harmonic model
+which is a way to restrict the sinusoidal model
+to track only the harmonics, like
+in the oboe sound, I think it was
+clear that it makes sense to do that.
+And we will also extend it with
+other new approaches to 
+the spectral analysis and synthesis of sounds.
+So I hope to see you next week,
+and thank you for your attention.
+

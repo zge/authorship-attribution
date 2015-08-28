@@ -1,0 +1,136 @@
+
+So at this point, we've given an 
+algorithm for a problem we've been 
+wondering about for a while, finding the 
+basis for the null space of a matrix. 
+Given the matrix, we think of it in terms 
+of rows. 
+And we find the orthogonal complement of 
+the span of the rows in Rn, where n is 
+the number of columns. 
+And to do that let e1 through en denote, 
+as usual, the standard basis vectors for 
+Rn, and we find the non 0 vectors among 
+the output of orthogonalize with the 
+input list a1 through am followed by e1 
+through en. 
+Here's a another approach to finding 
+basis for the null space of matrix. 
+This time we'll write the matrix in terms 
+of its columns. 
+Now here is the equation that relates 
+the original vectors supply to 
+orthogonalize to the output vectors. 
+The original vectors form a matrix, it's 
+equal to the matrix formed by the output 
+vectors times this matrix. 
+This is invertible matrix, so we can move 
+it to the other side, and we get this 
+equation. 
+It expresses the starred vectors, the 
+output vectors, in terms of the original 
+vectors. 
+I'll illustrate the algorithm through an 
+example. 
+Suppose we supply the vectors v0 through 
+v6 to orthogonalize, and it outputs the 
+vectors v0* through v6*. 
+So this is the relation between them. 
+The matrix consisting of the input 
+vectors is the product of the matrix 
+consisting of the output vectors times 
+this invertible matrix. 
+We can move the invertible matrix to the 
+other side, multiplying by its inverse. 
+And now, suppose it's before that 
+v2*, v4*, and v5* are 0 
+vectors. 
+These are 0 vectors, okay? 
+So the corresponding columns of the of 
+the triangular matrix are these. Now, it's clear that these are 
+linearly independent vectors and notice 
+that by the matrix vector definition of 
+matrix, matrix mutiplication, when you 
+multiply this orginal matrix by each of 
+these vectors, you get a 0 vector. 
+So these vectors lie in the null space of 
+this matrix. 
+They're linearly independent, so they 
+span a space of dimension 0. 
+And the rank nullity theorem shows that 
+the null space of this matrix is exactly 
+0 because the non-zero vectors in the 
+output form a basis. 
+And there are 1, 2, 3, 4 of them. 
+So the columns that we've identified are 
+indeed a basis for the null space of this 
+matrix. 
+So let's review the algorithm. 
+To find the null space of a matrix. 
+We apply orthogonalize to the columns of 
+that matrix. 
+And find the upper triangular matrix T, 
+such that the original matrix equals the 
+matrix whose columns are the output 
+vectors times the triangular matrix. 
+Then we take the inverse of the 
+triangular matrix, and return exactly 
+those columns of the inverse that 
+correspond to the zero vectors among the 
+output vectors of orthogonalize. 
+So this algorithm raises 2 questions. 
+How to find this triangular matrix T, and 
+how to find its inverse? 
+First we'll address finding the matrix 
+T. 
+We'll write a procedure I call augmented 
+orthogonalize that takes a v list say v1 
+through Vn of vectors and outputs as 
+before the vectors V1* through Vn*, 
+that are mutually orthogonal. 
+And also, some other vectors r1 through 
+rn. 
+These have the property that the matrix 
+formed by the original vectors equals the 
+matrix formed by the star vectors times 
+the matrix formed by r1 through rn. 
+The procedure is based on our 
+orthogonalized procedure. 
+Together with augmented projector 
+orthogonal. 
+So, here's the procedure. 
+It very much resembles orthogonalize. 
+It uses r vecs to accumulate these r 
+vectors. 
+Instead of calling project orthogonal, it 
+calls augmented project orthogonal. 
+Which returns not just a vstar vector but 
+also the corresponding column of the r's represented as a dictionary. 
+And the procedure just packages that 
+dictionary up into a vec and returns in 
+the end the list of starred vectors and 
+the list of r vectors. 
+Using augmented orthogonalize we can fill 
+out this prodecure a bit. 
+So, we use aug orthongonalize on the 
+columns of A and we get back a list of 
+starred vectors and list of R vectors. 
+We let T be the matrix whose columns are 
+these vectors in R vex. 
+And then, we return the columns of t 
+inverse corresponding to those vectors in 
+v*list that are zero vectors. 
+Well, how do we find a column of t 
+inverse? 
+From our knowledge of matrix inverse, we 
+know that t times t inverse is the 
+identity matrix. 
+So we can find column j of t inverse by 
+solving an equation, t times the unknown 
+column, which we call x, equals the 
+corresponding column of the identity 
+matrix, which is the standard vector. 
+And how do we solve this equation? 
+We can use triangular solve because t is 
+a triangular matrix. 
+

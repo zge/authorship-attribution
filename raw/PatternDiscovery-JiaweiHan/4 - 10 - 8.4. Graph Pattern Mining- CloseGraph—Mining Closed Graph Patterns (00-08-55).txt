@@ -1,0 +1,208 @@
+[SOUND] So,
+we have discussed efficient algorithms for
+mining graph substructures.
+For example, Apriori-based FSG or
+pattern-growth based gSpan.
+Now, I'm going to introduce a more
+interesting way to mine graph pattern
+called mining closed graph patterns.
+Closed graph is one,
+is one representative algorithm.
+Why we should mine closed graph patterns?
+Actually this is, the idea is very
+similar to why you want to mine closed
+item sets or closed sequential patterns.
+An n-edge frequent graph may contain 2 to
+the power n subgraphs based on
+the simple Apriori principle.
+For example, if you really can find
+a frequent subgraph which the,
+contain 100 edges,
+essentially there will be 2
+to the power 100 frequent
+set graphs in this datasets.
+Okay so, to that extent,
+it is impossible for
+any computer or
+storage space to handle this.
+To avoid this combinatorial
+explosion problem,
+the best way is we only mine
+the closed frequent subgraphs, okay.
+A, the definition is in the very
+singular spirit as closed item sets,
+or closed sequential patterns.
+That simply says,
+if a graph G is closed, if and
+only if there exists no supergraph of
+G that carry the same support as G.
+So conceptually, you can think about this.
+Suppose in your chemical
+compound database,
+you find this rather large
+chemical structures.
+Suppose you get certain support s.
+You, you may find there are, you know,
+some subgraph structures in this database,
+which is smaller than this but
+is a subset of this,
+they carry exactly the same support.
+That implies, actually any time
+it carry a little less structure,
+actually is a subgraph of this.
+This one, the largest one,
+would really make sense for chemists, for
+scientists to examine this compound.
+You better just show the largest one
+because they, they have the exact same
+number of occurrences of,
+it's a slightly smaller subgraph.
+That means if you only
+show the closed graph,
+it is lossless compression
+because you don't miss anything.
+It's, those non-closed subgraph.
+Actually it's hidden as
+a substructure in this graph, but
+they carry the same support.
+There is no point to mine of.
+So this method that we mine the closed
+graph pattern directly instead of first
+mine all the patterns and just finally
+compress them into this closed up graph.
+We call these, is a efficient algorithm,
+the typical one called CloseGraph, okay.
+Then, how to directly mine this one.
+We extend the gSpan to work
+out this CloseGraph algorithm.
+The general philosophy is
+pretty straightforward, okay.
+Suppose we get this k-edge graph,
+subgraph G.
+We want to grow this G into a bigger
+graph like k plus 1 edge graph,
+G sub 1, G sub 2, G sub n, okay.
+Suppose at this mining,
+we may want to check redundancy.
+We don't want to grow any redundant ones.
+We know we're growing certain order,
+that's gSpan.
+But, if both G and G1 are frequent, but
+G1 is a supergraph of G.
+Then if, in the database,
+you'll find these two,
+one is the other one's subgraph, but
+this G1 carries exactly same support as G.
+That means, anytime the graph
+shows your dataset shows G,
+actually shows G1 the supergraph as well.
+Then, there's no point.
+You grow G in some different
+way to grow it, because i,
+in principle, this trojan of G,
+try to grow it and
+essentially will be
+covered by growing G1 in,
+in, you know,
+instead of growing G in some other way.
+You can grow G1 in some other way,
+so that means you can,
+you need a lot of redundant growing.
+Actually, be careful.
+There's some very special subtle
+cases you still need to grow this.
+Those special case, you can set it
+efficient measure to check it, and
+you only go those very special case.
+But for the detail special case,
+I'm not going to lecture here.
+You can check the original
+closed graph paper in KDD 2003.
+But the general philosophy
+you probably can see is,
+except in very special case, you actually
+can omit all the remaining drawing.
+So, that's efficient algorithm.
+Now, we want to show you some
+real tests on the real datasets.
+We actually took one dataset.
+Is from NCI/NIH database is AIDS antivirus
+screening compound database, okay.
+You probably know,
+to control the AIDS virus,
+medical scientists already
+developed a lots of drugs.
+They have lots of complicated
+chemical structures, okay.
+So this dataset actually contains more
+than 43,000 chemical compounds, okay.
+We want to study if we want
+to mine this what things we
+can generate to the common
+chemical substructures which
+could be interesting to hint
+this structure may be effective.
+You, some chemical scientist, again,
+uses this to group, to develop
+further some interesting drugs, okay.
+So if you said support,
+a minimum support is 20 we actually
+found this kind of structure.
+But if you lower down the support,
+you will find a bigger and
+bigger structure like you
+said to support only 5%,
+you will find rather big chemical
+compound structures, okay.
+Of course, we are interested in
+setting the support rather low
+we find a bigger chemical
+compound structure.
+If they are common, they are closed graph.
+They probably will make a lot of sense
+for, for scientists to study them.
+And then we test this.
+We first, to see how many
+patterns we're going to generate.
+If you use frequent graph pattern mining,
+you will generate, like if you said
+5% as minimum support, you will generate
+millions of frequent subgraphs.
+But if you only look at a closed up graph,
+you will see their order is
+in the order of thousands.
+And they essentially carry
+the same information,
+this is lastly is compression.
+If you give 1,000 chemical
+structures to scientists,
+they probably will be
+interested in examining them,
+even they contain the same information
+if it gives them a million.
+Probably nobody will have time
+to examine them in detail, so
+this lossless compression is really
+very interesting and effective.
+Another thing is,
+even you look at run time, okay.
+If you mine only closed graph, the run
+time will be using closed graph methods.
+It would be substantially smaller, okay.
+For example, if you look at this,
+FSG were take multiple high order
+of a thousand seconds to get this.
+If gSpan were get take about
+a thousand seconds to get this.
+But a closed graph will take about
+a hundred seconds, you can finish mining.
+So, that implies not only will
+you find a very efficient or,
+effective sets but you also, your running
+time is substantially reduced as well.
+That's why, for mining large
+substructures, very important thing is
+we should think about mining closed graphs
+instead of mining all the frequent graphs.
+[MUSIC]
+

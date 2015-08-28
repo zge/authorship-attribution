@@ -1,0 +1,243 @@
+In this video I'm going to describe how 
+to use an RBM to model real value data. 
+The idea is that we make the visible 
+units. 
+Instead of being binary stochastic units, 
+the linear units with Gaussian noise. 
+When we do this, we get problems with 
+learning. 
+And it turns out a good solution to those 
+problems is to then make the hidden units 
+be rectified linear units. 
+With linear Gaussian units for the 
+visible, and rectified linear units for 
+the hiddens, it's quite easy to learn a 
+restricted Boltzmann machine that makes a 
+good model of real value data. 
+We first used restricted Boltzmann 
+machines with the images of handwritten 
+digits. 
+For those images. 
+Intermediate intensities caused by a 
+pixel being only partially inked can be 
+modelled quite well by probabilities, 
+that is numbers between one and zero that 
+are actually the probability of a 
+logistical unit being on. 
+So we treat partially inked pixels. 
+As having a probability of being inked. 
+This is incorrect but it works quite 
+well. 
+However it won't work for real images. 
+In a real image the intensity of a pixel 
+is almost always, almost exactly the 
+average of its neighbors. 
+So its got a very high probability of 
+being very close to that average and a 
+very small probability of being a little 
+further away. 
+And you can't achieve that with a 
+logistic unit. 
+Mean field logistic units are unable to 
+represent things like the intensity is 
+69. but very unlikely to be 71. or 67. So 
+we need some other kind of unit. 
+The obvious thing to use is a linear unit 
+with Gaussian norms. 
+So we model pixels as Gaussian variables. 
+We can still use alternating, get 
+sampling, to run the Markoff chain 
+required for the cross-divergence 
+learning. 
+But we need to use a much smaller 
+learning range, otherwise it will tend to 
+blow up. 
+The equation looks like this. 
+The first term on the right hand side, is 
+a kind of parabolic containing function. 
+It stops things blowing out. 
+So determining that sum contributed by 
+the Ith visible unit is parabolic in 
+shape. 
+It looks like this. 
+It's parabola with its minimum at the 
+bias of the Ith unit. 
+And as the Ith unit departs from that 
+value, we add energy quadratically. 
+So that tries to keep the Ith visible 
+unit close to VI. 
+The interactive term between the visible 
+and the hidden units looks like this. 
+And if you differentiate that with 
+respect to the I, you can see that you 
+get a constant. 
+It's the sum over all J, of H J W I J 
+divided by sigma I. 
+So that term with its constant gradient 
+looks like this. 
+And when you add together, that top down 
+contribution to the energy is linear, and 
+the parabolic containment function. 
+You'll get a parabolic function, but with 
+the mean shifted away from BI. 
+And how much it shifted depends on the 
+slope of that blue line. 
+So the effect of the hidden units is just 
+to push the mean to one side. 
+It's easy to write down an energy 
+function like this. 
+And it's easy to take derivatives off it. 
+But when we try learning with it, we 
+often get problems. 
+There were a lot of reports in the 
+literature that people could not get 
+these Gaussian binary RBM's to work. 
+And it is indeed extremely hard to learn 
+tight variances for the visible units. 
+It took us a long time to figure out why 
+it's so hard to learn those visible 
+variances. 
+This picture helps. 
+If you consider the effect that visible 
+unit I has on hidden unit J. 
+When visible unit I has a strong standard 
+deviation sigma I, that has the effect of 
+exaggerating the bottom up weights. 
+That's because we need to measure the 
+activity of I in units of its standard 
+deviation. 
+So when the standard deviation is small, 
+we need to multiply the weight by a lot. 
+If you look at the top down effect of J 
+on I, that's multiplied by sigma I. 
+So when the standard deviation of a 
+visible unit I is very small, the bottom 
+up effects get exaggerated, on the top 
+down effects get attenuated. 
+The result is that we have a conflict 
+where either we have bottom up effects 
+that are much too big or top down effects 
+that are much too small. 
+And the result is that the hidden units 
+tend to saturate and be firmly on or off 
+all the time, and this will mess up 
+learning. 
+So the solution is to have many more 
+hidden units than visible units. 
+That allows small weights between the 
+visible and hidden units to have big top 
+down effects, because of so many hidden 
+units. 
+But of course, we really need the number 
+of hidden units to change as that 
+standard deviation sigma I gets smaller. 
+And on the next slide, we'll see how we 
+can achieve that. 
+I'm going to introduce stepped sigmoid 
+units. 
+The idea is we make many copies of each 
+stacastic binary hidden unit. 
+All the copies have the same weights, and 
+the same bias that's learned B But in 
+addition to that adapted bias B they have 
+a fixed offset to the bias. 
+The first unit has an offset of -1.5. The 
+second unit has an offset of -1.5. The 
+third one has an offset of minus -2.5, 
+and so on. 
+If you have a whole family of sigmoid 
+units like that, with the bias changed by 
+one between neighbouring members of the 
+family, the response code looks like 
+this. 
+If the total in product is very low, none 
+of them are turned on. 
+As it increases, the number that get 
+turned on increases linearly. 
+This means that as the standard deviation 
+on the previous slide gets smaller, the 
+number of copies of each hidden unit that 
+get turned on gets bigger and we achieved 
+just the effect we wanted, which we get 
+more top-down effect to drive these 
+visible units that have small standard 
+deviations. 
+Now it's quite expensive to use a big 
+population of binary stochastic units 
+with offset biases, because for each one 
+of them, we need to put the total input 
+through the logistic function, but we can 
+make some fast approximations which work 
+just as well. 
+So the sum of the activities of a whole 
+bunch of sigmoid units with offset 
+ballasts, which is shown in that 
+summation. 
+Is approximately equal to log of one plus 
+E to the X and that in turn is 
+approximately equal to the maximum of 
+nought and X. 
+And we can add some noise to the X if we 
+want. 
+So the first term in the equation looks 
+like this. 
+The second term looks like that. 
+And you can see that the sum of all those 
+sigmoids in the first term will be a 
+curve like that. 
+And we can approximate that by a linear 
+threshold unit that has a value of zero 
+unless it's above threshold. 
+In which case its value increases 
+linearly with its input. 
+Contrastive Divergence Learning works 
+well for the sum of a bunch of stochastic 
+logistic units with offset biases. 
+And in that case. 
+You get a noise variance that's equal to 
+the logistic function. 
+But the output of that sum. 
+Alternatively we can use that green curve 
+and use rectified linear units. 
+They're much faster to compute because 
+you don't need to go through the logistic 
+many times. 
+And can trust divergence works just fine 
+with those. 
+One nice property of rectified linear 
+units is that if they have a bias of 
+zero, they exhibit scale equivariance. 
+This is a very nice property to have for 
+images. 
+What scale equivariance means is that if 
+you take an image x and you multiply all 
+the pixel intensities by a scalar a., 
+then the representation of ax in the 
+rectified linear units would be just a 
+times the representation of x. 
+In other words, when we scale up all the 
+intensities in the image, we scale up the 
+activities of all the hidden units but 
+all the ratios stay the same. 
+Rectified linear units aren't fully 
+linear because if you add together two 
+images, the representation you get is not 
+the sum of the representations of each 
+unit separately. 
+This property of scale equivariance is 
+quite similar to the property of 
+translational equivariance, convolutional 
+nets off. 
+So if we ignore the pooling for now, in a 
+convolution on that, if we shift an image 
+and look at the representation, 
+the representation of a shifted image is 
+just a shifted version of the 
+representation of the unshifted image. 
+So in a convolutional net without 
+pooling, translations of the input just 
+flow through the layers of the net 
+without really affecting anything. 
+The representation of every layer is just 
+translated. 
+

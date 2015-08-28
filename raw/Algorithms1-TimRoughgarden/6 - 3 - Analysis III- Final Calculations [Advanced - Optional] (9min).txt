@@ -1,0 +1,209 @@
+So we're almost at the finish line of our
+analysis of quick sort. Let me remind you
+what we're proving. We're proving that for
+the randomized implementation of quick
+sort where we always choose the pivot
+element to partition around uniformly at
+random, we're showing that for every
+array, every input of length N, the
+average running time of quick sort over
+the random choices of pivots is
+[inaudible] of N log N. So we've done a
+lot of work in the last couple of videos.
+Let me just remind you about the stories
+so far. In the first video what we did is
+we identified the relevant random variable
+that we cared about, capital C, the number
+of comparisons that Quicksort makes among
+the pairs of elements in the input array.
+Then we applied the decomposition
+approach. We expressed capital C, the
+overall number of comparisons, as a sum of
+indicator or 0-1 random variables. For
+each of those variables XIJ, just counted
+the number of comparisons involving the
+Ith smallest and Jth smallest entries in
+the array, and that's gonna be either zero
+or one. Then we applied linearity of
+expectation to realize, all we really
+needed to understand was the comparison
+probabilities for different pairs of
+elements. [inaudible]. Second video we
+nailed what that comparison probability
+is, specifically, for the I smallest and
+the J smallest elements in the array, the
+probability that quick sort compares them
+when you always make random [inaudible]
+choices is exactly. Two divided by the
+quantity J minus I. Plus one. So putting
+that all together, yields the following
+expression, governing the average number
+of comparisons made by quick sort. One
+thing I want you to appreciate is, is in
+the last couple of videos, we've been sort
+of amazingly exact as algorithmic analysis
+goes. Specifically we've done nothing
+sloppy whatsoever. We've done no
+estimates. The number of comparisons that
+quick store makes on average is exactly
+this double sum. Now surely we'll do some
+inequalities to make our lives a little
+bit easier. But up to this point
+everything has been completely exact. And
+this will actually see why there's small
+constants in the, in the, in quick sort.
+It's basically going to be this factor
+two. Now the next question to ask is, what
+are we shooting for? Remember the theorem
+we want to prove is that the expected
+number of comparisons really the expected
+run time is all of N log N, so we're
+already done. Well not quite we're gonna
+have to be a little bit clever, so if
+we're looking at this double sum, and we
+ask how big are the sum ends and how many
+terms are there? Well the biggest sum ends
+we're ever going to see are when I and J
+are right next to each other when J is one
+bigger than I, and in that case this
+fraction is gonna be one half. So the
+terms can be as big as one half, how many
+terms are there? Well there's a quadratic
+number of terms. So it would be very easy
+to derive an upper bound that's quadratic
+in N, but that's not what we want. We want
+one that's N log N. So to drive that,
+we're gonna have to be a little bit more
+clever about how we evaluate this sum. So,
+the idea is, what we're going to do, is to
+think about a fixed value of I in this
+outermost sum. And then we're gonna ask,
+how big could the inner sum be? So let's
+fix some value of I, the value of the
+index in the outer sum. And then let's
+look at the inner sum, where J ranges from
+I plus one up to N, and the value of the
+sum end is one over the quantity J minus I
+plus one. So how big can this be? Well,
+let's first understand what the terms
+actually are. So J starts at I plus one
+and then it ascends to N. And as J gets
+bigger the denominator gets bigger. So the
+sum ends get smaller. So the biggest sum
+end is gonna be the very first one. And J
+is as small as possible. Namely I plus
+one. When J is I plus one the sum end is
+one half. Then J gets incremented in the
+sum. And so that's, we're gonna pick up a
+one third term followed by one fourth
+term, and so on. So there's gonna be, for
+every inner sum is gonna have a this form,
+one-half plus one-half equals one-fourth.
+And then it's gonna sort of run out at
+some point, when J equals N. And the
+biggest term we're ever going to see is
+gonna be a one over N, in the case where I
+equals one. So. Let's make our lives
+easier by taking this expression we
+started with. Star, and instead of having
+a double sum, let's just upper bound this
+with a single sum. So what are the
+ingredients of a single sum? Well, there's
+this two, can't forget the two. Then
+there's N choices for I, actually, there's
+N minus one choices for I, but let's just
+be sloppy and say N choices. So that gives
+us a factor N. And then how big can an
+inner sum be? Well, inner sum is just a
+bunch of these terms, one-half plus
+one-third and so on. The biggest of those
+inner sums is the one occurring when I
+equals one, at W, at which point the last
+term is one over N. So, we're gonna just
+do a change of variable and express the
+inner [inaudible], upper bound on each
+inner sum as the sum from K equal two to N
+of one over K. So that's looking more
+manageable just having the single sum
+involving this index K, and life's gonna
+get really good when we prove the next
+claim, which is that this sum cannot be
+very big, it's only logarithmic in N, even
+though there's a linear number of sum N's,
+the overall value of the sum is only
+logarithmic. That, of course, is gonna
+complete the proof, 'cause that'll give us
+an overall bound of two times N times the
+natural log on N. So it's an N login bound
+with really quite reasonable constants.
+So, why is this true? Why is this sum only
+logarithmically large? Well, let's do a
+proof by a picture. I'm going to write
+this sum. In a geometric fashion. So on
+the X axis, let me mark off points
+corresponding to the positive integers.
+And on the Y axis, let me mark off points
+corresponding to fractions of the form,
+one over K. And what I?m gonna do is gonna
+draw a bunch of rectangles. Of decreasing
+area, specifically they all have with one,
+and the heights are gonna be like one over
+K. So the area of this guy's one, the area
+of this guy's one half, the area of this
+guy's one third, and so on. And now I'm
+going to overlay on this picture the graph
+of the function, the continuous function,
+F of X equals one over X. So notice that
+is going to go through these three points.
+It's gonna kiss all of these rectangles on
+their upper right corners. Now what is it
+we're trying to prove? The claim we're
+trying to prove is that this sum, one half
+plus one third and so on, is upper bounded
+by something, so the sum can be just
+thought of as the areas in these
+rectangles, the one half, the one third
+and so on, and we're going to upper bound
+it by the area under the blue curve, if
+you notice the area under the blue curve
+is at least as big as the sum of the areas
+of the rectangles because the curve hits
+each of these rectangles in its north east
+corner. So putting that into mathematics,
+the sum from K equal two to N of one over
+K. Is met in above by the integral. And
+we'll start the area of the curve at one.
+And then we need it to go all the way up
+to N. Of the function one over X. The X,
+so that's the area under the curve. And if
+you remember a little bit of calculus the
+integral of one over X is the natural log
+of X. So this equals the natural log of X.
+Evaluated at one. Also known as login
+minus log one. And of course log one would
+be zero, so that gives us our login. So
+that completes the proof of the claim.
+That indeed, the sum of these one over K's
+is bounded above by the natural log of N,
+and that in fact completes the proof of
+the theorem. You've got to be the expected
+number of comparisons, at most two N times
+this sum, which is at most log N. And
+altogether, we find that the expected
+number of comparisons that quick sort
+makes on an arbitrary input of length N.
+Is two times N times the natural log of N.
+So that would be big o of N, log N, with
+quite reasonable constants. Now, this is
+just the number of comparisons, but as we
+observed earlier, the running time of
+Quicksort on average is not much more than
+that, the running time is dominated by the
+number of comparisons that it makes.
+Moreover, as we discussed when we were
+talking about the details of the
+implementation, it works in place,
+essentially no extra storage is necessary.
+So that is a complete and mathematically
+rigorous explanation of just why
+Quicksort. Is so quick.

@@ -1,0 +1,253 @@
+[SOUND]
+We can compute this maximum estimate
+by using the EM algorithm.
+So in the e step,
+we now have to introduce more hidden
+variables because we have more topics,
+so our hidden variable z now,
+which is a topic indicator can
+take more than two values.
+So specifically will
+take a k plus one values,
+with b in the noting the background.
+And once locate,
+to denote other k topics, right.
+So, now the e step, as you can
+recall is your augmented data, and
+by predicting the values
+of the hidden variable.
+So we're going to predict for
+a word, whether the word has come from
+one of these k plus one distributions.
+This equation allows us to
+predict the probability
+that the word w in document d is
+generated from topic zero sub j.
+And the bottom one is
+the predicted probability that this
+word has been generated
+from the background.
+Note that we use document
+d here to index the word.
+Why?
+Because whether a word is
+from a particular topic
+actually depends on the document.
+Can you see why?
+Well, it's through the pi's.
+The pi's are tied to each document.
+Each document can have potentially
+different pi's, right.
+The pi's will then affect our prediction.
+So, the pi's are here.
+And this depends on the document.
+And that might give a different guess for
+a word in different documents,
+and that's desirable.
+In both cases we are using
+the Baye's Rule, as I explained, basically
+assessing the likelihood of generating
+word from each of this division and
+there's normalize.
+What about the m step?
+Well, we may recall the m step is we
+take advantage of the inferred z values.
+To split the counts.
+And then collected the right counts
+to re-estimate the parameters.
+So in this case, we can re-estimate
+our coverage of probability.
+And this is re-estimated based on
+collecting all the words in the document.
+And that's why we have the count
+of the word in document.
+And sum over all the words.
+And then we're going to look at to
+what extent this word belongs to
+the topic theta sub j.
+And this part is our guess from each step.
+This tells us how likely this word
+is actually from theta sub j.
+And when we multiply them together,
+we get the discounted count that's
+located for topic theta sub j.
+And when we normalize
+this over all the topics,
+we get the distribution of all
+the topics to indicate the coverage.
+And similarly, the bottom one is the
+estimated probability of word for a topic.
+And in this case we are using exact
+the same count, you can see this is
+the same discounted account,
+] it tells us to what extend we should
+allocate this word [INAUDIBLE] but
+then normalization is different.
+Because in this case we are interested
+in the word distribution, so
+we simply normalize this
+over all the words.
+This is different, in contrast here we
+normalize the amount all the topics.
+It would be useful to take
+a comparison between the two.
+This give us different distributions.
+And these tells us how to
+improve the parameters.
+And as I just explained,
+in both the formula is we have a maximum
+estimate based on allocated
+word counts [INAUDIBLE].
+Now this phenomena is actually general
+phenomena in all the EM algorithms.
+In the m-step, you general with
+the computer expect an account of
+the event based on the e-step result,
+and then you just and
+then count to four,
+particular normalize it, typically.
+So, in terms of computation
+of this EM algorithm, we can
+actually just keep accounting various
+events and then normalize them.
+And when we thinking this way,
+we also have a more concise way
+of presenting the EM Algorithm.
+It actually helps us better
+understand the formulas.
+So I'm going to go over
+this in some detail.
+So as a algorithm we first initialize
+all the unknown perimeters randomly,
+all right.
+So, in our case, we are interested in all
+of those coverage perimeters, pi's and
+awarded distributions [INAUDIBLE],
+and we just randomly normalize them.
+This is the initialization step and then
+we will repeat until likelihood converges.
+Now how do we know whether
+likelihood converges?
+We can do compute
+likelihood at each step and
+compare the current likelihood
+with the previous likelihood.
+If it doesn't change much and
+we're going to say it stopped, right.
+So, in each step we're
+going to do e-step and m-step.
+In the e-step we're going to do
+augment the data by predicting
+the hidden variables.
+In this case,
+the hidden variable, z sub d, w,
+indicates whether the word w in
+d is from a topic or background.
+And if it's from a topic, which topic.
+So if you look at the e-step formulas,
+essentially we're actually
+normalizing these counts, sorry,
+these probabilities of observing
+the word from each distribution.
+So you can see,
+basically the prediction of word
+from topic zero sub j is
+based on the probability of
+selecting that theta sub j as a word
+distribution to generate the word.
+Multiply by the probability of observing
+the word from that distribution.
+And I said it's proportional to this
+because in the implementation of
+EM algorithm you can keep counter for
+this quantity, and
+in the end it just normalizes it.
+So the normalization here
+is over all the topics and
+then you would get a probability.
+Now, in the m-step, we do the same,
+and we are going to collect these.
+Allocated account for each topic.
+And we split words among the topics.
+And then we're going to normalize
+them in different ways to obtain
+the real estimate.
+So for example, we can normalize among all
+the topics to get the re-estimate of pi,
+the coverage.
+Or we can re-normalize
+based on all the words.
+And that would give us
+a word distribution.
+So it's useful to think algorithm in this
+way because when implemented, you can just
+use variables, but keep track of
+these quantities in each case.
+And then you just normalize these
+variables to make them distribution.
+Now I did not put the constraint for
+this one.
+And I intentionally leave
+this as an exercise for you.
+And you can see,
+what's the normalizer for this one?
+It's of a slightly different form but
+it's essentially the same as
+the one that you have
+seen here in this one.
+So in general in the envisioning of EM
+algorithms you will see you accumulate
+the counts, various counts and
+then you normalize them.
+So to summarize,
+we introduced the PLSA model.
+Which is a mixture model with k unigram
+language models representing k topics.
+And we also added a pre-determined
+background language model to
+help discover discriminative topics,
+because this background language model
+can help attract the common terms.
+And we select the maximum estimate
+that we cant discover topical
+knowledge from text data.
+In this case PLSA allows us to discover
+two things, one is k worded distributions,
+each one representing a topic and
+the other is the proportion of
+each topic in each document.
+And such detailed characterization
+of coverage of topics in documents
+can enable a lot of photo analysis.
+For example, we can aggregate
+the documents in the particular
+pan period to assess the coverage of
+a particular topic in a time period.
+That would allow us to generate
+the temporal chains of topics.
+We can also aggregate topics covered in
+documents associated with a particular
+author and then we can categorize
+the topics written by this author, etc.
+And in addition to this, we can also
+cluster terms and cluster documents.
+In fact,
+each topic can be regarded as a cluster.
+So we already have the term clusters.
+In the higher probability,
+the words can be regarded as
+belonging to one cluster
+represented by the topic.
+Similarly, documents can be
+clustered in the same way.
+We can assign a document
+to the topic cluster
+that's covered most in the document.
+So remember, pi's indicate to what extent
+each topic is covered in the document,
+we can assign the document to the topical
+cluster that has the highest pi.
+And in general there are many useful
+applications of this technique.
+[MUSIC]
+

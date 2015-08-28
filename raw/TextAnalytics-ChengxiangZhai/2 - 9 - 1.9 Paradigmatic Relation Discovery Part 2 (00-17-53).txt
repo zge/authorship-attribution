@@ -1,0 +1,424 @@
+[SOUND] In this lecture
+we continue discussing
+Paradigmatic Relation Discovery.
+Earlier we introduced a method called
+Expected Overlap of Words in Context.
+In this method we represent each
+context by a word of vector
+that represents the probability
+of a word in the context.
+And we measure the similarity by using the
+dot product which can be interpreted as
+the probability that two randomly picked
+words from the two contexts are identical.
+We also discussed the two
+problems of this method.
+The first is that it favors
+matching one frequent term
+very well over matching
+more distinct terms.
+It put too much emphasis on
+matching one term very well.
+The second is that it
+treats every word equally.
+Even a common word like
+the would contribute equally
+as content word like eats.
+So now we are going to talk about
+how to solve this problems.
+More specifically we're going to
+introduce some retrieval heuristics
+used in text retrieval and these
+heuristics can effectively solve these
+problems as these problems also occur
+in text retrieval when we match a query
+with a document, so
+to address the first problem,
+we can use a sublinear
+transformation of term frequency.
+That is, we don't have to use raw
+frequency count of the term to represent
+the context.
+We can transform it into some form that
+wouldn't emphasize so much on the raw
+frequency to address the problem,
+we can put more weight on rare terms.
+And that is,
+we ran reward a matching a rare word.
+And this heuristic is called IDF
+term weighting in text retrieval.
+IDF stands for inverse document frequency.
+So now we're going to talk about
+the two heuristics in more detail.
+First, let's talk about
+the TF transformation.
+That is, it'll convert the raw count of
+a word in the document into some weight
+that reflects our belief about
+how important this wording.
+The document.
+And so,
+that would be denoted by TF of w and d.
+That's shown in the Y axis.
+Now, in general,
+there are many ways to map that.
+And let's first look at
+the the simple way of mapping.
+In this case, we're going to say, well,
+any non zero counts will be mapped to one.
+And the zero count will be mapped to zero.
+So with this mapping, all the frequencies
+will be mapped to only two values,
+zero or one.
+And the mapping function is
+shown here as a flat line here.
+This is naive because in order
+the frequency of words, however,
+this actually has
+advantage of emphasizing,
+matching all the words in the context.
+It does not allow a frequent
+word to dominate the match now
+the approach that we have taken earlier
+in the overlap account approach
+is a linear transformation we
+basically take y as the same as x so
+we use the raw count as
+a representation and
+that created the problem
+that we just talked about.
+Namely, it emphasizes too much
+on matching one frequent term.
+Matching one frequent term
+can contribute a lot.
+We can have a lot of other interesting
+transformations in between
+the two extremes.
+And they generally form
+a sub linear transformation.
+So for example,
+one a logarithm of the row count.
+And this will give us curve that looks
+like this that you are seeing here.
+In this case,
+you can see the high frequency counts.
+The high counts are penalized
+a little bit all right,
+so the curve is a sub linear curve.
+And it brings down the weight
+of those really high counts.
+And this what we want because it prevents
+that kind of terms from
+dominating the scoring function.
+Now, there is also another interesting
+transformation called a BM25
+transformation, which as been shown
+to be very effective for retrieval.
+And in this transformation we
+have a form that looks like this.
+So it's k plus one multiplies by x,
+divided by x plus k.
+Where k is a parameter.
+X is the count.
+The raw count of a word.
+Now the transformation is very
+interesting, in that it can actually
+kind of go from one extreme to
+the other extreme by varying k,
+and it also is interesting that it
+has upper bound, k + 1 in this case.
+So, this puts a very strict
+constraint on high frequency terms,
+because their weight
+will never exceed k + 1.
+As we vary k,
+we can simulate the two extremes.
+So, when is set to zero,
+we roughly have the zero one vector.
+Whereas, when we set the k
+to a very large value,
+it will behave more like,
+immediate transformation.
+So this transformation function is by far
+the most effective transformation function
+for tax and retrieval, and it also
+makes sense for our problem set up.
+So we just talked about how to solve the
+problem of overemphasizing a frequently,
+a frequently tongue.
+Now let's look at the second problem, and
+that is how we can penalize popular terms,
+matching the is not surprising
+because the occurs everywhere.
+But matching eats would count a lot so
+how can we address that problem.
+In this case we can use the IDF weight.
+Pop that's commonly used in retrieval.
+IDF stands for inverse document frequency.
+Now frequency means the count of
+the total number of documents
+that contain a particular word.
+So here we show that the IDF measure
+is defined as a logarithm function
+of the number of documents that
+match a term or document frequency.
+So, k is the number of documents
+containing a word, or document frequency.
+And M here is the total number
+of documents in the collection.
+The IDF function is
+giving a higher value for
+a lower k,
+meaning that it rewards a rare term, and
+the maximum value is log of M+1.
+That's when the word occurred just once in
+the context, so that's a very rare term.
+The rarest term in the whole collection.
+The lowest value you can see here is when
+K reaches its maximum, which would be M.
+All right so,
+that would be a very low value,
+close to zero in fact.
+So, this of course measure
+is used in search.
+Where we naturally have a collection.
+In our case, what would be our collection?
+Well, we can also use the context
+that we had collected for
+all the words as our collection.
+And that is to say, a word that's
+populating the collection in general.
+Would also have a low
+IDF because depending
+on the dataset we can Construct
+the context vectors in the different ways.
+But in the end, if a term is very
+frequently original data set.
+Then it will still be frequenting
+the collective context documents.
+So how can we add these
+heuristics to improve our
+similarity function well here's one way.
+And there are many other
+ways that are possible.
+But this is a reasonable way.
+Where we can adapt the BM25
+retrieval model for
+paradigmatic relation mining.
+So here, we define,
+in this case we define
+the document vector as
+containing elements representing
+normalized BM25 values.
+So in this normalization function, we see,
+we take a sum over, sum of all the words.
+And we normalize the weight
+of each word by the sum of
+the weights of all the words.
+And this is to, again, ensure all
+the xi's will sum to 1 in this vector.
+So this would be very similar
+to what we had before,
+in that this vector is actually something
+similar to a word distribution.
+Or the xis with sum to 1.
+Now the weight of BM25 for
+each word is defined here.
+And if you compare this with our old
+definition where we just have a normalized
+count, of this one so
+we only have this one and
+the document lens of
+the total counts of words.
+Being that context document and
+that's what we had before.
+But now with the BM25 transformation,
+we're introduced to something else.
+First off, because this extra occurrence
+of this count is just to achieve
+the of normalization.
+But we also see we introduced
+the parameter k here.
+And this parameter is generally non active
+number although zero is also possible.
+This controls the upper bound and
+the kind of all
+to what extent it simulates
+the linear transformation.
+And so this is one parameter, but we also
+see there was another parameter here, B.
+And this would be within 0 an 1.
+And this is a parameter to
+control length] normalization.
+And in this case, the normalization
+formula has average document length here.
+And this is computed by
+taking the average of
+the lengths of all the documents
+in the collection.
+In this case, all the lengths
+of all the context documents.
+That we are considering.
+So this average document will be
+a constant for any given collection.
+So it actually is only
+affecting the factor of
+the parameter b here
+because this is a constant.
+But I kept it here because it's
+constant and that's useful
+in retrieval where it would give us a
+stabilized interpretation of parameter B.
+But, for
+our purpose it would be a constant.
+So it would only be affecting the length
+normalization together with parameter b.
+Now with this definition then, we have a
+new way to define our document of vectors.
+And we can compute the vector
+d2 in the same way.
+The difference is that the high
+frequency terms will now have a somewhat
+lower weight.
+And this would help us control the
+influence of these high frequency terms.
+Now, the idea can be added
+here in the scoring function.
+That means we will introduce a way for
+matching each time.
+You may recall, this is sum that indicates
+all the possible words that can be
+overlapped between the two contacts.
+And the Xi and the Yi are probabilities
+of picking the word from both context,
+therefore,
+it indicates how likely we'll
+see a match on this word.
+Now, IDF would give us the importance
+of matching this word.
+A common word will be worth
+less than a rare word, and so
+we emphasize more on
+matching rare words now.
+So, with this modification,
+then the new function.
+When likely to address those two problems.
+Now interestingly,
+we can also use this approach to
+discover syntagmatical relations.
+In general,
+when we represent a term vector to replant
+a context with a term
+vector we would likely see,
+some terms have higher weights, and
+other terms have lower weights.
+Depending on how we assign
+weights to these terms,
+we might be able to use
+these weights to discover
+the words that are strongly associated
+with a candidate of word in the context.
+It's interesting that we can
+also use this context for
+similarity function based on BM25
+to discover syntagmatic relations.
+So, the idea is to use the converted
+implantation of the context.
+To see which terms are scored high.
+And if a term has high weight,
+then that term might be more strongly
+related to the candidate word.
+So let's take a look at
+the vector in more detail here.
+And we have
+each Xi defined as
+a normalized weight of BM25.
+Now this weight alone only reflects how
+frequent the word occurs in the context.
+But, we can't just say an infrequent
+term in the context would be
+correlated with the candidate word
+because many common words like the will
+occur frequently out of context.
+But if we apply IDF
+weighting as you see here,
+we can then re weigh
+these terms based on IDF.
+That means the words that are common,
+like the, will get penalized.
+so now the highest weighted terms will not
+be those common terms because they have
+lower IDFs.
+Instead, those terms would be the terms
+that are frequently in the context but
+not frequent in the collection.
+So those are clearly the words
+that tend to occur in the context
+of the candidate word, for example, cat.
+So, for this reason, the highly weighted
+terms in this idea of weighted vector
+can also be assumed to be candidates for
+syntagmatic relations.
+Now, of course, this is only
+a byproduct of how approach is for
+discovering parathmatic relations.
+And in the next lecture,
+we're going to talk more about how
+to discover syntagmatic relations.
+But it clearly shows the relation
+between discovering the two relations.
+And indeed they can be discussed.
+Discovered in a joined
+manner by leveraging
+such associations, namely syntactical
+relation words that are similar in,
+yeah it also shows the relation between
+syntagmatic relation discovery and
+the paradgratical relations discovery.
+We may be able to leverage the relation to
+join the discovery of
+two kinds of relations.
+This also shows some interesting
+connections between the discovery of
+syntagmatic relation and
+the paradigmatic relation.
+Specifically those words that
+are paradigmatic related tend to be
+having a syntagmatic
+relation with the same word.
+So to summarize the main idea of what
+is covering paradigmatic relations
+is to collect the context of a candidate
+word to form a pseudo document,
+and this is typically
+represented as a bag of words.
+And then compute similarity of
+the corresponding context documents
+of two candidate words.
+And then we can take the highly
+similar word pairs and
+treat them as having
+paradigmatic relations.
+These are the words that
+share similar contexts.
+There are many different ways
+to implement this general idea,
+and we just talked about
+some of the approaches, and
+more specifically we talked about
+using text retrieval models to help
+us design effective similarity function
+to compute the paradigmatic relations.
+More specifically we
+have used the BM25 and
+IDF weighting to discover
+paradigmatic relation.
+And these approaches also
+represent the state of the art.
+In text retrieval techniques.
+Finally, syntagmatic relations
+can also be discovered as a by
+product when we discover
+paradigmatic relations.
+[MUSIC]
+

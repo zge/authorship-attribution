@@ -1,0 +1,204 @@
+Here's another simple client program for
+symbol tables related to indexing.
+Again, another common function that's
+easily handled by symbol tables.
+There's all kinds of cases where we just
+have a lot of information, maybe on our PC
+or all over the web, and we want to create
+an index that allows us to specify.
+A search key and get all the associated
+information.
+And you've, you've used programs like this
+on, on your computer many instances, most
+likely.
+So, more generally, here's the goal.
+So, we're going to list of files that are
+specified.
+And then, and maybe it's all files on the
+computer, or maybe it's specified in, in
+some other way.
+And what we want to do is create an index,
+so that we can efficiently
+find all the files that contain a given
+query.
+String.
+so, in this small example.
+So, our client is going to called file
+index.
+And in this small example say we are going
+to have five text files.
+And these are just pieces of literature.
+And so what we want to do is, build and
+index from that set of text files.
+And then given a key, a string key, we
+want
+it to print out the files that might
+contain that key.
+So, for example, the word freedom appears
+in the
+Magna Ca, Carta and in Moby Dick and A
+Tale
+of Two Cities [COUGH] in all three of them
+but not in Tom Sawyer and not in Aesop's
+Fables.
+The word whale is only in, Moby Dick.
+The word lamb appears both in Tom Sawyer
+and Aesop's Fables, and so forth.
+So we're looking for a piece of
+information somewhere in a computer,
+and it'll give us the names of the files
+that contain that information.
+so, with the, more [COUGH] complex user
+interface, this is, very
+much what the spotlight or find function
+on your computer is doing.
+And a programmer might use the same
+program, to find places where certain,
+Programming
+terms are used in a bunch of programs.
+So, normally we have a bunch of dot
+java files when we're working on an
+application.
+Like these are all the ones associated
+with
+this, lecture, so we might build an index
+from
+that set of files, and then we might
+wonder well where do we use the import
+statements.
+So we just search for import and it'll
+tell us,
+look in those three files.
+Or, did we use comparators anywhere here?
+In, this Index will tell us no.
+So again, a very general capability that's
+got lots and lots of
+applications and easy to implement with
+our symbol table api.
+And the idea is, that what we're going to
+do is associate.
+On keys with values well the key is
+the string we type what's the value?
+Well what we're going to use for value is
+a
+set of files, the files that contain the
+query string.
+So just given that high level description
+then the implimintation is pretty direct.
+Here's the implementation of file index
+using our symbol file implimintation.
+So now we're going to build a symbol
+table.
+That associates string keys with sets of
+files.
+So this creates a new symbol table
+associating string keys with sets of
+files.
+So first thing we do, as before, is build
+the index.
+So we're going to take, this time we're
+going to take
+the list of file names from the command
+line.
+And [COUGH] for each file we're going to
+create an input stream.
+We're going to read every word in the file
+if
+the symbol contains does not contain the
+word.
+Will create a new set for that word and
+put that in the symbol table,
+and then, we simply get the set
+associated with the key and add the new
+word to that set, the new file
+name to that set.
+So, this one, for each word in the file.
+It'll add that file name to the
+corresponding set for that word.
+That's building a symbol table associating
+keys with sets of files.
+And then processing queries is the same as
+before, as
+long as standard in is not empty we take a
+query.
+And then simply print out the set of
+strings associated
+with that word which is a list of file
+names.
+So again,
+our symbol table API gives a very easy way
+to
+implement this file indexing function,
+which is very widely useful.
+And similarly, maybe we want to build a, a
+book
+index, maybe for a real book, or maybe for
+an ebook.
+Or more generally, people want to often
+process,
+preprocess text to, maybe a huge amount of
+text,
+to support, so called, concordance
+queries.
+So what you want to do, is given a word,
+find all occurrences of that word along
+with immediate contexts.
+And context just means a few words before
+and a few words after.
+So for example, in tail of two cities.
+The words cities actually only appears in
+this one place and this is [COUGH] Context
+that it appears.
+With the forwards tongues of the two
+before and that were blended in after.
+The word majesty appears in three places,
+and there's, there's the context.
+In well, this is, the very special case
+that you're very familiar with.
+In web searches.
+You type in a word, and then you get
+places that, where that word appears in
+context.
+Again, our symbol table API provides for
+an easy way to implement this.
+This is a, a.
+[COUGH] concordance client that that does
+the job.
+Now what we want to do is read text, and
+we want to build an index for each word.
+So this is a
+[COUGH] a, a java construct for.
+Reading all the strings
+on an input stream, on standard input,
+and, splitting em by
+blank space and putting em into array, so
+now all the words, are, in the an array.
+On standard input.
+And then we're going to create a new
+symbol table that associates
+strings with sets of integers.
+And again the string is the key and the
+sets of integers
+are going to be the places in the array
+where the given work appears.
+So, we go through.
+All the words, pick out our key, s, and
+again, if, it's not there yet, we create a
+new set associated with that s, and,
+then, afterwards, we go ahead and.
+Get that set, and put the new index on
+that set.
+And then that allows us to process
+queries, where we take a
+query, and then get the set of indices
+associated with that query.
+And then we left out, left out the code
+where you print out the nine words that
+you want.
+The four to the left and the four to the
+right.
+Again, quite useful and familiar
+functionality and very
+easy to implement with our simul table
+client.
+

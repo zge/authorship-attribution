@@ -1,0 +1,332 @@
+In this video we'll talk about
+how to fit the parameters theta
+for logistic regression.
+In particular, I'd like to
+define the optimization objective or the
+cost function that we'll use to fit the parameters.
+Here's to supervised learning problem
+of fitting a logistic regression model.
+We have a training set
+of M training examples.
+And as usual each of
+our examples is represented by
+feature vector that's N plus 1 dimensional.
+And as usual we have
+X 0 equals 1.
+Our first feature, or our 0
+feature is always equal to 1,
+and because this is a
+classification problem, our training
+set has the property that
+every label Y, is either 0 or 1.
+This is a hypothesis
+and the parameters of the
+hypothesis is this theta over here.
+And the question I want
+to talk about is given this
+training set how do
+we choose, or how do we fit the parameters theta?
+Back when we were developing the
+linear regression model, we use the following cost function.
+I've written this slightly differently, where
+instead of 1/2m, I've
+taken the 1/2 and put it inside the summation instead.
+Now, I want to use
+an alternative way of writing
+out this cost function which is
+that instead of writing out
+this squared and return here,
+let's write here, cost of
+H of X comma
+Y, and I'm going
+to define that term cost
+of H of X comma Y to be equal to this.
+It's just equal to just one half of the square root error.
+So now, we can see more
+clearly that the cost
+function is a sum
+over my training set, or
+is 1/m times the sum
+over my training set of this cost term here.
+And to simplify this
+equation a little bit more, it's gonna
+be convenient to get rid of those superscripts.
+So just define cost of
+H of X comma Y to
+be equal to 1/2 of
+this square root error  and the
+interpretation of this cost function
+is that this is the
+cost I want my learning
+algorithm to, you know,
+have to pay, if it
+outputs that value it
+this prediction is H of
+X, and the actual
+label was Y. So just
+cross off those superscripts. All right.
+And no surprise for linear
+regression the cost for you to define is that.
+Well the cost for this
+is, that is 1/2
+times the square difference
+between what are predicted and the
+actual value that we observe
+for Y. Now, this cost
+function worked fine for linear
+regression, but here we're interested in logistic regression.
+If we could minimize this cost
+function that is plugged into J here.
+That will work okay.
+But it turns out that if
+we use this particular cost function
+this would be a non-convex function of the parameters theta.
+Here's what I mean by non-convex.
+We have some cost function J
+of theta, and for logistic
+regression this function H here
+has a non linearity, right?
+It says, you know, 1 over
+1 plus E to the negative theta transfers
+X. So it's a pretty complicated nonlinear function.
+And if you take the sigmoid
+function and plug it in
+here and then take
+this cost function and plug
+it in there, and then plot
+what J of theta looks
+like, you find that
+J of theta can look like a function just like this.
+You know with many local optima and
+the formal term for this
+is that this a non convex function.
+And you can kind of tell.
+If you were to run gradient
+descent on this sort of
+function, it is not guaranteed
+to converge to the global minimum.
+Whereas in contrast, what
+we would like is to have
+a cost function J of theta
+that is convex, that is
+a single bow-shaped function that
+looks like this, so that
+if you run gradient descent, we
+would be guaranteed that gradient descent, you know,
+would converge to the global minimum.
+And the problem of using the
+the square cost function is that
+because of this very
+non linear sigmoid function that
+appears in the middle here, J of
+theta ends up being
+a non convex function if you
+were to define it as the square cost function.
+So what we'd would like to do
+is to instead come up with
+a different cost function that
+is convex and so
+that we can apply a great
+algorithm like gradient descent
+and be guaranteed to find a global minimum.
+Here's a cost function that we're going to use for logistic regression.
+We're going to say the cost
+or the penalty that the algorithm
+pays if it outputs
+a value H of X.
+So, this is some number like 0.7
+where it predicts a value H
+of X. And the actual
+cost label turns out to
+be Y. The cost is
+going to be minus log
+H of X if Y is equal 1.
+And minus log, 1 minus
+H of X if Y is equal to 0.
+This looks like a pretty complicated function.
+But let's plot function to
+gain some intuition about what it's doing.
+Let's start up with the case of Y equals 1.
+If Y is equal equal
+to 1, then the cost function
+is -log H of X, and
+if we plot that, so let's
+say that the horizontal
+axis is H of X.
+So we know that a hypothesis
+is going to output a value between
+0 and 1.
+Right?
+So H of X that varies
+between 0 and 1.
+If you plot what this cost function looks like.
+You find that it looks like this.
+One way to see why the
+plot like this it is because
+if you were to plot log Z
+with Z on the horizontal axis.
+Then that looks like that.
+And it's approach is minus infinity.
+So this is what the log function looks like.
+And so this is 0, this is 1.
+Here Z is of
+course playing the role  of
+H of X.  And so
+minus log Z will look like this.
+Right just flipping the sign.
+Minus log Z. And we're
+interested only in the
+range of when this function
+goes between 0 and 1.
+So, get rid of that.
+And so, we're just left with,
+you know, this part of the curve.
+And that's what this curve on the left looks like.
+Now this cost function
+has a few interesting and desirable properties.
+First you notice that if
+Y is equal to 1 and H of X is equal 1, in
+other words, if the hypothesis
+exactly, you know, predicts
+H equals 1, and Y
+is exactly equal to what I predicted.
+Then the cost is equal 0.
+Right?
+That corresponds to, the curve doesn't actually flatten out.
+The curve is still going. First, notice
+that if H of X
+equals 1, if the hypothesis
+predicts that Y is equal to 1.
+And if indeed Y is
+equal to 1 then the cost is equal to 0.
+That corresponds to this point down here.
+Right?
+If H of X is equal
+to 1, and we're only
+concerned the case that Y equals 1 here.
+But if H of X is equal to 1.
+Then the cost is down here is equal to 0.
+And that is what we like it to be.
+Because, you know, if we
+correctly predict the output Y then the cost is 0.
+But now, notice also
+that H of X approaches 0.
+So, that's H. As the
+output of the hypothesis approaches 0
+the cost blows up, and it goes to infinity.
+And what this does is
+it captures the intuition that if
+a hypothesis, you know, outputs 0.
+That's like saying, our hypothesis is
+saying, the chance of Y
+equals 1 is equal to 0.
+It's kind of like our going
+to our medical patient and saying,
+"The probability that you
+have a malignant tumor, the
+probability that Y equals 1 is zero."
+So, it's like absolutely impossible that your
+tumor is malignant.
+But if it turns out that
+the tumor, the patient's tumor, actually is malignant.
+So if Y is equal to
+1 even after we told them
+you know, the probability of it happening is 0.
+It's absolutely impossible for it to be malignant.
+But if we told them
+this with that level of certainty,
+and we turn out to be wrong,
+then we penalize the learning algorithm
+by a very, very large cost,
+and that's captured by having this
+cost goes infinity if Y
+equals 1 and H
+of X approaches 0.
+This might consider of
+Y1, let's look at what
+the cost function looks like for Y0.
+If Y is equal to 0, then the cost
+looks like this expression over here.
+And if you plot
+the function minus log 1
+minus Z what you
+get is the cost function actually looks like this.
+So, it goes from 0 to 1.
+Something like that.
+And so if you plot
+the cost function for the case
+of y equals zero, you find that it looks
+like this and what
+this curve does is it
+now blows up,
+and it goes to plus infinity as H of X goes to 1.
+Because it's saying that
+if Y turns out to be
+equal to 0, but we
+predicted that you know, Y is
+equal to 1 with almost
+certainty with probability 1, then
+we end up paying a very large cost.
+Let's plot the cost function for
+the case of Y equals 0.
+So if Y equals 0 that's going to be our cost function.
+If you look at this expression,
+and if you plot, you know, minus
+log 1 minus Z, if
+you figure out what that looks like,
+you get a figure that looks like this.
+Where, which goes from 0
+to 1 with the Z
+axis on the horizontal axis.
+So If you take this cost
+function and plot it for
+the case of Y equals 0,
+what you get is
+that the cost function looks like this.
+And what this cost function
+does is that it blows
+up or it goes to a
+positive infinity as each
+H of X goes to one
+and this captures the
+intuition that if a hypothesis
+predicted that, you know, H of
+X is equal to 1 with
+certainty, with like probability 1,
+it's absolutely got to be Y equals 1.
+But if Y turned out to
+be equal to 0 then
+it makes sense to make the
+hypothesis, or make the learning algorithm pay a very large cost.
+And conversely, if H
+of X is equal to
+0 and Y equals zero,
+then the hypothesis nailed it.
+The predicted Y is equal
+to zero and it turns
+out Y is equal to zero
+so at this point the cost
+function is going to be 0.
+In this video, we
+have defined the cost function
+for a single training example.
+The topic of convexity analysis is beyond the scope of this course.
+But it is possible to show
+that with our particular choice
+of cost function this would
+give us a convex optimization problem
+as cost function, overall cost function
+J of theta will be
+convex and local optima free.
+In the next video we're going
+to take these ideas of the
+cost function for a single
+training example and develop that
+further and define the
+cost function for the entire
+training set, and we'll also
+figure out a simpler way to
+write it than we have been using so far.
+And based on that will
+work out gradient descent, and
+that will give us our logistic regression algorithm.

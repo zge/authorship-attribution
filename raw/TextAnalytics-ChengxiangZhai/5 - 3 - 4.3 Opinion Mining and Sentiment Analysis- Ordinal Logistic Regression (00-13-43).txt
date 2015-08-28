@@ -1,0 +1,324 @@
+[NOISE] This lecture is about the ordinal
+logistic regression for
+sentiment analysis.
+So, this is our problem set up for a
+typical sentiment classification problem.
+Or more specifically a rating prediction.
+We have an opinionated text document d as
+input, and we want to generate as output,
+a rating in the range of 1 through k so
+it's a discrete rating, and
+this is a categorization problem.
+We have k categories here.
+Now we could use a regular text for
+categorization technique
+to solve this problem.
+But such a solution would not consider the
+order and dependency of the categories.
+Intuitively, the features that can
+distinguish category 2 from 1,
+or rather rating 2 from 1,
+may be similar to
+those that can distinguish k from k-1.
+For example, positive words
+generally suggest a higher rating.
+When we train categorization
+problem by treating these categories as
+independent we would not capture this.
+So what's the solution?
+Well in general we can order to classify
+and there are many different approaches.
+And here we're going to
+talk about one of them that
+called ordinal logistic regression.
+Now, let's first think about how
+we use logistical regression for
+a binary sentiment.
+A categorization problem.
+So suppose we just wanted to distinguish
+a positive from a negative and
+that is just a two category
+categorization problem.
+So the predictors are represented as X and
+these are the features.
+And there are M features all together.
+The feature value is a real number.
+And this can be representation
+of a text document.
+And why it has two values,
+binary response variable 0 or 1.
+1 means X is positive,
+0 means X is negative.
+And then of course this is a standard
+two category categorization problem.
+We can apply logistical regression.
+You may recall that in logistical
+regression, we assume the log
+of probability that the Y is equal to one,
+is
+assumed to be a linear function
+of these features, as shown here.
+So this would allow us to also write
+the probability of Y equals one, given X
+in this equation that you
+are seeing on the bottom.
+So that's a logistical function and
+you can see it relates
+this probability to,
+probability that y=1
+to the feature values.
+And of course beta i's
+are parameters here, so this is
+just a direct application of logistical
+regression for binary categorization.
+What if we have multiple categories,
+multiple levels?
+Well we have to use such a binary
+logistical regression problem
+to solve this multi
+level rating prediction.
+And the idea is we can introduce
+multiple binary class files.
+In each case we asked
+the class file to predict the,
+whether the rating is j or above,
+or the rating's lower than j.
+So when Yj is equal to 1,
+it means rating is j or above.
+When it's 0,
+that means the rating is Lower than j.
+So basically if we want to predict
+a rating in the range of 1-k,
+we first have one classifier to
+distinguish a k versus others.
+And that's our classifier one.
+And then we're going to have another
+classifier to distinguish it.
+At k-1 from the rest.
+That's Classifier 2.
+And in the end, we need a Classifier
+to distinguish between 2 and 1.
+So altogether we'll have k-1 classifiers.
+Now if we do that of course then
+we can also solve this problem
+and the logistical regression program
+will be also very straight forward
+as you have just seen
+on the previous slide.
+Only that here we have more parameters.
+Because for each classifier,
+we need a different set of parameters.
+So now the logistical regression
+classifies index by J,
+which corresponds to a rating level.
+And I have also used of
+J to replace beta 0.
+And this is to.
+Make the notation more consistent,
+than was what we can show in
+the ordinal logistical regression.
+So here we now have basically k minus one
+regular logistic regression classifiers.
+Each has it's own set of parameters.
+So now with this approach,
+we can now do ratings as follows.
+After we have trained these k-1
+logistic regression classifiers,
+separately of course,
+then we can take a new instance and
+then invoke a classifier
+sequentially to make the decision.
+So first let look at the classifier
+that corresponds to level of rating K.
+So this classifier will tell
+us whether this object should
+have a rating of K or about.
+If probability according to this
+logistical regression classifier is
+larger than point five,
+we're going to say yes.
+The rating is K.
+Now, what if it's not as
+large as twenty-five?
+Well, that means the rating's below K,
+right?
+So now,
+we need to invoke the next classifier,
+which tells us whether
+it's above K minus one.
+It's at least K minus one.
+And if the probability is
+larger than twenty-five,
+then we'll say, well, then it's k-1.
+What if it says no?
+Well, that means the rating
+would be even below k-1.
+And so we're going to just keep
+invoking these classifiers.
+And here we hit the end when we need
+to decide whether it's two or one.
+So this would help us solve the problem.
+Right?
+So we can have a classifier that would
+actually give us a prediction of a rating
+in the range of 1 through k.
+Now unfortunately such a strategy is not
+an optimal way of solving this problem.
+And specifically there are two
+problems with this approach.
+So these equations are the same as.
+You have seen before.
+Now the first problem is that there
+are just too many parameters.
+There are many parameters.
+Now, can you count how many
+parameters do we have exactly here?
+Now this may be a interesting exercise.
+To do.
+So
+you might want to just pause the video and
+try to figure out the solution.
+How many parameters do I have for
+each classifier?
+And how many classifiers do we have?
+Well you can see the, and so
+it is that for each classifier we have
+n plus one parameters, and we have k
+minus one classifiers all together,
+so the total number of parameters is
+k minus one multiplied by n plus one.
+That's a lot.
+A lot of parameters, so when
+the classifier has a lot of parameters,
+we would in general need a lot of data
+out to actually help us, training data,
+to help us decide the optimal
+parameters of such a complex model.
+So that's not ideal.
+Now the second problems
+is that these problems,
+these k minus 1 plus fives,
+are not really independent.
+These problems are actually dependent.
+In general, words that are positive
+would make the rating higher
+for any of these classifiers.
+For all these classifiers.
+So we should be able to take
+advantage of this fact.
+Now the idea of ordinal logistical
+regression is precisely that.
+The key idea is just
+the improvement over the k-1
+independent logistical
+regression classifiers.
+And that idea is to tie
+these beta parameters.
+And that means we are going to
+assume the beta parameters.
+These are the parameters that indicated
+the inference of those weights.
+And we're going to assume these
+beta values are the same for
+all the K- 1 parameters.
+And this just encodes our intuition that,
+positive words in general would
+make a higher rating more likely.
+So this is intuitively assumptions,
+so reasonable for our problem setup.
+And we have this order
+in these categories.
+Now in fact, this would allow us
+to have two positive benefits.
+One is it's going to reduce
+the number of families significantly.
+And the other is to allow us
+to share the training data.
+Because all these parameters
+are similar to be equal.
+So these training data, for
+different classifiers can then be
+shared to help us set
+the optimal value for beta.
+So we have more data to help
+us choose a good beta value.
+So what's the consequence,
+well the formula would look very similar
+to what you have seen before only that,
+now the beta parameter has just one
+index that corresponds to the feature.
+It no longer has the other index that
+corresponds to the level of rating.
+So that means we tie them together.
+And there's only one set of better
+values for all the classifiers.
+However, each classifier still
+has the distinct R for value.
+The R for parameter.
+Except it's different.
+And this is of course needed to predict
+the different levels of ratings.
+So R for sub j is different it
+depends on j, different than j,
+has a different R value.
+But the rest of the parameters,
+the beta i's are the same.
+So now you can also ask the question,
+how many parameters do we have now?
+Again, that's an interesting
+question to think about.
+So if you think about it for a moment, and
+you will see now, the param,
+we have far fewer parameters.
+Specifically we have M plus K minus one.
+Because we have M, beta values, and
+plus K minus one of our values.
+So let's just look basically,
+that's basically the main idea of
+ordinal logistical regression.
+So, now, let's see how we can use such
+a method to actually assign ratings.
+It turns out that with this, this idea of
+tying all the parameters, the beta values.
+We also end up by having
+a similar way to make decisions.
+And more specifically now, the criteria
+whether the predictor probabilities
+are at least 0.5 above,
+and now is equivalent to
+whether the score of
+the object is larger than or
+equal to negative authors of j,
+as shown here.
+Now, the scoring function is just
+taking the linear combination of
+all the features with
+the divided beta values.
+So, this means now we can simply make
+a decision of rating, by looking at
+the value of this scoring function,
+and see which bracket it falls into.
+Now you can see the general
+decision rule is thus,
+when the score is in the particular
+range of all of our values,
+then we will assign the corresponding
+rating to that text object.
+So in this approach,
+we're going to score the object
+by using the features and
+trained parameter values.
+This score will then be
+compared with a set of trained
+alpha values to see which
+range the score is in.
+And then,
+using the range, we can then decide which
+rating the object should be getting.
+Because, these ranges of alpha
+values correspond to the different
+levels of ratings, and that's from
+the way we train these alpha values.
+Each is tied to some level of rating.
+[MUSIC]
+

@@ -1,0 +1,431 @@
+In this video, I'd like
+to start adapting support vector
+machines in order to develop complex nonlinear classifiers.
+The main technique for doing that is something called kernels.
+Let's see what this kernels are and how to use them.
+If you have a training set that
+looks like this, and you
+want to find a
+nonlinear decision boundary to distinguish
+the positive and negative examples, maybe
+a decision boundary that looks like that.
+One way to do so is
+to come up with a set
+of complex polynomial features, right? So, set of
+features that looks like this,
+so that you end up
+with a hypothesis X that
+predicts 1 if you know
+that theta 0 and plus theta 1 X1
+plus dot dot dot all those polynomial features is
+greater than 0, and
+predict 0, otherwise.
+And another way
+of writing this, to introduce
+a level of new notation that
+I'll use later, is that
+we can think of a hypothesis
+as computing a decision boundary
+using this. So, theta
+0 plus theta 1 f1 plus
+theta 2, f2 plus theta
+3, f3 plus and so on.
+Where I'm going to
+use this new denotation
+f1, f2, f3 and so
+on to denote these new sort of features
+that I'm computing, so f1 is
+just X1, f2 is equal
+to X2, f3 is
+equal to this one
+here. So, X1X2. So,
+f4 is equal to
+X1 squared where f5 is
+to be x2 squared and so
+on and we seen previously that
+coming up with these high
+order polynomials is one
+way to come up with lots more features,
+the question is, is
+there a different choice of
+features or is there better sort of features than this high order
+polynomials because you know
+it's not clear that this high
+order polynomial is what we want,
+and what we talked about
+computer vision talk about when
+the input is an image with lots of pixels.
+We also saw how using high order polynomials
+becomes very computationally
+expensive because there are
+a lot of these higher order polynomial terms.
+So, is there a different or
+a better choice of the features
+that we can use to plug
+into this sort of
+hypothesis form.
+So, here is one idea for how to
+define new features f1, f2, f3.
+On this line I am
+going to define only three new
+features, but for real problems
+we can get to define a much larger number.
+But here's what I'm going to do
+in this phase
+of features X1, X2, and
+I'm going to leave X0
+out of this, the
+interceptor X0, but
+in this phase X1 X2, I'm going to just,
+you know, manually pick a few points, and then
+call these points l1, we
+are going to pick
+a different point, let's call
+that l2 and let's pick
+the third one and call
+this one l3, and for
+now let's just say that I'm
+going to choose these three points manually.
+I'm going to call these three points line ups, so line up one, two, three.
+What I'm going to do is
+define my new features as follows, given
+an example X, let me
+define my first feature f1
+to be some
+measure of the similarity between
+my training example X and
+my first landmark and
+this specific formula that I'm
+going to use to measure similarity is
+going to be this is E to
+the minus the length of
+X minus l1, squared, divided
+by two sigma squared.
+So, depending on whether or not
+you watched the previous optional video,
+this notation, you know, this is
+the length of the vector
+W. And so, this thing
+here, this X
+minus l1, this is
+actually just the euclidean distance
+squared, is the euclidean
+distance between the point x and the landmark l1.
+We will see more about this later.
+But that's my first feature, and
+my second feature f2 is
+going to be, you know,
+similarity function that measures
+how similar X is to l2 and the game is going to be defined as
+the following function.
+This is E to the minus of the square of the euclidean distance
+between X and the second
+landmark, that is what the enumerator is and
+then divided by 2 sigma squared
+and similarly f3 is, you know,
+similarity between X
+and l3, which is
+equal to, again, similar formula.
+And what this similarity
+function is, the mathematical term
+for this, is that this is
+going to be a kernel function.
+And the specific kernel I'm using
+here, this is actually called a Gaussian kernel.
+And so this formula, this particular
+choice of similarity function is called a Gaussian kernel.
+But the way the terminology goes is that, you know, in
+the abstract these different
+similarity functions are called kernels and
+we can have different similarity functions
+and the specific example I'm giving here is called the Gaussian kernel.
+We'll see other examples of other kernels.
+But for now just think of these as similarity functions.
+And so, instead of writing similarity between
+X and l, sometimes we
+also write this a kernel denoted
+you know, lower case k between x and one of my landmarks all right.
+So let's see what a
+criminals actually do and
+why these sorts of similarity
+functions, why these expressions might make sense.
+So let's take my first landmark. My
+landmark l1, which is
+one of those points I chose on my figure just now.
+So the similarity of the kernel between x and l1 is given by this expression.
+Just to make sure, you know, we
+are on the same page about what
+the numerator term is, the
+numerator can also be
+written as a sum from
+J equals 1 through N on sort of the distance.
+So this is the component wise distance
+between the vector X and
+the vector l. And again
+for the purpose of these
+slides I'm ignoring X0.
+So just ignoring the intercept
+term X0, which is always equal to 1.
+So, you know, this is
+how you compute the kernel with similarity between X and a landmark.
+So let's see what this function does.
+Suppose X is close to one of the landmarks.
+Then this euclidean distance
+formula and the numerator will
+be close to 0, right.
+So, that is this term
+here, the distance was great,
+the distance using X and 0
+will be close to zero, and so
+f1, this is a simple
+feature, will be approximately E
+to the minus 0 and
+then the numerator squared over 2 is equal to squared
+so that E to the
+0, E to minus 0,
+E to 0 is going to be close to one.
+And I'll put the approximation symbol here
+because the distance may
+not be exactly 0, but
+if X is closer to landmark
+this term will be close
+to 0 and so f1 would be close 1.
+Conversely, if X is
+far from 01 then this
+first feature f1 will
+be E to the minus
+of some large number squared,
+divided divided by two sigma
+squared and E to
+the minus of a large number
+is going to be close to 0.
+So what these
+features do is they measure how
+similar X is from one
+of your landmarks and the feature
+f is going to be close
+to one when X is
+close to your landmark and is
+going to be 0 or close
+to zero when X is
+far from your landmark.
+Each of these landmarks.
+On the previous line, I drew
+three landmarks, l1, l2,l3.
+Each of these landmarks, defines a new feature
+f1, f2 and f3.
+That is, given the the
+training example X, we can
+now compute three new
+features: f1, f2, and
+f3, given, you know, the three
+landmarks that I wrote just now.
+But first, let's look
+at this exponentiation function, let's look
+at this similarity function and plot
+in some figures and just, you know, understand
+better what this really looks like.
+For this example, let's say I have two features X1 and X2.
+And let's say my first
+landmark, l1 is at
+a location, 3 5. So
+and let's say I set sigma squared equals one for now.
+If I plot what this feature
+looks like, what I get is this figure.
+So the vertical axis, the height
+of the surface is the value
+of f1 and down here
+on the horizontal axis are, if
+I have some training example, and there
+is x1 and there is x2.
+Given a certain training example, the
+training example here which shows
+the value of x1 and x2
+at a height above the surface,
+shows the corresponding value of
+f1 and down below this is
+the same figure I had showed,
+using a quantifiable plot, with
+x1 on horizontal
+axis, x2 on horizontal
+axis and so, this
+figure on the bottom is just
+a contour plot of the 3D surface.
+You notice that when
+X is equal to
+3 5 exactly, then we
+the f1 takes on the
+value 1, because that's at
+the maximum and X
+moves away as X goes
+further away then this
+feature takes on values
+that are close to 0.
+And so, this is really a feature,
+f1 measures, you know, how
+close X is to the first
+landmark and if
+varies between 0 and one
+depending on how close X
+is to the first landmark l1.
+Now the other was due on
+this slide is show the effects
+of varying this parameter sigma squared.
+So, sigma squared is the parameter of the
+Gaussian kernel and as you vary it, you get slightly different effects.
+Let's set sigma squared to be
+equal to 0.5 and see
+what we get. We set sigma square to 0.5,
+what you find is that the
+kernel looks similar, except for the
+width of the bump becomes narrower.
+The contours shrink a bit too.
+So if sigma squared equals to 0.5
+then as you start
+from X equals 3
+5 and as you move away,
+then the feature f1
+falls to zero much more
+rapidly and conversely,
+if you has increase since
+where three in that
+case and as I
+move away from, you know l. So
+this point here is really
+l, right, that's l1 is at
+location 3 5, right. So it's shown up here.
+And if sigma squared is
+large, then as you move
+away from l1, the
+value of the feature falls
+away much more slowly.
+So, given this definition of
+the features, let's see what
+source of hypothesis we can learn.
+Given the training example X, we
+are going to compute these features
+f1, f2, f3 and a
+hypothesis is going to
+predict one when theta 0
+plus theta 1 f1 plus theta 2 f2,
+and so on is greater than or equal to 0.
+For this particular example, let's say
+that I've already found a learning
+algorithm and let's say that, you know,
+somehow I ended up with
+these values of the parameter.
+So if theta 0 equals
+minus 0.5, theta 1 equals
+1, theta 2 equals
+1, and theta 3
+equals 0 And what
+I want to do is consider what
+happens if we have a
+training example that takes
+has location at this
+magenta dot, right where I just drew this dot over here.
+So let's say I have a training
+example X, what would my hypothesis predict?
+Well, If I look at this formula.
+Because my training example X
+is close to l1, we have
+that f1 is going
+to be close to 1 the because
+my training example X is
+far from l2 and l3 I
+have that, you know, f2 would be close to
+0 and f3 will be close to 0.
+So, if I look at
+that formula, I have theta
+0 plus theta 1
+times 1 plus theta 2 times some value.
+Not exactly 0, but let's say close to 0.
+Then plus theta 3 times something close to 0.
+And this is going to be equal to plugging in these values now.
+So, that gives minus 0.5
+plus 1 times 1 which is 1, and so on.
+Which is equal to 0.5 which is greater than or equal to 0.
+So, at this point,
+we're going to predict Y equals
+1, because that's greater than or equal to zero.
+Now let's take a different point.
+Now lets' say I take a
+different point, I'm going to
+draw this one in a different
+color, in cyan say, for
+a point out there, if that
+were my training example X, then
+if you make a similar computation,
+you find that f1, f2,
+Ff3 are all going to be close to 0.
+And so, we have theta
+0 plus theta 1, f1,
+plus so on and this
+will be about equal to
+minus 0.5, because theta
+0 is minus 0.5 and
+f1, f2, f3 are all zero.
+So this will be minus 0.5, this is less than zero.
+And so, at this
+point out there, we're going to
+predict Y equals zero.
+And if you do
+this yourself for a range
+of different points, be sure to
+convince yourself that if you
+have a training example that's
+close to L2, say,
+then at this point we'll also predict Y equals one.
+And in fact, what you end
+up doing is, you know,
+if you look around this boundary, this
+space, what we'll find is that
+for points near l1
+and l2 we end up predicting positive.
+And for points far away from
+l1 and l2, that's for
+points far away from these two
+landmarks, we end up predicting
+that the class is equal to 0.
+As so, what we end up doing,is
+that the decision boundary of
+this hypothesis would end
+up looking something like this where
+inside this red decision boundary
+would predict Y equals
+1 and outside we predict
+Y equals 0.
+And so this is
+how with this definition
+of the landmarks and of the kernel function.
+We can learn pretty complex non-linear
+decision boundary, like what I
+just drew where we predict
+positive when we're close to either one of the two landmarks.
+And we predict negative when we're
+very far away from any
+of the landmarks.
+And so this is part of
+the idea of kernels of and
+how we use them with the
+support vector machine, which is that
+we define these extra features using
+landmarks and similarity functions
+to learn more complex nonlinear classifiers.
+So hopefully that gives you
+a sense of the idea of
+kernels and how we could
+use it to define new features for the Support Vector Machine.
+But there are a couple of questions that we haven't answered yet.
+One is, how do we get these landmarks?
+How do we choose these landmarks?
+And another is, what
+other similarity functions, if any,
+can we use other than the
+one we talked about, which is called the Gaussian kernel.
+In the next video we give
+answers to these questions and put
+everything together to show how
+support vector machines with kernels
+can be a powerful way
+to learn complex nonlinear functions.

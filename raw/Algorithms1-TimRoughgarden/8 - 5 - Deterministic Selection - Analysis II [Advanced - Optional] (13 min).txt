@@ -1,0 +1,351 @@
+So the time has arrived for us to finish
+the proof of the fact that this
+deterministic algorithm based on the
+median of median ideas, does indeed run in
+linear time. We've done really all the
+[inaudible] difficult work. We've
+discussed the algorithmic ingenuity
+required. To choose a pivot
+deterministically that's guaranteed to be
+pretty good. So remember the idea was you
+take the input array, you logically break
+it into groups of five, you sort each
+group. That's like the first round of a
+two round knockout tournament. The winners
+of the first round are the middle elements
+of each group of five. That's the initial
+set of medians. And then the second around
+we take a median of these N over five
+first round winners, and that's what we
+return as the pivot. And we proved this
+key lemma which is the 30/70 lemma, which
+says that if you choose the pivot by this
+two round knockout tournament, you're
+guaranteed to get a 30/70 split or better.
+So your recursive call in line six or
+seven. Of having a de-select is guaranteed
+to be on an array that has at most 70
+percent of the elements that you started
+with. In other words you're guaranteed to
+prune at least 30 percent of the array
+before you recurs again. But what remains
+to understand is whether or not we've done
+a sensible trade off. Have we kept the
+work required to compute this 30/70 split
+small enough. That we get the desired
+linear running time. Or have we, is the
+cost of finding a pretty good pivot
+outweighing the benefit of having
+guaranteed good splits? That's what we
+gotta prove. That's the next subject.
+Here's the story so far. You'll recall
+that, as usual, we define T of N to be the
+worst case running time of an algorithm.
+In this case, D select on inputs of array
+length. I didn't put arrays of length N.
+And we discussed, okay, there's the base
+case as usual. But in the general case, we
+discussed how, outside of the two
+recursive calls. The deselect algorithm,
+there's a linear number of operations.
+What does it have to do? It has to do the
+sorting, but each sorting is on a group of
+sized constants, size five, so it takes
+constant time for a group. There's a
+linear number of groups, so step one takes
+linear time, the copying takes linear
+time, and the partitioning takes linear
+time. So, there's some constant C, which
+is gonna be bigger than one, but it's
+gonna be constant. So, then outside of a
+recursive cause. Deselect always does at
+most C times N operations. Now what's up
+with the recursive calls. Well, remember
+there's two of them. First, there's one on
+line three that's just responsible for
+helping choose the pivot. This one we
+understand. It's always on twenty percent
+of the imputed rate of like the first
+round winners, so we can very safely write
+T of N over five for the work done, in the
+worst case, by that first recursive call.
+What we didn't understand until we proved
+the key lemma was what's up with the
+second recursive call, which happens on
+either line six or line seven. The size of
+the imputed rate on which we recursed
+depends on the quality of the pivot, and
+it was only when we proved the key lemma
+that we had a guarantee on the.
+[inaudible] 30-70 split or better what
+does that mean? That means the largest
+sub-array we could possibly recurs on has
+seven-tenths N elements. So what remains
+is to find the solution for this
+recurrence and hopefully prove that it is
+indeed big O event. So I'm going to go
+ahead and rewrite the occurrence at the to
+of the slide. We're not really going to
+worry about the T to one equal one. What
+we're interested in is the fact that the
+running time on an input of length N is at
+most C times N. Where again c is some
+constant which is gonna have to be at
+least one, given all the work that we do
+outside of the recursive calls. Plus the
+recursive call on line three on an array
+of size n over five. Plus the second
+recursive call, which is on some array
+that has size in the worst case
+seven-tenths n. So that's cool. This is
+exactly how we handle the over
+deterministic divide and conquer
+algorithms that we studied in earlier
+videos. We just wrote down a recurrence
+and then we solve the recurrence, but now,
+here's the trick. And all of the other
+recurrences that came up. For example,
+Merge Short, Strassner's Matrix
+Multiplication Algorithm, [inaudible]
+multiplication, you name it. We just plug
+the parameters into the masters method.
+And because of the power of the master
+method, boom! Out popped up an answer. It
+just told us what the recurrence evaluated
+to. Now, the master method, as powerful as
+it is, it did have an assumption, you
+might recall. The assumption was that
+every sub-problem solved had the same
+size. And that assumption is violated by
+this linear time selection algorithm.
+There are two recursive calls. One of 'ems
+on twenty percent of the original array.
+The other one is probably on much more
+than twenty percent of the original array.
+It could be as much as 70 percent of the
+original array. So because we have two
+recursive calls, and sub problems of
+different size, this does not fit into the
+situations that the master method covers.
+It's a very rare algorithm in that regard.
+Now, there are more general versions of
+the master method, of the master theorem
+which can accommodate a wider class of
+recurrences including this one here.
+Alternatively we could push the recursion
+tree proof so that we could get a solution
+for this recurrence. Some of you might
+want to try that at home. But I want to
+highlight a different way you can solve
+recurrences just for variety, just to give
+you yet another tool. Now the good news of
+the, about this approach that I'm gonna
+show you is that it's very flexible. It
+can be used to solve sort of arbitrarily
+crazy recurrences. It's certainly going to
+be powerful enough to evaluate this one.
+The bad news is that it's very out of
+hock. It's not very necessarily very easy
+to use. It's kind of a dark art figuring
+out how to apply it. So it's often just
+guess and check, is what it's called. You
+guess what the answer to the recurrence is
+and then you verify it by induction. Here,
+because we have such a specific target in
+mind, the whole point of this exercise is
+to prove a linear is not bound, I'm gonna
+call it just hope and check. So we're
+gonna hope there's linear of time and then
+we're gonna try to produce a proof of that
+just that verifies the linear time bound
+using induction. Specifically what are we
+hoping for, we're crossing our fingers
+that there's a constant, I'm going to call
+it A, A can be big but it's got to be
+constant, and again remember constant
+means it does not depend on N in any way.
+Such that our recurrence at the top of
+this slide T-N is bound above by A times N
+for all and at least one. Why is this what
+we're hoping? Well suppose this were true.
+By definition T of N is a upper bound of
+the running time of our algorithm. So it's
+bound and [inaudible] by A times N then
+it's obviously an O event. It's obviously
+a linear time algorithm. It's obviously A
+gets that gets suppressed in the big
+rotation. So that's the hope, now let's
+check it. And again, check mean just
+verify by induction on N. So the precise
+claim that I'm going to prove is the
+following. I'm gonna go ahead and choose
+the constant A. Remember all we need is
+some constant A, no matter how big as long
+as it's independent of N. That'll give us
+the big O of N time. So I'm actually gonna
+tell you what A I'm gonna use for
+convenience. I'm gonna choose A to be 10C.
+Now what is C? C is just a constant that
+we inherit from the recurrence that we're
+given. Now remember what this recurrence
+means is this is what the running time is
+of the deselect algorithm and the C times
+N represents the work that's outside of
+the recursive calls. So this is just a
+constant multiple on the amount of linear
+work that deselect does for sorting the
+groups, for doing the partitioning and for
+doing the copying. And so there's gonna be
+some small task at a reasonable cost and,
+and for the proof I'm just gonna multiply
+that by ten and use that as my A. And the
+claim is if I define A in that way then
+indeed, it is true that for all and at
+least one, T of N is banded above by A
+times N. Now, I realized I just, I pulled
+this constant A out of nowhere, right? Y10
+times C. Well, if you recall our
+discussion when we proved that things were
+big O of something else, there again,
+there was some constant. So to formally
+prove that something is big O of something
+else, you have to say what the constant
+is. And in the proof, you always wonder
+how do you know what constant to use? So,
+in practice, when you're actually, if you
+have to actually do one of these proofs
+yourself, you reverse engineer what kind
+of constant would work. So you just go
+through the argument with a generic
+constant. And then you're like, oh, well,
+if I set the constant to be this, I can
+complete the proof. So we'll see, that's
+exactly what's gonna happen in the proof
+of this claim. It'll be obvious. The very
+last line you'll see why it shows A equals
+10C. So I just reverse engineered what I
+needed for the proof. But to keep the
+proof easy to follow line by line I
+decided to just full disclosure tell you
+the cost right at the beginning. Now no
+prizes for guessing that the way this
+proof proceeds is by induction on N.
+Induction's the obvious thing to use,
+we're trying to prove an assertion for
+every single positive number N and
+moreover we're given this recurrence which
+relates solutions of smaller sub-problems
+to that of bigger problems. So that sets
+things up for use of the inductive
+hypothesis. If you want a longer review of
+what proofs by induction are, I suggest
+that you go back and re-watch the optional
+video where we prove the correctness of
+quicksort. That is, is a fairly formal
+discussion of what the template is like
+for a proof by induction. And that's the
+one we're gonna apply here. So, there's
+two ingredients in any proof by induction
+is, is a usually trivial one in the form
+of a base case. That's also gonna be
+trivial here. In the base case you just
+directly establish the assertion when n
+equals one. So, we're trying to prove that
+t of n is the most a times n for every n
+when n equals one we could just
+substitute. But what we're trying to prove
+is that t of one is at most a time one
+also known as a. And we're given that t of
+one is one. Right that's the base case of
+the recurrence that we're given. So that's
+what we're using here. What we want to be
+true is that this isn't the most a times
+one, but it is. So the constant c we're
+assuming is at least one, so it certainly
+can multiply c times ten to get a. It's
+definitely at least one. So the right hand
+side here is unquestionably bigger than
+the left hand side. A in fact is bigger
+than ten, let alone bigger than ten. So
+the interesting ingredient is generally
+the inductive step so remember what you do
+is here is you assume you've already
+proven the assertion that, in this case
+the T of N is at most AN for all smaller
+integers, and now you just merely have to
+prove it again for the current integer. So
+we're now interested in the case where N
+is bigger than one and the assumption that
+we've already [sound] proven to everything
+smaller is called inductive hypotheses. So
+what does it mean that we already proved
+it for all smaller numbers, that means we
+can use in the proof of our inductive step
+the fact that P of K is the most a times K
+for all K strictly less than N. All we
+gotta do is enlarge the range of N's to
+which this holds to one more to the
+current value N. And all we have to do is
+follow our nose. So pretty much, we, we
+have to start on the left hand side with T
+of N, and we have to wind up on the right
+hand side with A times N. And pretty much,
+at every step of the proof, there's just
+gonna be one conceivable thing we could
+do. So we just follow our nose. We start
+with what we wanna upper bound, T of N.
+Well, what do we got going for us? The
+only thing we can do at this point is
+invoke the recurrence that we were given
+up here. So we have an upper bound on T of
+N in terms of the T value of smaller
+integers. So we are given that T of N is
+at most C times N, plus T of N over five,
+plus T of seven-tenths N. Of course
+ignoring fractions, you would round up or
+round down, if you wanted to be precise,
+and the auxiliary lecture notes are more
+precise, if you want to see what the gory
+details look like. But it's really just
+exactly the same argument. One just has to
+be a little bit more anal about it. So now
+that we've invoked the recurrence, what
+can we possibly do, right? We can't really
+do any direct manipulation on any of these
+three terms. But fortunately, we have this
+inductive hypothesis. That applies to any
+value, any integer which is less than N.
+So we have her, N/5, that's certainly less
+than N. We have 70 percent of N. That's
+certainly less than N. So we can apply the
+inductive hypothesis twice. We already
+know that these T values are bounded above
+by A times their arguments. So T of N over
+5's at most A, times N over five. T of
+seven-tenths N is at most A, times
+seven-tenths N. Now we can group terms
+together, not we're comparing apples to
+apples. So we have N, times quantity C,
+plus A/5, plus seven-tenths A. Let me just
+go ahead and group the two A turns
+together. And that's gonna be nine-tenths
+A. No, don't forget where we're going,
+what the end goal is. We want a upper
+bound T of N by AN. So we wanna write that
+this is bounded above by A times N. And
+now you see exactly how I reverse
+engineered our choice of A, as a function
+of the given constant C. Since A is ten
+times as big as C, if I take 90 percent of
+A and add C, I just get A back. So by our
+choice of A. This equals AN. And that
+pretty much wraps things up. So don't
+forget what all this stuff stands for. So
+what did we just prove? What did we just
+prove by induction? We proved T of N is,
+at most, a constant times N for every N.
+That is, T of N is Big O of N. What was T
+of N? That was the running time of our
+algorithm. That's all we cared about. So
+because T of N is Big O of N, indeed,
+deselect runs in O of N time.

@@ -1,0 +1,432 @@
+Today, we're going to embark on the 
+discussion of a new algorithm design 
+paradigms namely that of designing and 
+analyzing Greedy Algorithms. 
+So to put this study of greedy algorithms 
+in a little bit of context let's just 
+zoom out, let's both review some of the 
+algorithm designs paradigms that we've 
+already seen as well look forward to some 
+that we're going to learn later on. 
+in this course. 
+So it's sort of a sad fact of life, that 
+in algorithm design there's no one silver 
+bullet, there's no magic potion that's 
+the cure for all your computational 
+problems. 
+So instead, the best we can do, in, in 
+the focus of these courses is to discuss 
+general techniques. 
+That apply to lots of different problems 
+that arise in lots of different domains. 
+So that's what I mean by algorithm design 
+paradigms, high level problem solving 
+strategies that cut across multiple 
+applications. 
+So let's look at some examples. 
+Back in part one, we started with the 
+divide and conquer algorithm design 
+paradigm. 
+A conical example of that paradigm being 
+the merge sort algorithm. 
+So remember in divide and conquer what 
+you do is you take your problem, you 
+break it into smaller sub-problems, you 
+solve the sub-problems recursively and 
+then you combine the results into a 
+solution to the original problem. 
+Like how in merge sort you recursively 
+sort two sub-arrays and then merge the 
+results to get a sorted version of the 
+original input array. 
+Another paradigm that we touched on in 
+part 1 although we didn't discuss it any 
+where near as thoroughly is that of 
+randomized algorithms. 
+So the idea that you can have codes, flip 
+coins that is make random choices is 
+inside the code itself often this leads 
+to simpler, more practical or more. 
+Elegant algorithms. 
+A kind of that application here is the 
+quick sort algorithm. 
+using a random pivot element. 
+But we also saw applications, for 
+example, to the design of hash functions. 
+So the next measure paradigm we're going 
+to discuss is that of Greedy Algorithms. 
+So these are algorithms that iteratively 
+make myopic decisions. 
+In fact, we've already seen an example of 
+a greedy algorithm in part 1, namely 
+Dijkstra's shortest path algoithm. 
+And then the final paradigm, we're 
+going to discuss in this class, is that 
+of dynamic programming, a very powerful 
+paradigm, which solves in particular, two 
+of the motivating questions we saw 
+earlier namely sequence alignment and 
+distributed shortest paths. 
+So what is a greedy algorithms anyways? 
+Well, to be honest, I'm not going to 
+offer you a formal definition, in fact, 
+much blood and ink has been spilled over 
+which algorithms precise here, greedy 
+algorithms, but I'll give you an informal 
+description. 
+A sort of, rule of thumb for what greedy 
+algorithms usually look like. 
+Generally speaking, what a Greedy 
+Algorithm does is make a sequence of 
+decisions. 
+With each decision being made myopically. 
+That is, it seems like a good idea at the 
+time. 
+And then you hope that everything works 
+out at the end. 
+The best way to get a feel for Greedy 
+Algorithms is to see examples. 
+And the upcoming lectures will give you a 
+number of them. 
+Algorithm. 
+But I want to point out we've actually 
+already seen an example of a greedy 
+algorithm in part one of this course, 
+mainly Dijkstra's shortest path 
+algorithm. 
+So, in what sense is Dijkstra's algorithm 
+a greedy algorithm? Well, if you recall 
+the pseudo code for Dijkstra's algorithm, 
+you'll recall this one main wild loop. 
+And the algorithm process is exactly one 
+new destination vertex in each iteration 
+of this wild loop. 
+So there's exactly n-1 iterations 
+overall. 
+Where N is the number of vertices. 
+So the algorithm only gets one shot to 
+compute the shortest path to a given 
+destination. 
+It never goes back and re-visits the 
+decision. 
+In that sense, the decisions are myopic, 
+irrevocable. 
+and that's the sense in which Dijkstra's 
+algorithm is greedy. 
+So let me pause for a moment to discuss 
+the greedy algorithm design paradigm, 
+generally. 
+Probably, this discussion will seem a 
+little abstract, so I recommend you 
+revisit this discussion on the slide. 
+After we've seen a few examples. 
+At that point, I think it will really hit 
+home. 
+So let me proceed by comparing it and 
+contrasting it to the per a diem we've 
+already studied in depth, that of divide 
+and conquer algorithm. 
+So you'll recall what you do in the 
+divide and conquer algorithm what you do 
+is you break the problem into sub 
+problems, so maybe to take an imput array 
+And you split it into 2 subarrays. 
+Then you solve the smaller subproblems 
+recursively. 
+And then you combine the results of the 
+subproblems into a solution to the 
+original input. 
+So, the Greedy paradigm is quite 
+different in several respects. 
+First, both a strength and a weakness of 
+the Greedy Algorithm design paradigm is 
+just how easy it is to apply. 
+So, it's often. 
+Quite easy to come up with plausible 
+greedy algorithms for a problem, even 
+multiple different plausible greedy 
+algorithms. 
+I think that's a point of contrast with 
+divide and conquer algorithms. 
+Often it's tricky to come up with a 
+plausible divide and conquer algorithm 
+and usually you have this eureka moment, 
+where you finally figure out how to 
+decompose the problem in the right way. 
+And once you have the eureka moment, 
+you're good to go. 
+So secondly, I'm happy to report that 
+analyzing running time of greedy 
+algorithms will generally be much easier 
+that it was with divide and conquer 
+algorithms. 
+For divide and conquer algorithms, it was 
+really unclear whether they were fast or 
+slow because we had to understand the 
+running time over multiple levels of 
+recursion. 
+On the one hand, problem size was getting 
+smaller, on the other hand the number of 
+sub problems was proliferating. 
+So we had to work hard, we developed 
+these powerful tools like the master 
+method and some other techniques for 
+figuring out just how fast an algorithm 
+like merge short runs. 
+Or just how fast an algorithm like 
+Strassen's fast matrix multiplication. 
+Application algorithm runs. 
+In contrast, with greedy algorithms, 
+it'll often be a one liner. 
+Often it'll be clear that the work is 
+dominated by, say, a sorting subroutine 
+and, of course, we all know that sorting 
+takes n log n time if you use a sensible 
+algorithm for it. 
+Now, the catch, and this is the third 
+point of comparison, is we're generally 
+going to have to work much harder to 
+understand correctness issues of greed 
+outcomes. 
+For divide and conquer algorithms we 
+didn't talk much about correctness, it 
+was generally a pretty straightforward 
+induction proof. 
+You can view the lectures on quick short 
+if you want an example of 1 of those 
+canonical inductive correctness proofs. 
+But the game totally changes with greedy 
+algorithms. 
+In fact, given a greedy algorithm we 
+often won't even have very good 
+intuition. 
+For whether or not they are correct, let 
+alone how to prove they're correct. 
+So even with a correct algorithm it's 
+often hard to figure out why it's 
+correct. 
+And in fact, if you remember only one 
+thing From all of this greedy algorithm 
+discussion many years from now I hope one 
+key thing you remember is that they're 
+often not correct. 
+Often especially if it's one that you 
+proposed yourself, which you're very 
+biased in favor of. 
+You will think the algorithm, the greedy 
+algorithm must be correct because it's so 
+natural. 
+But many of them are not. 
+So keep that in mind. 
+So to give you some immediate practice 
+with the ubiquitous incorrectness of 
+natural greedy algorithms. 
+Let's review a point that we already 
+covered in part 1 of this class 
+concerning Dijkstra's algorithm. 
+Now in part 1 you made a deal about a 
+justly famous algorithm Dijkstra's 
+shortest path algorithm is. 
+It runs blazingly fast and it computes 
+all of the shortest path. 
+What else do you want? Well, remember 
+there is an assumption when we proved the 
+Dykes algorithm is correct. 
+We assumed that every edge of the given 
+network has a non-negative length. 
+We did not allow Negative edge lengths. 
+And as we discussed in part one, you know 
+for many applications you only care about 
+non negative edge lengths. 
+But there are applications where you do 
+want negative edge lengths. 
+So let's review on this quiz why 
+Dijkstra's is actually incorrect despite 
+being so natural. 
+it's incorrect when edges can have 
+negative length. 
+So I've drawn in green a very simple 
+shortest path network with 3 edges and 
+I've antitated the edges with there 
+length. 
+You'll notice 1 of the edges does have a 
+negative length. 
+The edge from V to W with length -2. 
+So the question is consider the source 
+vertex s, and the destination vertex w. 
+And the question is, what is the shortest 
+path distance computed by Dykstra's 
+Algorithm? And you may have to go and 
+review, just the pseudo code in part 1, 
+or in, on the web, to answer that part of 
+the question. 
+And then, what is, in fact, the actual 
+shortest path distance, from s to w? 
+Where, as usual, the length of a path is 
+just the sum of the links of the edges 
+in. 
+In the path. 
+Alright, so the correct answer is d. 
+So let's start with the second part of 
+the question. 
+What is the actual length of a shortest 
+path from s to w? Where there's only 2 
+paths at all in the graph. 
+The one straight from s to w. 
+That has length 2. 
+And the one that goes via the 
+intermediate point v, that has length 3 + 
+-2 =. 
+The one which is shorter. 
+So svw is the shortest path that has 
+length one. 
+Y is Dijkstra incorrect. 
+Well if you go back to the pseudo code of 
+Dijkstra, you'll see that in the very 
+first iteration, it will greedily find 
+the closest vertex to s, in that case 
+this is w. 
+W is closer than v. 
+It'll greedily compute the shortest path 
+distance to w, knowing the information it 
+has right now. 
+And all it knows is there's this 1 hop 
+path from s to w. 
+So it'll irrevocably commute to the 
+shortest path distance from s to w as 2. 
+Never reconsidering that decision later. 
+So Dykstra will terminate with the 
+incorrect output that the shortest path 
+length from s to w is 2. 
+This doesn't contradict anything we 
+proved in part 1. 
+'Cuz we established correctness of 
+Dykstra. 
+Only under the assumption that all edge 
+lengths are not negative. 
+An assumption which is. 
+Violated in this particular example. 
+But again the takeaway point here is 
+that, you know, it's easy to write down a 
+greedy algorithm, especially if you came 
+up with it yourself. 
+You probably believe deep in your heart 
+that it's got to be correct all the time, 
+but more often than not, probably your 
+greedy heuristic is nothing more than a 
+heuristic and there will be instances on 
+which it does the wrong this. 
+So keep that in mind. 
+In greedy algorithm design. 
+So now that my conscious is clear, having 
+warned you about the perils of greedy 
+algorithm design. 
+Let's turn to proofs of correctness. 
+That is, if you have a greedy algorithm 
+that actually is correct, and we'll see 
+some notable examples in the coming 
+lectures. 
+How would you actually establish that 
+fact? Or if you have a greedy algorithm 
+and you don't know whether or not it's 
+correct. 
+How would you approach, try to understand 
+which one it is, whether it's correct or 
+not? So let me level with you. 
+Proving greedy algorithm is correct 
+frankly is sort of more art than science. 
+So unlike the divide and conquer paradigm 
+where everything was somewhat formulaic. 
+We had this black box ways of evaluating 
+recurrences, we have this So the template 
+for proving algorithms correct. 
+Really, approving correctness of greedy 
+algorithms takes a lot of creativity. 
+And it has a bit of an ad hock flavor. 
+That's it, as usual, to the extent that 
+there are recurring themes. 
+That is what I will spend our time 
+together emphasising. 
+So let me tell you, just a little bit 
+again, about very high levels. 
+How you might go about this, you again 
+might want to revisit this context af, 
+content after you've seen some examples 
+where I think it will make a lot more 
+sense. 
+So method one, is our old friend or 
+perhaps nemesis depending on your 
+disposition, namely proofs by induction. 
+Now for greedy algorithms remember that 
+they do is they sequentially make a bunch 
+of irrevocable decisions. 
+So here the induction is going to be on 
+the decisions made by the algorithm and 
+if you go back to our proof of 
+correctness of Dijkstra's algorithm that 
+in fact is exactly how we proved 
+Dijkstra's algorithm correct. 
+It was by induction on the number of 
+iterations and each iteration of the main 
+while loop we compute the shortest path 
+to one new destination and we always 
+proved that assuming all of our previous 
+computations. 
+Were correct, that's the inductive 
+hypothesis, then so is the computation 
+and the current iteration. 
+And so then by induction, everything the 
+algorithm ever does is correct. 
+So that's a greedy proof by induction 
+that a greedy algorithm can be correct, 
+and we might see some more examples of 
+those and for other algorithms in the 
+lectures to come. 
+Some of the textbooks call this method of 
+proof, greedy stays ahead, meaning you 
+always prove greedy's doing the right 
+thing iteration by iteration. 
+So a second approach to proving the 
+correctness of greedy algorithms, which 
+works in a lot of cases, is what's called 
+an exchange argument. 
+Now you haven't yet seen any examples of 
+exchange arguments in this class. 
+So I can't really tell you what they are. 
+But that's what we're going to proceed to 
+next. 
+I'm going to argue by an exchange 
+argument that a couple of different 
+famous greedy algorithms are, in fact, 
+correct. 
+It has a couple of different flavors. 
+One flavor is to approach it by 
+contradiction. 
+You assume for contradiction, that a 
+greedy algorithm is incorrect. 
+And then you show that you take an 
+optimal solution. 
+And exchange two elements of that optimal 
+solution and get something even better. 
+Which of course, contradicts the 
+assumption that you started with an 
+optimal solution. 
+a different flavor would be to gradually 
+exchange an optimal solution into the one 
+output by a greedy algorithm, without 
+making the solution any worse. 
+That would show that the up with the 
+greedy algorithm is in fact optimal and 
+informally that's done by an induction on 
+the number of exchanges required to 
+transform an optimal solution into yours, 
+and finally I've already said it once but 
+let me say it again, there is not a whole 
+lot of formula behind proving greedy 
+algorithm is correct. 
+You often have to be quite creative, you 
+might have to switch together aspects of 
+method 1 and method 2, you might have to 
+do something completely different. 
+Really, any rigorous fruit is fair gain. 
+

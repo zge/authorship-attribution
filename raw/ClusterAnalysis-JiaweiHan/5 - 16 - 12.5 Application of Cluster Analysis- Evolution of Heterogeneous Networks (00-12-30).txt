@@ -1,0 +1,292 @@
+[SOUND] In this session, we're going to
+study another application
+of cluster analysis.
+Evolution of heterogeneous networks.
+For data mining a very interesting
+thing is to study evolution dynamics
+of heterogeneous networks because
+networks evolve with time.
+For example, for DBLP network,
+the network may form
+sequences based on paper
+publication years.
+Let me see you take every
+year as one snapshots,
+you will see the sequence of
+the networks are changing.
+So the motivation is, we,
+we're trying to model evolution of
+communities in heterogeneous networks.
+That means we were,
+we want to automatically detect the best
+number of communities in each timestamp,
+then model the smoothness between
+the communities of adjacent timestamps.
+Then we can model the evolution
+of structure explicitly,
+like the birth,
+death split of subnetworks.
+We work at a algorithm call EvolNetClus,
+it's evolution network clustering.
+It's clustering of modeling evolution
+of dynamic heterogeneous networks.
+That means we want to
+see the co-evolution of
+multiple typed objects within a community.
+Simply says, within this community,
+within this cluster,
+it contains heterogeneous
+multi-typed objects and links and
+then we discover the overall evolution
+structures among different communities.
+The study was published in Machine
+Learning and Graphs is MLG 2010 and
+the later version were appear in
+algebraic transaction in 2015.
+The general idea is from natural sequence,
+we want to find evolution communities or
+subnetworks.
+You know, each community consists
+of multiple object type clusters.
+We have time stamp t sub 0, t sub 1,
+two t sub 2 and then we have authors,
+we have papers,
+we have venues and keywords.
+Those are the evolution components,
+they have sub clusters or networks.
+So we want to find these
+networks if we do clustering,
+we probably will find that
+there's a database cluster.
+There's an AI cluster and
+over the years some may,
+some authors or conferences may split and
+emerge into a new cluster
+called data mining cluster.
+And over the years, each cluster,
+once they form, they will evolve as well.
+So we work out a graphic model, which is
+a generative model to model these network.
+Essentially, it is a Dirichlet Process
+Mixture Model-based generative model.
+That means at each timestamp,
+a community is dependent on
+historical communities and
+a background community distribution.
+This graphic model represent by a sequence
+of these generative graphic model.
+You proceed the time is G sub 1 to
+this graphs G sub 2 to G sub t.
+And this graph actually was
+generated based on, you know,
+a lot of things you can see.
+For example, authors,
+venues, firms and you know,
+the research paper entries,
+you based on object you can see,
+you use those parameter you
+would be able to generate the,
+the real model how things are evolving.
+Then this generative and model inference,
+essentially is to generate
+a new paper o sub i.
+We need to decide whether this one
+will join an existing community or
+join a new one.
+Okay.
+To join a existing community k that we may
+have probabilities n sub k divide by this.
+And to, to join a new community k with
+a probability of the other one, okay?
+Then we can decide its prior, either
+from a background distribution lambda or
+historical community 1
+minus lambda times pi,
+the probability is sub k with
+different probabilities and
+then we will be able to draw our
+attribute distributions from the prior.
+Then we will be able to generate
+the the new paper object o
+sub i according to the attribute
+distribution using this formula,
+essentially is kind of a chain rule and
+each one is a product
+of their probability.
+Then we can use a greedy inference for
+each timestamp.
+That means we use Collapse Gibbs
+sampling trying to sample
+cluster label for each target object.
+For example, paper.
+Then based on this, we can work out
+the object evolution discovery errors,
+which is essentially EM algorithms.
+The step one is generating
+the prior groups,
+that means we calculate the posterior
+probability of the hidden labels.
+Then in a step two,
+we put this one into a iterative process
+using EM algorithm to do hidden
+community label assignment.
+Then at this step three,
+we finally we're do the community
+distribution estimation
+using those parameters.
+So if you You look at the overall
+framework, this algorithm we'll call
+Parameter Estimation Algorithm,
+essentially is an EM style algorithm.
+We'll give a different timestamp to
+networks and different parameters, then
+we want to get community assignment vector
+and the parameters and their distribution.
+So, at the very beginning, we assign
+each object into their prior group,
+then we get into this EM loop.
+Essentially, this for
+each object, we do the E-step,
+assign this object to, to the community
+with the maximum posterior
+probability in either existing community
+k or a new community k plus 1.
+You'll get M-step as we update
+the relevant statistics and
+if the community is too old, it contains
+no objects, we will remove this community.
+Then we repeat to this process
+until the cluster change
+change threshold is reached.
+After that, we estimated finer
+parameters for each community.
+Then we look at a case study,
+for example, for DBLP data.
+We will be able to check
+the database community evolution and
+you can see we do from 1991 to year 2000,
+every three years,
+we partition as one group,
+then we study the multi-typed
+objects during evolution.
+Okay.
+For example, you may see the, the top
+part of the blue ones are the venues and
+the red ones are the keywords.
+So you can see the, from 1991 to 1993,
+actually in the middle around
+1993 before reaching 1994,
+we've found actually, there's evolution.
+Some people actually,
+also getting into the conferencing AI and
+the software, then you probably
+can't see they are new keywords in
+this subcommunity focused on softwares and
+foregone knowledge.
+Around year 2000 1997 to year 2000,
+we found another major split
+that besides the regular database
+conferences their keywords,
+they, actually, there are people
+joined like IR and KDB community so
+using the keywords like information,
+retrieval, data mining, text, quite a lot.
+So we probably can see the evolution of
+this community along the years in 1990s.
+So, it's a clear indication
+this community are evolving and
+if you, you know,
+study the different communities,
+you will see their interconnection and
+their links and their evolution behavior.
+Usually, we also observe
+the more types of objects used.
+That means instead of just using,
+like venues,
+we actually use venues, use keywords,
+use papers and authors.
+The more object type used,
+the better accuracy.
+And also, you get better historical
+prior in your results and
+better accuracy as well.
+We also study the evolution of social
+events based on Delicious.com.
+Okay.
+The Delicious.com,
+the schema as was you see,
+the users usually tagging some events
+using tags on different websites.
+We study in year of 2010,
+just one month of January.
+That means we start from January
+the first week of January up
+to the fourth week of January.
+We want to study,
+we found a different clusters.
+For example, these three clusters.
+The first cluster C sub 1 is
+more international politics and
+the sub sub 2 is more
+on the TechKnowledge.
+The subs three is more like a and
+social life.
+So you see the first cluster.
+The first week of January in 2010,
+there were lots discussion
+on the terrorism in
+security travel airport.
+The reason was during the Christmas
+time previous year in year 2009,
+there was a terrorist who, who would
+have liked to blow up the plane when
+the plane was landed in
+the Detroit Airport.
+So you probably see,
+that's why we got lots of
+discussion on the travel airport safety,
+security terrorism.
+However, it's just one week later,
+you probably see there
+are lots of things changing.
+We still see some terrorism entries,
+but on the other hand,
+the major shipping of the discussion
+is that Google was leaving China
+due to the security internet
+privacy politics and censorship.
+So you probably can clearly see
+the trend is changing the discussion
+on the international politics and
+this issue was discussed in
+the following two weeks as well.
+Okay.
+Then you see like a, a for cluster two,
+their discussion on the Mac Apple,
+iPhone tablets and
+it's quite a lot, these four weeks.
+Their discussion did not
+change that much on the focus.
+Then if you look at it the social
+part of the first week was discuss
+more on the Harris
+dispatch depression sleep.
+But it just a week later, you probably
+see they start coming out of Haiti, then
+you got a Haiti earthquake photography and
+then there are lots of things in disaster.
+Then you'll probably see much more
+discussion in the following weeks.
+So just within these several weeks,
+many things are changing the network
+evolving quickly, e,
+especially you watch the keywords.
+So, even we look at the count,
+we also see every week,
+something may change quite a lot.
+That simply says,
+this clustering method is quiet effective
+at finding network evolution
+regularity in heterogeneous networks.
+[MUSIC]
+

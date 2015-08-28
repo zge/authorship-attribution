@@ -1,0 +1,145 @@
+So, now we've seen that if we define, our 
+global features f, as a sum of local 
+features g, we can efficiently calculate 
+this function, from sentences to tag 
+sequences, using the Viterbi algorithm. 
+That is critical for two reasons. 
+One is, if we want to apply our global 
+li, linear model to a new test sentence, 
+we clearly need to calculate this 
+function F. 
+And we need to be able to calculate it 
+efficiently. 
+Secondly, if we think about the 
+perceptron algorithm, the main 
+computational step in the perceptron 
+algorithm is, at each training example to 
+find the highest scoring tax sequence, 
+under the current parameter settings. 
+And so it is going to repeatedly, 
+calculate this argmax. 
+And again, it's therefore critical that 
+we can do this efficiently. 
+So, let me just talk briefly how the 
+perceptron works, for these types of 
+models. 
+So again here is a recap of the 
+Perceptron Algorithm. 
+We have inputs xi,yi if i equals 1 to n. 
+In the tagging case these will be 
+sentences paired with entire tag 
+sequences. 
+We set v equal to 0. 
+We define fx to be this argmax, where we, 
+iterate over all members of GEN, score 
+each member, find the highest scoring 
+structure. 
+And then in the actual parameter 
+estimation step, we take big T passes 
+over the data. 
+We go over the examples one by one, so we 
+have i equals 1 to n. 
+And this is the critical step. 
+So at each point, we find the highest 
+scoring tax sequence under the current 
+model. 
+If it's not correct we make some updates 
+to the parameters. 
+So in the, in the tagging case, this 
+algorithm looks like the following. 
+We have a training set, set of training 
+examples, consisting of word sequences 
+paired with tag sequences, used n sub i 
+to be the length of the ith example, 
+here, or the ith sentence and the ith tag 
+sequence. 
+We initially set all the parameters v be 
+equal to 0. 
+And again I'm going to take big T 
+iterations of the training set. 
+I visit the examples one by one so I take 
+i equals 1 to n. 
+I'm iterating over at the training 
+samples. 
+The first thing I do is, I calculate the 
+highest scoring tag sequence, under the 
+score v.f. 
+And we're going to assume, that f, 
+[SOUND] is equal to, a sum over these 
+local, feature vectors. 
+And that means that critically, we can 
+calculate this high scoring text sequence 
+under the current parameters using 
+dynamic programming, using the Viterbi 
+algorithm. 
+If the output from our model Z is not 
+equal to our target output t, so if 
+they’re yeah, I want a more tag errors 
+and the sequence we proposed, then we do 
+this very simple update again. 
+We say, v equals v, plus f, minus f. 
+Where this f, looks at the correct tag 
+sequence, and this f looks at the 
+incorrect tag sequence. 
+So again at a high level, the critical 
+thing is we've leveraged, this kind of 
+definition of f, that it's a sum of local 
+feature vectors. 
+In a sense, that we can now use dynamic 
+programming to find the highest scoring 
+tag sequence for each training example, 
+under the current parameters. 
+And then we use the standard perceptron 
+updates. 
+So here's some results from the 
+perceptron, on a couple of data sets 
+comparing it to a log-linear tagger. 
+This is first part-of-speech tagging 
+data. 
+And you can see the error rate of the 
+perception is very competitive actually 
+slightly lower than the result for log 
+linear tagger. 
+And secondly we have, the problem of noun 
+phrase chunking. 
+So, this is actually the problem of 
+taking a sentence as input and recovering 
+noun phrase boundaries, where I only look 
+at noun phrases which are non recursive. 
+So, these very low level noun phrases, 
+like the dog or cat. 
+So this is a segmentation problem, the 
+same way the identity recognition is a 
+segmentation problem. 
+And they be treated as a tagging problem, 
+the same way that maybe an identity 
+recognition could be treated as a tagging 
+problem. 
+So in noun phrase chunking again we see 
+similar levels of accuracy. 
+But perhaps slightly higher accuracy for 
+the perceptron. 
+So the perceptron is certainly a 
+competitive algorithm, in this particular 
+domain in tagging problems. 
+It offers a very interesting alternative 
+to log-linear tagger. 
+It's, it's, it's a simple algorithm, and 
+it's really rather simple to implement. 
+And perhaps most importantly, this way of 
+thinking about global linear models, 
+where GEN is exponential in science, but 
+f is defined through some sum of local 
+feature vectors. 
+We'll see that this is a very powerful 
+idea. 
+Tagging was one of the first problems 
+which was addressed using this kind of 
+technique. 
+But in the next segment of this class, 
+we'll look at dependency parsing, which 
+is another application of this technique, 
+and where this idea of decomposing f, as 
+the sum of g, this has really been 
+employed very effectively. 
+

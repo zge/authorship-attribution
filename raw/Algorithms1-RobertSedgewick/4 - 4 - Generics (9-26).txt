@@ -1,0 +1,172 @@
+Next we're going to consider addressing
+another fundamental defect in the
+implementations we've considered so far
+that those implementations are only good
+for strings. What if we want to have
+queues and stacks of other types of data?
+And that brings us to the topic of
+generics. Alright. So, we implemented
+stack of strings but in applications we
+have all different types of data that we
+might want to implement like stack of int
+say or URLs or cars or vans or whatever
+data that we might be processing. So how
+are we going to implement stacks and
+queues for that types of data. Well, first
+thing that we might that we might consider
+and actually we're forced to consider this
+one in lots of programming environment, is
+to implement a separate stack class for
+each type of data that we're using. That
+really seems unsatisfactory. We have our
+carefully crafted code that does array
+resizing and so forth and we're going to
+copy that code and change the data type
+string to the data type van or int to
+everywhere. And what if we have hundreds
+of different types of data that we're
+processing. We have hundreds of different
+implementations. Unfortunately that
+situation at the beginning of Java where
+we stuck with that and there are plenty of
+programming languages where basically
+we're stuck with that so what we want to
+look at is a modern approach to avoiding
+having multiple implementations for each
+type of data. So the a quick hack that is
+widely used is to use casting to implement
+to reuse the code for different data types.
+So, we make our implementation with type
+Object so everything in Java is a sub type
+of Object and then the client, when the
+client comes to use it, will simply cast
+the result to the corresponding type. I
+don't want to spend a lot of time with
+this cuz I think this is a unsatisfactory
+solution. So, in this example we have two
+types with two stacks one of apples and
+one of oranges. And then, it's up to the
+client when it pops something off the
+apple stacks to cast at the apple to keep
+the type checking system happy. The
+problem with this is that the client code
+has to do this, this casting and it's kind
+of an insidious bug if it doesn't quite
+get it. So, the third attempt that we're
+going to talk about uses generics. And
+that way the client code doesn't do
+casting. We can discover mistakes in typed
+mismatches at compile-time instead of at
+run-time. So, in this case, we put, with
+generics, we can have a type parameter on
+our class and that include, that's inside
+angle brackets in this code and then, we
+can [cough] if we have a stack of apples
+and we tried to push an orange unto a
+stack of apples then we're going to get a
+compile-time error because that's stack
+was declared to only consist of, of
+apples. And just the guiding principal in
+good modular programming is that we should
+welcome compile-time errors and avoid
+run-time errors because if we can detect
+an error at compile-time, then we can ship
+our product or deploy our implementation
+our implementation of an API and have some
+confident that it's going to work for any
+client whereas, the error is not going to
+get discovered until run-time it might
+occur with some client development. Now,
+years after, we have to deploy our
+software and be extremely difficult on
+everyone. Okay. So actually with a good
+generic implementation it's not difficult
+to simply [cough], take every place that
+we used string and replace it with a
+generic type name as in this code here. On
+the left is our implementation of a stack
+of strings using link list. On the right
+is a generic implementation. So, every
+place that we used string type on the
+left we used the word item on the right.
+And at the top, the class declaration we
+declared an angle brackets that item is
+the generic type that we're going to use.
+The implementation could hardly be more
+straightforward and it's an excellent way
+to solve the problem of handling multiple
+types of data with one implementation.
+With arrays, it doesn't quite work and
+again all programming languages and, you
+know, many programming languages nowadays
+have difficulties with this and Java's got
+a particular difficulty. So, what we would
+like to do is just declare a new array
+using our generic name Item as in the
+highlighted line here. Otherwise it's the
+same. Unfortunately, Java does not allow
+generic array creation. So there's various
+technical reasons for that and you can
+read, read extensive debates about this on
+the web that's going to go beyond our
+scope. For now, what we need to do is put
+a cast in to make this work. So, we create
+an array of objects and then we cast it
+down to an array of items. Now in my view,
+a good code has zero cast. So, we want to
+avoid cast as much as possible because it,
+it, it really is declaring some kind of
+weakness in what we're doing. But in this
+case we have to put in this one cast and
+so what we've heard about that is the ugly
+cast it doesn't, it doesn't make you feel
+good about the code. It's not something
+that you will come up with on your own and
+that's, and that's an undesirable feature,
+I think for codes so simple as this. But
+fortunately, we can get through pretty
+much everything that we're going to do in
+this course just knowing about this one of
+lay cast. So now, when we compile this
+program we get a, a warning message from
+Java. It says that we're using unchecked
+or unsafe operations and we should
+recompile with a minus -Xlint equals
+unchecked for details. So, we can go ahead
+and do that and it says that you have put
+in, in your code an unchecked cast and
+we're warning you about that cuz you
+shouldn't be putting in unchecked cast.
+And okay, that's fine and you're going to
+see that when you do compiles using code
+like these. I, I think maybe they might
+have added to this warning statement "We apologize for making you do this". It's
+not our fault that we had to do that, we
+had to do that cuz of your requirement
+about not allowing us to declare generic
+arrays. So with that note please don't
+think there's something wrong with your
+code if you follow our prescriptive and,
+and get this warning message. Okay then,
+it's one of the detail that Java takes
+care of and that's what about primitive
+types [cough] so the generic type that
+we're using is for objects and you know,
+we're casting down from array of objects.
+So in order to handle generic types we
+have to use Java's wrapper object types.
+So Integer with the capitalized rapid type
+for int and so forth and many of you were
+probably familiar with that. And there's a
+process called auto-boxing which
+automatically cast between primitive types
+and wrappers so all of that handles of
+the, the problem of dealing with primitive
+types, kind of behind the scenes. And the
+bottom line is that we can articulate an
+API for generic stacks that works for any
+type of data and we've got two
+implementations, link list and arrays
+that, that performed very well for [cough]
+any type of data using the, the resizing
+or link list as we've described.

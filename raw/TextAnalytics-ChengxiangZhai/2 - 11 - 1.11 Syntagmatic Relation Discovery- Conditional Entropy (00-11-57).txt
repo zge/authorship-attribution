@@ -1,0 +1,268 @@
+[SOUND] This lecture is
+about the syntagmatic
+relation discovery and
+conditional entropy.
+In this lecture,
+we're going to continue the discussion
+of word association mining and analysis.
+We're going to talk about the conditional
+entropy, which is useful for
+discovering syntagmatic relations.
+Earlier, we talked about
+using entropy to capture
+how easy it is to predict the presence or
+absence of a word.
+Now, we'll address
+a different scenario where
+we assume that we know something
+about the text segment.
+So now the question is, suppose we know
+that eats occurred in the segment.
+How would that help us
+predict the presence or
+absence of water, like in meat?
+And in particular, we want to
+know whether the presence of eats
+has helped us predict
+the presence of meat.
+And if we frame this using entrophy,
+that would mean we are interested
+in knowing whether knowing
+the presence of eats could reduce
+uncertainty about the meats.
+Or, reduce the entrophy
+of the random variable
+corresponding to the presence or
+absence of meat.
+We can also ask as a question,
+what if we know of the absents of eats?
+Would that also help us predict
+the presence or absence of meat?
+These questions can be
+addressed by using another
+concept called a conditioning entropy.
+So to explain this concept, let's first
+look at the scenario we had before,
+when we know nothing about the segment.
+So we have these probabilities indicating
+whether a word like meat occurs,
+or it doesn't occur in the segment.
+And we have an entropy function that
+looks like what you see on the slide.
+Now suppose we know eats is present, so
+now we know the value of another
+random variable that denotes eats.
+Now, that would change all
+these probabilities to
+conditional probabilities.
+Where we look at the presence or
+absence of meat,
+given that we know eats
+occurred in the context.
+So as a result,
+if we replace these probabilities
+with their corresponding conditional
+probabilities in the entropy function,
+we'll get the conditional entropy.
+So this equation now here would be
+the conditional entropy.
+Conditional on the presence of eats.
+So, you can see this is essentially
+the same entropy function as you have
+seen before, except that all
+the probabilities now have a condition.
+And this then tells us
+the entropy of meat,
+after we have known eats
+occurring in the segment.
+And of course, we can also define
+this conditional entropy for
+the scenario where we don't see eats.
+So if we know it did not occur in
+the segment, then this entry condition of
+entropy would capture the instances
+of meat in that condition.
+So now,
+putting different scenarios together,
+we have the completed definition
+of conditional entropy as follows.
+Basically, we're going to consider both
+scenarios of the value of eats zero, one,
+and this gives us a probability
+that eats is equal to zero or one.
+Basically, whether eats is present or
+absent.
+And this of course,
+is the conditional entropy of
+meat in that particular scenario.
+So if you expanded this entropy,
+then you have the following equation.
+Where you see the involvement of
+those conditional probabilities.
+Now in general, for any discrete
+random variables x and y, we have
+the conditional entropy is no larger
+than the entropy of the variable x.
+So basically, this is upper bound for
+the conditional entropy.
+That means by knowing more
+information about the segment,
+we want to be able to
+increase uncertainty.
+We can only reduce uncertainty.
+And that intuitively makes sense
+because as we know more information,
+it should always help
+us make the prediction.
+And cannot hurt
+the prediction in any case.
+Now, what's interesting here is also to
+think about what's the minimum possible
+value of this conditional entropy?
+Now, we know that the maximum
+value is the entropy of X.
+But what about the minimum,
+so what do you think?
+I hope you can reach the conclusion that
+the minimum possible value, would be zero.
+And it will be interesting to think about
+under what situation will achieve this.
+So, let's see how we can use conditional
+entropy to capture syntagmatic relation.
+Now of course,
+this conditional entropy gives us directly
+one way to measure
+the association of two words.
+Because it tells us to what extent,
+we can predict the one
+word given that we know the presence or
+absence of another word.
+Now before we look at the intuition
+of conditional entropy in capturing
+syntagmatic relations, it's useful to
+think of a very special case, listed here.
+That is, the conditional entropy
+of the word given itself.
+So here,
+we listed this conditional
+entropy in the middle.
+So, it's here.
+So, what is the value of this?
+Now, this means we know where
+the meat occurs in the sentence.
+And we hope to predict whether
+the meat occurs in the sentence.
+And of course, this is 0 because
+there's no incident anymore.
+Once we know whether the word
+occurs in the segment,
+we'll already know the answer
+of the prediction.
+So this is zero.
+And that's also when this conditional
+entropy reaches the minimum.
+So now, let's look at some other cases.
+So this is a case of knowing the and
+trying to predict the meat.
+And this is a case of knowing eats and
+trying to predict the meat.
+Which one do you think is smaller?
+No doubt smaller entropy means easier for
+prediction.
+Which one do you think is higher?
+Which one is not smaller?
+Well, if you at the uncertainty,
+then in the first case,
+the doesn't really tell
+us much about the meat.
+So knowing the occurrence of the doesn't
+really help us reduce entropy that much.
+So it stays fairly close to
+the original entropy of meat.
+Whereas in the case of eats,
+eats is related to meat.
+So knowing presence of eats or
+absence of eats,
+would help us predict whether meat occurs.
+So it can help us reduce entropy of meat.
+So we should expect the sigma term, namely
+this one, to have a smaller entropy.
+And that means there is a stronger
+association between meat and eats.
+So we now also know when
+this w is the same as this
+meat, then the conditional entropy
+would reach its minimum, which is 0.
+And for what kind of words
+would either reach its maximum?
+Well, that's when this stuff
+is not really related to meat.
+And like the for example,
+it would be very close to the maximum,
+which is the entropy of meat itself.
+So this suggests that when you
+use conditional entropy for
+mining syntagmatic relations,
+the hours would look as follows.
+For each word W1, we're going to
+enumerate the overall other words W2.
+And then, we can compute
+the conditional entropy of W1 given W2.
+We thought all the candidate was in
+ascending order of the conditional entropy
+because we're out of favor,
+a world that has a small entropy.
+Meaning that it helps us predict
+the time of the word W1.
+And then, we're going to take the top ring
+of the candidate words as words that have
+potential syntagmatic relations with W1.
+Note that we need to use
+a threshold to find these words.
+The stresser can be the number
+of top candidates take, or
+absolute value for
+the conditional entropy.
+Now, this would allow us to mine the most
+strongly correlated words with
+a particular word, W1 here.
+But, this algorithm does not
+help us mine the strongest
+that K syntagmatical relations
+from an entire collection.
+Because in order to do that, we have to
+ensure that these conditional entropies
+are comparable across different words.
+In this case of discovering
+the mathematical relations for
+a targeted word like W1, we only need
+to compare the conditional entropies
+for W1, given different words.
+And in this case, they are comparable.
+All right.
+So, the conditional entropy of W1, given
+W2, and the conditional entropy of W1,
+given W3 are comparable.
+They all measure how hard
+it is to predict the W1.
+But, if we think about the two pairs,
+where we share W2 in the same condition,
+and we try to predict the W1 and W3.
+Then, the conditional entropies
+are actually not comparable.
+You can think of about this question.
+Why?
+So why are they not comfortable?
+Well, that was because they
+have a different outer bounds.
+Right?
+So those outer bounds are precisely
+the entropy of W1 and the entropy of W3.
+And they have different upper bounds.
+So we cannot really
+compare them in this way.
+So how do we address this problem?
+Well later, we'll discuss, we can use
+mutual information to solve this problem.
+[MUSIC]
+

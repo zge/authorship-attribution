@@ -1,0 +1,374 @@
+Welcome again to the course on a audio signal
+processing for music applications.
+In the last lecture, we talked about
+stochastic signals and how to model them.
+With that
+we can now extend the sinusoidal and
+harmonic models that we talked about
+before into the concept of sinusoidal or
+harmonic plus residual or
+stochastic modelling.
+We will decompose sounds
+into these two parts,
+the sinusoidal or harmonic one,
+and the residual or
+ideally a stochastical one, if this
+residual is the stochastic signal.
+So in this lecture we will
+combining all the models we
+have been talking about until now.
+We'll put together the sinusoidal or
+harmonic modelling with
+the idea of residual component.
+For that, we'll need to talk
+about the subtraction of the
+the sinusoids or the harmonics
+in order to obtain the residual.
+And we will talk about a system
+that puts these together into
+the harmonic plus residual system.
+Then we will introduce the stochastic
+model and we'll put together
+the sinusoidal and, or harmonic models,
+with the stochastic ones for the residual.
+So in order to do that
+we will need to talk about how to model
+the residual as an stochastic component.
+And finally we will make an example
+of this system that combines
+the harmonic plus the stochastic analysis
+into an analysis synthesis system.
+The sinusoidal plus residual model is
+an extension of the sinusoidal model.
+We assume that a sinusoidal model is
+not able to represent the whole sound.
+And that there is a residual component
+that is perceptually relevant.
+So it's a sound that needs to be kept.
+So in here we see in this equation that
+y, the signal,
+is modeled with this sum of sinusoids,
+time varying sinusoids with amplitude and
+frequency.
+And we have xr which is our residual.
+So the whole sound is ys, our sinusoidal
+component, and xr our residual signal.
+And xr, is simply computed by subtracting
+the sinusoids from the original signal.
+And this is what we will be
+talking about in this lecture.
+Okay but it's much better, at
+least from our point of view,
+to show this model from
+the spectral point of view.
+Because that's where we're going to
+be developing all these models from.
+Okay?
+So here we see the sum of the sinusoid as
+the sum of the transform the windows
+shifted to a frequency and scaled to the
+Amplitudes of these sinusoids, plus
+the spectrum of this residual component.
+And the spectrum of this
+residual component,
+now this is how we going to do it,
+is obtained by subtracting the spectrum
+of the sinusoids from the spectrum
+of the original signal.
+Okay.
+So, let's show an example
+exactly how this will work.
+This is one frame of a sound and
+here we can show the different
+steps involved in this harmonic
+plus residual analysis.
+On the left top we see our frame,
+windowed frame of a flute sound.
+Okay, so
+it's just a few periods of a flute sound.
+And then below that we see the harmonic
+analysis that we do from the spectrum.
+So we do 
+the spectral analysis, the peaks, and
+we select the peaks with these
+blue crosses that are really
+the harmonics of that particular sound.
+And below it we see the actual phase
+of the spectrum with the crosses and
+the phase of these harmonics.
+Okay.
+Then what we do is we have to
+synthesize these harmonics, and
+this is what we see on the right side
+with the light red and light cyan color.
+So, the light red is the synthesized
+harmonics of the sound,
+of that particular frame.
+Of course this is a different
+FFT size, the shapes 
+of these lobes is different
+because the window is different.
+It's a black window using the synthesis.
+So, this is the synthesize spectrum and
+then we have to subtract this
+spectrum from the original spectrum.
+Strictly speaking, we don't subtract
+it from the spectrum on the left.
+We subtract this from another generated
+spectrum that has the same parameters.
+So that we can subtract the two of 
+the same size and of the same window size.
+And then it we subtract this
+synthesized sinusoid, or the harmonics,
+from the original one,
+we get this dark red and dark cyan color.
+Okay, and this is the residual spectrum,
+in magnitude and phase representation.
+And if we take the inverse
+of that we see
+the residual signal in the time domain and
+that's what we see on the top right plot.
+In with we see the original flute
+sound, of course with the right
+windowing and the right size
+that we have in the synthesis.
+And we see the residual signal,
+this dark blue one.
+And again,
+this is not just an error signal.
+This is a, in fact, this is a relevant
+component, is a relevant part of
+the sound that we want to recover.
+So the whole system, if we put together all
+these analyses in a frame by frame type
+of thing and put it together
+into a whole analysis synthesis system,
+we get this block diagram in which
+we start from the signal, x of n,
+then we window it, we compute the FFT,
+obtaining the magnitude and phase spectrum,
+we detect the peaks.
+Out of those peaks we find
+the fundamental frequency.
+And once we have this
+fundamental frequency,
+we can identify the harmonics
+of that sound and
+we can synthesize those harmonics
+with the Blackman-Harris window.
+Okay?
+So, we have another spectrum, yh.
+That can be subtracted from the original
+signal, but in order to do that we need to
+recompute another spectrum of
+the original signal with a window and
+a size that is comparable with
+the size that we used in the synthesis.
+So, we will choose a window size
+that normally will be 512 samples.
+We'll use a Blackman-Harris window, so
+that the shape of this X
+of k that we now compute
+can be easily subtracted
+from Yh, so
+it’s just a complex subtraction and
+we get x capital X of r which
+is our residual spectrum.
+Okay, and this residual spectrum can
+be added to the harmonic spectrum.
+Then we can compute the inverse fft and
+then do the overlap
+iterating over the whole sound.
+We can see here an example of the analysis
+of a particular sound using the harmonic
+plus residual model.
+So here, we took the flute
+sound that we heard before.
+And so on top we see the spectrogram
+of this flute sound and
+superposed we see the harmonics
+that have been obtained.
+So let's listen to this
+harmonic synthesis.
+[NOISE] Okay, and
+these harmonics are subtracted from this
+background spectrogram, and
+we obtained these lower
+plotd, which are the spectrogram
+of the residual component.
+So let's just now listen to this
+residual that has been obtained.
+[NOISE] Okay, it's soft.
+That is clearly very relevant.
+It's basically the breath
+noise of the instrument,
+which is an important part of
+the characteristics of this sound.
+But this residual component 
+is a complete sound.
+Therefore is difficult to process.
+We need to model it,
+we need to be able to approximate it
+with a particular modeling approach.
+And, and of course, we need 
+to model it with the stochastic model.
+So let's introduce the stochastic
+approximation of this residual component,
+and let’s present this idea of
+the sinusoidal plus stochastic model.
+So very similar to what we saw before.
+So we have the signal to
+be the sum of sinusoids
+plus the stochastic signal.
+Now this is stochastic signal,
+or stochastic component.
+It's not just the subtraction of
+the sinusoids minus the original signal.
+But is actually the result
+of a modeling approach.
+So, below here we see the equation of
+The modeling of these
+stochastic component.
+The stochastic component is a result
+of filtering white noise with
+the impulse response of the approximation
+of this residual signal.
+So we have the impulse
+response of every frame
+of this residual signal and
+we obtain this impulse response
+that approximate the spectral shape of that.
+So in fact, is much better to visualize
+this model in the frequency domain.
+So here, we see on the top the equation of
+the sum of the sinusoids, the sum of 
+of the analysis windows, plus
+the spectrum of the stochastic component.
+And now the stochastic component is
+this idea of a filtered white noise,
+but in the frequency of the main
+is the product of
+the approximation of the absolute
+value of the residual signal
+multiplied by e to the j and
+the phase of the random the white
+noise, I said the random numbers.
+Okay so, the magnitude spectrum is
+the approximation of the residual and
+the phase spectrum is
+the white noise basically,
+the phase spectrum of the white noise.
+This is the concept of the stochastic
+approximation that we saw in
+the previous lecture.
+Okay, so with this we can actually
+see how in a single spectrum,
+we actually perform this stochastic
+approximation of the residual.
+So we start from on the top, with magnitude
+the spectrum of a signal, the harmonics.
+And then below, the light red,
+is the synthesize spectrum, the mYh.
+And then this is subtracted
+from the original spectrum.
+Again it's a spectrum that
+will have to be recomputed.
+And then we obtained the,
+the next curve, which is the mxr,
+which is the residual spectrum, okay?
+And this residual spectrum can
+be approximated with a smooth,
+a smooth curve,
+which is this mYst, which is
+this sort of a line
+approximation of this residual.
+And this is going to be
+our stochastic model.
+So we can put it together
+into an analysis synthesis system and
+its very similar to what we saw before.
+So we start from the signal, we compute
+fft we find the peaks, we find harmonics.
+We synthesize them in the frequency domain
+and we subtract them from another spectrum
+of the original signal, we computed it to
+be able to subtract it, and then what is
+new in this model is the
+stochastic approximation of the residual.
+So we take this residual spectrum.
+We run it through the stochastic
+approximation module.
+And then we can synthesize.
+And we can synthesize the stochastic
+component by basically,
+the idea is filtering white noise, but,
+in the implementation is basically
+taking the phases of random numbers,
+and applying the stochastic
+approximation magnitude spectrum.
+And this results into a spectrum
+that then can be sum
+to the spectrum of the harmonics, and
+perform exactly the same thing
+that we have done before.
+So, performed FFT and the overlap-add.
+So let's now see an example of a complete
+analysis synthesis of a particular sound.
+So we are taking this saxophone sound.
+Let's listen to that.
+[MUSIC]
+Okay, and then, below it we have the two
+representations that we have obtained.
+The harmonics, and
+the stochastic component.
+The spectrogram of
+the stochastic component.
+Let's listen to the harmonics.
+[MUSIC]
+Now we may not appreciate
+what it's missing, but
+when we listen to the stochastic
+approximation [SOUND] we have to make it
+a little bit louder in order
+to actually listen what is going on.
+Well with these two
+components we basically have
+analyzed and
+model the original signal.
+And we can put them together and
+generate the synthesized sound.
+[SOUND] That captures most of what is
+perceptually relevant in this sound.
+So for these topics that I discussed
+in this lecture there's not that
+many references, in terms of tutorials or
+sort of more introductory material.
+But there is quite a bit of articles that
+have been proposing different strategies
+to analyze sinusoids, obtain residuals,
+approximating the residuals et cetera.
+So in this link that I put here,
+on this the website of the MTG,
+I have kept some articles.
+Well, quite a bit of articles
+that have been published related to
+these issues so feel free to go there and
+you can, you can sort of
+find those articles, and
+that's all basically in this lecture.
+We have covered the most advanced models
+that we'll be presenting in this course.
+We basically combined all the previous
+models developing a variety of
+analyses and
+synthesis techniques that can be applied
+to many sounds, and for many applications.
+In the next lecture we will
+focus on how these models can be
+used to transform sounds.
+So I think,
+we're going to start having fun and
+doing some interesting new sounds.
+So I hope to see you then.
+Bye-bye.
+

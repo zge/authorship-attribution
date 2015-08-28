@@ -1,0 +1,307 @@
+Okay, so, in the previous sections, we
+have defined the language modeling problem
+and we have introduced this very important
+class of models, trigram models for
+language modeling.
+Very soon, we will describe estimation
+methods that alleviate the problems with
+sparse data that I described in the
+previous session.
+But before I get to estimation, I want to
+describe how we can evaluate the
+effectiveness of different language
+models.
+And to do this we will describe a very
+important measure called perplexity which
+is widely used as a measure of the
+performances of a language model.
+So now let's define perplexity.
+So as I've said before, we've assumed in
+the language modeling problem, that we
+have some training data consisting of many
+sentences in the language in which we are
+interested.
+In addition we're going to assume that we
+have some test data sentences.
+Using the low m to refer to the number of
+sentences.
+So we have S1 S2 S3 up to Sm.
+Where each of these is a, is a sentence in
+the language.
+So S1 for example might be the dog laughs
+stop.
+It could be any sentence.
+Critically, while we will assume that the
+parameters of the language model are
+estimated on the training examples, we'll
+assume that the test data is a separate
+held out set of examples, which were not
+used in estimation of the parameters.
+So, the test data are on new, unseen
+examples.
+Given the test data, it's natural to look
+at the probability that our language model
+assigns to those test data sentences.
+So, here I have a product from i equals 1
+to m.
+P of si where this p is itself some
+product of terms for example the given
+star, star times q of dog.
+Given star there times and so on and so
+on.
+This, this function p is a function of our
+parameters.
+Now a good language model intuitively
+should assign as high probability as
+possible to these test data sentences.
+You can think of this value as being a
+measure of how well the language model
+predicts these test data sentences.
+It's actually slightly more convenient, to
+instead of looking at this product, we
+look at the log of this product.
+So if I take the log by the usual rules of
+logs of products, I end up with the
+following which is a sum, from i equals 1
+to m.
+That the log probability under the
+language model with sentence si.
+And again, the higher this quantity this
+log probability the better our language
+model is as a model of these test data
+sentences.
+So this would actually be a, perfectly
+good measure of the quality of a language
+model.
+But we're going to transform this quantity
+in a, a couple more steps which will be
+convenient.
+Which will turn out to be convenient.
+And so first I'm going to define this
+value l, and this is just dividing this
+log probability by capital m where m is
+the total number of words in the test
+data.
+So this can now be interpreted as the
+average log probability, word by word in
+my test data.
+And it's basically a quantity which is now
+normalized with respect to the length of
+the test data sentences.
+So in some sense is now stable with
+respect to the length of the test
+examples.
+This log by the way is going to be defined
+as log base 2 and the complexity is now
+defined as 2 to the minus l.
+So, I take this log probability I divide
+by the number of words and then I raise
+this 2 to the minus l.
+One important point about perplexity is,
+the higher this quantity is, the log
+probability, the better the fit of the
+model to the test examples.
+And that means, because I have 2 to the
+minus l here.
+Lower quantities of perplexity are better
+than the higher quantities.
+The lower the value for the perplexity,
+the better the language model is as a fit
+to our test data examples.
+So this is the standard measure of quality
+of a language model.
+Let's talk a little bit more about this.
+Giving some complexity values, and also
+talking a little bit more about some
+important intuition behind complexity.
+So, one thought experiment is the
+following.
+Say we have some vocabulary V is before I
+had to find capsule N to be the size of V
+plus 1.
+And let's say I have the dumbest possible
+language model, where each parameter is
+just 1 over capital N.
+So remember w in this case can be any
+value in v or it can be the STOP symbol.
+And this language model simply assigns the
+uniformed distribution over all possible
+words at each position.
+So it completely ignores the previous two
+words.
+And in addition, it has no model of the
+relative frequency of different words.
+The fact that this word, in English, might
+be more frequent than that word in
+English.
+It's, as I said, the dumbest possible
+language model you could think of.
+It's easy enough to go through the
+equations on the slide I showed you
+previously.
+And recover the fact that l, in this case,
+is log 1 over N.
+And the perplexity is 2 to the minus l
+again.
+And the Perplexity in this case comes out
+as simply N.
+Basically the vocabulary size plus 1.
+So, you can think of the perplexity as a
+measure in a sense of the effective
+vocabulary size.
+Under the dumbest possible model we simply
+get the vocabulary size.
+And on the statistical models we can
+improve upon this because some words are
+more frequent than others, and we
+condition on the context, and so on and so
+on.
+Here, to just give a little bit more
+intuition are, some values for perplexity
+taken from a paper by, Joshua Goodman call
+A bit of progress in language modeling.
+Here he considered assessing where the
+vocabulary size was 50,000.
+And I believe it was newspaper text.
+And here are some numbers.
+So for a trigram model, which is just as
+we defined before.
+We conditioned each word on the previous
+two words.
+And with appropriate estimation techniques
+which we'll describe a little later in
+this lecture.
+The perplexity came out at 74.
+Notice that is vastly smaller than the
+vocabulary size 50,000.
+So we've done much, much better than
+simply predicting a uniform distribution
+over each word and term in the sequence.
+You can see that this statistical
+information has given great benefits in
+terms of perpliexity.
+Goodman also looks at other models so one
+is a bigram model.
+A bigram model is very similar to a
+trigram model but at each point we
+condition only on the previous word Xi
+minus 1.
+So this is essentially a first order mark
+off process.
+Rember this, a trigram model, is a second
+order mark off process.
+So we're conditioning on less information
+just the previous word and of course we
+lose some statistical power there and the
+perplexity does go up a bit to about 137.
+Which is a pretty significant change from
+74.
+He also looked at unigram models.
+In this case, the probability for any
+sentence is a product of terms.
+I have q x i which actually completely
+ignores the context.
+And so we just have a parameter at q x i
+for each possible word.
+And so we are predicting to a, ignoring
+the previous two words.
+This model will have the ability to model
+the differences in frequencies of
+different words, but will have no ability
+to model context.
+The perplexity in this case was close to
+1,000.
+So you'll notice that this is really,
+dramatically larger than the value for
+trigram model.
+We certainly gotten a lot of benefit of
+conditional two previous words.
+It's still rather better than 50,000 words
+of the vocabulary size.
+So, in short, trigram language model's
+give considerable improvements over just a
+uniform distribution of the vocabulary or
+unigram, or biagram models.
+You can of course, go further to what I
+call 4-gram models, which condition on the
+previous 3 words, or 5-gram models.
+And you will, given enough training data
+see some imrovements if you do that.
+The trigrams are getting pretty close to
+the state of the art for this problem.
+I just want to finish this segment with a
+little bit about some history behind the
+idea of language models.
+And a critical reference is due to Shannon
+and this is really one of the earliest
+pieces of work on this problem.this is
+from 1951.
+Cole Shannon was really one of, a huge
+figure in information theory.
+Huge early figure in inf, information
+theory.
+And he actually did experiments where he
+looked at basically bigram, trigram
+language models and so on, building a,
+building as we did from mark up processes
+as his starting point.
+And it's a very interesting paper, it's
+well worth reading.
+And amongst other things, it actually
+measures how well humans perform as
+language models.
+So, it actually looks at how well humans
+will predict the next word, or maybe the
+next letter in a text.
+Turns out that humans really perform
+quite, quite well on this probelm.
+Probably better than the trigram models
+I've just described to you.
+Actually probably better than any language
+model that we've come up with at this
+point.
+So that's a very, one very early piece of
+research.
+Another very interesting reference is due
+to Chomsky.
+So, Syntactic Structures is a hugely
+influential book, in modern linguistics.
+And it's a wonderful book.
+I highly recommend it, if your interested
+in language.
+And here he has a, a detailed argument
+about the role of probability in
+statistics in linguistics, specifically
+it's role in grammaticality, predicting
+whether a sentence is grammatical or not.
+So this is a very involved argument it
+provoke a lot, it has provoked a lot of
+discussion.
+I won't get into it, but he has arguments
+for why probability really doesn't have
+much to do with grammaticality, and it's a
+very interesting argument.
+I, as I said, I won't get, get into the
+details.
+And as I said, and he I think is it's not
+entirely clear but I think he's very much
+has Sharon's experiments on mark of
+process on language of mind.
+There are clear arguments that these
+processes fail to capture the kind of
+longer distance dependencies which are a
+critical part of language.
+And as I said, later in the course we will
+see more powerful models, such as
+context-free grammars, which begin to get
+at more interesting long range
+dependencies.
+Having said that, as I said before.
+Trigram language models are tremendously
+useful in practice.
+And in applications such as speech
+recognition, and machine translation and
+so on.
+They play a critical role.
+And they've been very hard to improve
+upon.

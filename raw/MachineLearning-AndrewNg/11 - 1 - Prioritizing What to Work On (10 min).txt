@@ -1,0 +1,287 @@
+In the next few videos I'd
+like to talk about machine learning system design.
+These videos will touch on
+the main issues that you may
+face when designing a
+complex machine learning system,
+and will actually try to give
+advice on how to
+strategize putting together a complex machine learning system.
+In case this next set
+of videos seems a little
+disjointed that's because these
+videos will touch on a
+range of the different issues that
+you may come across when designing complex learning systems.
+And even though the
+next set of videos may seem
+somewhat less mathematical, I think
+that this material may turn
+out to be very useful, and
+potentially huge time savers
+when you're building big machine learning systems.
+Concretely, I'd like to
+begin with the issue of
+prioritizing how to spend
+your time on what to work
+on, and I'll begin
+with an example on spam classification.
+Let's say you want to build a spam classifier.
+Here are a couple of examples
+of obvious spam and non-spam emails.
+if the one on the left tried to sell things.
+And notice how spammers
+will deliberately misspell words,
+like Vincent with a 1 there, and mortgages.
+And on the right as maybe
+an obvious example of non-stamp
+email, actually email from my younger brother.
+Let's say we have a labeled
+training set of some
+number of spam emails and
+some non-spam emails denoted
+with labels y equals 1 or 0,
+how do we build a
+classifier using supervised learning
+to distinguish between spam and non-spam?
+In order to apply supervised learning,
+the first decision we must
+make is how do
+we want to represent x, that
+is the features of the email.
+Given the features x and
+the labels y in our
+training set, we can then
+train a classifier, for example using logistic regression.
+Here's one way to choose
+a set of features for our emails.
+We could come up with,
+say, a list of maybe
+a hundred words that we think
+are indicative of whether e-mail
+is spam or non-spam, for
+example, if a piece of
+e-mail contains the word 'deal'
+maybe it's more likely to be
+spam if it contains
+the word  'buy' maybe more
+likely to be spam, a
+word like 'discount' is more
+likely to be spam, whereas if
+a piece of email contains my name,
+Andrew, maybe that means
+the person actually knows who
+I am and that might mean it's
+less likely to be spam.
+And maybe for some reason I think
+the word "now" may be
+indicative of non-spam because
+I get a lot of urgent
+emails, and so on,
+and maybe we choose a hundred words or so.
+Given a piece of email,
+we can then take this piece
+of email and encode
+it into a feature
+vector as follows.
+I'm going to take my list of a
+hundred words and sort
+them in alphabetical order say.
+It doesn't have to be sorted.
+But, you know, here's a, here's
+my list of words, just count
+and so on, until eventually
+I'll get down to now, and so
+on and given a piece
+of e-mail like that shown on the
+right, I'm going to
+check and see whether or
+not each of these words
+appears in the e-mail and then
+I'm going to define a feature
+vector x where in
+this piece of an email on
+the right, my name doesn't
+appear so I'm gonna put a zero there.
+The word "by" does appear,
+so I'm gonna put a one there
+and I'm just gonna put one's or zeroes.
+I'm gonna put a
+one even though the word "by" occurs twice.
+I'm not gonna recount how many times the word occurs.
+The word "due" appears, I put a one there.
+The word "discount" doesn't appear, at
+least not in this this little
+short email, and so on.
+The word "now" does appear and so on.
+So I put ones and zeroes
+in this feature vector depending on
+whether or not a particular word appears.
+And in this example my
+feature vector would have
+to mention one hundred,
+if I have a hundred,
+if if I chose a hundred
+words to use for
+this representation and each
+of my features Xj will
+basically be 1 if
+you have a particular word that,
+we'll call this word j, appears
+in the email and Xj
+would be zero otherwise.
+Okay.
+So that gives me
+a feature representation of a piece of email.
+By the way, even though I've
+described this process as manually
+picking a hundred words, in
+practice what's most commonly
+done is to look through
+a training set, and in
+the training set depict the
+most frequently occurring n words
+where n is usually between ten
+thousand and fifty thousand, and use
+those as your features.
+So rather than manually picking a
+hundred words, here you look
+through the training examples and
+pick the most frequently occurring words
+like ten thousand to fifty thousand
+words, and those form the
+features that you are going
+to use to represent your email for spam classification.
+Now, if you're building a
+spam classifier one question
+that you may face is, what's
+the best use of your time
+in order to make your
+spam classifier have higher accuracy, you have lower error.
+One natural inclination is going to collect lots of data.
+Right?
+And in fact there's this tendency
+to think that, well the
+more data we have the better the algorithm will do.
+And in fact, in the email
+spam domain, there are actually
+pretty serious projects called Honey
+Pot Projects, which create fake
+email addresses and try to
+get these fake email addresses into
+the hands of spammers and use
+that to try to collect tons
+of spam email, and therefore
+you know, get a lot of spam data to train learning algorithms.
+But we've already seen in the
+previous sets of videos
+that getting lots of data will often help, but not all the time.
+But for most machine learning problems,
+there are a lot of other things
+you could usually imagine doing to improve performance.
+For spam, one thing you
+might think of is to develop
+more sophisticated features on the
+email, maybe based on the email routing information.
+And this would be information contained in the email header.
+So, when spammers send email,
+very often they will try
+to obscure the origins of
+the email, and maybe
+use fake email headers.
+Or send email through very
+unusual sets of computer service.
+Through very unusual routes, in order to get the spam to you.
+And some of this information will be reflected in the email header.
+And so one can imagine,
+looking at the email headers and
+trying to develop more sophisticated features
+to capture this sort of
+email routing information to identify if something is spam.
+Something else you might consider doing
+is to look at the
+email message body, that is
+the email text, and try to develop more sophisticated features.
+For example, should the word
+'discount' and the word
+'discounts' be treated as
+the same words or should
+we have treat the words 'deal' and 'dealer' as the same word?
+Maybe even though one is
+lower case and one in capitalized in this example.
+Or do we want more complex features about punctuation because maybe spam
+is using exclamation marks a lot more.
+I don't know.
+And along the same lines, maybe
+we also want to develop more
+sophisticated algorithms to detect
+and maybe to correct to deliberate misspellings,
+like mortgage, medicine, watches.
+Because spammers actually do this,
+because if you have watches
+with a 4 in there then well,
+with the simple technique that we
+talked about just now, the spam
+classifier might not equate
+this as the same thing as the
+word "watches," and so it
+may have a harder time realizing
+that something is spam with these deliberate misspellings.
+And this is why spammers do it.
+While working on a machine learning
+problem, very often you
+can brainstorm lists of different things to try, like these.
+By the way, I've actually
+worked on the spam
+problem myself for a while.
+And I actually spent quite some time on it.
+And even though I kind
+of understand the spam problem,
+I actually know a bit about it,
+I would actually have a very
+hard time telling you of
+these four options which is
+the best use of your time
+so what happens, frankly what
+happens far too often is
+that a research group or
+product group will randomly fixate on one of these options.
+And sometimes that turns
+out not to be the most
+fruitful way to spend your
+time depending, you know, on which
+of these options someone ends up randomly fixating on.
+By the way, in fact, if
+you even get to the stage
+where you brainstorm a list
+of different options to try, you're
+probably already ahead of the curve.
+Sadly, what most people do is
+instead of trying to list
+out the options of things
+you might try, what far too
+many people do is wake up
+one morning and, for some
+reason, just, you know, have a weird
+gut feeling that, "Oh let's
+have a huge honeypot project
+to go and collect tons more data"
+and for whatever strange reason just
+sort of wake up one morning and randomly
+fixate on one thing and just
+work on that for six months.
+But I think we can do better.
+And in particular what I'd
+like to do in the next
+video is tell you about
+the concept of error analysis
+and talk about the way
+where you can try
+to have a more systematic way
+to choose amongst the options
+of the many different things you
+might work, and therefore be
+more likely to select what
+is actually a good way
+to spend your time, you know
+for the next few weeks, or next few days or the next few months.

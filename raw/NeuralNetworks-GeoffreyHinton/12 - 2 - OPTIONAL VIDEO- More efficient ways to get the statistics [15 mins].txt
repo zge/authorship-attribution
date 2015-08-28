@@ -1,0 +1,346 @@
+In this video, I'll go into more detail
+about how we can speed up the Boltzmann
+Machine Learning Algorithm by using
+cleverer ways of keeping Markov chains
+near the equilibrium distribution, or by
+using what are called mean field methods.
+The material is quite advanced and so it's
+not really part of the course.
+There won't be any quizzes on it and it's
+not on the final test.
+You can safely skip this video.
+It's included for people who are really
+interested in how to get deep Boltzmann
+machines to work well.
+There are better ways of collecting the
+statistics than the method that Terry
+Snofsky and I originally came up with.
+If we start from a random state, it may
+take a long time to reach thermal
+equilibrium.
+Also, there's no easy tests for whether
+you've reached thermal equilibrium, so we
+don't know how long we need to run for.
+So, the idea is why not start from
+whatever state you ended up in last time
+you saw that particular data vector?
+So, we remember the interpretation of the
+data vector in the hidden units, and we
+start from there.
+This stored state, the interpretation of
+the data vector, is called a particle.
+Using particles that persist gives us a
+warm start and it has a big advantage.
+If we were at equilibrium before and we
+only updated the weights a little bit,
+it'll only take a few updates of the units
+in a particle to bring it back to
+equilibrium.
+We can use particles for both the positive
+phase, where we have a clamp data vector,
+and for the negative phase, when nothing
+is clamped.
+So, here's the method for directing
+statistics introduced by Radford Neal in
+1992.
+In the positive phase, you have a set of
+data specific particles, one or a few per
+training case. And each particle has a
+current value that's the configuration of
+the hidden units plus which data vector it
+goes with.
+You sequentially update all the hidden
+units a few times in each particle with
+the relevant data vector clamped.
+And then, for every connected pair of
+units, you average the probability of the
+two units being on over all these
+particles.
+In the negative phase, you keep a set of
+fantasy particles.
+That is, these are global configurations.
+And again, after each weight update, you
+sequentially update all the units in each
+fantasy particle a few times.
+Now, you're updating the visible units as
+well.
+And for every connected pair of units,
+your average, SiSj, over all the fantasy
+particles.
+The learning rule is then the change in
+the weights is proportional to the average
+you got with data, averaged over all
+training data, and the average you got
+with the fantasy particles when nothing
+was clamped.
+This works better than the learning rule
+that Terry Snofsky and I introduced, at
+least for full batch learning.
+However, it's difficult to apply this
+approach to mini batches.
+And the reason is, that by the time we get
+back to the same data vectorn if we're
+using mini batch learning, the weights
+would have been updated many times.
+Son the stored data specific particle for
+that data vector won't be anywhere near
+thermal equilibrium anymore.
+The hidden units won't be in thermal
+equilibrium with the visible units of the
+particle given the new weights.
+And again, we don't know how long we're
+going to have to run for, before we get
+close to equilibrium again.
+So, we can overcome this by making a
+strong assumption about how we understand
+the world.
+It's a kind of a epistemological
+assumption.
+We're going to assume that when a data
+vector is clamped, the set of good
+explanations, that is states of the hidden
+units, that act as interpretations of that
+data vector is uni-modal.
+That means we're saying that, for a given
+data vector, there aren't two very
+different explanations for that data
+vector.
+We assume that for sensory input, there is
+one correct explanation.
+And if we have a good model of the data,
+our model will give us one energy minimum
+for that data point.
+This is a restriction on the kinds of
+models we're willing to learn.
+We're going to use a learning algorithm
+that's incapable of learning models in
+which a data vector has many very
+different interpretations.
+Provided we're willing to make this
+assumption, we can use a very efficient
+method for approaching thermal equilibrium
+or an approximation to thermal
+equilibrium, with the data.
+It's called a mean field approximation.
+So, if we want to get the statistics
+right, we need to update the units
+statistically and sequentially.
+And the update rule is the probability of
+turning on unit, i, is the logistic
+function of the total input it receives
+from the other units in its bias.
+Where Sj, the state of another unit, is a
+stochastic binary thing.
+Now, instead of using that rule, we could
+say, we're not going to keep binary states
+for unit i, we're going to keep a real
+value between zero and one which we call a
+probability.
+And that probability at time t + one is
+going to be the output of the logistic
+function.
+The more you put in is the bias, and the
+sum of all the probabilities at time t
+times the weights.
+So, we're replacing this stochastic binary
+thing by a real value probability.
+And that's not quite right because this
+stochastic binary thing is inside a
+non-linear function.
+If it was a linear function, things would
+be fine.
+But because the logistics non-linear, we
+don't get the right answer when we put
+probabilities instead of fluctuating
+binary things inside.
+However, it works pretty well.
+It can go wrong by giving us biphasic
+oscillations because now we're going to be
+updating everything in parallel.
+And we can normally deal with those by
+using what's called damped mean field
+where we compute that pi of t1.
++ one.
+But, we don't go all the way there.
+We go to a point in between where we are
+now, and where this update wants us to go.
+So, in damped mean field, we'll go to
+lambda times the place we are now, plus
+one minus lambda times the place the
+update rule tells us to go to.
+And that will kill oscillations.
+Now, we can get an efficient mini batch
+learning procedure for both the machines,
+and this is what Russ Salakhutdinov
+realized.
+In the positive phase, we can initialize
+all probabilities at 0.5.
+We can clamp a data vector on the visible
+units, and we can update all the hidden
+units in parallel using mean field until
+convergence.
+And for mean field, you can recognize
+convergence is when the probability stop
+changing.
+And once we converged, we record PiPj for
+every connected pair of units.
+In the negative phase, we do what we were
+doing before.
+We keep a set of fantasy particles, each
+of which has a value that's a global
+configuration.
+And after each weight update, we
+sequentially update all the units in each
+fantasy particles a few times.
+And then, for every connected pair of
+units, we average SiSj, these stochastic
+binary things, over all fantasy particles.
+And the difference in those averages is
+the learning rule.
+That is, we change the weights by an
+amount proportional to that difference.
+If we want to make the updates for the
+fantasy particles more parallel, we can
+change the architecture of the Boltzmann
+machine.
+So, we're going to have a special
+architecture that allows alternating
+parallel updates for the fantasy
+particles.
+We have no connections within a layer, and
+we have no skip-layer connections, but we
+allow ourselves lots of hidden layers.
+So, the architecture looks like this.
+We call it a Deep Boltzmann Machine.
+And, it's really a general Boltzmann
+machine with lots of missing connections.
+All those skipped layer connections, if
+they were present.
+We wouldn't really have layers at all, it
+would just be a general Boltzmann machine.
+But, in this special architecture, there's
+something nice we can do.
+We can update the states for example the
+first hidden layer and the third hidden
+layer, given the current states of the
+visible units and the second hidden layer.
+And then, we can update the states of the
+visible units in the second hidden layer.
+And then, we can go back and update the
+other states,
+And we can go backwards and forwards like
+this.
+And so, we can update half the states of
+all the units in parallel and that'll be a
+correct update.
+So, one question is, if we have a deep
+Boltzmann machine like that trained by
+using mean field for the positive phase
+and updating fantasy particles by
+alternating between even layers and odd
+layers for the negative phase, can we
+learn good models of things like the MNIST
+digits, or indeed, a more complicated
+things?
+So, one way to tell whether you've learned
+a good model is after learning, you remove
+all the input and you just generate
+samples from your model.
+So, you run the Markov chain for a long
+time until it's burned in, and then you
+look at the samples you get.
+So, Russ Salakhutdinov used a eep
+Boltzmann machine to model MNIST digits
+using mean field for the positive phase,
+And alternating updates of the layers of
+the particles for the negative phase.
+And the real data looks like this.
+And the data that he got from his model
+looks like this.
+You can see, they're actually fairly
+similar.
+The model is producing things very like
+the MNIST digits so it's learned a pretty
+good model.
+So here's a puzzle.
+When he was learning that, he was using
+mini-batches with 100 data examples and
+also he was using 100 fantasy particles,
+the same 100 fantasy particles for every
+mini-batch.
+And the puzzle is, how can we estimate the
+negative statistics with only 100 negative
+examples to characterize the whole space?
+For all interesting problems, the global
+configurations base is going to be highly
+multi model.
+And how do we manage to find and represent
+all the nodes with only 100 particles?
+There's an interesting answer to this.
+The learning interacts with the Markov
+chain that's being used to gather the
+negative statistics, either one that's
+used to update the fantasy particles, and
+it interacts with it to make it have a
+much higher effective mixing rate.
+That means, we cannot analyze the learning
+by thinking of it being an outer loop that
+updates the weights,
+And an inner loop that gathers statistics
+with a fixed set of weights.
+The learning is affecting how effective
+that inner loop is.
+The reason for this is that whenever the
+fantasy particles outnumber the positive
+data, the energy surface is raised, and
+this has an effect on the mixing rate of
+the Markov chain.
+It makes the fantasies rush around
+hyper-actively,
+And they move around much faster than the
+mixing rate of the mark of chain to find
+better current static weights.
+So, here's a picture that shows you what's
+going on.
+If there's a mode in the energy surface
+that has more fantasy particles than data,
+the energy surface will be raised until
+the fantasy particles escape from that
+mode.
+So, the mode on the left has four fantasy
+particles and only two data points. So,
+the effect of the learning is going to be
+to raise the energy there.
+And that energy barrier might be much too
+high for a Markov chain to be able to
+cross, so the mixing rate will be very
+slow.
+But, the learning will actually spill
+those red particles out of that energy
+minimum by raising the minimum.
+And we get filled up and the fantasy
+particles will escape and go off somewhere
+else, to some other deep minimum.
+So, we can get out of minima that the
+Markov chain would not be able to get out
+of, at least, not in a reasonable time.
+So, what's going on here is the energy
+surface is really being used for two
+different purposes.
+The energy surface represents our model,
+but it's also being manipulated by the
+learning algorithm to make the Markov
+chain mix faster.
+Or rather, to have the effect of a
+faster-mixing Markov chain.
+Once the fantasy particles have filled up
+one hole, they'll rush off to somewhere
+else and deal with the next problem.
+An analogy for them is that their like
+investigative journalists who rush in to
+investigate some nasty problem.
+As soon as the publicity has caused that
+problem to be fixed, instead of saying,
+okay, everything is okay now.
+They rush off to find the next nasty
+problem.

@@ -1,0 +1,232 @@
+So we'll first introduce the basic
+formalism, PCFGs.
+And then we'll talk about a crucial
+algorithm, which is called the CKY
+algorithm.
+And this is again, actually a dynamic
+programming algorithm, which will allow us
+to use PCFGs to parse sentences.
+So here is a PCFG and you'll see that it
+basically looks exactly the same as a
+context-free grammar, but we now have
+probabilities assigned to each rule in the
+grammar.
+So here I have a set of context-free
+rules.
+And we'll, again, assume that s is the
+start symbol under the context free
+grammar.
+But now, in red, I've shown a probability
+for each rule.
+So s goes to np vp, for example, has
+probability 1.
+Vp goes to vi has probability 0.4.
+And so on and so on.
+These probabilities have one critical
+property, which is the following: If I
+take any non-terminal in the grammar, so
+let's take DP for example, there're a
+numbers of possible ways.
+Of expanding that non-terminal.
+So VP can be expanded in three different
+ways here.
+It can be written here as VI, or VTNT, or
+VPPP.
+Three possibilities.
+And notice that the 3 probabilities
+associated with these 3 different options
+sum to one.
+So 0.4 plus 0.4 plus 0.2 is equal to 1.
+And this is the key constraint on the
+probabilities in the PCFG.
+If I look at any non-terminal, we, must
+have these probabilities summing to 1.
+Here's another example.
+Mp can be write in two different ways.
+Either as a duh, duh, determiner followed
+by a noun, or a noun phrase followed by a
+prepositional phrase.
+These two probabilities sum to one.
+So these probabilities have a clear
+interpretation, which is the following.
+They are the conditional probability of,
+conditioned on a particular nonterminal we
+have multiple different ways of writing
+that nonterminal.
+We now have a, a distribution over those
+different options, over those different
+ways of rewriting that particular
+nonterminal.
+Okay So then we can do the following, so
+let me just illustrate this definition
+down here.
+This text down here.
+Let's take a particular[UNKNOWN] into this
+ground, pretty simple So notice that
+everyone of the rules I'm using here is in
+this grammar.
+So that's about it, parse tree under the
+underlying context-free grammar.
+We're now going to assign a probility to
+this entire parse tree, which is simply a
+product of probailties for these different
+rules.
+So if I look at the first rule, s goes to
+np vp, that has probability 1.
+And then np goes to determiner nn, that
+has probability 0.03.
+Determinate goes to the has probability
+1.0, and so to calculate the probability
+of an entire tree, I just multiply
+together the probabilities for different
+rules.
+So VP goes to Vi has probability 0.4, and
+Vi goes to sleeps has probability 1.
+Okay.
+So that's the final expression for the
+probability of this particular parse tree.
+So, more abstractly, if a tree has rules
+alpha 1 goes to beta 1, alpha 2 goes to
+beta 2, up to alpha n goes to beta n.
+This is the left hand side this is the non
+terminal for each rule.
+This is the sequence of non terminals on
+the right-hand side.
+Then The probability for the tree is the
+product of these parameters, so I write Q,
+so for example Q with VP goes to VT and P
+is equal to zero point four and it's
+grammar.
+So each rule has a parameter, Q of that
+rule which is some probability.
+The probability for an entire tree is the
+product of these Q terms, just as I
+illustrated here.
+So one useful intuition behind ptfg is the
+following.
+We can now think of top down stochastic
+processes under which we can sample pause
+trees or derivations under a ptfg..
+So, recall that s is are start symbol so
+derivation always starts with s.
+Now at each point in the derivation I'm
+again going to pick the left most
+non-termimal in my current derivation, s,
+in this case and I'm going to use some
+rule to expand that symbol.
+So let's say I pick this rule here.
+S goes to NP VP.
+And we can think of this as a
+probabilistic process.
+Where we choose this rule with the
+probability under the grammar.
+So in fact, there's only 1 way of
+expanding S as NP VP.
+And so with probability one, we're always
+going to rewrite this as NP VP under the
+grammar I showed you.
+On the previous slide.
+Next step in the process, we take the
+leftmost non-terminal NP, and you can
+again think of a stochastic process where
+we choose the rule expanding NP from the
+different possibilities using the
+distribution under the grammar.
+So in this case we might choose NP goes to
+determine NN, so notice NN is now replaced
+by these two words.
+Write these two symbols and that has
+probability 0.3.
+Now, we pick DT and we choose a rule from
+the grammar.
+This actually rewrites as though its
+probability one, and so on and so on.
+So this probabilistic top down process is
+going to terminate when I end up with the
+sequence of words.
+So now at this point I have no
+non-terminals left.
+The pharse tree underling this of course,
+is S over NP.
+P. It's going to be something like this.
+And the probability is going to be the
+product of these different terms.
+So you, you can in fact, once you have a
+probabilistic context free grammar.
+Sample derivations from that, context free
+grammar.
+In this sort of top down process.
+So you can use a probablistic context free
+grammar to generate parse-frees.
+Okay, so some crucial properties of PCFGs.
+Firstly, as we've said, they assign a
+probability to every possible parse tree
+allowed by the underlying context-free
+grammar.
+So, to calculate the probability of a
+parse tree, I just look at the rules in
+that parse tree and multiply together the
+different probabilities.
+Most crucially for our purposes, we have
+the following.
+So say I have a sentence s.
+So let's say, for example, it's the dog
+saw the man with the telescope.
+So this is our sentence, s.
+This sentence may have several different
+parse-trees under the underlying
+context-free grammar.
+So say we have a couple of different
+parse-trees, which I'll just sketch here,
+under the CFG.
+(End of transcription.) And as we said,
+this is the ambiguity problem.
+The problem is that our grammar is
+generating more than 1 parse tree.
+So I'll cool this entire set of parse
+trees.
+T of s.
+Okay?
+So, t of s is the set of possible parse
+trees, for this input sentence.
+Now, critically, now I have probabilities
+on these rules in the grammar.
+I can calculate the probability of each of
+these parse trees.
+So I might, for example, calculate the
+probability of this one as 0.001, and
+maybe this one as 0.00057.
+And so now I get this additional
+information where each parse tree in the
+grammar.
+Each parse tree for this particular
+sentence has a different probability.
+And that gives a ranking on the different
+parse trees in terms of their probability
+or likelihood.
+And so, given this ranking I can for
+example simply output from my model, or
+from my parse, at the highest probability
+tree out of the model.
+So I now have a way of choosing between
+different parse-trees.
+And so, the parse method we'll look at,
+we'll first somehow learn the parameters
+in PCFG from Datar, And then given a new
+sentence, they will search for the parse
+tree that has the highest probability
+under the grammar.
+And if the PCFG does a good job of
+modeling the probability of different
+possible parse trees, you will end up with
+an accurate parser that, more often than
+not, resovles ambiguities that I.
+Just, described to you in the previous
+lecture.
+So, one last definition.
+If we have the sentence s, then the most
+likely parse-tree for that sentence is, if
+we look at all trees and that set t of s
+from t of s is the set of possible
+parse-trees for s, we now just choose the
+highest probability tree under our PCFG.

@@ -1,0 +1,315 @@
+So now, we can put these ideas together 
+in the final decoding algorithm. 
+The beam search algorithm for 
+phrase-based models. 
+So, the input to this algorithm is a 
+sentence x1 through xn. 
+For example, this might be a sentence in 
+German. 
+And in addition, we have a phrase-based 
+model. 
+So, the phrase-based model consists of a 
+lexicon, l, remember that consists of a 
+very large set of German phrases paired 
+with English phrases, for example. 
+We have a language model which I've 
+called h. 
+We have a distortion limit, little d. 
+So, for example, d is equal to 4. 
+And we have a distortion parameter here. 
+So, given the input in the phrase-based 
+model, we can define these functions ph 
+of q and next q of p. 
+Remember, ph is a function that takes a 
+state as its input and returns the 
+phrases that can follow that state. 
+And next q, p takes a state together with 
+the phrase and returns the next state, 
+the state formed by concatenating this 
+phrase to the state q. 
+So, lets be concrete and assume we have 
+and put sentence of length 7. 
+So, we have x1 and x2 upto x7 as the 
+input. 
+And a key data structure is going to be 
+this set of q's. 
+I'll use this capital Q for each Q, will 
+beam. 
+So, I have Q0, Q1, Q2, and then, right up 
+to Q6 and Q7. 
+And we'll see, each of these Qs is going 
+to contain states, which are created 
+during the search process. 
+The initialization step is to set this 
+first q to contain a single element, 
+little q0, remember little q0 is this 
+initial state. 
+It's going to be something like star, 
+star, one, two, three, four, five, six, 
+seven, 0s. 
+And then position 0 and score 0, okay? 
+So, we just have this initial state here. 
+Okay, so the next thing we're going to do 
+is going to loop, for i equals 0 to n 
+minus 1. 
+So, we're initially going to start at q0, 
+and we're going to move through each of 
+these qs in turn. 
+And what do we do for each value of i? 
+The first thing we do is we look at every 
+possible state in q sub i. 
+So, in this case, we would just look at 
+the initial state. 
+And then, we explore every possible 
+phrase that can follow this initial 
+state. 
+So, we're going to look at all phrases p 
+and ph of q. 
+So, we might have things like 1, 2, must. 
+Basically, corresponds to the outset of 
+outgoing arcs here. 
+1, 3, sorry, that should be 1, 2 we must 
+1, 3 we must also. 
+maybe 3, 3 also. 
+Okay, so we're going to have some set of 
+phrases that could follow this initial 
+state and we're going to explore each one 
+in term. 
+For each one of these possible phrases, 
+we calculate the next state. 
+We call this q primed, and then we at 
+that state to be appropriate Q. 
+So, for example if we look at 1, 2 we 
+must, we get the following state, we must 
+1, 1, five 0s, 2, and then, some score, 
+minus 2.5. 
+So, this state is going to get added to 
+what, one of these q's. 
+Which one does it get added to? 
+It actually gets added to Q2 and that is 
+because the number of words translated in 
+this state, q primed is equal to 2. 
+So, Q2 is going to store a whole bunch of 
+states with the one restriction that each 
+bit string in these states has exactly 2 
+words translated. 
+So, the idea in these beam search 
+algorithms is, in some sense, to group 
+together states which have the same 
+number of words translated. 
+So, that's what q0 is. 
+We have 0 words translated, Q1 has one, 
+Q2 has two. 
+Irrespective of the position, we're 
+grouping together states which have the 
+same number of words translated. 
+So, if we look at these three phrases 
+here, this phrase here, 1, 3, is going to 
+lead towards a, a member of Q3. 
+So, we're going to add some state to 
+that. 
+This one's going to add to Q1. 
+And so, in this first step, when we 
+considered i equals 0, we considered the 
+single state q0, we considered all ways 
+of extending it. 
+And that's going to lead to a bunch of 
+new states, q primed, which are added to 
+these later Qs. 
+So, notice we have this add function. 
+We'll describe this in a moment, but 
+intuitively, this is just going to add 
+some phrase sorry, some state q primed to 
+Qi. 
+Critically, where i is the length of q 
+primed. 
+This is the number of words that are 
+being translated in q primed. 
+Add is also going to take q and p, the 
+previous state, and the phrase that'll 
+just be for some additional bookkeeping. 
+Okay. 
+So, we actually move through these Qs one 
+by one. 
+So, Q0 is going to take this one state 
+and expand it in these various ways. 
+Now, I'm going to get to Q1, and I'm 
+going to find one or more states in Q1. 
+For each one, I'm going to go through the 
+same process, I'm going to find all of 
+the phrases that can follow this state. 
+I'm going to concatenate them, and I'm 
+going to add entries later. 
+So, as you go through this, you're 
+going to populate more and more states in 
+these various Qs. 
+Okay. 
+Finally, we'll hit Q6. 
+We'll take off all of the states from 
+this and and, and populate, in this case, 
+we can only populate Q7 from Q6. 
+So, we always pick up a state from the 
+earlier Q and extend it by populating a 
+state in a later Q. 
+The final thing we do is we return the 
+highest scoring state in Q sub n. 
+So, Q7, in this case. 
+So, we would have some set of states in 
+here. 
+Each one of them will have a score, and 
+you simply return the highest scoring 
+state in, in this, in this set, in this 
+Q. 
+And that will correspond to the highest 
+scoring translation found by this beam 
+search process. 
+In a very similar way to dynamic 
+programming, Backpointers can actually be 
+used to trace back the steps in 
+constructing that particular translation. 
+And we thereby get the final translation. 
+[NOISE] So, let's just look at two 
+functions which play a critical role 
+here. 
+one is this add function, which as we'll 
+see, is very simple. 
+And secondly, we critically had a beam 
+function. 
+Okay so, actually when I said we take Q 
+in out of each state q, i. 
+So, if we take Q0 Q1 is equal to some set 
+of states, Q2 is equal to some set of 
+states. 
+if we're not careful, these sets will 
+quickly grow exponentially in size. 
+You're going to end up with a huge number 
+of states. 
+because as we've said before, the number 
+of possible states in these models is 
+exponential in size. 
+And so, this beam function is actually 
+going to only consider a small subset of 
+the items in a particular Q. 
+And expand only that small subset. 
+And that's going to make this whole thing 
+efficient. 
+Okay. 
+So, let's look at these two functions, 
+beam and add. 
+So, here's a definition of add. 
+Add takes a Q, capital Q, and state q 
+primed and adds q prime q. 
+And remember q primed is equal to next q 
+and p. 
+So, this is just some record of a history 
+that was used to create q primed. 
+The first thing we do is we check to see 
+if there's something already in the set 
+which is equal to our current state. 
+Okay, so remember the equal function. 
+So, I if, for example, have something 
+like the following, must, also 1, 2, 3 
+minus 2.5. 
+Okay, so maybe this is q primed. 
+This is the thing we're adding and we 
+have some existing state which looks 
+extremely similar. 
+In fact, it's equal under the definition 
+of equal I gave earlier. 
+so, I should add a position here, here as 
+well, 3. 
+Okay, so these two states are equal, 
+under the definition I showed you 
+earlier, because the two words, the bit 
+string, and the last position of the 
+final phrase were all equal. 
+The only thing which differs is the 
+score. 
+This step is going to be very similar to 
+dynamic programming. 
+If the two things are equal, we simply 
+keep the highest scoring element because 
+that records the highest scoring path to 
+this particular state. 
+And there's no reason to keep the lowest 
+scoring path, okay? 
+So, we do two things. 
+We check if the score of the new thing 
+being added is created from the old 
+score. 
+And if so, we will move the old state and 
+we add the new state. 
+And we record backpointers. 
+So, these backpointers are going to say, 
+I reached state q primed by extending 
+state q with phrase p. 
+Okay. 
+otherwise, if we don't find anything in 
+this Q which is equal to the current 
+state being added, we do the following. 
+We simply add it. 
+We add q primed, and then we set the 
+backpointer to set this record. 
+Okay. 
+So, that's the add function. 
+So, basically we're just adding q primed 
+to Q. 
+We're recording a backpointer. 
+And we're being a little careful if we 
+have multiple states which are equal, but 
+have different scores, we simply take the 
+highest scoring of those states. 
+The final function is this idea of beam, 
+so beam q is going to be, basically a 
+subset of just the highest scoring items 
+in Q. 
+How do we define that? 
+Well, we say we have some b some set Q 
+and it has a number of possible states 
+and each of these has a score. 
+So, let's write down a few scores here 
+and so on and so on. 
+we first find the highest scoring state 
+in the set, minus 1.8, for example, so 
+maybe that's the highest score. 
+And sorry, that should be max, not arg 
+max. 
+Okay, so alpha star is the highest score 
+for any state in this set. 
+Beta is some beam-width parameter where 
+it says, well, how far? 
+So, for example, we might take, Beta, 
+Beta is equal to 5. 
+And so, then we subtract the beam. 
+So, minus 1.8, minus 5 is equal to minus 
+6.8. 
+And we basically keep any states which 
+have score greater and equal to this. 
+And throw any other states away. 
+And so, for example, a state with minus 
+100 will get thrown away or a state with 
+minus 25 will get thrown away. 
+Okay. 
+So, beam is just going to keep all of 
+those items within a certain tolerance of 
+the highest scoring element in that Q. 
+The intuition here is that we can, sort 
+of, throw away some translations even 
+before they're complete as being very 
+suboptimal, if they have low scores at 
+this particular state. 
+So, let's just go back to this algorithm 
+and see how these two functions are used. 
+so remember, we go for i equals 0 right 
+the way up to n minus 1. 
+We only remove states which satisfy the 
+beam condition. 
+Okay, so we only remove high scoring 
+states. 
+At each point, we extend that state, and 
+then we call this add function. 
+And this add function will actually throw 
+away i terms where we have two states 
+that are equal, but one has a higher 
+score than the other. 
+

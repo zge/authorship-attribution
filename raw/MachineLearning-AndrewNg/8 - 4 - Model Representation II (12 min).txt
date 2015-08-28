@@ -1,0 +1,341 @@
+In the last video, we gave
+a mathematical definition of how
+to represent or how to
+compute the hypotheses used by Neural Network.
+In this video, I like
+show you how to actually
+carry out that computation efficiently, and
+that is show you a vector rise implementation.
+And second, and more importantly, I want
+to start giving you intuition about
+why these neural network representations
+might be a good idea and how
+they can help us to learn complex nonlinear hypotheses.
+Consider this neural network.
+Previously we said that
+the sequence of steps that we
+need in order to compute
+the output of a hypotheses
+is these equations given on
+the left where we compute
+the activation values of the
+three hidden uses and then
+we use those to compute the
+final output of our hypotheses
+h of x. 
+Now, I'm going
+to define a few extra terms.
+So, this term that I'm
+underlining here, I'm going to
+define that to be
+z superscript 2 subscript 1.
+So that we have that
+a(2)1, which is this
+term is equal to
+g of z to 1.
+And by the
+way, these superscript 2, you
+know, what that means is that
+the z2 and this a2
+as well, the superscript
+2 in parentheses means that these
+are values associated with layer
+2, that is with the hidden
+layer in the neural network.
+Now this term here
+I'm going to similarly define as
+z(2)2.
+And finally, this last
+term here that I'm underlining,
+let me define that as z(2)3.
+So that similarly we have a(2)3
+equals g of
+z(2)3.
+So these z values are just
+a linear combination, a weighted
+linear combination, of the
+input values x0, x1,
+x2, x3 that go into a particular neuron.
+Now if you look at
+this block of numbers,
+you may notice that that block
+of numbers corresponds suspiciously similar
+to the matrix vector
+operation, matrix vector multiplication
+of x1 times the
+vector x. Using this observation
+we're going to be able to vectorize this computation
+of the neural network.
+Concretely, let's define the
+feature vector x as usual
+to be the vector of x0, x1,
+x2, x3 where x0
+as usual is always equal
+1 and that defines
+z2 to be the vector
+of these z-values, you know, of z(2)1 z(2)2, z(2)3.
+And notice that, there, z2 this
+is a three dimensional vector.
+We can now vectorize the computation
+of a(2)1, a(2)2, a(2)3 as follows.
+We can just write this in two steps.
+We can compute z2 as theta
+1 times x and that
+would give us this vector z2;
+and then a2 is
+g of z2 and just
+to be clear z2 here, This
+is a three-dimensional vector and
+a2 is also a three-dimensional
+vector and thus this
+activation g. This applies the
+sigmoid function element-wise to each
+of the z2's elements.
+And
+by the way, to make our notation
+a little more consistent with
+what we'll do later, in this
+input layer we have the
+inputs x, but we
+can also thing it is
+as in activations of the first layers.
+So, if I defined a1 to
+be equal to x. So,
+the a1 is vector, I can
+now take this x here
+and replace this with z2 equals theta1
+times a1 just by defining
+a1 to be activations in my input layer.
+Now, with what I've written
+so far I've now gotten
+myself the values for a1,
+a2, a3, and really
+I should put the
+superscripts there as well.
+But I need one more
+value, which is I also want this a(0)2
+and that corresponds to
+a bias unit in the
+hidden layer that goes to the output there.
+Of course, there was a
+bias unit here too that,
+you know, it just didn't draw
+under here but to
+take care of this extra bias unit,
+what we're going to do is add
+an extra a0 superscript 2,
+that's equal to one, and after
+taking this step we now have
+that a2 is going to
+be a four dimensional feature
+vector because we just added
+this extra, you know,
+a0 which is equal to
+1 corresponding to the bias unit
+in the hidden layer.
+And finally,
+to compute the actual
+value output of our hypotheses, we
+then simply need to compute
+z3. So z3 is
+equal to this term here that I'm just underlining.
+This inner term there is z3.
+And z3 is stated
+2 times a2 and finally
+my hypotheses output h of x which
+is a3 that is
+the activation of my
+one and only unit in
+the output layer. So, that's just the real number. You can write it as a3
+or as a(3)1 and that's g of z3.
+This process of computing h of x
+is also called forward propagation
+and is called that because we
+start of with the activations
+of the input-units and then
+we sort of forward-propagate that to the
+hidden layer and compute the activations of the
+hidden layer and then we
+sort of forward propagate that
+and compute the activations of
+the output layer, but this process of computing the activations from the input then
+the hidden then the output layer,
+and that's also called forward propagation
+and what we just did is
+we just worked out a vector
+wise implementation of this
+procedure.
+So, if you
+implement it using these equations
+that we have on the right, these
+would give you an efficient way
+or both of the efficient way of
+computing h of x.
+This forward propagation view also
+helps us to understand what
+Neural Networks might be doing
+and why they might help us to
+learn interesting nonlinear hypotheses.
+Consider the following neural network
+and let's say I cover up
+the left path of this picture for now.
+If you look at what's left in this picture.
+This looks a lot like
+logistic regression where what
+we're doing is we're using
+that note, that's just the
+logistic regression unit and we're
+using that to make a
+prediction h of x. 
+And concretely,
+what the hypotheses is outputting
+is h of x is going
+to be equal to g which
+is my sigmoid activation function times theta 0
+times a0 is equal
+to 1 plus theta 1
+plus theta 2
+times a2 plus theta
+3 times a3 whether
+values a1, a2, a3
+are those given by these three given units.
+Now, to be actually consistent
+to my early notation. Actually, we
+need to, you know, fill in
+these superscript 2's here everywhere
+and I also have these
+indices 1 there because I
+have only one output unit, but if you focus on the blue parts of the notation.
+This is, you know, this looks
+awfully like the standard logistic
+regression model, except that
+I now have a capital theta instead of lower case theta.
+And what this is
+doing is just logistic regression.
+But where the features fed into
+logistic regression are these
+values computed by the hidden layer.
+Just to say that again, what
+this neural network is doing is
+just like logistic regression, except
+that rather than using the
+original features x1, x2, x3,
+is using these new features a1, a2, a3.
+Again, we'll put the superscripts
+there, you know, to be consistent with the notation.
+And the cool thing about this,
+is that the features a1, a2,
+a3, they themselves are learned
+as functions of the input.
+Concretely, the function mapping from
+layer 1 to layer 2,
+that is determined by some
+other set of parameters, theta 1.
+So it's as if the
+neural network, instead of being
+constrained to feed the
+features x1, x2, x3 to logistic regression.
+It gets to
+learn its own features, a1,
+a2, a3, to feed into the
+logistic regression and as
+you can imagine depending on
+what parameters it chooses for
+theta 1. 
+You can learn some pretty interesting
+and complex features and therefore
+you can end up with a
+better hypotheses than if
+you were constrained to use
+the raw features x1, x2 or x3 or if
+you will constrain to say choose the
+polynomial terms, you know,
+x1, x2, x3, and so on.
+But instead, this algorithm has
+the flexibility to try
+to learn whatever features at once, using
+these a1, a2, a3 in
+order to feed into this
+last unit that's essentially
+a logistic regression here. 
+I realized
+this example is described as
+a somewhat high level and so
+I'm not sure if this intuition
+of the neural network, you know, having
+more complex features will quite
+make sense yet, but if
+it doesn't yet in the next
+two videos I'm going to
+go through a specific example
+of how a neural network can
+use this hidden there to compute
+more complex features to feed
+into this final output layer
+and how that can learn more complex hypotheses.
+So, in case what I'm
+saying here doesn't quite make
+sense, stick with me
+for the next two videos and
+hopefully out there working through
+those examples this explanation will
+make a little bit more sense.
+But just the point O. You
+can have neural networks with
+other types of diagrams as
+well, and the way that
+neural networks are connected, that's called the architecture.
+So the term architecture refers to
+how the different neurons are connected to each other.
+This is an example
+of a different neural network architecture
+and once again you may
+be able to get this intuition of
+how the second layer,
+here we have three heading units
+that are computing some complex
+function maybe of the
+input layer, and then the
+third layer can take the
+second layer's features and compute
+even more complex features in layer three
+so that by the time you get
+to the output layer, layer four,
+you can have even more
+complex features of what
+you are able to compute in
+layer three and so get very interesting nonlinear hypotheses.
+By the way, in a network
+like this, layer one, this is
+called an input layer. Layer four
+is still our output layer, and
+this network has two hidden layers.
+So anything that's not an
+input layer or an output
+layer is called a hidden layer.
+So, hopefully from this video
+you've gotten a sense of
+how the feed forward propagation step
+in a neural network works where you
+start from the activations of
+the input layer and forward
+propagate that to the
+first hidden layer, then the second
+hidden layer, and then finally the output layer.
+And you also saw how
+we can vectorize that computation.
+In the next, I realized
+that some of the intuitions in this
+video of how, you know, other certain
+layers are computing complex features of the early layers.
+I realized some of that intuition
+may be still slightly abstract and kind of a high level.
+And so what I would like
+to do in the two videos
+is work through a detailed example
+of how a neural network can
+be used to compute nonlinear
+functions of the input and
+hope that will give you a
+good sense of the sorts of
+complex nonlinear hypotheses we can get out of Neural Networks.

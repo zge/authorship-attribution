@@ -1,0 +1,400 @@
+Welcome back. Next we're going to talk
+about Binary Search Trees, a classic data
+structures that'll enables us to provide
+efficient implementation of symbol table
+and out rhythms. [cough] Let's look at the
+basic Binary Search Tree data structure
+with Heaps we talk about implicit
+representation of trees with an array. For
+Binary Search Trees we're going to talk
+about actually explicit tree data
+structures. A binary search tree is a
+binary tree in symmetric order. Let's look
+at the meaning of those words. So, a
+binary tree is an explicit data structure.
+It's got what we call nodes which contain
+information and every node's got two links
+to Binary Trees that are disjoint from one
+another, a left tree and right tree
+associated with each node. Each node has a
+left tree and a right tree. Links can be
+null. Left tree can be null and right tree
+can be null or both. We refer to every
+node in the tree as the root of a sub-tree
+and [cough] referred to, the nodes below.
+Each node is its children so this is the
+right child of the root. And that's a left
+link, and so forth. So that's the
+definition of a binary tree. A binary
+search tree, each node has a key and every
+nodes key is larger than all the keys in
+its left subtree and smaller than all the
+keys in its right subtree. This is a
+different ordering than we have to heap if
+we have a node larger than both its
+children, this one, every node is between
+the values, the value of every node is
+between the values of the nodes in its two
+subtrees. So the nodes to the left of e
+are smaller and nodes to the right of e
+are larger. [cough] now we're going to use
+these to implement symbol tables and
+there's values associated with each key
+when appropriate, we'll write the values
+in smaller numbers next to the keys. But
+usually, we're just going to worry about
+the keys and we'll keep the values, in the
+nodes along with them [cough] so that's
+binary search trees. A binary tree in
+symmetric order that's the data structur e
+that we're going to use to implement
+symbol table operations. So how are we're
+going to represent binary search trees in
+Java? Well, we're going to extend our
+implementations of linked list structures
+to have two references instead of just
+one. So first of all, is the, there's a
+node at the root. So, a binary search tree
+in Java is just going to be referenced to
+a root node. And every node's got four
+fields, a key and a value, and references
+to the left subtree, that contains the
+smaller keys, and the right subtree that
+contains the larger keys. So, here's what
+the, [cough] code is based on. The, inner
+class that we used to implement nodes has,
+one, two, three, four instance variables.
+All of which are private as usual. A key
+of type key, a value of type value and
+then references to a left and a right
+node. For convenience, we'll provide a
+constructor that takes the key and value
+as argument and fills in the key and value
+instance variables then the left and right
+links are initialized to null. And our
+data structure then will be a root that
+points to a node in the tree and then that
+node will point to subtrees and that will
+be the data structure that we use for
+symbol tables. So here's the skeleton of
+our symbol table implementation. It's for
+comparable keys associated with values and
+those are both generic types. The only
+instance variable is a link to the root
+node called root. The inner class node is
+the code that was given on the previous
+slide, and then we'll need implementations
+of put and get, and we'll also look at an
+implementation of delete, and an iterator
+as well. So that's our skeleton
+implementation, let's look at the keys. So
+let's look at search first. So here's a
+binary search tree let's do a demo of what
+different searches will look like in this
+tree. So there's a tree so S is at the
+root everybody to the left of is less than
+S over to the right is bigger. So this is
+a dynamic data structure that kind of
+follows the same rule as binary search. So
+to look for a, to do a search for the key
+H in this tree, we start at the root and
+we compare our key against the key at the
+root. And in this case, H is less so all
+that says to us is that if H is in the
+tree, it has to be to the left cuz
+everybody to the right is greater than S.
+So we move to the left and compare H
+against the root of the left subtree. In
+this case that's E. Now H is greater so
+that says we should go right. Now we can
+pair H against the root of the right
+subtree of E, and that's R and it's less
+so we have to go left cuz everybody to the
+right of R is bigger and H is smaller. And
+eventually if the key is in the tree,
+we're going to hit it. In this case we, we
+find H as the left sub tree of R in
+[cough] that's a search hit and then for
+the get operation, we can return the value
+that's stored in that node along with the
+key H. What about an unsuccessful search?
+Well the same rules follow. If it's in the
+tree, it's gotta be according to the left
+or right, according to whether it's
+smaller or larger than the key at the
+route. In this case, if we're searching
+for G, it's gotta go left, because it's
+less than S. When we come against the E,
+we gotta go right because it's bigger than
+E against the R, we have to go left,
+because it's less than R. We come against
+the H, we have to go left. And then we
+come off a null link, and all that says is
+that there's no place in this tree where G
+could be so G is not there. So that's a
+search miss. And the get operation would
+return null in that case. What about
+insertion? Well, to insert a new key, all
+we do is follow the same steps as we did
+for search. That following off that null
+link and again, we'll just, for G, travel
+down the tree until we come to the, null
+link. Really, what we're saying is when we
+go to the left link of H, it says, if G is
+in the tree, it has to be down this link.
+Since it's not there to in sert G, all we
+need to do is just put it there and that's
+how we insert a new node into a binary
+search tree. Alright, here's the code
+corresponding to the process that we just
+demo. And it's quite straight forward
+simple code as simple as binary search
+really. We start at the root then we set
+variable x to be the root and that's going
+to be the pointer to the current node as
+we move down the tree. As long as our, our
+current node x is not null what we'll want
+to do is a comparison between the key at
+node x and our search key. If our search
+key is less, we go to the left. If it's
+greater we go to the right. And if it's
+equal we don't even have to test that,
+that's why it's in grey. If it's not
+greater or lesser it has to be equal, than
+we return the value right at that node. If
+we get to the bottom and our current node
+is null and that's falling off the bottom
+of the tree we return null and that's
+equivalent to saying our buyer convention
+that, that key is not in our data
+structure, or not in our symbol table. So
+that's very straightforward implementation
+of the get operation for symbol tables
+with a binary search tree representation.
+Now, what's the cost? Well, we went down a
+path in the tree so it's one plus the
+depth of the node in the tree. [cough] So
+what about search well search for put
+there's two cases. If the if we're
+supposed to associate a value with a key.
+If the key's already in the tree then
+we're just going to reset the value. If
+they key's not in the tree then we add a
+new node at the bottom. So now it's a
+little bit tricky the way that we
+implement it since we're using we use a
+recursive implementation. And the reason
+we do this is that it generalizes to give
+us more efficient data structures later
+on. So, what we'll do is use a recursive
+implementation that as it moves down the
+tree it'll return a link up higher in the
+tree. And so when we insert a new node L
+say in this tree we go down that path, we
+create a new node and then return the link
+to that node higher up. There's ways to
+implement that don't involve this, but
+its, the code is so simple and it extends
+to more powerful data structures later on
+that we'll introduce this right now and,
+and you'll see how it works. So here's
+the, this is very concise recursive code
+but its tricky because of that last point
+so its worth reading carefully. So, we're
+going to use a recursive method put. That
+put a associate a value with a key in the
+tree. And that recursive [cough] method is
+going to return a node. So the client
+method put of course, just is supposed to
+do the association so it has a void
+return. But what we'll do is invoke a
+recursive method starting at the root and
+whatever link gets returned, we'll set
+that to root. So right away, we can see,
+let's suppose that we have an empty tree
+where root is null. So then if we put with
+null as the first argument, then null is
+the first argument. What we do is we say
+if, if the argument is null, return a
+reference to a new node that associates
+key with value and then that one has null
+links. So in this case, that first call
+will return a link and whatever link gets
+returned, that will be set to root. So,
+without any extra special code we insert a
+node into an empty tree. And that works,
+again, recursively say we have one node in
+the tree, and we have a new key to
+associate. And let's say that key is less
+than the key at the root. So, so now we do
+put in it's actually a link to that one
+node that's got two null links. So it's
+not null so we'll compare our key against
+the key in that node. If that comparison
+comes out left, here's how we do the
+insert. We change our left link which is
+right now it's null to whatever put
+returns. So what's put going to return?
+Well, that left link is null, so what's
+going to happen is, in that call x is
+null. It's going to be cre ated a new node
+and the link to that node will be returned
+and that's the link that we'll put in the
+left. This is a very concise code that
+otherwise we'd have various cases about
+saving which link we went down in order to
+reset that later on. So now the best way
+having looked at those small examples, the
+best way to understand this code is
+recursively. Let's believe that it works
+for small cases which we have just done.
+So, lets see what the code does. So if x
+is null, we want to create a new node and
+return the link to that node. So, even if
+it's a huge tree down at the bottom, we
+just came of a null link. We just want to
+create a new node with our new key and
+return a link to that node, that's all we
+want to do. Now, we can assume that put is
+going to return a link to a sub-tree that
+contains our new key and if our new key is
+smaller than the key at the node that,
+that we're processing now, then [cough] we
+want to insert the new key value there and
+the new node on the left otherwise, we
+want to insert on the right. Most of the
+time, the link that we get back will be
+same as the link that we put in but for
+the bottom node it will be different. So,
+if put works properly inserting a new node
+on the left, then that's what we want our
+left link to be. If it works properly,
+putting in the subtree on the right,
+that's what we want our right link to be.
+And by the way, if we find a key that's in
+the tree already, then we just want to
+reset the value. And in all of these cases
+where we're on a node that already
+existed, we just want to return the link
+to that node. Again, when we look at more
+sophisticated values we'll be returning
+something else. So it's worthwhile you
+know, checking that you believe that this
+code implements the simple binary search
+tree algorithm that we demoed where when
+we fall off a null link we created a new
+node and replaced that null link with the
+new node . So that's insert for a binary
+search tree in a symbol table. And again,
+the cost of this is the number of compares
+is equal to one plus the depth of the
+node. We just go down a path in the tree.
+Now, what's interesting about binary
+search trees is that there are many
+different binary search trees that
+correspond to the same set of keys. So the
+number it compares is going to depend on
+the order in which the keys come in. And
+that's a key feature of binary search
+trees that we'll come back to again when
+we look at more sophisticated data
+structures. So it depends on how the keys
+come in. The shape of the, of the tree
+could be well in the best case so it would
+be perfectly balanced. And one of the
+things we'll look at is algorithms that
+come very, very close to achieving that
+goal. The typical, typical case it'll be
+sort of balanced. Now but one problem is
+if the keys come in and, and really
+unfortunately, if they come in, in a
+natural order. Like if they come in, in
+order, that's the worst case. We don't get
+any benefit from having it in a tree
+shape. It's no different than a link list.
+So we'll, we'll come back to dealing with
+that worse case in the next lecture. But
+the point is, the tree shape depends on
+the order of insertion. Now, but let's
+look at what's happened or visualize what
+happens when keys come in, in random
+order. So the tree grows from the bottom
+in the little side to side motion it's
+just accommodating room for each new key
+as it's added. But you could see that even
+for this case which is hundreds of keys,
+the length of the path from top to bottom
+is not so much. In this case, the maximum
+distance from the top to the bottom is
+sixteen the average is only nine and the
+best you could in a perfectly balanced
+tree it would be seven. So it's pretty
+well balanced which means that our search
+and insert cost in this case for 255 keys
+is only going to be sixteen quite a bit
+less. So one remark before we do the
+analysis is that actually binary search
+trees correspond exactly to Quicksort
+partitioning. In the binary search tree,
+we have a node at the root and we have
+everybody smaller to the left, and
+everybody larger to the right. In
+Quicksort partitioning, after the random
+shuffling we have the partitioning element
+and then we process everybody to the left
+independently of everybody to the right.
+So it's a [cough] there's a direct
+correspondence. If there is no duplicate
+keys Quicksort processes them and referred
+them out in BSTs and if there's no
+duplicate keys there's a one-to-one
+correspondence between what happens with
+Quicksort and what happens with binary
+search trees. And we point that out
+because that helps with the mathematical
+analysis. In fact, this correspondence
+with Quicksort partitioning tells us we
+can take that proof and prove that if you
+insert in distinct keys into a BST, in
+random order, then the expected number of
+compares for a search and an insert is two
+natural log N. So again about 1.38 log
+base two of N almost the best that you
+could do. It also has been shown actually
+not that long ago, that the expected
+height of the tree if they're inserted in
+random order, the height that's the worst
+case length of a path in the tree. This is
+the average path in a tree, this is the,
+the worst of all the keys. This is about
+four natural log N. So, if you have the
+keys in random order the binary search
+tree gives efficient search and insert.
+Now but there is this problem that the
+actual worst case height if the keys come
+in, in order and reverse order and other
+natural orders that the time could be
+proportional to n. So, we have this
+summary which is looking pretty good,
+because we have the average case for both
+operations, the search and insert, to be
+1.39 log N and that's probabilistic if
+they are in random order, its extremely
+likely to be there. But the problem by
+comparison with sorting is, we don't get
+to randomize the order the client is
+providing the keys. So we're going to need
+something better to provide the guarantee
+than just randomly ordering the keys.
+That's what we're going to be looking at
+next when we look at more efficient
+algorithms. But first we're going to look
+at the implementation of order and
+operations with the binary search tree
+structure. It expands like binary search
+to handle all these convenient client
+operations in a very natural manner.
+That's the implementation of binary search
+trees for symbol tables. They give
+sufficient implementation of both search
+and insert.

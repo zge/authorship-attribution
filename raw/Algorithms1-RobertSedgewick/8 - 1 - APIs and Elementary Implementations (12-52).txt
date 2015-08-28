@@ -1,0 +1,258 @@
+Welcome back. Today, we're going to look
+at Priority Queues which is a variant of
+sorting that generalizes the idea to
+provide more flexible data structure that
+we can use for all sorts of applications.
+To get started, we'll look at the API and
+some elementary implementations. So at a
+week or so ago, we looked at collections
+in Java and the idea of elementary data
+structures where we insert and delete
+items. And then, the data structures
+differ on the basis of which item we choose
+to delete. We looked to the push down
+stack where we removed the item that was
+most recently added, And the queue where we
+remove the item that was least recently
+added. And then, we talked about
+randomized queue or bag where we might
+remove a random or an arbitrary item.
+Today, what we're going to talk about is
+called the priority queue and for that, we
+insert items, but when it's time to
+remove, we consider the items to have a
+total order and we want to remove the
+largest or the smallest item. So this
+little example if we insert P, Q, and E
+then when we do remove max, we want to get
+the Q out and for later, we insert X, A,
+and M and then we removed max. The
+largest one in there is X. We'll insert P,
+L, and E and then, after a while, we
+remove max P. So, that's our basic setup.
+That's our definition of what a priority
+queue is. So, the API will look very
+similar to our stack or queue API with a
+difference that we want to have generic
+items that are comparable. So the Java
+language for that is in the class header.
+We say that our generic type Key extends
+Comparable of Key. And that just means
+that our keys must be Comparable and we
+must have a compareTo() method that will
+compare it to another key. Otherwise we
+have a constructor and actually for some
+applications, it's convenient to have a
+constructor that takes an array of keys as
+argument. Then, an insert() that puts
+something in like push in a stack or
+enqueue in a queue. Then delete the
+maximum. I referred to delete the minimum
+just to avoid confusion, we have the
+implementation separate implementation
+usually MinPQ, where we delete the
+minimum. Then test isEmpty() and we also
+sometimes have extra method that just
+gives us the value of the largest key and
+also size which is useful sometimes in
+collections. You might also want it to be
+iterable but we'll skip that for now.
+There are lots and lots of applications of
+priority queues. Even though it emerged as
+a data structure relatively late in the
+game now that we see that there are many
+algorithms that are much easier to
+implement when we think about the priority
+key abstraction. We have data that we are
+processing we can't process it all at once.
+We have to save it some of way. And then,
+what the priority queue tells us is - 
+let's organize it in some ways that we are
+always taking the best one to process
+next. And it turns out to be very close to
+a generic algorithmic design technique
+that we will be looking at in many, many
+different applications. Today, we're going
+to talk about event-driven simulation
+which is an interesting idea that is based
+on priority queues but it's also used in
+numerical computation and we'll see in
+algorithms for data compression and graph
+searching that it's useful. And in many
+other applications in Computer Science and
+in scientific computing. It generalizes the
+stack and the queue and gives us a data
+structure that we can use to effectively
+design algorithm of all sorts. So here's
+just a particular client that will help
+explain the idea. So our, our challenge is
+let's say this is on the web we have
+billions of transactions, you know, and they
+are streaming through our data warehouse
+or processor in some way. And just a very,
+very huge number of transactions. In fact,
+we couldn't possibly hope to even store
+them all. There's trillions of them there
+coming through as fast as possible. But
+we're interested in the biggest ones and
+so maybe it's the biggest amount of
+dollars, or the biggest cost, or whatever
+it might happen to be. And so we can pick
+some numbers that we can store. I would
+like to, to store the, the thousand
+biggest ones. So, you can imagine a credit
+card company looking for fraud - it's going
+to care about keeping track of the largest
+transactions. So, maybe we can store
+millions or thousands of them. So that's
+our parameter M - that's the number we can
+afford to store but the total number of
+items we couldn't possibly afford to store
+them. So and this is just some test data
+where we've got all, all these
+transactions and so we are going to be
+able to take in data like this and again
+an unbounded stream of data. But let's
+say, we want to keep track of the top five
+[cough] values using the third column as
+the value. So we're going to look at a
+client program called TopM that takes the
+command-line argument, how many and
+this case, it's going to say five and then
+it's going to take from standard input the
+transactions and it will print out the top
+five. So, that's a canonical example of a,
+a priority queue client that we need to
+design a program that can do that. So,
+with the priority queue abstraction that's
+not too difficult to do. So we are going to
+use a min-oriented priority queue so
+that's going to keep, it'll [cough] it'll
+be one where we can delete the minimum
+and, and it'll be generic so we'll have a
+transaction type that holds this
+information including natural ordering
+where it's ordered by dollars that last
+column. So, we'll build a new priority
+queue, min priority queue or we'll have
+the capability to delete the minimum. And
+then we read from standard input. We read
+the line, build the transaction from the
+information on that line. And that will
+fill in the fields and then, we put that
+transaction on the priority queue. Now, if
+the priority queue has more than M items
+because we inserted that one, then we want
+to delete the smallest one there and that
+way, we're keeping track of the largest M.
+Whenever we get a new one, then we
+throw away the smallest one that's there.
+So, even with this huge stream of items
+coming through, we're only keeping track
+of the M largest items and that's a fine
+canonical client for priority queue. Now
+how we are going implement or solve this
+problem or you can think of lots of ways
+to go ahead and solve this problem of
+finding the largest M items in the stream
+of N items. So, for example, you could
+sort them. And then just look at the M at
+the end but by sending up the problem, I
+already kind of ruled that one out because
+we don't have the space to sort them all,
+to store them all. So sorting is out of
+the question. We'll look at couple of
+elementary priority queue implementations
+that are straightforward. You know, keep
+the items like we would in the stack and
+then when we need to find the smallest or
+the largest look at, look at them all. But
+that's going to be too slow. M is large
+and N is huge, and M<i>N is going to be too
+slow. What would what we we'll look at is</i>
+very simple and practical implementation
+using a data structure called the binary
+heap that gets the job done in time
+proportional to N log M and only M space.
+And that's pretty close to the best that
+we could do in theory and is very
+important and useful, practical
+implementation and data structure.
+Alright. So here's just an overview of two
+elementary implementations for priority
+queues using the example operations that I
+gave before. So you can imagine keeping
+the item, say, in a linked list or in
+a doubling array and just keeping just an
+order just as we would in the, in the
+stack just keeping in the way that they
+come in. And we'll put a new item at the
+end of the array and remove it from the
+end of the array. Or you could do it in a linked
+list, and then when it's time to find the,
+remove the maximum, you have to scan
+through everything to find the maximum.
+So, so, that's a one way you could
+implement this with, with a linked list or
+with the resizing array. Or you might to
+say well let's try to keep things in
+order. And then that might involve some
+work with the, it's like insertion sort,
+you find a place to put the new item and
+then put it in the right place. And again,
+you could do this with a linked list or with
+the resizing array but then, with array,
+you'd have to move all the larger ones over
+one position to fit the new item in. When
+we insert E and that's supposed to keep
+them in order, we have to move over L, M,
+P, and P to get the E and then so forth.
+But the advantage of that might be that
+removing the maximum is easy. We just take
+away the one at the end. To remove the
+Q - we know it's at the end to remove
+the max. At this point, that's X - it's
+right at the end, and P is right at the end.
+So you can imagine the implementations of
+priority queues using these two basic
+strategies. Not much code involved. This
+is a an ordered array implementation of
+priority queues and it's quite straight
+forward. We didn't put in the this is the
+cheat version where we require the client
+to provide a capacity but we could easily
+change this to a resizing array. So
+insert() just puts it at the end, and since
+its unordered delete maximum has to go
+through the entire array to try to find
+the maximum when it refines it and the
+changes that we're the one at the end and
+then removes it the same way that we do
+within the stack. It'll use less and
+exchange just like we would in sorting
+methods. So that's a fine implementation if
+the priority queue was going to be tiny
+all the time. So if you, without even
+implementing it, you can understand this
+table that if we use an unordered array
+implementation we can get insertion done
+in constant time but we have
+to look at everything to delete the
+maximum or even find the maximum. If we
+keep it in order, we can find the maximum
+or delete it at constant time but it takes us
+linear time to insert. And since as
+with stack and queue operations, these
+insert and deletes might be intermixed in
+arbitrary ways and there might be huge
+numbers of them either one of these is
+very attractive because they're going to
+take N times the number of operations.
+Whereas what we can hope for and what we
+actually will achieve is to get log N time
+for all operations, time proportion to log N
+for all operations. With the clever data
+structure and interesting implementation
+we can actually achieve that goal. That's
+the basic API and some elementary
+implementations for priority queues.

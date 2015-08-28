@@ -1,0 +1,475 @@
+In this video, we'll talk about
+the normal equation, which for
+some linear regression problems, will
+give us a much better way
+to solve for the optimal value
+of the parameters theta.
+Concretely, so far the
+algorithm that we've been using
+for linear regression is gradient
+descent where in order
+to minimize the cost function
+J of Theta, we would take
+this iterative algorithm that takes
+many steps, multiple iterations of
+gradient descent to converge
+to the global minimum.
+In contrast, the normal equation
+would give us a method to
+solve for theta analytically, so
+that rather than needing to run
+this iterative algorithm, we can
+instead just solve for the
+optimal value for theta
+all at one go, so that in
+basically one step you get
+to the optimal value right there.
+It turns out the normal equation
+that has some advantages and
+some disadvantages, but before
+we get to that and talk about
+when you should use it, let's
+get some intuition about what this method does.
+For this week's planetary example, let's
+imagine, let's take a
+very simplified cost function
+J of Theta, that's just the
+function of a real number Theta.
+So, for now, imagine that Theta
+is just a scalar value or that Theta is just a row value.
+It's just a number, rather than a vector.
+Imagine that we have a cost function J
+that's a quadratic function of this real value
+parameter Theta, so J of Theta
+looks like that.
+Well, how do you minimize
+a quadratic function?
+For those of you that know
+a little bit of calculus,
+you may know that the way to
+minimize a function is to
+take derivatives and to
+set derivatives equal to zero.
+So, you take the derivative of J
+with respect to the parameter of Theta.
+You get some formula
+which I am not going to derive,
+you set that derivative
+equal to zero, and this
+allows you to solve for
+the value of Theda that
+minimizes J of Theta.
+That was a simpler case
+of when data was just real number.
+In the problem that we are
+interested in, Theta is
+no longer just a real number,
+but, instead, is this
+n+1-dimensional parameter vector, and,
+a cost function J is
+a function of this vector
+value or Theta 0 through
+Theta m. And, a cost
+function looks like this,
+some square cost function on the right.
+How do we minimize this cost function J?
+Calculus actually tells us
+that, if you, that
+one way to do so, is
+to take the partial derivative of J, with respect to every parameter of Theta J in turn, and then, to set
+all of these to 0.
+If you do that, and you
+solve for the values of
+Theta 0, Theta 1,
+up to Theta N, then,
+this would give you that values
+of Theta to minimize the cost
+function J.  Where, if
+you actually work through the
+calculus and work through
+the solution to the parameters
+Theta 0 through Theta N, the
+derivation ends up being somewhat involved.
+And, what I am going
+to do in this video,
+is actually to not go
+through the derivation, which is kind
+of long and kind of involved, but
+what I want to do is just
+tell you what you need to know
+in order to implement this process
+so you can solve for the
+values of the thetas that
+corresponds to where the
+partial derivatives is equal to zero.
+Or alternatively, or equivalently,
+the values of Theta is that
+minimize the cost function J of Theta.
+I realize that some of
+the comments I made that made
+more sense only to those
+of you that are normally familiar with calculus.
+So, but if you don't
+know, if you're less familiar
+with calculus, don't worry about it.
+I'm just going to tell you what
+you need to know in order to
+implement this algorithm and get it to work.
+For the example that I
+want to use as a running
+example let's say that
+I have m = 4 training examples.
+In order to implement this normal
+equation at big, what I'm going to do
+is the following.
+I'm going to take my
+data set, so here are my four training examples.
+In this case let's assume that,
+you know, these four examples is all the data I have.
+What I am going to do is take
+my data set and add
+an extra column that corresponds
+to my extra feature, x0,
+that is always takes
+on this value of 1.
+What I'm going to do is
+I'm then going to construct
+a matrix called X that's
+a matrix are basically contains all
+of the features from my
+training data, so completely
+here is my here are
+all my features and we're
+going to take all those numbers and
+put them into this matrix "X", okay?
+So just, you know, copy
+the data over one column
+at a time and then I am going to do
+something similar for y's.
+I am going to take the
+values that I'm trying to
+predict and construct now
+a vector, like so
+and call that a vector y.
+So X is going to be a
+m by (n+1) - dimensional matrix, and
+Y is going to be
+a m-dimensional vector
+where m is the number of
+training examples
+and n is, n is
+a number of features, n+1, because of
+this extra feature X0 that I had.
+Finally if you take
+your matrix X and you take
+your vector Y, and if you
+just compute this, and set
+theta to be equal to
+X transpose X inverse times
+X transpose Y, this would
+give you the value of theta
+that minimizes your cost function.
+There was a lot
+that happened on the slides and
+I work through it using
+one specific example of one dataset.
+Let me just write this
+out in a slightly more general form
+and then let me just,
+and later on in
+this video let me explain
+this equation a little bit more.
+It is not yet entirely clear how to do this.
+In a general case, let us
+say we have M training examples
+so X1, Y1 up to
+Xn, Yn and n features.
+So, each of the training example
+x(i) may looks like a vector
+like this, that is a n+1 dimensional feature vector.
+The way I'm going to construct the
+matrix "X", this is
+also called the design matrix
+is as follows.
+Each training example gives
+me a feature vector like this.
+say, sort of n+1 dimensional vector.
+The way I am going to construct my
+design matrix x is only construct the matrix like this.
+and what I'm going to
+do is take the first
+training example, so that's
+a vector, take its transpose
+so it ends up being this,
+you know, long flat thing and
+make x1 transpose the first row of my design matrix.
+Then I am going to take my
+second training example, x2, take
+the transpose of that and
+put that as the second row
+of x and so on,
+down until my last training example.
+Take the transpose of that,
+and that's my last row of
+my matrix X. And, so,
+that makes my matrix X, an
+M by N +1
+dimensional matrix.
+As a concrete example, let's
+say I have only one
+feature, really, only one
+feature other than X zero,
+which is always equal to 1.
+So if my feature vectors
+X-i are equal to this
+1, which is X-0, then
+some real feature, like maybe the
+size of the house, then my
+design matrix, X, would be equal to this.
+For the first row, I'm going
+to basically take this and take its transpose.
+So, I'm going to end up with 1, and then X-1-1.
+For the second row, we're going to end
+up with 1 and then
+X-1-2 and so
+on down to 1, and
+then X-1-M.
+And thus, this will be
+a m by 2-dimensional matrix.
+So, that's how to construct
+the matrix X. And, the
+vector Y--sometimes I might
+write an arrow on top to
+denote that it is a vector,
+but very often I'll just write this as Y, either way.
+The vector Y is obtained by
+taking all all the labels,
+all the correct prices of
+houses in my training set, and
+just stacking them up into
+an M-dimensional vector, and
+that's Y.  Finally, having
+constructed the matrix X
+and the vector Y, we then
+just compute theta as X'(1/X)
+x X'Y. I just
+want to make
+I just want to make sure that
+this equation makes sense to you
+and that you know how to implement it.
+So, you know, concretely, what is this X'(1/X)?
+Well, X'(1/X) is the
+inverse of the matrix X'X.
+Concretely, if you were
+to say set A to
+be equal to X' x
+X, so X' is a
+matrix, X' x X
+gives you another matrix, and we
+call that matrix A. Then, you
+know, X'(1/X) is just
+you take this matrix A and you invert it, right!
+This gives, let's say 1/A.
+And so that's how you compute this thing.
+You compute X'X and then you compute its inverse.
+We haven't yet talked about Octave.
+We'll do so in the later
+set of videos, but in the
+Octave programming language or a
+similar view, and also the
+matlab programming language is very similar.
+The command to compute this quantity,
+X transpose X inverse times
+X transpose Y, is as follows.
+In Octave X prime is
+the notation that you use to denote X transpose.
+And so, this expression that's
+boxed in red, that's computing
+X transpose times X.
+pinv is a function for
+computing the inverse of
+a matrix, so this computes
+X transpose X inverse,
+and then you multiply that by
+X transpose, and you multiply
+that by Y. So you
+end computing that formula
+which I didn't prove,
+but it is possible to
+show mathematically even though I'm
+not going to do so
+here, that this formula gives you
+the optimal value of theta
+in the sense that if you set theta equal
+to this, that's the value
+of theta that minimizes the
+cost function J of theta
+for the new regression.
+One last detail in the earlier video.
+I talked about the feature
+skill and the idea of
+getting features to be
+on similar ranges of
+Scales of similar ranges of values of each other.
+If you are using this normal
+equation method then feature
+scaling isn't actually necessary
+and is actually okay if,
+say, some feature X one
+is between zero and one,
+and some feature X two is
+between ranges from zero to
+one thousand and some feature
+x three ranges from zero
+to ten to the
+minus five and if
+you are using the normal equation method
+this is okay and there is
+no need to do features
+scaling, although of course
+if you are using gradient descent,
+then, features scaling is still important.
+Finally, where should you use the gradient descent
+and when should you use the normal equation method.
+Here are some of the their advantages and disadvantages.
+Let's say you have m training
+examples and n features.
+One disadvantage of gradient descent
+is that, you need to choose the learning rate Alpha.
+And, often, this means running
+it few times with different learning
+rate alphas and then seeing what works best.
+And so that is sort of extra work and extra hassle.
+Another disadvantage with gradient descent
+is it needs many more iterations.
+So, depending on the details,
+that could make it slower, although
+there's more to the story as we'll see in a second.
+As for the normal equation, you don't need to
+choose any learning rate alpha.
+So that, you know, makes it really convenient,
+makes it simple to implement.
+You just run it and it usually just works.
+And you don't need to
+iterate, so, you don't need
+to plot J of Theta or
+check the convergence or take all those extra steps.
+So far, the balance seems to
+favor normal the normal equation.
+Here are some disadvantages of
+the normal equation, and some advantages of gradient descent.
+Gradient descent works pretty well,
+even when you have a very large number of features.
+So, even if you
+have millions of features you
+can run gradient descent and it will be reasonably efficient.
+It will do something reasonable.
+In contrast to normal equation, In, in
+order to solve for the parameters
+data, we need to solve for this term.
+We need to compute this term, X transpose, X inverse.
+This matrix X transpose X.
+That's an n by n matrix,
+if you have n features.
+Because, if you look
+at the dimensions of
+X transpose the dimension of
+X, you multiply, figure out what
+the dimension of the product
+is, the matrix X transpose
+X is an n by n matrix where
+n is the number of features, and
+for almost computed implementations
+the cost of inverting
+the matrix, rose roughly as
+the cube of the dimension of the matrix.
+So, computing this inverse costs,
+roughly order, and cube time.
+Sometimes, it's slightly faster than
+N cube but, it's, you know, close enough
+for our purposes.
+So if n the number of features
+is very large,
+then computing this
+quantity can be slow and
+the normal equation method can actually be much slower.
+So if n is
+large then I might
+usually use gradient descent because
+we don't want to pay this all in q time.
+But, if n is relatively small,
+then the normal equation might give you a better way to solve the parameters.
+What does small and large mean?
+Well, if n is on
+the order of a hundred, then
+inverting a hundred-by-hundred matrix is
+no problem by modern computing standards.
+If n is a thousand, I would still use
+the normal equation method.
+Inverting a thousand-by-thousand matrix is
+actually really fast on a modern computer.
+If n is ten thousand, then I might start to wonder.
+Inverting a ten-thousand-  by-ten-thousand matrix
+starts to get kind of slow,
+and I might then start to
+maybe lean in the
+direction of gradient descent, but maybe not quite.
+n equals ten thousand, you can
+sort of convert a ten-thousand-by-ten-thousand matrix.
+But if it gets much bigger than that, then,
+I would probably use gradient descent.
+So, if n equals ten
+to the sixth with a million
+features, then inverting a
+million-by-million matrix is going
+to be very expensive, and
+I would definitely favor gradient descent if you have that many features.
+So exactly how large
+set of features has to be
+before you convert a gradient descent,
+it's hard to give a strict number.
+But, for me, it is usually
+around ten thousand that I might
+start to consider switching over
+to gradient descents or maybe,
+some other algorithms that we'll talk about later in this class.
+To summarize, so long
+as the number of features is
+not too large, the normal equation
+gives us a great alternative method
+to solve for the parameter theta.
+Concretely, so long as
+the number of features is less
+than 1000, you know, I would
+use, I would usually is used
+in normal equation method rather than, gradient descent.
+To preview some ideas that
+we'll talk about later in this
+course, as we get
+to the more complex learning algorithm, for
+example, when we talk about
+classification algorithm, like a logistic regression algorithm,
+We'll see that those algorithm
+actually...
+The normal  equation method
+actually do not work
+for those more sophisticated
+learning algorithms, and, we
+will have to resort to gradient descent
+for those algorithms.
+So, gradient descent is a very useful algorithm to know.
+The linear regression will have
+a large number of features and
+for some of the other algorithms
+that we'll see in
+this course, because, for them, the normal
+equation method just doesn't apply and doesn't work.
+But for this specific model of
+linear regression, the normal equation
+can give you a alternative
+that can be much faster, than gradient descent.
+So, depending on the detail of your algortithm,
+depending of the detail of the problems and
+how many features that you have,
+both of these algorithms are
+well worth knowing about.

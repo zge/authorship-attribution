@@ -1,0 +1,221 @@
+In the previous video, we talked
+about how to use back propagation
+to compute the derivatives of your cost function.
+In this video, I want
+to quickly tell you about one implementational detail of
+unrolling your parameters from
+matrices into vectors, which we
+need in order to use the advanced optimization routines.
+Concretely, let's say
+you've implemented a cost function
+that takes this input, you know, parameters
+theta and returns the cost function and returns derivatives.
+Then you can pass this to
+an advanced authorization algorithm by fminunc
+and fminunc
+isn't the only one by the way.
+There are also other advanced authorization algorithms.
+But what all of them
+do is take those input
+pointedly the cost function,
+and some initial value of theta.
+And both, and these
+routines assume that theta and
+the initial value of theta, that
+these are parameter vectors, maybe
+Rn or Rn plus 1.
+But these are vectors and it
+also assumes that, you know, your cost
+function will return as
+a second return value this
+gradient which is also Rn
+and Rn plus 1. So also a vector.
+This worked fine when we
+were using logistic progression but
+now that we're using a neural
+network our parameters are
+no longer vectors, but instead
+they are these matrices where for
+a full neural network we would
+have parameter matrices theta 1, theta 2, theta 3
+that we might represent in Octave
+as these matrices theta 1, theta 2, theta 3.
+And similarly these gradient
+terms that were expected to return.
+Well, in the previous video we
+showed how to compute these
+gradient matrices, which was
+capital D1, capital D2,
+capital D3, which we
+might represent an octave as matrices D1, D2, D3.
+In this video I want
+to quickly tell you about the
+idea of how to take
+these matrices and unroll them into vectors.
+So that they end up
+being in a format suitable for
+passing into as theta here off for getting
+out for a gradient there.
+Concretely, let's say we
+have a neural network with one
+input layer with ten units,
+hidden layer with ten units
+and one output layer with
+just one unit, so s1
+is the number of units in layer one
+and s2 is the
+number of units in layer two, and s3 is a number
+of units in layer three.
+In this case, the dimension of
+your matrices theta and
+D are going to be
+given by these expressions.
+For example, theta one
+is going to a 10 by 11 matrix and so on.
+So in if you want
+to convert between these matrices.
+vectors.
+What you can do is take
+your theta 1, theta
+2, theta 3, and write this
+piece of code and this will
+take all the elements of
+your three theta matrices and
+take all the elements
+of theta one, all the
+elements of theta 2, all the
+elements of theta 3,
+and unroll them and put
+all the elements into a big long vector.
+Which is thetaVec and similarly
+the second command would take
+all of your D matrices and
+unroll them into a big
+long vector and call them
+DVec.
+And finally
+if you want to go back from
+the vector representations to the matrix representations.
+What you do to get back
+to theta one say is take
+thetaVec and pull
+out the first 110 elements.
+So theta 1 has 110
+elements because it's a
+10 by 11 matrix so that
+pulls out the first 110 elements
+and then you can
+use the reshape command to reshape those back into theta 1.
+And similarly, to get
+back theta 2 you pull
+out the next 110 elements and reshape it.
+And for theta 3, you pull out
+the final eleven elements and run
+reshape to get back the theta 3.
+Here's a quick Octave demo of that process.
+So for this example
+let's set theta 1 equal
+to be ones of 10 by
+11, so it's a matrix of all ones. And
+just to make this easier seen,
+let's set that to be 2
+times ones, 10 by
+11 and let's
+set theta 3 equals 3
+times 1's of 1 by 11.
+So this is 3
+separate matrices: theta 1, theta 2, theta 3.
+We want to put all of these as a vector.
+ThetaVec equals theta
+1; theta 2
+theta 3.
+Right, that's a colon
+in the middle and like so
+and now thetavec is
+going to be a very long vector.
+That's 231 elements.
+If I display it, I find
+that this very long vector with
+all the elements of the first
+matrix, all the elements of
+the second matrix, then all the elements of the third matrix.
+And if I want to get back
+my original matrices, I can
+do reshape thetaVec.
+Let's pull out the first 110
+elements and reshape them to a 10 by 11 matrix.
+This gives me back theta 1.
+And if I then pull
+out the next 110 elements.
+So that's indices 111 to 220.
+I get back all of my 2's.
+And if I go
+from 221 up to
+the last element, which is
+element 231, and reshape to
+1 by 11, I get back theta 3.
+To make this process really concrete,
+here's how we use the unrolling
+idea to implement our learning algorithm.
+Let's say that you have some
+initial value of the parameters
+theta 1, theta 2, theta 3.
+What we're going to do
+is take these and unroll
+them into a long vector
+we're gonna call initial theta to
+pass in to fminunc
+as this initial setting of the parameters theta.
+The other thing we need to do is implement the cost function.
+Here's my implementation of the cost function.
+The cost function is going to
+give us input, thetaVec,
+which is going to be all
+of my parameters vectors that in
+the form that's been unrolled into a vector.
+So the first thing I'm going to
+do is I'm going to use
+thetaVec and I'm going to use the reshape functions.
+So I'll pull out elements from
+thetaVec and use reshape
+to get back my
+original parameter matrices, theta 1, theta 2, theta 3.
+So these are going to be matrices that I'm going to get.
+So that gives me a
+more convenient form in which
+to use these matrices so that I
+can run forward propagation and
+back propagation to compute my
+derivatives, and to compute my cost function j of theta.
+And finally, I can then
+take my derivatives and unroll
+them, to keeping the elements
+in the same ordering as I did when I unroll my thetas.
+But I'm gonna unroll D1, D2,
+D3, to get gradientVec
+which is now what my cost function can return.
+It can return a vector of these derivatives.
+So, hopefully, you now have
+a good sense of how to
+convert back and forth between
+the matrix representation of the
+parameters versus the vector representation of the parameters.
+The advantage of the matrix
+representation is that when
+your parameters are stored as
+matrices it's more convenient when
+you're doing forward propagation and
+back propagation and it's easier
+when your parameters are stored as
+matrices to take advantage
+of the, sort of, vectorized implementations.
+Whereas in contrast the advantage of
+the vector representation, when you
+have like thetaVec or DVec is that
+when you are using the advanced optimization algorithms.
+Those algorithms tend to
+assume that you have
+all of your parameters unrolled into a big long vector.
+And so with what we just
+went through, hopefully you can now quickly
+convert between the two as needed.

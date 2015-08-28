@@ -1,0 +1,562 @@
+Now let's turn to the analysis of the
+deterministic selection algorithm that we
+discussed in the last slide by Blum,
+Floyd, Pratt, Rivest, and Tarjan. In
+particular, let's prove that it runs in
+linear time on every possible input.
+Let's, remind you what the algorithm is.
+So the idea is, we just take the R select
+algorithm. But instead of choosing a pivot
+at random, we do quite a bit more work to
+choose what we hope is going to be a
+guaranteed pretty good pivot. So again,
+lines one through three are the new choose
+pivot subroutine. And it's essentially
+implementing a two round knockout
+tournament. So first, we do the first
+round matches. So what does that mean?
+That means we take A we think of it as
+comprising these groups of five elements.
+So the first five elements one through
+five and the elements six through ten and
+points eleven through fifteen and there
+again and so on. If we sort each of those
+five using, let's say, merge sort although
+it doesn't matter much, then the winner in
+each of these five first round matches is
+the median of those five. That is the
+third highest element, third largest
+element out of the five. So we take those
+in over five first round winners the
+middle element of each of the five and the
+sorted groups, we copy those over into a
+new array of capital [inaudible] and
+[inaudible] in it for five. And then we.
+Second round of our tournament at which we
+elect the medium of these N over five,
+first round winners as our final pivot, as
+our final winner. So, we do that by
+recursively calling deselect on C. It has
+a length N over five [inaudible] for the
+medium. So that's the N over tenth
+[inaudible] statistic in that array. So,
+we call the pivot P and then we just
+proceed exactly like we did. And in the
+randomized case. That is, we partition A
+around the pivot, we get a first part, a
+second part, and we recurs on the left
+side or the right side as appropriate,
+depending on whether the pivot is less
+than or bigger than the element that we're
+looking for. So the claim is, believe it
+or not, that this algorithm runs in linear
+time. Now, you'd be right to be a little
+skeptical of that claim. Certainly, you
+should be demanding from me some kind of
+mathematical argument about this linear
+time claim. It's not at all clear that
+that's true. One reason for skepticism is
+that this is an unusually extravagant
+algorithm. In two senses for something
+that's gotta run in linear time. First is,
+first is it's extravagant use of
+recursion. There are two different
+recursive calls, as discussed in the
+previous video. We have not yet seen any
+algorithm that makes two recursive calls
+and runs in linear time. The best case
+scenario was always [inaudible] for our
+two recursive call algorithms like merge
+sort or quick sort. The second reason is
+that, outside the recursive calls, it
+seems like it?s just kind of a lot of
+work, as well. So, to drill down on that
+point, and get a better understanding for
+how much work this algorithm is doing, the
+next quiz asks you to focus just on line
+one. So when we sort groups of five in the
+input array how long does that take. So
+the correct answer to this quiz is the
+third answer. Maybe you would have guessed
+that given that I'm claiming that the
+whole algorithm takes linear time, you
+could have guessed that this sub-routine
+is going to be worse than linear time. But
+you should also be wondering you know,
+isn't sorting always N log N so, aren't we
+doing sorting here. Why isn't the N log N
+thing kicking in? The reason is we're
+doing something much, much more modest
+than sorting the linked N input array, all
+we're sorting are these puny little
+sub-arrays that have only five elements
+and that's just not that hard, that can be
+done in constant time so let me be a
+little more precise about it. The claim is
+that sorting an element, an array with
+five elements takes only some constant
+number of operations. Let's say 120. Where
+did this number, 120 come from? Well, you
+know, for example, suppose we used merge
+sort. If you go back to those very early
+lectures, we actually counted up the
+number of operations that merge sort needs
+to sort an array length of M. For some
+generic M, here M is five, so we can just
+plug five into our previous formula that
+we computed from merge sort. Right if we
+plug amicle five into this formula, what
+do we get, we get six times five times log
+base 205+1. Who knows what log base 205
+is, that's some weird member but it's
+gonna be a most three right. So that's the
+most three of three+1 is four multiply
+that by five and again time six and will
+get you 120. So it's constant time to sort
+just one of these groups of five. Now of
+course, we have to do a bunch of groups of
+five because there's only a linear number
+of groups. Constant for each, so it's
+gonna be linear time overall. So to be
+really pedantic. We do 120 operations at
+most per group. There's N over five
+different groups. We multiply those, we
+get 24 N operations. So do all the sorting
+and that's obviously a big O event. So
+linear time for step one. So having warmed
+up with step one. Let's look now at the
+whole seven line algorithm, and see what's
+going on. Now I hope you haven't forgotten
+the paradigm that we discussed for
+analyzing the running time of
+deterministic divide and conquer
+algorithms like this one. So namely we're
+gonna develop a recurrence and remember a
+recurrence expresses the running time, the
+number of operations performed, in two
+parts. First of all, there's the work done
+by the recursive calls on smaller
+sub-problems. And secondly, there's the
+work done locally, not in the recursive
+calls. So let's just go through these
+lines one at a time, and just do a running
+tally of how much work is done by this
+algorithm, both locally and by the
+recursive calls. So the quiz was about,
+step number one. We just argued that since
+it's constant time to sort each group, and
+there's a linear number of groups, we're
+gonna do linear work, theta of N. For step
+one. So copying these first round winners
+over in to their special array C is
+obviously linear time. Now, when we get to
+the third line, we have a recursive call,
+but it's a quite easy recursive call to
+understand. It's just, recursing on a, a
+ray that has size twenty percent as large
+as the one we started with, on the N over
+five elements. So this, remember the
+notation we used for recurrences.
+Generally, we denote by capital T the
+running time of an algorithm on
+[inaudible] of a given length. So this is
+going to be the running time that our
+algorithm has in the worst case on inputs
+of length N over five. Cuz N over five is
+the length of the array that we're passing
+to this recursive call. Good. Step four,
+partition. Well we had. Videos about how
+they were going to partition the Y to
+linear time. We knew that all the way back
+from quick sort, so that's definitely
+Theta of N. Step five is constant time,
+I'm not going to worry about it. And
+finally we get to lines six and seven so
+at most one of these will execute so in
+either case there's one recursive call. So
+that's fine, we know in recurrences when
+there's recursive call we'll just write
+capital T of whatever the input length is.
+So we just have to figure out what the
+input length here is. It was N over five
+in step, in line three so we just have to
+figure out what it is in line six or
+seven. Oh yeah, now we're remembering why
+we didn't use recurrences when we
+discussed randomized quick sort and. The
+randomized selection algorithm. It's
+because we don't actually know how big the
+recursive call is, how big the input
+passed to this recursive call in line six
+or seven is. Line three, no problem. It's
+guaranteed to be twenty percent of the
+input array cuz that's how we defined it.
+But for line six or seven, the size of the
+input array that gets passed to the, to
+the recursive call depends on how good the
+pivot is. It depends on the splitting of
+the array A into two parts, which depends
+on the choice of the pivot P. So at the
+moment all we can write is T. Of question
+mark. We don't know. We don't know how
+much work gets done in that recursion,
+cause we don't know what the input size
+is. Let me summarize the results of this
+discussion. So write down a recurrence for
+the D select algorithms. So with T of N
+denote the maximum number of operations
+the D select ever requires to terminate an
+array of input [inaudible]. It's just the
+usual definition of T of N when using
+recurrences. What we established in our
+tally on the last slide is that deselects
+does linear stuff outside the recursive
+calls. It does the sorting of groups of
+five. It does the copying, and it does the
+partitioning. Each of those is linear, so
+all of them together is also linear. And
+then it does two recursive calls. One
+whose size we understand, one whose size
+we don't understand. So, for once I'm not
+going to be sloppy and I'm going to write
+out an explicit constant about the work
+done outside of the recursive cause. I'm
+going to write [inaudible], I'm going to
+actually write C times N for some constant
+C. So of course no one ever cares about
+base cases, but for completing this let me
+write it down anyways. When D select gets
+an input of only one element it returns
+it, what's called that one operation for
+simplicity. And then in the generals cases
+and this is what's interesting. When
+you're not in the base case and you have
+to recurs, what happens? Well you do a
+linear work outside of the recursive call.
+So that's C times N for some constant C. C
+is just the [inaudible] constant on all of
+our big thetas on the previous slide. Plus
+the recursive call in line three, and we
+know that happens on an array of size
+[inaudible] five. As usual, I'm not gonna
+worry about rounding up or rounding down,
+it doesn't matter. Plus our mystery
+recursive call on an array of unknown
+size. So that's where we stand and we seem
+stuck because of this pesky question-mark.
+So, let's prove lemma which is gonna
+replace this question-mark with something
+we can reason with, with an actual number
+that we can then analyze. So the upshot of
+this key lemma is that all of our hard
+work in our choose pivot subroutine in
+lines one through three bears fruit in the
+sense that we're guaranteed to have a
+pretty good pivot. It may not be the
+median, it may not give us a 50/50 split.
+Then we could replace the question mark
+with, one-half times N. But it's gonna let
+us replace the question mark by
+seven-tenths times N. Now, I don't wanna
+lie to you, I'm gonna be honest, it's not
+quite 7/10N, it's more like 7/10N minus
+five, there's a little bit of additive
+error, so, taking care of the additive
+error adds nothing to your conceptual
+understanding of this algorithm or why it
+works. For those of you who want a truly
+rigorous proof, there are some posted
+lecture notes which go through all the
+gory details. But in lecture I'm just
+gonna tell you what's sort of morally true
+and ignore the fact that we're gonna be
+off by three here and four there. And then
+we'll be clear when I show you the proof
+of this limit, where I'm being a little
+bit sloppy and why it really shouldn't
+matter, and it doesn't. So to explain why
+this key limit is true why we get a 30 70
+split or better guaranteed, let me set up
+a little notation. I'm getting sick of
+writing N over five over and over again,
+so let's just give that a synonym, let's
+say, K. So this is the number of different
+sort of first round matches that we have,
+the number of groups. I also want some
+notation to talk about the first round
+winners, that is the medians of these
+groups of five, the K first round winners.
+So, were gonna call XI the [inaudible]
+smallest of those who win their first
+round match and make it to the second
+round. So just to make sure the notation
+is clear, we can express the pivot element
+in terms of these X?s. Remember, the pivot
+is the final winner. It wins not only its
+first round tournament, but it also the
+second round tournament. It's not only the
+middle element of the first group of five.
+It's actually the median of the N over
+five middle element. It's the median of
+the medians. That is, of the K middle
+elements, it's the K over two order
+statistic, [inaudible] K over two
+smallest. I'm saying this, assuming that K
+is even. If K was odd, it would be some
+slightly different formula as you know. So
+let's remember what we're trying to prove.
+We're trying to prove that for our
+proposed pivot, which is exactly this
+element X sub K over two, it's exactly the
+winner of this 2-round knockout
+tournament. We're trying to argue that for
+this proposed pivot, we definitely get a
+30-70 split or better. So what that means
+is, there better be at least 30 percent of
+the elements that are bigger than the
+pivot. That way if you recurs on the left
+side on the first part, we don't have to
+deal with more that more than 70 percent
+of the original elements. Similarly, there
+better be at least 30 percent of the
+elements that are smaller than the pivot.
+That way if we recurs on the right hand
+side we know we don't have to deal with
+more than 70 percent of the original input
+elements. So if we achieve this goal, we
+prove that there's at least 30 percent on
+each side of XK over two, then we're done.
+That proves the key lemma that would get a
+30/70 split or better. So I'm gonna show
+you why this goal is true. I'm gonna
+introduce a thought experiment. And I'm
+gonna lay out it abstractly. Then we'll
+sorta do an example to make it more clear.
+And then we'll go back to the general
+discussion and finish the proof. So what
+we're gonna do is a thought experiment,
+for the purposes of counting how many
+elements of the input array are bigger
+than our pivot choice, and how many are
+smaller. So in our minds we're going to
+imagine that we're taking elements in A
+and rearrange them in a 2D grid. So here
+are the semantics of this grid. Each
+column will have exactly five elements
+that will correspond to one of the groups
+of five. So we'll have N over five columns
+corresponding to our N over five groups in
+our first round of our tournament.
+[inaudible] is not a multiple of five then
+one of these groups has size between one
+and four but I'm just not gonna worry
+about it, that some of the additive loss,
+which I'm ignoring. Moreover were going to
+arrange each column in a certain way so
+that going from bottom to top the entries
+of that go from smallest to largest. So
+this means that in this grid we have five
+rows. And the middle row, the third row,
+corresponds exactly to the middle
+elements, to the winners of the first
+round matches. So because these middle
+elements these first round winners are
+treated specially, I'm going to denote
+them with big squares, the other four
+elements of the group two of which are
+smaller two of which are bigger are just
+going to be little circles. Furthermore,
+in this thought experiment, in our mind,
+we're going to arrange the columns from
+left to right in order of increasing value
+of the middle element. Now remember, I
+introduced this notation X of I is the
+[inaudible] smallest amongst the middle
+elements. So a different way of what I'm
+trying to say is that the leftmost column
+is the group that has X1 as its middle
+element. So among the N over five middle
+elements, one of the groups has the
+smallest middle elements. We put that all
+the way on the left. So this is gonna be
+X1 in the first column, the smallest of
+the first round winners. X2 is the second
+smallest of the first round winners, X3 is
+the third smallest and so on. At some
+point we get to the median of the first
+round winners, XK over two. And then, way
+at the rights is the largest of the first
+round winners. And I'm sure that you
+remember that the median of medians which
+is XK over two is exactly our pivot. So
+this is our lucky winner. I know this is a
+lot to absorb, so I'm gonna go ahead and
+go through an example. If what I've said
+so far makes perfect sense, you should
+feel free to skip the following example.
+But if there's still some details you're
+wondering about, and hoping this example
+will make everything crystal clear. So
+let's suppose we have an input array. I
+need a, a slightly big one to [inaudible]
+grid make sense. Let's say there's an
+input array of twenty elements. So there's
+going to be the input array, which is in a
+totally arbitrary order. There's gonna be
+the vertical [inaudible] after we sort
+each group of five. And then I'm gonna
+show you the grid. So this is the input
+we're all gonna use. Let's now go ahead
+and delineate the various groups of five.
+So after sorting this group, you get the
+following. From each group there's a
+single winner mainly the middle element so
+that would be the twelve, and the six, and
+the nine, and the fourteen, those are the
+four survivors from the first round of the
+tournament. And the median of these four
+elements which, at the end of the day is
+gonna to be our pivot is the second
+smallest of the four, that's how we define
+the median from an even number of
+elements, so that's gonna be the nine. So,
+this first transformation from the input
+array, to this vaguely mini sorted version
+of the input array with the groups of five
+sorted, this we actually do in the code.
+This happens in the algorithm. Now, this
+grid we're just doing in our minds. Okay?
+We're just in the middle of proving why
+the algorithm is fast. Why the fit bits
+guaranteed to give us close to a, a 30 70
+split or better. So, let me show you an
+example of this grid in our mind, what it
+looks like for this particular input. So
+the grid always has five rows. The columns
+always have five elements cause the
+columns correspond to the groups. Here
+because N equals twenty and over five is
+four. So there's gonna be, four columns
+and five rows. And moreover we arrange the
+columns from left to right so that these
+middle elements go from smallest, to
+largest. So the middle elements are six
+nine twelve and fourteen and we're gonna
+draw the columns in that order from left
+to right. So first we'll write down the
+middle elements, the middle row from
+decreasing to increasing, six, nine,
+twelve, fourteen. Again the median of this
+is our pivot, which is the nine. And then
+each column is just the other four
+elements that goes along with this middle
+element from decreasing to increasing as
+we go from bottom to top. So this is the
+grid that we're been talking about on the
+other slide, in this particular example.
+So I hope that makes what we're talking
+about clear, what these X?s mean, and what
+worry we have amongst the rows, amongst
+the columns and so on. So let?s go back to
+the general argument. Here is the key
+point, here is why were doing this entire
+thought experiment, it?s going to let us
+prove our key limit. We're going to get a
+30/70 split or better. 30 percent of the
+stuff at least is less than the pivot; 30
+percent at least is bigger than the pivot.
+So why is there at least 30 percent of the
+stuff below the pivot? Why is the pivot
+bigger then at least 30%? Well, it's
+bigger then everything to the left and
+everything below the stuff to the left.
+That is we know that XK over two is bigger
+than the K over two minus one elements.
+That is to the left of it, those other
+middle elements that it's bigger then.
+That's because it's the median of the
+medians. >> So, if we just go straight
+west from the pivot we only see stuff
+which is less. Furthermore, these columns
+are arranged from decreasing to increasing
+order as we go from south to north, from
+bottom to top. So if you travel south from
+any of these smaller XMI we only see stuff
+which is still smaller. So all we're using
+in here is transitivity of the less than
+relation. If you go straight west you see
+stuff which is only smaller from any of
+those points if you go southward you'll
+see stuff which is even smaller than that.
+So this entire yellow region, everything
+southwest of the pivot element, is smaller
+than it. And that's a good chunk of the
+grid. Right? So for all of these columns,
+it's basically three out of the five, or
+60 percent of them are smaller than the
+pivot, and half of the columns,
+essentially, are in this part of the grid.
+So if the pivots bigger than 60 percent of
+the stuff in 50 percent of the groups that
+means it's bigger than 30 percent of the
+elements overall. And if we reason in an
+exactly symmetric way, we find that the
+pivot is also smaller than at least 30
+percent of the array. So to find things
+bigger than the pivot, what do we do?
+First we travel eastward. That gives us
+middle elements that are only bigger than
+it and then we stop wherever you want on
+our eastward journey and we head north,
+and we're gonna see stuff which is still
+bigger. So this entire north eastern
+corner. Is bigger than the pivot element,
+and again that's 50%, that's at 60 percent
+of roughly 50 percent of the groups.
+Returning to our example, the southwest
+region of the nine. Is this stuff, one,
+three, four, five, six. Certainly, all of
+that is smaller than the nine. You'll
+notice there's other things smaller than
+the nine as well. There's the eight,
+there's the two, there's the seven, which
+we're not counting. But it depends on the
+exact array. Whether or not, in those
+positions, you're gonna have stuff smaller
+than the pivot or not. So it's this yellow
+region we're guaranteed to be smaller than
+the pivot. Similarly, everything northeast
+of the pivot is bigger than it. Those are
+all double digit numbers and our pivot is
+nine. Again there's some other stuff in
+other regions bigger than the pivot, the
+twenty, the ten, the eleven, but again
+those are positions where we can't be
+guaranteed that it will be bigger than the
+pivot. So it's the yellow regions that are
+guaranteed to be bigger and smaller than
+the pivot, and that gives us the
+guaranteed 30 70 split. Okay, so that
+proof was hard work, showing that this
+deterministic choose pivot subroutine
+guarantees a 30-70 split or better. And
+you probably feel a little exhausted and
+like we deserve a QED at this point. But
+we haven't earned it. We have not at all
+proved that this deterministic selection
+algorithm runs in linear time. Why doesn't
+a guaranteed 30-70 split guarantee us
+linear time automatically? Well, we had to
+work pretty hard to figure out this
+element guaranteeing this 30-70 split. In
+particular we had to invoke another
+recursive call. So maybe this was a
+Pyrrhic victory. Maybe we had to work so
+hard to compute the pivot that it
+outweighs the benefit we'd get from this
+guarantee. 30 70 split. So, we still have
+to prove that's not the case even in
+conjunction doing both of these things, we
+still have our linear time bound. We'll
+finish the analysis in the next video.
+[sound].

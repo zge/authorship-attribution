@@ -1,0 +1,350 @@
+Welcome back.
+Now that we've learned that
+two-dimensional LSI systems,
+in producing the processed image, they
+perform the convolution
+of the input of the system with the
+impulses
+parts of the system and another through
+the signal.
+We can start getting our feet wet by
+playing around, in some sense,
+with various LSI image processing systems
+for which you know the impulse response.
+So for example, if the impulse response
+that
+went through the system is flat, over,
+say, a
+3 x 3 region, and flat means that its
+sample in the impulse response gives the
+same value.
+So for the 3 x 3 example, each sample has
+value equal to one over nine.
+So, in this case, what will the effect of
+such a system on an image going to be?
+You can write a simple program or a few
+lines to perform the
+convolution of the two images and we can
+utilize any images you have available.
+So, we can find out what this effect is
+going to be.
+We will see that the high frequency
+content of the images is reduced.
+The image will look blurry.
+The system with this 3 x 3 flat impulse
+response is a low-pass system, or a
+low-pass filter.
+We will also see examples of systems which
+would use the low frequency formation
+in an image and allow the high frequencies
+to go through the system unchanged.
+In this case, the edges in the image at
+the output of the system are pronounced.
+Such systems are referred to as high-pass
+systems or high-pass filters.
+We will show such examples early on in the
+course so that
+you obtain a good feel about the
+manipulation or filtering of images.
+We jump the gun, in some sense, in
+this segment by providing image noise
+smoothing examples and
+the extraction of edges in an image, which
+is a topic that we'll cover in week five.
+And this is the topic of image
+enhancement.
+We actually also show an example
+of filtering impulsive noise or more
+specifically,
+the so-called salt and pepper noise both
+with an LSI and a non-linear
+filter, for demonstrating that LSI filters
+are not appropriate for removing such type
+of noise while the non-linear filter or
+the medium filter specifically indeed is.
+So, it's always fun looking at the images,
+and let's proceed with the material of
+this segment.
+As we show, in processing an image with a
+linear and shifting variant system or in
+filtering the
+images we typically refer to, we're
+performing the convolution
+of the image with the impulse response of
+the system.
+In doing so, we need to have information
+about the image outside its borders or
+boundaries, which is typically information
+we don't have, since in most cases, the
+image is a windowed version of a larger
+scene, since we have a limited
+view of the larger scene through the
+camera lens or the sensor in general.
+So, let's look at this specific example.
+You see here on the left a synthetic
+image.
+It has 200 x 200 pixels.
+It is a binary image and therefore each of
+the
+squares is 50 pixels wider and and tall.
+We convolve this image with a 15 x 15
+symmetric flat filter.
+So the impulse response of the filter is
+centered at 0,0.
+The height of each sample of the impulse
+response is 1 over 255 so that if I sum
+all the samples, the sum is equal to 1.
+Clearly in finding a filtered value of the
+image, let's say, at this location of
+the boundary, I bring the flipped
+around impulse response for the system at
+this location, right?
+And it's clear that I need here a band
+with seven, seven columns for this
+particular
+filter of pixel values that I do not have,
+that do not belong to the image.
+So, for this particular example, I need to
+know a band of width 7 around the image.
+These boundary values.
+We also see down here, a line that goes
+through, around here the image.
+So, you see the black value 0, white value
+is 255, and so on.
+I have various ways to generate this
+boundary information.
+The first way is zero-padding, which means
+simply that I assume already acquired
+boundary values are equal to zero.
+With the symmetric method, the size of the
+image is extended by mirror deflecting
+it around its borders, and with the
+circular method, the image is periodically
+extended.
+If I look at all the results here and the
+one-dimensional line, it's the line in the
+same location through all the images,
+shown down here, it's clear that away
+from the borders, the result is identical
+in all cases.
+This is actually how the, this pulse here
+is,
+is shown, looks like after they perform
+the
+convolution with this particular symmetric
+filter.
+So it becomes narrow up here and then
+these sharp
+edges become smooth or become broader
+here, right?
+However, in all these four cases it's
+clear that the resulting images
+differ depending on how these boundaries
+were generated.
+It should be clear that there is no method
+of choice here.
+There's no kind of clear winner telling
+us which way the boundaries should be
+generated.
+We show here an example of a color image
+on the
+left being processed by a system with
+impulse response shown down here.
+It's a symmetric impulse response, which
+means that
+this is the h(0,0) value of the impulse
+response.
+It is called the low-pass filter because
+it allows
+the low spatial frequencies of the image
+to go
+through it while rejecting the high
+frequencies, then this
+concept will become clearer later in the,
+in the course.
+But this manifests itself by looking for
+example,
+at this part of the original image, you
+see
+the fine branches there in it, while it's
+harder
+to do in the low-pass filter or blurred
+image.
+For this 3 x 3 filter, I need the boundary
+of width one around
+the image to process it and to
+use the symmetric method that we mentioned
+earlier.
+Finally this is a color image and in
+processing it we process each of the
+three channels, the RGB channel separately
+with
+the impulse response of the filter shown
+below.
+This is the same type of experiment as the
+previous one.
+You see original image on the left and the
+filtered one is shown on the right.
+The impulse response of the filter is
+different now.
+It's flat, it has a bold 5 x 5, and all
+the values are the same, 1 over 25.
+We see that with this filter, the blurring
+effect is more severe.
+In other words more, higher frequencies
+are rejected
+or attenuated as compared to the previous
+case.
+We show now the result of processing the
+same image
+with a filter with the impulse response
+shown down here.
+It's a symmetric filter.
+So this is the h(0,0) value of the impulse
+response.
+And this now is a high-pass filter, which
+means that the low frequencies are
+attenuated or rejected, while the
+high-spatial frequencies
+are allowed to go through the filter.
+And high-spatial frequencies manifest
+themselves in
+regions of the image where we see
+large variation in intensity values, and
+these are the edges of the image.
+So this type of filter performs edge
+detection for the given image.
+One of the uses of low-pass filtering is
+to remove noise
+that might have been added, might be
+present in an image.
+So, on the left you see the same image
+we've been working with, to which noise
+has been added, IID Gaussian noise with
+peak signal to noise ratio around 25 db.
+So, this image is processed with the same
+figures that we used before.
+This is the h(0,0) value of the impulse
+response.
+And on the right you see the processed
+image.
+Some of the noise has been removed, as
+hopefully
+somebody can see by looking at this image,
+while at
+the same time the price one pays is that
+the
+image is now blurred as compared to the
+original one.
+We'll talk about noise reduction and other
+enhancement techniques later in the
+course.
+Here's another example of noise filtering.
+You see on the left the image we've
+been working with, to which noise has been
+added.
+But this time, time the noise is not this
+Gaussian broadband noise but instead is a
+type of
+noise we're referring to as salt and
+pepper, since
+it resembles throwing salt and pepper on
+the image.
+It's actually colored salt and pepper
+because the salt and pepper type of
+noise is added on the three
+channels separately and gives this colored
+appearance.
+So, if we apply again the filters shown
+here to this
+image as impulse response of the filter
+we've used multiple times before.
+You see the processed image on the right.
+So in this particular case the filter is,
+does not do such a
+great job because it doesn't really remove
+the noise, but instead it correlates it.
+For this type of salt and pepper noise
+another filter referred to as median
+filter, it's
+a non-linear filter, is doing a
+considerably better
+job than the low-pass filter we used
+before.
+So on the left you see the same image that
+I showed in the previous slide.
+And on the right the result of processing
+the image
+on the left with a 3 x 3 median filter.
+Clearly in this case the salt and pepper
+noise is
+greatly removed and this is a considerably
+improved quality image.
+We'll cover all these things in much
+more detail when we talk about image
+enhancement.
+So, we reach the end of week two.
+During this week we learned some
+fundamental concepts for 2D signals and
+systems in the 2D spatial domain, a crash
+course in 2D system theory, you might say.
+The concepts we've discussed in 2D are
+reduced to one dimension
+or extended to multi-dimensional signals
+and
+systems in a rather straightforward way.
+So we learned, for example, what is a
+linear and spatial invariant system?
+We also learned that complex exponentials,
+sines and
+cosines go through such systems without
+changing their frequency.
+We will actually see next week that this
+complex exponentials are the building
+blocks of any signal.
+We also learned that 2D LSI systems can be
+uniquely characterized by a
+two-dimensional signal which is called
+the impulse response of the system, and it
+is
+indeed the response of the system to an
+impulse.
+This quantity can typically be measured.
+You can take a photograph with your camera
+of a page which
+is black everywhere and only has a white
+spot in the middle.
+The signal, the impulse response is all we
+need to fully describe the
+system, a very powerful signal and a very
+compact description of the LSI system.
+With the knowledge of the impulse response
+of
+the systems, we can then find the output
+of
+the system for any input, by simply
+convolving the
+input image with the input response of the
+system.
+What we have covered so far is extendable
+to dimensions larger than two.
+So this is a, in a sense,
+a mini-introduction to multi-dimensional
+digital signal processing.
+I expect that you'll feel very content now
+when you pick up a
+book or an article on image processing,
+and feel very comfortable with its
+content.
+What
+we will do next week is to take what we've
+learned this week to the frequency domain.
+It is worth it because if nothing else, in
+finding out the output of an LSI
+system, instead of convolving two signals,
+we can
+instead multiply their spectra, a much
+simpler operation.
+So, I'll see you next week in the
+frequency domain.
+

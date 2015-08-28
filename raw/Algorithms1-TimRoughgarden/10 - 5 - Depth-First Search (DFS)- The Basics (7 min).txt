@@ -1,0 +1,211 @@
+Let's explore our second strategy for
+graph search, namely depth-first search.
+And again, like with breadth-first search,
+I'll open by just reminding you what the
+depth-first search is good for. And we'll
+trace through it in a particular example
+and then we'll tell you what the actual
+code is. So if breath-first search is the
+cautious and tentative exploration
+strategy, then depth-first search or DFS
+for short is its more aggressive cousin.
+So the plan is to explore aggressively and
+only backtrack when necessary. And this is
+very much the strategy one often
+uses when trying to solve a maze. >>To
+explain what I mean, let me show you how
+this would work in the same running
+example we used when we discussed breath-first
+search. So here if we invoke depth-first
+search from the node number S.
+Here's what's gonna happen, so obviously
+we start at S and obviously there's two
+places where we can go next. We can go to
+A or, or to B, and depth-first search is
+underdetermined like breath-first search, we
+can pick either one. So like with the
+breath-first search example, let's go to A
+first. So A will be the second one that
+we explore. But now unlike breadth-first search
+where we automatically went to node B
+next, since that was the other layer one
+node, here the only rule is that we have
+to go next to one of A's immediate
+neighbors. So we might go to B but we're
+not going to B because it's one of the
+neighbors of S, we go because it's one of
+the neighbors of A, and actually to make
+sure the difference is clear, let's assume
+that we aggressively pursue deeper and we
+go from A to C. And now the depth-first
+search strategy is, again, just to pursue
+deeper. So, you go to one of C's immediate
+neighbors. So, maybe we go to E next. So,
+E is going to be the fourth one visited.
+Now, from E there's only one neighbor, not
+counting the one that we came in on. So,
+from E we go to D. And D is the fifth one
+we see, now from D we have a choice, we
+can either go to B or we can go to C. So
+let's suppose we go to C from D. Well then
+we get to a node number three, where we've
+been before, okay? And as usual we're
+going to keep track of where we've already
+been. So at this point we have to
+backtrack from C back to D, we retreat to
+D. Now there's still another outgoing edge
+from D to explore, namely the one to B.
+And so what happens is, we actually wind
+up wrapping all the way around this outer
+cycle. And we hit B sixth. And now, of
+course, anywhere we try to explore, we see
+somewhere we've already been, so from B we
+try to go to S, but we've been there, so
+we retreat to B, we try, we can try to go
+to A, but we've been there, so we retreat
+to B. Now we've explored all of the
+options out of B. So we have to retreat
+from B, we have to go back to D. Now from
+D we've explored both B and C, so we have
+to retreat back to E. E we've explored the
+only outgoing mark D, so we have to
+retreat to C. C we retreat to A. From A,
+we actually haven't yet looked along this
+arc. But that just sends to B where we've
+been before. So then we retreat back to A.
+Finally, we retreat back to S and S, even
+at S there's still an extra edge to
+explore. At S we say, oh we haven't tried
+this S-B edge yet but, of course, when we
+look across, we get to B where we've been
+before and then we backtrack to S. Then
+we've looked at every edge once and so we
+stop. That's how depth-first search works.
+You just pursue your path. You go to an
+immediate neighbor as long as you can
+until you hit somewhere you've been before
+and then you retreat. >>So
+you might be wondering you know why bother
+with another graph search strategy. After
+all we have breadth-first search which seems
+pretty awesome right? It runs in linear
+time. It's guaranteed to find everything
+you might wanna find. It computes shortest
+paths. It computes connected components if
+you imbed it in a for loop. Kinda seems
+like what else would you want? Well, it turns
+out depth-first search is gonna have its own
+impressive catalog of applications which
+you can't necessarily replicate with
+breadth-first search. And I'm gonna focus on
+applications in directed graphs. So
+there's gonna be a simple one that we
+discuss in this video. And then there's
+gonna be a more complicated one that has a
+separate video devoted to it. So in this
+video, we're gonna be discussing computing
+topological orderings of directed acyclic
+graphs. That is, directed graphs that have
+no directed cycle. The more complicated
+application is computing strongly
+connected components in directed graphs.
+The run time will be essentially the same
+as it was for breadth-first search and
+the best we could hope for which is linear
+time. And again, we're not assuming that
+there's necessarily that many edges. There
+may be much fewer edges than vertices.
+So, linear time in these connectivity
+applications means O(M+N). >>So let's
+now talk about the actual code of
+depth-first search. There's a couple ways
+to do it. One way to do it is to just make
+some minor modifications to the code for
+breadth-first search. The primary
+difference being instead of using a queue
+at its first-in-first-out behavior, you
+swap in a stack where it's last-in-first-out
+behavior. Again, if you don't know
+what a stack is you should read about that
+in the programming textbook or on the web.
+It's something that supports constant-time insertions to the front and constant
+time deletions from the front, unlike a
+queue which is meant to support constant-time
+deletions to the back. Okay, so
+stack. It operates just like those
+cafeteria trays that you know where you
+put in a tray, and the last one that got
+pushed in, when you take the first one
+out, that's the last one that got put in.
+So these are called push and pop. In a
+stack context, both are constant time. So
+if you swap out the queue, you swap in the
+stack, make a couple other minor
+modifications, breadth-first search turns
+into depth-first search. For the sake of
+both variety and elegance, I'm, instead,
+gonna show you a recursive version. So
+depth-first search is very naturally
+phrased as a recursive algorithm, and
+that's why we'll discuss here. So depth-first
+search, of course, takes as input
+a graph G. And, again, it could be
+undirected or directed, it doesn't matter.
+Just, with the directed graph, be sure
+that you only follow arcs in the
+appropriate direction, which should be
+automatically handled in the adjacency
+lists of your graph data structure
+anyways. So, as always, we keep
+a boolean local to each vertex of the
+graph, remembering whether we've,
+start, we've been there before or
+not. And of course as soon as we start
+exploring for S, we'd better make a note
+that, now we have been there. We better
+plant a flag, as it were. And remember,
+that depth-first search is an aggressive search.
+So we immediately try to recursively
+search from any of S's neighbors that we
+haven't already been to. And if we find such a
+vertex, if we find, somewhere we've
+never been, we recursively call depth-first
+search, from that node. The basic
+guarantees of depth-first search are
+exactly the same as they were for
+breadth-first search. We find everything we
+could possibly hope to find and we do it
+in linear time. And once again the reason
+is this is simply a special case of the
+generic search of procedure that we
+started this sequence of videos about.
+So it just corresponds to a
+particular way of choosing amongst
+multiple crossing edges between the region
+of explored nodes and the region of
+unexplored nodes, essentially always being
+biased toward the most recently discovered
+explored nodes. And just like breadth-first
+search, the running time is going to
+be proportional to the size of the
+component that you're discovering. And the
+basic reason is that each node is looked
+at only once, right? This boolean makes
+sure that we don't ever explore a node
+more than once and then for each edge, we
+look at it at most twice, one from each end
+point. And given that these exact same two
+claims hold for depth-first search as for
+breadth-first search, that means if we
+wanted to compute connected components in
+an undirected graph, we could equally well
+use an outer for loop with depth-first
+search as our work horse in the inner
+loop. It wouldn't matter. Either of those
+for undirected graphs, depth-first search,
+breadth-first search is gonna find all the
+connected components in O(M+N) time,
+in linear time. So, instead, I wanna
+look at an application particular to depth-first
+search, and this is about finding a
+topological ordering of a directed acyclic graph.

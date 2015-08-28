@@ -1,0 +1,160 @@
+In this segment, I'm going to talk about
+why NLP researchers adopted an empirical
+approach using data and statistics for
+making progress on the problem of
+parsing the structure of human
+language sentences. What was the situation
+that existed before that? Well the classic
+way of parsing, by which I mean before 1990,
+was that people would write a grammar,
+which might be a phrase structure grammar or
+a context free grammar, those two terms
+are equivalent or might be of a more
+complex format and a lexicon. So
+something like this baby example that
+I've shown here. And once you had a
+grammar of that sort, you can then use a
+grammar parsing system or a proof system
+to find allowed parses for a string of
+words. The problem with this approach is
+that its scaled very badly to the kind of
+sentences that people typically write and
+say, and didn't give a suitable solution
+to that problem. Let me try and give
+some indication of the problem.
+So consider the full version of this sentence
+that we've used as an example before:
+Fed raises interest rates 0.5 percent in
+effort to control inflation. If I as a
+linguist write a grammar that's not
+completely crazy, but is the smallest
+possible grammar that can parse that
+sentence, and then say, parser, parse
+this sentence. What I find is the grammar
+already allows 36 parses for that
+sentence. If I write a slightly more
+general grammar, which will allow other
+things that commonly happen in natural
+language sentences, well then suddenly my
+grammar allows 592 parses for this
+sentence. And if we then look at the kind
+of broad coverage grammars that are
+actually used in the statistical parsers
+we'll talk about soon, and I try and parse
+this sentence, I find this sentence has
+millions of parses. So you can see that
+we've got a problem that's kind of
+out of control. So classical parsing was
+stuck between two problems. On the one
+hand you could try and put a lot of
+constraint on grammars to limit their
+ability to generate weird and unlikely
+parses for sentences. But the problem was
+that to the extent that you did that, the
+grammar became very non-robust. So it was
+quite common in traditional systems that
+even if you gave them well edited text
+like news-wire articles that, you know,
+something like a third of the sentences
+would have no parse whatsoever. But on the
+other hand if you made the grammar looser
+so it could parse more sentences, what you
+found is that even extremely simple
+sentences started getting more and more
+unlikely and weird parses. And you didn't
+have any good way to choose between them.
+So what we need is a system of grammar
+that's flexible enough that it can deal
+with the flexible ways in which humans use
+language in their daily life, but is
+predictive enough that will, it will allow
+us to choose the correct or likely parse
+for a sentence. And so that's precisely
+what the statistical parsing systems that
+we'll look at in these lectures allow us to do.
+How can you build a statistical
+parsing system? That's where the topic of
+data comes in and so the huge enabling
+factor for being able to build statistical
+parsing systems was the development of
+treebanks. And here I'm showing an example
+sentence from the Penn Treebank which was
+the earliest widely available treebank
+and still the most famous. So what, we've
+shown examples of treebank sentences
+before but what you actually get in the
+treebank is these kind of structures.
+So the sentence tree structure is being
+indicated by these parentheses which are
+nested to show constituency. If you're an
+old time Lisp programmer, this should look
+to you like as, and indeed is Lisp S
+expressions. So this is giving the
+structure of a sentence with noun phrases
+and verb phrases and various other things.
+So these markings also will indicate empty
+elements of various kinds, and also sort
+of various functional annotations. So this
+says that this is the subject of the
+sentence. And so, once we had this kind
+of annotated data we're then in a position in
+which we can use machine learning
+techniques to train parsers to say what is
+the most likely parse for a sentence.
+We're also in a much better position to
+build robust parsers because we have a lot
+of sentences that give us some kind of
+indication of what kind of flexibility of
+structure we need to admit into our
+languages to be able to parse typical
+language use. And so this was a
+revelation, that if you're starting off,
+it actually seems like building a
+tree-bank is a lot of work with very low
+payoff, cause the whole power of writing
+rules of grammar is you can write one rule
+and it generalizes to thousands, millions,
+in fact, an infinite number of possible
+sentences. Whereas, building a tree-bank,
+you're taking one sentence at a time and
+parsing it. So that seems slower and less
+useful. But actually a tree-bank gives us
+many, many useful things. It gives us
+reusability. Normally the parser of one
+person was completely not used in
+developing the parser of another person.
+It was done completely independently. But now
+we've been able to build many, many parsers,
+part of speech taggers, etc. off
+Penn treebank data. And it also has other wider
+uses. So for example many linguists now
+use the Penn treebank as a source for
+testing out and developing hypotheses about
+language. The Penntree bank gives
+us something that is, broad coverage. It
+gives us the statistics that'll allow us
+to choose between parses, and it
+gives us another thing that's proved to
+be incredibly important. It gives us a way
+to evaluate parsers on a common testbed so
+that we have good data on which
+parsers are better or worth than other
+parsers. Now of course these days the Penn
+treebank isn't the only parser. There are
+now dozens of treebanks. There are both
+treebanks for different languages and treebanks
+for different genres. The original Penn
+treebank was just newswire. It's been
+extended to some other genres. But now
+there are other treebanks that cover
+things like, well biomedical English is one
+popular domain, but also other things like
+looking at various kinds of informal texts and
+more specialized kinds of English usage
+such as treebanks of questions.
+Okay, so I hope that's motivated for
+you why it's been important to take an
+empirical approach in developing parsing 
+systems for human languages and the
+great value that we've been able to get 
+from having data resources like treebanks.

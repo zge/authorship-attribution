@@ -1,0 +1,155 @@
+So far, we've been talking about running
+time. Now we have to talk about the memory
+requirements over our programs as well.
+Well, the basics are we want to know how
+many bits the program use or bytes, eight
+bits at a time. And actually, we'll be
+talking in terms of millions of bits or
+billions of bits and actually surprisingly
+there is a controversy about even these
+basic definitions. Computer scientists
+think of a million bits is two^20 and a
+billion is two^30 because that's a number
+of possible things that you can fit into
+30 bits and everything is consistent with
+our calculations. Other scientists stick
+to one million or one billion for a lots
+of reasons we'll usually use two^20, I
+mean, a megabyte. Now an old computers we
+used to for many years, we use a 32-bit
+machine so that pointers were four bytes.
+Just in recent years we've mostly switched
+to a model where machines are 64-bits and
+pointers are eight bytes. That allows us
+to address much more memory but pointers
+use much more space and actually this
+transition caused a lot of problems
+initially because programs were using way
+more space than people thought they
+should. You're not going to have to go
+through this kind of transition the way
+that we did because 64 bits is definitely
+enough to address anything that you might
+need to address, two^64 is really a huge
+number. So in terms of bytes we have to
+start out with typical memory usage. Now,
+again, this is very dependent on machine
+and implementation but these numbers are
+reasonable and are found on typical
+implementations. So a boolean, it will be
+nice of a boolean just took a bit cuz
+that's just true or false but actually,
+usually we have to count for a byte for a
+boolean. All byte is a byte. Character
+nowadays is two byte, 16-bit characters.
+Not that a long ago we used eight bit for
+chars. Integer regular int is four bytes
+or 32 bits and a float is also four bytes
+long int is eight and a double is eight.
+Usually, we use double for floating point
+and ints for integers in most
+applications. So, that's for primitive
+types. And then for arrays there's a
+certain amount of overhead for making an
+array and then if there's n items, it's
+whatever the cost of the primitive type
+times n so an array of doubles is say 8n +
+24. And two-dimensional array then well,
+we can go ahead and compute the exact
+thing but now, now, it's time to use, the
+tilde notation. And then for arrays we
+could say a double is tilde 8n for
+one-dimensional. For two-dimensional,
+two-dimensional array of doubles is tilde
+8mn. And there's extra terms for the over
+head but for large m and n that's going to
+be pretty accurate. So, that's our basic
+usage for primitive types and arrays in a
+typical Java implementation. Now, a lot of
+our programs and objects like link list
+and so forth. So, we have to also factor
+in object overhead to crossover reference
+and also there's padding built in, in
+typical implementations to make it so that
+each object has used a multiple of eight
+bytes. So, for example if you have a date
+object that had three int instance
+variables then that object would take a
+total of 32 bytes. Each int takes four
+bytes, object overhead is sixteen bytes.
+It needs four bytes for padding so it's a
+total of 32 bytes. So and the other one
+that often comes up is a string and the
+string is a little bit more complicated
+than a than an array but the typical
+implementation of a string in Java has a,
+a reference out to an array of characters
+and then, its got int values for offset
+count in a hash value and then some
+padding and adding it all together the
+[cough] cost of the string is about 2n +
+64 bytes. So, these are the basics that we
+need to analyze the memory usage for a
+typical Java program. A h, so for
+primitive, for data type value, if it's a
+primitive type it's four for an eight, and
+eight for a double, and so forth. If it's
+a reference, it's going to be eight bytes
+and that's for the pointer takes array 24
+bytes plus the memory for each entry in an
+object sixteen bytes plus the memory for
+the instance variable plus if there's an
+inner class , it's another eight bytes as
+we talked about with nodes for link list.
+And then there's the padding. So then we
+have to, to think about who is responsible
+for referenced objects, you know, in, in
+some cases. And we'll take care of that
+when we get to these situations. So, as an
+example, a simple example of memory use
+analysis, let's take a look at how much
+memory are rated quick union UF function
+from a, a few lectures ago, uses as a
+function of n. And there's only a couple
+of memory elements and each one of them
+are easily analyzed using the basics that
+we just gave it's an object so the sixteen
+bytes of object overhead there's two int
+arrays. Each one of them have array
+overhead of 24 plus and then 4n for the n
+entries. Each and vn entries takes four
+bytes and there's four bytes for the count
+and there's four bytes for the padding and
+if you add it altogether it gets 8n + 88
+which is tilde 8n and again, all that's
+saying is when n is large, all we are
+going to care about in terms of analyzing
+the memory is that we've got [cough] 2n
+integers two arrays of size n each one of
+which takes four bytes for a grand total
+of 8n bytes. Okay. So, in summary we
+really can figure out how many times we
+have to turn the crank on modern
+computers. We can do it with empirical
+analysis where we actually execute the
+program, can do experiments and use
+[inaudible] power law, formulate
+hypothesis and make predictions. But we
+can do more, we can do mathematical
+analysis where we can identify the most
+costly operations, analyze the frequency
+of execution of those operations and using
+the tilde notation to simplify analysis.
+We can actually explain the behavior, not
+just predict it. And this is a fine
+example of the use of the scientific
+method to understand the artifacts that
+we're studying, the algorithms. Our
+mathematical models are usually
+independent of a particular computer
+system and even implied to machines that
+are not yet built. But we always validate
+our mathematical models by running
+experiments on real machines so that we
+can be confident where we're making
+predictions and analyzing algorithms.

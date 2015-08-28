@@ -1,0 +1,479 @@
+Hello again.
+The formulations or reformulation tricks
+are very
+commonly used in optimization, and they're
+very effective.
+In this segment, we'll examine two such
+tricks, which allow
+us to solve the so-called basic pursuit
+and LASSO problems.
+The first one, the positive negative split
+trick tells the basic pursuit problem
+into a linear program and the lawsuit
+problem into a quadratic program.
+The same is true for the second trick, the
+suppression trick.
+We will also look at dictionary
+techniques, which are very widely used.
+The idea is simple.
+We want to learn a representation scheme
+for the actual
+data instead of relying on fixed basis
+such as the DCT.
+Generally speaking, a better
+representation
+performance results in this case.
+So, let us proceed with the details of
+this section.
+[BLANK_AUDIO]
+Very often in solving optimization
+problems that involve the L1 norm, we
+end up having to solve with a linear
+program or a quadratic program.
+So, let us look first at the basic idea
+behind the linear program.
+Is defined by these mathematical
+expressions.
+The objective function is linear in x and
+the constraints are linear inequalities.
+That you might think interpretation of a
+linear program is quite
+straightforward, the linear inequalities
+define a polyhedron and this
+is the value of x inside the polyhedron,
+that form the visible region.
+The objective, if I set C transpose X
+equal
+to a constant C3 for example, define a
+hyperplane.
+So we see here 3 different hyperplanes for
+3 different values of C.
+C3, so C2 is less than C3, C1 is less than
+C2.
+So, we want the minimum of C transpose X,
+as long as this X belongs to the feasible
+regions.
+So we can start here, we keep decreasing
+C, we move this direction.
+So this is, the objective is smaller here,
+but no X belongs to the feasible region,
+and
+therefore the solution is for this X star,
+where again X star belongs to the feasible
+region.
+There are a large number of algorithms for
+solving linear programs very efficiently,
+including interior-point method, simplex
+method, and active set methods.
+The name of the solver for example in
+Matlab is Linprog.
+[BLANK_AUDIO]
+So the basic idea is that as long as we
+can reformulate the
+given prog, problem optimization problem
+to take this form here, we realize that
+we have a linear program to solve and
+we're not going to spend any more time
+just talking about the various approaches
+for solving such problem.
+But we are fully aware that we can really
+utilize a large number of
+solvers for obtaining a, an efficient
+solution to this linear program.
+A quadratic program has the form shown
+here.
+The constraints are linear again, but now
+the objective is a quadratic function of
+x.
+So the geometry of this problem is shown
+here.
+Again the constraints define the
+polyhedron and in, since here we have less
+equal the surface above the polyhedron
+belongs also to the feasible region.
+And if we set the objective equal to
+a constant, then we have a contra shown
+here.
+So this is the quadratic equal to C1,
+equal to C2, equal to C3.
+So, we want the smallest possible value of
+the quadratic, which would be
+here for example, but we need that x
+belongs to the feasible region.
+Therefore, the optimal solution is
+obtained by this point.
+This is also an extremely well studied
+problem with a lot of theoretical results,
+but also with specific solvers available
+that one can utilize to obtain solutions.
+The Matlab solver is called quadprog.
+[BLANK_AUDIO]
+I should mention here that if we have a
+constraint in the form of equality, it
+can be handled for both by a linear
+quadratic program, by writing the equality
+as to inequalities.
+So, for both cases of linear and quadratic
+programs, as long as we can bring
+the optimization problem wherein this the
+D after
+reformulation into the one or the other
+form.
+Then we know that there're a number of
+efficient solvers we can utilize and
+obtain efficient solutions.
+The L1 norm is not differentiable at the
+origin.
+Because of this, when we deal with
+optimization problems that involve the L1
+norm, we cannot resort to taking
+derivatives or gradients of the objective
+function.
+We will introduce two reformulation tricks
+that transform this sparse
+optimization problem into well-studied
+Linear and Quadratic programs.
+We know that efficient solvers exist for
+solving such
+problems and we can resolve to utilizing
+these solvers.
+The first trick to consider is the
+positive negative split trick.
+Given a vector X with entries X or Y, we
+can
+write each of them as P of I minus N of I.
+P of I is the positive part, defined as
+equal to X of I for
+X of I positive and 0 otherwise N of I is
+the negative part
+defined as minus X of I if X of I is
+negative and 0 otherwise.
+As an example, let us consider the vector
+with entries 2 minus 3, 0, 5.
+Then,
+B1 is equal to 2.
+And 2 is equal to 3.
+B4 is equal to 5.
+You can, I write the vector X as the P
+vector,
+which has entries 2, 0, 0, 5, minus
+an N vector with entries 0, 3, 0, 0.
+So this is a P vector minus an N vector.
+Then with this splitting of the positive
+and negative parts,
+the L1 norm of X, it's simply the inner
+product of this vector
+here, this vector has all ones for the
+problem at hand.
+It's the transpose of the column vector so
+it has entries
+1, 1, 1, 1 and then I form the inner
+product of
+the P vector, which we just saw it's 2, 0,
+0,
+5 plus the N vector which is entries 0300.
+And it's pretty straightforward.
+It's obvious, almost I would say that this
+is indeed the L1 norm of X.
+Due to this, the composition it's also
+clear that the inner product
+of P and N is equal to 0 because a
+number cannot be positive and negative at
+the same time.
+So whenever P has an entry and has a 0 and
+the other way around.
+[BLANK_AUDIO]
+Let us now utilize the positive negative
+split trick to
+turn this bases pursuit problem into a
+linear problem.
+We write X is equal to P minus N, and
+then the basis pursuit problem can
+be written as the minimization over
+P and N of 1 transposed B plus N as we
+saw that's the L1 normal of X,
+subject to AP minus N equals B.
+Where P and N are both non-negative and P
+transpose n is equal to 0.
+This last constrain actually is not
+needed, since it can be shown by
+contradiction that an optimum, this
+equation holds
+the inner product is equal to 0.
+So, we can disregard this.
+So now if we use a new variable, Z equals
+to P N,
+then we can rewrite the problem as the
+minimization of 1
+transpose Z over Z,
+subject to CZ=B, where Z is not
+negative and the matrix C is equal to AF
+where F is this matrix that
+has the N by N identity here as the first
+part and the minus N by N identity as the
+second part.
+So this is an N times 2N matrix.
+[BLANK_AUDIO]
+So this is easily recognizable as a linear
+program.
+The objective is linear and the
+constraints as linear.
+And those are a dimension the equality can
+berate them as two inequalities.
+We should comment here however that we
+have doubled the dimensions of the input
+space.
+That is now we're minimizing over P and N
+to
+variables that each of them is of equal
+size, 2x.
+However, this is not a huge problem since
+as already mentioned,
+there are very efficient solvers for
+providing solutions to this LP problem.
+We
+will show here that using the
+positive-negative split trick, we
+can turn this, the LASSO problem into a
+quadratic program.
+So that the composition is that x=p-n,
+based on which we can rewrite the
+objective as
+the minimization of LPN of AP minus N
+minus B.
+L two squared plus lambda therein a
+product of 1
+with P plus lambda [UNKNOWN] product of 1
+with N.
+And in the condition that both these guys
+are no negative and P transpose N equals
+0.
+As mentioned earlier, at the optimum this
+condition is satisfied.
+We can prove this by contradiction and
+therefore we don't need to carry with us.
+Using the new variable Z as the
+concatenation of the positive and negative
+part, one can show in a straightforward
+way that lasso takes this form.
+[BLANK_AUDIO]
+The minimization of Z, opposite transpose
+BZ plus we
+transpose Z under the constraint that Z is
+not negative.
+Well the matrix B is equal to this.
+[BLANK_AUDIO]
+And C is equal to lambda 1.
+[BLANK_AUDIO]
+Now that they gave you actually this form,
+you can just substitute
+in here B and C and find indeed the
+expression for the LASSO.
+So, it's easily recognizable that here we
+have a quadratic program.
+The objective is quadratic, the constrains
+are linear.
+There for we can utilize any of
+the available solvers for obtaining a
+solution.
+The same comment would be made again that
+we double the size of the unknowns
+instead of 1x we have two unknowns now, P
+and N of the same dimension.
+However this does not present a major
+issue since again we have efficient
+solvers.
+We will use the suppression trick now to
+turn the basis pursuit problem into a
+linear program.
+We will introduce a variable S with
+elements,
+it's a vector S with element S of K.
+Such that the absolute value of X of K is
+less equal than S of K.
+So this is the suppression variable.
+Based on this variable, we can rewrite the
+basis pursuit problem as
+the minimization with respect to X and S
+of the
+inner product of 1 with S,
+subject to the constraint that AX equals
+B.
+Each X of K is less equal than S of K,
+for all values of K, and the vector S is
+non-negative.
+[BLANK_AUDIO]
+We can express each absolute value and
+equality
+here as two linear inequalities and this
+here
+problem becomes as the minimization again
+of
+this inner product subject to again AX
+equals B.
+But now X of K is less than S of
+K, or K while X of K is greater
+than, equal minus SK for all
+K, NS is non-negative.
+So, this is now easily recognizable as
+a linear program, linear objective and
+linear constraints.
+And we can use again any of the many
+efficient solvers to solve it.
+The dimensionality of the space doubles
+here instead of
+1 variable X they have X and S now.
+But, again, assuming that they have
+efficient solvers of
+the LP problem, this does not present a
+major issue.
+There're a large number of optimization
+methods
+or tools for solving the various
+optimization
+problems that we have been discussing
+here,
+which involve the L0 and the L1 norms.
+The solution approaches we discussed were
+done so to give you a flavor of how one
+can go about solving such problems, but
+anything
+more advanced is beyond the scope of this
+course.
+I just want to mention here some other
+methods.
+So variations of matching pursuit and the
+[UNKNOWN] matching
+pursuit as shown here is the StOMP and the
+CoSaMP.
+Variation of the methods we discussed to
+solving the lawsuit
+problem is FISTA and some of the popular
+and powerful
+techniques is ADMM, Alternating Direction
+Method of Multipliers,
+according to which the problem at hand is
+brought into this formulation.
+So there are two functions, F of X and G
+of Y.
+They're minimized with respect to X and Y,
+and
+the constraint just connects the X and Y
+variables.
+In many applications, we have multiple
+observations B of I, we have
+B1, all the way to B of N, and we want for
+each of
+them to find the sparse representation,
+utilizing a dictionary A.
+So, X1 is a sparse vector, X of N is also
+a sparse vector with the same sparsity.
+Instead of solving each of these problems
+separately, we
+can combine them into one problem, as
+shown here.
+The matrix, matrix equation now looks like
+this.
+So, into matrix B, we have stuck the B of
+I vector, so the B1
+observation is here, the B2 observation in
+this column and all the way to the BN.
+Observation, while the sparse
+representation X1 is the first
+column, X2 the second one, all the way to
+XN.
+Here F denotes the frobenius norm of a
+matrix.
+So the frobenius norm over matrix A, it's
+simply the square root
+of the sum over IJ of all its elements AIJ
+squared.
+Instead of using a static dictionary, an
+interesting question is if we
+can do a better representation of the data
+B if we solve for a dictionary.
+If we find the dictionary that is most
+appropriate
+for the class of data we are interested in
+representing.
+So A becomes an unknown in this case.
+The answer is yes, we can design a
+dictionary by solving the optimization
+problem described here.
+So, we minimize the frobenius norm as
+before, but now not only
+in terms of x but also in terms of A, the
+dictionary.
+The constraint remains the same that each
+and every
+column of matrix X is sparse with the same
+sparsity.
+The next question clearly is how to
+go about solving such an optimization
+problem.
+So here is the dictionary design problem
+we're interested in solving.
+We want to minimize the Frobenius norm of
+this error with respect to both A and X.
+Subject to this sparsity constraint on
+their presentation vector.
+According to the method of optimal
+directions,
+we alternate optimization between A and X.
+So we first fix A and solve for X.
+So, we minimize with respect to S, X
+subject to this constraint, and
+we can use a matching pursuit type of
+approach to obtain a solution.
+Then we are fixing X and solving for A, so
+then there's no constraint imposed.
+We have a non-constraint problem, and this
+is a [UNKNOWN] type of problem
+for ways we can find a closed-form
+solution, which is given by this
+expression.
+We solved similarly squares problems
+multiple times so far, so
+it should not be difficult to obtain this
+solution as well.
+So this is the general approach of
+alternating minimization
+and depending on what is fixed and what
+we're solving
+for, we can either use a closed form
+expression or
+we can use a matching pursuit type of
+greedy algorithm.
+For the dictionary design problem, instead
+of the L0
+norm we can use the L1 norm of a matrix.
+And since the L1 is convex, as already
+mentioned, we can solve this
+unconstrained problem in terms of the
+lagrange
+multiplier, which needs to be
+appropriately chosen.
+We can follow again in solving
+this problem the method of alternating
+optimization.
+So if A is fixed and solve for X, we have
+this LASSO type of problem to solve.
+So this is indeed a series of LASSO
+problems and we discussed methods such as
+the various tricks in solving this
+problems and
+turning it into a quadratic program for
+example.
+If A's fixed, then if solving for X, we
+have an unconstrained quadratic problem.
+And as mentioned in the previous slide we
+can obtain the close form expression for
+this problem.
+So, this is similar to the MOD approach.
+We, how to make minimization in both
+cases, however now
+we are solving a LASSO problem when we're
+solving for X.
+While when we're solving for A, the
+solution is the same with both methods.
+

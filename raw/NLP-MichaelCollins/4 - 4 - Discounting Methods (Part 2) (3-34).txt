@@ -1,0 +1,85 @@
+So this method can be extended in a fairly
+natural way to Katz Back-Off Models for
+the trigram case.
+So we're now going to define an estimate
+of Wi given two previous words.
+And this is derived in a very similar way
+to the bigram case.
+So again I'm going to define sets A and B.
+Which now depend on the two words being
+conditioned on.
+So this first set a is the set of words,
+W.
+Such that the trigram count is greater
+than zero.
+And the second set b is the set of words,
+W.
+Such that the trigram count is equal to
+zero.
+So if we look at this back-off estimate,
+the first case is as follows, if we come
+across some word Wi, such that the trigram
+can't count as greater than 0, we take the
+ratio of the discounted count, minus the
+count.
+So this again is going to be something
+like count of the trigram minus some
+constant say 0.5.
+And this is simply the, the count of the
+bigram being conditioned on.
+Now again, this definition gives us some
+missing probability mass.
+And we have an expression for that missing
+mess down here.
+So alpha of Wi minus 2, Wi minus 1 is
+going to be 1 minus.
+Now again I have a sum of all words whose
+count is greater than zero.
+And I have this, this estimator I showed
+you count star divided by count.
+So this is the missing probability mass
+and again for any word which is seen in
+the set B, I for which this count is equal
+to zero, we define the back-off estimate
+in the following way.
+We're again going to split this missing
+mass between these words in the set B and
+now we're going to split this in
+proportion to the back-off estimate at the
+bigram level.
+So this is just the estimator I showed you
+on the previous slide.
+We essentially have a recursive estimate
+here where we're going to look at the
+back-off estimate at the level below the
+bigram level.
+So here on the numerator, I have that
+back-off estimate.
+And down here, I have a normalization
+term, where I sum over all words in b and
+I have that back-off term here.
+So this is simply taking the missing
+probability mass alpha.
+And splitting it in proportion to these
+backed off estimates at the bigram.
+So, that's essentially it, that is a
+trigram back-off method.
+The one parameter in this approach is this
+value say 0.5 that I'm using and
+discounting.
+This is the value that I subtract from
+account to form this discounted count.
+And so this will be typically some value
+between 0 and 1.
+And one way to choose this value is again
+by optimization on validation data.
+So you test a series of values between 0
+and 1.
+For each one, see how well the language
+model forms on this validation set of
+data.
+And pick the, the discount value which
+gives you the best performance on that
+validation data.
+A value of 0.5 wouldn't be untypical it's
+usually somewhere around there.

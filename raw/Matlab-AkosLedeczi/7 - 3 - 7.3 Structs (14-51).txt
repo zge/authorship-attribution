@@ -1,0 +1,328 @@
+[MUSIC]
+We've learned that all elements in
+an array must be of the same type.
+Such arrays are said to be homogenous.
+What if we want to group together
+heterogeneous data somehow?
+That is, data of multiple types.
+Well MATLAB, like many other languages,
+provides ways to do that.
+The easiest way is to use a struct.
+A struct is different from
+an array in three ways.
+One, structs have fields, not elements.
+Two, we access the fields of
+a struct by names, not indices.
+And three, fields within the same
+struct can have different types.
+What's especially cool is that the field
+of struct can be another struct, and that
+ability of a struct to have another struct
+inside it makes structs very versatile.
+The syntax for creating or
+accessing the field of a struct
+relies on the period, or dot.
+If we type r.ssn equals 12345678,
+MATLAB will create a new variable named r,
+make it a struct,
+create a field called ssn for that struct,
+and assign it the value 12345678.
+So the syntax is simply to put
+a dot between the variable name and
+the name of the field.
+Easy.
+Now if we check the data type of
+the variable r with the class function,
+we get struct, as expected.
+But if we check the data type
+of the ssn field, we get double,
+which is also what we should expect,
+since we assigned a number to that field.
+Okay, so we've created a brand new struct.
+Now we can add a new field to that struct,
+simply by typing r.name equals quote,
+Homer Simpson, end quote.
+MATLAB will modify our struct by
+adding a new field called name,
+and it will assign the string,
+Homer Simpson, as the value of that field.
+Now here comes the cool part I mentioned.
+Typing r.address.street equals
+single quote, 742 Evergreen Terrace,
+single quote, creates another field for
+r called, address.
+And because of the dot after address,
+this new field is itself a struct, with
+its own field, which is called street.
+And then it assigns a string,
+742 Evergreen Terrace,
+to the field street of the field
+address of the variable r.
+As you can see MATLAB doesn't print the
+inside of this new struct in the command
+window directly.
+Instead, it just signals that the field
+address of the struct r is another struct.
+As I said, allowing a field to be
+a struct makes structs really versatile.
+But there is more
+versatility here than that,
+because structs can hold arrays,
+and arrays can hold structs.
+In other words,
+the field of a struct can be an array.
+And it goes the other way too,
+the element of an array can be a struct.
+But in that direction,
+we encounter the homogeneity rule,
+all array elements must be the same type.
+So if they're structs,
+they must all have the same fields.
+We'll see some examples shortly, but
+first, you'll not be surprised when I tell
+you that MATLAB has some useful built-in
+functions that deal with structs.
+For example, isfield will tell you
+whether a struct has a certain field.
+You just give it the struct, and the name
+of the field you're looking for, and
+it'll return true or false.
+And setfield can add new fields to
+a struct in a dynamic manner, meaning that
+you don't have to know the name of the
+field when you're writing your program.
+The user can specify it while your
+program is running, for example.
+Another handy function is called rmfield,
+which means remove field.
+It can produce a struct that is
+a duplicate of another struct,
+except that a specified,
+specified field is missing.
+You give it the struct, and the name
+of the field you want to remove, and
+it returns a copy with that field removed.
+Finally, if you want to create a struct
+with a set of names in one shot,
+you can simply call
+the function name struct, and
+give it the field names
+you want as arguments.
+Okay.
+We've learned about structs and now we're
+ready to see them working in MATLAB.
+Information about a bank account
+is pretty heterogeneous.
+An account has an owner, which is probably
+going to be a string, an account number,
+which will be a number, and a balance
+which will be a number, etcetera.
+Let's create a struct that
+represents a bank account.
+The value that we've assigned
+to the variable, account,
+here, is a struct,
+class will tell us that.
+And its first two fields are doubles.
+Its third field is a struct,
+as we can see right here, called, owner.
+An owner has a couple of fields,
+which we can look
+at by typing the variable name dot and
+the name of the field owner,
+to see what's inside it,
+and it has two fields.
+When we see these with this colon here,
+we know that we're looking at a struct.
+And they happen to be both of
+the same type, as we can see.
+These quotes are included by MATLAB,
+when it gives the value of a struct
+field that happens to be a char.
+If we want to turn a count
+into an array of structs,
+it's easy enough to do,
+we just give it another element.
+And we did that by assigning
+something to one of its fields.
+As you can see, MATLAB prints out only the
+field names, once we have a struct array.
+Also, the new struct,
+well the second element of the array,
+magically, has all the same fields
+that the first element already had,
+not just the account number we created.
+This has to happen, to keep
+the types of both elements the same.
+Remember that homogenous rule?
+If some elements had one set of fields,
+and others had another set,
+well homogeneity'd be out the window.
+So what values are in these fields
+that showed up auto-magically?
+Let's have a look.
+Well they're initialized
+to the empty array.
+Let's assign values to more
+fields of our new struct.
+If we want to see the entire struct,
+we can do this.
+But if we want to see the value
+of a field of a substruct, we have to
+type in the entire hierarchical name.
+The array name, the index in parentheses,
+the dot, the field name,
+another dot, and
+the field name of the substruct.
+Well let me just do one.
+And I'll do the other one.
+While the structs must
+have the same field names,
+the values stored in those
+fields don't have to match.
+They can have different types,
+and or different sizes.
+For example, the length of the strings
+in owner.names are different for
+elements one and two, let's prove that.
+One's 9, one's 11.
+And substructs don't even have
+to have the same set of fields.
+There, we've added a sub struct to owner,
+giving it the value 23, for element one.
+So what about element two?
+Does a new field, called age
+,show up under it's owner, with,
+maybe, a empty matrix, or something in it.
+No, reference to nonexistent field,
+age, it doesn't even have that field.
+The homogeneity rule for
+arrays is only skin deep,
+it extends only to the first
+level of the fields.
+Every element of the array account
+has to have the fields, number,
+balance, and owner, but
+different things can be inside them.
+Okay, that's a look at how fields
+of structs are accessed, and
+the homogeneity rule for
+an array of structs.
+Now let's try some of the functions
+that work with structs,
+some that we've mentioned before.
+First let's clear this cluttered screen,
+and
+look at the owner field of
+each element of account.
+Putting that 1 colon 2 in there makes
+it show each one of these elements,
+and we see there's quite a few
+things in 1 and not much in 2.
+Well let's look at isfield.
+So what we see here,
+is that isfield takes this argument,
+which is account 2,
+the second one, dot owner,
+it looks at the field of account 2,
+called owner,
+and checks to see if there's
+a field in there called, age.
+Well there's not, so
+it returns faults or zero.
+Then we do the same
+thing with element one.
+Well if we go inside of owner for
+element 1,
+we find there is a field called age,
+and so we get true.
+As we said, isfield returns true or false,
+depending on whether the given structure
+has a field, with a given name.
+And then there's rmfield, which you may
+remember, removes the field from a struct.
+Let's remove age from account1.owner.
+There, age field is gone,
+along with it's value, which was 23.
+You give the thing you want to
+remove the field from,
+then you give the name of
+the field that you want to remove.
+Now let's just check to
+make sure that it's gone.
+Wait.
+Why is age still there?
+We just removed it.
+Well we made one of those rookie errors.
+The function rmfield doesn't
+change its argument.
+This was its argument, account1.owner.
+That's not the way MATLAB works.
+It returns a changed version of its
+argument, that's what we saw here.
+So when we checked out the argument
+that we gave it, its unchanged,
+its still the same.
+If we want to change it,
+we have to assign something to it.
+That's easy to do, we do it like this.
+First of all, I'll click my up arrow and
+get that command back.
+And over here, I type account1.owner, and
+the result from rmfield will
+be assigned back to it.
+So let's hit Return, and see what happens.
+Now let's check, age is gone.
+Okay, we got one last function,
+that works on structs,
+to look at ,and its name is struct.
+You'll remember when we started all
+these struct examples, we needed to
+have some structs to work with, and you
+do that by giving a variable some fields.
+We started out by giving account
+the field named, number.
+And then we gave it balance, and so forth.
+We kind of did it piecemeal,
+one field at a time.
+But you don't have to do it that way.
+You can do it all in one fell swoop,
+with a builtin function,
+whose name is struct, like this.
+Man, I've got my typing in high gear here.
+I am rea, I am smoking it, 'kay?
+Whoa.
+Remember we're professionals here,
+we don't recommend you try
+typing like this at home.
+But anyway, the inputs to
+the struct function come in pairs,
+organized as field and value.
+So here is the field called, area.
+Here's the value called, cs, and
+you can see it showed up here.
+Here's a field called, number,
+and 103, which is a double,
+is the value for that field,
+title, there you go.
+This method of setting values for fields
+by processing a list of field value,
+field value, field value pairs,
+is not unique to MATLAB.
+It first appeared in a language called
+Lisp, which means list processing,
+shortly after Fortran was
+invented in the late 50s.
+Lisp, and derivatives of it,
+are still used today for
+writing programs that have
+artificial intelligence.
+We're still using this method
+of giving values to fields.
+Good ideas never die.
+And with that bit of
+programming language history,
+we conclude our coverage of structs.
+[MUSIC]
+[APPLAUSE]
+

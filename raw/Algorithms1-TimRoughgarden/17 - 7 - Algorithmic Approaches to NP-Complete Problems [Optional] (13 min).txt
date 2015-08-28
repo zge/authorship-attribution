@@ -1,0 +1,404 @@
+This video is a segue between bad news 
+and good news. 
+The bad news which we've now discussed is 
+NP-Completeness; the fact that there are 
+computationally intractable problems out 
+there in the world, in fact they're 
+fairly ubiquitous and you're likely to 
+encounter them in your own project. 
+The good news is that NP-Completeness is 
+hardly a death sentence. 
+Indeed, our algorithmic toolbox is now 
+rich enough to provide many different 
+strategies toward coping with 
+NP-Completeness. 
+NP problems. 
+So, suppose you had identified a 
+computational problem on which on which 
+the success of [UNKNOWN] company rests. 
+May be you have spent the last several 
+weeks throwing the kitchen sink added/g. 
+All the algorithm designed for [UNKNOWN], 
+all the data structures, all the 
+primitives nothing works. 
+Finally you decide to try to prove the 
+problem is NP-Complete And you succeed. 
+Now you have an explanation for why your 
+weeks of effort have come to not. 
+But that doesn't change the fact that 
+this is the problem that governs the 
+success of your project. 
+What should you do? Well, the good news 
+is NP-Completeness is certainly not a 
+death sentence. 
+There are people solving, or at least 
+approximately solving, NP-Complete 
+problems all the time. 
+However, knowing that your problem is 
+NP-Complete does tell you where to set 
+your expectations. 
+You should not expect some general 
+Purpose, super fast algorithm, like we 
+have for other computational problems. 
+Like say, sorting or single sort shortest 
+paths. 
+Unless you're dealing with unusually 
+small or well structured inputs, you're 
+going to have to work pretty hard to 
+solve this problem, and also possibly 
+make some compromises. 
+[INAUDIBLE] The rest of this course is 
+devoted to strategies for solving or 
+approximately solving NP-Complete 
+problems. 
+In the rest of this video, I'll give you 
+an orientation for what those strategies 
+are, and what you can expect to come. 
+So as usual, I'm going to focus here on 
+general purpose strategies, that cut 
+across multiple application domains. 
+Means. 
+As usual, these general principles should 
+just be a starting point. 
+You should take them and run with them, 
+admitting them with whatever domain 
+expertise you have in this specific 
+problem that you need to solve. 
+The first strategy is to focus on 
+computationally tractable special cases 
+of an NP-Complete problem. 
+Relatedgee, relatedly you want to think 
+about what's special about your domain. 
+[INAUDIBLE]. 
+About the data sets that you're working 
+with, and try to understand if there's 
+special structure which can be exploited 
+in your algorithm. 
+Let me point out that we've already done 
+this in a couple cases in this course. 
+The first example we saw concerned the 
+weighted independent set. 
+So we studied this problem on path 
+graphs, but the computational problem 
+makes perfect sense in general graphs. 
+The general problem is, I give you as 
+input an undirected graph. 
+Every vertex has a weight, and I want the 
+maximum weight subset of vertices that's 
+an independent set. 
+And remember in an independent set you 
+are forbidden to to take any 2 vertices 
+that are neighbors. 
+So in an independent set none of the 
+pairs of vertices that you've picked are 
+joined by an edge. 
+In general graphs the weighted 
+independent set problem is NP-Complete so 
+we certainly don't expect it to have an 
+polynomial time algorithm. 
+But in the special case where the graph 
+is a path, as we saw, there's a linear 
+time dynamic programming algorithm that 
+exactly solves the weighted independent 
+set. 
+So path graphs form a special case of the 
+weighted independent set problem that's 
+compucation retractable solvable in 
+polynomial or even linear time. 
+In fact the frontier of tractability can 
+be pushed well beyond path graphs. 
+On the homework, I ask you to think 
+through the case of graphs that are trees 
+and notice that you can still do dynamic 
+Programming efficiently, to compute 
+weighted independent sets in trees. 
+You can even get computationally 
+efficient algorithms for a broader class 
+of graphs, known as bounded tree-width 
+graphs. 
+So the definition of that's a little 
+outside the scope of this course, but you 
+can go even beyond trees. 
+So the second example follows from my 
+dynamic programming algorithm for the 
+knapsack problem. 
+So, we discussed that running time. 
+And we explained why it's exponential 
+time. 
+If the running time of our dynamic 
+programming napsac algorithm is n, the 
+number of items, times capital w, the 
+napsac capacity. 
+And because it only takes log w bits to 
+specify the capacity, capital w, we don't 
+Call that a polynomial time algorithm. 
+But, imagine you only have to solve a 
+knapsack instance where the capacity is 
+not too big, maybe even say the capacity, 
+capital W, is big O event. 
+And you definitely will see knapsack 
+instances in practice, which posses That 
+property, well then our dynamic 
+programming algorithm just runs in time o 
+of n squared and that's a bona fide 
+polynomial time algorithm for this 
+special case of a small knapsack 
+capacity. 
+So next let me mention a couple of 
+examples we're going to see in the 
+forthcoming videos. 
+The 1st 1 is going to concern the 2SAT 
+problem. 
+The 2SAT is a type of constraint 
+satisfaction problem. 
+Remember in a constraint satisfaction 
+problem you have a bunch of variables, 
+each one gets assigned a value. 
+So the simplest case is the Bullion case 
+where each value can be zero or one, 
+false or true. 
+And then you have a bunch of clauses, 
+which specify the permitted joint Values 
+of a collection of variables. 
+The 2 and 2 set refers to the fact that 
+each constraint involves the joint values 
+of only a pair of variables. 
+So a conconical constraint in a 2 set 
+instance is going to for 2 variables 
+specify 3 joint assignments that allowed. 
+And one that's forbidden. 
+So, for example, maybe it will say, oh 
+for variables x3 and x7, it's okay to set 
+them both to true. 
+It's okay to set them both to false. 
+It's okay to set 3 to true, and 7 to 
+false. 
+But it's forbidden to set 3 to false, and 
+7 to true. 
+So that's a canonical constraint in the 2 
+sat instance. 
+3 sat, it's the same thing, except the 
+constraints involve the join values to a 
+triple of variables. 
+And it's going to forbid 1 out of the 8 
+possibilities. 
+Now the 3 set problems a canonical MP 
+complete problem. 
+That was really singled out by Cooke and 
+Levin as being sufficiently expressive to 
+encode all problems in MP, but if each 
+constraint has size. 
+Only 2 then as we'll see the problem 
+becomes polynomial time solvable. 
+There's a couple ways of proving that. 
+We're going to talk about a local search 
+algorithm that checks whether or not 
+there is indeed an assignment to the 
+variables that similtaneously satisfies 
+all of the given constraints. 
+So the final example we'll discuss in 
+more detail later but just very briefly 
+we're going to discuss the vertex cover 
+problem. 
+This is a graph problem and a vertex 
+cover is just the compliment of an 
+independent set. 
+So while an independent set cannot take 
+two vertices from the same edge, in the 
+vertex cover problem you have to take at 
+least One vertex from every single edge, 
+and then what you want is you want the 
+vertex cover that minimizes the sum of 
+the vertex rates. 
+Yet again this is an NP-Complete problem 
+in general but we're going to focus on 
+the special case where the optimal 
+solution is small. 
+That is we're going to focus on graphs 
+where there's a small number of vertices. 
+Such that every single edge has at least 
+one endpoint in that small set. 
+And, we'll see that for that special 
+case, using a smart kind of exhaustive 
+search will actually be able to solve the 
+problem in polynomial time. 
+So, let me reiterate that these tractable 
+special cases are meant primarily to be 
+building blocks upon which you can draw 
+in a possibly more sophisticated approach 
+to your NP-complete problem. 
+So, just to make this a little more 
+concrete, let me just kind of dream up 
+one scenario to let you know what I'm 
+thinking about. 
+Imagine, for example, that you have a 
+project where, unfortunately, it's not 
+really 2SAT that you're confronting. 
+It's actually A 3SAT instance. 
+So you're feeling kind of bummed, 3SATs 
+have been complete and maybe you have 
+1,000 variables. 
+And certainly you can't do brute-force 
+search over 2 to 1,000 possible ways of 
+assigning values to your 1,000 variables. 
+But maybe the good news is, because you 
+have domain expertise because you 
+understand this problem instance. 
+You know that yeah. 
+There's a 1000 variables but there's 
+really 20 that are crucial. 
+You have the feeling that all of the 
+action basically is boiling down to how 
+these 20 core variables get assigned. 
+Well now maybe you can mix together some 
+brute-force search with some of these 
+tractable special cases, for example you 
+could enumerate overall 2 to the 20 ways 
+of assigning values to this core set of 
+20 variables. 
+To the 20 is roughly a million. 
+That's not so bad. 
+And now, what you're going to do is, for 
+each of these million scenarios, you 
+check whether there isn't a way to extend 
+that tentative assignment of 20 values to 
+the 20 variables, to the other 980 
+variables, so that all of the constraints 
+get satisfied. 
+The original problem is solvable, if and 
+only if there exists. 
+A way of assigning values to these 20 
+variables that successfully extends the 
+other 980. 
+Now, because these are the crucial 
+variables, and it's where all the action 
+is, maybe as soon as you assign all of 
+them 0's and 1's the residual SAT 
+instance is tracked. 
+For example maybe it just becomes a 
+simple 2SAT instance and then you can 
+solve it in polynomial time. 
+So this gives you a hybrid approach, 
+approach, brute-force search at the top 
+level, tractable special cases for each 
+guess of assignments of the 20 variables 
+and you're off to the races. 
+And I hope it's clear. 
+I mean this as just one possible way that 
+you might combine the various building 
+blocks for developing into a more 
+elaborate approach to tackling an 
+NP-Complete problem. 
+And that's generally what they take. 
+They take a fairly elaborate approach 
+because after all, they are NP-Complete, 
+you've got to respect them. 
+Expect that. 
+So with that digression complete, let me 
+mention what are the other 2 strategies 
+we're going to be exploring in the 
+lectures to come. 
+So, the second strategy, which is 
+certainly one very common in practice, is 
+to resort to heuristics. 
+That is to algorithms which are not 
+guaranteed [INAUDIBLE] to be correct. 
+We haven't really seen examples of 
+heuristics in the course thus far. 
+those of you that are alumni of part 1. 
+Perhaps we could classify [INAUDIBLE] 
+randomized minimum cut algorithm as a 
+heuristic. 
+'Cuz it did have a small failure 
+probability of, of failing to find, the 
+minimum cut. 
+But rather, I'm going to focus on some 
+examples in the upcoming lectures. 
+I'm going to use the [INAUDIBLE]. 
+Knapsack problem as a case study. 
+And what we'll see is that our toolbox, 
+which contains various algorithm design 
+paradigms. 
+It's useful not just for designing 
+correct algorithms. 
+But it's also useful for designing 
+heuristics. 
+So, in particular, we'll get a pretty 
+good algorithm for the knapsack problem 
+using the Greedy Algorithm design 
+paradigm. 
+And we'll get an excellent. 
+Heuristic for knapsack using the dynamic 
+programming algorithm designed paradigm. 
+The final strategy is for situations 
+where you are unwilling to relax 
+correctness unwilling to consider 
+heuristics. 
+Now first one can be NP complete problem 
+if your hours going to be correct your 
+not, you don't expect to run on 
+polynomial time but there are still 
+opportunities to have algorithms that. 
+Well exponential time in the worst case 
+are smarter than naive brute-force 
+search. 
+So we have in fact already seen on 
+example that can be interpreted as a 
+implementation of the strategy, that's 
+for the knapsack problem. 
+So in the knapsack problem naive 
+brute-force search would just run over 
+all possible subsets of the items, it 
+would check if the subsets of items fit 
+in the knapsack if it does remembers the 
+value and then it just returns the 
+feasible solution with maximum value. 
+That has time proportional to 2^n, where 
+N is the number of items. 
+Our dynamic programming algorithm has 
+running time N times times capital W. 
+Now, of course, cap this is no better 
+than 2^n, if the knapsack capacity is 
+huge, 
+it is itself 2^n, But as we argued, if W 
+is smaller, this algorithm is going to be 
+faster. 
+And also, as you learned on the third 
+programming assignment, sometimes even 
+though W is big, dynamic programming is 
+going to beat the crap out of brute-force 
+search. 
+[SOUND] So I'll show you a couple of 
+other examples we'll talk about the 
+traveling salesman problem where naive 
+brute-force search would take roughly in 
+factorial time. 
+Where n is the number of vertices. 
+We'll give an alternative dynamic 
+programming based solution which runs in 
+time only 2^n which is much better than 
+in factorial. 
+The third example, which we'll cover in a 
+forthcoming video, we already alluded to 
+briefly on the last slide. 
+It's for the vertex cover problem. 
+So this is where you're given a graph. 
+If your vertex has a weight and you want 
+the minimum weight subset of vertices 
+that includes at least. 
+One endpoint from every edge. 
+We're going to consider the version of 
+the problem where you want to check 
+whether or not it's possible to have a 
+vertex cover that uses only K vertices. 
+Whether or not there exists K vertices 
+that includes one endpoint at least from 
+each edge. 
+The naiive root brute-force search will 
+run in time, end the K, which gets 
+absurd, even when K is quite small. 
+But we're going to show that there's a 
+smarter algorithm, which is still 
+exponential in k, but runs in time only 
+2^k times the size of the graph. 
+

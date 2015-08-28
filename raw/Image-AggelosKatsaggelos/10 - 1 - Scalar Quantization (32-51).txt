@@ -1,0 +1,765 @@
+Hello and welcome to week nine.
+This is the beginning of the second week
+covering the exciting topic of image and
+video compression.
+Image and video compression represents one
+of
+the major topics in image and video
+processing.
+Compression is one of the enabling
+technologies
+behind the multimedia revolution we are
+experiencing.
+Last week, we talked about lossless
+compression, and this week
+we will see how it is used in loss
+recompression.
+As I mentioned last week, what
+distinguishes lossy and lossless
+compression, is not
+the exploitation of the correlation of the
+data, since it's shared by both
+approaches.
+but the removal of the perceptually
+relevant information.
+This is done through quantization.
+This is the topic of this week's first two
+segments.
+It's actually requantization since the
+data is already in digital form.
+We will then cover predictive quality,
+more specifically, DPCM.
+Fractal encoding, transform encoding, and
+also the well
+known image compression standard JPEG and
+sub-band encoding.
+We will see that each and every image and
+video lossy compression system consists of
+three building blocks.
+The first one to perform redundancy
+removal.
+Followed by one to reduce entropy.
+And finally on to perform entropy coding.
+What therefore, differentiates lossy and
+lossless compression, is the middle block.
+While, what differentiates the values
+lossy
+compression techniques we just mentioned
+above, is
+the first block of redundancy removal
+via prediction or self similarity or
+decorrelation.
+While, the other two blocks remain the
+same.
+We will cover both scalar and vector
+quantization.
+Both techniques are part of any logical
+operation system or
+they can be implemented on their own right
+as compression techniques.
+In this firs segment we will discuss
+scalar quantization.
+We discuss uniform quantizers but also a
+PDF optimized
+non-uniform quantizer also refered to as
+the max loyd quantizer.
+We will also talk about the principle of
+compounding
+based on which non-uniform quantizers
+implemented utilizing a uniform quantizer.
+So let us start with this exciting topic.
+In the Lossy Data Compression System, be
+it the
+speech, audio, still image, or video
+compression system, and
+we'll be starting the last two during this
+and
+next week, consists of the three building
+blocks shown here.
+According to the first one, the redundance
+in the data is removed.
+As we mentioned earlier, the existence of
+redundance in the
+data is one of the two reasons data is
+compressible.
+The second building block is the reduction
+of the entropy of the data.
+There is only one to take this step is
+that
+according to the Shannon Coding Theorem we
+covered last week,
+the smaller the entropy of the source the
+fewer the
+number of bits we need to encode such as
+source.
+This is the step that reduces the bit rate
+in representing the symbols of the source.
+The final building block is the further
+reduction of the bits in representing the
+source symbols, by using a lossless coding
+scheme which ideally will achieve entropy.
+More specifically, two important mechanism
+to remove redundancy is prediction
+and, transformation, we talked about
+linear prediction last week.
+The main idea is to utilize the
+correlation in the data, in performing
+prediction of
+a pixel based on the values of its
+either special or temporal or special
+temporal neighbor.
+The idea behind the use of a
+transformation is to decorrelate the data.
+Then, it's easier to tell which transfer
+coefficients are
+more important than others, and in the
+next step,
+try to keep the important ones in pristine
+shape
+while discarding or heavily quantizing the
+less important ones.
+Entropy reduction is achieved through
+quantization, the process
+that turns the continuous values of a
+discrete signal
+into discrete values, or requantization
+when discrete values are
+further restricted into a smaller set of
+discrete values.
+In designing such quantizers the
+properties of the visual system are
+taken into account, so as to remove the
+perception irrelevant information.
+The second usually mentioned earlier for
+the data being compressible.
+Finally, in performance lossless encoding,
+of the, either quantized
+prediction error or the transfer
+coefficient, any of the lossless
+techniques we covered during last week,
+such as Huffman,
+LZW, and Arithmetic coding and then
+variants can be utilized.
+This center block of quantization,
+distinguishes lossless and loss encoding.
+In other words, if it's not present, the
+system is
+lossless, like for example, lossless JPEG
+that we covered last week.
+With that, if you recall, a predictor was
+used
+out of a set of predictors for redundancy
+removal.
+and arithmetic coding for the lossless
+representation
+of the source symbols representing
+prediction errors.
+We will cover quantization in this
+lecture.
+It's an irreversible process, and
+contributes the
+most towards the reduction of the B trait.
+So, in summary a loss compression scheme,
+we will cover in these two weeks.
+And the other one that is not covered in
+this class consists of these three
+building blocks shown here.
+This week, we are going to cover the
+following
+topics: we will talk about quantization,
+both scalar and vector.
+We will then describe some approaches
+which are called
+basic approaches, such as subsampling and
+pulse code modulation.
+We will revisit differential or predictive
+encoding, and more
+specifically you will derive the
+expression for differential PCM.
+We will talk about fractal encoding, a
+very interesting approach in its own
+right,
+continue with transform coding and its
+application
+to the well known standard of JPEG.
+And finally, we will discuss sub-band
+coding.
+There are other topics that we'll not have
+time to cover
+here, such as wavelength based coding,
+which relates to sub-band coding.
+So how does a quantizer look like?
+Here is an eight level uniform midrise
+quantizer.
+So, it's a midrise because it rises here
+in the middle,
+as opposed to a midstop or one with a dead
+zone.
+On the horizontal axis, you see the input
+intensity values of
+an image or the amplitude values of a
+signal in general.
+They can be continuous numbers or discrete
+numbers.
+According to the mapping defined by this
+function all the input values say between
+delta and two delta are mapped into this
+value three delta over two.
+If this values, input values continues,
+then we
+have infinitely many values between delta
+and 2-delta.
+That they're all mapped into this one
+value 3-delta over 2.
+If on the other hand, they're discrete.
+Then a finite number of them are mapped
+into this one value.
+So, for example, if delta equals 10.
+Then the values here between 10 and 19 we
+close the
+interval on this side and keep it open on
+this side are all
+mapped into this value which is going to
+be equal to 15.
+It's clearly an irreversible process.
+If we know the number 15, we cannot tell
+which of the ten values in this 10 to
+the 19th range was quantized to the value
+15.
+It is a uniform quantizer, because the
+steps, these are the steps.
+Except of these one at the end here and
+here are all the same.
+They have a, exactly the same values and
+the
+output has only A discrete values the
+quantization levels.
+So to define this quantizer we need to
+know that
+the decision boundaries, these are the
+decision
+boundaries, as well as the quantization
+levels.
+Of course in this case that we have a
+uniform quantizer as far as the decision
+boundaries go all we need to know is the
+step of the quantizer denoted by delta.
+And clearly, if the range of values of the
+input is finite, let's
+say between -255 and 255, then we can make
+all these steps exactly equal.
+Here's another view of the uniform
+quantizer.
+The quantization levels here are denoted
+by R of i.
+And the decision boundaries are shown
+here, they're typically closed on one
+side.
+And open on the other so the
+interpretation is that all
+the values inside this interval here are
+mapped to r of i.
+Now suppose we know the distribution of
+the intensity values of
+the input image by computing for example
+the histogram of the image.
+So assume that this distribution looks
+like this, so we have many more
+values concentrated in this region than in
+these regions over here.
+When we design a quantizer we fix the
+number of quantization levels.
+And we want the error we are in carrying,
+the quantization error to be as small as
+possible.
+So then how shall we design a quantizer in
+this case.
+Shall we make the quantizer step sizes the
+same as before.
+Shall we design in other words a uniform
+quantizer.
+Or, can we do better than this?
+What does our intuition tell us about it?
+If we think for a second, we have
+many more values around here than in these
+regions.
+And we would like for these values the
+quantization error to be as small as
+possible.
+Since we have many of them and the overall
+quantization error is the sum of
+the quantization errors per region in the
+quantizer or per bean as it is called.
+For the values that are in here, again, we
+want a small quantization error while we.
+With the values out here, we can allow
+larger quantization errors.
+Now, how can we have a small quantization
+error?
+We can do that by using a smaller step
+size, or in other words by doing finer.
+Quantization here in the middle, where
+most of the values are concentrated.
+And doing coarser quantization, larger
+step sizes, in the regions out here.
+Our intuition is actually correct, because
+as
+you'll see, the quantizer that gives us
+this wallace
+quantization error, is a non unioniful
+quantizer.
+As shown here against small quantization
+step sizes
+here in the center and larger step sizes,
+in, the region
+where this probe density function has
+small volumes.
+And this can be mathematically derived as
+we'll show right away.
+And again, it confirms our intuition.
+But first let's define the quantization
+problem a bit more rigorously.
+Here's the definition of the quantizer q
+of x.
+x is the input to the quantizer a
+continuous number representing
+the amplitude or intensity value of a
+sample or a pixel.
+According to it the values of x between.
+B-i minus 1 and b of i, the decision
+boundaries
+are represented by the quantized or
+reconstruction level y of it.
+Assume we want to design an m level
+quantize.
+The variance of the quantization error is
+equal to this.
+Inside two consecutive boundaries, bi
+minus 1 and b of i which are referred
+to as a bin, B-I-N, the variance of the
+error is equal to the error squared.
+x, all the values x are represented by y
+over i.
+So this is the error squared, times the
+probability that's the function of the
+random variable x.
+This is just the definition of the
+variance.
+Since I have M levels for the quantizer or
+M beans.
+The variance of the total quantization
+error is the sum of the
+individual bean error variances since the
+quantization for beans is done
+independently.
+In the quantization process, we are
+interested in counting beans, or
+in other words, in encoding the
+quantization levels y of i.
+These are the symbols of the source, the
+problem we covered last week.
+The bit rate associated with this
+quantizer is given by this expression, so
+L of I is the length of the code word
+which is used to encode the level Y of I.
+And this is multiplied with the area under
+the probability density function curve
+inside this beam.
+From bi minus one b of i.
+So this is sum over all beams here m
+and therefore gives us the average code
+word length.
+So formally the optimal quantiser results
+from the
+minimization of the variance of the
+quantization
+error with respect to the decision
+boundaries,
+the reconstruction levels, as well as the
+binary codes, subject to a rate
+constraint.
+Or we can deal with the dual problem,
+which
+is the dual formulation which is the
+minimization of the
+rate, with request to decision boundaries
+reconstructive levels, and
+binary codes, subject to constrained on
+the allowable quantization errors.
+[BLANK_AUDIO].
+We show here again a scalar quantizer with
+f representing the
+input signal with continuous amplitude
+values or intensity
+values and r of i representing the
+construction levels.
+While d of i, r minus one d of i are the
+decision boundaries.
+We will derive next the solution of the
+optimal quantizer,
+assuming the fixed codes are used to
+represent the construction levels.
+In other words, we're not optimizing over
+the
+bit rate for representing the quantization
+or reconstruction levels.
+We are solving therefore a simplified
+version of
+the general problem we described in the
+previous slide.
+The problem now it's unconstrained.
+So assuming that we use fix codes to
+represent the construction levels.
+We want to design an l level quantizer,
+so, in other words, we're going to find
+the
+d of i's and r of i's so that the variance
+of the quantization error is minimized.
+So this is the statement of the design
+problem of the optimal quantizer.
+Here is the expression of the variance of
+the quantization
+error p of f is the probability density
+function of
+the input intensities and again, we have L
+beans or
+L-levels and this is an expression we saw
+earlier.
+We want to find the minimum of this
+expression, they are now
+constrained again now since we used
+fixed codes to represent the
+reconstruction levels.
+The necessary conditions for obtaining a
+minimum are but the
+partial derivability of this variance of
+the quantization error with
+respect to the reconstruction levels are
+of k is equal
+to zero, and we have capital L such
+reconstruction levels.
+And also, the partial derivatives with
+respect to
+the decision boundaries are also equal to
+zero.
+We have M plus 1 decision boundaries.
+However, the first and last decision
+boundaries are known
+and therefore we only have L minus 1
+unknowns.
+We will find next what these partial
+derivatives are equal to.
+Let
+us first look at the partial derivative of
+the variance of
+the quantization error with respect to the
+construction level r of k.
+If we look at the expression of D, is the
+sum of those integrals.
+R of k appears only in this integral from
+dk minus 1 to d of k because
+when f is inside this interval, then all
+these values are mapped to r of k.
+The differentiation operation comes inside
+the integral and
+then I have r of k minus f squared.
+So, the derivative is two times the term,
+R of K, minus F times the derivative of R
+of K minus F, which is equal to one, and
+therefore, I end up with this expression.
+So, now if I split the integral into two,
+that's how this form looks like R of K,
+clearly is a constant with respect to the
+integration,
+which is done with respect to them D of F.
+Therefore, if I solve for R of K, I end up
+with this expression.
+What this expression is telling me is that
+the reconstruction level is the
+centroid of the probability mass in this
+quantization interval.
+We want now to evaluate the partial
+derivative of the
+variance of the quantization error with
+respect to the decision boundary.
+Things become a bit more complicated,
+simply because
+the decision bounders appear as the limits
+of integration.
+We need, therefore, a formula to let us
+know how to
+carry out this differentation and this
+formula is due to Leibritz.
+So, the derivative with respect to A of
+this expression here, equals the integral
+here of the partial derivative of the
+integrand with respect to A, plus the
+integrand
+evaluated at the upper limit of
+integration
+times the derivative of the upper limit
+with respect to A, minus the integrand
+evaluated at the lower limit of
+integration times
+the derivative of, of the lower limit.
+We will apply this formula to find again
+the partial of the
+variance of the quantization error that I
+showed a few slides earlier.
+If we look at that formula we see that
+there are two terms that depend on d of k.
+This first one where d of k is the upper
+limit of integration
+and the next one where d of k is the lower
+limit of integration.
+For values of f between d of k minus 1 and
+d
+of k, they are all mapped or quantized
+into r of k.
+While when f is between d of k and d k
+plus one,
+all of the values of f are quantized into
+r of k plus one.
+If we apply Leibnitz's formula to carrying
+out the
+partial of these two terms, what we obtain
+is this.
+Let's work through the first partial
+derivative here, here's the integrant.
+If I take the derivative of this, the
+partial with respect to d of k, is equal
+to zero since there's no dependant d of k
+so this first term is going to be zero.
+Then, I have the integral evaluated at d
+of k,
+so instead of f here, I would put d of k.
+Instead of f here, I would put d of k,
+times the
+derivative of d of k with respect to d of
+k right?
+It's a bit of an unfortunate notation
+here.
+Too many ds with, you might say.
+Minus the integrant evaluated at dk minus
+1 times the derivative
+of dk minus 1 with respect to dfk which is
+equal to 0.
+So the derivative of the first term gives
+rise to just one term here.
+And similarly, the variative of the second
+term would give rise to this second term.
+And you can go through the steps here in a
+rather straightforward way.
+we see that p of d of k is a common
+factor, it's constant, and clearly
+these derivatives are equal to one and
+therefore
+what I'm left with is this expression
+here.
+If I apply the identity a minus b squared
+equals a minus b times a plus b.
+Then I obtain is this expression d of k is
+cancelled out, therefore this is a
+constant does not depend on d of k and
+from the second term i obtain that d of k
+equals to this
+and this is just the midpoint of two
+neighboring reconstruction levels.
+We see now that if the intensities of
+input image follow a uniform
+distribution, or in other words, p of f is
+a constant, then if we use the formula.
+That gives us the reconstruction levels,
+it's very straight
+forward to see that R of K is the midpoint
+of the two consecutive decision levels.
+And since we have that for any
+distribution, D
+of K is the midpoint of the reconstruction
+levels.
+We see that, in this case, the resulting
+quantizer is a uniform quantizer.
+So this is a interesting result that the
+optimal
+quantizer, when the PDF is uniform, is the
+uniform quantizer.
+Uniform quantizers are used widely because
+they're
+very easy and straight forward to use.
+When we cover the enhancement we call the
+[UNKNOWN] that it has a uniformed PDF of
+intensities.
+An image with equalized histogram, and
+therefore when we do quantization,
+if we given an image and we perform
+histogram equalization then.
+We know that the uniform quantizer we can
+apply to such an image is
+the best possible one in terms of
+minimizing the variance of the
+quantization error.
+So, here is another potential use of the
+histogram quantization
+technique that we covered when we talked
+about image enhancement.
+If we were to apply uniform quantizer in
+quantizing
+sources with different distributions, we
+can obtain the optimum
+step size by minimizing the variance of
+the quantization
+error, with respect to delta, the
+quantizer step size.
+So the steps are shown here, in this
+table, for different alphabet sizes.
+That is when the number of quantization
+levels are equal to 2, 4, 8, and 16.
+The sigma to noise ratio is shown as well
+for all these three distributions.
+For a uniform distribution of amplitudes,
+a close form expression can
+be obtained for the SNR, in terms of the
+quantization level.
+More specifically, the SNR equal 6.02 N,
+where N is
+the number of bits to represent the
+quantization levels.
+So here I have m equals 2 to the 1st,
+equals 2 squared, equals 2 to the 4th.
+So see that for m, here, equal 1 I have 60
+b, for n equal 2, I have 2 times 6.
+M equals 3, M equals 4.
+For the SNRs, for the Gaussian and
+Laplacian distributions, they are obtained
+based on experiments.
+We see that the best performance is
+achieved
+when a uniform quantizer is used for the
+uniform
+distribution of the input data, because as
+we saw,
+a few slides earlier, this is the optimal
+quantizer.
+We showing this table, the values of the
+decision boundaries.
+d of i and the construction levels r of i
+for two different distributions
+of input data, Gaussian and Laplacian, as
+a function of the
+number of the construction levels, four,
+six, eight.
+These results were obtained by using
+iteratively the two relationships for
+the optimal Max Lloyd quantizer that we
+derived a few slides ago.
+The distributions that have, heavier
+tails, that
+is the Laplasian have larger outer step
+sizing.
+If compare this step size to this, this
+one is larger.
+While the same quantizers have smaller
+inner step sizes.
+So this one is smaller than this because
+they're more heavily picked.
+The s and l values are also shown.
+Comparing this SIL values to the table in
+the previous slide where PDF optimized
+uniform quantizer were shown, we'll see
+that
+these are center values are considerably
+improved.
+This is to be expected because these are
+the optimal quantizers for these two
+distributions while the
+uniform quantizer was not optimal for the
+Gaussian and
+the Laplacian while was optimal for the
+uniform distribution.
+We show here the effects of uniform
+quantization
+on this eight bits per pixel original
+image.
+When an one bit per pixel quantizer is
+used, here is the resulting image.
+This particular quantizer has this shape.
+The input values range from zero to 255,
+since again, it's an eight bit per pixel
+image.
+And then, the, values between 0
+and 127, are mapped onto the mid point of
+this region, which is equal to 64.
+While the values from 128 to 255 are
+mapped into
+the midpoint of this region, which is
+equal to 196.
+When two bits per pixel are used, here is
+the resulting quantized image.
+Three bits per pixel and four bits per
+pixel are shown here.
+Clearly, in this case, we see this
+artificial conturing effects.
+They're not as visible when three bits per
+pixel are used while for
+this four bit per pixel image it looks
+quite similar to the original one.
+Therefore this uniform requantization is a
+simple, naive maybe, means to.
+Active compression in this last case the
+compression factor is equal
+to 2 since we go from make bits per pixel
+to four bits per pixel.
+We see demel, the problem I discussed
+earlier
+in the course was used in generating these
+results.
+[BLANK_AUDIO].
+We're still going to derive the optimal
+quantizer, but the step size is small.
+We are performing fine quantization in the
+regions where the input lies with high
+probability.
+In other words, the probability density
+function has large values.
+Instead of doing this, we can make the
+interval what the input lies with high
+probability large.
+This is the idea behind compounded
+quantization
+as shown in the globe diagram here.
+The idea of the compressor is to stretch
+the high probability regions close
+to the origin, and correspondedly compress
+the
+low probability regions away from the
+origin.
+So, this region here is stretched while
+this region here,
+[BLANK_AUDIO]
+is compressed.
+[BLANK_AUDIO].
+Therefore, regions close to the origin in
+the input of the compressor
+occupy a greater fraction of the total
+region covered by the compressor.
+The output of the compressor is quantized
+using the uniform quantizer
+and the quantized value is transformed
+with the use of an expander.
+So the overall effect is the same as using
+a non-uniform quantizer.
+We clearly encounter this compressor
+expander
+mappings when we cover image enhancement.
+[BLANK_AUDIO].
+Two companding characteristics the co,
+widely used today
+are the so called mu-law companding and
+A-law companding.
+The compressor and expander functions have
+specific forms in this case.
+The mu-law is used in North America and
+Japan, and
+the rest of the world is using the A-law
+characteristics.
+

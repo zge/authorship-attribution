@@ -1,0 +1,199 @@
+Okay, so now let's describe the EM
+algorithm.
+The input to the algorithm is a training
+corpus consisting of sentence pairs f k is
+the kth French sentence e k is the kth
+English sentence.
+And in the initialization step, we're
+going to initialize our t and q
+parameters, so some initial value.
+You might for example, choose random
+initial values for these parameters.
+Then the algorithm proceeds as follows.
+So, we take S, capital S iterations over
+the data.
+And as I said before, S might be typically
+10 to 20 for training these IBM models.
+Okay?
+At each iteration, we first set all of our
+counts equal to 0.
+At the end of the iteration, we're going
+to recalculate.
+The t and q parameters, based on the
+counts that we calculate.
+And in this middle portion I'm going to
+describe how the counts are actually
+calculated.
+Okay, so we initially set the counts equal
+to 0.
+And then again, we pass over every
+training example.
+So we might find example like the one I
+showed you before.
+And we consider every position in the
+French string, and every position paired,
+sorry, every, we consider every position
+in the French string paired with every
+possible position in English strings.
+We have a loops over i and j.
+And then again we have these updates to
+our accounts.
+Which are actually identical to the
+algorithm I showed you previously.
+So we have updates where we have c or c
+plus delta.
+The critical differences in how these
+deltas are calculated.
+So again, remember that before, we had
+delta, k, i, j is equal to 1 if a, k, i
+equals j, 0 otherwise.
+So in the very lucky scenario where we
+have alignments, we can fill in these
+deltas as either 1 or 0 depending on
+whether the alignment is in our training
+data or not.
+Of course in the EM algorithm we're not
+going to assume we have alignments.
+An so instead, we calculate these delta
+values based on our current parameters.
+So I have an expression here based on the
+qs and ts form our previous iteration.
+Okay, so the qs and ts are our common
+parameter values.
+We're going to be able to calculate these
+deltas, using this expression here, which
+I'll describe on the next slide, and we
+can use these deltas to increment these
+counts.
+Okay, so let's describe how to calculate
+these deltas, using the expression I
+showed you on the previous slide.
+And to illustrate this expression I'm
+going to use a particular example so lets
+consider the third french word a.
+So lets number these 1, 2, 3, 4, 5, 6, 7
+and we have 1, 2 3, 4, 5, 6 on the English
+side.
+And, let's first consider delta 100 so
+this is the 100th training example that's
+what this 100 here mean.
+And I'm going to consider position 3.
+And let's first posi, consider, value 0.
+Which intuitively corresponds to, this
+word a being aligned to the null word,
+which is the word zero.
+So what does this expression say.
+Well, on the numerator, I multiply two
+things together.
+Firstly I have q of 0 given 3,6,7.
+That's because I'm aligning word 3 in the
+French to Word 0 in English.
+That's what I'm considering.
+And then I have a t term, which is t of a
+given null.
+So that's the numerator.
+So, basically I'm considering this
+alignment to null and I'm multiplying to
+get the associate distortion parameter.
+And also the translation parameter.
+So now look at the denominator.
+So this is, this whole thing is going to
+be divided by some expression star.
+Let me write, star over here.
+So start is actually going to be a sum of
+terms where we're going to consider each
+of these possible English positions.
+And so this is actually going to be q of
+0, given 3,6,7 times t of a given null.
+Plus q of 1 given 3, 6, 7 times t of a
+given and.
+So this is position one of the English
+distortion parameter and the translation
+parameter.
+Plus 1 of 2 given 3, 6, 7 times t of a
+given the.
+And I basically going to through all
+possible English words multiply in a q and
+a t parameter and that's how I calculate
+this denominator.
+So denominator is essentially are going to
+be a normalization constant which we'll
+see very soon.
+Similarly delta 100.
+3,1 ) is going to be equal to q of 1 given
+3, 6, 7 times t of a given and.
+And again we divide by star, the same sum.
+Delta 100 3, 2 is going to be q of 2 given
+3, 6, 7 times t of a given, now we have a
+third word, sorry, we have the second word
+there, divided by star.
+And so on and so on.
+So we can fill in these values.
+Delta, 100, 3, 0.
+Delta, 100, 3, 1.
+Delta, 100, 3, 2.
+And so on.
+Right the way up to Delta, 100 3 6, and
+you can verify that these different deltas
+sum to 1.
+So in some sense, they're a fractional
+count.
+They say they, they sum to 1, and they
+define a probability distribution.
+Over the different possible alignments for
+this particular French word a.
+So these deltas actually have a very,
+direct, probabilistic interpretation,
+which is follow, as follows.
+Delta k i j is the probability that the
+ith French word is aligned to the jth
+English word, conditioned on the English
+sentence e k, and the French sentence k
+under my current parameters t and q.
+So I'll write a semicolon here followed by
+t and q to mean that we're talking about
+probabilities under the model defined by a
+common parameter.
+So basically what we've done in this
+algorithm is we hallucinated these delta
+values by calculating probability of the
+alignments under the common parameters.
+And recall we then use these deltas in
+calculating the counts which are used to
+re-estimate these q and t parameters.
+So to recap if we go back to this
+algorithm again I'm going to show you this
+diagrams to remind you of this.
+We start off with some initial values of
+the q and t variables and we also have our
+data.
+So this consists of e k, f k for k equals
+1 to n.
+From these two inputs we calculate counts
+and these are often referred to as
+expected counts.
+And they're expected counts under this
+previous model, under the previous q and t
+values.
+We do that by using this definition of
+delta which makes direct use of q and t in
+the previous iteration and we calculate
+the counts.
+From this we calculate new values for the
+q and t variables using these simple
+expressions down here.
+So that's the first iteration.
+And then in the second iteration, we
+repeat this.
+So again, we have two inputs.
+We have our data, together with our
+current parameter, parameters.
+We calculate our expected counts, and from
+those expected counts, we re-estimate q
+and t.
+And we just keep going with this process.
+And this is referred to as the EM
+algorithm.
+Or at least this is an instance of the EM
+algorithm applied to these IBM translation
+models.

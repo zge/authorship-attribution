@@ -1,0 +1,251 @@
+So, now let's describe how Global Linear 
+Models, GLMs can be applied to dependency 
+parsing. 
+So, throughout this section I'll take x 
+to be a sentence, so x is going to be a 
+sequence of words x1, x2, up to x sub n. 
+And really, to define a global linear 
+model, we need to give two definitions. 
+So firstly, we have to define GEN, that 
+takes a sentence as input and returns a 
+set of candidate dependency structures as 
+its output. 
+And secondly, we have to define f. 
+Which is a function that takes a sentence 
+together with a dependency structure and 
+returns a feature vector representation. 
+So GEN is going to be very simple. 
+It is simply defined as the set of all 
+dependency structures for the sentence x. 
+So for example, for John saw Mary. 
+GEN, with the sentence, will return all 
+possible dependency structures over these 
+three words. 
+Critically the size of GEN is exponential 
+in n where n is the length of the 
+sentence being paused. 
+So we're again in a situation where gen 
+is going to be a very large set of 
+possible structures, at least for 
+appreciable n sentences of say 10, or 20, 
+or 30 words. 
+This is going to be an extremely large 
+set. 
+So f of course is going to be a function 
+that takes, as input, a sentence in 
+conjunction with a particular dependency 
+structure and returns a feature vector. 
+So it might return some vector like this 
+which is the representation used by the 
+learning algorithm used by, for example, 
+the perception algorithm when setting 
+the, the parameters of the model. 
+And we'll see that there is a way of 
+defining f that gets us around this 
+problem of the exponential size of GEN. 
+Because we can again, use dynamic 
+programming for search for the, most 
+likely tree under this model. 
+So let me now talk about how we can 
+define f. 
+So, the key idea is going to be, again, 
+to define f as a sum of local feature 
+vectors. 
+So remember in the last segment on the 
+perception algorithm and the Global 
+Linear Models for tagging, we saw a very 
+similar thing, where f was defined as a 
+sum of local feature x is g. 
+In the dependency pausing case, we're 
+going to have one local feature vector 
+for each dependency in the structure y. 
+So y is a structure and this is going to 
+be mapped to a set of dependencies. 
+Where again, each dependency has a head 
+and a modifier. 
+The head is an index of a word, where 
+zero is the root word. 
+And the modifier is also an index of a 
+word in a sentence. 
+The local feature vectors can look at any 
+information in the sentence and can look 
+the identities of this head in the 
+modifier word. 
+So let me illustrate this with an 
+example. 
+So here we have a sentence x with a 
+dependency structure. 
+So the sentence x is John saw a movie. 
+So we have x1 equals John, x2 is equal to 
+saw, x3 is equal to a, x4 is equal to 
+movie. 
+And the dependency structure y is 
+basically equal to a set of dependencies 
+where we have 0, 2, 2, 1, 2, 4, and 4, 3. 
+So, it would be useful to, to number 
+these words 0,1,2,3,4. 
+So, for example, the dependency 2,4 
+corresponds to this directed arc between 
+saw and movie. 
+Now we're going to have some 
+feature-vector mapping that takes x in 
+conjunction with i and return some 
+feature vector. 
+And through the definition on the 
+previous slide, this was defined as sum 
+of all dependencies in y of g of x, h, m. 
+So for this particular example, this is 
+going to be g of x, 0, 2 plus g of x, 2, 
+1 plus g of x, 2, 4 plus g of x, 4, 3. 
+So again where playing this trick where 
+we define a global feature vector as a 
+sum of local feature vectors. 
+Where now we have a local feature vector 
+for each of the directed arcs and its 
+dependency [UNKNOWN]. 
+So we might for example have feature 
+vectors like the following. 
+[NOISE] So maybe of, of our four feature 
+vectors look like the following. 
+And in this case, the sum would be, one, 
+two, three in the first position. 
+So 3' ones and 1 zeros. 
+Just 1 in the second position, because I 
+have one 1 and 0s elsewhere. 
+In the third position, I would have 1, 
+because again, I have a single 1 in the 
+third position. 
+And in the final position I also have 1. 
+So that's going to be the final global 
+feature vector. 
+It's the sum of these local feature 
+vectors. 
+Again what we're seeing here is something 
+which is very common in these kind of 
+models. 
+Which is that these local feature vectors 
+have ones or zeros. 
+These are going to be features. 
+We'll talk about this more in a second. 
+These can be features which ask various 
+questions about these, different 
+dependencies. 
+And then the global feature vector is 
+going to be a count. 
+For example, there are three dependencies 
+within this structure, such that this 
+first question was true, i.e the first 
+question had a value of 1. 
+So let me give you an example of how we 
+might define these, featured vectors. 
+So, maybe the first feature, so this is 
+the first component. 
+So we're going to have g, x, h, m is 
+going to be a vector composed of g1, x, 
+h, m, g2, x, h, m, right the way up to g 
+sub d of x, h, m. 
+Where d is the dimensionality of the 
+feature, feature vector. 
+As the number of features. 
+so each of these different functions g1, 
+g2, up to gd, will look at an x, h, m 
+triple and return some value. 
+So, one such function might be the 
+following. 
+So this is 1, if x sub h is equal to saw 
+and x sub m is equal to movie. 
+Okay, so in particular we would have g1 
+of John saw a movie. 
+And if we have 2, 1 as the dependency. 
+So that's this particular dependency 
+here. 
+This is going to be one in this case. 
+Okay? 
+So this particular function, this 
+particular feature looks at the two 
+words, that stand in some dependency 
+relationship between x, h and x, m. 
+And returns 1 if they're a particular 
+word, 0 otherwise. 
+We would typically define a feature like 
+this, for every possible pair of words in 
+the vocabulary. 
+Okay, so again, as we've seen often with 
+these log linear models. 
+We might have a very very large number of 
+possible features. 
+One for each pair of words. 
+These features are very useful. 
+Because certain pairs of words are very 
+likely to stand in a dependency 
+relationship. 
+Other pairs of words are much less likely 
+to stand in a, in a dependency relation-, 
+a dependency relationship. 
+Let me give you some other examples of 
+features. 
+It's very common, actually, to not just 
+include the words in the input x. 
+But also to include part of speech tags. 
+[SOUND]. 
+Because those can provide useful 
+information. 
+And so now if we have g2 of h x m, here's 
+another feature. 
+Now think of x as including both the 
+words and also the part of speech tags in 
+the input. 
+So you could say something like one if 
+the part of speech tag for h is equal to 
+VBD and the parse speech tag for m is 
+equal to NN, is 0, otherwise. 
+So, these kind of features would be 
+introduced for every possible pairs of 
+part of speech tags in the underlying 
+part-of-speech tag set. 
+And these kind of features are very 
+useful because certain part-of-speech 
+tags are much more likely to be seen in 
+dependency relationships than other ones. 
+Another type of feature which we might 
+use [SOUND] could look at the distance 
+between the two words. 
+Okay, so we could say this is one if the 
+distance between h and m. 
+So, the difference, this is the absolute 
+value of the difference is equal to 10 
+and 0 otherwise. 
+[SOUND] So this feature returns the value 
+1 if the two words involved and the 
+dependency are very far from each other. 
+And these kind of features can be useful 
+because there certainly is a statistical 
+tendency in language for these 
+dependencies to be between close by 
+words. 
+That's actually an empirical observation 
+we're told across many languages. 
+You do see occasional dependencies which 
+are very long, but many of them are very 
+short dependencies where we just have an 
+adjacent word or we have. 
+dependency involving words within a two 
+or three word window. 
+Now what you'll hopefully see from these 
+examples, is we have considerable freedom 
+in defining these features. 
+Which, look at the sentence, the index of 
+the head word and the index of the 
+modifier word, we can incorporate all 
+kinds of information. 
+About the words x, h, and x, m. 
+Maybe the part of speech tags for those 
+words. 
+Maybe the distance between those two 
+words. 
+Maybe surrounding information so we can 
+look at the part of speech tags or words 
+of the left or right of the two words 
+that stand in teh dependency 
+relationship. 
+

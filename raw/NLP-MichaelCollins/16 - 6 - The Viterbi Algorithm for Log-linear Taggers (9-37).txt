@@ -1,0 +1,213 @@
+So we've now described some key steps in 
+constructing a log-linear tagger. 
+Firstly, how to define features that take 
+into account features of the context or 
+the history, in conjuction with the 
+current tag being predicted. 
+Secondly, we've described how to estimate 
+the parameters of this model, essentially 
+by optimizing regularized log likelihood. 
+In exactly the same way we saw in last 
+week's lecture on log-linear models. 
+The final piece of the puzzle is the 
+question of how we apply a log-linear 
+model to a new test sentence. 
+So this means we're going to take some 
+test sentences input, for example, the 
+dog barks. 
+And we're going to search over all 
+possible tag sequences, for the tag 
+sequence that maximizes this conditional 
+probability. 
+So, you might consider the tag sequence 
+of DDD, DDN, DND. 
+And so on and so on. 
+And we're going to return the tag 
+sequence that has the highest value for 
+this conditional probability. 
+Now, as usual and as argued earlier in 
+this course, brute force search just 
+isn't going to scale to any appreciable 
+sentence length. 
+There's no way I can explicitly enumerate 
+all possible tag sequences, calculate the 
+probability of each subsequents, and then 
+return the highest one. 
+But we'll see that we can again use the 
+Viterbi algorithm. 
+And actually it's a very minor variant of 
+the Viterbi algorithm as seen for hidden 
+Markov models. 
+And that will find the highest scoring or 
+the highest probability tag sequence very 
+efficiently. 
+And the critical observation is that 
+we're going to make the assumption that 
+this conditional probability takes the 
+following form. 
+So notice I have a product from i equals 
+one to n and I have q of t i, given the 
+previous two tags, the entire sentence 
+and the position. 
+The key property of this definition is 
+that at each point I condition just on 
+the previous two tags. 
+I have this Markov like assumption. 
+And that will again allow us to apply 
+dynamic programming or the Viterbi 
+Algorithm to this problem of finding the 
+highest scoring tag sequence. 
+As it happens in our case. 
+This Q, this estimate is the output from 
+our log-linear model. 
+Which makes direct use of parameters and 
+these features that we saw earlier. 
+So let's build up the Viterbi algorithm 
+in this case in a very similar way. 
+To the way we solve for hidden Markov 
+models. 
+So, a key idea will be to define a 
+dynamic programming table, so pi kuv, is 
+going to the maximum probability of any 
+tag sequence ending in tags u and v, at 
+position k. 
+So a little bit more formally, we'll 
+define a function r, which takes a 
+sequence of k tags, t1 through tk. 
+And calcs-, it calculates their 
+probability onto the model. 
+So notice, this is basically a truncated 
+form of the probability for an entire tag 
+sequence. 
+We're now multiplying through articles 1 
+through k, q of ti, given the previous 
+two tags. 
+And we define pi k, u, v. 
+To simply the maximum probability for any 
+tag sequence ending in u and v, at 
+positions k. 
+So that's what this definition is saying. 
+Again, that's very similar to what we say 
+for hidden Markov models. 
+In the hidden Markov models, we also saw 
+dynamic programming table of this form 
+where this pi values correspond to 
+maximum probabilities of prefixes of tag 
+sequences. 
+Here is the recursive definition. 
+So firstly, we say that pi of 0 star, 
+star equals 1. 
+That's the base case of the recursion. 
+This is identical to the HMM algorithm so 
+no changes there. 
+And then, a recursive definition looks 
+like the following. 
+So again will define s sub k to be the 
+set of possible tags at position k in the 
+sentence. 
+That's exactly the same as the definition 
+for the algorithm for the hidden Markov 
+models. 
+And then for any k , for any u and sk 
+minus 1, and v and sk, I define pi k, u, 
+v to be the following. 
+I take the max of all tags, the position 
+k minus 2, I multiply n pi of k minus 1, 
+tu. 
+So that's a pi value of position k minus 
+1 and note that we have position k over 
+here. 
+And then here, I just have the 
+conditional probability of v given the 
+previous two tags t and u. 
+Given the entire sentence, w and given 
+the position, k. 
+And so, this would be the output from a 
+log-linear model. 
+Now, I'm not going to go through the 
+justification for this recursion in great 
+detail. 
+But it is extremely similar to the 
+justification we saw for the recursion, 
+when applied to hidden Markov models. 
+So, in fact, what's happened here 
+essentially is that in hidden Markov 
+models, instead of this term, we would 
+have had something like the following. 
+We would have had q of v given t u and 
+then secondly e of wk, which we have the 
+k for word, given tag v. 
+So we'd have this product of two terms. 
+The trigram term for a tag. 
+And then the, the emission term for the 
+probability of w k being emitted by v. 
+In this log-linear model, we have this 
+new term which the conditional 
+probability of v given t and u. 
+Under the entire sentence w 1 through n, 
+and the position k. 
+Otherwise, this recursive definition is 
+almost exactly the same as what we saw 
+before. 
+So, here is the Viterbi Algorithm which 
+puts all of these ideas together. 
+And again, I want to stress, it's very 
+familiar to the Viterbi Algorithm you saw 
+for hidden Markov models. 
+So the input to the algorithm is the test 
+sentence, w1 through wn, which we'd like 
+to tag. 
+And in addition, we'll assume that we're 
+provided with a log-linear model that 
+provides the conditional probability of 
+any v given tags t and u, given an input 
+sentence and a position. 
+So those are the two inputs to the model. 
+The model then proceeds as follows. 
+So in the initialization step, we set pi 
+0 star, star equal to 1. 
+And then we do the following. 
+So for every position k, in the range 1 
+to n, we consider all possible tags, u in 
+position k minus 1, and v at position k. 
+And we're going to fill in the value for 
+pi k of u and v. 
+We do that by searching for the tag t, at 
+position k minus 2. 
+That maximizes the product of these two 
+terms. 
+So I have pi of k minus 1, t and u. 
+And then I have this q term refecting, 
+reflecting the conditional probability of 
+the tag v in this particular context, 
+under this particular history. 
+As before, I keep track of back pointers 
+for every k,u, v triple. 
+Which just record the arg max. 
+That is the tag, t. 
+That actually achieves this maximum. 
+So that's the main body of the algorithm. 
+Once I've completed these steps, I can 
+then find the highest scoring tag 
+sequence by following the back pointers 
+backwards through the sequence. 
+So at first we set tn minus 1, tn. 
+To be the uv pair that maximizes pi, n, 
+u, and v. 
+And then I work backwards through the 
+sequence from position n minus 2 down to 
+1. 
+At each point saying the case tag is 
+equal to the back pointer from position k 
+plus 2 with tk plus 1 and tk plus 2. 
+So I'm essentially working backwards 
+through the sequence. 
+First recovering the last two tags, say d 
+of n, d and then n, and then filling in 
+the previous tags one by one, backwards 
+through the sequence. 
+Once I've done that, I finally return the 
+tag sequence t 1 through tn, and that is 
+the highest probability sequence under 
+the log-linear modal. 
+

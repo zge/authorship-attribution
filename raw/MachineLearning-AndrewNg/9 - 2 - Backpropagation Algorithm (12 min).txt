@@ -1,0 +1,339 @@
+In the previous video, we talked about
+a cost function for the neural network.
+In this video, let's start to talk about an algorithm,
+for trying to minimize the cost function.
+In particular, we'll talk about the back propagation algorithm.
+Here's the cost function that
+we wrote down in the previous video.
+What we'd like to do is
+try to find parameters theta
+to try to minimize j of theta.
+In order to use either gradient descent
+or one of the advance optimization algorithms.
+What we need to do therefore is
+to write code that takes
+this input the parameters theta
+and computes j of theta
+and these partial derivative terms.
+Remember, that the parameters
+in the the neural network of these things,
+theta superscript l subscript ij,
+that's the real number
+and so, these are the partial derivative terms
+we need to compute.
+In order to compute the
+cost function j of theta,
+we just use this formula up here
+and so, what I want to do
+for the most of this video is
+focus on talking about
+how we can compute these
+partial derivative terms.
+Let's start by talking about
+the case of when we have only
+one training example,
+so imagine, if you will that our entire
+training set comprises only one
+training example which is a pair xy.
+I'm not going to write x1y1
+just write this.
+Write a one training example
+as xy and let's tap through
+the sequence of calculations
+we would do with this one training example.
+The first thing we do is
+we apply forward propagation in
+order to compute whether a hypotheses
+actually outputs given the input.
+Concretely, the called the
+a(1) is the activation values
+of this first layer that was the input there.
+So, I'm going to set that to x
+and then we're going to compute
+z(2) equals theta(1) a(1)
+and a(2) equals g, the sigmoid
+activation function applied to z(2)
+and this would give us our
+activations for the first middle layer.
+That is for layer two of the network
+and we also add those bias terms.
+Next we apply 2 more steps
+of this four and propagation
+to compute a(3) and a(4)
+which is also the upwards
+of a hypotheses h of x.
+So this is our vectorized implementation of
+forward propagation
+and it allows us to compute
+the activation values
+for all of the neurons
+in our neural network.
+Next, in order to compute
+the derivatives, we're going to use
+an algorithm called back propagation.
+The intuition of the back propagation algorithm
+is that for each note
+we're going to compute the term
+delta superscript l subscript j
+that's going to somehow
+represent the error
+of note j in the layer l.
+So, recall that
+a superscript l subscript j
+that does the activation of
+the j of unit in layer l
+and so, this delta term
+is in some sense
+going to capture our error
+in the activation of that neural duo.
+So, how we might wish the activation
+of that note is slightly different.
+Concretely, taking the example
+neural network that we have
+on the right which has four layers.
+And so capital L is equal to 4.
+For each output unit, we're going to compute this delta term.
+So, delta for the j of unit in the fourth layer is equal to
+just the activation of that
+unit minus what was
+the actual value of 0 in our training example.
+So, this term here can
+also be written h of
+x subscript j, right.
+So this delta term is just
+the difference between when a
+hypotheses output and what
+was the value of y
+in our training set whereas
+y subscript j is
+the j of element of the
+vector value y in our labeled training set.
+And by the way, if you
+think of delta a and
+y as vectors then you can
+also take those and come
+up with a vectorized implementation of
+it, which is just
+delta 4 gets set as
+a4 minus y. Where
+here, each of these delta
+4 a4 and y, each of
+these is a vector whose
+dimension is equal to
+the number of output units in our network.
+So we've now computed the
+era term's delta
+4 for our network.
+What we do next is compute
+the delta terms for the earlier layers in our network.
+Here's a formula for computing delta
+3 is delta 3 is equal
+to theta 3 transpose times delta 4.
+And this dot times, this
+is the element y's multiplication operation
+that we know from MATLAB.
+So delta 3 transpose delta
+4, that's a vector; g prime
+z3 that's also a vector
+and so dot times is
+in element y's multiplication between these two vectors.
+This term g prime of
+z3, that formally is actually
+the derivative of the activation
+function g evaluated at
+the input values given by z3.
+If you know calculus, you
+can try to work it out yourself
+and see that you can simplify it to the same answer that I get.
+But I'll just tell you pragmatically what that means.
+What you do to compute this g
+prime, these derivative terms is
+just a3 dot times1
+minus A3 where A3
+is the vector of activations.
+1 is the vector of
+ones and A3 is
+again the activation
+the vector of activation values for that layer.
+Next you apply a similar
+formula to compute delta 2
+where again that can be
+computed using a similar formula.
+Only now it is a2
+like so and I
+then prove it here but you
+can actually, it's possible to
+prove it if you know calculus
+that this expression is equal
+to mathematically, the derivative of
+the g function of the activation
+function, which I'm denoting
+by g prime. And finally,
+that's it and there is
+no delta1 term, because the
+first layer corresponds to the
+input layer and that's just the
+feature we observed in our
+training sets, so that doesn't have any error associated with that.
+It's not like, you know,
+we don't really want to try to change those values.
+And so we have delta
+terms only for layers 2, 3 and for this example.
+The name back propagation comes from
+the fact that we start by
+computing the delta term for
+the output layer and then
+we go back a layer and
+compute the delta terms for the
+third hidden layer and then we
+go back another step to compute
+delta 2 and so, we're sort of
+back propagating the errors from
+the output layer to layer 3
+to their to hence the name back complication.
+Finally, the derivation is
+surprisingly complicated, surprisingly involved but
+if you just do this few steps
+steps of computation it is possible
+to prove viral frankly some
+what complicated mathematical proof.
+It's possible to prove that if
+you ignore authorization then the
+partial derivative terms you want
+are exactly given by the
+activations and these delta terms.
+This is ignoring lambda or
+alternatively the regularization
+term lambda will
+equal to 0.
+We'll fix this detail later
+about the regularization term, but
+so by performing back propagation
+and computing these delta terms,
+you can, you know, pretty
+quickly compute these partial
+derivative terms for all of your parameters.
+So this is a lot of detail.
+Let's take everything and put
+it all together to talk about
+how to implement back propagation
+to compute derivatives with respect to your parameters.
+And for the case of when
+we have a large training
+set, not just a training
+set of one example, here's what we do.
+Suppose we have a training
+set of m examples like
+that shown here.
+The first thing we're going to do is
+we're going to set these delta
+l subscript i j. So this triangular symbol?
+That's actually the capital Greek
+alphabet delta .
+The symbol we had on the previous slide was the lower case delta.
+So the triangle is capital delta.
+We're gonna set this equal to zero
+for all values of l i j.
+Eventually, this capital delta
+l i j will be used
+to compute the partial
+derivative term, partial derivative
+respect to theta l i j of
+J of theta.
+So as we'll see in
+a second, these deltas are going
+to be used as accumulators that
+will slowly add things in
+order to compute these partial derivatives.
+Next, we're going to loop through our training set.
+So, we'll say for i equals
+1 through m and so
+for the i iteration, we're
+going to working with the training example xi, yi.
+So
+the first thing we're going to do
+is set a1 which is the
+activations of the input layer,
+set that to be equal to
+xi is the inputs for our
+i training example, and then
+we're going to perform forward propagation to
+compute the activations for
+layer two, layer three and so
+on up to the final
+layer, layer capital L. Next,
+we're going to use the output
+label yi from this
+specific example we're looking
+at to compute the error
+term for delta L for the output there.
+So delta L is what
+a hypotheses output minus what
+the target label was?
+And then we're going to use
+the back propagation algorithm to
+compute delta L minus 1,
+delta L minus 2, and
+so on down to delta 2 and once again
+there is now delta 1 because
+we don't associate an error term with the input layer.
+And finally, we're going to
+use these capital delta terms
+to accumulate these partial derivative
+terms that we wrote down on the previous line.
+And by the way, if you
+look at this expression, it's possible to vectorize this too.
+Concretely, if you think
+of delta ij as
+a matrix, indexed by subscript ij.
+Then, if delta L is
+a matrix we can rewrite
+this as delta L, gets
+updated as delta L plus
+lower case delta L plus
+one times aL transpose.
+So that's a vectorized implementation of
+this that automatically does
+an update for all values of
+i and j.
+Finally, after
+executing the body of
+the four-loop we then go outside the four-loop
+and we compute the following.
+We compute capital D as
+follows and we have
+two separate cases for j
+equals zero and j not equals zero.
+The case of j equals zero
+corresponds to the bias
+term so when j equals
+zero that's why we're missing
+is an extra regularization term.
+Finally, while the formal proof
+is pretty complicated what you
+can show is that once
+you've computed these D terms,
+that is exactly the partial
+derivative of the cost
+function with respect to each
+of your perimeters and so you
+can use those in either gradient
+descent or in one of the advanced authorization
+algorithms.
+So that's the back propagation
+algorithm and how you compute
+derivatives of your cost
+function for a neural network.
+I know this looks like this
+was a lot of details and this was a lot of steps strung together.
+But both in the programming
+assignments write out and later
+in this video, we'll give
+you a summary of this so
+we can have all the pieces
+of the algorithm together so that
+you know exactly what you need
+to implement if you want
+to implement back propagation to compute
+the derivatives of your neural network's
+cost function with respect to those parameters.

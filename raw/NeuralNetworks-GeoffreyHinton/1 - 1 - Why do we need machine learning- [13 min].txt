@@ -1,0 +1,353 @@
+Hello.
+Welcome to the Coursera course on Neural
+Networks for Machine Learning.
+Before we get into the details of neural
+network learning algorithms, I want to
+talk a little bit about machine learning,
+why we need machine learning, the kinds of
+things we use it for, and show you some
+examples of what it can do.
+So the reason we need machine learning is
+that the sum problem, where it's very hard
+to write the programs, recognizing a three
+dimensional object for example.
+When it's from a novel viewpoint and new
+lighting additions in a cluttered scene is
+very hard to do.
+We don't know what program to write
+because we don't know how it's done in our
+brain.
+And even if we did know what program to
+write, it might be that it was a
+horrendously complicated program.
+Another example is, detecting a fraudulent
+credit card transaction, where there may
+not be any nice, simple rules that will
+tell you it's fraudulent.
+You really need to combine, a very large
+number of, not very reliable rules.
+And also, those rules change every time
+because people change the tricks they use
+for fraud.
+So, we need a complicated program that
+combines unreliable rules, and that we can
+change easily.
+The machine learning approach, is to say,
+instead of writing each program by hand
+for each specific task, for particular
+task, we collect a lot of examples, and
+specify the correct output for given
+input.
+A machine learning algorithm then takes
+these examples and produces a program that
+does the job.
+The program produced by the linear
+algorithm may look very different from the
+typical handwritten program.
+For example, it might contain millions of
+numbers about how you weight different
+kinds of evidence.
+If we do it right, the program should work
+for new cases just as well as the ones
+it's trained on.
+And if the data changes, we should be able
+to change the program runs very easily by
+retraining it on the new data.
+And now massive amounts for computation
+are cheaper that paying someone to write a
+program for a specific task, so we can
+afford big complicated machine learning
+programs to produce these stark task
+specific systems for us.
+Some examples of the things that are best
+done by using a learning algorithm are
+recognizing patterns, so for example
+objects in real scenes, or the identities
+or expressions of people's faces, or
+spoken words.
+There's also recognizing anomalies.
+So, an unusual sequence of credit card
+transactions would be an anomaly.
+Another example of an anomaly would be an
+unusual pattern of sensor readings in a
+nuclear power plant.
+And you wouldn't really want to have to
+deal with those by doing supervised
+learning.
+Where you look at the ones that blow up,
+and see what, what caused them to blow up.
+You'd really like to recognize that
+something funny is happening without
+having any supervision signal.
+It's just not behaving in its normal way.
+And then this prediction.
+So, typically, predicting future stock
+prices or currency exchange rates or
+predicting which movies a person will like
+from knowing which other movies they like.
+And which movies a lot of other people
+liked.
+So in this course I'm mean as a standard
+example for explaining a lot of the
+machine learning algorithms.
+This is done in a lot of science.
+In genetics for example, a lot of genetics
+is done on fruitflies.
+And the reason is they're convenient.
+They breed fast and a lot is already known
+about the genetics of fruit flies.
+The MNIST database of handwritten digits
+is the machine equivalent of fruitflies.
+It's publicly available.
+We can get machine learning algorithms to
+learn how to recognize these handwritten
+digits quite quickly, so it's easy to try
+lots of variations.
+And we know huge amounts about how well
+different machine learning methods do on
+MNIST.
+And in particular, the different machine
+learning methods were implemented by
+people who believed in them, so we can
+rely on those results.
+So for all those reasons, we're gonna use
+MNIST as our standard task.
+Here's an example of some of the digits in
+MNIST.
+These are ones that were correctly
+recognized by neural net the first time it
+saw them.
+But the ones within the neural net wasn't
+very confident.
+And you could see why.
+I've arranged these digits in standard
+scan line order.
+So zeros, then ones, then twos and so on.
+If you look at a bunch of tubes like the
+onces in the green rectangle.
+You can see that if you knew they were 100
+in digit you'd probably guess they were
+twos.
+But it's very hard to say what it is that
+makes them twos.
+Theres nothing simple that they all have
+in common.
+In particular if you try and overlay one
+on another you'll see it doesn't fit.
+And even if you skew it a bit, it's very
+hard to make them overlay on each other.
+So a template isn't going to do the job.
+An in particular template is going to be
+very hard to find that will fit those twos
+in the green box and would also fit the
+things in the red boxes.
+So that's one thing that makes recognizing
+handwritten digits a good task for machine
+learning.
+Now, I don't want you to think that's the
+only thing we can do.
+It's a relatively simple for our machine
+learning system to do now.
+And to motivate the rest of the course, I
+want to show you some examples of much
+more difficult things.
+So we now have neural nets with
+approaching a hundred million parameters
+in them, that can recognize a thousand
+different object classes in 1.3 million
+high resolution training images got from
+the web.
+So, there was a competition in 2010, and
+the best system got 47 percent error rate
+if you look at its first choice, and 25
+percent error rate if you say it got it
+right if it was in its top five choices,
+which isn't bad for 1,000 different
+objects.
+Jitendra Malik who's an eminent neural net
+skeptic, and a leading computer vision
+researcher, has said that this competition
+is a good test of whether deep neural
+networks can work well for object
+recognition.
+And a very deep neural network can now do
+considerably better than the thing that
+won the competition.
+It can get less than 40 percent error, for
+its first choice, and less than twenty
+percent error for its top five choices.
+I'll describe that in much more detail in
+lecture five.
+Here's some examples of the kinds of
+images you have to recognize.
+These images from the test set that he's
+never seen before.
+And below the examples, I'm showing you
+what the neural net thought the right
+answer was.
+Where the length of the horizontal bar is
+how confident it was, and the correct
+answer is in red.
+So if you look in the middle, it correctly
+identified that as a snow plow.
+But you can see that its other choices are
+fairly sensible.
+It does look a little bit like a drilling
+platform.
+And if you look at its third choice, a
+lifeboat, it actually looks very like a
+lifeboat.
+You can see the flag on the front of the
+boat and the bridge of the boat and the
+flag at the back, and the high surf in the
+background.
+So its, its errors tell you a lot about
+how it's doing it and they're very
+plausible errors.
+If you look on the left, it gets it wrong
+possibly because the beak of the bird is
+missing and cuz the feathers of the bird
+look very like the wet fur of an otter.
+But it gets it in its top five, and it
+does better than me.
+I wouldn't know if that was a quail or a
+ruffed grouse or a partridge.
+If you look on the right, it gets it
+completely wrong.
+It a guillotine, you can why it says that.
+You can possibly see why it says
+orangutan, because of the sort of jungle
+looking background and something orange in
+the middle.
+But it fails to get the right answer.
+It can, however, deal with a wide range of
+different objects.
+If you look on the left, I would have said
+microwave as my first answer.
+The labels aren't very systematic.
+So actually, the correct answer there is
+electric range.
+And it does get it in its top five.
+In the middle, it's getting a turnstile,
+which is a distributed object.
+It does, can't, it can do more than just
+recognize compact things.
+And it can also deal with pictures, as
+well as real scenes, like the bulletproof
+vest.
+And it makes some very cool errors.
+If you look at the image on the left,
+that's an earphone.
+It doesn't get anything, like an earphone.
+But if you look at this fourth batch, it
+thinks it's an ant.
+And for you to think that's crazy.
+But then if you look at it carefully, you
+can see it's a view of an ant from
+underneath.
+The eyes are looking down at you, and you
+can see the antennae behind it.
+It's not the kind of view of an ant you'd
+like to have if you were a green fly.
+If you look at the one on the right, it
+doesn't get the right answer.
+But all of its answers are, cylindrical
+objects.
+Another task that neural nets are now very
+good at, is speech recognition.
+Or at least part of a speech recognition
+system.
+So speech recognition systems have several
+stages.
+First they pre-process the sound wave, to
+get a vector of acoustic coefficients, for
+each ten milliseconds of sound wave.
+And so they get 100 of those actors per
+second.
+They then take a few adjacent vectors of
+acoustic coefficients, and they need to
+place bets on which part of which phoneme
+is being spoken.
+So they look at this little window and
+they say, in the middle of this window,
+what do I think the phoneme is, and which
+part of the phoneme is it?
+And a good speech recognition system will
+have many alternative models for a
+phoneme.
+And each model, it might have three
+different parts.
+So it might have many thousands of
+alternative fragments that it thinks this
+might be.
+And you have to place bets on all those
+thousands of alternatives.
+And then once you place those bets you
+have a decoding stage that does the best
+job it can of using plausible bets, but
+piecing them together into a sequence of
+bets that corresponds to the kinds of
+things that people say.
+Currently, deep neural networks pioneered
+by George Dahl and Abdel-rahman Mohammed
+of the University of Toronto are doing
+better than previous machine learning
+methods for the acoustic model, and
+they're now beginning to be used in
+practical systems.
+So, Dahl and Mohammed, developed a system,
+that uses many layers of, binary neurons,
+to, take some acoustic frames, and make
+bets about the labels.
+They were doing it on a fairly small
+database and then used 183 alternative
+labels.
+And to get their system to work well, they
+did some pre-training, which will be
+described in the second half of the
+course.
+After standard post processing, they got
+20.7 percent error rate on a very standard
+benchmark, which is kind of like the NMIST
+for speech.
+The best previous result on that benchmark
+for speak independent recognition was
+24.4%.
+And a very experienced speech researcher
+at Microsoft research realized that, that
+was a big enough improvement, that
+probably this would change the way speech
+recognition systems were done.
+And indeed, it has.
+So, if you look at recent results from
+several different leading speech groups,
+Microsoft showed that this kind of deep
+neural network, when used as the acoustic
+model in the speech system.
+Reduced the error rate from 27.4 percent
+to 18.5%, or alternatively, you could view
+it as reducing the amount of training data
+you needed from 2,000 hours down to 309
+hours to get comparable performance.
+Ibm which has the best system for one of
+the standard speech recognition tasks for
+large recovery speech recognition, showed
+that even it's very highly tuned system
+that was getting 18.8 percent can be
+beaten by one of these deep neural
+networks.
+And Google, fairly recently, trained a
+deep neural network on a large amount of
+speech, 5,800 hours.
+That was still much less than they trained
+their mixture model on.
+But even with much less data, it did a lot
+better than the technology they had
+before.
+So it reduced the error rate from sixteen
+percent to 12.3 percent and the error rate
+is still falling.
+And in the latest Android, if you do voice
+search, it's using one of these deep
+neurall networks in order to do very good
+speech recognition.

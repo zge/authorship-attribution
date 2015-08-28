@@ -1,0 +1,326 @@
+[MUSIC]
+This lecture is about the mixture
+of unigram language models.
+In this lecture we will continue
+discussing probabilistic topic models.
+In particular, what we introduce
+a mixture of unigram language models.
+This is a slide that
+you have seen earlier.
+Where we talked about how to
+get rid of the background
+words that we have on top of for
+one document.
+So if you want to solve the problem,
+it would be useful to think about
+why we end up having this problem.
+Well, this obviously because these
+words are very frequent in our data and
+we are using a maximum
+likelihood to estimate.
+Then the estimate obviously would
+have to assign high probability for
+these words in order to
+maximize the likelihood.
+So, in order to get rid of them that
+would mean we'd have to do something
+differently here.
+In particular we'll have
+to say this distribution
+doesn't have to explain all
+the words in the tax data.
+What were going to say is that,
+these common words should not be
+explained by this distribution.
+So one natural way to solve the problem is
+to think about using another distribution
+to account for just these common words.
+This way, the two distributions can be
+mixed together to generate the text data.
+And we'll let the other model which
+we'll call background topic model
+to generate the common words.
+This way our target topic theta
+here will be only generating
+the common handle words that are
+characterised the content of the document.
+So, how does this work?
+Well, it is just a small
+modification of the previous setup
+where we have just one distribution.
+Since we now have two distributions,
+we have to decide which distribution
+to use when we generate the word.
+Each word will still be a sample
+from one of the two distributions.
+Text data is still
+generating the same way.
+Namely, look at the generating
+of the one word at each time and
+eventually we generate a lot of words.
+When we generate the word,
+however, we're going to first decide
+which of the two distributions to use.
+And this is controlled by another
+probability, the probability of
+theta sub d and
+the probability of theta sub B here.
+So this is a probability of enacting
+the topic word of distribution.
+This is the probability of
+enacting the background word
+of distribution denoted by theta sub B.
+On this case I just give example
+where we can set both to 0.5.
+So you're going to basically flip a coin,
+a fair coin,
+to decide what you want to use.
+But in general these probabilities
+don't have to be equal.
+So you might bias toward using
+one topic more than the other.
+So now the process of generating a word
+would be to first we flip a coin.
+Based on these probabilities choosing
+each model and if let's say the coin
+shows up as head, which means we're going
+to use the topic two word distribution.
+Then we're going to use this word
+distribution to generate a word.
+Otherwise we might be
+going slow this path.
+And we're going to use the background
+word distribution to generate a word.
+So in such a case,
+we have a model that has some uncertainty
+associated with the use
+of a word distribution.
+But we can still think of this as
+a model for generating text data.
+And such a model is
+called a mixture model.
+So now let's see.
+In this case, what's the probability
+of observing a word w?
+Now here I showed some words.
+like "the" and "text".
+So as in all cases,
+once we setup a model we are interested
+in computing the likelihood function.
+The basic question is, so
+what's the probability of
+observing a specific word here?
+Now we know that the word can be observed
+from each of the two distributions, so
+we have to consider two cases.
+Therefore it's a sum over these two cases.
+The first case is to use the topic for
+the distribution to generate the word.
+And in such a case then
+the probably would be theta sub d,
+which is the probability
+of choosing the model
+multiplied by the probability of actually
+observing the word from that model.
+Both events must happen
+in order to observe.
+We first must have choosing
+the topic theta sub d and then,
+we also have to actually have sampled
+the word the from the distribution.
+And similarly,
+the second part accounts for
+a different way of generally
+the word from the background.
+Now obviously the probability of
+text the same is all similar, right?
+So we also can see the two
+ways of generating the text.
+And in each case, it's a product of the
+probability of choosing a particular word
+is multiplied by the probability of
+observing the word from that distribution.
+Now whether you will see,
+this is actually a general form.
+So might want to make sure that you have
+really understood this expression here.
+And you should convince yourself that
+this is indeed the probability of
+obsolete text.
+So to summarize what we observed here.
+The probability of a word from
+a mixture model is a general sum
+of different ways of generating the word.
+In each case,
+it's a product of the probability
+of selecting that component model.
+Multiplied by the probability of
+actually observing the data point
+from that component of the model.
+And this is something quite general and
+you will see this occurring often later.
+So the basic idea of a mixture
+model is just to retrieve
+thesetwo distributions
+together as one model.
+So I used a box to bring all
+these components together.
+So if you view this
+whole box as one model,
+it's just like any other generative model.
+It would just give us
+the probability of a word.
+But the way that determines this
+probability is quite the different from
+when we have just one distribution.
+And this is basically a more
+complicated mixture model.
+So the more complicated is more
+than just one distribution.
+And it's called a mixture model.
+So as I just said we can treat
+this as a generative model.
+And it's often useful to think of
+just as a likelihood function.
+The illustration that
+you have seen before,
+which is dimmer now, is just
+the illustration of this generated model.
+So mathematically,
+this model is nothing but
+to just define the following
+generative model.
+Where the probability of a word is
+assumed to be a sum over two cases
+of generating the word.
+And the form you are seeing now
+is a more general form that
+what you have seen in
+the calculation earlier.
+Well I just use the symbol
+w to denote any water but
+you can still see this is
+basically first a sum.
+Right?
+And this sum is due to the fact that the
+water can be generated in much more ways,
+two ways in this case.
+And inside a sum,
+each term is a product of two terms.
+And the two terms are first
+the probability of selecting a component
+like of D Second,
+the probability of actually observing
+the word from this component of the model.
+So this is a very general description
+of all the mixture models.
+I just want to make sure
+that you understand
+this because this is really the basis for
+understanding all kinds of on top models.
+So now once we setup model.
+We can write down that like
+functioning as we see here.
+The next question is,
+how can we estimate the parameter,
+or what to do with the parameters.
+Given the data.
+Well, in general,
+we can use some of the text data
+to estimate the model parameters.
+And this estimation would allow us to
+discover the interesting
+knowledge about the text.
+So you, in this case, what do we discover?
+Well, these are presented
+by our parameters and
+we will have two kinds of parameters.
+One is the two worded distributions,
+that result in topics, and
+the other is the coverage
+of each topic in each.
+The coverage of each topic.
+And this is determined by
+probability of C less of D and
+probability of theta, so this is to one.
+Now, what's interesting is
+also to think about special
+cases like when we send one of
+them to want what would happen?
+Well with the other, with the zero right?
+And if you look at
+the likelihood function,
+it will then degenerate to the special
+case of just one distribution.
+Okay so you can easily verify that by
+assuming one of these two is 1.0 and
+the other is Zero.
+So in this sense,
+the mixture model is more general than
+the previous model where we
+have just one distribution.
+It can cover that as a special case.
+So to summarize, we talked about the
+mixture of two Unigram Language Models and
+the data we're considering
+here is just One document.
+And the model is a mixture
+model with two components,
+two unigram LM models,
+specifically theta sub d,
+which is intended to denote the topic of
+document d, and theta sub B, which is
+representing a background topic that
+we can set to attract the common
+words because common words would be
+assigned a high probability in this model.
+So the parameters can
+be collectively called
+Lambda which I show here you can again
+think about the question about how many
+parameters are we talking about exactly.
+This is usually a good exercise to do
+because it allows you to see the model in
+depth and to have a complete understanding
+of what's going on this model.
+And we have mixing weights,
+of course, also.
+So what does a likelihood
+function look like?
+Well, it looks very similar
+to what we had before.
+So for the document,
+first it's a product over all the words in
+the document exactly the same as before.
+The only difference is that inside here
+now it's a sum instead of just one.
+So you might have recalled before
+we just had this one there.
+But now we have this sum
+because of the mixture model.
+And because of the mixture model we
+also have to introduce a probability of
+choosing that particular
+component of distribution.
+And so
+this is just another way of writing, and
+by using a product over all the unique
+words in our vocabulary instead of
+having that product over all
+the positions in the document.
+And this form where we look at
+the different and unique words is
+a commutative that formed for computing
+the maximum likelihood estimate later.
+And the maximum likelihood estimator is,
+as usual,
+just to find the parameters that would
+maximize the likelihood function.
+And the constraints here
+are of course two kinds.
+One is what are probabilities in each
+[INAUDIBLE] must sum to 1 the other is
+the choice of each
+[INAUDIBLE] must sum to 1.
+[MUSIC]
+

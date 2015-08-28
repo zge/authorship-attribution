@@ -1,0 +1,345 @@
+Well it's great that there are sentiment
+lexicons available. For lots of other
+purposes we'd like to build our own
+sentiment lexicons. And the way we do this
+is often by, by semi supervised learning
+and the idea of semi supervised learning
+is we have some small amount of
+information. Maybe we have a few labeled
+examples or maybe we have a few hand built
+patterns. And, from that set of data, we'd
+like to bootstrap a complete lexicon. And
+we might want to do learning of lexicons
+instead of taking an online lexicon, if
+we're looking at a particular domain that
+maybe, that doesn't match the domain of
+the lexicon that was built, or we're
+trying to do a particular task, or maybe
+we're just, think that our online lexicons
+might not have an, enough words that are
+relevant to the topic we're looking at.
+One of earliest ways of inducing this kind
+of sentiment-lexicon was proposed in 1997
+by [inaudible]. And I'm gonna show you
+this because the intuit, although the
+paper is old, this intuition is included
+in almost all modern ways of, of doing
+this semi supervised learning of getting a
+lexicon. And their intuition, very simple,
+is that. To adjectives if their conjoined
+by the word and they probably have the
+same polarity and if their conjoined by
+the word but they don't. So if you see on
+a very high frequency of fair and
+legitimate or corrupt and brutal probably
+fair and legitimate or both on the same
+polarity. And, and so we might suspect
+that fair and brutal are just less likely
+to occur on the web or in some corpus. And
+so if we see a lot of something occurring
+with hand, may be the two are likely to
+have the same sentence. But if we see two
+words linked by but, they probably have
+different sentiments. So fair, but, brutal
+more likely to occur than fair and brutal.
+And here's how they use this intuition.
+They first labeled by hand a seed set of
+1300 adjectives and so they had about a
+similar number of positive and negative
+adjectives. So central or clever or famous
+or thriving and negative adjectives like
+ignorant or, or list listserv unresolved.
+And now from the seed set, they expand
+that to any adjective that's conjoined
+with the word in their scene set. So, for
+example, we can go to Google and we can
+type in was nice and, and look at what
+words occur next, and what do we see after
+was nice and. What we see was nice and
+helpful. So that tells us that nice and
+helpful are likely to have the same
+sentiment. And here we see nice and
+classy, so that tells us that nice and
+classy might have the same sentiment. And
+we can do that for, for all sorts of words
+that occur conjoined with our seed set.
+And we take any word that occurs
+frequently enough in the right conjunction
+with our seed set words. And now we can
+build from that, a classifier. And the job
+of a classifier is just to assign. For
+each pair of words how similar the two
+words are. And so we can give the
+classifier the count of the two words
+occurring with an and in between them and
+a count of the words with a but in between
+them. And it, the classifier can learn
+that nice and helpful are somewhat
+similar. Nice and fair are very similar.
+Fair and corrupt are very dissimilar, mark
+them in red with a dotted line. Because
+maybe but occurs more often between these
+two and, and occurs more often between
+these two and so on. So we can get between
+any pair of words a number that indicates
+it's similarity. And now we can just
+cluster the graph and use any kind of
+clustering algorithm and we get for the
+words that tend to be linked together
+helpful and nice and fair and classy will
+get that these are linked together and
+brutal and corrupt and irrational linked
+together then we can get our, our output.
+Polari lexicon and here I have shown you
+an output Polari lexicon and of course
+it'll have some mistakes in it. So, see if
+you can find the mistakes in this lexicon.
+Here are some of the mistakes. So we have
+disturbing as a positive word or strange
+as a positive word, or pleasant as a
+negative word. So of course there's gonna
+be errors in any of these kind of
+automatic, semi-supervised algorithms.
+[sound] So while the [inaudible] and
+[inaudible] algorithm automatically finds
+the sentiment or the polarity of
+individual words, it doesn't do well with
+phrases, and we'd like, often to get
+phrases as well as words. So the
+[inaudible] algorithm is another way to
+bootstrap in a semi-supervised wave
+lexicon. And what this does is extract a
+bunch of phrases from reviews, learn the
+polarity of reviews, and take all the
+phrases that occur in a review, take their
+average polarity and then use that to rate
+the review. So let's look at these stages
+in the turning algorithm. First we're
+going to extract, every two word phrase.
+That has a particular set of part of
+speech tag. And we haven't talked about
+parts of speech yet, but, so this is added
+to the tag for adjectives. So if the first
+word is an adjective and the second word
+this means noun and this means plural
+noun. So if the first word is an
+adjective, so an adjective followed by a
+noun or plural noun, we'll extract that
+phrase, whatever the third word is. Or of
+the first word is an adverb, RB means
+adverb, and the second word is an
+adjective and the last word is not a noun,
+we'll extract that phrase. So adverb,
+adjective. Adjective, adjective. Noun,
+adjective. Add the verb. So these are
+particular phrases. We are gonna run our
+part of speech tagger. We're gonna talk
+about that in a few lectures and assign
+for each word a part of speech adjective
+noun and so on and then we'll extract two
+word phrases that meet these criterion.
+The first word is this tag, second word is
+this tag the third word has some
+constraints but we don't extract it and
+now we look at all those phrases. And our
+goal is for each of those phrases we have
+extracted to measure it's polarity. So how
+positive or negative is a particular
+phrase and the intuition of the Tourney
+algorithm is just like the hustle bustle
+of [inaudible] Maculen algorithm. To think
+about co-occurrence. So we ask, well a
+phrase is positive if that co occurs a
+lot, nearby lets say in the web or some
+large corpus with the word excellent. A
+negative phrase is likely to co occur more
+often with a word like poor. So how we're
+going to measure this co occurrence. The
+standard way to measure, this kind of
+concurrence is by, point wise mutual
+information. Point wise mutual
+information. And that's a variant of a
+standard information theoretic measure
+called mutual information. The mutual
+information between two random variables
+is the sum over all the values the two
+variables can take of the. Joint
+probability of the two, times the log of
+the joint over the individual probability.
+So point wise mutual information takes
+this intuition from mutual information and
+just ask a very simple compute a very
+simple ratio. The probability of two
+events X and Y divided by the product of
+the individual probabilities. So what,
+point wise mutual information is asking,
+it's a ratio is how much more the two
+events X and Y co occur than if they were
+independent. If they were independent they
+would have these independent multiplied
+probabilities. And, and how much does the
+joint occur more often than we'd expect
+from independence. It's the intuition that
+point wise mutual information. So looking
+at point wise mutual information, I just
+repeated the equation here, we can look at
+it between two words. We say how much more
+do these two words, word one and word two
+co-occur than if they were independent? By
+taking the ratio, the probability of the
+two words occurring together divided by
+the probability of each word separately
+and multiply and we take the log of that.
+How do we estimate this? Well, the way
+Tourney, did it originally is by using the
+AltaVista Search engine. And we're gonna
+estimate the probability of word just by
+how many times, how many hits we see for
+that word. And we're gonna estimate the
+probability of two words by how often word
+one occurs near word two. So all of this
+has the near operator that, that lets just
+check if a word is near another word. And
+in each case we're gonna want to normalize
+to get a real probability from these
+counts. And by our definition from the
+previous slide, point wise mutual
+information, it's the probability of the
+joint, so that's hits of word one near
+word two over N squared. Divided by hits
+of word one over N over hits of word N two
+over N and these N's are gonna cancel and
+we're gonna end up simply with, with this
+equation. So how, how many times words
+occur near each other, how many times do
+they occur individually, multiply it
+together. So once we have a measure of
+co-occurence of how, how much a phrase
+co-occurs with the word excellent or
+another word good we can now determine its
+polarity. So [inaudible] the equation for
+polarity in the [inaudible] algorithm is
+just how much is the mutual information,
+the point [inaudible] mutual information
+of the, of any phrase with the word
+excellent and we subtract its neutral
+information with the phrase poor. So how
+much more does the phrase appear with
+excellent than poor or vice a versa? And
+just doing a little algebra. So that's
+the, the number of. Here's the definition
+of point wise mutual information of phrase
+with excellent. How often it occurs near
+the word excellent divided by the
+individual number of hits of, of the
+phrase itself in excellent, and then
+subtract the same thing for poor. And of
+course by the definition of logs we can
+bring things inside the log and turn the
+minus into a divide and then we can do
+some, some messing with terms So we have
+hits of phrase here. And we have hits of
+phrase there. And so, in the end we can
+get our formula for deciding the polarity
+of a phrase. It's just how many times does
+the phrase occur in your excellent, times
+how many times it occurs with, the word
+poor occurs, over how many times the
+phrase occurs in your poor, over how many
+times excellent occurs. These are, these
+are constants that we can get once, and
+then for each phrase we can compute these
+chief quantities. And using the twenty
+algorithm, Here's a positive review
+obviously of a bank and so here's a phrase
+like online service. Adjective noun
+phrase. And here's the polarity assigned
+by it, 2.8. Here's another one direct
+deposit, 1.3. And here's some negative
+phrases with negative polarities. So the
+phrases occurred more often near the word
+poor than near the word excellent. So in
+community located has a negative polarity.
+So on an average though more, I have just
+shown you a sub set more of the positive
+phrases occur in this review than the
+negative phases and the average polarity
+is positive. So this is a thumbs up
+review. A, thumbs down review, you can see
+that phrases like virtual monopoly,
+negative polarity, lesser evil, negative
+polarity, other problems, negative
+polarity, all occur more frequently, And
+on average, have a more negative polarity
+than the positive polarity words that
+occur in this review. And we end up with a
+review that has an average negative
+polarity. So the turning algorithm was
+evaluated on various kinds of review sites
+and does a better job than just the
+majority class base line, at predicting
+the polarity of a review. So what's
+important about the turning algorithm is
+that it lets us look at phrases, learn
+phrases rather than just words and what's
+true about in general about these
+unsupervised algorithms, is that we can
+learn domain specific information that
+might not be in some online dictionary.
+So, for doing, go back to the previous
+slide, if we're doing. Banking, a word
+like direct deposit or virtual monopoly
+might, simply might not be in an online
+polarity dictionary or online web so we,
+we need to use some of these semi
+supervised algorithms for learning the
+polarity of these kind of words. Finally,
+I mention briefly a third algorithm for
+learning polarity, and this uses WordNet,
+again that's the online Thesaurus which
+we'll talk about in detail later. And the
+intuition of using these online
+thesauruses is, is similar to what we've
+seen in the first two semi-supervised
+algorithm, we'll start with a positive
+seed set and a negative seed set, so when
+I have words like good in the positive
+seed set and terrible in the negative seed
+set, and now we use the thesaurus just
+very simply to find synonyms and antonyms.
+So we add synonyms of positive words like
+well. And antonyms of negative words to
+the positive set. And to the negative set,
+which we started out with words like
+terrible, now we add synonyms of all those
+words. Maybe awful is a synonym of
+terrible. And antonyms of our positive
+words to the negative set and we just
+repeat and the sets grow as we keep adding
+synonyms and antonyms to it. And then each
+of the algorithms that make use of Word
+Net for learning clarity will have various
+ways of filtering our bad examples or
+problems with word synthesis and things
+like that. So, in summary, we, learning
+lexicons can help us. Deal with
+domain-specific issues. In banking we
+might have a word like direct deposit.
+It's just not gonna be in a standard
+online polarity lexicon. And we can more
+robust in general, as new names are,
+people start using new names, or a new
+company name might not be in some training
+data, but, but we might be able to learn
+it from the web or from the data we're
+look at. And, again, the intuition of all
+these algorithms is really the same. We
+start with some seed set. We find other
+words that have similar polarity to that
+seed set in some semi-automatic way and
+the ways you've seen are using one of the
+ca, words are conjoined with and or but
+using words that just occur near, by,
+towards, like poor or excellent so that's
+a receipt set there. Or using coordinate,
+synonyms or antonyms.

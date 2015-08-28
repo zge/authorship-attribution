@@ -1,0 +1,418 @@
+Welcome back. In this and the next few
+lectures, we're going to look at symbol
+tables. A fundamental and extremely
+important data type that have led to all
+kinds of fascinating implementations and
+we're going to see at several of them in
+this course. To begin, we'll take a look
+at the API and some elementary
+implementations and various operations
+that people want to perform on Symbol
+Tables. Start with the API. The idea
+behind symbol tables is to implement the
+following abstraction. We are going to
+have keys, like our keys in priority
+queues but, the whole ideas that we are
+going want to associate, values with each
+key. So two operations that we're going to
+perform in symbol tables is the insert
+operation where we're really putting a
+value, a key value pair into the symbol
+table, a value with a specified key, and
+then given a key we want to search for a
+corresponding value. Those are the two
+basic operations. Now the keys and the
+values can interchange roles. And that's,
+that's why we, have the abstraction to
+separate them. So for example, a domain
+name server might have a look up where
+you've got a table that's got an IP
+address, and a URL associated with that IP
+address. And different clients might want
+to use this data in different ways. One
+might want to use the URL as key. Given
+the URL, give us the corresponding IP. The
+address. Another client, might want to use
+the IP address as key, have an IP address,
+give me the corresponding client. So those
+are just a couple of examples. This is a
+very fundamental and basic abstraction. In
+the list of applications is huge, in fact
+almost any computer application system is
+going to have symbol table or multiple
+symbol tables at its core, all the way
+down to the basic memory system of the
+computer or the networking system that
+your computer accessed information depends
+on. You can think of it intuitively, as,
+like a dictionary. Well, there used to be
+books, and people would open up those
+books to look for a word, to find the
+definition. Nowadays, you're more likely,
+to do that online. Or, when you're trying
+to find a song to download, you provide
+the name of the song. And then a value
+will tell you what computer to go to, to
+get that or in commercial computing, the
+key might be an account number, and the
+value might be the transaction details,
+for that account. Web search is something,
+we all do multiple times every day. And
+the key is a keyword, or a list of
+keywords. And the value is a list of
+places where that keyword is found. And
+there's many, many other applications,
+including scientific applications where
+say in genomics people use simple tables
+to keep track of finding markers in the
+genome and again many other applications.
+So, its a very fundamental concept and we
+will look at plenty of applications. But
+first we want to look at some algorithms
+so the way that it's convenient to set up
+a symbol table is to implement the
+so-called associative array abstraction.
+And the idea behind that is to think about
+just associating one value with each key.
+And well it's like in Java array of
+integers say. We're only, our keys in that
+case are indices that are restricted
+between, to be between zero and the array
+size. But we're only associating one value
+with each index. We think of storing the
+value in the array position given by that
+index. And a good way to think of a symbol
+table is as shown in the right here. When
+we put a key value pair onto the symbol
+table. Think of that as using the key to
+index an array, and storing the value
+there. Now this, isn't legal in Java if
+key is not an int. And, and we're going to
+do this generic. It can be any type of
+data. But, it's a good way to think about
+it. And then, to retrieve it, you just
+give that same key, and it'll return the
+value. So that's our, two primary
+operations. Put a key value pair into the
+table. So that is associate the value with
+key, and then get the value paired with
+the key. Now th ere's particular rules for
+Null that I'll talk about in a second. And
+then to properly maintain the symbol table
+in a dynamic situation in many clients you
+want to support and delete operation and
+contains is, is simpler operation than
+depth. It's convenient for many clients
+where it just tells us whether there's
+some value paired with that key in the
+table isn't in size. And then another
+thing that you might want to do is iterate
+through all the keys in, in the table. So
+those are the basic operations that we're
+going to want to implement to get the
+associative array abstraction. And then
+there's many, many possibilities for
+clients and we'll look at some later on.
+Now there is a couple of conventions
+around null. And these are not critical,
+but they make it bit more convenient for
+several implementations. So we are not
+going to allow null values, we cannot
+associate null with any key. And then we
+are going to adopt the convention that the
+get method returns null, if the key is not
+present in the table. And also the
+associative array abstraction is the put
+method, well, overwrite an old value with
+a new value. So these are our
+consequences. So, it's, the contains
+implementation is the same for all our,
+symbol typal implementations. If get
+returns, a non null value, then there's a
+value corresponding to that key in the
+table if it returns null. It's not get
+returns null keys not present. And the
+other thing that we could do is we can use
+null in some situations or temporary
+situations to implement a lazy version of
+the delete operation. We can associate the
+key with null internally and then a client
+won't know the difference whether that's
+in there or not. And some algorithms take
+advantage of the ability to use null in
+this way. These are just conventions and
+somewhat details but it's important to
+point them out at front. So now, we're
+going to want the value to be any generic
+type at all, but the key type we have to
+make some natural assumptions about them.
+And actually there's different assumptions
+that we make in our implementations
+depending on the application. Though one
+of the most useful ones is to have
+comparable keys. Just as in sorting
+algorithms we'll assume that the keys have
+values that have come from a total order.
+And we can use compare to, to compare
+whether one key is less than, than other
+or not. This is for two reasons. One is we
+can get more efficient app implementations
+if we can use the ordering of the keys to
+help us find our way around the data
+structure. And the other reason is that we
+can support a broader set of simple table
+operations that are very convenient for
+many clients. And it's very typical for
+keys to come from an ordered set. Now, for
+example in the dictionary application or
+if keys are stings or numbers. Or account
+numbers or many other situations. So if
+they're going to be comparable we might as
+well take advantage of it. Both to get
+more efficient algorithms and to be able
+to take advantage of a broader set of
+operations. Now in other situations, maybe
+they're not comparable. And all we're
+allowed to use is to, use the equals
+operation. That is everything every type
+of data in Java has to support and equals
+operation that reads out to test whether
+they're equal. And there's another family
+of methods where there's no ordering. Then
+there is a special method called hash code
+that helps us [cough] inject randomness
+into the process and that's built into
+Java and also some classic algorithms
+depend on that. We're going to start out
+with the comparable mostly. And again, as
+with priority queues, the best practice is
+to use immutable types, and experienced
+programmers know this and it's not
+difficult to arrange for the natural types
+of data that people are going to use for
+simple table keys. Unreasonable to expect
+the implementation to work well if the
+client can change the values of keys that
+are in the table. If you want that, you
+have to provide that as a specific
+operation. In the case of symbol tables ,
+we are not going to do that. You have to
+remove it and put it back in. Alright, so
+there's equalities. Now, equality again
+we're getting into programming language
+issue but it's still it's important to be
+explicit about what's going on with,
+equality. How do we test if two objects
+are equal? So, the job has got
+requirements as for compared to in, here's
+the basic requirements about equals. There
+is a method that all Java for equals, but
+the default implementation is simply to
+test whether the references are equal. Are
+those precisely the same objects or not.
+Usually in applications when we want to
+have something more general than that and
+have a concept of a value or like a key in
+our case. And then we want to know if two
+references refer to objects that have the
+same value and we want to call that equal,
+that's what equals is about. So anyway
+we're required to make sure that X is
+always equal to X and that, X = Y is the
+same Y = X, and if X = Y, Y = Z, then X =
+Z. So that means that mathematical terms
+equals is called an equivalence relation.
+And also no, no object is equal to null.
+So those are absolute requirements for
+Java. And again, the default
+implementation is to check whether they
+refer to the same object. And that's
+rarely what we want. Java systems programs
+maybe want that. But client programs
+usually have customized implementations
+that are based on comparing some sort of
+value and the standard built-in types of
+the Java language are going to have those
+customized implementations and we can rely
+on them doing what we expect. If we're
+going to implement our own types and then
+use those types as keys and symbol tables
+you have to exercise a little bit of care
+and we'll talk about that briefly. Say we
+have this simplified date implementation
+we talked about before it's a mutable type
+and every day it's got a month a day in a
+year. It seems like it should be easy to
+implement equals basically, we're just
+going to check that all the significant
+fields are the same. Two dates should be
+equal if they have the same day, month,
+and year. And if any one of those are not
+the same value, then just return false. So
+that seems as if it should work. But that
+doesn't have all the characteristics that
+we need in a job implementation. And so
+all of this code in red shows a model for
+what you might do if you're going to
+implement your own type of data equals for
+your own type of data. So we shouldn't use
+it in connection with inheritance so we
+don't use inheritance that much so I won't
+talk about that The type of the argument
+in the equals must be object, do you think
+it should be date? And experts debate
+about that, and people who are interested
+can look on the web for that kind of date.
+If it is the case that you happen to be
+testing two objects that are the same
+object for equality, you might as well,
+optimize everything and just test that. If
+Y is a reference that's pointing to the
+same object as this object just returned
+true because, if you're going to test the
+values they're going to have the same
+values anyway. And that's a good
+optimization for lots of, situations. Why
+go through all that risk to that code if
+you know right away they're, equal.
+There's this test for null, that has to be
+there. And if not there can lead to
+nefarious plugs and, and, unusual
+problems. So on your equals test you'd
+better, test that, the client didn't give
+you null. They have to be in the same
+class. And while there's a couple of
+different ways to check about the same
+class, and that's another religious
+debate. That we'll ignore. We'll use, get
+class and that's something that's got to
+work or they'll get, they'll get an
+exception in this later code. Because
+since Y had to be an object, now we have
+to, cast it to a date. And then it better
+be the right class, or else it's not going
+to have these fields, that, we can test
+for. So, details but anyway, you can use
+this code as a model to implement equals
+for any data type that you might wind up
+using as a simple table key. Okay so
+that's a standard this is just in words
+the standard recipe for user find, type
+optimize for reference equality, check
+against null. Make sure they're the same
+type and do the casting, and then compare
+all the similar, significant fields. It
+could be that if one of the fields is an
+object, then you use that object's equals,
+which reapplies the world the rule
+recursively. And then if you ever feel
+that it's an array you can go ahead and
+try applying it to each entry. And there's
+implementations in Java. You don't want to
+use A, A. = B. That checks if those arrays
+are the same objects. And that's not what
+you want you want to check that all the
+values are the same. And if it's array of
+objects you can see that testing for
+equals can actually involve a lot a code
+and a lot a cost. Alright so and certainly
+you want to follow some of these best
+practices. So fields that are most likely
+to differ. Those are the ones you might
+want to compare first. And your also going
+to want to make compare to consistent with
+equals. The rule generally if we're have a
+comparable types we'll use to compare to.
+If we don't have a comparable types then
+we'll use equals. Okay, so now let's look
+at a couple of test clients before we look
+at any particular implementation. So this
+is a test client so symbol tables are ST
+is the type, symbol table, they're generic
+on key and value. And so this, this
+statement builds a new symbol table with
+string keys and integer values that's
+going to associate integers with strings.
+And so what the test client is going do is
+going to a just go in a loop as long as
+standard n is not empty, and it's going to
+read strings, read a string off standard
+input, and then put it in the symbol table
+associated with the value I where did it
+appear in the value input. So this is an
+index same client where we associate each
+string with its position most recent
+position in the input. And, notice it's an
+associative array implementation so for
+example, we have two Es and at the end E
+is a associated value twelve. The place
+where it most recently appeared. We could
+also keep these things in a bag and do a
+client that does all the positions that
+appeared. This is a simple indexing client
+that we use for our traces. [cough] For
+analysis for bigger problems we'll use a
+client called the frequency counter
+client. And so that one is going to read a
+sequence of strings from standard input
+and print out the one that occurs with
+highest frequency. So, so for this small
+data from the beginning of Dickens' Tale
+of two Cities if we run a frequency
+count-, or the frequency counter client.
+And this first argument is just ignore
+words of fewer than this many letters.
+It'll say that the most frequent word
+where there's no word that appears more
+frequently than it which appears ten
+times. And we'll want this client to work
+well for huge data sets so Liepzeig is a,
+a data set from the web of about twenty
+million words. About half a million
+distinct ones and in that Corpus, the word
+government appears about 25,000 times. So,
+if you have a quadratic time algorithm for
+implementing simple tables or linear time
+for each operation. You're not going to be
+able to run this client in a reasonable
+amount of time for a big amount of data.
+So that's the client that we're going to
+use for analysis. Here's the code for that
+frequency counter client. Again, it's
+similar to the other one, we're creating a
+simple table that associates strings with
+integers. We take that command line
+argument which is the minimum length that
+we care about. We will read a new word.
+We'll ignore the short strings. Just trap
+out if the word length is too small. And
+now the integer we are going to associate
+with each word is the frequency of
+occurrence of that word in a symbol table.
+So if word is not in the symbol table,
+we'll put it there with a frequency of
+occurrence of one. That's the first time
+we saw the word. If it is in the symbol
+table, we will just over write. The old
+value, which is ST get word, with the new
+value, ST ge t word plus one. So increment
+the frequency in the symbol table. So
+that's, read, this loop reads in all the
+data and associates each word with its
+frequency of occurrence. And then we'll
+have a client that uses the iterator,
+going through all the keys in the symbol
+table. It'll get the value associated with
+each key. And if that's bigger than the
+maximum found so far, we'll save that
+away. And then print out the, the word
+that occurs the, the most often along with
+its frequency. So this is a useful and non
+trivial client that's enable by symbol
+table. And, but it won't work well unless
+we have an efficient symbol table
+operation. And we'll use this client to
+compare different symbol table
+implementations. So that's the symbol
+table API. And next, we'll take a look at
+implementations.

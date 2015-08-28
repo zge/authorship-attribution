@@ -1,0 +1,191 @@
+Alright. Now that we've seen efficient
+implementations of algorithms that can
+solve the unifying problem for huge
+problem instances let's look to see how
+that might be applied. There's a huge
+number of applications of Union-find. We
+talked about dynamic connectivity in
+networks there's many other examples in
+our computational infrastructure. Down at
+the bottom is one of those important one
+is in image processing for understanding
+how to label areas in images. We'll see
+later Kruskal's minimum spanning tree
+algorithm, which is a graph processing
+algorithm which uses Union-find as a
+subroutine. There's algorithms in physics
+for understanding physical phenomenon that
+we'll look at an example and many others
+on this list. So, the one we're going to
+talk about now is called percolation.
+That's a model for many physical systems
+I'll give an abstract model and then just
+talk briefly about how it applies to
+physical systems. So let's think of an n
+by n grid of squares that we call sites.
+And we'll say that each site is open.
+That's white in the diagram with probably
+P or blocked, that's black of the diagram
+with probability one - P and we define a
+system to, we say that a system is
+percolated if the top and the bottom are
+connected by open sites. So the system at
+the left, you can find a way to get from
+the top to the bottom through white
+squares, but the system to the right does
+not percolate, there's no way to get from
+the top to the bottom through white
+squares. So, that's a model for many
+systems. You can think of for electricity.
+You could think of a vacant site as being
+a conductor and, and a block site as being
+insulated. And so if there's a conductor
+from top to bottom then the thing conducts
+electricity. Or, you could think of it as,
+as water flowing through a porous
+substance of some kind. Where a vacant
+side is just empty and a block side has
+got some material, and either the water
+flows through from top to bottom, or not.
+Or you could think of a social network
+where it's people connected and either
+there's a c onnection between two people
+or not and these are a way not to get from
+one group of people to another
+communicating through that social network.
+That's just a few examples of the
+percolation model. So if we, we are
+talking abouta randomized model where the
+sites are vacant with the given
+probability. And so it's pretty clear that
+if it's. Probability that a site is vacant
+is low as on the left, two examples on the
+left in this diagram, it's not going to
+percolate. There's not enough open site
+for there to be a connection from the top
+to the bottom. If the probability is high
+and there is a lot of open sides, it
+definitely is going to percolate. There
+would be lots of ways to get from the top
+to the bottom. But in the middle, when
+it's medium, it's questionable whether it
+percolates or not. So the scientific
+question, or the, mathematical question
+from this model is, how do we know,
+whether it's going to percolate or not? In
+this problem and in many similar problems,
+there's what's called a phase transition.
+Which says that, you know, when it's low,
+it's not going to percolate. When it's
+high, it is going to percolate. And
+actually, the threshold between when it
+percolates and when it doesn't percolate
+is very sharp. And actually there is a
+value as N gets large that if you're less
+than that value it almost certainly will
+not percolate, if you're greater it almost
+certainly will. The question is what is
+that value. This is an example of a
+mathematical model where the problem is,
+is very well articulated. What's that
+threshold value but, nobody knows the
+solution to that mathematical problem. The
+only solution we have comes from a
+computational model, where we run
+simulations to try and determine the value
+of that probability. And those simulations
+are only enable by fast union find
+algorithms, that's our motivating example
+for why we might need fast union find
+algorithms, so let's look at that. So what
+we're going to run is called a so called
+Monte Carlo simulation. Where we
+initialize the whole grid to be block ed
+all black and then we randomly fill in
+open sites. And we keep going. And every
+time we add an open site, we check to see
+if it makes the system percolate. And we
+keep going until we get to a point where
+the system percolates. And we can show
+that the vacancy percentage at the time
+that it percolates is an estimate of this
+threshold value. So what we want to do is
+run this experiment millions of times,
+which we can do in a computer, as long as
+we can, efficiently do the calculation of
+does it percolate or not. That's a Monte
+Carlo simulation, a computational problem
+that gives us a solution to this,
+scientifc problem where, mathematical
+problems nobody knows how to solve yet.
+So, let's, look in a little bit more
+detail of how we're going to use our
+dynam-, dynamic connectivity model to do
+this. So, it's clear that, we'll create an
+object corresponding to each site. And
+we'll give'em a name, from zero to N^2-1
+as indicated here. And then we'll connect
+them together. If they're connected by
+open sites. So the percolation model on
+the left corresponds to the, connection
+model on the right, according to what
+we've been doing. Now, you might say,
+well, what we want to do is, connect,
+check whether any site in the bottom row
+is connected to any site in the top row,
+and use union find for that. Problem with
+that is, that would be a brute force
+algorithm. Would be quadratic, right on
+the face of it. Because it would have N^2,
+calls to find, to check whether they're
+connected. For each site on the top, I'd
+check each site on the bottom. Much too
+slow. Instead, what we do is create a
+virtual site on the top and on the bottom.
+And then, when we want to know whether
+this system percolates, we just check
+whether the virtual top site is connected
+to the virtual bottom site. So how do we
+model opening a new site? Well to open a
+site we just connect it to all it's
+adjacent open sites. So that's a few calls
+to Union but that's easy to implement. And
+then with that, simple, relationship we
+can use the exactly the code that we
+developed to go ahead and run a simulation
+for this connectivity problem. And that's
+where we get the result that, by running
+enough simulations for a big-enough n,
+that this, percolation threshold is about
+.592746. With this fast algorithm we can
+get an accurate answer to the scientific
+question. If we use a slow Union-find
+algorithm we won't be able to run it for
+very big problems and we won't get a very
+accurate answer. So in summary, we took an
+important problem. The, the dynamic
+connectivity problem. We modeled the
+problem to try to understand precisely
+what kinds of data structures and
+algorithms we'd need to solve it. We saw a
+few easy algorithms for solving the
+problem, and quickly saw that they were
+inadequate for addressing huge problems.
+But then we saw how to improve them to get
+efficient algorithms. And then left us
+with, applications that, could not be
+solved without these efficient algorithms.
+All of this involves the scientific
+method. For algorithm design where we try
+to develop mathematical models that help
+us understand the properties of the
+algorithms that we're developing. And then
+we test those models through
+experimentation enabling us to improve
+algorithms iterating, developing better
+algorithms and more refined models until
+we get what we need to solve the practical
+problems that we have of interest. That's
+going to be the overall architecture for
+studying algorithms that we're going to
+use throughout the course.

@@ -1,0 +1,86 @@
+how do we learn the perimeters for Naive Bayes?
+The simplest way of multinomial Naive Bayes model
+is to use maximum likelihood estimates
+simplest use the frequencies of the data
+so for trying to compute the prior probably for particular document being in a class J
+we have the count of all the documents, and out of those documents
+how many of the documents will be in class J
+that's our prior, that random documents will be in class J
+for the likelihood, the probability of word Wi given the class of J
+we count the number of times word<u>i occurs in documents of class J</u>
+and we normalize by the total number of words
+in the class J,  so the sum of all the words, and we normalise the total number of
+so all the words in the vocabulary of those words
+so out of all the documents in the class J
+how many of them are the particular words that we are looking at
+so we are going to compute the fraction of times of word Wi appears
+among all the words of this document of this topic cj
+we are going to do this, by creating some kind of mega document
+for topic j by concatenating all the documents in this topic
+together we use the frequency of w in this document
+so for sentiment analysis
+we might have documents of positive, a mega document for all the positive documents
+we are just gonna concatenate them altogether into some big mega document
+and we might have doc-neg and so on
+now I have been lying to you
+we don't in fact use maximum likelihood for naive bayes
+and the reason is the following
+imaging we are looking at the word 'Fantastic'
+we introduce the word 'Fantastic', might have occurred in the test set
+and happens not to appear in the training set
+in the topic positive
+so the probability of fantastic in the class positive in the training set
+by maximum likelihood, is the count of fantastic occur in the positive
+normalise by the sum of all the counts of those words in positive
+but fantastic never occurs, so that count is zero
+so the maximum likelihood estimate for the likelihood of fantastic
+given positive will be zero
+why is that bad? because these zero probabilities can never be conditioned away
+for we are looking for the most likely class
+that's the argmax over all classes of the prior times the likelihood
+and if one of the likelihood terms in zero, then this whole thing is zero
+and we will never gonna pick that class
+the solution, is very simple, add one smoothing
+so here is the computation without smoothing
+and add one smoothing, we simply add one to each of those counts
+so we add one the count every time the count is numerator
+and every time that count occurs in the denominator, we add one to that too
+and we can re-write that, into the form we have seen before
+here we take the total number of that word in class C
+and we add the vocabulary size
+because we add one to every vocabulary into the denominator
+so classic Laplace add-1 smoothing
+so let's walk through the calculation of this parameters
+first, from the training corpus, we are gonna extract a the vocabulary, a list of words
+next we are gonna calculate the priors for each class J
+so for each class, we gonna get the list/set of all documents
+that have that class Cj
+and the number of documents in that set, divided by the total number
+will give us the prior, the probability of that particular class
+now for the likelihood, now we are gonna want compute the likelihood for every Wk
+given every topic Cj
+so first we are gonna create our mega document
+that can concatenating all the documents called text j
+now for each word Wk in vocabulary, we are gonna count the times of Wk occurs
+in the mega document text j, Nk
+now the probability--the likelihood of word Wk in class Cj
+is just the add one smooth I have shown you, the add alpha smooth
+version, of the naive bayes algorithm
+so we have added alpha, to Nk, and in the denominator, we have the
+n, the total number of tokens in the class j
+what about unknown words?
+a simple way to deal with unknown words is to add one extra word to the vocabulary
+we might call that W<u>u, the unknown word </u>
+and now, what does that do with our likelihood equation
+here is the likelihood equation written out again
+with that new word W<u>u, so I have increased the vocabulary size by one</u>
+now what is the count of W<u>u in any particular class c</u>
+well the word is unknown so it never occurred in out training set
+so that count is zero
+so the likelihood term for that unknown word, is gonna simply be
+1 over n--that's the number of tokens in the class c, plus the V + 1
+so each of our unknown word, is gonna be modeled by this very simplistic model
+of the probability of a unknown word
+so learning the parameters for naive bayes, a simple computation for the prior
+and a slightly more complex computation for the likelihood, which we can use add 1 smoothing
+to deal with unknown words

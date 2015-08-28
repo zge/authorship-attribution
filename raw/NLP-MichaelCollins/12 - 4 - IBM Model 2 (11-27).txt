@@ -1,0 +1,269 @@
+So now let's move onto IBM Model 2.
+Ibm Model 2 is, as we'll see, a fairly
+straightforward extension of Model 1.
+So, the only difference is going to come
+in the alignment model.
+So, IBM Model 2 introduces what are called
+alignment, or sometimes called Distortion
+Parameters, okay?
+So, I'm going to use q for these
+parameters and it's going to have a few
+different indices here.
+So, m, as before, is the length of the
+French sentence, and i is the length of
+the English sentence.
+And j is the index of the French word, and
+i is the index of the English word.
+So, let me give you an example.
+So again, if we come back to that example,
+the dog barks, and say we have m is equal
+to 3.
+We have three French words, and let's say
+sort of that, some of these 1, 2, and 3,
+so the second French word, let's say we
+align this to the third English word.
+The probability of this happening is q of
+so that's 1, 2, 3, the English position
+three conditioned on the French position
+two and the length of the two sentences,
+so l, m are both equal to three in this
+case, okay?
+So, conditioned on the length of the
+English and the length of the French
+sentence, and conditioned on the position
+of the French word we're considering
+position two in this particular example.
+We have a distribution over all possible
+alignments.
+Again, zero is taken to be null word, and
+that is one possibility.
+We'll come to a concrete example in a
+moment to this.
+But here abstractly is how we write this
+out.
+So, an alignment is again going to be a
+sequence of variables, a1 through am,
+specifying for each of the French words
+what it's aligned to.
+And to calculate the probability of an
+alignment, we just multiply together the q
+variable.
+So, I have a product from j equals 1 to m
+and add q.
+A sub j is going to be the position in the
+alignment for the j-th word, a condition
+on the position j, the length l, and the
+length m of the English and French
+sentences.
+The final form of the model is then going
+to be the joint probability of f and a
+conditioned on e.
+And this length m is a product from j
+equals 1 to m of q times t.
+And these t terms are exactly the same as
+we saw before.
+So, this is t of fj given e of a sub j.
+Sorry, this is a j down here.
+So, let's work through an example.
+So again, consider this example where I
+have this English sentence and this French
+sentence, and the lengths of the English
+and French are 6 and 7 respectively.
+And let's consider this particular
+alignment I showed you before, I just draw
+here, it's this particular alignment.
+So, what's the probability of this
+alignment condition on the English word
+and the length of the French sentence
+being 7.
+It's going to be a product of the q term.
+So, the first term is the probability of
+position one in the French being aligned
+to position two in the English,
+conditioned on these two sentence lengths.
+And you'll see that I have a similar term
+for each position in the French, 1, 2, 3,
+4, 5, 6, 7.
+Each of these positions is aligned 3, 4,
+5, 6, 6, 6 respectively.
+And so, this product to q terms gives us
+the probability of this alignment
+condition on the English sentence, and on
+the length of the French sentence.
+So, this model is incredibly naive.
+It misses all kinds of important
+linguistic problems.
+From a linguistic point of view, it's
+really not a realistic model of
+translation.
+But the important point is that, in spite
+of this, it gets us off the ground and it
+will actually be quite successful in
+recovering good alignments between
+different sentences in our training
+samples.
+And those alignments will form a critical
+component of the phrase based translation
+systems we'll see a little later in this
+class.
+So, a naive model, but in practice it does
+quite a good job.
+Here's the second part of this model.
+Remember, the second part is to define the
+conditional probability of the French
+sentence given the recondition on the
+English, the alignment, and the two
+lengths.
+And in this case, it's exactly the same as
+Model 1.
+So again, remember this alignment is the
+following.
+And so, we have one term for each French
+word.
+And at each point, we condition on the
+English word which it's being aligned to.
+And we have these t parameters reflecting
+the conditional probability, for example,
+of Le being translated from the and so on
+and so on.
+So, this is the second part of the model.
+It's the same as IBM Model 1.
+So finally, to get some intuitions, let's
+consider the generative process underlying
+the model I've just shown you.
+It's basically assuming that a French
+string f is generated from an English
+string e using the following process.
+So again, we're conditioning on e being
+some sentence, for example, the dog barks.
+And we're going to, we kind of condition
+on the length of the French sentence m,
+for example, m equals 3.
+So, in the first step, we choose an
+alignment from the set of possible
+alignments with this probability.
+So, for each word in the French sentence,
+we choose an alignment to some English
+word, okay?
+And, and this is dictated by these
+alignment parameter, these q parameters.
+In the second step, we fill in the French
+words one by one, conditioned on the
+English word we're aligned to.
+So something like this.
+And so that's the second step of the
+process.
+The final result of all this is that the
+joint probability of f and a conditioned
+on the English sentence e, and the length
+of sentence n is the product of these two
+model terms.
+And so, I end up with this model form.
+I have a product from j equals 1 to n.
+And for each j, I have both a distortion
+parameter and also a translation
+parameter.
+So, if q of a sub j condition on the
+position of the 2 lengths, and then
+secondly I have the translation parameter,
+the probability of fj being emitted from e
+sub aj.
+This is the probability of emitting a
+French word from the English word that is
+actually aligned to.
+And that is it.
+That is the final model form for IBM Model
+2.
+So, final point I wanted to make about IBM
+Model 2 is the following.
+Once we have the parameters q and t, and
+we'll actually talk next about how to
+estimate these parameters from training
+examples.
+So, once we have these parameters, it is
+very straightforward to find the most
+likely alignment for a given sentence
+pair.
+So, what I'm going to describe here is a
+process which takes in an English sentence
+paired with a French sentence as the
+input, and then as output will produce
+some alignment.
+So, for example, it might produce the
+following alignment.
+So, for each word in the French sentence,
+we've chosen one of the English words to
+align to.
+And if we have the parameters by IBM Model
+2, it's straightforward to find the most
+likely alignment under the, the model.
+Let me show how this works.
+So, the key to key definition is the
+following.
+So, given a sentence pair e1 through el,
+f1 through fm, then for each aj, for j
+equals 1 to m, you simply find the
+alignment that maximizes the product of
+two terms.
+Firstly, q of a, given j, l, m, and
+secondly, t of fj given ea.
+So you find the alignment that maximizes
+this product.
+Let me illustrate this with a particular
+example.
+Okay, so say I want to align this word a
+in French.
+So, it could potentially be aligned to any
+one of the English words, or it could be
+aligned to null, okay?
+So, any one of these possible alignments
+is possible.
+And we have to choose between them.
+Let's go through each of them in turn and
+see how this expression is scored.
+So, for the null word, we evaluate q of 0
+given, and then we have the third word in
+the French sentence.
+And we have 6 is the length of the English
+and 7 is the length of the French, so this
+is the distortion parameter.
+Basically, specifying the probability that
+position three in French is rely into
+position zero.
+And then, we have a translation parameter
+t of a given null.
+So, look at the second word, and.
+In this case, we're going to evaluate q of
+1 given 3, 6, 7 because now we are
+aligning to the first position in English,
+and then we have t of a given and.
+Next word is there.
+We have q of 2 given 3, 6, 7, and then t
+of a given this word there in the second
+position, and so on and so on.
+We can go right to the end 'till the final
+word is implemented, and that is q of 6
+given 3, 6, 7 times t of a given
+implemented.
+So, for each of these alternative words
+that we could align to, we calculate two
+firms, two terms.
+Firstly, q reflecting the likelihood of
+that position, and then t reflecting how
+likely it is that this French word was
+generated from that English word.
+And we take the max, so we find the
+maximum of all these values, and then take
+the single alignment that maximizes this
+product.
+In this case, you'd hope it was this word,
+has, which is the natural translation.
+Okay, so to recap the main message here is
+once we have these parameters, it's very
+easy to recover alignments.
+So, it's very easy to fill in these
+alignments on training examples where an
+alignment specifies for each French word,
+an alignment to one of the English words
+where an English could come could include
+the null position.

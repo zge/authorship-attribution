@@ -1,0 +1,280 @@
+In this and in the
+next set of videos, I'd like
+to tell you about a learning
+algorithm called a Neural Network.
+We're going to first talk about
+the representation and then
+in the next set of videos
+talk about learning algorithms for it.
+Neutral networks is actually
+a pretty old idea, but had
+fallen out of favor for a while.
+But today, it is the
+state of the art technique for
+many different machine learning problems.
+So why do we need yet another learning algorithm?
+We already have linear regression and
+we have logistic regression, so why do we need, you know, neural networks?
+In order to motivate the discussion
+of neural networks, let me
+start by showing you a few
+examples of machine learning
+problems where we need
+to learn complex non-linear hypotheses.
+Consider a supervised learning classification
+problem where you have a training set like this.
+If you want to apply logistic
+regression to this problem, one
+thing you could do is apply
+logistic regression with a
+lot of nonlinear features like that.
+So here, g as usual
+is the sigmoid function, and we
+can include lots of polynomial terms like these.
+And, if you include enough polynomial
+terms then, you know, maybe
+you can get a hypotheses
+that separates the positive and negative examples.
+This particular method works well
+when you have only, say, two
+features - x1 and x2
+- because you can then include
+all those polynomial terms of
+x1 and x2.
+But for many interesting machine learning
+problems would have a
+lot more features than just two.
+We've been talking for a while
+about housing prediction, and suppose
+you have a housing classification
+problem rather than a
+regression problem, like maybe
+if you have different features of
+a house, and you want
+to predict what are the
+odds that your house will
+be sold within the next
+six months, so that will be a classification problem.
+And as we saw we can
+come up with quite a
+lot of features, maybe a hundred
+different features of different houses.
+For a problem like this, if
+you were to include all the
+quadratic terms, all of
+these, even all of the
+quadratic that is the second
+or the polynomial terms, there would be a lot of them.
+There would be terms like x1 squared,
+x1x2, x1x3, you know, x1x4
+up to x1x100 and then
+you have x2 squared, x2x3
+and so on.
+And if you include just
+the second order terms, that
+is, the terms that are
+a product of, you know,
+two of these terms, x1
+times x1 and so on, then,
+for the case of n equals
+100, you end up with about five thousand features.
+And, asymptotically, the
+number of quadratic features grows
+roughly as order n
+squared, where n is the
+number of the original features,
+like x1 through x100 that we had.
+And its actually closer to n squared over two.
+So including all the
+quadratic features doesn't seem
+like it's maybe a good
+idea, because that is a
+lot of features and you
+might up overfitting the training
+set, and it can
+also be computationally expensive, you know, to
+be working with that many features.
+One thing you could do is
+include only a subset of
+these, so if you include only the
+features x1 squared, x2 squared,
+x3 squared, up to
+maybe x100 squared, then
+the number of features is much smaller.
+Here you have only 100 such
+quadratic features, but this
+is not enough features and
+certainly won't let you fit
+the data set like that on the upper left.
+In fact, if you include
+only these quadratic features together
+with the original x1, and
+so on, up to x100 features,
+then you can actually fit very
+interesting hypotheses. So, you
+can fit things like, you know, access a
+line of the ellipses like these, but
+you certainly cannot fit a more
+complex data set like that shown here.
+So 5000 features seems like
+a lot, if you were
+to include the cubic, or
+third order known of each others,
+the x1, x2, x3.
+You know, x1 squared,
+x2, x10 and
+x11, x17 and so on.
+You can imagine there are gonna be a lot of these features.
+In fact, they are going to be
+order and cube such features
+and if any is 100
+you can compute that, you
+end up with on the order
+of about 170,000 such cubic
+features and so including
+these higher auto-polynomial features when
+your original feature set end
+is large this really dramatically
+blows up your feature space and
+this doesn't seem like a
+good way to come up with
+additional features with which
+to build none many classifiers when n is large.
+For many machine learning problems, n will be pretty large.
+Here's an example.
+Let's consider the problem of computer vision.
+And suppose you want to
+use machine learning to train
+a classifier to examine an
+image and tell us whether
+or not the image is a car.
+Many people wonder why computer vision could be difficult.
+I mean when you and I
+look at this picture it is so obvious what this is.
+You wonder how is it
+that a learning algorithm could possibly
+fail to know what this picture is.
+To understand why computer vision
+is hard let's zoom
+into a small part of the
+image like that area where the
+little red rectangle is.
+It turns out that where you
+and I see a car, the computer sees that.
+What it sees is this matrix,
+or this grid, of pixel
+intensity values that tells
+us the brightness of each pixel in the image.
+So the computer vision problem is
+to look at this matrix of
+pixel intensity values, and tell
+us that these numbers represent the door handle of a car.
+Concretely, when we use
+machine learning to build a
+car detector, what we do
+is we come up with a
+label training set, with, let's
+say, a few label examples
+of cars and a few
+label examples of things that
+are not cars, then we
+give our training set to
+the learning algorithm trained a
+classifier and then, you
+know, we may test it and show
+the new image and ask, "What is this new thing?".
+And hopefully it will recognize that that is a car.
+To understand why we
+need nonlinear hypotheses, let's take
+a look at some of the
+images of cars and maybe
+non-cars that we might feed to our learning algorithm.
+Let's pick a couple of pixel
+locations in our images, so
+that's pixel one location and
+pixel two location, and let's
+plot this car, you know, at the
+location, at a certain
+point, depending on the intensities
+of pixel one and pixel two.
+And let's do this with a few other images.
+So let's take a different example
+of the car and you know,
+look at the same two pixel locations
+and that image has a
+different intensity for pixel one
+and a different intensity for pixel two.
+So, it ends up at a different location on the figure.
+And then let's plot some negative examples as well.
+That's a non-car, that's a
+non-car  .
+And if we do this for
+more and more examples using
+the pluses to denote cars
+and minuses to denote non-cars,
+what we'll find is that
+the cars and non-cars end up
+lying in different regions of
+the space, and what we
+need therefore is some sort
+of non-linear hypotheses to try
+to separate out the two classes.
+What is the dimension of the feature space?
+Suppose we were to use just 50 by 50 pixel images.
+Now that suppose our images were
+pretty small ones, just 50 pixels on the side.
+Then we would have 2500 pixels,
+and so the dimension of
+our feature size will be N
+equals 2500 where our feature
+vector x is a list
+of all the pixel testings, you
+know, the pixel brightness of pixel
+one, the brightness of pixel
+two, and so on down
+to the pixel brightness of the
+last pixel where, you know, in a
+typical computer representation, each of
+these may be values between say
+0 to 255 if it gives
+us the grayscale value.
+So we have n equals 2500,
+and that's if we
+were using grayscale images.
+If we were using RGB
+images with separate red, green
+and blue values, we would have n equals 7500.
+So, if we were to
+try to learn a nonlinear
+hypothesis by including all
+the quadratic features, that is
+all the terms of the form, you know,
+Xi times Xj, while with the
+2500 pixels we would end
+up with a total of three million features.
+And that's just too large to
+be reasonable; the computation would
+be very expensive to find and
+to represent all of these
+three million features per training example.
+So, simple logistic regression together
+with adding in maybe the
+quadratic or the cubic features
+- that's just not a
+good way to learn complex
+nonlinear hypotheses when n
+is large because you just end up with too many features.
+In the next few videos, I
+would like to tell you about Neural
+Networks, which turns out
+to be a much better way to
+learn complex hypotheses, complex nonlinear
+hypotheses even when your
+input feature space, even when n is large.
+And along the way I'll
+also get to show
+you a couple of fun videos
+of historically important applications
+of Neural networks as well that I
+hope those videos that
+we'll see later will be fun for you to watch as well.

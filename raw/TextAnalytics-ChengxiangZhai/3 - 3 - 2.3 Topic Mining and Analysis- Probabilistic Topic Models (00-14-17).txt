@@ -1,0 +1,366 @@
+This lecture is about Probabilistic Topic
+Models for topic mining and analysis.
+In this lecture,
+we're going to continue talking
+about the topic mining and analysis.
+We're going to introduce
+probabilistic topic models.
+So this is a slide that
+you have seen earlier,
+where we discussed the problems
+with using a term as a topic.
+So, to solve these problems
+intuitively we need to use
+more words to describe the topic.
+And this will address the problem
+of lack of expressive power.
+When we have more words that we
+can use to describe the topic,
+that we can describe complicated topics.
+To address the second problem we
+need to introduce weights on words.
+This is what allows you to distinguish
+subtle differences in topics, and
+to introduce semantically
+related words in a fuzzy manner.
+Finally, to solve the problem of
+word ambiguity, we need to split
+ambiguous word, so
+that we can disambiguate its topic.
+It turns out that all these can be done
+by using a probabilistic topic model.
+And that's why we're going to spend a lot
+of lectures to talk about this topic.
+So the basic idea here is that,
+improve the replantation of
+topic as one distribution.
+So what you see now is
+the older replantation.
+Where we replanted each topic, it was just
+one word, or one term, or one phrase.
+But now we're going to use a word
+distribution to describe the topic.
+So here you see that for sports.
+We're going to use
+the word distribution over
+theoretical speaking all
+the words in our vocabulary.
+So for example, the high
+probability words here are sports,
+game, basketball,
+football, play, star, etc.
+These are sports related terms.
+And of course it would also give
+a non-zero probability to some other word
+like Trouble which might be
+related to sports in general,
+not so much related to topic.
+In general we can imagine a non
+zero probability for all the words.
+And some words that are not read and
+would have very, very small probabilities.
+And these probabilities will sum to one.
+So that it forms a distribution
+of all the words.
+Now intuitively, this distribution
+represents a topic in that if we assemble
+words from the distribution, we tended
+to see words that are ready to dispose.
+You can also see, as a very special case,
+if the probability of the mass
+is concentrated in entirely on
+just one word, it's sports.
+And this basically degenerates
+to the symbol foundation
+of a topic was just one word.
+But as a distribution,
+this topic of representation can,
+in general,
+involve many words to describe a topic and
+can model several differences
+in semantics of a topic.
+Similarly we can model Travel and Science
+with their respective distributions.
+In the distribution for Travel we see top
+words like attraction, trip, flight etc.
+Whereas in Science we see scientist,
+spaceship, telescope, or
+genomics, and, you know,
+science related terms.
+Now that doesn't mean sports related terms
+will necessarily have zero
+probabilities for science.
+In general we can imagine all of these
+words we have now zero probabilities.
+It's just that for a particular
+topic in some words we have very,
+very small probabilities.
+Now you can also see there are some
+words that are shared by these topics.
+When I say shared it just means even
+with some probability threshold,
+you can still see one word
+occurring much more topics.
+In this case I mark them in black.
+So you can see travel, for example,
+occurred in all the three topics here, but
+with different probabilities.
+It has the highest probability for
+the Travel topic, 0.05.
+But with much smaller probabilities for
+Sports and Science, which makes sense.
+And similarly, you can see a Star
+also occurred in Sports and
+Science with reasonably
+high probabilities.
+Because they might be actually
+related to the two topics.
+So with this replantation it addresses the
+three problems that I mentioned earlier.
+First, it now uses multiple
+words to describe a topic.
+So it allows us to describe
+a fairly complicated topics.
+Second, it assigns weights to terms.
+So now we can model several
+differences of semantics.
+And you can bring in related
+words together to model a topic.
+Third, because we have probabilities for
+the same word in different topics,
+we can disintegrate the sense of word.
+In the text to decode
+it's underlying topic,
+to address all these three problems with
+this new way of representing a topic.
+So now of course our problem definition
+has been refined just slightly.
+The slight is very similar to what
+you've seen before except we have
+added refinement for what our topic is.
+Now each topic is word distribution,
+and for each word distribution we know
+that all the probabilities should sum to
+one with all the words in the vocabulary.
+So you see a constraint here.
+And we still have another constraint
+on the topic coverage, namely pis.
+So all the Pi sub ij's must sum to one for
+the same document.
+So how do we solve this problem?
+Well, let's look at this problem
+as a computation problem.
+So we clearly specify it's input and
+output and
+illustrate it here on this side.
+Input of course is our text data.
+C is our collection but we also generally
+assume we know the number of topics, k.
+Or we hypothesize a number and
+then try to bind k topics,
+even though we don't know the exact
+topics that exist in the collection.
+And V is the vocabulary that has
+a set of words that determines what
+units would be treated as
+the basic units for analysis.
+In most cases we'll use words
+as the basis for analysis.
+And that means each word is a unique.
+Now the output would consist of as first
+a set of topics represented by theta I's.
+Each theta I is a word distribution.
+And we also want to know the coverage
+of topics in each document.
+So that's.
+That the same pi ijs
+that we have seen before.
+So given a set of text data we would
+like compute all these distributions and
+all these coverages as you
+have seen on this slide.
+Now of course there may be many
+different ways of solving this problem.
+In theory, you can write the [INAUDIBLE]
+program to solve this problem,
+but here we're going to introduce
+a general way of solving this
+problem called a generative model.
+And this is, in fact,
+a very general idea and
+it's a principle way of using statistical
+modeling to solve text mining problems.
+And here I dimmed the picture
+that you have seen before
+in order to show the generation process.
+So the idea of this approach is actually
+to first design a model for our data.
+So we design a probabilistic model
+to model how the data are generated.
+Of course,
+this is based on our assumption.
+The actual data aren't
+necessarily generating this way.
+So that gave us a probability
+distribution of the data
+that you are seeing on this slide.
+Given a particular model and
+parameters that are denoted by lambda.
+So this template of actually consists of
+all the parameters that
+we're interested in.
+And these parameters in general
+will control the behavior of
+the probability risk model.
+Meaning that if you set these
+parameters with different values and
+it will give some data points
+higher probabilities than others.
+Now in this case of course,
+for our text mining problem or
+more precisely topic mining problem
+we have the following plans.
+First of all we have theta i's which
+is a word distribution snd then we have
+a set of pis for each document.
+And since we have n documents, so we have
+n sets of pis, and each set the pi up.
+The pi values will sum to one.
+So this is to say that we
+first would pretend we already
+have these word distributions and
+the coverage numbers.
+And then we can see how we can generate
+data by using such distributions.
+So how do we model the data in this way?
+And we assume that the data
+are actual symbols
+drawn from such a model that
+depends on these parameters.
+Now one interesting question here is to
+think about how many
+parameters are there in total?
+Now obviously we can already see
+n multiplied by K parameters.
+For pi's.
+We also see k theta i's.
+But each theta i is actually a set
+of probability values, right?
+It's a distribution of words.
+So I leave this as an exercise for
+you to figure out exactly how
+many parameters there are here.
+Now once we set up the model then
+we can fit the model to our data.
+Meaning that we can
+estimate the parameters or
+infer the parameters based on the data.
+In other words we would like to
+adjust these parameter values.
+Until we give our data set
+the maximum probability.
+I just said,
+depending on the parameter values,
+some data points will have higher
+probabilities than others.
+What we're interested in, here,
+is what parameter values will give
+our data set the highest probability?
+So I also illustrate the problem
+with a picture that you see here.
+On the X axis I just illustrate lambda,
+the parameters,
+as a one dimensional variable.
+It's oversimplification, obviously,
+but it suffices to show the idea.
+And the Y axis shows the probability
+of the data, observe.
+This probability obviously depends
+on this setting of lambda.
+So that's why it varies as you
+change the value of lambda.
+What we're interested here
+is to find the lambda star.
+That would maximize the probability
+of the observed data.
+So this would be, then,
+our estimate of the parameters.
+And these parameters,
+note that are precisely what we
+hoped to discover from text data.
+So we'd treat these parameters
+as actually the outcome or
+the output of the data mining algorithm.
+So this is the general idea of using
+a generative model for text mining.
+First, we design a model with
+some parameter values to fit
+the data as well as we can.
+After we have fit the data,
+we will recover some parameter value.
+We will use the specific
+parameter value And
+those would be the output
+of the algorithm.
+And we'll treat those as actually
+the discovered knowledge from text data.
+By varying the model of course we
+can discover different knowledge.
+So to summarize, we introduced
+a new way of representing topic,
+namely representing as word distribution
+and this has the advantage of using
+multiple words to describe a complicated
+topic.It also allow us to assign
+weights on words so we have more than
+several variations of semantics.
+We talked about the task of topic mining,
+and answers.
+When we define a topic as distribution.
+So the importer is a clashing of text
+articles and a number of topics and
+a vocabulary set and
+the output is a set of topics.
+Each is a word distribution and
+also the coverage of all
+the topics in each document.
+And these are formally represented
+by theta i's and pi i's.
+And we have two constraints here for
+these parameters.
+The first is the constraints
+on the worded distributions.
+In each worded distribution
+the probability of all the words
+must sum to 1,
+all the words in the vocabulary.
+The second constraint is on
+the topic coverage in each document.
+A document is not allowed to recover
+a topic outside of the set of topics that
+we are discovering.
+So, the coverage of each of these k
+topics would sum to one for a document.
+We also introduce a general idea of using
+a generative model for text mining.
+And the idea here is, first we're design
+a model to model the generation of data.
+We simply assume that they
+are generative in this way.
+And inside the model we embed some
+parameters that we're interested in
+denoted by lambda.
+And then we can infer the most
+likely parameter values lambda star,
+given a particular data set.
+And we can then take the lambda star as
+knowledge discovered from the text for
+our problem.
+And we can adjust
+the design of the model and
+the parameters to discover various
+kinds of knowledge from text.
+As you will see later
+in the other lectures.
+[MUSIC]
+

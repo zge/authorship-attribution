@@ -1,0 +1,174 @@
+So here's some results from this paper. 
+This is the first set of results. 
+So what we have on this axis is the 
+number of training samples. 
+I believe in terms of number of words. 
+So we go from 1,000, to 10,000, to 
+100,000, to a million words. 
+This is actually on a log scale, you'll 
+notice. 
+And on this axis we have the f-measure 
+accuracy of the named entity recognizer. 
+So this measure is actually a combination 
+of precision and recall. 
+It's actually the f-measure is equal to 2 
+times the precision times the recoil over 
+the precision. 
+Plus the recall. 
+You can basically just think of this as, 
+kind of averaging with the precision and 
+recall, where 100 is perfect performance. 
+85, for example means you have roughly 
+85% accuracy. 
+So it's really just a way of taking these 
+two numbers, precision and recall and 
+forming a single number measuring the, 
+measuring the accuracy. 
+So let's see what we have on this curve. 
+So firstly we have an HMM, which was 
+basically the best model they had up to 
+this point. 
+And this was the serious model, this was 
+a HMM model which they had developed over 
+several years and it was a very, very 
+good name entity recognizer. 
+Here in pink you can see we have the 
+model I just showed you which is the 
+log-linear tagger in combination with the 
+brown clusters. 
+It's worth noting that without the 
+clusters, the log-linear tagger has very 
+similar performance to the HMM. 
+I haven't showed that on this slide, but 
+for this task the log-linear model and 
+the HMM had roughly comparable 
+performance. 
+So what you will see here is there's a 
+pretty substantial difference between 
+these two curves. 
+The cluster information really adds quite 
+a bit in terms of accuracy. 
+Over 5% here. 
+Over 5% here, that's, 10,000 words of 
+training I think. 
+And so on, and so on. 
+Or, if you think about it another way, if 
+you want to achieve this level of 
+performance, you would need this much 
+data under the HMM. 
+And you would need roughly this much data 
+under the discriminative model rather the 
+cluster base model. 
+And notice that this is on the log scale, 
+so this is a pretty, pretty substantial 
+difference. 
+So that in itself is, is quite an 
+impressive result. 
+The final result are sure actually throws 
+another very useful technique of this 
+problem and this is a problem called 
+active learning. 
+So in most of the methods that we've seen 
+in this class, you are given a fixed set 
+of training examples. 
+You train a model from those examples and 
+then you test on your test data, in 
+active learning you attempt to reduce the 
+number of training examples you need by 
+dynamically choosing which examples 
+should be labeled. 
+And you, in particular, choose to label 
+the most, useful examples at each stage. 
+What that would typically mean is you 
+would train your log-linear tagger on a 
+small number of examples, maybe 500. 
+You would have a large pool of additional 
+examples, which you could send to an 
+annotated for labeling. 
+And you would choose to la, label the 
+examples which are most difficult for the 
+log-linear tagger. 
+Maybe where the log-linear tagger has 
+most confusion by some measure or 
+another. 
+And so in this way you end up rather than 
+repeatedly labeling examples for which 
+you already have a very good idea of 
+what's going on. 
+You, you choose examples which are more 
+challenging, an which essentially contain 
+more information for the current learning 
+algorithm. 
+So that's active learning. 
+It's the idea that you can dynamically 
+select examples, based on how informative 
+they are. 
+This is well known to give, some pretty 
+significant reductions, in the amount of 
+training data that's required. 
+So here are some different, curves. 
+This is the baseline model. 
+This is just a log-linear tagger with no 
+active learning. 
+And with, no use of those word clusters 
+that I've showed you. 
+If we use active learning we get this 
+pink curve and we can see again that 
+there's some fairly particular 
+improvements. 
+The yellow curve is the result with brown 
+clusters so again you can see you good 
+improvement over the method that doesn't 
+use clusters. 
+And finally and most impressively, we 
+have a result which makes use of both the 
+brown clusters and also active learning. 
+If we look at this, the performance 
+really is rather remarkable. 
+I can get over money percent performance 
+with, sorry that's not a very straight 
+line, but with, on the order of roughly 
+ten thousand words of training data. 
+And so, if we look at this level of 
+performance, we would have needed a few 
+100,000 words of training data under the 
+old method. 
+We would have been over here. 
+So this combination of the brown 
+clustering information and active 
+learning has vastly reduced the amount of 
+label data that we need. 
+And as we saw in the motivation for this 
+work, that is certainly a very useful 
+thing in many context. 
+So what I've spoken about here is results 
+for named entity recognition but this 
+kind of technique can apply to many other 
+problems. 
+Another problem where brown cost us, been 
+showed to be very useful. 
+Its the pausing problem where, again, we 
+have severe problems with [UNKNOWN] and 
+these brown cost can really improve 
+things. 
+The final thing I'll say here is that, 
+note that the use of modeling your model 
+was critical in that it enabled us to use 
+these representations, these brown 
+clustering representations, in a really 
+seamless and straightforward way. 
+It would have been much more challenging 
+to have used those representations within 
+a hidden Markov model. 
+So again as I said before, a selling 
+point of log-linear models is the 
+flexibility in terms of the 
+representation they can use. 
+And here we've used that flexibility to 
+directly leverage information from brown 
+clusters. 
+Which themselves are derived from very 
+large quantities of unlabeled data. 
+Maybe 10s, or 100s, of millions of words 
+of unlabeled data. 
+

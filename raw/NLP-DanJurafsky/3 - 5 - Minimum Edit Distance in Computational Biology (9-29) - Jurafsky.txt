@@ -1,0 +1,191 @@
+There are a number of advanced variants of
+minimum edit distance that play a special
+role in computational biology. So we're
+called a computational biology when we're
+aligning a sequence of nucleotides or
+sometimes proteins. And our job is to take
+two strings like this and produce an
+alignment like this. So, in biology this
+is important for a number of. Reasons. We
+can be finding regions in the genome. We
+could be discovering functions of genes.
+We could be looking for evolutionary
+things by comparing different species.
+This is also important for assembling
+fragments of DNA sequencing. We're going
+to be trying to assemble fragments and we
+want to look for overlapping pieces. We'll
+talk about overlapping pieces and find
+some matches between them; find that these
+two pieces match. And we're comparing
+individuals and looking for mutations,
+finding places where there are
+similarities and differences. In general,
+in natural language processing we talk
+about distance, string edit distance
+and minimum edit distance. So we're
+minimizing distance and we're computing
+weights for things. In computational
+biology, we're talking about similarities
+or maximizing similarities, so we're
+asking how similar two things are, so
+we're trying to maximize something and we
+generally talk about scores rather than
+weights. So in competition biology, the,
+standard minimum at a distance algorithm
+that we just looked at, is called
+Needleman-Wunsch. And I've shown you the
+algorithm here, but it's the same, the
+same thing that we saw before, although in
+general, we're just going to keep, we'll
+use d to mean the cost of insertions and
+deletions, and we'll have a little s value
+for the substitution, the positive or
+negative value of substituting things. And
+in general in biology we'll talk about
+positive costs for things that match, a
+positive value for things that match and a
+cost for things, for deletions and
+insertions. So here's the, Needleman-Wunsch matrix. And, notice that, as
+opposed to what we did in natural language
+processing in general, in computational
+biology, we put the origin at the upper
+left. [sound]. So let's, let's first look
+at some of the variants that are important
+in computational biology. So one is cases
+where it's possible to have unlimited gaps
+at the beginning and end of the string and
+this happens exactly when we have two
+little snips of D and A and we know that
+the end points of one might overlap with
+ends of another but there might be
+something else going on in other places.
+So here is one long sequence and here's
+another long sequence but it's just this
+piece. Of, of this sequence, and this
+piece of this that might overlap. So we
+don't wanna penalize the fact that there's
+other things going on before here or after
+here. So we'd like to modify the algorithm
+so it doesn't penalize gaps at the end.
+And in fact there can be various different
+kinds of overlapping of this, of this
+sort. This might happen when we are, when
+we are doing sequencing and we have
+overlapping reads or it might be that we
+are looking for a piece of a gene inside
+another piece and so we have a subset
+piece inside a larger piece. So the
+variant of the dynamic programing
+algorithm that we use for overlap
+detection, the overlap detection variant,
+we'll just make a few small changes in the
+algorithm. So first, we just changed the
+initialization so that. It doesn't cost us
+anything to start from a long string and
+delete everything or insert everything. So
+use to be that we had a, we had -I, -I
+star D here and we had -J star D here and
+we've gotten rid of those because it's
+allowing ourselves to start at a path at a
+random point we are here at the
+intersection. So we're, we're. Allowing
+ourselves to start at zero cost here and
+not be penalized for not matching all
+these things up until here. So again we're
+looking for edge overlaps. And now, for
+our, termination condition, we're gonna
+look for the, start from, not from the
+upper right corner, because we're allowing
+a match not to go all the way to the edge,
+but we'll find the, the place along the
+final column, or the final row, where we
+have the maximum value, and we'll trace
+back from there. So, in this case, our
+maximum value is here, in this column, and
+we'll trace back from there. A similar
+extension of the Needleman-Wunsch, or the
+standard dynamic programming algorithm for
+string at a distance, is the local
+alignment problem. So here's the local
+alignment problem. We have two strings X
+of length m and y of length n and we want
+to find two sub strings who's similarity
+is maximum, so imagine that here is x and
+here is y we would like to add up this and
+these two stings, we would like to find
+these two these sub strings c, c, c g, g,
+g that's the largest similar sub strings.
+So it's very similar to the overlap
+detection variant that we saw except not
+only do we allow ourselves not to ignore
+previously unaligned sequences at the
+beginning and end, but also anywhere. So
+we can basically have our maximum
+alignment be somewhere in the middle as it
+is here. [sound]. [sound]. So in order to,
+in order to modify the Needleman-Wunsch
+algorithm to allow any kind of local
+alignments, the new version is now called
+the Smith-Waterman algorithm. And we're
+first going to allow, as we did for the
+overlap detection variant. Allow them the
+initialization conditions to be zero both
+for X and Y so we don't penalize ourselves
+for initial strings. And now we're gonna
+make one more modification which is that,
+in each cell when we're looking at the
+possible places we could come from to
+choose the alignment, we're gonna not only
+pick, the maximum of the three previous
+cells. But we're also going to add a
+maximum of zero. So we're going to let
+ourselves, sense in an, biology we're
+talking about maximizing similarity. When
+things get very different and we
+get very negative score we're just
+going to start all over again from zero.
+Allow myself to just throw away regions
+that don't align at all. The termination
+condition of the Smith-Waterman Algorithm,
+depends on what we're looking for. If we
+just want the best local alignment we'll
+pick the place that's, that's, maximum in
+the entire array and we'll trace back from
+there. If we want all of the local
+alignments that score greater than some
+threshold T then maybe we'll find some
+place that's greater than T, find all
+those places and trace back all of them.
+Now this get's complicated by the fact
+that there can be overlapping local
+alignments, so here we might have two
+alignments like this and it might be that
+they actually overlap tracing back, so
+there can be some complications here. But
+if you want the best local alignment
+that's actually much easier. So here's an
+example of local alignment. So let's,
+let's imagine that we're, we're, we're
+getting one positive point every time two
+symbols match, and a negative point for
+any deletion, insertion or substitution.
+And then let's look for all the local
+alignments between these two strings, A T
+C A T and A T, T A and A T C. And if we
+fill in the matrix, they're gonna be,
+start with zeroes everywhere, because
+we're doing local alignment. We see, two,
+if we then look for regions, cells that
+have a maximum distance to trace back
+from, we see two of these cells. So, one
+of them corresponds to the alignment
+A.T.C.A.T to A.T.T.A.T., so we have four
+strings that match, one mis-match, so
+that's gonna be a distance of three, and
+the other one of them, over here,
+corresponds, to, the alignment between
+A.T.C. And A.T.C. Where we have three,
+matching symbols. So those are some of the
+more advanced variance of edit distance
+that we see in computational biology.

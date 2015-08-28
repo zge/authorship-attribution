@@ -1,0 +1,418 @@
+In the last video, we talked
+about precision and recall as
+an evaluation metric for classification
+problems with skew classes.
+For many applications, we'll want
+to somehow control the trade
+off between position and recall.
+Let me tell you how
+to do that and also show
+you some, even more effective
+ways to use precision and
+recall as an evaluation
+metric for learning algorithms.
+As a reminder, here are the
+definitions of precision and
+recall from the previous video.
+Let's continue our cancer classification
+example, where y equals
+one if the patient has cancer
+and y equals zero otherwise.
+And let's say we've trained in
+logistic regression classifier, which outputs
+probabilities between zero and one.
+So, as usual, we're
+going to predict one, y equals
+one if h of x
+is greater than or equal to
+0.5 and predict zero if
+the hypothesis outputs a value
+less than 0.5 and this
+classifier may give us
+some value for precision and some value for recall.
+But now, suppose we want
+to predict that a patient
+has cancer only if we're
+very confident that they really do.
+Because you know if you go
+to a patient and you tell
+them that they have cancer, it's
+going to give them a huge
+shock because this is seriously
+bad news and they may
+end up going through a pretty
+painful treatment process and so on.
+And so maybe we want to
+tell someone that we think
+they have cancer only if they're very confident.
+One way to do this would
+be to modify the algorithm, so
+that instead of setting the
+threshold at 0.5, we
+might instead say that we'll
+predict that y is equal
+to 1, only if H of
+x is greater than or equal to 0.7.
+So this, I think
+will tell someone if they
+have cancer only if we think
+there's a greater than, greater
+than or equal to 70% that they have cancer.
+And if you do this then
+you're predicting some of this
+cancer only when you're
+more confident, and so
+you end up with a classifier
+that has higher precision, because
+all the patients that you're
+going to and say, you know,
+we think you have cancer, all
+of those patients are now
+pretty, once they hear, pretty
+confident they actually have cancer.
+And so, a higher fraction of
+the patients that you predict to
+have cancer, will actually turn
+out to have cancer, because in
+making those predictions we are pretty confident.
+But in contrast, this classifier will
+have lower recall, because
+now we are going
+to make predictions, we are
+going to predict y equals one, on a smaller number of patients.
+Now we could even take this further.
+Instead of setting the threshold
+at 0.7, we can set
+this at 0.9 and we'll predict
+y1 only if we are
+more than 90% certain that
+the patient has cancer, and so,
+you know, a large fraction that
+those patients will turn out
+to have cancer and so,
+this is the high precision classifier
+will have lower recall because we
+want to correctly detect that those patients have cancer.
+Now consider a different example.
+Suppose we want to avoid
+missing too many actual cases of cancer.
+So we want to avoid the false negatives.
+In particular, if a patient
+actually has cancer, but we
+fail to tell them that
+they have cancer, then that can be really bad.
+Because if we tell
+a patient that they don't
+have cancer then they are
+not going to go for treatment and
+if it turns out that they
+have cancer or we fail
+to tell them they have
+cancer, well they may not get treated at all.
+And so that would be
+a really bad outcome because he
+died because we told them
+they don't have cancer they failed
+to get treated, but it turns
+out that they actually have cancer.
+When in doubt, we want to
+predict that y equals one.
+So when in doubt, we want
+to predict that they have
+cancer so that at least
+they look further into it
+and this can get treated,
+in case they do turn out to have cancer.
+In this case, rather than setting
+higher probability threshold, we might
+instead take this value
+and this then sets it to
+a lower value, so maybe
+0.3 like so.
+By doing so, we're saying
+that, you know what, if we
+think there's more than a 30%
+chance that they have caner, we better
+be more conservative and tell
+them that they may have cancer,
+so they can seek treatment if necessary.
+And in this case, what
+we would have is going to
+be a higher recall classifier,
+because we're going to
+be correctly flagging a higher
+fraction of all of
+the patients that actually do have
+cancer, but we're going
+to end up with lower precision,
+because the higher fraction of
+the patients that we said have
+cancer, the higher fraction of them will turn out not to have cancer after all.
+And by the way, just as an
+aside, when I talk
+about this to other
+students up until before, it's pretty amazing.
+Some of my students say is
+how I can tell the story both ways.
+Why we might want to have
+higher precision or higher recall
+and the story actually seems to work both ways.
+But I hope the details of
+the algorithm is true and the
+more general principle is, depending
+on where you want, whether
+you want high precision, lower recall
+or higher recall, lower precision, you
+can end up predicting y equals
+one when h(x) is greater than some threshold.
+And so, in general, for
+most classifiers, there is going
+to be a trade off between precision and recall.
+And as you vary the value
+of this threshold, this value,
+this special that I have
+joined here, you can actually
+plot us some curve that
+trades off precision and
+recall, where a value
+up here, this would correspond
+to a very high value of
+the threshold, maybe threshold equals
+over 0.99, so that say, predict
+y equals 1 only where
+no more than 99 percent
+confident, at least 99
+percent probability this once, so
+that will be a precision relatively
+low recall, whereas the point
+down here will correspond to
+a value of the threshold that's
+much lower, maybe 0.01.
+When in doubt at all, put down y1.
+And if you do that, you
+end up with a much
+lower precision higher recall classifier.
+And as you vary the threshold, if
+you want, you can actually trace
+all the curve from your classifier
+to see the range of different values you can get for precision recall.
+And by the way, the position
+recall curve can look like many different shapes.
+Sometimes it'll look this, sometimes
+it'll look like that.
+Now, there are many different possible
+shapes in the position of recall
+curve, depending on the details of the classifier.
+So this raises another
+interesting question which is, is
+there a way to choose
+this threshold automatically?
+Or, more generally, if we have
+a few different algorithms or a
+few different ideas for algorithms, how
+do we compare different precision recall numbers?
+completely.
+Suppose we have three different
+learning algorithms, or actually maybe
+these are three different learning algorithms, may
+be these are the same algorithm, but just with different values for the threshold.
+How do we decide which of these algorithms is best?
+One of the things we talked
+about earlier is the importance
+of a single real number evaluation metric.
+And that is the idea of
+having a number that just
+tells you how well is your classifier doing.
+But by switching to the precision
+recall metric, we've actually lost that.
+We now have two real numbers.
+And so we often end up
+facing situations, like if
+we are trying to compare algorithm 1
+to algorithm 2, we
+end up asking ourselves, Is a
+position of point five and
+a recall of point four, well
+is that better or worse than
+a position of point seven or
+a recall point one?
+If every time you try
+on a new algorithm you end up
+having to sit around and think
+well, maybe point five
+point four, is better than point
+seven point one, maybe not, I do not know.
+If you end up having to sit around and think and make these decisions.
+that really slows down your
+decision making process, for what
+changes are useful to incorporate into your algorithm.
+Where as in contrast, if we
+had a single real number evaluation metric,
+like a number that just
+tells us is either algorithm 1 or is algorithm 2 better.
+That helps us much more
+quickly decide which algorithm to
+go with and helps us
+as well to much more quickly
+evaluate different changes that we
+may be contemplating for an algorithm.
+So, how can we get
+a single real number evaluation metric.
+One natural thing that you
+might try is to look
+at the average between precision and recall.
+So using p and r
+to denote position and recall, what
+you could do is just compute the
+average and look at what classifier
+has the highest average value.
+But this turns out not to
+be such a good solution because, similar
+to the example we had earlier,
+it turns out that if we
+have a classifier that predicts
+y1 all the time, then if
+you do that, you can get a very high recall.
+That's you end up with a very low value of Vision.
+Conversely,if you have a classifier
+that predicts y=0 almost all
+the time, that is, if
+it predicts y one very sparingly.
+This corresponds to setting
+a very high threshold using the notation of previous line.
+And then you can actually
+end up with a very high precision with a very low recall.
+So the two extremes of either
+are a very high threshold or a
+very low threshold, neither of
+them would give it paticularary good classifier.
+And we recognize that is
+by seeing if we end
+up with a very low
+precision or a very low recall.
+And if you just take the average of people's ro2.
+One does the example the average
+is actually highest for algorithm 3.
+Even though you can get
+that sort of performance by predicting
+y1 all the time.
+And that is just not a very good classifier, right?
+You predict y equals one all
+the time is just not a
+useful classifier if all it does is prints out y equals one.
+And so algorithm one or algorithm
+two would be more
+useful than algorithm three,
+but in this example algorithm three
+has a higher average value of
+precision recall than algorithm one and two.
+So we usually think of
+this average of precision recall
+as not a particularly good way to evaluate our learning algorithm.
+In contrast, there is a
+different way of combining precision recall.
+It is called the f score and it uses that formula.
+So, in this example, here are the f scores.
+And so we would tell
+from these f scores and
+we'll say algorithm 1 has
+the highest f score.
+Algorithm 2 has the second highest and
+algorithm 3 has the lowest and so
+you know, if we go by
+the f score, we would pick probably algorithm of 1 over the others.
+The f score, which is also
+called the f1 score,
+is usually written f1 score
+that I have here, but often people will just say f score.
+It determines use is a
+little bit like taking the
+average of precision of recall,
+but it gives the lower
+value of precision and recall
+- whichever it is - it gives it a higher weight.
+And so, you see in
+the numerator here that the
+f score takes a product or position of equal.
+And so, if either position is
+0 or recall is equal to
+0, the f score will
+be equal to o. So
+in that sense, it kind of combines position and recall.
+but for the f score to
+be large, both position
+and recall have to be pretty large.
+I should say that there are
+many different possible formulas for
+combining position and recall.
+This f score formula is
+really, maybe just one out
+of a much larger number of
+possibilities, but historically or
+traditionally this is what
+people in machine learning use.
+And the term f score, you
+know, it doesn't really mean
+anything, so don't worry about
+why it's called f score or f1 score.
+But this usually gives
+you the effect that you want
+because if either position is
+0 or recall is 0, this
+gives you a very low f score.
+And so, to have a
+high f score you can't
+need a preserve quality 1
+and completely if p
+equals zero or i
+equals zero then this
+gives you the f score equals zero.
+Where as a perfect f
+score, so if position equals
+one and  [xx] equals
+one that would give
+you an f score that's
+equal to one times one
+over two times two.
+So the f score will be
+equal to 1 if you
+have perfect precision and perfect recall.
+And intermediate values between 0
+and 1, this usually gives a
+reasonable rank ordering of different classifiers.
+So this video we talked
+about the notion of trading
+off between position and recall
+and how we can vary the
+threshold that we use to
+decide whether to predict y
+equals one or y equals zero.
+This threshold that says do
+we need to be at least
+seventy percent confident or ninety
+percent confident or whatever before
+we predict y equals one and
+by varying the threshold you
+can control a trade off
+between precision and recall.
+Ross talked about the f score
+which takes precision and recall
+and gives you a single
+real number evaluation metric.
+And of course, if your goal is
+to automatically set that
+threshold, to decide which
+one of y equals 1 or
+y equals 0, one pretty
+reasonable way to do that
+would also be to try
+a range of different values of thresholds.
+So, try a range of values
+of thresholds and evaluate these
+different threshold on say your
+cross validation set, and then
+to pick whatever value of threshold
+gives you the highest f score
+on your cross validation setting.
+That would be a pretty reasonable way
+to automatically chose the threshold for your classifier as well.

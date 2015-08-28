@@ -1,0 +1,235 @@
+
+This is a Wiimote, a remote control for 
+the Wii, video system. 
+And it has an infrared camera in here. 
+And, it can wirelessly report the 
+location of infrared points that it sees 
+to the computer. 
+Johnny Chung Lee showed we could use this 
+as a simple light pen. 
+The, the first thing you have to do to 
+use it is find the mapping from the 
+points in the camera's coordinate system to the points in the screen coordinate 
+system. 
+[SOUND]. 
+Now, how do we find that transformation? 
+The transformation can be represented as 
+we'll see, by a matrix H. 
+And the challenge is, figuring out the 
+matrix H. 
+We can derive H essentially once we take 
+four points whose coordinates in the 
+screen coordinate system are known. 
+And find their representation in the 
+camera coordinate system. 
+We're going to use the same math for a 
+slightly different problem, removing 
+perspective. 
+Here's an image taken in my office of a 
+whiteboard, taken from an angle. 
+Now, there might be some interesting 
+linear algebra written on this board. 
+But we can't quite get it, because it's 
+taken from an angle, so what we'd like to 
+do is synthesize a new image from this 
+image looking straight at the board, and with 
+no perspective at all. 
+And here's the result. 
+And how do we do that, we use the same 
+camera orientated basis as before, 
+remember that the origin is at the camera 
+center. 
+The first vector in the basis goes 
+horizontally, the second goes vertically 
+and the third goes from the camera 
+center. 
+From the origin to the top left corner of 
+the image sensor array. 
+We're going to make use of another 
+coordinates system, one that's 
+particularly well suited to the to, to 
+the, the whiteboard okay. 
+In this coordinates system the origin is 
+as before, the camera center. 
+The first vector in this whiteboard basis 
+goes horizontally from the top left 
+corner to the top right corner. 
+The second vector goes from the top left 
+corner vertically down to the bottom left 
+corner. 
+And the third vector in the basis goes 
+from the origin, the camera center, to 
+the top left corner of the whiteboard. 
+So you have to imagine these vectors in 
+the three dimensional world. 
+Let's say we have a point in the world 
+and we have it's coordinates in terms of 
+the camera oriented basis, a1,a2, a3. 
+We can write the same point p in terms of 
+the whiteboard coordinates system c1, c2, 
+c3. 
+Here are the coordinates in terms of the 
+hammer basis, here are the coordinates in 
+terms of the whiteboard basis. 
+Now combining these two equations we get 
+this equals this because of course, it's 
+the same point. 
+So we've got this equation, and I'm 
+going to basically be recapitulating an 
+argument I made earlier. 
+having to do with change of basis. 
+Let a and c be there two matrices and as 
+before, when we were discussing, change 
+of basis, this matrix c has an inverse, c 
+inverse. 
+Let's multiple this equation on the left, 
+by c inverse and we get, this equation. 
+Now, C inverse in C, cancel out, giving 
+the identity matrix, which multiplied by 
+this vector, doesn't change it. 
+So we get this equation. 
+So, the product of the matrix C inverse, 
+and A, is a matrix H, such that H times 
+the corner representation with respect to 
+a1, a2 ,a3 equals the quarter representation with 
+respect to c1, c2 and c3. 
+The challenge is computing H. 
+We don't actually compute this matrix H 
+by multiplying two matrices, we compute 
+it by solving equations. 
+We think about the entries of the matrix 
+H as unknowns. 
+We set up some equations in, in these 
+unknowns, and we'll use the solver module 
+to solve this. 
+The math is a little hard to follow. 
+It'll make more sense once you start 
+actually doing this. 
+So to derive the equations, let p be some 
+point on the whiteboard. 
+And let q be the corresponding point in 
+the image plane. 
+Let x1 x2 and 1 be the camera coordinates 
+of the point q in the image plane. 
+that is, the coordinates with respect to 
+the camera basis. 
+And that, y1, y2, y3 be the white, whiteboard 
+coordinates of the same point q. 
+So then we have that the vector y1, y2, 
+y3 is the matrix, h times x1, x2, and 1. 
+Now let's multiply everything out 
+and we get these equations. 
+So here are the equations. 
+The white board coordinates of the 
+original point, p, are y1 divided by y3, 
+y2 divided by y3, and y3 divided by y3, 
+which is 1. 
+So let's define w1 to be y1 over y3, and 
+w2 to be y2 over y3. 
+So we can write the whiteboard 
+coordinates of this original point p as 
+w1, w2, and 1. 
+Now, let's multiply through these 
+equations, by y3. 
+So we get these equations. 
+Now, we use these to substitute for y1, 
+and y2, and y3 in the, in these equations 
+and we get these equations. 
+Now, finally multiplying through and 
+moving things to the other side, we get 
+these fairly complicated equations. 
+The equations are equations in the 
+unknown h entries. 
+And the coefficients in these equations 
+are known values. 
+They're, coordinates of points we know 
+about. 
+So, we got two equations, in these 
+unknowns from looking at a point in the 
+whiteboard and the corresponding point in 
+the in the image plain. 
+Now that gives us two equations we're 
+going to take 4 points in the whiteboard. 
+Namely the four corners of a whiteboard 
+and find out using an image viewer the 
+coordinates of those points in the in the 
+image plane. 
+We find out which pixels they correspond 
+to. 
+We can use that in this way to derive 
+eight equations in the unknown entries of 
+the matrix age. 
+Unfortunately, there are nine entries in 
+the matrix age, so that doesn't quite 
+give us enough information. 
+We need one more equation. 
+But it turns out, we can't figure out 
+what H is from these points after 
+all. 
+This corresponds to the fact, that we 
+don't know the scale of, of the image, 
+okay. 
+A tiny building that's nearby looks just 
+like a, a huge building that, that's far 
+away. 
+But it turns out, that doesn't matter. 
+The scale of the image doesn't matter 
+when we're doing this transformation. 
+So we don't have to pin down exactly H. 
+As long as the H we compute is a scalar 
+multiple of the true matrix H 
+we'll be able to perform the 
+transformation just fine. 
+So in order to pin down some H, we just 
+add an equation. 
+We specify that one of the entries is 
+one. 
+And that should work out okay. 
+Again, the math is fairly confusing. 
+Once you start actually performing these 
+calculations, I'm hoping it'll become 
+more clear to you. 
+Alright, let's say we've computed the 
+matrix age. 
+How can we use this to synthesize an 
+image without perspective? 
+An image of the white board without 
+perspective? 
+We have an image, it's a, it's a grid of 
+pixels. 
+Each pixel is a rectangle of color. 
+What we have to do is, transform that 
+rectangle to find out the corresponding 
+quadrilateral in the white board. 
+So, we know the coordinates of the little 
+rectangle in in the image plane, 
+it's given by the, by, by the camera 
+coordinates. 
+What we want to do is find out the 
+corresponding points in the white board 
+coordinate system. 
+So we start with a point, q, in the 
+representation of the image, and we have 
+its camera coordinates. 
+We have, we know what pixels it 
+corresponds to. 
+Take each point, each corner of a pixel, 
+multiply it by H to get the 
+representation of the same point with 
+respect to the whiteboard coordinates. 
+Given the representation with respect to the whiteboard coordinates, it's easy to find the corresponding point on the whiteboard. So here's a point in the image plane, we want to map it to this corresponding point in the whiteboard. And we know that the way to do that is to 
+just scale down. 
+Divide these coordinates by the third 
+coordinate. 
+And that gives us the point in the whiteboard. 
+ 
+So you you white a program to carry that 
+out for each corner of each rectangle of 
+color in the image. 
+Transform those and you'll get a new 
+image that's of the whiteboard with no 
+perspective looking straight on. 
+This will be more clear when you start 
+doing the lab and it's spelled out in 
+greater detail in the lab assignment. 
+

@@ -1,0 +1,283 @@
+Now, fortunately when we analyze
+algorithms, actually not too many
+different functions arise and actually
+that property allows us to really classify
+algorithms according to their performance
+as the problem size grows. So that's what
+we'll talk about next. So the good news is
+there's only these few functions turn up
+about the algorithms that we are
+interested in. We can craft things that
+have other functions and there are counter
+examples to this. But really a great
+number of the algorithms that we consider
+are described by these few functions and
+that are plotted here. And [cough] the
+when we are talking about the order of
+growth, we are not talking about the
+leading constant. Normally we'll say the
+running time of the algorithm is
+proportional to N log N. That means we
+that we think that our hypothesis is that
+the running time is tilde C lg N, N lg N,
+where C is some constant. And in these
+plots, these are lg, lg plots that not
+really give a good idea of what's going
+on. If a order of growth is logarithmic or
+constant, doesn't matter how big the thing
+is. It's going to be fast of the running
+time for is T for say a thousand, and for
+half a million it will be pretty close to
+T. If it's linear, if it's auto growth is
+proportional to N then as the running
+time, as the size increases the running
+time increases correspondingly. And the
+same is true, almost, if it's N log N. So
+those are the algorithms that we strive
+for. They scale with the input size. As
+the input grows, so grows the running
+time. And that's, a reasonable situation
+to be in. As we talked about when we
+talked about Union-find. If it's
+quadratic, the running time grows much
+faster than the input size. And it's not
+feasible to use such an algorithm for
+large inputs. And qubic is even worse. So
+what we find is for many algorithms our
+first task is really, simply, make sure
+it's not quadratic or qubit. And these
+order of growth classifications actually
+come from kind of simple patterns in terms
+of the code that we write. So if our code
+has no loops in it, then the order of
+growth is going to be constant. If our
+code has some kind of loop where the
+input's divided in half, and so binary
+search algorithm is an example of that.
+Then our order growth will be logarithmic
+and we'll take a look at that analysis and
+but if you do the doubling test, it grows
+almost linearly, if you have a huge input
+and you double the size it's, it's still
+going to be I'm sorry, not linearly,
+constant just like if it's constant.
+You'll hardly notice that lg N. If you
+have a loop where you touch everything in
+your input. Than the running time is
+linear, proportional to end so a typical
+example of that would be find the maximum,
+or to count the number of zeros. Our one
+some problem. A very interesting category
+is a so-called N lg N algorithms or linear
+rhythmic algorithms. And those are the
+ones that arise from a particular
+algorithms design technique called the
+divide and conquer. And the Mergesort
+algorithm, which we'll talk about in a
+couple of weeks, is a prime example of
+that. And then if you have double four
+loops like our two sum algorithm, that's
+going to be time proportional to N^2. As
+we saw, that's quadratic, or triple four
+loop like our 3-sum algorithm, that's
+going to be cubic or time proportional to
+N^3. For a quadratic algorithm or a cubic
+algorithm, the doubling factor is four or
+eight as the input size double for cubic
+algorithm, the running time goes up by a
+factor of eight, and that's the kind of
+calculation that you can do in your head
+while waiting for a program to finish.
+There's also a category of algorithms
+who's running time is exponential and in
+those algorithms n doesn't get very large
+at and we'll talk about those at the end
+part two of the course. So these are some
+practical implications of, of the order
+growth. And we really dwell on this too
+much, except to come back to the point
+that the algorithms we are really
+interested in, that can solve huge
+problems, are the linear and N lg N
+algorithms. Because even now a quadr atic
+algorithm on a typical fast computer could
+only solve problems and saying that tens
+of thousands in a cubic algorithm only in
+the size of thousands. And nowadays those
+are just not useful because the amount of
+data that we have is more like the
+millions or billions or trillions. That
+fact is becoming more and more evident as
+time wears on the ancient times would have
+some discussion about whether quadratic
+algorithm might be useful but the
+situation gets worse as the time goes on,
+so we need better algorithms. To
+illustrate the process of developing a
+mathematical model for describing a
+performance through an algorithm, we'll
+look at a familiar algorithm called binary
+search. It's, the goal is that you have a
+sorted array of integers, say and you're
+given a key. And you want to know, is that
+key in the array? And if it is, what,
+what's its index? And a fast algorithm for
+doing this is known as binary search,
+where we compare the key against the
+middle entry. In this case, if we're
+looking for 33, we compare it against 53.
+If its smaller we know its in the left
+half of the array, if it's larger we know
+it's in the right half of the array, if
+it's equal, we found it. And then we apply
+the same algorithm recursively. So let's
+quickly look at a demo. So we're looking
+for 33 in this array, compare it against
+the middle entry in the array. 53 and it's
+less so we go left, so now we can
+concentrate just on the left half of the
+array, now we look in the middle of this
+half, that's 25, 33 is bigger so we go
+right. And now we concentrate on the right
+half or the left half and we have a
+smaller sub array. Look at the middle, 33
+is less so we go left and now we have only
+the one element to look at and we found
+our key 33 in the array and we return that
+index four. If we're looking for something
+that's not in the array, we do the same
+process. So, say, we're looking for 34.
+It's going to be the same. Look in the
+left half, look in the right half. Look to
+the left of the 43. Now, there's only one
+key to look at. A nd it's not 34, so we
+say, it's not there. So that's binary
+search. So here's the code for binary
+search. Actually, Binary Search although
+it's a simple algorithm, its notoriously
+tricky to get every detail right. In fact
+one paper claimed, that the first bug free
+binary search wasn't published until 1962,
+and even in 2006, a bug was found in
+Java's implementation of binary search,
+just an indication of the care that we
+have to take in developing algorithms
+especially for libraries that are going to
+be used by millions of people. So here's
+an implementation. It's not recursive
+although often we can implement this
+recursively. And it's just reflexing code,
+what I described in words, we have to
+find. A key, whether a key's in an array.
+And we use two pointers, low and high, to,
+indicate the part of the array we are
+interested in, as long as low is less and
+equal to high, we compute the middle. And
+then we compare our key against the
+middle, actually its a three way compare,
+see its less or greater or if its equal,
+we, we return that mid index. If its less
+we reset the high pointer, if its greater,
+we reset the low pointer, and we keep on
+going until the pointers are equal. If
+they are equal and we haven't found it
+then we return -one. And it's easy to
+persuade ourselves that this program works
+as advertised by thinking about this
+invariant, if the keys in the array, then
+it's between low and high in the array.
+Alright, so that's a program that, you are
+probably familiar with. Lets look at the
+mathematical analysis of that program. And
+this a, a theorem that we are going to
+prove easily. We want to a lot of proofs
+but this is one worth doing. So its say
+that binary search uses at most one + lg
+base two event compares, to complete a
+search, in a sorted array of size f. So we
+do that, to setup the problem by defining,
+a variable T(N), which is the number of
+compares that binary search needed for its
+array size and. And then we write down a
+recurrence relation that is reflex the
+code. And what the code does is, it
+divides the problem size in half so that.
+If the event is less or equal to the event
+over two plus depending on how you count
+what the compare is think of it as a two
+way compare so divided in half by doing
+one compare and that's true as long as N
+is bigger than one. If it's equal to one
+the solution is one. So it's a recurrent
+relation describing the computation. And
+so we, we can go ahead and, solve this
+recurrence by applying the recurrence
+itself, to the first term on the right.
+Now that's called telescoping. So if this
+is true and we can apply the same thing to
+T(N/2). And throw out another one and if
+that's, this is true, apply the same thing
+to N over four, and throw out another one
+and so forth until we get down to just
+one. In which case we have lg N ones left.
+Now this is a true sketch you might have
+noticed that, that this proof actually
+only holds if N is a power of two. Because
+we nearly specify in this recurrence what
+we mean if N is odd. But it's possible to
+go ahead and sorry, possible to go ahead
+and take care of that detail as well and
+show that binary search running time is
+logarithmic always. All right, so given
+that fact we can develop a faster
+algorithm for a threesome. It's a sorting
+based algorithm. And so what we're going
+to do is we're going to take the numbers
+that we have as input and sort them. We'll
+talk about sorting algorithms next week.
+And we get that time in time proportional
+to N lg N but that's not the main part of
+the computation. The main part of the
+computation is to after the numbers are
+sorted, we'll go through and for each pair
+of numbers ai and aj. We'll do a binary
+search for -ai + ij. If we find it then
+we'll have three numbers that sum to zero.
+So if we [cough] sort our numbers and then
+go through for each pair do a binary
+search to see if it's there, so -40, zero.
+Minus that is 40, we do a binary search
+that's in there so we have one solution to
+the 3-sum problem. And do that for all
+pairs of numbers. Then a quick analysis
+says the order of growth of running time
+is going to be N^2 lg N. Then you need a
+good sort, well, you could use the
+elementary insertion sort the first one we
+talk about but the running time of the
+binary search for each of the pairs, each
+of the N^2 pairs or N^2/2 pairs we're
+going to do the binary search, so we get a
+N^2 lg N running time. So, a quick example
+of how we could improve the performance,
+we could find an imroved algorithm to
+solve a problem. N^2 lg N is much less
+than N^3 for large N. And so, we're
+implicitly making the hypothesis that if
+we do this, do the sort base thing and use
+binary search, we're going to have a
+faster program. And, sure enough we can go
+ahead and run some experiments and find
+that whereas it took us 50 seconds to
+solve the problem for 8,000 numbers
+before. It's taking less than a second
+now. In 50 seconds we can solve up to
+64,000. So typically we expect that better
+order of growth means. Faster in practice
+and but when it comes to examining the
+algorithms in detail we can, we can go
+ahead and do the tests and figure out
+which algorithm is faster. And certainly
+going from N^3 to N^2 lg N we're going to
+expect that we're going to have a much
+better algorithm.

@@ -1,0 +1,220 @@
+[MUSIC]
+So we got in trouble calling
+the multable with no arguments,
+We got strange results when we
+called it with the wrong arguments.
+Well, how can we avoid these problems.
+First let's note a limitation
+of the function declaration.
+A function declaration specifies
+the name and the number of input and ar,
+output arguments.
+But in our head, and in our code, we make
+additional assumptions about our function,
+that aren't specified in the declaration.
+And we write the code and
+the documentation for
+the function, which specifies the rest.
+What the function does.
+What types of values should be
+in the input arguments, and
+what those values represent.
+So rather than just assuming that the
+caller of the function will comply with
+the assumptions in our code,
+we need to write our code so
+that it checks its input.
+If a function checks all its assumptions
+about its inputs and outputs, and provides
+a meaningful error message when they're
+violated, it's termed a robust function.
+All built in MATLAB functions
+are written in this way.
+In general, you should always check
+that the function is called correctly.
+That is, in accordance with your
+assumptions about the inputs and
+the outputs.
+This can make finding
+bugs later much easier.
+But how do you do it?
+Well we do it with the if statement.
+Lets make our Mult function table robust.
+First we check whether the function
+was called with at least one input.
+If nargin is smaller than one then no
+input argument was provided in that case
+we call the built in error function.
+It prints out the message we give it in
+red and then terminates the function.
+That's how easy it is and
+we get to print in red.
+That's the only way to do that.
+Next we check to see whether
+the function was called
+with m just as we did in the earlier
+version of the function but
+this time we add an elseif to check for
+the correct type of m.
+The type we want is a positive integer.
+The elseif uses a combination
+of three conditions.
+If any one of them is true,
+m is not a positive integer.
+We use the or
+operator to combine these conditions.
+The first condition uses the built in
+isscalar function to check whether
+m is a scalar.
+It returns true if its argument
+is scalar and false otherwise.
+So we need to use the logical
+negation to turn that around.
+By putting the tilde in front of isscalar,
+because not scalar is the error case.
+Then we check for the error m less than
+one, and then we check for non-integer.
+Here's how we do that.
+We use the built-in fix function,
+which rounds its argument to an integer.
+If m is not an integer then its rounded
+value won't be the same as m itself.
+If any of these conditions is true then
+we have an error, so we use the error
+function, telling the user that m
+needs to be a positive integer.
+And then error automatically
+quits the function.
+Now we repeat the same check for
+n that we did for m.
+At last,
+we can compute the multiplication table.
+It's funny how the error checking was
+more painful than the actual computation.
+That's not that unusual.
+But it's worth the pain
+now to avoid pain later
+when assumptions are violated
+during actual function calls.
+Finally, we compute the sum, if requested
+by the caller, just as we did before.
+And that's our new and improved, and
+most importantly, robust function.
+But we're not done.
+We got a robust function, but
+it's not a good program yet.
+There's more to good
+programming than good code.
+We need to include an explanation of
+our assumptions in human language and
+not just in MATLAB code.
+Well, can we do that?
+You can probably guess the answer.
+Yes, we can.
+We can do it with the help of comments.
+A comment is extra text that's not part of
+the code, so MATLAB simply disregards it.
+You create a comment
+using the percent sign.
+A MATLAB editor will then
+show that percent sign,
+and everything that follows it, in green.
+Anything after the percent sign,
+including the percent sign,
+until the end of the line becomes
+a comment and MATLAB ignores it.
+The purpose of a comment is to provide
+extra information for human users.
+You use comments to document your code.
+It's typically used to explain important
+or complicated parts of the program.
+For example, you should use comments
+at the beginning of your functions
+to explain what the function does.
+And what it's inputs are and
+what it's outputs are.
+And guess what, and this is very cool.
+If we do it this way,
+that is if we insert these comments
+after the function declaration but
+before the function code, just as
+shown here for the multable function.
+The built in help function
+in MATLAB will work for
+our function just like it does
+with its built in functions.
+It'll print out all the text
+we've provided in these comments.
+So your function will behave
+just like a built in function.
+Let's try it and see it for ourselves.
+Here's the improved version in the editor.
+You can see all the changes
+that we've made here.
+Let's ask for help with it,
+just as if it were a built in function.
+But before we do that, we hardly have
+any room here for our command window.
+I think I'll get rid of
+the work space over here by
+clicking this little arrow and
+clicking Close.
+That's gone.
+And maybe I can move the command
+window over here somewhere, like that.
+And let's make it a little bit bigger.
+I don't need as much space there.
+Let's get things, you can get things
+set up the way you like them.
+And then go from there.
+So, let's try asking for help.
+Look at that.
+It looks just like we've
+written a built in function.
+You see how you get bold type
+wherever you use all caps?
+That's just so cool.
+So, it tells you what you need to do.
+And the user feels comfortable,
+trying out this function.
+But, now we've got to see what
+happens if we give it the wrong input.
+So let's try a few things here.
+No inputs.
+Now we're printing the red stuff out.
+To the user must have at
+least one input argument.
+So far so good.
+M needs to be a positive integer.
+Let's give it a fraction.
+Hm, needs to be a positive integer.
+That's not an integer.
+It's positive, but it's not an integer.
+Let's give it a vector.
+Well, a vector is not a positive integer.
+Maybe we should add
+an error message that says,
+what part of positive integer
+do you not understand?
+That would just be mean, we won't do that.
+And anyway, we'd need to count the number
+of times a user called it with
+a bad input.
+How in the world would you do that?
+Anyway, in how is a help page that
+provides meaningful error messages for
+any inputs that violate the assumptions
+made about it in that help page.
+And does it still work correctly for
+valid input?
+Let's check that.
+Yeah, whew, good.
+We didn't break the thing when we
+added all that error checking.
+[MUSIC]
+You know,
+I think we can congratulate ourselves now.
+We've written a function that's robust,
+and does what it says it'll do.
+[MUSIC]
+

@@ -1,0 +1,286 @@
+Welcome back to the course on Audio Signal
+Processing for Music Applications.
+In the previous programming class,
+we talked about the spectral peaks and
+how to program them.
+How to detect the values of
+the spectral peaks, and that was
+the beginning of implementing the analysis
+synthesis using a sinusoidal model.
+So we identified the values
+of spectral beats,
+which hopefully correspond to sinusoids.
+So in this second class
+I want to introduce idea of how to
+synthesize a sinusoid from those peaks.
+So how to do basically additive synthesis.
+So we will be doing it in the frequency
+domain, like we talked in the
+in the theory lecture, in which we're
+basically synthesizing the main
+lobes of a Blackman-Harris window and
+then do the inverse DFT of that.
+So this equation shows the idea that
+we synthesize the sound y,
+by taking the inverse DFT
+of a sum of main lobes.
+And in here we see the plot of that.
+So we see the
+the main lobes already been generated.
+The phases already been generated, and
+then we take the inverse of that,
+to generate the synthesize sound.
+So let's show that.
+And we first have to actually learn how to
+synthesize a lobe of
+a Blackman-Harris window.
+So in this little code I show that,
+so we call this function called genBhLobe,
+and we give it the samples, the bins,
+that we want to generate.
+So since we only want to
+generate the main lobe
+we just give the eight
+centered bins of that.
+But first let's look at this function,
+genBhLobe,
+which comes from the Utilfunctions file.
+And in here we have this genBhLobe,
+which implements
+the generation of a Blackman-Harris
+window directly in the spectral domain.
+In the spectral domain of Blackman-Harris,
+is the sum of 4 sync functions.
+And this is what this main loop does.
+It generates 4 sync functions and
+it sums them together.
+Each sync function has a
+coefficient that comes
+from the equation of
+the Blackman-Harris window.
+And then in this, of these sync
+functions, we call a function called sync,
+which also is here, which is what
+generates one particular sinc function.
+Again, it only generates the main lobe,
+it doesn't generate 
+the whole sync function.
+Okay?
+So, with these two functions,
+we are able to generate the main
+lobe of a Blackman-Harris window,
+let's run this code.
+Okay.
+run test2, okay?
+And if we show the output, X, capital X.
+These are the eight samples of
+the Blackman-Harris window, in
+a linear scale, okay?
+So the center is this 
+sample, which is value 1.
+If we take the absolute, well the
+log of that.
+So 20 times log10 of this X,
+we will see it in a log scale.
+Okay.
+And we can plot it.
+So we can plot this, okay.
+
+So this is the main lobe in the log
+scale of a Blackman-Harris window.
+If instead of reading
+these samples,
+we read some other series of samples.
+For example, we just add .5
+to this array and we save it.
+And now we run it again, and
+we plot it, well we have to plot this
+Okay?
+Now we see that
+these are different samples.
+These are the, there is no center sample,
+So this is basically in between two samples.
+This is how we generate main lobes
+corresponding to different frequencies.
+Because we are moving these
+main lobes around the samples.
+Let's now do it with
+with a function that
+the sms-tools does it, which is
+the function called genSpecSines.
+So genSpecSines has this input
+arrays of frequency, magnitude,
+and phases and then we generate this
+spectrum, that includes all that.
+Okay?
+So in this code
+I am generating one single
+sinewave at 4,000 hertz.
+Magnitude of 0 decibels and phase 0.
+And I'm generating the whole
+FFT of size of 512 samples.
+From there I compute the absolute value.
+And then here I plot the log
+of that, the dB value of that.
+So let's show that.
+Let's run test3.
+Okay?
+And this is one main lobe of
+a sinusoid at frequency 4,000 hertz.
+And if we zoom into that we will see,
+this is the main lobe and
+of course this has been shifted exactly
+to have a centered around 4,000 hertz.
+If we go zooming in more
+we will see that the tip of this
+peak is basically at 4,000 hertz.
+Okay, now let's talk about how to actually
+generate the time domain from that.
+So we have to do the inverse
+Fourier transform from that.
+And, and this is in 
+this other script I implement that.
+So after having done the genSpecSines,
+I call the inverse FFT, and
+then there is some code to undo the windowing
+of the Blackman-Harris window.
+We mentioned in the theory class
+that in order to have a good overlap add
+with not much of a small hop size,
+It's good to undo the Blackman-Harris
+window and apply a
+triangular function, and this is
+what we do in this part of the code.
+We generate a synthesis window,
+which is sw, which is the result of having
+a triangular window divided
+by a Blackman-Harris window.
+and this is what we multiply by 
+to the inverse of the DFT, of 
+what we obtain.
+So let's run this code.
+So let's run test4.
+Okay, and we can plot the 
+individual steps.
+So let's plot first absolute
+value of the spectrum.
+Okay?
+So
+this is the complex
+spectrum of the sinusoid.
+Well only the magnitude part of that.
+So that we see both the negative and
+the positive side of that sinusoid.
+So we see 
+in here that x axis is not in hertz,
+so we don't see the exact values, but
+these would correspond to the 4,000
+frequency, both the positive and the
+negative side of it, in linear scale.
+Kay?
+Then what we do is,
+we compute the inverse DFT so
+we can plot the inversy of DFT of that.
+So let's plot y.
+Okay?
+And this is the Blackman-Harris
+windowed sinusoid in the time domain.
+And we see it centered around zero.
+So we see that the second
+half of the window in the
+the beginning, and
+the first half at the end.
+There is no zero phase here.
+well there is no zero padding.
+Because we actually had the same
+window size and FFT size, which was 512.
+Okay?
+So once we do that
+then we undo, we divide by this window and
+multiply by a triangular window.
+So we can show the result of that,
+which is yw.
+Okay?
+And this is the signal that we would like
+to use in the overlap add step in which
+we have divided the Blackman-Harris and
+we have multiplied by a half
+length triangular window.
+So it's only, the original was 512,
+now it's 256 samples.
+So we will be able to
+overlap by half of that, so
+we'll be able to overlap by 128 samples.
+Okay, so we have seen the whole
+synthesis from some frequency values of
+a given sinusoid.
+Let's put that together into on
+a real analysis synthesis of
+a fragment of a sound,
+and this is in test5.
+And in here we are reading
+a fragment of an oboe sound.
+And we're going to do the DFT analysis.
+Then we will detect the peaks.
+Then we will intrapolate the peaks
+to get a more accurate value of
+the location of the sinusoids.
+And then we will do the synthesis
+of that in the frequency domain.
+And then do the inverse FFT and
+undo the window.
+Here it plots 
+the spectrum, resulting spectrum,
+the magnitude spectrum, and the peaks
+of that, so let's show that.
+So let's run this test5.
+Okay, and this is the magnitude
+spectrum of the oboe sound and
+we have detected some peaks
+with a given threshold.
+So let's zoom into that.
+Okay?
+And we see the crosses which
+correspond to the interprolated peaks.
+Here we see the effect of the parabolic
+interpolation is huge because,
+in here we didn't have any zero padding,
+and the FFT was quite a bit small.
+So the effect of the parabolic
+interpolation is really substantial.
+Okay, so now from these crosses,
+we have the magnitude, frequency and
+phase of each of these peaks, and
+we can then compute the inverse of that.
+And so that we can plot the y array,
+in which we have the inverse of that.
+So here we have the 0 centered inverse FFT
+of all these sinusoids of the oboe sound.
+And if we now center it and
+undo the Blackman and obtain
+multiply it by the triangular,
+we can
+plot the yw
+which will be this windowed 
+by a triangular function signal, and
+this is the one we will be using in
+the overlap add of the synthesis,
+analysis synthesis, of the oboe sample.
+Okay, so that's all I wanted to say.
+basically, we have looked another
+component of the sinusoidal model.
+We have done the peak,
+sort of synthesis, and
+before we talked about how
+to actually find the peaks.
+And now what we're missing is
+the putting it
+all together into a complete analysis
+synthesis system of time varying.
+And worrying about the continuation
+of this sinusoids.
+So this is what we're going to be doing
+in the next programming lecture.
+So I hope to see you then.
+See you, bye-bye.
+

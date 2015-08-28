@@ -1,0 +1,244 @@
+In this video, I'm going to talk about the
+Bayesian interpretation of weight
+penalties.
+In the full Bayesian approach, we try to
+compute the posterior probability of every
+possible setting of the parameters of a
+model.
+But there's a much reduced form of the
+Bayesian approach, where we simply say,
+I'm going to look for the single set of
+parameters that is the best compromise
+between fitting my prior beliefs about
+what the parameters should be like, and
+fitting the data I've observed.
+This is called Maximum alpha Posteriori
+learning and it gives us a nice
+explanation of what's really going on,
+when we use weight decay to control the
+capacity of a model.
+I'm now going to talk a bit about what's
+really going on, when we minimize the
+squared error during supervised maximum
+likelihood learning.
+Finding the weight vector that minimizes
+the squared residuals, that is the
+differences between the target value and
+the value predicted by the net,
+Is equivalent to finding a weight vector
+that maximizes the log probability density
+of the correct answer.
+In order to see this equivalence, we have
+to assume that the correct answer is
+produced by adding Gaussian noise to the
+output of the neural net.
+So the idea is, we make a prediction by
+first running the neural net on the input
+to get the output.
+And then adding some Gaussain noise.
+And then we ask, what's the probability
+that when we do that, we get the correct
+answer?
+So the model's output is the center of a
+Gaussian and what we're interested in is
+having the target value of high
+probability under that Gaussian because
+the probability producing the value t,
+given that the network gives an output of
+y is just the probability density of t
+under a Gaussian centered at y.
+So the math looks like this: let's suppose
+that the output of the neural net on
+training case c is yc and this output is
+produced by applying the weights W to the
+input c. The probability that we'll get
+the correct target value when we add
+Gaussian noise to that output yc is given
+by a Gaussian centered on yc.
+So we're interested in the probability
+density of the target value, under a
+Gaussian centered at the output of the
+neural net.
+And on the right here, we have that
+Gaussian distribution, with mean yc.
+We also have to assume some variance, and
+that variance will be important later.
+If we now take logs and put in a minus
+sign,
+We see that the negative log probability
+density of the target value tc given that
+the network outputs yc, is a constant that
+comes from the normalizing term of the
+Gaussian plus the log of that exponential
+with the minus sign in which is just (tc2
+- yc)^2 divided by twice the variance of
+the Gaussian.
+So what you see is that, if our cost
+function is the negative log probability
+of getting the right answer, that turns
+into minimizing a squared distance.
+It's helpful to know that whenever you see
+a squared error being minimized, you can
+make a probabilistic interpretation of
+what's going on, and in that probabilistic
+interpretation, you'll be maximizing the
+log probability under a Gausian.
+So the proper Bayesian approach, is to
+find the full posterior distribution over
+all possible weight vectors.
+If there's more than a handful of weights,
+that's hopelessly difficult when you have
+a non-linear net.
+Bayesians have a lot of ways of
+approximating this distribution, often
+using Monte Carlo methods.
+But for the time being, let's try and do
+something simpler.
+Let's just try to find the most probable
+weight vector.
+So the single setting of the weights
+that's most probable given the prior
+knowledge we have and given the data.
+So what we're going to try and do is find
+an optimal value of W by starting with
+some random weight vector, and then
+adjusting it in the direction that
+improves the probability of that weight
+factor given the data.
+It will only be a local optimum.
+Now, it's going to be easier to work in
+the log domain than in the probability
+domain.
+So if we want to minimize a cost, we
+better use negative log props.
+Just an aside about why we maximize sums
+of log probabilities, or minimize sums of
+negative log probs,
+What we really want to do is maximize the
+probability of the data, which is
+maximizing the product of the
+probabilities of producing all the target
+values that we observed on all the
+different training cases.
+If we assume that the output errors on
+different cases are independent, we can
+write that down as the product over all
+the training cases, of the probability of
+producing the target value, tc, given the
+weights.
+That is the product of the probability of
+producing tc, given the output that we're
+going to get from out network, if we give
+it input c and it has weights W.
+The log functions monotonic, and so it
+can't change where the maxima are.
+So instead of maximizing a product of
+probabilities, we can maximize the sums of
+log probabilities, and that typically
+works much better on a computer.
+It's much more stable.
+So we maximize the log probability of the
+data given the weights, which is simply
+maximizing the sum over all training cases
+of the log probability of the output for
+that training case, given the input and
+given the weights.
+In Maximum a Posteriori learning, we're
+trying to find the set of weights that
+optimizes the trade off between fitting
+our prior and fitting the data.
+So that's base theorem.
+If we take negative logs to get a cost, we
+get that the negative log of the
+probability of the weights given the data,
+is the negative log of the prior term, and
+the negative log of the data term, and an
+extra term.
+So, that last extra term, is an integral
+overall possible weight vectors.
+And so that doesn't affect W.
+So we can ignore it when we're optimizing
+W.
+The term that depends on the data is the
+negative log probability is given W, and
+that's our normal error term.
+And then term that only depends on W is
+the negative log probability of W under
+its prior.
+Maximizing the log probability of a weight
+is related to minimizing a squared
+distance, in just the same way as
+maximizing the log probability of
+producing correct target value is related
+to minimizing the square distance.
+So minimizing the squared weights is
+equivalent to maximizing the log
+probability of the weights under a
+zero-mean Gaussian prior.
+So here's a Gaussian.
+It's got a mean zero, and we want to
+maximize the probability of the weights,
+or the log probability of the weights.
+And to do that, we obviously want w to be
+close to the mean zero.
+The equation for the Gaussian is just like
+this, where the mean is zero so we don't
+have to put it in.
+And the log probability of w is then the
+squared weights scaled by twice the
+variance, plus a constant that comes from
+the normalizing term of the Gaussian.
+And isn't affected when we change w.
+So finally we can get to the basing
+interpretation of weight decay or weight
+penalties.
+We're trying to minimize the negative log
+probability of the weights given in the
+data and that involves minimizing a term
+that depends on by the turn the weights
+namely how will we shift the targets and
+determine that depends only on the
+weights.
+Is derived from the log probability of the
+data given the weights, which if we assume
+Gaussian noise is added to the output of
+the model to make the prediction, then
+that log probability is the squared
+distance between the output of the net on
+the target value scaled by twice the
+variance of that Gaussian noise.
+Similarly, if we assume we have a Gaussian
+prior for the weights, the log probability
+of a weight under the prior is the squared
+value of that weight scaled by twice the
+variance of the Gaussian prior.
+So now let's take that equation and
+multiply through by two sigma squared D.
+So, we got a new cost function. And the
+first term, when we multiply through turns
+into simply the sum of all training cases
+of the squared difference between the
+output of the net and the target.
+That's the squared error that we typically
+minimize in the neural net.
+The second term now becomes, the ratio of
+two variances times the sum of the squares
+of the weights.
+And so what you see is, the ratio of those
+two variances is exactly the weight
+penalty.
+So we initially thought of weight
+penalties as just a number you make up to
+try and make things work better.
+Where you fix the value of the weight
+penalty by using a validation set.
+But now we see that if we make this
+Gaussian interpretation where we have a
+Gaussian prior and we have a Gaussian
+model of the relation of the output of the
+net to the target,
+Then the weight penalty is determined by
+the variances of those Gaussians.
+It's just the ratio of those variances.
+It's not an arbitrary thing at all within
+this framework.

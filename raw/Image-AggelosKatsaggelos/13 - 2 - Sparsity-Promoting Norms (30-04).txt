@@ -1,0 +1,643 @@
+Welcome back.
+We will describe in this segment, ways to
+formulate problems so that the resulting
+solutions are sparse.
+In many applications, we end up
+with solving underdetermined systems of
+Linear Equations.
+So the systems of equations can be either
+0 or infinitely made solutions.
+In order to restrict the set of possible
+solutions, we regularize the problems.
+Prior knowledge is used, to constrain the
+solution space.
+When this prior knowledge, we bring into
+the problem is that,
+the solution is sparse, then sparse
+promoting norms need to be used.
+By visualizing the regularized solution of
+the problem Ax equals b, we see that
+the L0, L1, and lp norms, where p is less
+than one, are promoting sparsity.
+The use of the L0 norm results in the NP
+hard problem, while the
+use of the lp norms with p less than one,
+results in an non-convex problem.
+Therefore, the use of the L1 norm becomes
+in some
+sense, the natural choice, since it is
+convex although non-differentiable.
+It's actually the tightest, convex
+surrogate for the L0 norm.
+We also discuss Convex Optimization, and
+offer some simple experimental
+comparison between the use of the L0 and
+L1 norms.
+So, let us proceed with this, interesting
+material.
+Let us begin by considering a
+Linear Inverse Problem encountered in many
+applications.
+We're given the system A x equals b, where
+A and b are known and we try to solve for
+x, so it is indeed an inverse problem.
+I use a color coded representation here
+where green represents known quantities,
+so this is a known matrix, this is a known
+vector, while
+red represents, an unknown quantity at the
+unknown vector x in this particular case.
+We have a fully determined system of
+equations, when
+the number of equations equals the number
+of unknowns.
+In this case, matrix A is clearly a square
+matrix.
+As we probably know, we obtain a unique
+solution to this problem when A is full
+rank.
+In this case A's invertible, and therefore
+the optimal solution x star, is
+simply obtained by multiplying the inverse
+of A with b, which represents the data.
+Let us consider the case now, when we have
+an over determined, system of equations.
+So the number of equations is greater than
+the number of
+unknowns and therefore, the matrix a here
+is a tall matrix.
+Let's say it's m by n where m is, greater
+than n.
+In this case, one solution we can obtain,
+is the Least Square solution.
+It is obtained by minimizing the norm of
+the arrow, Ax minus b.
+So this is the L2 norm squared and the
+minimization is with respect to x.
+This is actually a minimization, we
+carried out
+back in week six when we talked about
+restoration.
+If you recall, we obtained the gradient
+with respect to x of the norm,
+and set it equal to 0, and this is the
+necessary condition for a minimum.
+If we expand this,
+we have the gradient of Ax minus b
+transpose Ax minus b, is equal
+to 0 and if we expand there the, product
+inside the
+brackets, we should obtain x transpose, A
+transpose Ax minus 2, x
+transpose A transpose
+b, plus b transpose b, equal to 0.
+And if we obtain the gradient, this term
+will give us
+2, A transpose Ax, and this term will give
+us minus 2.
+A transpose b is clearly independent of x,
+so this is equal to zero.
+And if A transpose A is invertible, then
+the
+minimum normally square solution we obtain
+is shown here.
+A transpose A, by the way, is an N
+by N matrix, the smallest dimension of
+matrix A.
+The last case to consider is when the
+number
+of equations is smaller than the number of
+unknowns.
+In this case, we deal with an
+under-determined system of equations.
+In this case, as shown here, matrix a is a
+long matrix.
+We encountered this, situation in many of
+the
+applications, we discussed, for example,
+the super resolution application.
+In this case, the observed low resolution
+image b is
+of lower dimension than the unknown high
+resolution image x.
+With underdetermined system of equations,
+we can have either no
+solution, if b does not belong to the
+range of A.
+Which you might say is not the case
+of interest or we can have infinitely many
+solutions.
+The question in the latter case is, which
+of these infinitely many solution should
+we choose?
+The answer is that it depends on the
+application.
+How do we pick, one of such solutions?
+We can follow the standard approach of
+regularization, that we also
+discussed back in week six and seven when
+we covered recovery.
+According to the regularization principle,
+we bring prior
+knowledge into the solution process, by
+defining a function on j of x.
+So we minimize this with respect to x,
+subject
+to the constraint, that the solution x
+satisfies the data.
+This is the fidelity to the data
+constraint.
+There's a problem that people have looked
+at for many years
+in Linear Algebra and Optimization, and
+what's new here is that.
+One type of prime, or knowledge, that we
+can bring
+into the problem, is that the solution x
+is sparse.
+[BLANK_AUDIO]
+In this case, powerful results have been
+shown in the literature.
+And the question is, what type of
+functionals here
+j of x, can we use that promotes sparsity?
+So this is what we'll discuss next,
+we'll look at norms that indeed promote
+sparsity.
+We're interested in looking at various
+forms of
+the regularized problem, I described in
+the previous slide.
+We'll, we'll introduce functional j of x
+which depend
+on values norms and we'll start with the
+L2 norm.
+So, the L2 norm of a vector is defined
+here, it's also called the Euclidean norm.
+I'm sure that you've encountered this many
+times, in the past.
+So for example, if we are given a vector
+with elements 3,
+4, 0, a three by one vector, then its L2
+norm is simply
+equal to the square root of 3 squared plus
+4 squared plus 0
+squared, so the square root of 25, which
+is equal to 5.
+[BLANK_AUDIO]
+Let's look at how the unit bowl, looks,
+with respect to the L2 norm.
+So, let's look in two dimensions, it is
+easier to visualize.
+So, let's look at, the gaze where the, L2
+norm squared of the vector is equal to 1.
+And in two dimensions, this means that x1
+squared plus x two squared, equals to 1.
+So this is clearly the equation, of a
+circle in two
+D, or a hydrosphere if we are in the
+undimensional space.
+So with, our axis here, x1 and x2.
+This is the, unit circle, according to the
+L2 norm, so the radius here is equal to 1.
+We are interested in solving this
+Constraint Optimization problem.
+We want to minimize the L2 norm of the
+vector, subject
+to the constraint of the vector, the
+solution satisfies, the data.
+So, we want the small solution in terms of
+the L2 norm.
+If we, visualize this problem in two D,
+then this equation here,
+defines a hyper plane in the undimensional
+space or a line in two dimensions.
+So this is my constraint, and then to
+obtain the solution, we
+take here the unit ball and, enlarge it
+until it intersects, it touches the line
+which means that I have
+a solution with the smallest x that
+satisfies, the constraint.
+So, we use a larger circle here, and yet
+a larger one and at this point, clearly
+they touch.
+So, this point here is the solution to my
+original optimization problem.
+The main observation here is, that, in
+two-dimensions, the circle and the, line
+are
+going to touch most probably at the point,
+but will give us a non-sparse solution.
+So this solution here is an X1 component,
+which is this one.
+And an x2 component, which is equal to
+this one.
+A sparse solution would be, if we were to
+select
+this point or this point, or these, any of
+these four.
+For this particular problem actually, we
+can find the, solution in closed form.
+It's given by this expression which is an
+expression I'm going to derive next.
+One of the advantages of the use of the L2
+norm is
+that, very often closed form expressions
+result from, the optimization problems
+like
+the one we are discussing, so, let's look
+here how we can
+indeed obtain in a, very few easy steps
+the solution in this case.
+So, we're doing to get the problem of
+minimizing with respect to
+x the L2 norm of x, subject to the
+constraint that Ax equals b.
+[BLANK_AUDIO]
+The first on the step, is to
+turn the constraint problem into an
+unconstrained one.
+So, we minimize, with respect to x,
+the L2 norm of x plus the Lagrange
+multiplier, transpose A x minus b.
+If we call this L of x, then this
+is equal to the minimization with respect
+to x of L of x.
+The so called KKT conditions, for
+obtaining an optimum are that the gradient
+with respect to x of L of x, should be
+equal to 0 and the gradient of L of x
+with respect to Lambda should be equal to
+0.
+From the first KKT condition, we obtain
+here in a rather straightforward way,
+following
+steps that we first discussed during week
+six and seven, when we covered recovery.
+We see that the gradient of the L2 of x,
+is equal to x,
+plus this term here actually, Lambda
+transpose A
+x is a scalar, therefore, is equal to x
+transpose A transpose lambda, so the
+gradient of this is, A transpose Lambda.
+This is equal to 0 therefore, x is equal
+to minus A transpose Lambda.
+From the say, the second KKT condition was
+simply obtained that Ax minus b is equal
+to 0.
+So if I say, substitute x in here, I
+obtain minus A, A transpose
+Lambda equals b.
+And assuming that A A transposes
+invertible,
+Lambda is equal to minus A A transpose
+minus 1 b.
+And then substituting this, in the first
+equation, we'll plane that x equals the
+minuses,
+cancel out A transpose AA transpose minus
+1 b.
+So, this is the, close formed solutions.
+We can call it, x star here, of
+the original optimization problem when the
+L2 norm is used.
+So, the advantage of the L2, is that we
+have a closed form expression.
+The disadvantage with respect to our
+purposes, is
+that we do not obtain a sparse solution.
+In our quest towards obtaining sparse
+solutions, let us
+look at the use of the so called L0 norm.
+It is defined as shown here, it is a
+counting norm.
+It counts the number of non zero entries
+in x.
+You may or may have not seen this norm
+before.
+It's actually not a, a norm, in the
+sense that it does not satisfy the scaling
+property.
+Alpha x L0 norm is different than alpha
+the L0 norm of x.
+So, if we use the example I used earlier,
+and I have the vector 3, 4, 0.
+Then the, L0 norm of this vector, is
+simply equal to 2.
+Since there are only two non-zero
+elements.
+How does the union ball look like when the
+L0 norm is used, the L0 ball.
+If I look again at two dimensions, my two
+axes, x
+1, x 2.
+All the elements on the axis except from
+the origin,
+belong to the unit ball utilizing the L0
+norm,
+because if I look at an element here, it
+has norm 1.
+Another element here has also norm1, an
+element here has norm 1.
+An element here has norm 1 and so on.
+It's, I assume, quite clear to see indeed
+that, the unit
+ball are the two axis with the exception
+of the origin.
+Let us look now at the problem, under
+consideration, we
+want now to use the L0 norm to carry this
+optimization.
+So again, in two dimensions, the
+constraint defines a straight line and
+therefore.
+The point of intersection of a straight
+line
+with the L0 ball here, are solutions to
+the
+problem and we see indeed that, in this
+particular example, in two dimensions, I
+have two solutions.
+Both solutions are, indeed sparse, right?
+If we look at this solution, let's assume
+that this value is here minus 5.
+So this is minus 5 0, so it's a sparse
+solution,
+Iif we look at this one, assume this is a
+2.
+So it's a 0, two base solution.
+So, with the use of the L0 norm, we do
+obtain sparse solutions.
+The solution, however, is not unique as
+was visualized here with this simple
+example.
+Let us now look at the L1 norm,
+which you will be utilizing in our
+optimization problem.
+It is defined as shown here, so it's the
+sum
+of the absolute value of the element of
+the vector.
+So for the vector used before as an
+example, 3 4 0, Clearly, the
+L1 norm of this vector is 3 plus 4 equals
+7.
+By the way, if you recall the L2 norm of
+this,
+is equal to 5 and the L0 norm is equal to
+2.
+So, how does the unit ball when we use
+theL1 norm look like?
+In two D.
+Again, for easy visualization, x1, x2, the
+axis, and this is the L1 bowl.
+So, here we are showing into
+the, the L1 bowl which is equal to this.
+So the corners of this rhombus are at 1 or
+minus1.
+And then for example this line is the x1
+plus x2 equal 1 line.
+So, let us look at the solution, of the
+optimization problem shown here.
+So we use the L1 norm now, and we want to.
+Constrained x by L1, we can find, we
+want to find the smallest
+L1 normal vex, subject to this constraint
+that the solution satisfies the data.
+By the way, this is referred to
+in the literature as the Basis Pursuit
+problem.
+In visualizing the solution, we show Ax
+equals b
+line into b and then we take the L1 ball
+and we keep
+increasing its size or nflate it until it
+hits this line.
+So here is, the L1 ball and here its
+larger size that is going
+to result in this point here, as being the
+solution to the Basis Pursuit problem.
+Clearly the solution is a sparse solution.
+This point here has x1 coordinate equal to
+zero and its x2 has a specific value, x2.
+So, through this visualization, it should
+be clear that when the L1 norm is used in
+an optimization problem like this, then
+the resulting solution is sparse.
+We're going to have an intersection of a
+plane or
+hyper plane in general with these rumbles
+in, and dimensions.
+And of course there is a small chance
+that, the straight line here is along
+the lines of the side of the, rhombus, but
+this is a very low probability event.
+So the L1 norm actually is the tightest
+convex surrogate
+to the L0 norm, as we'll discuss in the
+following.
+Let's look at the use of the lp norms now,
+where p
+is less than one in solving
+the regularized problem that we are
+considering.
+Here's a definition of the lp norm.
+If I use the example I've been carrying
+through
+in this lecture, here is my three by one
+vector.
+And if we look at the norm with be one
+half, then this is simply equal to the
+square root of 3 plus the square root of
+4, the whole expression squared.
+How does the lp ball look like?
+If I visualize it, again in the
+two-dimensional x1, x2 space.
+Ten it looks like this.
+If it's the unit bowl, then these points
+here are equal to 1.
+I'm interested in using the lp norm to
+solve this optimization
+problem, so the function of j x that I
+defined a
+couple slides earlier now is just the Lp
+norm of x,
+we want to get the smallest possible one
+subject to this constraint.
+In visualizing this solution, as we did
+before, we showed the hyper
+plane Ax equals b or the straight line
+into b, that's the constraint.
+And then we consider the lp bowl.
+We keep inflating it, until it touches the
+constraint.
+And, this is then the point that provides
+a solution to the optimization problem
+we're interested in.
+We see that with the lp norm, we also
+obtain a sparse solution.
+This is the good news, one might say,
+however, the
+bad news are that the lp bowl now is not
+convex.
+Therefore solving problems that do not
+include either convex functions or convex
+sets is not as straightforward as when
+when convexity is present.
+So we are going to say a few things about
+convexity.
+Regarding convexity this is how when one
+dimension of convex function looks like.
+If I take any two points of the graph of
+the function
+and draw a line segment, then this line
+segment lies above the graph.
+Here's a picture of a non convex function,
+which
+clearly does not satisfy the property I
+just mentioned.
+I can consider these two points and here
+is
+the line that does not lie above the
+graph.
+When it comes to sets, here is the picture
+of a convex set,
+considering any two points of the set, the
+line segment that connects them lies.
+On to the set and this is a non-convex set
+that does not have this
+property,by large, we are interested in
+solving convex optimization
+problems which means that both the
+function, we minimize is
+convex and the set of points that define
+this function is also a convex set.
+For such optimization problems, we can
+obtain a global, minimum, such as this
+one, or global minima, if we have an f of
+x, that looks like this.
+Then this is convex and all the local
+minima are also a global minimum.
+We talked actually about convexity when we
+talked about
+motion estimation and I showed the graph
+of this nature.
+We show a synthetic experiment here which
+compares the effectiveness of
+the L2 norm and the L1 norm towards
+providing sparse results.
+It provides actually the, experimental
+evidence that the L2 norm enforces
+smallness of the solution while the L1
+norm enforces, promotes sparse.
+So, we create a vector x here that looks
+like this, it consists of 400
+points and it has plus,minus 1 impulses
+and it is clearly as per signal.
+We create a matrix a, of dimensions 200 by
+400 and its entries are random.
+We multiply A times x and we obtain the
+observation b that looks like this.
+There's a signal that has 200 points.
+So, given b and given a, we solve the
+problem of minimizing, the normal vex,
+subject to the constraint that Ax equals
+b.
+So now, if the L2 norm is used, that is
+the solution we obtain.
+So this is the estimated x here when the
+L2 norm is utilized.
+As argued, for the values of x are
+rather small, however, the solution is not
+sparse.
+If the L1 norm is utilized, over here, and
+we solve again this problem, the, optimal
+solution we obtain, is this one.
+It is actually identical to the original
+signal x.
+[BLANK_AUDIO]
+We show here in one graph, all the
+unit balls utilizing the values, norms
+that we introduced.
+So, the circle is the L2 ball, by the way
+all these points are equal to1 minus 1
+minus 1.
+The two axes with the exception of the
+origin, are,
+represent the L0 unit ball, the red curve
+represent the LP.
+The LP is between 0 and 1.
+Ball and the diamond represents the L1
+norm, as
+we discussed, the, the use of the L2 norm
+results
+in a convex optimization problem and more
+than that,
+in many instances, we can obtain the
+closed form solution.
+So, these are the advantages of the use of
+the L2 norm.
+However, we do not obtain sparse
+solutions,
+but instead, small values for the
+solution.
+What we're really after in obtaining
+sparse
+solutions, is the use of the L0 norm.
+However in this case, we end up with an
+NP, Non-Polynomial hard problem.
+The use of the lp norm, results in a
+non-convex
+optimization problem, although the
+solutions are indeed sparse.
+While the use of the L1 norm, results in a
+Convex Optimization problem, although
+the function is not smooth, is not,
+differential [UNKNOWN] points and the
+solution is sparse.
+So, we seeing some sense here all the
+possible engineering
+trade-offs, we have kind of lazy talk-time
+solutions, but is non-sparse, the
+hard solution to obtain, also hard since
+it is non-convex and therefore in some
+sense the use of the L1 norm represents
+the available choice.
+And indeed it has been utilized in solving
+sparse problems in many
+different formulations, as we will see
+later in the class.
+And over here in summary, a comparison of
+the
+L0 and L1 norms in solving these
+constrained optimization problems.
+Minimize x with respect to L0, subject to
+this constraint or minimizing x, utilizing
+the L1 norm subject to the same constraint
+and this is the basis pursuit problem.
+We did compare the solutions graphically
+or visualized the solution
+and it should be clear, by now, that both
+formulations provides sparse solutions.
+However, the L0 norm models sparsity
+directly.
+Just counts the number of non zero
+elements, while the L1 does so indirectly.
+L0 is non-convex, The L1
+is, and is actually the tightest convex
+surrogate to the L0 norm.
+The overall problem is NP hard with the
+L0 norm, while here it's convex but non
+smooth.
+In solving the L0 problem, there are
+greedy approaches such as the matching
+pursuit that we're going to discuss in
+this lecture, that provide an approximate
+solution.
+While solving the Basis Pursuit problem,
+that are
+Convex Optimization algorithms we're also
+going to discuss.
+

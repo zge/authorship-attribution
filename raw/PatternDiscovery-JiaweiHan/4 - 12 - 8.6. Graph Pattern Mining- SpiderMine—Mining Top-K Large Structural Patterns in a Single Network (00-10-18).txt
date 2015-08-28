@@ -1,0 +1,245 @@
+[MUSIC]
+Now in this last session of this lecture,
+I'm going to introduce you
+another interesting direction
+is Mining Structural Patterns
+in a Single large Network.
+I'm going to introduce you, SpiderMine,
+this interesting algorithm.
+SpiderMine is trying to mine top-K
+large structural patterns in
+a massive network, and
+we know there are lots of big networks,
+like in social network in a web,
+or in a biological networks.
+So in many cases you want to mine large
+patterns because the large pattern
+may imply there is a subcommunity.
+There are some interesting
+biological structures, so
+it is a great way to
+characterize a large network.
+Similar to pattern fusion,
+if you want mine large structural
+patterns in a single large network.
+So we are not aiming for completeness,
+finding every possible large patterns,
+but we may have a efficient
+algorithm to find representative,
+majority large graphs, okay.
+So SpiderMine is one of such interesting
+algorithms developed by Feida Zhu,
+and the group publish in 2011,
+called Mine top-K largest
+frequent substructures patterns.
+And these structure the theorem says, you,
+if you take the structure,
+the diameter is bounded by D sub max.
+Then you are going to find all such,
+all of such large K frequency
+substructures with a probability
+of at least 1 minus epsilon, and
+epsilon is a small threshold.
+The general idea from the spider
+to mine such large patterns,
+is very similar to pattern fusion
+algorithm we introduced before.
+So, what you can see is,
+we want to mine large patterns,
+but those large patterns can be grown from
+the smaller components, like spiders.
+That means if we first mine spider,
+we try to merge those spiders,
+connecting those spiders,
+in many rounds of pattern growths.
+We will be able to find rather large
+structures in a efficient way.
+So what is spider?
+The spider actually is a small
+structure which, with certain features.
+Eh, essentially, we say r-spider
+is a frequent graph pattern, P,
+and that pattern, actually there, all, you
+always will be able to find a vertex u.
+From u, you reach all the other
+vertices within distance of r.
+That means start from this,
+this u, like, like a center,
+okay, then you would jump over, r hops.
+You are going to find these frequent
+pattern, which cover the vertexes,
+vertices of P within the distance of r,
+and we consider this one is a spider.
+Then this spider mining
+algorithm goes like this.
+It's very similar to pattern
+fusion you may think in that way.
+It's initially you use efficient graph
+pattern mining algorithm similar to gSpan,
+you can mine all the r-spiders
+of certain size.
+That means r-spider could be 5, you know
+it could be 3, you mine these spiders.
+Once you find these spiders,
+this big pool of frequent small ones,
+frequent r-spiders,
+you just randomly draw M, these r-spiders.
+Then, you grow this M, spider is in
+iterative way, you iterate t iterations.
+Essentially t is half of the D sub max.
+That means you grow this,
+you're going to reach to D max,
+and while growing, you merge
+those two patterns when possible.
+That means that they become connected and
+also they are frequent.
+Those patterns which can not be merged,
+you just discard them.
+Then keep growing to the maximum size,
+that means
+you keep growing those remaining ones
+to the maximum size within this pool,
+you will find a return,
+the top-K largest ones.
+They are frequent, and
+they are very large.
+You just return top-K such ones.
+So then you find the,
+the top-K largest sub structure and
+you almost find all of them with
+the probability 1 minus epsilon.
+There's a detailed algorithm to prove
+the correctness of the algorithm.
+I'm not going get into detail,
+but the general philosophy is
+why is SpiderMine likely to retain
+large patterns and prune small ones?
+This is very similar to pattern fusion.
+You start from the small one,
+you can think these are the core patterns.
+When you grow them,
+you find new core patterns.
+The small patterns are much less
+likely to be hit in the random draw,
+because they do not have
+that many core patterns.
+Then, even if a small pattern's hit,
+it is likely to be
+hit multiple times because even this time,
+it hit, you get it, you, you, you grow.
+You may find you can not grow anymore,
+so the next round you grab those
+small pattern, their descendant is
+likely to be hit multiple times.
+The larger the pattern,
+the greater chance it is hit and saved.
+That's the reason if, even you think you
+are using random draw, you actually were
+guarantee you have high probability
+you will find those top-K patterns.
+I'm not getting to the very
+detail of this algorithm, but it,
+it is an efficient algorithm.
+You guarantee the completeness to certain
+extent, so it's very interesting.
+Now I'm going to show you some
+experimental results you will see even for
+the real network like DBLP network.
+You will be able to find
+some interesting patterns.
+We actually did some experiments
+with take 600 top conferences,
+nine major computer science areas and
+also we focus our study
+on 15 southern authors in the database and
+data mining area.
+Then we labeled these authors slightly
+differently using different labels.
+If the people publish over
+50 papers in these areas,
+like database and data mining areas,
+we say they are Prolific.
+If they publish 20 to 49,
+we say they are Senior.
+Publish 10 to 19, they are Junior.
+They publish only five to nine,
+we say they are Beginners, okay?
+Of course some, you know,
+may not be just the beginners.
+But anyway, we label in this way based on
+number of papers published in the area.
+Now, we actually doing this mine,
+the smaller pattern but it's also
+interesting one we found is this, okay?
+You get four prolific authors
+linked together like a ring, okay?
+But they also co-author
+with some senior authors.
+We actually found like a one is
+Héctor García-Molina linking with Je,
+Jennifer Widom, Jeffery Ullman and
+Yehoshua Sagiv,
+as a prolific author, they are also
+linked to some well-known senior authors.
+And you, we also find like Ramakrishnan
+has one interest in linking ring and
+also together with some
+some senior authors, okay?
+Though we find that there
+are patterns like this,
+you have prolific author,
+they link together, and
+they also link to some beginners, linking
+to junior authors, and senior authors.
+And senior author also link together,
+okay?
+So, we find such pattern like this it's
+one interesting pattern, instance.
+We also find the larger structure,
+like a start from
+one prolific author, linking to
+quite a bunch of senior authors.
+They link together and
+they link to junior authors and
+beginning authors as well, okay?
+So this pattern like a,
+one interesting case.
+There are many such patterns.
+One is Hans-Peter Kriegel linking
+to a lot of authors in this manner.
+Okay, so you probably can see from DBRP,
+the real computer
+science research network, we can find some
+interesting collaboration patterns, okay.
+So you probably can see,
+we covered some interesting concepts
+graph pattern and
+the graph pattern mining.
+We introduce apriori-based graph
+pattern mining methods like FSG,
+we introduce a pattern-growth-based
+method like gSpan,
+we also introduce methods for
+mining closed graph patterns, CloseGraph.
+We introduced an interesting application,
+build a graph index,
+a gIndex based on graph
+pattern mining results.
+And finally, we introduced a, an
+interesting algorithm called SpiderMine,
+which mines top-K large structural
+patterns in a large network.
+There are many research papers
+working on graph mining,
+graph pattern mining, and
+we only list a bunch of them.
+These are the initial papers in the field,
+and
+also we introduce them in this lecture.
+If you want to go detail on
+the techniques I introduce in this
+lecture you better read those
+paper in some more detail.
+Thank you.
+[MUSIC]
+

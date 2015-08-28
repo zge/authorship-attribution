@@ -1,0 +1,241 @@
+[SOUND] So now we can learn how to draw
+two-dimensional graphics.
+What we're going to learn is how to set
+up a two-dimensional drawing canvas, and
+then how to draw things in it.
+And we're going to learn how do to this
+using the scalable vector graphics
+specification for
+two-dimensional graphics.
+The scalable vector graphics
+specification is a method for
+describing two-dimensional graphics for
+a variety of systems.
+One of the systems that
+it works with is HTML.
+So you can embed two-dimensional
+graphics in a Web page by putting
+an SVG tag in your HTML code for
+the Web page.
+And this is an example SVG tag.
+It has a width, a height, and a viewbox.
+The width and the height,
+describe the width and
+height usually in pixels of how
+the graphics will appear in your Web page.
+The viewbox describes the coordinates
+that you'll be drawing with.
+And so these are your canvas coordinates.
+It'll start with an x and y-coordinates.
+And the canvas will extend to
+the point x plus w, y plus h.
+So, it'll have a width and
+height of w and h units for drawing.
+And so, the important thing to
+remember for SVG is at this origin.
+This x and y is the upper-left corner and
+not the lower-left corner
+in my previous example.
+SVG particularly when it's being used for
+a Web page is being used to describe
+a document system, and we tend to
+read left to right, top to bottom.
+The coordinate system is
+set up appropriately.
+The other thing to remember is
+that when we set up this viewbox,
+we're setting up our
+canvas coordinate system.
+These are the coordinates we're
+going to be drawing with.
+And when we describe the width and
+the height of the SVG tag,
+that's describing the actual
+display pixels of the result.
+And so we're automatically getting
+a canvas to screen transformation
+between these two coordinate systems.
+So here's an example of
+that plot of a parabola,
+y = x squared,
+using SVG graphing coordinates.
+Here's our SVG tag,
+we'll set up some width and height for
+some number of pixels depending
+on our output device.
+But we set up a viewbox that's
+going to give us the coordinates,
+the canvas coordinates that we're
+going to use to draw the graph.
+And so, we'll set up coordinate
+systems going from (0,0) to (1,1) for
+canvas coordinates to draw in.
+Then we'll draw the axis title and
+other decorations.
+Then we can set up another
+canvas with another SVG tag.
+And so one of the elements of the scalable
+vector graphics specification is another
+scalable vector graphics canvas.
+And in this case we're going to
+put the canvas at a point 10% in,
+since our original canvas goes from
+0 to 1, 10% would be 0.1 units.
+So we'd have a 0.0, 0.1, 0.1 here.
+That's the x, y-coordinate of
+the upper-left corner of our canvas,
+our blue canvas.
+And it's going to have a width of 80%.
+That'll be 80% of the original
+drawing coordinates.
+So it'll go from 0.1, 0.1 to 0.9, 0.9.
+And its width will be 0.8 units and
+its height will be 0.8 units.
+And so I can set this sub-canvas up and
+I can set its own coordinates systems.
+So this is the coordinates
+that's going to be displayed in
+in the outer coordinates system.
+And then these are the inner coordinates,
+the blue coordinates,
+that we're going to use to draw things
+in this blue coordinates system.
+So its canvas coordinates
+extend from (0,0) to (1,1),
+(0,0) to 0 plus 1, 0 plus 1.
+So then we can plot the data in this case,
+since we're starting at the lower-left
+system with it plotted as (x,1-y),
+then we can use a coordinate
+system where we don't need to rescale
+things inside the center coordinates.
+When we plot data here it goes through
+a coordinate transformation to figure out
+where the point is in the yellow
+coordinate system and then it goes through
+another coordinate transformation to get
+out of the yellow canvas coordinates into
+the display coordinates defined
+by your width and height.
+So, there's several coordinate system
+transformations that are happening.
+But, we're setting up coordinate
+systems to make it more convenient for
+us to draw, and letting the computer
+take care of all the transformations.
+As before we're going to draw primitives
+by specifying vertices, and then we're
+going to connect those vertices with
+either straight lines or smooth paths.
+Those are called strokes.
+And then we can fill
+in regions with fills.
+And we can specify various properties for
+fills and strokes and so on.
+And so we can go through the different
+drawing primitives available to us in
+the scalable vector
+graphics specification.
+A very simple one is a circle.
+So, if I've set my canvas
+coordinates go from (0,0) to (1,1),
+I can specify a circle by specifying
+its center at the point cx,
+cy in canvas coordinates,
+in this case one-half, one-half, and
+I can set its radius to be
+four-tenths of the unit.
+Since five times of the unit
+would get me to the edge,
+that leaves about
+one-tenth of a unit there.
+I can set a property of
+the stroke to be the color black.
+And I can set the property of
+its fill to the color blue, and
+I get a black circle with
+a blue interior as a result.
+And that will be embedded,
+in this case, in my Web page.
+You can also specify a rectangle, and
+this is going to be another
+useful data visualization tool.
+Again, we set up a canvas, a drawing
+canvas, and then I say, rect, and
+I specify a point, in this case
+(0.3,0.2) gives me a single point.
+And then, I specify the width and
+the height of the rectangle.
+And this point, I've specified will be
+the upper-left point of the rectangle, and
+then I say that I want the lines,
+the strokes of the rectangle to be black.
+And I want it to be filled with the blue
+color, and I get this resulting rectangle.
+You can also specify paths.
+In this case, I've specified a path
+by specifying a bunch of points,
+0.2 0.1, 0.2 0.3, 0.4 0.3, through here.
+And then I've specified
+a bunch of commands, and
+these commands are moved to the point
+0.2 0.1, so move without drawing a line.
+And then move while drawing
+a line from 0.2 0.1 to 0.2 0.3.
+And that way I can specify
+a line by starting here and
+ending here, and at 0.2 0.3.
+And I can specify the next line by
+starting at the current position and
+moving to a new position, 0.4 0.3.
+So these Ms mean move from the previous
+position to a new position
+without drawing a line.
+And these Ls mean move from a position
+to a new position while drawing a line.
+This way I don't need to,
+if I'm drawing a continuous line from one
+point through several other points,
+I don't need to respecify these points.
+I don't need to say, draw a line from here
+to here and then from here to here, and
+specify this point twice.
+I can specify this point once,
+and say just draw a point to
+here from the previous point, which
+is the endpoint of the previous line.
+And so this will draw, what I wanted to be
+a block I but I'm missing this top part.
+And this is part of
+the path specification.
+So I'm drawing a path and
+d is the data for the path.
+If I want to get this missing line at the
+top, I just need to add a Z at the bottom.
+And the Z just says close the path.
+That means draw one last line
+from the last point I specified
+to the first point I specified and
+that will close the path.
+And then I can finally fill in that
+closed path by just specifying a fill
+specification.
+In this case,
+I didn't say stroke equals black because
+it may have been set up before that way.
+But that would give you a black
+outline of a blue region.
+So what did we learn?
+We learned how to use
+the scalable vector graphics
+specification to make our own line art for
+Web pages.
+We figured out how to set up an SVG
+drawing canvas, which has its origin
+specification in the upper-left corner,
+instead of the lower-left corner.
+And then we figured out how to
+draw a circle, a rectangle, and
+any polygonal shape.
+[MUSIC]
+

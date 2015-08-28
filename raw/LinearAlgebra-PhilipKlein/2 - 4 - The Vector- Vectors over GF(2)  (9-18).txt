@@ -1,0 +1,203 @@
+
+Now, we turn to vectors over GF(2). 
+Here's an example of addition of GF(2) 
+vectors. 
+We're adding them entry wise. 
+And, of course, 1 plus 1 is 0, 1 plus 0 
+is 1, and so on. 
+Now, we'll use the notation sometimes, 1, 
+1, 0, 1 instead of the list, 1, 1, 0, 1. 
+So, here's another example. 
+What's 1, 1, 0, 1 plus 0, 1, 1, 1. 
+And the answer you should get is 1, 0, 1, 
+0. 
+Now, let's see how we can use GF(2) 
+edition to achieve perfect secrecy in a 
+cryptographic sense. 
+So, we're going to represent encryption 
+by N vector addition over GF(2). 
+So, let's imagine that Alice and Bob 
+agree on this key. 
+It's a ten, ten vector over GF(2). 
+And later, Alice wants to send a message 
+to Bob. 
+Here's the plain text. 
+She encrypts it by adding p and k, the 
+plain text to the key to get the 
+ciphertext. 
+So, here's the ciphertext. 
+When Bob receives c, he can decrypt it by 
+subtracting, which is the same as adding, 
+the key. 
+And he gets back the original message. 
+Now, I claim that if the key is chosen 
+according to the uniform distribution, 
+this scheme is perfectly secret. 
+For each plain text, there's a function 
+that maps the key to the ciphertext. 
+Namely, given the key, k, it, it maps k 
+to k plus p. 
+Now, this function is invertible. 
+What that means is, that if the key k is 
+chosen according to the uniform 
+distribution, the output will also be 
+distributed according to the uniform 
+distribution. 
+Now, that doesn't depend on which plain 
+text we chose. 
+Regardless of the plain text Alice 
+chooses, the distribution of the output 
+is the uniform distribution. 
+So, an eavesdropper learns nothing about 
+the plain text by looking at the output. 
+Here's another use of the same idea. 
+Suppose I have a secret, the midterm. 
+So, I'll represent it as an N vector over 
+GF(2). 
+Now, I want to provide it to my teaching 
+assistants so that I can go on vacation. 
+However, I don't completely trust my TAs. 
+One of them might be bribed to give away 
+the midterm before its time. 
+So, the solution is to provide pieces to 
+the two teaching assistants. 
+I want the two of them jointly to be able 
+to reconstruct the midterm. 
+But I don't want any one of them acting 
+alone to know anything about the midterm. 
+So, here is the solution, I start by 
+choosing a random n-vector over GF(2), 
+let's call it VA. 
+I then compute VB by subtracting, so is 
+the same as adding in GF(2), subtracting 
+the VA from V. 
+Now, I provide VA to Alice, one of my 
+TAs, and VB to Bob, the other TA. 
+And I leave on vacation. 
+What has Alice learned form her part? 
+Well, all she receives is a random 
+n-vector. 
+Well, what about Bob? 
+The part he receives is the output of a 
+function f of x equals v minus x where 
+the input is chosen according to the 
+uniform distribution. 
+Since this function is invertible, the 
+output is also distributed according to 
+the uniform distribution. 
+So, he learns nothing. 
+It seems like a really simple trick, but 
+RSA just introduced a product based 
+exactly on this idea. 
+Their product splits a password using 
+essentially the technique we just showed. 
+So, they can be stored on two separate 
+servers, making it more secure. 
+Here's another application of GF(2). 
+[SOUND]. 
+This is the lights out puzzle. 
+[SOUND]. 
+It's a grid, 5 by 5 consisting of buttons 
+that light up. 
+When you push a button, it toggles the 
+light, so if the light is on, it turns it 
+off. 
+If the light's off, it turns it on. 
+It toggles the light on the button you 
+push. 
+But it also toggles the lights on the 
+buttons immediately above and immediately 
+to the left and right of the button you 
+push. 
+So, if I push this button. 
+Well, and the goal is to push enough 
+buttons to turn off all the lights. 
+All right, I'm obviously not very good at 
+this, but I know linear algebra. 
+So, I'm going to look at how we can use 
+linear algebra to figure out how to solve 
+lights out. 
+So, given a configuration of lights, we 
+want to figure out what sequence of 
+button pushes will turn off all the 
+lights. 
+We're going to represent the state of 
+lights out using a vector. 
+There's going to be an entry in the 
+vector for each light in lights out. 
+So, for 5 by 5 lights out, that means 
+there are 25 entries. 
+And these are vectors over GF(2). 
+Here's a representation of the state of 
+lights out. 
+I'm using these black dots to represent 
+lights that are on. 
+Now, the trick is we can also represent 
+each button as a vector over GF(2). 
+We represent a button by the GF(2) vector 
+with ones in exactly the positions that 
+are toggled when we push that button. 
+Remember that in GF(2), adding one means 
+flipping a bit. 
+If you add 1 to a 1, it turns it into a 
+0. 
+If you add 1 to a 0, it turns it into a 
+one. 
+Let's look at the 3 by 3 case. 
+So, suppose this is the state of lights 
+out. 
+And we push the button in the top left. 
+Well, the button in the top left toggles, 
+the light in the top left, the light 
+immediately towards right and the light, 
+and the light immediately below it. 
+So, this is the move vector corresponding 
+to that button where the dots represent 
+1s. 
+If we add this vector to the vector 
+representing the state, we get this 
+vector. 
+Which represents the state obtained by 
+pushing that button. 
+Similarly, given this state, we push the 
+button in the middle. 
+It toggles the light in the middle, the 
+lights directly above and below, and the 
+lights to the left and the right. 
+Resulting in this state. 
+Finally, from this state, if we push the 
+button in the bottom right, it toggles 
+these positions, giving you the state in 
+which all the lights are out. 
+The key idea here is when we use vectors 
+over GF(2), adding a vector toggles 
+exactly the positions where that vector 
+we're adding has 1s. 
+So, we can use GF(2) vectors to model the 
+process of pushing buttons in Lights Out. 
+The question is which sequence of buttons 
+will lead to the configuration in which 
+all the lights are out. 
+Here are some simple observations. 
+By the commutative property, the order in 
+which you push those buttons doesn't 
+matter. 
+Also, if you add a button vector twice, 
+they cancel out. 
+So, really instead of trying to think 
+about the sequence of buttons we push, 
+all we have to do is figure out which set 
+of the button vectors we have to push. 
+That is, which set of the button vectors 
+will sum up to the vector representing 
+the initial configuration. 
+Thus, we've reduced the problem of 
+solving an instance of lights out, to 
+which set of button vectors sum up to the 
+vector representing the initial 
+configuration. 
+A more general version of that problem 
+is, given a bunch of vectors over GF(2), 
+find a subset whose sum equals some 
+target vector S. 
+

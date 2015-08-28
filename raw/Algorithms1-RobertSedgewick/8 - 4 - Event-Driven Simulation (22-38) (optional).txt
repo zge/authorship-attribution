@@ -1,0 +1,449 @@
+Now, look at an interesting application of
+priority queues that is actually
+representative of whole family of a
+critically important applications in
+applications of computing. It's called
+event driven simulation. And the idea is
+we want to study some property of the
+natural world by simulating it. And that's
+something that's very, very common in, in
+scientific inquiry nowadays. And this is a
+very natural idea. And actually, the idea
+goes back to Einstein. So, we want to
+simulate the motion of N moving particles
+that might collide with the priority.
+This, this kind of stimulation is enabled
+by priority queues. And without something
+like priority queues, you couldn't do this
+for a large number of particles because it
+would require quadratic time and simply
+can't be afforded for a huge number of
+particles. So, and let's take a look at
+how we can possibly make this happen. So
+we use a simple scientific model called
+the hard disc model. And then, this is
+just for simplicity to get this done and
+just part of a lecture. Clearly, these
+things can be extended in many ways. So,
+we're going to have moving particles that
+either collide with each other and with
+the walls. And each particle is a disc
+that's got known position, velocity, mass,
+and radius. And there's no other forces
+involved. It gets more complicated if
+there's more forces, like gravity
+involved. And this point by itself is very
+significant. As I mentioned, it goes back
+to the study of physics with [cough] the
+trying to understand the pressure and
+temperature in Einstein's famous
+experiment on a pollen grain showing that
+their motion was brownian and random. So
+whether it's individual atoms and
+molecules or some bigger kinds of
+particles. It's a complex dynamic
+situation that is better understood
+through computer simulation. And nowadays
+that means priority queues. [cough] So, as
+a wa rm-up, here's code to implement
+bouncing balls without the collisions. And
+this is an elementary programing exercise
+that is the, the code at the left has the
+effects shown at the right. So, we have a
+data type called ball that represents just
+one of the particles and has instance
+variables that has the position and the
+velocity. So, that's why we make a bunch
+of them and then we have a, a while loop
+which is just every 50 milliseconds clear
+the, the whole drawing and then move the
+balls a little bit and then draw them in
+their current position. And then the only
+to move [cough] operation does is to
+update the position of the ball by the
+velocity, which is just another number and
+then it does the bouncing off the walls.
+If it happens to hit the left of the wall
+then you reflect the x-coordinate in the
+right wall, you reflect the x-coordinate
+bottom to top, you do the same for the
+y-coordinate. So, this the is an easy
+programming exercise given the right
+display primitives. And it's a good
+exercise in object-oriented programming
+showing how just one implementation then
+we can use that same implementation to
+simulate a number of instances. So, that's
+our starting point in terms of the code.
+So this is the implementation of the ball
+class. So, it's got position and velocity
+as I mentioned, and every ball has a, a
+radius. And then there is a constructor
+and maybe we have a constructor that takes
+arguments that would initialize the
+position and the velocity or maybe
+initialize them to a random position if
+there's no arguments. And then, here's the
+move method. And the move method again,
+most of the times, just takes the x and y
+coordinates and adds the current velocity
+times the speed constant. The dt speed,
+speed variable that's given as argument
+dt. And then these tests are for whether
+it hits the walls in which case, you have
+to flip the x or y velocity. And then
+draw, it's just using standard draw. Just
+draw the ball. So, that's all the code for
+doing the bouncing ball simulation. Now,
+what's missing in this is what happens
+when the balls collide with each other.
+And to cope with that we need to do both.
+A little bit of high school Physics and a
+little bit of basic Computer Science. The
+Physics problem is exactly what happens
+when two balls hit and they bounce off
+each other according to some
+well-understood physical process, and
+that's the high school Physics. And the CS
+problem is how and when to we exactly do
+these computations for each of the balls.
+And how can we do it efficiently that is
+in, in log N time versus quadratic time.
+Because if we have a computational process
+that takes quadratic time, then it's not
+going to scale, we're not going to be able
+to do large number of particles.
+Simulations in the real world, usually, we
+wind up doing huge amounts of data and we
+cannot have a quadratic algorithm. This is
+just first indication of that of why if
+you want to do this simulation, you better
+know about some data structure like
+priority queues. If you try to do it
+without it, you're not going to be
+successful. Alright, so, let's take a look
+at what happens. So there's a number of
+things that you might consider trying. So,
+one idea is the so-called time driven
+simulation. And we just say, we're going
+to update everything every dt seconds.
+Then we go ahead and then we could check
+if there's a collision, if the two balls,
+pieces of the two balls are occupying the
+same space. And if there is, then we could
+roll back time just a little bit and I'll
+try to figure out exactly, the moment of
+which they collided and then figure out
+how the position and velocity should
+change accordingly and then continue the
+simulation. But this has a huge problem.
+The first one is that you have t o check
+all pairs of balls for overlap so that's
+quadratic, so it's going to be really,
+really lot of overall texture you're not
+going to be able to do it for a huge, huge
+value of N. But the other thing is even if
+N is small if you do a very small dt, then
+you're just doing this calculation over
+and over again and there's just too much
+computation moving the balls little bit at
+a time. On the other hand, if you try to
+improve things by making dt too large you
+might completely miss a collision as shown
+in the example at right. So figuring out
+the value of dt that would really work is
+a huge problem for the time driven
+simulation. Instead, what we want to do is
+called an event driven simulation. And
+this is a very general concept that's
+useful in all kinds of context. And we are
+going to change things when something
+happens. So, since the only thing that
+matters is collisions, we are going to
+figure the particles move in a straight
+line, between collisions. And what we are
+going to do is focus only on the times
+when the collisions are going to occur.
+And the way we are going to that, is to
+maintain a priority queue and that
+priority queue is going to have all the
+possible collisions that could happen in
+the future and they're going to be
+prioritized by time. And when we remove
+the minimum element from the priority
+queue, that's the next collision that we
+have to deal with. And so we have two
+phases, we have prediction and resolution.
+So, that's sometime t, we can take two
+particles. We know their position and
+velocities shown at the bottom here and we
+can predict exactly the moment, which
+they'll collide assuming that something
+else doesn't happen to them in between and
+then so they will put that predicted
+collision time on the priority queue and
+later on, when that time comes to pass we
+will be right at moment when they collide
+and we can figure out what to do. Now,
+there is a possibly that something else
+happened to t hem in between and we'll
+talk about that change, too. So, we have
+to do collision prediction, which is given
+position, velocity, and radius when's it
+going to hit with another particle or, or
+the wall. And then there's resolution
+which is to figure out how to change the
+velocities of the particles according to
+physical laws. Now this part I'm not going
+to talk about in that much detail right
+now because it's high school Physics. And
+so, I think most students have had high
+school Physics and will be able to do, do
+this Math or at least be convinced that
+the code that does this Math is correct.
+So, if you know that you have a particle
+that's at a certain position or x or y and
+has got a certain velocity, the x in the
+x-direction and y in the y-direction, then
+you can from the distance to the pro,
+vertical wall you can figure out how many
+seconds this is going to take until it
+hits it. It's basically that distance
+divided by the by the velocity. And so
+that's the prediction. And then, the
+resolution. When it hits the wall is, is
+just going to change the velocity. So
+that's in, you know what the position is.
+So that's just an example of collision, of
+collision prediction, when's it going to
+hit the wall and resolution what do you do
+when it gets to the wall. When you have
+two particles there's definitely more
+math. And again, this is high school
+Physics. And we're not going to test on it
+or even go through the details. But it's
+just a little bit of arithmetic with the
+velocities and positions to deal with what
+happens when, when how to predict when a
+given particle is going to collide with
+another given particle knowing their
+velocity and position. So, you have to
+take both velocities and divide their
+distance by those and, and so forth. So
+there's simple formulas to tell us what to
+do and we can also figure out the formulas
+for what we do o nce they do collide. And
+again nobody's claiming that this is easy
+but this is the Physics part and it's
+worked out and it comes from Newton's
+Second Law. And, and, anybody taking high
+school Physics will, be able to deal with
+these formulas and the rest of this may
+have to go to a reference book to get up
+to speed on them. [cough] but once it's
+reduced to code we can be, it might have
+some trouble debugging at first but at
+least we can be convinced that it works.
+But now, let's look at the computer
+science code. So, this is just extending
+our ball data type that we use for the
+bouncing balls that didn't collide to take
+in, into account these extra things. So,
+ours will have mass, so there will be some
+big heavy ones that make things more
+interesting. And there's also a variable
+called count, which is the number of
+collisions of particles have been involved
+in. And that's useful for a couple of
+purposes. So, we're going to need a bunch
+of procedures which do the prediction and
+the collision resolution. I want, what's
+the, given a particle what's the time till
+we hit that particle? What's the time till
+we hit vertical horizontal wall? And the
+same thing is if we're at the point where
+we're hitting a particle, what would we
+do, the, the same way with the vertical
+and horizontal wall. So, that's the
+skeleton. We need those procedures that
+implement those Physics rules for every
+particle. And, and this is what they look
+like and again this is high school Physics
+so we're not going to do it in detail
+other than to point out it's really not a
+huge amount of code. Lots of the xs and
+the ys and the vs but really not a huge
+amount of code. And the other point is
+we're going to return infinity if there's
+no collision at all so that it's going to
+keep, keep that on the priority queue,
+that ran on the priority queue forever.
+Okay, so that's the procedures that we
+need and then they're similar ones for the
+horizontal and vertical walls. So now,
+let's look at the main loop for the event
+driven simulation. So, the first thing is
+we're going to for every particle we're
+going to compute the next time that it
+might hit every horizontal and vertical
+wall. Well, actually if it's going away
+from a wall, it's not going to hit it so
+that would be infinity. But if it's going
+towards a wall, then we'll compute the
+time. And then that's a time in the future
+and we'll put that event on the priority
+queue with that time as the key. And then,
+we'll do the same thing for all pairs of
+particles. So, we do have a quadratic
+initialization phase that we perform just
+once to get the priority queue filled up.
+Now, all collisions are, might not happen
+so we might have two particles that are on
+a collision course that and we're going to
+predict that point for both of those
+particles, you know, even right at the
+beginning. But it might be the case that
+there's a third particle that knocks one
+of those out before that thing happens and
+that event would be invalidated. So, the
+simulation has to be careful to take that
+into account. But that's not difficult to
+do. So, here's what the main loop is. So,
+we're going to take the next event from
+the priority queue. That's the next
+collision that's going to happen from all
+our calculations. There's one collision
+that's going to happen next. Then, we test
+whether that event has been invalidated.
+And we do that by using that count field
+in the particle. So, then that tells us
+what time it's going to be next. So, then
+we have to go through all the particles
+and change their positions on a straight
+line trajectory, where would they'll be
+after that much time? Then we have to take
+the two particles that collide and change
+their velocity. They bounce off one
+another. Now those two particles'
+velocities have changed , essentially that
+invalidates the future collisions
+involving those. And then we, what we have
+to do is for those two particles is go
+through and predict the future collisions
+with any walls and collisions with any
+other particles. And put all those new
+events on to the priority queue. But
+that's it. You got two particles, change
+your velocities figure out the future
+collision of those particles with the wall
+and update the priority queue and then the
+main loop is take the next thing off the
+priority queue and keep going. That's the
+code that we'll look at next. So we have
+a, a, a bunch of conventions just to
+reduce the code. And if we this the, the
+thing called event which involves it says
+between two particles, something is going
+to happen at a certain time and we're
+going to adopt the conventions that, if,
+neither particle is null then we're
+talking about two particles. If one of the
+particles is null then we're talking about
+a wall, a vertical or horizontal wall. And
+if both particles are null we're saying we
+just want to redraw things. That's a bit
+of a hack, but it cuts down on a lot of
+code. Our compared to is by time. And then
+again, we need an, is valid to check about
+intervening collision. And then here's the
+skeleton of what's going to happen with
+the collision system which is the key
+thing is this prediction method that takes
+a particle as argument, and adds to the
+priority queue, all the possible
+collisions involving this particle. So,
+it's going to go through every particle
+and call the time to hit method for that
+particle. And then, it'll put an event on
+the priority queue for that time, this
+particle with that particle. And then,
+it'll also put an event for the vertical
+wall and the horizontal wall, again, using
+this null convention to say that the event
+second argument null is vertical. First
+argument null is horizontal. So that's a
+key method t hat gets used in the
+simulation for each of the two particles
+that are going to collide. So, now we can
+look finally at the main event driven
+simulation loop. So there's build a
+priority queue. There's do this prediction
+for every one of the particles. And then,
+also we're going to put as the first thing
+that happened always a, an event that says
+redraw everything. So that's just a, a way
+of make suring that the simulation keeps
+proceeding. It's an easy way to get things
+drawn. Okay. So, now the main loop is
+while the priority queue is not empty
+we're going to pull off an event. We're
+going to test whether it's valid. And
+that's just checker if anything happened
+with those two particles. We're going to
+pull off the two particles and then we're
+going to all, we're going to move all
+particles by the amount of time that has
+elapsed since the last event. And then,
+we're going to test which of the four
+types of events that it is. It's either
+redraw, bounce, B of A or, or bounce off a
+vertical wall or, or a horizontal wall.
+And then we'll go ahead and do the
+predictions of each of those particles, A
+and B, against all other particles. That's
+the pretty much all the code for the
+simulation. So this is data driven code.
+So, one thing we can do is just run it for
+a 100 balls in random position at random
+velocity. But what's nice about data
+driven code is now that the code's working
+and again we, we're not saying that this
+is a trivial code to write but it's
+definitely manageable. And it's enabled by
+priority queues. Without priority queues,
+it would be quite a bit more complicated
+to figure out how to do this. And also, it
+wouldn't be reasonably efficient at all
+for large data sets. So, that's a, a
+simple simulation to just generate random
+positions. People might be interested in
+this one. Now this isn't exactly precisely
+wh at would happen in the real world
+mainly because we didn't put in the
+simulation what happens when three
+particles are touching or there's two
+touching in another one hits them. And
+also nobody racks up a, a set of billiard
+balls such that all fifteen are touching
+in all places. So life can be complicating
+when you try to simulate the natural
+world. This is a little bit about
+Einstein's experiment. If you got one big
+particle like a pollen grain and lots of
+little particles like atoms molecules and
+bouncing against it the big one is going
+to move about randomly. And then this is
+another famous physics experiment showing
+diffusion. And there's many other things
+that you can do with this basic collision
+system. If you have huge numbers of
+particles and you measure the number that
+hit the size and the frequency with which
+they hit they sides you can do experiments
+relating temperature and pressure and many
+other things or do three-dimensional
+versions. Again simulation of the natural
+world is an increasingly important
+application of computing and need
+efficient data structures like priority
+queues to get it done.

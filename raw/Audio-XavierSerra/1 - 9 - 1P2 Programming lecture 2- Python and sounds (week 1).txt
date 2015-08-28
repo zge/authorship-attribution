@@ -1,0 +1,259 @@
+Welcome to the course on audio signal
+processing for music applications.
+In the last programming class, we
+introduced Python, which is a high level
+language quite powerful and
+that's going to be very useful for us for
+all the, applications and for
+all the programming, we will have to do.
+In this lecture I want to talk about
+how to use Python to process sound.
+How to, read sound files, process sounds
+and then write sound files again.
+So let's start, by going to terminal and
+now starting the,
+interactive shell, that we'll be using,
+to program in Python, which is iPython.
+And now we have to,
+read a sound file, okay?
+To read a sound file,
+we need to use one package, SciPy,
+that has this functionality.
+So, what we going to do is from SciPy, and
+within SciPy there is a module called IO,
+and within that there is one
+specifically to handle WAV files.
+So from that part of this package,
+we going to import,
+the read function.
+Okay?
+So now, the read function is part of
+our system Python.
+And in fact, if we type help and
+the read function,
+it knows about it and
+tells me what is the input and the output.
+So as input, we going to input the name,
+of the file I want to have and
+then as return,
+what it returns is the sampling rate and
+an array with the actual
+samples of the sound.
+Okay, so what we're going to do is have fs
+as a variable where to put the sampling
+rate, x as a variable where to put,
+the samples of the sound and
+then we're going to say read, and
+we're going to put filename here.
+Okay, in this directory I am in,
+I have a file name called flutea4.wav.
+Okay?
+so, I will read this sound
+file into into memory.
+Okay?
+So now, fs has the sampling rate
+44,100 and x, is an array of integers.
+They are 16 bit integers.
+Including all the samples.
+Here, of course,
+it's not showing everything, just showing
+the first three and the last three.
+Now we can start asking
+things about this sound.
+For example, if we want to know
+the length of the, the array,
+we can just type x.size,
+and this tells me that this
+sound has 94,803 samples If we want
+to know, how many seconds that is,
+we can divide the, the number of
+samples into the sampling rate.
+However, these two numbers are integers.
+So, the result is an integer.
+If we want to know,
+the duration in an exact way.
+What we going to do,
+is just convert one of the numbers,
+to a floating point number, like the FS.
+So that, now,
+it returns a floating point number.
+So this is, the duration of the sound,
+in seconds.
+So, it's 2.149 seconds.
+Now we can plot the sound for example.
+In order to plot it, we need to import
+the package for plotting, matplotlib.
+So we will import matplotlib, and
+specifically within
+that the pyplot module.
+And we going to give it as a name plt.
+So now we can call the plot
+function within that module and
+give it the array of samples.
+In order to show it,
+we going to have to call the show command.
+Okay, and this is the sound
+the visualization of the wave form,
+in the horizontal axis it basically
+has the samples I read and
+then on the vertical axis it has
+the values of these samples.
+Being in integer values it it
+goes from -10,000 to 8,000.
+Okay?
+But this is
+not a nice way to visualize sound.
+What we want to do,
+is to visualize them in seconds, so
+the time actually should be in seconds.
+How do we do that?
+Okay?
+So, what we going to do,
+is we need to get some arrays.
+And for doing that, we need to import.
+Another package, which is the numpy so
+import numpy as np and
+now we can give some useful functions for
+numpy, specifically,
+we can create a time axis,
+so we define a time axis t.
+That uses a function of
+numpy called range and
+range, what it does,
+is basically creates an array
+of the length that I put in as input.
+Going from zero to that value.
+And then if I divide by the sampling rate,
+this will create basically an array of
+seconds of the the size of the sound.
+But, in seconds, okay?
+So that I have t.
+And now if I plot the array t,
+with respect to x,
+now I have, and
+then of course I have to show it.
+I have a much nicer display because,
+on the horizontal axis
+I have time in seconds.
+So I can go from zero to 2.5.
+And this is the duration in seconds.
+Within that this this figure we can zoom
+into, into it and do quite a few things.
+For example, it has this option
+which is zoom to rectangle.
+So we can, select a region of these.
+And we can see the oscillation of the sound.
+In fact if we do it a little more,
+we're going to see it and even more,
+we will see the individual periods,
+the oscillation of of the sound.
+Okay?
+So that's, quite good.
+We didn't have to, actually call
+the function with these specific numbers.
+So, within the figure we can already
+navigate through this sound, okay?
+But also, we can select samples with
+Python commands, by choosing just
+the samples from a given array.
+So for example, if we want to have
+another array that is just one fragment
+of our input array, so we can say okay,
+take just samples for example,
+from 44,100 coming from second one to,
+let's say,
+45,100, so this is going to be 1000 samples,
+that are going to be stored in y.
+And now, of course, we can,
+just if we plot this
+y it will just show that this 1000 samples.
+Okay, now we can start doing operations
+for example, on this new array.
+And for example, we can just ask what
+is the, the maximum of these arrays,
+or there is this function
+called max from numpy,
+that if we give it array y,
+it gives us what is the maximum value.
+However of course we know that sound
+sort of oscillates around zero.
+So it has positive and negative values.
+So in fact, instead of doing that,
+what it makes more sense is to
+just take the absolute value of y.
+So that it considers also the negative
+values as values to be considered.
+So if we now type the maximum of
+the absolute value of y, and it gives us
+a different number which basically that
+means that this was a negative value
+that of course was higher, in terms of
+absolute value than the positive values.
+And we can do things like sum
+all the samples of an array.
+Okay, so, this is the sum of all of them.
+Of course now it's negative because,
+again, it has sum positive and negative.
+If we do absolute value it will
+be a completely different value.
+Okay, now that we know how to process
+sounds, now what typical thing we will
+want to do, is to write the result or,
+or write this new sound into a file.
+So we need to get the,
+a function to write sound files.
+So for, again from SciPy so
+from sciPy.io.wavfile, we are going
+to import the write function, okay?
+And the write function,
+basically accepts as
+input values, a name of a file to write.
+Then we need to give it a sampling
+rate with, with the same as the input.
+So fs, and
+now we can just put an array of numbers.
+So for example this new y array.
+Okay, and that's it we have created a sound file.
+Then we type ls,
+it's going to be an test.wav file.
+And from within iPython,
+we can play these sound files.
+By calling Unix or
+terminal level programs or functions.
+So specifically, if we put the,
+the exclamation mark, and
+we there is this function in Unix,
+this program called Play.
+And so we, this calls the,
+the Unix program play, and
+we can give it any file
+that is in the directory.
+So, we put the flute-A4.wav,
+it's playing this
+flute sound, and it's,
+at the same time it's giving
+ me some information about this sound file.
+Okay, so that's all I wanted to say so
+basically
+we have been talking about reading and
+writing sound files.
+And there is this package wavfile within
+SciPy, that allows it to do that.
+And there is packages that allow us to
+process and to manipulate these sounds.
+So with matplotlib,
+we can plot sounds fragments of sounds and
+with numby, there is a whole bunch
+of functions that allows us to,
+process this sound, and
+that's all for this class.
+So we have already introduced Python,
+and now we have introduced some
+basic functions to,
+to read write sound files.
+And hopefully with that, we can start
+doing some interesting things but
+of course we have to learn my more,
+much more.
+So, I will see you next class.
+Thank you.

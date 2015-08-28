@@ -1,0 +1,125 @@
+So next let's talk about how to estimate
+the parameters of a lexicalized PCFG.
+So firstly, I want to emphasize where
+we've, what we've ended up with, and why
+this is going to be a much better parse
+model of language than raw PCFGs.
+And to do this, I've picked an example
+sentence and, and an example parse tree.
+With a case of propositional phrase
+ambiguity so this sentence is the man saw
+the dog with the telescope and this is the
+full pals tree with all it's lexicalized
+glory where each of these nonterminals has
+an associated lexical item.
+So, the probability of this tree again is
+going to be a product of terms With one Q
+parameter for each rule that has been seen
+in the tree, and I've listed a few
+important ones here, there are a few other
+terms.
+And so for example, the root of the tree,
+I have S(saw) goes to NP(man) VP(saw) and
+I have parameter Q for that rule.
+And so on and so on in the tree.
+So if you recall if we had been applying
+just regular PCFGs without lyscolization
+we would have had these simple rules such
+as G goes to NPVP or VP goes to VP
+prepositional phrase and these rules would
+have had associated probabilities But as I
+had argued before, these rules are rather
+insensitive to lexical information.
+Now, we see that these rules actually
+incorporate rich sources of lexical
+information.
+And so, take, for example, the rule
+involving the preposition.
+So before, we had vp goes to vp
+prepositional phrase Now we have v p saw
+goes to v p saw p, p with.
+What we see here is that we now have
+parameters that explicitly model
+dependencies within, between lexical
+items.
+For example, the dependency between saw
+and with.
+And these dependencies are linked to
+particular grammatical relations.
+So for example, we have the ability to say
+how likely Is a prepositional phrase we
+preposition with to modify a verb phrase
+with, with head saw.
+That's basically what this rule is saying.
+There's another example at the top of the
+tree.
+We now have the probability of saw being
+associated with man in the[UNKNOWN]
+relationship where.
+Man is basically the subject of saw.
+And so on and so on through the tree.
+So you can see how our, the parameters of
+our model, now have direct access to
+important lexical information.
+The challenge of course, is going to be
+that we have a very large number of rules.
+And parameters not model.
+So we going to have to be quite careful
+about how we estimate them from a set of
+training samples.
+So let's now talk how that can be done.
+This is a model from Eugene Charniak, it's
+a famous model form late 90s, one of the
+first lexicalized PCFG models, and, one of
+the first models to show this very much
+improved performance of irregular PCfg's.
+So here's example of parameter which I'll
+uses as an example throughout this
+section.
+The parameter associated with S saw going
+to in np man vp saw.
+So the first step is going to be actually
+decompose this.
+Into a product of two terms, two
+parameters, which will make our job sim,
+sim, simpler.
+So this first parameter corresponds to the
+probability, given that I have s saw the
+probability of that wri rewriting as np V
+p.
+Okay, so if you think we're r, rewriting s
+saw, there are many possible ways of
+rewriting it.
+Here I have parameter corresponding to
+just the choice of the rule.
+And for now ignoring the second lexical
+item man associated with this rule.
+The second parameter can be in,
+interpreted as follows.
+So, say we have, S saw and we've actually
+chosen this rule.
+So we've chosen NP, VP, and saw is the
+head of the VP.
+So I have a two under this arrow.
+Then we have a choice of which lexical
+item is going to fill in this position in
+the rule.
+So, potentially any possible word could
+fall into this position.
+This parameter is, is corresponding to the
+probability that man Is chosen in this
+position within the rule.
+And these kind of parameters are crucial
+because they basically model, in this
+case, the probably for a particular word
+man to play a particular role, namely the
+subject of the verb saw.
+So we see a very direct model of these
+dependencies.
+Between lexical items saw and man.
+And again those dependencies can be very
+useful for disambiguation.
+So that's step one.
+First step is to take this parameter and
+actually decompose it into those products
+of two different terms.

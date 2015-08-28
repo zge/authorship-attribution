@@ -1,0 +1,376 @@
+[SOUND].
+In this lecture, we're going to talk about
+how to improve the instant changing of
+the Vector Space Model.
+This is the continued discussion
+of the Vector Space Model.
+We're going to focus on how to improve
+the instant changing of this model.
+In a previous lecture,
+you have seen that with simple
+situations of the Vector Space Model,
+we can come up with
+a simple scoring function that
+would give us, basically,
+a count of how many unique query
+terms are matching the document.
+We also have seen that this function
+has a problem as shown on this slide.
+In particular,
+if you look at these three documents,
+they will all get the same score because
+they match the three unique query words.
+But intuitively we would like,
+d4 to be ranked above d3.
+And d2 is really non relevant.
+So the problem here is that
+this function couldn't capture
+the following characteristics.
+First, we would like to
+give more gratitude to d4
+because it matches the presidential
+more times than d3.
+Second, intuitively matching
+presidential should be more important
+than matching about, because about is
+a very common word that occurs everywhere.
+It doesn't really carry that much content.
+So, in this lecture,
+let's see how we can improve the model
+to solve these two problems.
+It's worth thinking at this point about
+why do we have these four problems.
+If we look back at
+the assumptions we have made
+while substantiating the Vector
+Space Model, we will realize that
+the problem is really coming
+from some of the assumptions.
+In particular, it has to do with how we
+place the vectors in the vector space.
+So then, naturally,
+in order to fix these problems,
+we have to revisit those assumptions.
+Perhaps, you will have
+to use different ways to
+instantiate the Vector Space Model.
+In particular, we have to place
+the vectors in a different way.
+So, let's see how can we prove this?
+Well, our natural thought is in order
+to consider multiple times of a term
+in a document.
+We should consider the term frequency
+instead of just the absence or presence.
+In order to consider the difference
+between a document where a query
+term occurred multiple times and the one
+where the query term occurred just once.
+We have to concede a term frequency,
+the count of a term being in the document.
+In the simplest model, we only model
+the presence and absence of a term.
+We ignore the actual number of times
+that a term occurs in a document.
+So let's add this back.
+So we're going to do then represent
+a document by a vector with
+term frequency as element.
+So, that is to say, now,
+the elements of both the query vector and
+the document vector will not be zero once,
+but
+instead there will be the counts of
+a word in the query or the document.
+So this would bring additional
+information about the document.
+So this can be seen as a more accurate
+representation of our documents.
+So, now let's see what the formula
+would look like if we change
+this representation.
+So as you see on this slide,
+we still use that product, and,
+so the formula looks
+very similar in the form.
+In fact, it looks identical, but
+inside of the sum of cos xi and
+yi are now different.
+They're now the counts of words
+i in the query and the document.
+Now at this point, I also suggest you
+to pause the lecture for moment and
+just we'll think about how we have
+interpret the score of this new function.
+It's doing something very similar
+to what the simplest VSM is doing.
+But because of the change of the vector,
+now the new score has
+a different interpretation.
+Can you see the difference?
+And it has to do with
+the consideration of multiple
+occurrences of the same
+time in the document.
+More importantly, we''ll try to know
+whether this would fix the problem of
+the simplest vector space model.
+So, let's look at the this example again.
+So suppose, we change the vector
+to term frequency vectors.
+Now, let's look at these
+three documents again.
+The query vector is the same because
+all these words occurred exactly once
+in the query.
+So the vector is still 0 1 vector.
+And in fact,
+d2 is also essential in representing
+the same way because none of these
+words has been repeated many times.
+As a result, the score is also the same,
+still three.
+The same issue for d3 and
+we still have a 3.
+But d4 would be different, because now,
+presidential occurred twice here.
+So the end in the four presidential in
+the [INAUDIBLE] would be 2 instead of 1.
+As a result, now the score for
+d4 is higher.
+It's a four now.
+So this means, by using term frequency,
+we can now rank d4 above d2 and
+d3 as we hope to.
+So this solve the problem with default.
+But, we can also see that d2 and
+d3 are still featured in the same way.
+They still have identical scores,
+so it did not fix the problem here.
+So, how can we fix this problem?
+We would like, to give more credit for
+matching presidential than matching about.
+But how can we solve
+the problem in a general way?
+Is there any way to determine which word
+should be treated more importantly and
+which word can be, basically ignored.
+About is such a word.
+And which it does not really
+carry that much content,
+we can essentially ignore that.
+We sometimes call such a word,
+a stock word.
+Those are generally very frequent and
+they occur everywhere,
+matching it, doesn't really mean anything.
+But computation how can we capture that?
+So again, I encourage you to
+think a little bit about this.
+Can you come up with any
+statistical approaches to somehow
+distinguish presidential from about.
+If you think about it for
+a moment, you realize that,
+one difference is that a word
+like above occurs everywhere.
+So if you count the currents of the water
+in the whole collection that we
+would see that about as much higher for
+this than presidential, which it tends
+to occur only in some documents.
+So this idea suggests
+that we could somehow
+use the global statistics of terms or
+some other formation to try to
+down weight the element for
+about in the vector representation of d2.
+At the same time,
+we hope to somehow increase the weight
+of presidential in the vector of d3.
+If we can do that, then,
+we can expect that d2 will get
+the overall score to be less than three,
+while d3 will get the score about three.
+Then, we'll be able to
+rank d3 on top of d2.
+So how can we do this systematically?
+Again, we can rely on some
+steps that people count.
+And in this case, the particular idea is
+called the Inverse Document Frequency.
+We have seen document frequency.
+As one signal used in,
+the moding retrieval functions.
+We discussed this in a previous lecture.
+So here's the specific way of using it.
+Document frequency is the count of
+documents that contain a particular term.
+Here, we say inverse document frequency
+because we actually want to reword a word
+that doesn't occur in many documents.
+And so, the way to incorporate this
+into our vector [INAUDIBLE] is
+then to modify the frequency
+count by multiplying
+it by the idea of the corresponding
+word as shown here.
+If we didn't do that,
+then we can penalize common
+words which generally have a low idea of,
+and
+reward real words,
+which we're have a higher IDF.
+So most specific [INAUDIBLE] IDF
+can be defined as the logarithm
+of M plus one divided by k,
+where M is the total number of
+documents in the collection,k is df or
+document frequency.
+The total number of documents
+containing the word W.
+Now, if you plot this
+function by varying k,
+then you will see the curve
+that look like this.
+In general, you can see it
+would give a higher value for
+a low DF word, a rare word.
+You can also see the maximum value
+of this function is log of M plus 1.
+Will be interesting for you to think about
+what's minimum value for this function?
+This could be interesting exercise.
+Now, the specific function
+may not be as important as
+the heuristic to simply
+penalize popular terms.
+But it turns out this particular
+function form has also worked very well.
+Now, whether there is a better
+form of function here,
+is the open research question.
+But, it's also clear that if we use
+a linear kernalization like what's
+shown here with this line, then, it may
+not be as reasonable as the standard IDF.
+In particular, you can see
+the difference in the standard IDF,
+and we,
+somehow have a [INAUDIBLE] point here.
+After this point, we're going to say these
+terms are essentially not very useful.
+They can be essentially ignored.
+And this makes sense when the term
+occurs so frequently, and
+let's say a term occurs in more
+than 50% of the documents.
+Then the term is unlikely very important
+and it's, it's basically, a common term.
+It's not very important to match this
+word, so with the standard IDF, you can
+see it's, basically, assumed that they all
+have lower weights, there's no difference.
+But if you look at the linear
+kernelization, at this point there is,
+there's some difference.
+So intuitively, we want to focus more
+on the discrimination of low DF words,
+rather than these common words.
+Well, of course, which one works better,
+still has to be validated
+by using the empirically related data set.
+And we have to use users to
+judge which results of that.
+So now let's see how this
+can solve problem two.
+So now,
+let's look at the two documents again.
+Now without IDF weighting, before,
+we just have [INAUDIBLE] vectors,
+but with IDF weighting we
+now can adjust the DF weight
+by multiplying the, with the IDF value.
+For example here, you can see is
+the adjustment in particular for
+about, there is an adjustment
+by using the IDF value of about
+which is smaller than the IDF
+value of presidential.
+So if you look at these,
+the IDF will distinguish these two words.
+As a result, adjustment here would be
+larger, would make this weight larger.
+So if we score with these new vectors, and
+what would happen is that the, of course,
+they share the same weights for news and
+the campaign, but the margin of about and
+presidential with this grouping may.
+So now as a result of IDF weighting,
+we will have d3 to be ranked above d2.
+Because it matched rail word,
+where as d2 matched common word.
+So this shows that the idea of
+weighting can solve problem two.
+So, how effective is this model in
+general when we use TF-IDF weighting?
+Well, let's look at all these
+documents that we have seen before.
+These are the new scores
+of the new documents.
+But how effective is this
+new weighting method and
+new scoring function, all right?
+So now let's see overall how effective
+is this new ranking function
+with TF-IDF Weighting?
+Here, we show all the five documents
+that we have seen before, and
+these are their scores.
+Now, we can see the scores for
+the first four
+documents here seem to
+be quite reasonable.
+They are as we expected.
+However, we also see a new problem.
+Because now d5, here,
+which did not have a very high
+score with our simplest
+vector space model.
+Now, after it has a very high score.
+In fact, it has the highest score here.
+So, this creates a new problem.
+This actually a common phenomenon
+in designing material functions.
+Basically, when you try
+to fix one problem,
+you tend to introduce other problems.
+And that's why it's very tricky how
+to design effective ranking function.
+And what's what's the best ranking
+function is the open research question.
+Researchers are still working on that.
+But in the next few lecture, we're
+going to also talk about some additional
+ideas to further improve this model and
+try to fix this problem.
+So to summarize this lecture,
+we've talked about how to
+improve this vector space model.
+And we've got to improve the [INAUDIBLE]
+of the vector space model based on
+TF-IDF weighting.
+So the improvement, most of it,
+is on the placement of the vector.
+Where we give higher weight to a term
+that occurred many times in the document,
+but infrequently in the whole collection.
+And we have seen that this improved
+model indeed works better than
+the simplest vector space model, but
+it also still has some problems.
+In the next lecture,
+we're going to look at the how to
+address these additional problems.
+[MUSIC]
+

@@ -1,0 +1,178 @@
+So that was a recap of how we can use the 
+IBM models to derive these alignments on 
+training data sentences. 
+In reality, though, there are two 
+problems. 
+Firstly, these alignments are often 
+rather noisy. 
+So, over much of these alignments look 
+good, they are, they often contain noise 
+or erroneous alignments. 
+And secondly, these alignments are 
+many-to-one. 
+What I mean by that is that, each word in 
+the foreign language is aligned to 
+exactly one word in the English language. 
+Okay? 
+So we may have, we think about the 
+English and the foreign languages, each 
+word on the foreign side is aligned to 
+exactly one word on the English side. 
+So many words on this side may be aligned 
+to one word on this side, but we 
+certainly can't, for example, have a 
+particular English word. 
+Or we can't have alignments like this 
+where multiple English words are aligned 
+to the same foreign word. 
+This is ruled out. 
+We have to constrain that each foreign 
+word is like exactly one English word. 
+And this isn't necessarily realistic. 
+In many examples, you'll find that this 
+constraint is not realistic. 
+So, a number of heuristics have been 
+developed to try to get around these kind 
+of problems. 
+first is to try and make these alignments 
+more robust, somehow reduce the noise, 
+and secondly, to somehow get around this 
+constraint that the, the, the, alignments 
+are many-to-one and, in particular, to 
+try to move two alignments, which are 
+many-to-many. 
+So we might, for example, have alignments 
+like this where some foreign words are 
+aligned to multiple English words. 
+And similarly, some English words are 
+aligned to multiple French words. 
+So the, here's how this is generally 
+done. 
+The trick is that we can make the 
+observation that the IBM models can be 
+trained in both directions. 
+So we can train a model for the condition 
+of probability of a French sentence given 
+the English, this is what we've seen so 
+far, but I can also just reverse the two 
+languages and train a model for English 
+given French. 
+And we can find the most likely alignment 
+under each of these models in each of 
+these two directions. 
+And now, we're going to have two 
+different alignments for each training 
+example. 
+And the intersection of these alignments 
+turns out to be a very reliable starting 
+point for the alignment process. 
+Let me illustrate this with an example. 
+So here is the sentence pair we've seen 
+earlier, the Spanish sentence and the 
+English sentence, so f in this case is 
+Spanish. 
+It's a foreign string and e is English. 
+And this is the alignment I showed you 
+earlier derived from IBM 2 model of f 
+given e. 
+So notice that this satisfies the 
+constraint that each foreign word is 
+align to a single English word. 
+It's a single point in each of these 
+columns specifying the alignment for each 
+of foreign words. 
+Here's the alignment from the reverse 
+model, so I can train an IBM model, 2 
+model for this language pair, but going 
+in the opposite direction where I modeled 
+the conditional probability of the 
+English given the Spanish. 
+And from that, I can again derive the 
+most likely alignment. 
+And now, notice that this alignment has 
+the constraint that each English word is 
+aligned to a single Spanish word, so if I 
+look at any row of this matrix, there's a 
+single dot in each row specifying the 
+Spanish word that this English word was 
+aligned to. 
+So these are the two alignments. 
+Now, we can consider the intersection of 
+these two alignments. 
+So at certain alignment points, for 
+example this one, are seen in both 
+alignments and they constitute the 
+intersection. 
+So there's this one here, this one here. 
+If we look further, we see this one is 
+also in both alignments. 
+This one is in both alignments. 
+This one is and this one is. 
+So some set, subset of the points in 
+these two alignments are going to be seen 
+in both, and that subset is the quotes 
+intersected alignment. 
+Okay? 
+Now, in practice, what has been found is 
+that these intersected alignments tend to 
+be quite reliable, and so they're very 
+useful they're a very useful starting 
+point for a process, which is then going 
+to grow the alignments. 
+Okay, so what we'll see next is that 
+we'll see a process that considers, we 
+put a cross by all the points which are 
+not seen in both alignments. 
+I'm going to just circle these. 
+Okay, so these circled points are in both 
+alignments. 
+And then, there are some points which are 
+in neither alignment. 
+These one, two, three, four points, 
+sorry, are in one alignment, but not the 
+other alignments. 
+Okay? 
+So, what we'll see is that there are 
+methods, which basically start with these 
+intersected alignments and start adding 
+back in some of these points. 
+So I don't want to go into detail about 
+how this process works. 
+but let me give you a sketch of this. 
+we only explore alignment points which 
+occur in one alignment or the other 
+alignment. 
+We add one alignment point at a time. 
+We only add alignment points, which align 
+a word that currently has no alignment. 
+And at first, we restrict ourselves to 
+alignment points that are neighbors, 
+they're adjacent or diagonal of current 
+alignment points. 
+I'll try to post as, link to some papers 
+on this process if you want to read about 
+it in more, in more detail in the class. 
+But here's an example of the kind of 
+final alignment you might get using these 
+heuristics, which start with the 
+intersect alignments and then add in some 
+points in the union of these two 
+alignments. 
+So this is our final alignment matrix. 
+And notice, that the alignment is no 
+longer many-to-one, okay? 
+There are some English words which are 
+aligned to multiple Spanish words. 
+And similarly, there are some Spanish 
+words that are aligned to multiple 
+English words. 
+So to recap, the motivation for this is 
+these two problems. 
+One, that alignments are often noisy, and 
+two, that there are many-to-one. 
+And what we now have, hopefully, is a set 
+of many-to-many alignments which are more 
+reliable than taking alignments from 
+simply one direction or one model pfe or 
+pef alone. 
+

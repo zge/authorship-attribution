@@ -1,0 +1,233 @@
+Welcome back, to the course on audio
+signal processing for music applications.
+This week we are talking about
+the short-time Fourier transform and
+the Spectrogram is basically
+the output of the STFT,
+is the visualization of the time
+varying spectra that we compute.
+So, in this demonstration class
+I want to use the Spectrogram,
+the Short Time Fourier Transform,
+to analyze a voice sound, so
+that we can understand better the STFT and
+at the same time understand
+better a given sound.
+So we'll start with the SonicVisualizer.
+And this is the sound I
+want to analyze.
+It's a note of a soprano singing,
+let's hear that.
+[MUSIC]
+Okay, that's a quite high pitch sound.
+And it has quite a bit of vibrato,
+this frequency oscillation that is
+characteristic of operatic singing.
+And to understand a little better
+the sound let's open the spectogram, so
+let's open the pane on the spectogram.
+So here it is.
+we see now clearly some
+information of this voice sound.
+And we see these horizontal lines
+that correspond to the harmonics and
+we see this oscillation, which is
+basically this vibrato that is present.
+To go a little deeper,
+let's open another pane,
+with a single spectrum of this
+time varying spectrogram.
+So let's first show 
+in a linear scale in
+the horizontal axis.
+Let's have lines as interpolation and
+the window,
+let's use the same window then for
+the STFT so we'll use 1,024.
+Okay, and this is it.
+Let's maybe make it, zoom in and stretch so
+that we see same things that we
+would see in the spectrogram, okay?
+So this is one slice of the spectrogram,
+all these horizontal lines correspond
+to these peaks that we see here.
+Okay.
+And now maybe let's change things.
+Let's change for example
+the window size.
+If we change to 256 both analysis.
+Okay, now what we're seeing
+is a much smoother shape.
+We're not seeing the individual harmonics.
+We're just seeing an overall shape
+which basically corresponds to
+what we call the formants,
+the resonances of the vocal tract,
+which is what makes us be able to
+distinguish between vowels, for example.
+So each vowel has a characteristic
+formant structure.
+Of course if we move things
+will change a little bit but
+of course the vowel will remain the same
+so it will not change that much.
+If we go back to the analysis size
+hat allows us to visualize the harmonics,
+and when we move, well we see
+few more changes because the harmonics
+are changing more than just the formants.
+Okay, so now if we want to change
+the type of window, we can go to the
+Preferences, and in the Analysis tab.
+Let's put this away from this,
+here in the last option we
+see the window,
+the Analysis window to be used, okay.
+Currently is the Blackman window,
+let's change for
+example to Rectangular window.
+Which is the the square that will
+cut the signal, very abruptly.
+Let's apply that.
+Okay, so clearly, it doesn't look so nice.
+A single spectrum looks with quite a lot kind of
+noise, the noise floor is very high.
+So, we see very few of the harmonics.
+And in the spectrogram we see these
+vertical lines, which is a kind of
+a distortion of it.
+so that's clearly not that good so
+we definitely would prefer for
+this sound the Blackman window.
+Okay, now let's do the same kind
+of analysis, using the sms-tools.
+with the sms-tools we have 
+the single spectrum
+using the DFT option, or the time varying
+spectrogram using the STFT option.
+So let's first start
+with a single spectrum.
+Let's go to the soprano sound.
+So soprano-E4.
+Okay.
+Then let's analyze the middle
+of the sound, like 0.5, and
+let's use the same values
+that we used before.
+1,024 for both FFT-size and
+window-size with the Blackman window.
+And we can compute.
+Okay, and
+this is basically what we saw before.
+This is the 1,024 samples
+we have started with.
+This is the magnitude and phase spectrum.
+And we see clearly the peaks
+corresponding to the harmonics.
+And in here we see the phase spectrum
+which we didn't see before and
+also we see the inverse of this.
+So, this is the windowed signal
+that we generate back by
+taking the inverse FFT of this spectrum.
+And of course we can do the same thing.
+We can change windows, for example
+if we change the window size to 256.
+And also the FFT size, 256, and
+the same location we
+compute, we see much less samples.
+The spectra are much smoother,
+less information there.
+One advantage of course,
+that this interface will have
+is that we can independently control
+the window size from the FFT size.
+So, we can put the FFT size 1,024 and
+maybe a window size not that large,
+maybe 801.
+And we will Compute, okay.
+We are taking less samples than before,
+but still the frequency resolution
+is quite good,
+it's quite smooth because we have been
+doing zero padding and so
+the shape of the spectrum is quite nice.
+Let's look at all this from the
+short-time Fourier transform perspective,
+from the spectrogram.
+So we will get the same sound.
+Okay and again let's put 1,024, 1,024, 
+and the Hop size,
+has to be at least much smaller
+than the window size, in a way that
+the overlap add factor, adds correctly.
+So for 1,024, in the Blackman window,
+at least we need one-fourth.
+So let's put 256.
+And we Compute.
+Okay?
+And this is the result.
+So we have the input signal,
+the magnitude spectrogram, the phases,
+the time varying phases and
+the output sound. And the output sound
+[SOUND] is very much the same
+than the original, because we have done
+a good reconstruction with a good overlap.
+However, if this overlap
+is not correctly set, for
+example let's put the same
+than the window size, for example,
+1,024, and let's Compute it.
+Well, clearly now
+there is something wrong in the output signal,
+and if we listen to it [SOUND] okay?
+Of course, we see this modulation,
+that is at the frame rate.
+Because we are not overlapping correctly,
+so at every frame we see a burst of sound.
+And they don't balance out
+by the overlap factor.
+So, we definitely need to
+have a much smaller hop size.
+And anyway, that's all I wanted to say.
+Basically, I encourage you to play
+around with these parameters.
+You can change the window size.
+You can change the FFT size, the Hop size,
+the type of window, and in between
+the DFT and the STFT, I believe you can
+get a good grasp of all these different
+parameters and the effect they have in
+the visualization of the spectrogram.
+And also in the reconstruction
+of the signal.
+So let's just finish and okay.
+Today basically,
+we have used SonicVisualiser to analyze a
+voice sound and to visualize the
+spectrogram and the individual spectrum.
+We'll have also done the same thing
+with the interface of the sms-tools and
+of course we have used this sound, a
+soprano sound from freesound.
+So this hopefully has given you a more
+practical view on the STFT.
+And has allowed you to
+understand how useful might be
+to use this type of techniques
+to visualize a particular sound.
+In this case a soprano sound.
+Of course this is just the
+the beginning of this more analysis,
+this more complex analysis.
+So in next,
+in next demonstration class, we're
+going to analyze a more complex sound.
+And we will see how we can analyze 
+time-varying sounds that have much more
+structure and how to use these spectrogram
+analysis to get some insights on that.
+So thank you very much for your attention
+and I hope to see you next class.
+

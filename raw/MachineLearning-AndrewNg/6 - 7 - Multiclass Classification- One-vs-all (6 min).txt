@@ -1,0 +1,182 @@
+In this video we'll talk about
+how to get logistic regression to
+work for multi-class classification problems,
+and in particular I want to
+tell you about an algorithm called one-versus-all classification.
+What's a multi-class classification problem?
+Here are some examples.
+Let's say you want a learning
+algorithm to automatically put your
+email into different folders or
+to automatically tag your emails.
+So, you might have different folders
+or different tags for work email,
+email from your friends, email
+from your family and emails about your hobby.
+And so, here, we have
+a classification problem with 4
+classes, which we might
+assign the numbers, the classes
+y1, y2, y3 and
+y4 to, Another
+example for a medical
+diagnosis: if a patient
+comes into your office with
+maybe a stuffy nose, the possible
+diagnoses could be that
+they're not ill, maybe that's
+y1; or they have
+a cold, 2; or they have the flu.
+And the third and final example,
+if you are using machine learning
+to classify the weather, you know,
+maybe you want to decide that
+the weather is sunny, cloudy, rainy
+or snow, or if there's gonna be snow.
+And so, in all of these
+examples, Y can take
+on a small number of
+discreet values, maybe 1 to
+3, 1 to 4 and so on, and
+these are multi-class classification problems.
+And by the way, it doesn't really
+matter whether we index as
+0123 or as 1234, I tend
+to index that my classes
+starting from 1 rather than starting from 0.
+But either way, where often, it really doesn't matter.
+Whereas previously, for a
+binary classification problem, our data sets look like this.
+For a multi-class classification problem, our
+data sets may look like
+this, where here, I'm using
+three different symbols to represent our three classes.
+So, the question is: Given the
+data set with three classes
+where this is a the
+example of one class, that's
+the example of the different class,
+and, that's the example of yet, the third class.
+How do we get a learning algorithm to work for the setting?
+We already know how to
+do binary classification, using logistic
+regression, we know how the,
+you know, maybe, for the straight line,
+to separate the positive and negative classes.
+Using an idea called one
+versus all classification, we can
+then take this, and, make
+it work for multi-class classification, as well.
+Here's how one versus all classification works.
+And, this is also sometimes called "one versus rest."
+Let's say, we have a training
+set, like that shown on the
+left, where we have 3 classes.
+So, if y1, we denote that
+with a triangle if y2 the
+square and, if y3 then, the cross.
+What we're going to do is,
+take a training set, and, turn
+this into three separate binary classification problems.
+So, I'll turn this into three separate
+two class classification problems.
+So let's start with Class 1, which is a triangle.
+We are going to essentially create a
+new, sort of fake training set.
+where classes 2 and 3
+get assigned to the negative
+class and class 1
+gets assigned to the positive class
+when we create a new training
+set if that's showing
+on the right and we're going
+to fit a classifier, which I'm
+going to call h subscript theta
+superscript 1 of x
+where here, the triangles
+are the positive examples and the circles are the negative examples.
+So, think of the triangles be
+assigned the value of 1
+and the circles the sum, the value of zero.
+And we're just going to train
+a standard logistic regression crossfire
+and maybe that will give us a position boundary.
+OK?
+The superscript 1 here is the class one.
+So, we're doing this for the triangle first class.
+Next, we do the same thing for class 2.
+Going to take the squares and
+assign the squares as the
+positive class and assign
+every thing else the triangles and the crosses as the negative class.
+and then we fit a second logistic regression classifier.
+I'm gonna call this H of X
+superscript 2, where the
+superscript 2 denotes that
+we're now doing this:  treating the
+square class as the positive
+class and maybe we get the classifier like that.
+And finally, we do the
+same thing for the third
+class and fit a third
+classifier H superscript 3
+of X and maybe this
+will give us a decision boundary
+or give us a classifier that separates
+the positive and negative examples like that.
+So, to summarize, what we've
+done is we fit 3 classifiers.
+So, for I equals 1
+2 3 we'll fit a classifier
+H superscript I subscript theta
+of X, thus trying to
+estimate what is the
+probability that y is
+equal to class I given X and prioritize by theta.
+Right?
+So, in the first
+instance, for this first one
+up here, this classifier
+with learning to by the triangle.
+So it's thinking of the triangles as a positive class.
+So, X superscript one is
+essentially trying to estimate what is
+the probability that the Y
+is equal to one, given
+X and parametrized by theta.
+And similarly, this is treating,
+you know, the square class as
+a positive took pause so its
+trying to estimate the probability that y2 and so on.
+So we now have 3 classifiers each
+of which was trained is one of the three crosses.
+Just to summarize, what we've
+done is we've, we want
+to train a logistic regression
+classifier, H superscript I
+of X, for each plus
+i that predicts it's probably a
+y i. Finally, to
+make a prediction when we
+give it a new input x and
+we want to make a prediction,
+we do is we just
+run Let's say three
+what run our 3 of our
+classifiers on the input
+x and we then
+pick the class i that maximizes the three.
+So, we just you know, basically
+pick the classifier, pick whichever
+one of the three classifiers is
+most confident, or most enthusistically
+says that it thinks it has a right class.
+So, whichever value of i
+gives us the highest probability, we
+then predict y to be that value.
+So, that's it for multi-class
+classification and one-versus-all method.
+And with this little method
+you can now take the logistic
+regression classifier and make
+it work on multi-class classification problems as well.

@@ -1,0 +1,541 @@
+Hello again.
+This is the last segment of a rather long
+week, I have to admit.
+But it has hopefully been an informative
+one.
+In danger of stating the obvious, improved
+restoration results can be obtained
+when the restoration filter takes the
+local content of the image into account.
+The filter, in other words, is not content
+agnostic anymore.
+This should make sense conceptually.
+But it is also strongly supported by
+experimental evidence.
+So based for example on the local spatial
+activity, a
+different restoration filter is applied to
+each and every pixel.
+In this segment, we described one way to
+introduce the spatial
+adaptability of the restoration filter
+with the use of weighted norms.
+We discussed one specific way to adjust
+these
+weights based on properties of the human
+visual system.
+We introduced special adaptive restoration
+algorithms
+in terms of the iterative implementation,
+since now direct solutions, for example,
+the frequency domain, are not feasible
+anymore.
+But more importantly, because the spatial
+activity of the
+image needs to be computed from the
+available data.
+Since such data are noisy and blurred, it
+makes sense conceptually to estimate
+such activity at each iteration step based
+on the partially restored image.
+We also include in this segment an example
+of the
+effectiveness of the positivity constraint
+in restoring an impulsive signal.
+We also address the problem of the
+so-called
+ringing artifacts, which appear in
+restored images, especially with
+certain types of blurs, such as the blur
+due to motion between the camera and the
+scene.
+Developing image processing algorithms
+which are not content agnostic,
+but instead take the content of the image
+into
+account, and therefore performing a
+different filtering, processing
+operation per pixel, is of the utmost
+importance in image processing.
+It has been proven that such filters
+outperform non-adaptive, non-spatial
+adaptive filters in all applications that
+they, that they have been considered.
+We actually showed a spatially adapted
+noise
+smoothing filter when we talked about
+enhancement, and
+we would like to do the same
+here when, that we're talking about image
+restoration.
+So one of the ways to introduce spatial
+adaptivity for the
+constrained least squares filter is to
+consider this
+function phi of f that we want to find its
+roots, that is equal to what's shown here.
+So I have the fidelity of the data
+term again and the smoothness constraint
+that we've
+talked about, but though this norms are
+weighted
+by a W1 weight and a W2 weight here.
+So let's see first how the weight should
+be interpreted.
+So if I have a weighted norm of x by W,
+square this is
+simply x transpose, W transpose, Wx and
+can also be
+written as the sum, one, let's say there
+are capital N
+elements in the matrix x, W of i squared,
+xi squared.
+So here W is a diagonal matrix, with
+entries w1, w2, wN, in this particular
+example.
+So we see that the weights assign
+different importance to the elements of x.
+So now, now when I find the norm, the
+contribution of each element in
+x is not the same, but again it's weighted
+by the value of wi.
+And the wi's are all non-negative.
+So with this, then, definition, if you
+wish, of the weighted norm, we should
+be able to find the gradient with respect
+to f of the terms inside the parentheses.
+It's something we did before without the
+weights a couple of times already.
+And if we do so, the
+successive approximations based iteration
+is shown here.
+So this is the iterative algorithm that
+I'm performing now.
+If W1 equals W2 equals identity, then this
+is exactly
+the constrained least squares iteration
+that we have talked about.
+I should comment here that this iteration
+cannot be taken out
+to the discrete frequency domain even when
+H and C are block
+circulant simply because the weight
+matrices W1 and W2 are not block
+circulant and therefore, I cannot take it
+to the discrete frequency domain.
+So implementing this iteration, I could
+either implement it in
+the spatial domain or alternate between
+spatial and frequency domain.
+The convolutions are performed in the
+discrete
+frequency domain, and then we take the
+result
+back to the spatial domain to implement
+the ways and go back and forth that way.
+For the sum of the choices of these
+weights, one possible choice is to, is
+shown here,
+drawing from some experiments that were
+done to
+demonstrate the masking properties of the
+human visual system.
+According to it, high frequency
+information
+in the image masks high frequency noise.
+And, put it differently, the noise is not
+as visible
+at the edges as in the flat regions in an
+image.
+Therefore, when we perform restoration, we
+can allow noise go through at
+the edges, and the way to accomplish this
+is by setting the
+entrance of the W matrix here very small,
+close to zero, at
+the edge locations and allow them to be
+larger at the flat region.
+So if W is small, then we disable the
+smoothness constraint.
+And that's what we want to do at the
+edges.
+So this visibility matrix is calculated
+according to a formula like this.
+It's made proportional, or rather, it's
+made inversely proportional to
+the local variance of the image, sigma
+squared of f.
+So at the edges the local variance is
+high.
+Therefore, V therefore, W small therefore,
+C of f is disabled.
+We can then choose W1 is 1 minus W2,
+because
+we want with that term to kind of do the
+reverse.
+So we want to perform deconvolution at the
+edges.
+And we don't enforce that much
+deconvolution in the flat regions.
+Actually if I have a perfectly flat part
+of
+the image, then blurring it will not
+change anything.
+It will be exactly the same signal.
+So this is just one choice of W1, W2.
+People have experimented with all kind of
+other different choices.
+But the concept when it comes to
+deconvolution that we are discussing here
+is
+again, to not perform smoothing at the
+edges, therefore sharp edges will be
+restored.
+And it will be noisy but that's fine.
+The noise will not be visible while we
+want
+to smooth out the noise in the flat
+regions.
+Now a question is how do we calculate the
+V here, for example, the local activity.
+All we have available is y, which is a
+noisy image.
+So we can work with that and try to remove
+noise and then find the local activity.
+Or alternatively, we can update these
+matrices as the iteration progresses.
+So in other words, we can make this
+matrices functions of K.
+So I could put a K here, a K here and all
+the weights.
+Which exact, which, again, all this means
+is
+that at each iteration, I apply my
+estimation of
+the local variance, and then the
+visibility function, then
+W1, whatever the formula is to update
+these matrices.
+So let's see, now, how this filter
+performs in restoring an image.
+So here is one implementation of the
+specially adaptive CLS filter that I just
+mentioned.
+So this is the noise blurred image I've
+been working with.
+This is the adaptively restored image.
+This is the CLS image that both are, are
+implemented in an iterative fashion.
+By comparing the two, we see that there's
+a finer
+control between noise amplification and
+sharpness in the adaptively restored
+image.
+The edges are considerably well-restored,
+while the noise has been suppressed.
+In the CLS image I, we don't have this
+control.
+The edges are sharp, but there's a lot of
+noise amplification.
+Here we show the visibility function,
+computed
+by finding the local variance in the
+image.
+It's like an edge detector so black are
+the small value,
+so at the edges, the weight for the
+smoothness term is small.
+Therefore, the smoothness term is, is
+disabled and it's,
+it's high values, wide values in the flat
+regions.
+And here finally we show the difference,
+the absolute difference, between
+the two restorations, the spatially
+adaptive and the non spatially adaptive.
+We see that they different at the edges,
+which is
+also something we can visual, visually
+confirm, but also there is
+a lot of noise in the, in the difference,
+which
+is the noise that we see amplified in the
+CLS restoration.
+Actually both the visibility function and
+this difference are marked
+in the 32 to 255 range linearly for
+visualization purposes.
+So the, the spatial adaptive filter is a
+rather powerful framework, you might
+say, but it's success depends on the
+appropriate choice of those W1, W2
+matrices.
+They can be done once at the beginning, or
+they can also be updated as the iteration
+progresses.
+Of course, as the issue of proving the
+convergence of the algorithm when the
+weights are updated.
+But there is work in that direction, as
+well.
+You try to linearize this non linear
+function.
+You try to optimize.
+And there are some convergence results as
+well.
+We want to demonstrate here with a simple
+example, that the positivity constraint
+that we mentioned earlier can be a
+powerful constraint when it comes to
+restoration.
+So here is a toy one dimensional signal.
+It consists of three impulses.
+It is blurred by this one D motion
+blur over eight samples that we have been
+using.
+And this is the observation.
+Clearly since these two impulses are close
+together, they are not distinguishable
+anymore, after blurring.
+And also the intensities here, the values
+rather,
+are small because the motion blur is
+normalized.
+If I run the iteratively squares algorithm
+with the positivity constraint, which
+means that at each iteration step, the
+negative values of the restored
+signal are set to zero, are clipped, then
+I'm able to obtain
+a perfect restoration, perfect recovery of
+the three pulses as shown here.
+If I run the iterative least squares
+without the
+positivity constraint, then this is the
+result we obtain.
+The three impulses are still picked out
+but their
+height is not the correct one, and then
+clearly
+there's a lot of activity in the rest of
+the signal that should have been equal to
+zero.
+It should also be clear that applying the
+positivity constraint at the end after the
+algorithm
+converges to a result like this, is not
+the same as applying a digit iteration
+step.
+Because clearly here if I set the negative
+values equal to
+zero at this signal, I'm not going to
+obtain this signal.
+You recall that in a number restoration
+examples
+we showed, these so called ringing
+artifacts are present.
+So an edge here, a sharp edge propagates
+as shown here for example.
+So you see a couple of artificial,
+nonexisting edges.
+If we look at these images and
+measure this distance between these
+replications of the
+edges these are equal to eight pixels,
+which
+is the length of degradation, the motion
+blur.
+And as expected, the ringing artifacts are
+a function, should
+be a function of the impulse response of
+the degradation system.
+So here's a simple analysis of what takes
+place.
+H i, j is the impulse response of
+degradation system r i, j
+the impulse response of the restoration
+filter, the convolution, we call it s all.
+And in essence, s all is convolved with
+original image to give us the restored
+image.
+So if things were ideal, then h should
+be the convolutional inverse of r, and
+therefore s all should be just a delta.
+If we take this to the frequency domain,
+then s all u, v should be equal to 1.
+So the ringing artifacts are due to the
+fact that there are
+deviations from the delta, as we'll see in
+a simple example next.
+[BLANK_AUDIO].
+So for the the degradation we've been
+using throughout
+the presentation, one D motion blur over
+eight pixels.
+We show here the frequency response of
+the overall system when direct inversion
+is used.
+So it can match in the restoration filter
+exactly the
+inverse of all frequency values of the
+frequencies response of
+the degradation except at the locations of
+the zeros, since
+the inverse filter is zero at those
+locations as well.
+I performed here a generalized inverse.
+So this frequency response is one at all
+frequencies exact, except exact zeros.
+If I take this signal now to the spatial
+domain, I obtain this.
+It's a delta almost equal to one here, but
+we also see we have
+this train of smaller impulses that are
+eight pixels away.
+[BLANK_AUDIO].
+So as already mentioned, it's this impulse
+response that will convolve
+the original image to give us an estimate
+of the original image.
+So if I'm eight pixels away from an edge,
+I will find
+the exact value of the intensity of the
+image at that location.
+However, I will have a replica of the edge
+due to this little impulse.
+If I move 16 pixels away, I have a second
+replica, the second impulse, and so on.
+The good news, you might say, is that
+these impulses are small, and
+therefore the ringing artifacts will not
+be really pronounced.
+The bad news, of course, is that such a
+direct inversion amplifies noise.
+So if we look now at the frequency
+response of the overall
+system when a least squares filter is
+performed iteratively, here's what we see.
+It's exactly zero at the zeroes of the
+sync function.
+However, close to those frequencies, we
+see that
+the values are not exactly equal to one.
+Because, as we mentioned, those, the
+values of those
+frequencies close to zero, they will not
+be fully restored.
+Would not be equal to the direct inverse
+since also is a
+low rate of convergence towards the
+inverse field at those frequency
+locations.
+So if I take this back to the spatial
+domain, I
+see this picture, so the impulse is not
+exactly at one now.
+But also, this train of impulse I had
+before, it tapers off, but
+the values of these impulses close to the
+big impulse are now larger.
+Again the spacing is eight pixels.
+So, if I convolve now this impulse
+response
+with the original image, I do see that,
+eight pixels away from an edge, I will
+have a pronounced edge due to this
+impulse.
+16 pixels, I will have another replica to
+this impulse, and
+after two or three impulses, the ringing
+artifacts will fade out.
+And this is exactly what we observed in
+the image I showed in the previous slide.
+So with an iterative least squares filter
+here, we
+deviate from the delta or deviate from one
+here, and
+this gives rise to ringing artifacts, but
+at the
+same time this way we can control the
+noise amplification.
+So there's this important engineering
+trade off that
+takes place when I compare the various
+filters.
+So we reach the mid point of the course.
+You've just completed 50% of the material.
+My warmest congratulations to all of you.
+During the sixth week, we learned that
+the recovery problems encountered in
+practice, which
+come with different names such as
+restoration,
+super-resolution, and [INAUDIBLE]
+sharpening are all inverse problems.
+We had actually discussed in detail
+another inverse problem,
+that of motion estimation, earlier in
+class during week four.
+We established a notation for being able
+to represent images
+as vectors and the degradation equation in
+matrix vector form.
+This representation allows to model and
+provide restoration solutions to
+a larger class of problems than the
+restoration to convolution problem.
+It provides us also with the flexibility
+of
+utilizing a number of optimization
+techniques from the literature.
+We then discussed three widely used
+approaches for solving the image
+restoration problem.
+The simplest possible one is the least
+squares approach, also referred to as
+inverse filtering.
+The
+extension of least squares is constrained
+least squares, with which
+prior knowledge about the solution is
+incorporated into the solution process.
+This is also an application of the theory
+of regularization.
+Finally a general fro-, framework was also
+presented, the set theoretic estimation
+approach, which
+is applicable to solving various other
+recovery
+problems in addition the the restoration
+problem.
+This is of course the case with the other
+methods
+we've discussed, such as least squares and
+constrained least squares.
+A specific synthetic image was used
+throughout the presentation, so as to
+easily demonstrate the relative advantages
+and shortcomings of each method.
+As you saw, the topic of recovery is
+rather
+mathematical, drawing material from linear
+algebra, estimation theory, optimization
+ect.
+Again even if not all the derivations and
+algorithmic details
+are crystal clear to you, you still can
+have some
+good basic understanding of the approaches
+and be able to
+make immediate use of them in your work
+and study environments.
+Although equipped a knowledge acquired
+this week you should
+be able to provide the solution to any
+inverse
+problem, we will continue next week on the
+same
+topic since it is a rich and important
+one.
+So, see you next week.
+

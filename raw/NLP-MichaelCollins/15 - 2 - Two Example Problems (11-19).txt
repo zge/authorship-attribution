@@ -1,0 +1,272 @@
+So the first example problem I'm going to 
+use to motivate log linear models is the 
+Language Modeling Problem, which we saw 
+right at the start of this class. 
+So just to recap quickly, the problem is 
+as follows. 
+We define w sub i to be the ith word in a 
+document, and then, our task is to 
+estimate a distribution. 
+This is the conditional distribution over 
+wi given the context or history which is 
+the previous i minus 1 words. 
+So here's one example, this is a passage 
+taken, taken from Chomsky from the 1950s. 
+So say we have this sequence of i minus 1 
+words, our task is to estimate a 
+distribution over the word that appears 
+at the ith position at wi. 
+Now, of course, one model we studied 
+extensively in the schools was the idea 
+of a trigram language model. 
+So again, just a quick recap on this, so 
+a trigram estimate is defined as follows. 
+We define this, this estimate of a 
+probability of, of a particular word, say 
+model and given the previous context. 
+So, this is the word we're trying to 
+predict, this is wi. 
+we defined that as a combination of three 
+maximum likelihood estimates, assuming 
+that we're using smoothing. 
+So we have the maximum likelihood 
+estimate of model given that the previous 
+two words are any and statistical. 
+We have the maximum likelihood estimate 
+of model, given just the word 
+statistical, and then finally, we have 
+the so-called unigram estimate of just 
+the probability of seeing model 
+conditioned on no context. 
+And of course, these maximum likelihood 
+estimates are defined as ratios of 
+counts, as we've seen here. 
+So if I want to estimate the probability 
+of some y given some context x, I take 
+the ratio of these two counts and these 
+lambdas. 
+These three values lambda 1, lambda 2, 
+lambda 3 dictate the relevant, relative 
+weight of these three estimates. 
+These lambdas are positive and they sum 
+to 1. 
+So that's a trigram language model, you 
+should be very familiar with those at 
+this point in the class but they have 
+some very clear deficiencies. 
+Okay, so these models make use of only 
+bigram trigram, and unigram estimates. 
+Okay, so they basically restrict 
+themselves to a very small window, 
+conditioning only on the previous two 
+words in the context. 
+And if we think back to that passage, 
+there could be all kinds of quote 
+features of the context, which could be 
+useful in predicting the distribution 
+over the next word. 
+So, for example, we might want to come up 
+with an estimate that conditions on the 
+fact that the word two backs the word two 
+positions back is the word any. 
+notice that we've, in some sense, skipped 
+over wi minus 1 in this case and just 
+looked at the word to back. 
+We might condition on the fact that the 
+previous word is an adjective, so that 
+gives us a coarser estimate which ignores 
+the exact identity of the previous word. 
+but it is an estimate that we might only 
+be able to make roughly reliably given 
+the amount of data we have. 
+We might condition on the previous word 
+ending on a particular suffix or prefix, 
+for example, ical. 
+We might condition on the author of the 
+entire article. 
+That's likely to influence this 
+distribution and we might condition on 
+long range features. 
+So we might, for example, condition on 
+the fact that the word model the fact 
+that it doesn't occur somewhere in the 
+previous context. 
+Or we might condition on the fact that 
+some other word, for example grammatical, 
+occurs somewhere in the previous context. 
+Notice critically, these features, and 
+actually also this feature, in some 
+sense, go beyond just the two, previous 
+words of context to either consider the 
+entire document or some meter information 
+about the document, for example the 
+document's author. 
+The point being that all of these 
+estimates could provide useful 
+distribution useful information about the 
+distribution of the next word and the 
+document, all of these features of the 
+context could be useful in estimating 
+this distribution. 
+And of course, the trigram model ignores 
+all of the information that I've shown 
+you down here. 
+So lets just imagine that were trying to 
+define this estimate probability of this 
+particular word model, given the previous 
+i minus 1 words in the document. 
+And we want to incorporate all of these 
+pieces of information that I just showed 
+you. 
+So, one natural first attempt at this 
+would be to define a smoothed model 
+that's very similar to the trigram models 
+that we'd seen earlier in the class or 
+rather similar to the smoothing methods 
+we'd seen for those models. 
+So I could take these nine different 
+maximum likelihood estimates that I've 
+shown you here. 
+So here, I have the regular trigram, 
+bigram, unigram estimate. 
+Here, I condition on the word to that 
+being any, the condition on the last word 
+being an adjective. 
+a condition on the author, the presence 
+or absence in modeling the context. 
+The presence or absence of grammatical in 
+the context. 
+I take all of these estimates and I 
+simply take a linear interpolation of 
+these estimates, so I have now 
+parameters, smoothing parameters. 
+This lambda 1, lambda 2, lambda 3, up to 
+lambda 9, and these will all great link 
+to 0 and they sum to 1. 
+Okay? 
+So, I wanted to go through this as a 
+thought experiment, as a first way that 
+you might try to build a model that makes 
+use of all this different information. 
+In practice, this kind of approach 
+quickly becomes extremely unwieldy. 
+And, in fact, is beset by all kinds of 
+practical problems, really makes it a 
+non-starter. 
+So while this method, a trigram language 
+model that may use just these three 
+estimates and these are three definitions 
+of contexts that works quite well. 
+Once you try to extend these models to 
+include different types of feature, they 
+become extremely unwieldy. 
+As we'll see, log linear models, a very 
+clean and I think very elegant solution 
+to this problem of incorporating multiple 
+sources of information in these 
+estimates. 
+So here is a second, very important 
+motivating example for log linear models 
+and that's the problem of tagging. 
+Specifically, in this example, we're 
+going to look again at part of speech 
+tagging. 
+So as a recap, the problem here is to 
+take some sentence, sentence, some 
+sequence of words as input. 
+And to map this to a representation where 
+each word has an associated tag, for 
+example, n for a noun, v for a verb, p 
+for a preposition, and so on and so on. 
+So here is a natural estimation problem 
+associated with this this particular 
+problem. 
+Okay? 
+So if we take a particular word in a 
+sentence, our task is going to be to 
+estimate a distribution over the possible 
+tags at that position. 
+So again, that might be 40 or 50 possible 
+part of speech tags. 
+So, ti is going to be the ith tag of the 
+sequence, and we'll use wi to refer to 
+the ith word in the sequence. 
+Okay? 
+So we're going to try to estimate the, 
+the distribution over potential tags of 
+the ith position, that's t i. 
+Now, under the definition of the problem 
+I'm going to give you here, we're 
+going to condition on two things. 
+Firstly, we can potentially condition on 
+any information in the entire sentence, 
+so w1 through wn. 
+Here's the input sentence. 
+And secondly, we can condition on any 
+information in the previous i minus 1 
+tags. 
+So in this particular case, t1 through ti 
+minus 1 is equal to the tag sequence NNP 
+up here or V, VB, DT, [UNKNOWN] JJ. 
+So that's actually a sequence of length 
+five. 
+We're trying to estimate probability of 
+t6, given this previous sequence of tags, 
+and the entire sentence as input. 
+Okay, so this looks slightly different 
+from the kind of parameters you saw in 
+hidden Markov models for tagging. 
+But we'll see a little later that if we 
+can come up with accurate estimates of 
+these conditional probabilities, then 
+they lead to a very direct and very 
+powerful tagging model, which is an 
+alternative to the, the problem it well, 
+is an alternative to the hidden Markov 
+models we've seen earlier in this course. 
+So again, the thing to realize here is 
+that in coming up with this estimate, we 
+could look at all kinds of features of 
+the history or context. 
+Okay, so if we look at this particular 
+example here, where we're trying to tag 
+the word base. 
+So we're trying to estimate a 
+distribution of the tags at this 
+position. 
+We can look at various things to say 
+we're trying to estimate the probability 
+of seeing the word base tagged as an NN, 
+that's a common noun, singular noun in 
+English. 
+We can condition on the fact that the 
+current word being tagged is the word 
+base or we could condition on the fact 
+that the previous tag ti minus 1 is the 
+tag JJ. 
+Or, we could condition on prefix or 
+suffix information about the word being 
+tagged. 
+So I could condition on the fact that wi 
+ends in the single letter e or the fact 
+that wi ends in the pair of letters s 
+followed by e. 
+I could condition on surrounding words, 
+in this case. 
+I could condition on the fact the 
+previous word is important or I could 
+condition on the fact that the next word 
+is the word from. 
+So again, if we continue with this 
+example, anyone of these features of the 
+previous context could be useful in 
+predicting the distribution over the tag 
+at the ith position. 
+And we could, once again, come up with a 
+method based on linear interpolation. 
+The old method for smoothing we saw 
+within the context of trigram language 
+models, but it would quickly become 
+really unwieldy as you incorporate more 
+and more sources of information. 
+

@@ -1,0 +1,279 @@
+In this video, I'll talk about why it's
+difficult to learn sigmoid belief nets.
+And then in the following two videos, I'll
+describe two different methods we
+discovered that allow us to do the
+learning.
+The good news about learning in sigmoid
+belief nets is that unlike Boltzmann
+machines, we don't need two different
+phases.
+We just need what in a Boltzmann machine
+would be the positive phase.
+That's because sigmoid belief nets are
+what is called locally normalized models.
+So we don't have to deal with a partition
+function or its derivatives.
+Another piece of good news about Sigma
+belief nets, is that if we could get
+unbiased samples from the posterior
+distribution over the hidden units, given
+the data vector, Then learning would be
+easy.
+That is, we could follow the gradient
+specified by maximum likelihood learning,
+in a mini batch stochastic kind of way.
+The problem is that it's hard to get
+unbiased samples, from the posterior
+distribution over the hidden units.
+This is largely due to a phenomenon that
+Judeo Po calls explaining away.
+And I'll explain, explaining away in this
+video and it's important to understand it.
+Now, I'm going to talk about why it's
+difficult to learn sigmoid belief nets.
+As we've seen, it's easy to generate an
+unbiased sample, once you've done the
+learning.
+That is, once we've decided on the weights
+and the network, we can easily see the
+kinds of things the network believes in by
+generating samples from this model.
+This is done top down, one layer at a
+time.
+It's easy, because it's a causal model.
+However, even if we know the weights, it's
+hard to infer the posterior distribution
+over hidden causes when we observe the
+visible effects.
+The reason for this is that the number of
+possible patterns of hidden causes is
+exponential in the number of hidden nodes.
+It's hard even to get a sample from the
+posterior, which is what we need if we're
+going to do stochastic gradient descent.
+So given this difficulty in sampling from
+the posterior.
+It's hard to see how we can learn sigmoid
+belief nets with millions of parameters,
+Which is what we'd like to do.
+This is a very different regime from the
+one normally used with graphical models.
+There they have interpretable models, and
+they're trying to learn dozens or maybe
+hundreds of parameters.
+They're not typically trying to learn
+millions of parameters.
+Now before I go into ways in which we can
+try and get samples from the posterior
+distribution.
+I just want to tell you what the learning
+rule is, if we could get those samples.
+So, if we can get an unbiased sample from
+the posterior distribution of hidden
+states, given the observed data, then
+learning is easy.
+So here's part of a sigmoid belief net,
+and we're going to suppose that for every
+node we have a binary value.
+So, for node J, that binary value is SJ.
+And that vector binary value is a global
+configuration for the node, which is the
+sample from the posterior distribution.
+In order to do maximum likelihood
+learning, all we have to do is maximize
+the law of probability, that the inferred
+binary state of unit, I would be generated
+from the inferred binary states of its
+parents.
+So the learning rule is local and simple.
+The probability that the parents of I
+would turn I on, is given by a logistic
+function that involves the binary states
+of the parents.
+And what we need to do is make that
+probability be similar to the actually
+observed binary value of I and although
+I'm not going to derive it here,
+The maximum likelihood learning rule for
+the weight WJI is simply to change it in
+proportion to the state of J times the
+difference between the binary state of I
+and the probability that the binary states
+of I's parents would turn it on.
+So to summarize,
+If we have an assignment of binary states
+to all the hidden nodes, then it's easy to
+do maximum likelihood learning in our
+typical stochastic way.
+Where we sample from the posterior, and
+then we update the weights based on that
+sample.
+And we average that update over a mini
+batch of samples.
+So, let's go back to the issue of why it's
+hard to sample from the posterior.
+The reason it's hard to get an unbiased
+sample from the posterior over the hidden
+nodes, given an observed data factor at
+the leaf nodes, is a phenomenon called
+explaining away.
+So if you look at this little sigma B leaf
+net chair, it has two hidden causes and
+one observed effect.
+And if you look at the biases, you'll see
+that the observed effect of a high stress
+jumping is very unlikely to happen unless
+one of those causes is true.
+But if one of those causes has happened,
+the twenty cancels the minus twenty, and
+neither house will jump with the
+probability of a half.
+Each of the causes is itself rather
+unlikely but not nearly as unlikely as a
+host spontaneously jumping.
+So if you see the house jump, one
+plausible explanation is that a truck hit
+the house.
+A different plausible explanation, is that
+it was an earthquake.
+And each of those has a probability of
+about E to the minus ten.
+Whereas the house jumping spontaneously
+has a probability of about E to the minus
+twenty.
+However, if you assume both hidden causes,
+that has a probability of E to the
+-twenty, so that's extremely unlikely,
+even if the house did jump.
+So assuming there was an earthquake,
+reduces the probability that the house
+jumped because the truck hit it.
+And we get an anti-correlation between the
+two hidden causes when we've observed the
+house jumping.
+Notice in the model itself, in the prior
+for the model, these two hidden causes are
+quite independent.
+So if the house jumps.
+This basically an even chunks that was
+because of the truck or because of the
+earthquake.
+The posterior actually look something like
+this.
+There's four possible patterns of hidden
+causes, given that the house jumped.
+Two of them are extremely unlikely.
+Namely that the truck hit the house, and
+there was an earthquake.
+Or that neither of those things happened.
+The other two combinations are equally
+probable, and you'll notice they form an
+exclusive all.
+We have two likely patterns of causes
+which are just the opposites of each
+other.
+That's explaining away.
+Now that we've understood explaining away,
+let's consider,
+Let's go back to the issue of learning a
+deep sigmoid belief net.
+So we're going to have multiple layers of
+hidden variables.
+They're going to give rise to some data in
+our causal model.
+And we want to learn those weights, W,
+between the first layer of hidden
+variables in the data.
+And let's see what it takes to learn W.
+First of all, the posterior distribution
+over the first layer of hidden variables
+is not going to be a factorial.
+They're not independent in the posterior.
+And that's because of explaining away.
+So, even if we just had that layer of
+hidden variables, once we've seen the
+data, they wouldn't be independent of one
+another.
+But because we have higher layers of
+hidden variables, they're not even
+independent in the prior.
+This hidden variables in the laser bath
+created prior, and that prior itself will
+cause correlations between the hidden
+variables in first layer.
+To learn W, we need to learn the posteria
+in the first hidden layer were least in
+the approximation to it.
+And even if you are only approximating it
+we need to know all of the weights in
+higher layers in order to compute that
+prior term.
+In fact it's even worse than that.
+Because to compute that prior term, we
+need to integrate out all the hidden
+variables and higher layers.
+That is we need to consider all possible
+patterns of activity in these higher
+layers.
+And combine them all to compute the prior
+that the higher levels create for the
+first hidden layer.
+Computing that prior is a very complicated
+thing.
+So these three problems suggest that it's
+gonna be extremely difficult to learn
+those weights W.
+And in particular, we're not gonna be able
+to learn them without doing a lot of work
+in the higher layers to compute the prior.
+So now we're gonna consider some methods
+for learning deep belief mets.
+The first one is the Monte Carlo method
+used by Radford Neal.
+And that Monte Carlo method basically does
+all the work.
+That is, if we go back to the previous
+slide, it considers patents activity over
+all of the hidden variables.
+And it runs a mark off chain that takes a
+long time to settle down, given the data
+factor.
+And once it's settled down, to thermal
+equilibrium, you get a sample from the
+posterior, but it's a lot of work.
+So, in large deep belief nets, this
+methods pretty slow.
+In the 1990's people developed much faster
+methods for learning deep belief nets,
+which we call variational methods.
+In fact this is where variational methods
+came from at least the artificial
+intelligence community.
+The variational methods give up on getting
+unbiased sound post from the posterior and
+they content themselves with just getting
+approximate samples that is samples from
+some other distribution that approximates
+the posterior.
+Now as we saw before, if we have samples
+from the posterior, maximum likelihood
+learning is simple.
+If we have samples from some other
+distribution, we could still use the
+maximum likelihood learning rule, but it's
+not clear what will happen.
+On the face of it, crazy things might
+happen if we're using the wrong
+distribution to get our samples.
+There doesn't seem to be any guarantee
+that things will improve.
+In fact there is a guarantee that
+something will improve.
+It's not the log probability that the
+model would generate the data.
+But it is related to that.
+In fact it's a lower band on that log
+probability.
+And by pushing up the lower band, we can
+usually push up the log probability.

@@ -1,0 +1,244 @@
+[SOUND].
+This lecture is about the syntagmatic
+relation discovery, and entropy.
+In this lecture, we're going to continue
+talking about word association mining.
+In particular, we're going to talk about
+how to discover syntagmatic relations.
+And we're going to start with
+the introduction of entropy,
+which is the basis for designing some
+measures for discovering such relations.
+By definition,
+syntagmatic relations hold between words
+that have correlated co-occurrences.
+That means,
+when we see one word occurs in context,
+we tend to see the occurrence
+of the other word.
+So, take a more specific example, here.
+We can ask the question,
+whenever eats occurs,
+what other words also tend to occur?
+Looking at the sentences on the left,
+we see some words that might occur
+together with eats, like cat,
+dog, or fish is right.
+But if I take them out and
+if you look at the right side where we
+only show eats and some other words,
+the question then is.
+Can you predict what other words
+occur to the left or to the right?
+Right so
+this would force us to think about what
+other words are associated with eats.
+If they are associated with eats,
+they tend to occur in the context of eats.
+More specifically our
+prediction problem is to take
+any text segment which can be a sentence,
+a paragraph, or a document.
+And then ask I the question,
+is a particular word present or
+absent in this segment?
+Right here we ask about the word W.
+Is W present or absent in this segment?
+Now what's interesting is that
+some words are actually easier
+to predict than other words.
+If you take a look at the three
+words shown here, meat, the, and
+unicorn, which one do you
+think is easier to predict?
+Now if you think about it for
+a moment you might conclude that
+the is easier to predict because
+it tends to occur everywhere.
+So I can just say,
+well that would be in the sentence.
+Unicorn is also relatively easy
+because unicorn is rare, is very rare.
+And I can bet that it doesn't
+occur in this sentence.
+But meat is somewhere in
+between in terms of frequency.
+And it makes it harder to predict because
+it's possible that it occurs in a sentence
+or the segment, more accurately.
+But it may also not occur in the sentence,
+so
+now let's study this
+problem more formally.
+So the problem can be formally defined
+as predicting the value of
+a binary random variable.
+Here we denote it by X sub w,
+w denotes a word, so
+this random variable is associated
+with precisely one word.
+When the value of the variable is 1,
+it means this word is present.
+When it's 0, it means the word is absent.
+And naturally, the probabilities for
+1 and 0 should sum to 1,
+because a word is either present or
+absent in a segment.
+There's no other choice.
+So the intuition with this concept earlier
+can be formally stated as follows.
+The more random this random variable is,
+the more difficult the prediction will be.
+Now the question is how does one
+quantitatively measure the randomness of
+a random variable like X sub w?
+How in general, can we quantify
+the randomness of a variable and
+that's why we need a measure
+called entropy and
+this measure introduced in information
+theory to measure the randomness of X.
+There is also some connection
+with information here but
+that is beyond the scope of this course.
+So for
+our purpose we just treat entropy function
+as a function defined
+on a random variable.
+In this case, it is a binary random
+variable, although the definition can
+be easily generalized for
+a random variable with multiple values.
+Now the function form looks like this,
+there's the sum of all the possible
+values for this random variable.
+Inside the sum for each value we
+have a product of the probability
+that the random variable equals this
+value and log of this probability.
+And note that there is also
+a negative sign there.
+Now entropy in general is non-negative.
+And that can be mathematically proved.
+So if we expand this sum, we'll see that
+the equation looks like the second one.
+Where I explicitly plugged
+in the two values, 0 and 1.
+And sometimes when we have 0 log of 0,
+we would generally define that as 0,
+because log of 0 is undefined.
+So this is the entropy function.
+And this function will
+give a different value for
+different distributions
+of this random variable.
+And it clearly depends on the probability
+that the random variable
+taking value of 1 or 0.
+If we plot this function against
+the probability that the random
+variable is equal to 1.
+And then the function looks like this.
+At the two ends,
+that means when the probability of X
+equals 1 is very small or very large,
+then the entropy function has a low value.
+When it's 0.5 in the middle
+then it reaches the maximum.
+Now if we plot the function
+against the probability that X
+is taking a value of 0 and the function
+would show exactly the same curve here,
+and you can imagine why.
+And so that's because
+the two probabilities are symmetric,
+and completely symmetric.
+So an interesting question you
+can think about in general is for
+what kind of X does entropy
+reach maximum or minimum.
+And we can in particular think
+about some special cases.
+For example, in one case,
+we might have a random variable that
+always takes a value of 1.
+The probability is 1.
+Or there's a random variable that
+is equally likely taking a value of one or
+zero.
+So in this case the probability
+that X equals 1 is 0.5.
+Now which one has a higher entropy?
+It's easier to look at the problem
+by thinking of a simple example
+using coin tossing.
+So when we think about random
+experiments like tossing a coin,
+it gives us a random variable,
+that can represent the result.
+It can be head or tail.
+So we can define a random variable
+X sub coin, so that it's 1
+when the coin shows up as head,
+it's 0 when the coin shows up as tail.
+So now we can compute the entropy
+of this random variable.
+And this entropy indicates how
+difficult it is to predict the outcome
+of a coin toss.
+So we can think about the two cases.
+One is a fair coin, it's completely fair.
+The coin shows up as head or
+tail equally likely.
+So the two probabilities would be a half.
+Right?
+So both are equal to one half.
+Another extreme case is
+completely biased coin,
+where the coin always shows up as heads.
+So it's a completely biased coin.
+Now let's think about
+the entropies in the two cases.
+And if you plug in these values you can
+see the entropies would be as follows.
+For a fair coin we see the entropy
+reaches its maximum, that's 1.
+For the completely biased coin,
+we see it's 0.
+And that intuitively makes a lot of sense.
+Because a fair coin is
+most difficult to predict.
+Whereas a completely biased
+coin is very easy to predict.
+We can always say, well, it's a head.
+Because it is a head all the time.
+So they can be shown on
+the curve as follows.
+So the fair coin corresponds to the middle
+point where it's very uncertain.
+The completely biased coin
+corresponds to the end
+point where we have a probability
+of 1.0 and the entropy is 0.
+So, now let's see how we can use
+entropy for word prediction.
+Let's think about our problem is
+to predict whether W is present or
+absent in this segment.
+Again, think about the three words,
+particularly think about their entropies.
+Now we can assume high entropy
+words are harder to predict.
+And so we now have a quantitative way to
+tell us which word is harder to predict.
+Now if you look at the three words meat,
+the, unicorn, again, and
+we clearly would expect meat to have
+a higher entropy than the unicorn.
+In fact if you look at the entropy of the,
+it's close to zero.
+Because it occurs everywhere.
+So it's like a completely biased coin.
+Therefore the entropy is zero.
+[MUSIC]
+

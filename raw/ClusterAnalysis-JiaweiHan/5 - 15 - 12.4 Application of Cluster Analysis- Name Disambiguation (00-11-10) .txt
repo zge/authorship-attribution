@@ -1,0 +1,259 @@
+[SOUND]
+In this session, we are going to introduce
+you one interesting application of cluster
+analysis called name disambiguation.
+Name disambiguation actually
+is one task in data cleaning.
+In data cleaning, people may do object
+reconciliation versus object distinction.
+Object reconciliation
+means the same objects,
+sometimes they have multiple names.
+For example,
+UIUC you may also call the University
+of Illinois at Urbana-Champaign.
+Then object distinction means the same
+name may represent multiple real objects.
+For example, different people or
+different objects may share the same name.
+Just give you example, when we
+studied this problem in the year 2007,
+we checked AllMusic.com.
+There were 72 songs and
+3 albums have the exact the same name,
+Forgotten or The Forgotten.
+And in DBLP at that time,
+we checked that there were 141 papers
+written by at least 14 different
+people with the same name, Wei Wang.
+So there's a new challenge for
+object distinction just because if
+you just look at the textual similarity,
+they have exactly the same name.
+So you cannot use textual
+similarity to distinguish them.
+Especially in DBLP,
+if you cannot reference their websites or
+many other pieces of information, then
+you'll probably find it's really hard.
+However, in this point, link analysis may
+take advantage of redundancy of those
+links and neighborhoods to facilitate
+entity cross-checking and validation.
+If this is the case,
+we work out an algorithm called distinct.
+It's object distinction by information
+network-based cluster analysis,
+and we show the power of cluster analysis.
+This paper was published in ICDE 2007.
+Let's look at this distinction problem,
+the Wei Wang Challenge in DBLP.
+When the student first proposed this
+problem, I told him this is very hard,
+because I even have three different
+Wei Wangs who work with me.
+And we actually published in different
+years almost in the same conferences.
+So how could you distinguish them?
+Then he actually later
+gave me this picture.
+And he says, if you look at this Wei Wang,
+this Wei Wang was at a UCLA and
+then he went to IBM and a here.
+So if you look at the co-authors at
+different year, there's a clear pattern.
+Wei Wang around to this time published
+substantially with Jiong Yang, Dick Muntz.
+And later with Jiong Yang, Philip Yu.
+And later with, for example,
+with her own students.
+But there is a clear pattern and
+a clear connection.
+Then you look at this Wei Wang, actually
+was first published with Hongjun Lu,
+and then later with Xuemin Lin,
+substantially.
+So that also has some very clear patterns.
+And if you look at this Wei Wong,
+it's more like published a lot with the
+people in Fudan University, or something.
+So if you look at these different Wei
+Wangs, you see just based on the years and
+the collaborations,
+you will be able to find the clusters.
+Maybe we will be able to use cluster
+analysis to help distinguish those cases.
+So that's the case which will
+become quite interesting,
+how to design a methodology to distinguish
+those different people with the same name.
+Then we want to work out the similarity
+measure between the references.
+We checked,
+there's a link-based similarity.
+That means just look at
+linkages between references.
+The references to the same object
+are more likely to be connected.
+Then we can use random walk probability
+to calculate this link-based similarity.
+Another one is neighborhood similarity.
+Neighborhood similarity means that for
+each reference,
+their neighbor tuples can indicate some
+kind of similarity between their contexts.
+Then the major problem becomes,
+we got similarity,
+we can group them into different clusters.
+But what is a boundary,
+how we can cut those different links
+to get into distinctive clusters?
+So we actually found that there's
+one interesting way to do training.
+Self-boosting, that means we do training
+within the same bulky data sets,
+by using relatively clean case.
+Clean case means those object may have
+very distinct last names or full names.
+Using this, we think they are clean,
+they are just the same,
+reference the same author.
+Then we use them to study the behavior.
+Then we use reference-based clustering.
+That means we group references
+according to their similarities.
+Then we got a little detail on how to
+do training with the same data sets.
+That means we want to build a training set
+without experts, we do it automatically.
+How can we do it automatically?
+There's distinct names.
+We just go to DBRP,
+if you just look at a name,
+look at their statistics,
+you'll find those pretty long and
+pretty rare last name like
+Johannes Gehrke and Mike Stonebraker.
+Then we assume those people,
+they are distinct.
+They are clean, unambiguous examples.
+Then we look at their
+collaboration behavior.
+Within the same community, we assume
+the collaboration behavior within the same
+community, they do share some similarity.
+Then these training parameters can be
+used from those unambiguous examples.
+We use SVM to learn a model for
+combining different join path.
+Then join path is used as two attributes
+with link-based similarity and
+neighborhood similarity.
+And the model is a weighted
+sum of all those attributes.
+Then we do data clustering based on this
+measure similarity between clusters.
+We actually try different cases
+to see what is the best measure,
+what is way to do best clustering.
+We first tried single-link,
+which is getting highest similarity
+between points in two clusters.
+That means between the two clusters,
+the closest one,
+the most similar one as the link.
+That's a single link.
+However, using the single-link
+we found is no good
+because the reference to different
+objects can be easily connected.
+Then we tried a complete-link.
+That means try the minimum
+similarity between them.
+That means linking the two clusters
+to use the most faraway points.
+However, this is no good either
+because a reference to the same object
+may be weakly connected, as well.
+So then we tried average-link.
+That means looking at the average
+similarity between points in two clusters.
+We found this is a far better measure.
+Moreover, we refined this link by thinking
+about average neighborhood similarity and
+the collective random walk probability,
+we take both factors, we average them.
+So we found this average-link using
+this refined measure gave
+us the very best result.
+Then we test on the real cases.
+We look at DBLP Popular Names,
+like this is one set.
+We test it.
+Then like Hui Fang,
+got three authors here are the same name,
+and Wei Wang,
+got 14 authors here are the same name.
+And these are the number
+of papers they published.
+And then we found actually some,
+we got perfect results.
+Some will get close-to-perfect results,
+for example, like Joseph Hellerstein.
+And actually,
+151 papers is a pretty large number.
+Actually, there were two
+Joseph Hellersteins.
+But interestingly, in DBLP, actually
+they have a different middle initial.
+You really can't distinguish them.
+We actually removed the middle initial.
+We test our algorithm to see
+whether we can get those cases,
+which Joe Hellerstein worked
+on which paper, back.
+Actually, we found our F-measure,
+it's not perfect, but it's not bad.
+But then you look at Wei Wang.
+For this Wei Wang, you may see
+this F-measure is not that good.
+But it's pretty decent, as well.
+We checked for Wei Wang,
+what are the problems,
+which cases we got right,
+or which case we got wrong.
+Actually, we found if you really look
+at these 14 different Wei Wangs who
+authored more than one paper,
+we found there's one case,
+this SUNY Binghamton Wei Wang,
+was completely missing.
+And that two papers was merged
+into Fudan University Wei Wang.
+However, Fudan University Wei Wang got
+five papers with credit to UNC Wei Wang,
+but UNC Wei Wang lost six papers
+to SUNY Buffalo Wei Wang.
+Then we looked at the detailed case.
+We found actually one author Xian Pei,
+almost they published in
+the same conference, same time.
+He actually worked with Fudan
+University Wei Wang, UNC Wei Wang, and
+the SUNY Buffalo Wei Wang
+at the same time.
+That's 11 papers, essentially,
+was all the papers collaborating with him.
+So that's a case we messed up.
+Otherwise, actually, it's a decent
+cutting for the different cases.
+So that simply says of course we need
+further study using additional technique.
+And some people following up
+this work actually did more
+using additional signals
+to get even better results.
+That paper just shows clustering actually
+works, even for object distinction.
+[MUSIC]
+

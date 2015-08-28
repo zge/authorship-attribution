@@ -1,0 +1,280 @@
+Supervised machine learning is an
+important way to do relation extraction.
+The algorithm works as follows. We choose
+some set of relations we'd like to
+extract. We choose some set of entities
+we'd like to extract the relationship in
+between. Once it presumes we have some
+name entity tagger that can tag those
+entities. And now we find some data and we
+label it. So, we choose some
+representative corpus, we run our name
+entity tagger and label the entities, or
+we label them by hand if it's small. And
+now, by hand, we'll, we label the
+relationship between each entity. So all
+the relations we're interested in, we're
+gonna label all of them in the corpus. And
+now we break our corpus in a training
+development test like we have done in the
+past for all of our classification tasks.
+And now we train our classifier in our
+training set, and then we test it in our
+development and test set. For efficiency
+reasons, we often modify this algorithm
+slightly. We first find all pairs of name
+entities, usually occurring in the same
+sentence or right near each other. And we
+build one classifier which just makes a
+yes no decision. Are these two entities
+related in some way? And if so, we then
+run to a second classifier, which
+classifies the relation. So why don't we
+build two classifiers instead of one?
+Usually, if we're, we have a lot of data,
+this simple [inaudible] classifier that
+says, these things are probably related in
+some way, can be run very quickly, can be
+trained fast, and run fast. We can train
+in a lot of data. And that will eliminate
+most pairs, because most entities in most
+sentences are probably not, in, in
+whatever relation we're looking for. And
+then we can use distinct feature sets
+specific to deciding if two things are
+related to each other at all, and deciding
+if they're in a particular relation. So
+again we might use the relations for
+example from the automated content
+extraction or ACE task. Remember we had
+six med relations and seventeen sub type
+of those relations and given that set of
+relations. Our task is to classify the
+relation between two entities in a
+sentence. So, imagine this sentence,
+American Airlines a unit of AMR,
+immediately matched the moves, spokesman
+Tim Wagner said. So, we have two entities,
+American Airlines and Tim Wagner. And our
+task is to decide what the relationship is
+between those two entities. And it might
+be family or citizen or employment or it
+might be nothing. I might be unrelated. Or
+it could be subsidiary or founder or
+venter, and so on. So, what are the
+features we're gonna use for this task?
+And let's for now imagine that we're
+doing, just the task of deciding what the
+relationship is between the two. So here's
+the sentence again. We have two mentions.
+Mention one is American Airlines, and
+mention two is Tim Wagner. So, one
+important feature is the head words of the
+two mentions. So, the head word of
+American Airlines is airlines. So we'll
+talk more about head words when we get to
+parsing. But the, s-, in this case, airl-,
+the, American Airlines is a kind of
+airline. And the head word of Tim Wagner
+will be Wagner. And so, airlines and
+Wagner might be useful features. And we
+can create a new feature which is just the
+two combined together and sometimes that's
+gonna be useful because we're gonna see
+the two heads together often enough that
+feature might actually tells us some
+information. So we have three features so
+far, airlines, Wagner, airlines Wagner.
+You might throw in a bag of words or even
+a bag of bigrams that are [inaudible]
+themselves. So the word American, the word
+airlines, the word Tim, the word Wagner
+are all words that occur in the
+[inaudible] and the bigram American
+airlines. And the bigram Tim Wagner occur
+in the two mentions. And we might pick
+words or bigrams that are in particular
+positions to the left and right of the two
+mentions. So, for example, the word before
+mention two, so we'll call this word minus
+one with respect to mention two, is the
+word spokesman. And the word after mention
+two. So we'll call this +one with respect
+to mention two is the word said, or after
+mention one, if we're counting punctuation
+our first word there is a comma, if we're
+not counting punctuation our first word is
+a. And the word before American Airlines
+is nil, there's no word before American
+Airlines. So we can have these words that
+are specific, at specific positions before
+and after each mention. And we can have
+the words that are in between the two
+mentions. So, for example, this between
+region, so a unit of AMR immediately match
+the word spokesman between American
+Airlines and Tim Wagner. We can throw in a
+bag of those words. So A, AMR, of,
+immediately, all this sort of thing. Or in
+fact, if we have enough compute power, we
+can throw in bags of bi-grams as well, so
+all pairs of words between the two
+entities. We've already said that named
+entity type, very important for relation
+extraction. So, I wanna know that the
+first entity is an organization. So,
+American Airlines an organization, the
+second mentioned, Tim Wagner is a person.
+And I might create a new feature just by
+concatenating those two together. So, a
+new feature called orgperson which is the
+concatenation of the two named entity
+types. A feature is called orgperson. And
+then we might add what's called the entity
+level of the two mentions. So, the entity
+level is whether an entity is a name a
+nominal or a pronoun. Very often what we
+have is names. But we also get nominals
+and pronouns acting as name entities. So
+these two are both names, so American
+Airlines is a name, and Tim Wagner is a
+name, but if they were instead it or he
+then we would call this a pronoun. And if
+it was a nominal like the company, so not
+a proper noun, then we call that nominal.
+So another feature we can use for each
+other two mentions. [sound] Than we
+haven't talked yet about parsen but we can
+use lots of features related to the parse.
+Once we parse the sentence we can extract
+lots of useful parse features. And just to
+give you the intuition without going into
+the details of parsing we could extract
+what's called a, a syntactic chunk
+sequence or a base chunk sequence. So
+there's a couple of noun phrases followed
+by a prepositional phrase. So here we have
+a, a noun phrase and a noun phrase and a
+preposition phrase and a verb phrase and a
+noun phrase, and so on. So this sequence
+of sympathetic chunks. We can actually run
+a parser and then. Flatten out the parse
+into what's called a constituent pass and
+we'll talk about how these work later, but
+basically this is saying that we see the
+parse has a noun phrase, who's parent is a
+noun phrase, who's parent is a sentence,
+who's parent is another sentence and so
+on. So it's a way of taking out complex
+parse stream, flattening it out. And we
+can have a dependency path for example we
+can say that the verb said has an argument
+which is Wagner and an argument which is
+matched and matched has an argument which
+is airlines. So any of these kind of
+things can be used as parse features for
+relation extraction. And finally we can
+use gazetteer and trigger word features.
+So a trigger word. It's just a list of
+terms of terms that might be useful in
+this particular domain. So, for example,
+kinship terms are obviously useful for
+just having if we have the family
+relation. So a word like parent of wife or
+husband or grandparent are obviously words
+that are gonna help in finding a family
+relation. And we can get these from online
+data bases like the WordNet thesaurus or
+other places. And a gazetteer feature is a
+list of useful geographical or
+geopolitical words. We might have a
+country name list in a gazetteer or other
+kinds of kinds of sub entities like names
+of rivers or lakes or states or. Cities
+and so on. That's gonna help us know that
+San Francisco is in California, and
+California is in the United States, and so
+on. And we often, when we talk about
+[inaudible] features we might, for
+example, for detecting named entities like
+person names, having a country name list
+isn't as useful. But having a list of
+common person names in whatever language
+we're working in, might be a very useful
+feature. And so we often call those
+[inaudible] features, even though a name
+list isn't really a, a [inaudible], it's a
+list of names. But sometimes, we, we use
+the word [inaudible] to mean [inaudible]
+any long list of useful proper nouns that
+might help us in doing name entity
+extraction. So in summary, for our
+sentence, American Airlines, a unit of AMR
+immediately matched the moved spokesman,
+Tim Wagner said, we might have a whole a
+series of features. So we might have the
+entity type of the first. Mentioned being
+org, and the second one being person, and
+the head of the first one being airlines,
+and the head of the second one being
+Wagner. And this concatenated type feature
+whose value is org purse. And then the bag
+of words of all of the words between the
+two entities, and the word before entity
+one, which, there isn't one, so that would
+be none or nil. And the word after entity
+two, which is said. And then all the
+various parse features that we talked
+about. And we combine all these features
+and, and we extract them from our training
+set, we extract them from our test set,
+and we do standard classification. And of
+course, you can use any classifier you
+like. We talked about the. We've talked
+about the Max N classifier and the naive
+base classifier. There's other classifiers
+like SVMs and whatever you like. And in
+each case you train your classifier on the
+training set. You extract all these
+features for deciding you relation, train
+that classifier on the training set, and
+then you tune any of your hyperparameters
+on the [inaudible] and then test on your
+unseen test set. Like other kinds of
+classification, supervised relation
+extraction is evaluated with the precision
+to recall and F1. So just as we saw with
+other kinds of classification, the
+precision is the number of correctly
+extracted relations over the total number
+of relations extracted and the recall is
+the number of correctly extracted
+relations over the total number of true
+gold relations. So when we test that,
+that's hand labeled. For the correct
+relations, we can compute the precision to
+recall and, again, the balance, the F1 is
+2PR over P+R. So in summary. Supervised
+relation extraction lets us get high
+accuracies, if we have enough hand-labeled
+data and if the test set is, in the, the
+same domain as the training set. The
+minuses of supervised relation extraction
+are the expense of making a large training
+set and the general problem of supervised
+models, which is that they don't
+generalize well to different genres. So if
+we know that we're going to run our system
+on a similar genre to what we have in
+training, then supervised is a good
+approach. If we're worried that the test
+set's going to be very different that the
+training set, and we have to able to be
+very robust in different genres then we're
+probably going to need to unsupervised or
+semi-supervised methods. So supervise
+relation extraction an important way to do
+relation extraction in cases where we're
+gonna afford to label a training set and
+we think our test domain is gonna be very
+similar to that training domain.

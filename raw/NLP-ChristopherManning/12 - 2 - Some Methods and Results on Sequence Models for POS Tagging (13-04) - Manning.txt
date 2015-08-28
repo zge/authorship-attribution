@@ -1,0 +1,289 @@
+Now let me return to part of speech taking
+and say a little bit more about how
+sequence models perform and what kind of
+features end up being used and useful.
+So what are the main sources of information
+for part of speech tagging? One source of
+information is knowledge of neighboring
+words and their possible part of speech tags.
+So if our sentence is, Bill saw that
+man yesterday, we have a lot of part of
+speech ambiguities. So, Bill can be either
+a proper noun or a verb. Saw can be either
+a noun or a verb. That can be either a
+determiner or what's tagged as IN when
+introducing a complement clause. Man can
+be a noun or a verb but at this point, we
+start to notice that there are some
+constraints from neighborhoods. So it just
+can't be the case that, that is a determiner 
+but then it's followed by a verb, that
+this is a bad sequence. And so this is
+sequence information that gives us some
+ideas as to how a part of speech tag
+things. And when people started working on
+part of speech tags, people thought of that
+as the main source of evidence. But it
+turns out that that's not really the case,
+that the easiest and biggest source of
+evidence is statistics, knowledge about
+how often words have different parts of
+speech. So, we can also get a long way by
+just saying, man is very rarely used as a
+verb and therefore just without even
+looking at the context, we probably should
+tag, take the part of speech tag noun for
+man. And that latter source of information
+proves most useful but that's not to mean
+that the first source of information isn't
+so useful. So what we're gonna wanna do is
+start putting more and better features
+into our maximum entropy tagger,
+producing a feature based sequence model.
+And one part of that is just features that
+we can define over the word itself.
+So knowing what the word is is useful but it
+turns out you can get a lot of further
+value, especially for rare and unknown
+words, by also putting in features that
+pick out properties of words. So looking not
+just at the word, but its lowercase form.
+So maybe there are many words that
+we haven't seen capitalized at the
+beginning of a sentence, but if we know
+what their lowercase form is, and its parts
+of speech are, then that will help us.
+Knowing the beginning of a word, so if you
+know a word starts with un, that gives you
+a bit of information about what its part
+of speech is. Knowing the suffix of a
+word, so if you know a word ends in ly,
+it's almost certainly an adverb in
+English. Capitalization is useful. So, in
+English the capital letter, once you're
+away from the beginning of a sentence, is
+a very good clue that you've got a proper
+noun. And here's an interesting different
+kind of feature that we've made a lot of
+use of in some of our Stanford systems. We
+call these word shape features, an idea
+first suggested by Michael Collins. It's a
+different way of making features from
+words that creates natural equivalence
+classes that is very useful for
+generalization. And so the idea here is
+that you're mapping a word into one of a
+small set of equivalence classes that
+represents its shape. So here what we are
+doing, and there are different exact
+schemes that you can use, we can say this
+is a digit character; this is also a digit
+character. Let's collapse, for our
+equivalence classing, sequence of
+characters that are the same. Then there's
+a hyphen here and then we've got a
+sequence of lower case letter characters.
+And so we will give that the word shape of
+d-x. Some number of digits followed
+by a hyphen, followed by some number of
+lower case letters. And that kind of
+feature proves to be a very useful feature
+in quite a few of our discriminative
+models. So here's the headline good news.
+If you get clever using all these kinds
+of features and just build a model that
+looks at the current word and assigns a
+tag to it, it turns out that without
+looking at the context whatsoever, you can
+build a part of speech tagger that overall
+gets 93.7 percent of words right. And
+actually does quite well on unknown words
+as well. Commonly we pull out separately
+the accuracy for unknown words because
+it's always lower and can be distinctively
+different from the accuracy for known words.
+So here are some figures over all
+just to give you a picture of the kind of
+accuracies you should be expecting from
+part of speech taggers and how different
+features impact the classification. So we
+discussed before this idea of a baseline
+method of just giving the most frequent
+tag to words and calling everything else a
+noun. So overall that gives about 90%, but
+only gets about half of the unknown words
+right. The next set of models that people looked 
+at were HMM models, hidden Markov models,
+which I'm not really gonna cover in this class 
+but this was sort of in the mid 90s
+the state of art of part of speech
+tagging so that got around 95 percent of
+all words right and just did a little bit
+better on unknown words. We just saw on the
+previous slide that just having a straight
+classifier and no sequence model but with
+rich and carefully chosen features
+actually works rather well, it does much
+better on unknown words. And doesn't
+actually perform badly in, on known words.
+But people have gone on from there. The
+idea that you could use features to do a
+better job was able to be incorporated
+into hidden Markov models as well. And
+so Thorsten Brants produced
+this high performance hidden Markov
+model based tagger which used feature
+based ideas for predicting unknown words.
+And that performed rather nicely. So it
+gets around 96.2 percent overall, and very
+competitive performance on unknown words.
+But you can keep on building features into
+your maximum entropy Markov model including
+using context features that we didn't have
+in the first model. So then if we go into a sort 
+of a standard maximum entropy Markov model
+tagger of the kind we've discussed, that
+that might be getting almost 97% on all
+words and starting to do a bit better
+again on unknown words. And that work
+has been pushed up further at
+several places including at Stanford. So
+at Stanford we have a model that's like, 
+almost like a maximum entropy model but
+allows some bi-directional dependencies 
+and so that's then pushing the overall
+accuracy up to about 97.2 percent and
+pushing up the unknown word accuracy
+further to about 90%. And that's getting
+close to how good you can expect part of
+speech taggers to perform. Because for
+reasons of humans themselves not being
+sure what the right answer is to part
+of speech tagging problems and also
+just because the gold standards have errors.
+Because sometimes human goof, and put in
+the wrong part of speech tag, even when it
+seems like the correct answer is clear.
+That it seems like around 98 percent is
+the upper bound of what you could possibly
+hope to score on the kind of test sets we
+have for part of speech tagging. And if
+one wants to keep on working on improving
+things, normally the way one goes about
+that is by staring hard at the output of your
+part of speech tagger or whatever it is and
+looking at where it makes errors and
+thinking of ways in which you could encode
+some information into features that would let
+you detect that something has gone wrong
+and get the system to prefer some other
+configuration. I'm just gonna give an
+example of that now. So here we have an
+error of the part of speech tagger, that
+there's the word as, and the part of
+speech tagger has chosen the preposition
+tag for it. Whereas, what it should have
+chosen is the adverb tag cause this is as
+soon, modifying soon. Well, how could we
+fix that? Well, it seems like the
+information that we want to use is that,
+if the next word is soon, that's a really
+good clue that as will be functioning as
+an adverb. And so we can fix this error by
+adding a feature that looks at the next
+word. So we're using next words as well as
+previous words and previous part of speech
+tags. So here, the part of speech tagger
+for intrinsic has labeled it as a proper
+noun. That's a common error, because if
+the part of speech tagger sees a
+capitalized word that it never saw in the
+training data, normally its first best
+guess is to say, that's a proper noun. But
+tha t's not necessarily true at the
+beginning of a sentence, when all words
+get capitalized. But maybe we actually
+know about the word intrinsic,
+and that was seen several times in the 
+training data and we know that it's an adjective.
+So if we could utilize that knowledge we'd
+be able to get this case right as well.
+So if we put in a feature of what's the word
+lower cased, that that feature would argue
+that this word should be tagged as an
+adjective and so we might be able to hope
+to fix that error. Note that both of those
+features didn't require any sequence
+information. We were looking at features
+of word to the right and what's the lower
+case form of a word, and that's an
+interesting general observation. In early
+work on sequence models people were very
+fixated on sequence models and using the
+sort of, sequence of labelings, the
+sequence of tags to predict other tags.
+It turns out for many of the problems that,
+that were and are conventionally done as
+sequence labeling that the sequence
+information is barely useful. It normally
+gives you a fraction of extra performance,
+but very, very little and so we already
+saw in the case of part of speech tagging
+that just using this model, of using a lot
+of features of the current word to predict
+the tag performs very nicely. So that gave
+us this performance of 93.7 on all tokens
+and 82.6 on unknown tokens. But you can do
+a lot better than that as was being
+suggested on the previous slide by also
+considering things like what's the next
+word, and using that to influence the tag.
+And what's the previous word and using
+that to influence the tag. And so that's
+what's being referred to here as the three
+words model. So you're having features
+independently of these three words
+influencing the tag. And it's actually
+quite stunning how well that performs, so
+that gives you a total accuracy of about
+96.6 percent and an unknown word accuracy
+of about 86.8 percent and the thing to
+notice is that, that performance is
+actually quite similar to the performance
+you get with sequence models. So if we
+go back to the performance here, that you
+can see that that performance is very
+close to the performance that's being
+listed here for the MEM tagger, 96.9,
+86.9. 96.6, 86.8, fractionally below but
+exceedingly close in performance. Okay. So
+what we've learned about part of speech
+tagging is that by itself, changing from
+generative to discriminative models doesn't
+give a big boost to part of speech tagging
+performance. The big boost comes from
+being able to put in lots of features of
+observations, and combine them together in
+a good way so that things like suffix
+analysis, word shape features, lower
+casing, things like that. So this
+additional power from having rich features
+has been shown to result in major improvements
+to the accuracy of sequence models.
+There is some cost and the cost as you'll
+probably find out in the assignment is
+that training discriminative models is just
+much slower than training generative models.
+If you remember back to language models, well
+you can estimate language models essentially
+just by counting data, whereas for discriminative
+models we have to do processes of
+numerical optimization. And they just are
+much more time intensive. That completes
+the discussion of part of speech taggers,
+and so now you should be in a position
+not only that you understand something
+about part of speech tagging, but in
+general how to apply maximum entropy
+sequence models to part of speech tagging
+and other similar sequence problems.

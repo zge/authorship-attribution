@@ -1,0 +1,383 @@
+[SOUND] This lecture is a continued
+discussion of
+Latent Aspect Rating Analysis.
+Earlier, we talked about how to solve
+the problem of LARA in two stages.
+But we first do segmentation
+of different aspects.
+And then we use a latent regression
+model to learn the aspect ratings and
+then later the weight.
+Now it's also possible to develop
+a unified generative model for
+solving this problem, and
+that is we not only model the generational
+over-rating based on text.
+We also model the generation of text,
+and so
+a natural solution would
+be to use topic model.
+So given the entity,
+we can assume there are aspects that
+are described by word distributions.
+Topics.
+And then we an use a topic model to model
+the generation of the reviewed text.
+I will assume words in the review text
+are drawn from these distributions.
+In the same way as we assumed for
+generating model like PRSA.
+And then we can then plug in
+the latent regression model to
+use the text to further
+predict the overrating.
+And that means when we first
+predict the aspect rating and
+then combine them with aspect weights
+to predict the overall rating.
+So this would give us
+a unified generated model,
+where we model both the generation of text
+and the overall ready condition on text.
+So we don't have time to discuss
+this model in detail as in
+many other cases in this part of the cause
+where we discuss the cutting edge topics,
+but there's a reference site here
+where you can find more details.
+So now I'm going to show you some
+simple results that you can get
+by using these kind of generated models.
+First, it's about rating decomposition.
+So here, what you see
+are the decomposed ratings for
+three hotels that have
+the same overall rating.
+So if you just look at the overall rating,
+you can't really tell much
+difference between these hotels.
+But by decomposing these
+ratings into aspect ratings
+we can see some hotels have higher
+ratings for some dimensions,
+like value, but others might score better
+in other dimensions, like location.
+And so this can give you detailed
+opinions at the aspect level.
+Now here, the ground-truth is
+shown in the parenthesis, so
+it also allows you to see whether
+the prediction is accurate.
+It's not always accurate but It's mostly
+still reflecting some of the trends.
+The second result you compare
+different reviewers on the same hotel.
+So the table shows the decomposed ratings
+for two reviewers about same hotel.
+Again their high level
+overall ratings are the same.
+So if you just look at the overall
+ratings, you don't really get that much
+information about the difference
+between the two reviewers.
+But after you decompose the ratings,
+you can see clearly that they have
+high scores on different dimensions.
+So this shows that model can review
+differences in opinions of different
+reviewers and such a detailed
+understanding can help us understand
+better about reviewers and also better
+about their feedback on the hotel.
+This is something very interesting,
+because this is in some
+sense some byproduct.
+In our problem formulation,
+we did not really have to do this.
+But the design of the generating
+model has this component.
+And these are sentimental weights for
+words in different aspects.
+And you can see the highly weighted words
+versus the negatively loaded weighted
+words here for
+each of the four dimensions.
+Value, rooms, location, and cleanliness.
+The top words clearly make sense, and
+the bottom words also make sense.
+So this shows that with this approach,
+we can also learn sentiment
+information directly from the data.
+Now, this kind of lexicon is very useful
+because in general, a word like long,
+let's say, may have different sentiment
+polarities for different context.
+So if I say the battery life of this
+laptop is long, then that's positive.
+But if I say the rebooting time for
+the laptop is long, that's bad, right?
+So even for
+reviews about the same product, laptop,
+the word long is ambiguous, it could
+mean positive or it could mean negative.
+But this kind of lexicon, that we can
+learn by using this kind of generated
+models, can show whether a word is
+positive for a particular aspect.
+So this is clearly very useful, and in
+fact such a lexicon can be directly used
+to tag other reviews about hotels or
+tag comments about hotels in
+social media like Tweets.
+And what's also interesting is that since
+this is almost completely unsupervised,
+well assuming the reviews whose
+overall rating are available And
+then this can allow us to learn form
+potentially larger amount of data on
+the internet to reach sentiment lexicon.
+And here are some results to
+validate the preference words.
+Remember the model can infer wether
+a reviewer cares more about service or
+the price.
+Now how do we know whether
+the inferred weights are correct?
+And this poses a very difficult
+challenge for evaluation.
+Now here we show some
+interesting way of evaluating.
+What you see here are the prices
+of hotels in different cities, and
+these are the prices of hotels that are
+favored by different groups of reviewers.
+The top ten are the reviewers
+was the highest
+inferred value to other aspect ratio.
+So for example value versus location,
+value versus room, etcetera.
+Now the top ten of the reviewers that
+have the highest ratios by this measure.
+And that means these reviewers
+tend to put a lot of
+weight on value as compared
+with other dimensions.
+So that means they really
+emphasize on value.
+The bottom ten on the other
+hand of the reviewers.
+The lowest ratio, what does that mean?
+Well it means these reviewers have
+put higher weights on other aspects
+than value.
+So those are people that cared about
+another dimension and they didn't care so
+much the value in some sense, at least
+as compared with the top ten group.
+Now these ratios are computer based on
+the inferred weights from the model.
+So now you can see the average prices
+of hotels favored by top ten reviewers
+are indeed much cheaper than those
+that are favored by the bottom ten.
+And this provides some indirect way
+of validating the inferred weights.
+It just means the weights are not random.
+They are actually meaningful here.
+In comparison,
+the average price in these three cities,
+you can actually see the top ten
+tend to have below average in price,
+whereas the bottom half, where they care
+a lot about other things like a service or
+room condition tend to have hotels
+that have higher prices than average.
+So with these results we can build
+a lot of interesting applications.
+For example, a direct application would be
+to generate the rated aspect, the summary,
+and because of the decomposition we
+have now generated the summaries for
+each aspect.
+The positive sentences the negative
+sentences about each aspect.
+It's more informative than original review
+that just has an overall rating and
+review text.
+Here are some other results
+about the aspects that's covered
+from reviews with no ratings.
+These are mp3 reviews,
+and these results show that the model
+can discover some interesting aspects.
+Commented on low overall ratings versus
+those higher overall per ratings.
+And they care more about
+the different aspects.
+Or they comment more on
+the different aspects.
+So that can help us discover for
+example, consumers'
+trend in appreciating different
+features of products.
+For example, one might have discovered
+the trend that people tend to
+like larger screens of cell phones or
+light weight of laptop, etcetera.
+Such knowledge can be useful for
+manufacturers to design their
+next generation of products.
+Here are some interesting results
+on analyzing users rating behavior.
+So what you see is average weights
+along different dimensions by
+different groups of reviewers.
+And on the left side you see the weights
+of viewers that like the expensive hotels.
+They gave the expensive hotels 5 Stars,
+and
+you can see their average rates
+tend to be more for some service.
+And that suggests that people like
+expensive hotels because of good service,
+and that's not surprising.
+That's also another way to
+validate it by inferred weights.
+If you look at the right side where,
+look at the column of 5 Stars.
+These are the reviewers that
+like the cheaper hotels, and
+they gave cheaper hotels five stars.
+As we expected and
+they put more weight on value,
+and that's why they like
+the cheaper hotels.
+But if you look at the, when they didn't
+like expensive hotels, or cheaper hotels,
+then you'll see that they tended to
+have more weights on the condition of
+the room cleanness.
+So this shows that by using this model,
+we can infer some
+information that's very hard to obtain
+even if you read all the reviews.
+Even if you read all the reviews it's
+very hard to infer such preferences or
+such emphasis.
+So this is a case where text mining
+algorithms can go beyond what
+humans can do, to review
+interesting patterns in the data.
+And this of course can be very useful.
+You can compare different hotels,
+compare the opinions from different
+consumer groups, in different locations.
+And of course, the model is general.
+It can be applied to any
+reviews with overall ratings.
+So this is a very useful
+technique that can
+support a lot of text mining applications.
+Finally the results of applying this
+model for personalized ranking or
+recommendation of entities.
+So because we can infer the reviewers
+weights on different dimensions,
+we can allow a user to actually
+say what do you care about.
+So for example, I have a query
+here that shows 90% of the weight
+should be on value and 10% on others.
+So that just means I don't
+care about other aspect.
+I just care about getting a cheaper hotel.
+My emphasis is on the value dimension.
+Now what we can do with such query
+is we can use reviewers that we
+believe have a similar preference
+to recommend a hotels for you.
+How can we know that?
+Well, we can infer the weights of
+those reviewers on different aspects.
+We can find the reviewers whose
+weights are more precise,
+of course inferred rates
+are similar to yours.
+And then use those reviewers to
+recommend hotels for you and
+this is what we call personalized or
+rather query specific recommendations.
+Now the non-personalized
+recommendations now shown on the top,
+and you can see the top results generally
+have much higher price, than the lower
+group and that's because when the
+reviewer's cared more about the value as
+dictated by this query they tended
+to really favor low price hotels.
+So this is yet
+another application of this technique.
+It shows that by doing text mining
+we can understand the users better.
+And once we can handle users better
+we can solve these users better.
+So to summarize our discussion
+of opinion mining in general,
+this is a very important topic and
+with a lot of applications.
+And as a text sentiment
+analysis can be readily done by
+using just text categorization.
+But standard technique
+tends to not be enough.
+And so we need to have enriched
+feature implementation.
+And we also need to consider
+the order of those categories.
+And we'll talk about ordinal
+regression for some of these problem.
+We have also assume that
+the generating models are powerful for
+mining latent user preferences.
+This in particular in the generative
+model for mining latent regression.
+And we embed some interesting
+preference information and
+send the weights of words in the model
+as a result we can learn most
+useful information when
+fitting the model to the data.
+Now most approaches have been proposed and
+evaluated.
+For product reviews, and that was because
+in such a context, the opinion holder and
+the opinion target are clear.
+And they are easy to analyze.
+And there, of course,
+also have a lot of practical applications.
+But opinion mining from news and
+social media is also important, but that's
+more difficult than analyzing review data,
+mainly because the opinion holders and
+opinion targets are all interested.
+So that calls for
+natural management processing
+techniques to uncover them accurately.
+Here are some suggested readings.
+The first two are small books that
+are of some use of this topic,
+where you can find a lot of discussion
+about other variations of the problem and
+techniques proposed for
+solving the problem.
+The next two papers about
+generating models for
+rating the aspect rating analysis.
+The first one is about solving
+the problem using two stages, and
+the second one is about a unified model
+where the topic model is integrated
+with the regression model to solve
+the problem using a unified model.
+[MUSIC]
+

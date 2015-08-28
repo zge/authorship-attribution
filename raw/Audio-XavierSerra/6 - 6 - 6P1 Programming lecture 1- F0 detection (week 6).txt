@@ -1,0 +1,369 @@
+Welcome to the course on audio
+processing for music applications.
+This week we are talking
+about the harmonic model, and
+in this programming lecture I want to
+talk about the implementation of it.
+In particular the first part of it,
+the part that requires detecting
+fundamental frequency so
+that we can then identify
+the harmonics of a given sound.
+So we will be talking about
+one particular algorithm,
+the two-way mismatch algorithm.
+That's an algorithm that we presented
+in the in the theory lecture.
+And it's a frequency domain algorithm
+that basically tries to
+identify harmonic series,
+possible harmonic series
+that match the peaks of the spectrum.
+So in this plot we see the
+measured peaks that we have identified
+and then we keep trying different
+predicted fundamental frequencies and
+and the harmonics of it.
+And we measure the error, we measure the
+distance between these two list of values.
+And we do that measuring two errors,
+the predicted to measure,
+the difference between the distance
+between the predicted and the measured
+values, and also we have another measure
+which is the measured to predicted error.
+But lets go directly to the actual code.
+Okay?
+In the sms-tools package,
+In the util functions file,
+there is the code for
+the two-way mismatch algorithm.
+The core of it is a function
+called two-way mismatch.
+In fact
+there is a C version and a Python version.
+Now we will go through the Python version.
+When we run it we normally use the C
+version because its more efficient.
+So this algorithm what it does is it
+receives the peaks, the frequencies,
+and magnitudes of the peaks.
+It receives a list of candidates
+of frequencies of candidates of
+fundamental frequency.
+And it basically identifies which is
+the candidate that has the smallest error.
+So it does that by measuring the two
+errors, the error predicted to measure,
+which is this part, and then the measured
+to predicted which is this part.
+Within it it keeps identifying all
+the distances between all the values
+of the harmonic series and
+the peaks, and it has different
+ways of comparing those.
+We're not going to go
+into detail of that
+but of course feel free to go into it.
+And then finally it just
+creates an an error array,
+which is the list of errors
+of all the candidates, okay?
+So we have, in there we have 
+all the errors for
+every single one of the candidates.
+And then what we do is we choose
+the minimum of those errors and
+the fundamental frequency is going to be
+that candidate that has the minimum error.
+Then this function is
+wrapped by another one
+that is the one responsible for generating
+the candidates and calling the function.
+So this f0Twm receives again
+the pics of the spectrum, and
+then it receives the control parameters.
+So like the maximum error allowed.
+This is the error that will be allowed for
+the fundamental frequency
+to be accepted as such.
+And then the range of the fundamental
+frequencies from a minimum to
+maximum f0.
+And then there is one value which is
+kind of a memory tracking value.
+That is basically the fundamental
+frequency of the previous frame.
+And this will allow us to refine 
+the fundamental frequency
+by restricting that the fundamental
+frequency should be as smooth as possible.
+But the algorithm here is very simple,
+in fact it just takes the list of peaks
+that are within the minimum and
+maximum values of the frequencies.
+And the rest it just makes a few
+more comparisons about that.
+There is a lot of room for
+improvement in this algorithm, in the sense
+of generating more candidates so
+that we could do a more exhaustive
+trial of different frequencies.
+But for efficiency reasons we made
+the simple implementation, so that allows
+us to compute this quite efficiently.
+Okay.
+So I wrote a little script that
+basically does an analysis
+of a single spectrum and
+then it computes the errors
+of all candidates.
+Okay.
+So in here I have this little script
+that from a sound a sawtooth
+sound it just computes one DFT.
+So here it computes one
+DFT of that particular sound.
+It finds the peaks,
+it finds, it interpolates the peaks,
+and then it generates possible candidates
+of the fundamental frequency.
+In a similar way than what we just saw,
+but more simply, in the sense
+that we are taking the candidates
+as all the peaks lie within the ranges
+that that we specified.
+And then it calls the two-way mismatch
+algorithm, but I modified the function, so
+I have it here, in a way that
+instead of returning just one value,
+the fundamental frequency that is the
+minimum error, it returns all the errors.
+So it returns an array of all
+the errors for all the candidates.
+So that we can look at them and
+see how how they behave.
+Okay, and then it prints here, it just
+prints the spectrum and the peaks, so
+we can understand a little
+bit what's going on.
+Okay, so lets run this.
+So lets run test.
+Okay, and this is the spectrum,
+the magnitude spectrum.
+And the peaks that we found.
+So let's maybe zoom in a little bit,
+so that we can see a little
+bit what is going on.
+Okay.
+So these are clearly
+the harmonics of the sound.
+It has also found peaks like before
+the fundamental frequency and
+one after the fundamental frequency.
+But that's well, basically in has
+identified the harmonics.
+So now let's plot, or
+let's print some of the intermediate
+values of all these.
+Okay, so
+clearly the first thing is the candidates.
+So if we print the f0c,
+this is the candidate,
+and it's going to be the peaks that lie
+within the frequency range that we
+specified, which was
+between 50 and 2,000 hertz.
+So the candidates are the first
+five peaks, and if we print
+their frequencies, so
+like ipfreq and f0 candidates.
+Those are the frequencies that lie
+within the frequency range, and
+that we're going to test in the algorithm.
+So, we're going to test 166 hertz,
+440, 637, etc.,
+etc.
+So now lets print the errors
+that it returns.
+So, f0 errors.
+Which is the output of this
+algorithm will have the errors for
+every one of these values.
+So for 166, we have an error 4.8.
+For 440 has minus 0.13.
+So clearly this is the smallest of all
+errors and this is indeed the fundamental
+frequency, the candidate that is the
+best one as a fundamental frequency.
+So this error values are really
+misleading because they are not
+bounded within a particular range.
+It can even be negative like in this case.
+And clearly the larger the error, the less
+chance that it's
+going to be a fundamental frequency.
+So we will be focusing on
+the lowest errors that we have.
+Okay, so this works quite well.
+Now we can we can go into another file
+that basically does this for
+the whole sound.
+So we will be iterating for
+the whole sound.
+We are just doing the exact same thing.
+We are taking the sawtooth sound
+and we are trying a different window,
+we'll keep doing it to see if we
+can get a different type of result.
+And we take the FFT,
+we define the minimum and maximum, and
+we call a function f0Detection.
+Which, in fact,
+is in the harmonic model file.
+In the harmonic model file, there is
+this function called f0Detection,
+that does all what we talked about.
+Basically, accepting
+things like the input sound,
+the sampling rate, window, fft-size,
+and the values given by the user.
+It iterates over the whole sound and
+it calls the peak detection,
+peak interpolation,
+the two-way mismatch algorithm, and
+then it decides which one would be
+the best fundamental frequency.
+There is a few sort of constraints to
+make sure that the fundamental
+is stable in time,
+related to this track that we talked about.
+So but basically it returns just
+the fundamental frequency that
+it considers to be the best.
+Okay, so lets now look at test1 and
+lets run it.
+So lets run test1.
+Okay, and
+now in fact we can just show the f0.
+Okay, so this is
+the values that it has returned.
+Well the hop size that I
+specified was quite large, 1,000,
+so, it is not that many samples so
+it is easier to look at.
+And, okay, clearly there is not a
+perfect fundamental frequency identified.
+It kind of varies, like it goes
+from 439.9 to 440 something.
+In fact if we plot this array
+we will see 
+the variation that we will have here.
+Okay, well let's get rid of this and
+let's get rid of this and
+now let's plot it again.
+Okay now we can zoom into the very top.
+Okay.
+So clearly it moves around 440
+and these variations
+are caused by, clearly, by
+the errors of the peak detection
+algorithm and the interpolation.
+So that we are not really exactly at 440.
+But of course the error is very
+small, it's less than 1 hertz error.
+So this is 440, and
+40.5 and a little bit below.
+So this is clearly a quite small deviation
+from the nominal value that is 440.
+If we change these values we
+might get better results.
+For example, instead of having
+the window being 1,001 lets
+lets make it twice as much.
+And the FFT size lets
+make it twice as much.
+Okay, and oh, no, times 2.
+Okay, and now we will, so lets see that
+before we were 439.95,
+440 point something.
+Let's see if that's any different.
+Any difference by looking
+now at these values.
+Okay?
+So this is what we got now.
+And it's a little bit better.
+So we can see the difference
+between these two values.
+Now the error is smaller than before.
+In fact if we plot now this f0 well there
+is this exponential to
+the minus 2 to the, minus 2.
+So clearly this is a very small,
+it's a smaller error range
+than what we had before.
+So the lowest, the lowest now is 439.9,
+and the highest value is 440.042.
+So that means that as
+the window gets larger and the FFT
+gets larger, the zero padding increases,
+we will have better values.
+Okay, now let's look at
+a real sound and
+let's finish by running
+it on this oboe sound.
+And basically I do basically the same thing.
+So I can just run this test2.
+Okay, this will compute the fundamental
+frequency of this oboe sound.
+And now if I plot this f0, okay,
+and now we will have to
+zoom into the meaningful range.
+Okay,
+well that is definitely also a variation.
+But here that is both the variation
+that may be caused by errors and
+the variation that is clearly natural
+to the playing of the oboe sound.
+So for example this sound
+is clearly higher than 440.
+So the oboe sound was played a little
+bit higher in frequency than 440.
+So around 442.
+And there is kind of a periodic
+oscillation that makes sense
+to be present in the sound.
+And, of course, there might be some of
+these oscillations that may be caused by
+some error.
+But this is a very interesting way to
+try to understand what is going on
+both in terms of the algorithm and
+in terms of the sound.
+In terms of this oboe sound and
+natural oscilations that may be
+caused by either the acoustics or
+the performer that is playing this note.
+Okay, and that's all I wanted to say.
+So basically, we have talked about 
+an implementation of
+the two-way mismatch algorithm.
+And I think that has given us
+a view on the issues of how to
+detect the fundamental frequency.
+Of course we have used Python and
+a number of of these packages, and
+the implementations that,
+that we have in the sms-tools package.
+So that's all.
+So this was the first program in class and
+this harmonic model week.
+And then on the next lecture we
+will then add the whole model and
+include this fundamental frequency
+into a harmonic analysis.
+And we'll be able to do both
+the analysis and synthesis of sounds.
+So thank you very much and
+I see you next lecture.
+

@@ -1,0 +1,403 @@
+Welcome to the final segment of this week.
+In this segment, we discuss the principle
+behind prediction in image processing.
+It's a way to capture the correlation
+amongst image and video pixels.
+And it is utilized widely in many signal
+processing applications.
+In the context of compression, we'll
+utilize
+prediction in many places these three
+weeks.
+The idea is to encode and transmit to the
+decoder the
+unpredictable part in the prediction
+process, which is the prediction error.
+Then the decoder, with knowledge of the
+prediction
+model, performs the same prediction as the
+encoder.
+And adds that there's maybe a prediction
+error to form the constructed signal.
+For lossless compression, the prediction
+error is encoded error free.
+While for loss compression it is first
+quantized and
+then encoded as you'll see in the next two
+weeks.
+Based on this principle there are very
+useful lossless
+image compression schemes, such as CALIC
+and JPEG LS.
+We'll discuss briefly JPEG LS.
+And, of course, we'll talk more about the
+loss aversion of JPEG next week.
+So, let's proceed then with this final
+segment of week eight.
+Prediction is used extensively in signal
+processing and certainly in
+compression, the topic of this and the
+next two week's lectures.
+So based on a prediction model, we can
+predict the
+signal value of the given pixel using
+values from the past.
+That is, values that have been processed
+and we therefore know their values.
+The past refers to spacial or temporal or
+spacial temporal past.
+And of course it also relates to the
+direction the
+image is processed, that is left to right
+and top down.
+So as an example here's an image from
+predicting the value of the pixel here.
+If I used these neighbors in assuming a
+left to right and a top down
+scanning direction, then the Os here,
+these neighbors
+refer to the past of the pixel text.
+These are values that I have already
+computed.
+The prediction model can be the result of
+an optimization problem.
+Such as minimizing the prediction error,
+as we'll see next week.
+Or it can result from heuristics and
+extensive experimentation.
+Of course, every time we do a prediction
+we are bound to make an error.
+Sometimes a small one and other times a
+large one.
+Therefore, the reconstructed value equals
+the
+predicted value plus the prediction error.
+Now in compression as mentioned earlier we
+code
+and send to the decoder the prediction
+error.
+This is the unpredictable part.
+Or the correction term.
+Since the decoder can carry out the
+prediction assuming
+that this model is a, is available to the
+decoder.
+Only this prediction error term is needed
+to form the reconstruction.
+When we deal with lossless compression,
+this correction part.
+Here, the correct, the prediction error
+needs to be encoded, error free.
+Using some of the techniques we covered so
+far that is Huffman and arithmetic coding.
+As you'll see when we discuss lossless
+compression next
+week, this prediction error is first
+quantized before being encoded.
+An algorithm for lossless image
+compression based on a
+heuristic prediction model is CALIC,
+context adaptive lossless image
+compression.
+Also JPEG, the joint photographic experts
+group, has produced lossless image
+compression standards.
+And the, that's what the LS stands for.
+We will discuss lossless JPEG next week.
+This is probably what most people are
+familiar with.
+But I will briefly, here, discuss a
+version of JPEG LS.
+But before we proceed, let's look at the
+question of why encoding
+the prediction error versus the original
+values saves us bits.
+We will show an example here of this
+simple prediction model and try to
+argue why this more efficient to encode
+the prediction error than the original
+signal.
+So we're going to work with this image.
+And we're going to use an one-dimensional
+prediction model.
+So each line of this image is going to be
+processed separately.
+So let's assume that here is how one of
+these lines in the image looks like.
+Nothing particular about the values here.
+[BLANK_AUDIO]
+So, the prediction model is that the
+predicted
+value at n equals the value of the signal
+at n minus 1.
+So, if this, if we assume this is n, this
+is n minus 1, therefore this is x n minus
+1.
+This is x of n.
+According to this prediction model the
+predicted
+value at n, is equal to x over minus 1.
+And therefore the error that results is
+just x of n
+minus the predicted value, so the value
+here.
+So if we apply this model to this image,
+here's how the error looks like.
+Since the original image is an eight bit
+image, here's 256 values.
+The error has twice the dynamic range,
+therefore the
+values range from 2, minus 255 to plus
+255.
+And for displaying purposes we have
+linearly mapped
+this range to the 0 to 255 range.
+Therefore the value here in the middle of
+127 represents zero.
+So as expected the, a lot of 127s, a lot
+of zeroes in the error image.
+Because this model is quite accurate in
+the flat regions of the image.
+Divert fails or the prediction error is
+large at
+the edges of the image, and this is what
+you see here if you have a close look
+at real reactors and exit detectors in
+some sense.
+Large values are you know close to 255 and
+close
+to zero, are observed at the edges of the
+image.
+So, it is this prediction error this image
+at
+the center of the decoder instead of the
+original one.
+In trying to see why this more efficient
+to encode the prediction error
+than the original one, let's look at the
+histogram of these two images.
+So, here's the histogram of the original
+image.
+If you recall actually this was an image
+that
+we used when we covered enhancement to
+demonstrate histogram equalization.
+So, this is the histogram which is the
+close and equalized
+histogram and, and was the result of the
+histogram equalization algorithm.
+If we look at the histogram of the
+error, as expected it's pointy, pointing
+around zero.
+And zero again is represented by the value
+127.
+If we look at the entropy of the original
+image.
+Let's call it H1, and the entropy of the
+error image call it H2.
+If you recall from our discussion, the
+entropy
+of a discrete source is maximized when the
+symbols emitted by the source are equally
+probable,
+or in other words the histogram is flat.
+So based on this, H1 is greater than H2.
+And
+assuming that I have a means to achieve
+entropy.
+I have an earth medicoder for example that
+can come close to entropy.
+Then based on these I need more beats to
+encode the
+orignal image than the resulting
+prediction error.
+We look at the first version of the JPEG
+lossless standard.
+There are eight predictors used, and they
+are given by these expressions.
+So, predictor zero is where no prediction
+is
+taking place, so the actual values are
+encoded.
+Then there are three one-dimensional
+predictors, and four two-dimensional
+predictors.
+So if we look at some of them, as an
+example.
+So, let's look, for example, at predictor
+number one.
+Then the predicted value at this location
+ij,
+equals the value of the pixel to the left.
+This is exactly the one dimensional
+predictor we used in the previous example,
+to find the error and argue about the
+reasons for encoding the error.
+If you look at predictor number six, then
+the pixel value
+at this location is equal to the pixel
+value on the left.
+With weight one, the one involved with
+weight one half.
+And the one diagonally involved with
+weight minus a half.
+So this is also linear predictor, a two
+dimensional one that uses the three
+neighbors shown here.
+So the prediction error clearly is the
+actual value of the image
+at location ij, minus the predicted value
+at location ij.
+So for lossless compression this error is
+encoded losslessly.
+And for JPEG LS, it's encoded using
+adoptive arithmetic coding.
+The user has a choice of any one of the
+eight predictors at each pixel location.
+If an, of the line processing is taking
+place.
+Then in principle, one could try all
+eight, eight predictors at each pixel
+location.
+And choose the one that provides the
+smallest prediction error.
+Of course, the decoder needs to be
+signaled
+as to which of the eight predictors are
+used.
+So, three bits need to be allocated
+to indicating, again, the choice of the
+predictor.
+Alternative is, some other heuristics can
+be used to
+make adaptive use of one of the eight
+predictors.
+And of course, one can just pick one of
+the eight and use it throughout the image.
+This predictor did not result of one
+specific optimization,
+but nevertheless, they're all reasonable
+predictors and actually each
+each one of them can be derived as a
+result of an optimization as we will show
+next week.
+We show here some examples by applying
+JPEG LS to four different images, the
+results are actually out of this book
+one of the standard textbooks on data
+compression.
+So, there are four images, and all eight
+prediction modes are utilized.
+So, here actually if you recall there is
+no prediction, when
+code the intensity values of the images
+directly using arithmetic coding.
+So, one observation is that, in all cases
+prediction provides a benefit.
+So no matter which of the other seven
+prediction modes are used, the number of
+bits needed is smaller than when we are
+directly encoding the intensity values.
+What is shown in bold is the best encoding
+achieved in each case.
+And clearly which prediction method
+performs best
+depends on the type of the image.
+So with this image Sena, the fifth
+prediction mode gave the best performance.
+And we see that this about 45% or so fewer
+bits
+than when the intensities were directly
+encoded
+using, encoded using Eric's method,
+encoding.
+We also show here a comparison between the
+best JPEG-LS and GIF.
+G-I-F, which was if you recall a,
+technique to compress graphical images
+utilizing implementation of a dictionary
+technique,
+in more specifically the LZW technique.
+As I mentioned when we covered dictionary
+techniques.
+We said that in all cases JPEG-LS is
+performing better than GIF.
+However, in this case the performance is
+comparable and
+this image is closer to you might say a
+graphical image, and
+therefore this justifies the semi
+equivalent performance.
+So we've reached the end of week eight, 2
+3rds of the course is completed.
+Congratulations to all of you.
+You should all feel very good and proud
+about it.
+During this week, the first week out of
+three
+weeks dedicated to compression, we talked
+about lossless compression.
+This an important topic on its own, but
+it's also very important because a
+lossless compression
+step is part of any lossy compression
+scheme
+as you'll see in the next two weeks.
+In addressing some of the important
+questions, such as how efficiently can
+we losslessly compress a signal, we'll
+light on elements from information theory.
+We covered some of these intriguing
+notions and
+results, such as entropy and the source
+coding theorem.
+We discussed ways to generate variable
+length codes, such
+as the celebrated and widely used Huffman
+and arithmetic codes.
+We'll be making use of them in the next
+two weeks as well.
+We saw how these two codes found
+applications in the facts standards.
+We've also discussed dictionary techniques
+for encoding
+signals with recurring patterns such as
+text.
+Dictionary techniques are used, for
+example, in the UNIX compress command.
+In compressing signals sent over a modem
+and in GIF or compressing graphical
+images.
+Finally, we talked about the principle of
+prediction, which is utilized in
+many signal processing tasks, such as the
+compression task we're discussing here.
+In lossless compression, the prediction
+errors is
+encoded without error and sent to the
+decoder.
+While in lossy compression it is first
+quantized and then
+encoded error free, as we'll see in the
+next two weeks.
+So, we already have a good understanding
+of
+the concept of compression, and more
+specifically lossless compression.
+All we need to do now is utilize what
+we've learned but
+include a quantization step in the
+process, which is not a reversible
+process.
+Due to quantization, error will be
+introduced
+but higher compression ratios will be
+achieved.
+And this is all we'll be doing in the next
+two weeks.
+So I hope you found the material of this
+week interesting.
+I'm looking forward to continuing with the
+material of the next two weeks.
+So, I'll see you next week.
+

@@ -1,0 +1,120 @@
+Now there are some kinds of advanced
+questions that don't tend to be answered
+in modern commercial systems, but are part
+of modern research systems. And let's turn
+to those now. Imagine the following harder
+question. What is water spinach? And the
+answer we'd like to give, is really a full
+paragraph, that talks about water
+spinach, and its history, and names for
+it in different languages and so on.
+So we'd like to be able to build that kind of
+question not by just looking it up on the
+web, but by merging together possible
+snippets we might get from different
+sources. Or we might get hard medical
+questions like in children with an acute
+illness what's the efficacy of a particular
+medicine and an answer there might be
+again a summary of things we might see
+from a particular PubMed paper. We might
+wanna read a sentence and decide, read a
+document and extract sentences and we can
+say where they came from and how much we
+believe them. These are the kind of harder
+things that are important in the research
+literature, but haven't yet made it into
+commercial, modern commercial systems.
+And for answering these harder
+questions, we often use an approach that's
+called query focused summarization. And
+query focused summarization means that
+we're applying a natural language
+summarization algorithm. We're going to
+summarize multiple documents, pull
+information from multiple documents. But
+it's query focused. It's not just a
+summary of everything that's in those
+documents. It's the parts that are
+relevant for a query. And there are two
+kinds of algorithms for query focused
+summarization. One of them, what we might
+call the bottom up snippet method, we find
+a set of relevant documents, extract
+information from them, bottom up, using
+TFIDF, deciding how many s--, how 
+sentences are relevant by their TFIDF score,
+other kinds of scores. And then we combine 
+and modify the sentences into an answer.
+And what I'm gonna talk about today 
+is a second method which you might
+think of as an information extraction
+method. And here we build specific answers
+that work for different question types. So
+we might have definition questions or
+biography questions or certain medical
+questions and for each of those we might
+decide what constitutes a good definition
+question or a good biography question or a
+good medical question. And we're gonna
+build specific answers for those. So for
+example we know that a good biography
+contains a person's birth and death,
+dates, it contains how famous they are,
+what they're famous for, their education,
+their nationality, and these kind of 
+things. Whereas a good definition
+contains what's often called a genus or
+hypernym, so we know. What is a Hajj?
+It's a type of ritual. And a good medical
+answer contains the problem that the
+medicine is designed to, to, to solve, the
+intervention, what is this drug or intervention
+we're gonna use and then the outcome, 
+the result of the study describing this problem.
+So for these three kinds of answers, 
+we might know that
+we need to extract for a definition
+question, we've got to build a genus
+detector and a species extractor, subtype
+extractor. Whereas for a biography
+question, we need to build a data
+extractor and a nationality extractor.
+While for a drug efficacy question, we
+have to extract the population the study
+was run on or what the problem or
+intervention are and so on. And I've given
+you examples here of the kinds of
+sentences we need to extract for these
+kind of answers. So here's a sample
+architecture for a complex question-answering
+system from Blair-Goldensohn et al.
+Here you might have a, a question like
+what is the Hajj, and we might specify
+that we'd like to search twenty documents
+and extract an answer of about eight
+sentences. So we'll pull, do document
+retrieval, pull lots of relevant documents. 
+And now we're going to build classifiers
+whose job is to pull out genus
+species sentences. So the Hajj is a
+pilgrimage, the Hajj is a milestone, the
+Hajj is a pillar and so on and a classifier
+that pulls on other non, non kinds of
+definition sentences. And we're gonna
+cluster these and order these and produce
+as the response an answer of about eight
+sentences, that summarizes a good response
+to the question. So advanced question-answering
+algorithms used in the laboratory
+either use information extraction methods
+or use bottom-up clustering methods to
+combine information from lots of documents
+to create a set of sentences that answer
+our question. But more commonly commercial
+systems are based on factoid answers. So
+either using knowledge bases or more often
+using information retrieval techniques to
+find sentences that contain an answer to
+the question extracting and ranking the
+answer and then presenting it to the user.

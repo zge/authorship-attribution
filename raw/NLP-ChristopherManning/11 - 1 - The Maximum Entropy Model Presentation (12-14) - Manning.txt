@@ -1,0 +1,261 @@
+Up until now I've referred to the models
+that we're using as maximum entropy models.
+But actually what we defined is these
+likelihood maximizing models which are
+defined with, in a certain exponential model
+form. In this part I want to show why
+these models are also referred to as
+maximum entropy models and what the
+motivating intuition is for the maximum
+entropy idea. The motivating intuition for
+maximum entropy models is that in general
+there are tons of probability
+distributions out there, most of which are
+very spiked and specific, and would tend
+to overfit on particular data items. What
+we want to do is to find a distribution
+that's as uniform as possible except in
+places where we know that there's some
+reason to believe that the probability
+distribution isn't uniform. Uniformity can
+be thought of as high entropy. We
+search for distributions which have the
+properties we desire, but which also have
+high entropy. So this is kind of embodying
+a statement of Thomas Jefferson's.
+Ignorance is preferable to error, and he
+is less remote from the truth who believes
+nothing than he who believes what is
+wrong. So what we're wanting to do is not
+have any beliefs in our model that we
+haven't particularly stated. To the extent
+that we haven't stated any constraints in
+our model, we want the probabilities to be
+uniform as possible. So entropy is a
+quantity that measures the uncertainty of
+a distribution. So if we have an event X
+which has some probability, we can work
+out the surprise of that event by taking
+the log of the inverse of the probability.
+So if you see an event with a very, which
+you think has a very small probability of
+happening, your surprise is then great.
+If you thought it had zero probability of
+happening, your surprise is infinite.
+On the other hand, if the event had a very
+high probability of happening, your
+surprise is small. In particular, if you
+think it had probability one, then your
+surprise is zero. We can then work out the
+entropy of a distribution by taking the
+expectation over the surprise, which can
+be written out in this form here.
+And this gives us the equation for entropy.
+So here's an example of that with the simple 
+case of flipping a possibly weighted coin.
+So if the coin always comes down
+heads, or always comes down tails,
+then there's no entropy in the distribution.
+And the entropy is maximized when the coin
+is equally likely to come down heads or tails.
+Let me go through some concrete examples 
+that show what happens when we try
+and maximize the entropy of a distribution, 
+i.e., to minimize the commitment.
+So we're starting off with no beliefs, 
+and then in some ways we're going
+to want a probability distribution that
+resembles some reference distribution,
+which for us we're going to be taking straight
+from the observed data. So what we're
+going to say in our model is that we want
+to maximize entropy subject to feature-
+based constraints. And precisely what our
+feature-based constraints are is to say
+that the expectations of the values of
+features in the model should be the same
+as the empirical expectations of those
+features over our observed data. So every
+time that we add features that, that puts
+constraints into the model and therefore
+it lowers the maximum entropy, but on
+the other hand, it raises the likelihood
+of the observed data. It takes the
+distribution further from uniform, but it
+brings the distribution closer to the data.
+So here is a very simple example of that.
+So here was our unconstrained entropy
+distribution, which has its maximum right
+here. If we put in the constraint that
+said the probability of the heads was 0.3,
+then we've constrained the distribution to 
+just a single point. And so at this point
+the constrained distribution has a lower 
+maximum entropy than we had before.
+That example in one dimension is so simple 
+it's hard to see much. So, let's do a slightly more
+complex example in two dimensions. So here
+we have two, two probabilities, the
+probability of heads, and the probability
+of tails. So let's just assume those
+are two numbers between zero and one and
+we haven't even modeled the fact that
+heads and tails are in complementary
+distribution. Well then, if we model this
+entropy surface, that we find that the
+maximum entropy comes about when the
+probability of P(h) and P(t) is
+around there, and well why is that, well
+that's because for the components of
+the entropy distribution minus x log x,
+they have their optimum at the value of
+one on e, which is about .38, .4 or
+something like that. So that's not what we
+normally see when we see the entropy
+picture for a coin. And that's because,
+normally, we immediately put in this
+constraint saying that heads and tails are
+in complementary distribution. The sum of
+their probabilities have to add up to one.
+And so then, once we do that, we've
+constrained the space by saying we have to
+be somewhere along this line. And then
+we're in the situation that entropy is
+maximized by having the probability of
+heads equaling the probability of tails
+equaling a half. But again, we could sort
+of stick in one more constraint, and say
+the probability of heads is .3. And then
+again, we've constrained the distribution
+down to a single feasible point. And the
+point to notice is that, with each of
+these constraints, the maximum entropy of
+the model has gone lower. So here, we're
+at the true maximum of the function.
+Now we are sort of away from the true 
+maximum of the function, but still at a
+reasonably  high entropy point. And here 
+we've wandered even further from the maximum
+of the function. So our maximum entropy is 
+going down, but we are modeling facts
+about the situation in the world that 
+we want to model.
+Let's look at a concrete example that's a little 
+bit closer to an actual language problem now.
+Let's suppose we have this event space. 
+So we have parts of speech, where here
+we just have six parts of speech: nouns, 
+plural nouns, proper nouns, proper plural nouns,
+and two verb parts of speech.
+And this was  our empirical data. So that 
+we saw 36 different events and of those
+the most common things we saw were 
+proper nouns, which were actually two thirds
+of the data, and then we saw some 
+regular nouns and we saw a few verbs.
+Right, so if we have a probability for each 
+of these events, and we just say maximize,
+and they're sort of P1, P2, P3. And we say 
+maximize those probabilities.
+Again, the maximum entropy distribution 
+is by setting each of them to the value 1/e.
+But that's not what we want. We want to say 
+that this is a set of categorical probabilities.
+And so then the maximum entropy distribution 
+is to say that each of those probabilities
+is one sixth. Uniformity is the maximum entropy 
+distribution in categorical distributions.
+But that's too uniform given what 
+happened in the data.
+The nouns are much more common than 
+verbs in our data, and so we're gonna
+add a feature that has value one if the tag 
+is a noun and zero otherwise.
+Well the expected value of that feature is 
+32 over 36, eight ninths.
+That's just using the data from
+the previous slide. So if we add that
+constraint, and then say what's the
+maximum entropy distribution, it's going
+to set the probabilities so that this
+constraint is satisfied. The sum of these
+probabilities equals 32 over 36, but within 
+that category probability mass is still
+gonna be distributed uniformly because 
+that's the maximum entropy distribution.
+Similarly, within the verb classes you're 
+gonna get the remaining probability
+mass distributed uniformly.
+At that point we might notice that
+proper nouns are much more frequent that
+common nouns, so we can add a second
+constraint that is a feature that has value
+one when the tag is a proper noun and
+the expectation of that feature is two thirds, 
+two thirds of the data are proper nouns,
+as we noted before. If we put that
+into the model, we then get the
+expectation of that feature observed, that
+two thirds of the probability mass goes
+to proper nouns which is again distributed
+uniformly. We still have the feature
+that 32/36 of the probability
+mass goes to some kind of noun.
+So the remainder is distributed evenly 
+among the other nouns and this is as before.
+Now, of course we could keep on refining our
+model. We could, for example, say add a
+feature to say that singular nouns
+comprised a certain amount of the data.
+So singular nouns comprised eighteen
+thirty-sixths of the data. We can add that
+constraint in and eventually if we added
+enough constraints, we'd force the
+distribution to be exactly the same as the 
+empirical distribution. It's very easy to see
+that maximum entropy models are convex
+models, so what's the idea of a convex
+function? The idea of a convex function,
+here f, is that if you take the
+function value at the weighted mean of
+any set of points, then that function
+value is greater than what you do if you
+take the function value at those points,
+and then weight those
+function values that you found,
+that we're kind of above it up here. And
+so that's distinguish from something like
+a non-convex function where you could have
+these local minima and so then the
+function value of this average point is
+beneath what the function value is if
+you just take the average of the values
+of the two greater points.
+Convexity guarantees that a function has 
+a single global maximum because any
+higher points of the function are greedily
+reachable. In the maximum entropy formulation
+it's easy to see that we have a convex
+function, so we can start of by showing
+that the entropy function is convex. And
+so we have that minus X log X is a convex
+function. And so therefore if we take a
+sum and we drew it over here that's a convex
+function. If we then take a sum of convex
+functions, that's always convex.
+Then after that, what we're doing is adding
+constraints to the function. And so the
+feasible region of a constrained entropy 
+function is a linear subspace of it,
+which then also has to be convex. So,
+like, when we put a linear subspace
+constraint right here through our entropy
+surface, that we've still got a convex
+function coming out of it. And so, I'm not
+gonna show it here, but the same is true
+for our original maximum likelihood
+presentation, that we get a convex function.
+Okay. Well, I hope you now understand 
+where the name maxent models
+comes from and what they key idea of the
+maximum entropy principle is.

@@ -1,0 +1,506 @@
+Hello, welcome back to the course on Audio
+Signal Processing for Music Applications.
+This week we're talking about
+the Fourier properties and theorems.
+And in this programming lecture,
+we are going to be using that
+to actually implement
+the analysis of a sound, using
+the Fourier transform, and we will
+take advantage of those properties to
+better understand this
+programming aspect of it.
+Okay, so let's first go to a terminal.
+And we going to be working within
+the sms-tools kind of package.
+So we'll go to
+where we have kept the sms-tools code
+that we downloaded from GitHub.
+And we're going to be working
+from the workspace directory.
+Okay.
+So, now we are within
+the workspace directory.
+And now we can start iPython.
+So, today we're going to be using iPython,
+which is an interactive shell that
+is very convenient for
+interactively calling python commands.
+Since we're going to be using
+matplotlib all the time,
+there is a way when we start iPython
+to already import matplotlib.
+So we do that by calling pylap.
+Okay?
+And this will execute iPhython and
+it already will be using matplotlib
+as part of that.
+Okay, now we want to
+start typing in Python,
+but it's much easier to
+do it from a text editor.
+Okay so here is our gedit,
+our text editor, and
+I already typed some of the commands
+of what I want to explain.
+So this is a very simple script,
+in which I imported three packages,
+so numpy,
+the standard array processing package,
+then I wanted to use a triangular function,
+so
+I got that from scipy, okay so
+I imported that function,
+and I want to use the DFT
+implementation in Python,
+the FFT algorithm,
+so I get that also from scipy,
+from the fftpack.
+Okay?
+Now we declare,
+we create a triangular function, an array
+of values that is a triangular shape.
+So I compute 15 samples
+of a triangular function.
+Then I call the FFT algorithm.
+And here it's very important
+to notice that 
+the size of the input signal is 15
+samples, it is not a power of two,
+even though
+we mentioned that in order
+to use the FFT algorithm,
+we require to have a length
+of a power of two signal.
+But, this implementation of the fft,
+when the input signal is not a power of
+two, then it just implements the DFT,
+the standard implementation of the DFT,
+therefore it does not take
+advantage of the power of two and
+of the implementation of the FFT.
+But so therefore we can use the FFT for
+any size,
+of course we will
+try to use power of two
+When this is called very often.
+And then after computing the spectrum,
+capital X.
+We obtain the magnitude, and
+the phase of the spectrum.
+Okay?
+So from iPython, we can execute this file,
+this file is in our workspace directory,
+it's test.py.
+Okay?
+So I can execute this script
+by just typing run and test.
+No need to type that .py because it knows
+that we are executing Python files.
+Okay, so
+now it has executed these commands.
+It hasn't printed or plotted anything.
+I didn't ask for any
+output in that way.
+But it has computed all these variables.
+So these variables are now
+known into the environment.
+So if we for
+example just type the variable x, it shows
+the array of our triangular
+function that we have computed.
+And we can plot it.
+If we plot x, where
+plot is the matplotlib function, I don't
+need to make reference to the package,
+but just directly the function plot.
+and I plot x.
+I'll display the triangular
+function going from 0 to 14.
+Okay?
+Then the magnitude and
+phase spectrum can also be plotted.
+So I just can plot mX
+and this is the magnitude spectrum.
+Okay.
+And this requires some explanation.
+The magnitude spectrum of a real
+function like a triangular function
+is symmetric and here there is
+a symmetry, but maybe a little misleading.
+The symmetry is around 0 and the way this
+has to be understood is as a circular
+buffer in which the center is 0 and
+then the first half of the array
+are the positive values
+and the second half of the array
+are the negative values, so
+in fact the value 14 is
+also the sample minus 1.
+Okay, so
+this keeps repeating left and right.
+And, therefore
+this ending is the negative part.
+And then, we can understand
+the symmetry very clearly.
+Okay?
+We can plot the phase
+spectrum by typing plot pX.
+Okay?
+And it shows this quite complex function,
+which is kind of not so
+intuitive from what we talked about.
+When we analyze a real function,
+and an even function like the triangular
+function, the phase should be 0.
+This was one of the
+symmetry properties of the DFT.
+And here the phase is not 0, why?
+Well, because our time signal,
+the triangular signal,
+was not centered around 0.
+It had a shift operation.
+It had a shift of half of
+the triangular function.
+So from what we just talked about,
+the concept of centering around 0,
+in order to compute a triangular
+function that is centered around 0,
+we have to place the triangle
+in a different way.
+Let's show that.
+Okay, in this second file,
+I have added three lines
+that change the triangular function
+in a way to center it around 0.
+Okay?
+So after computing the triangular
+function, we are creating a variable,
+which we call fftbuffer,
+of the same size as x.
+All initialized with 0s.
+So np.zeros is a way to create
+an array of empty values.
+And then what we going to do is
+locate the triangle around 0.
+Which means that the first part of
+the buffer will be the end of the triangle.
+This way of accessing
+the array basically says that
+from seventh location of
+the input signal to the end
+are placed at the beginning
+of the fftbuffer.
+And the second part of the triangle,
+the second half
+is placed at the end.
+No, this is the first
+part of the triangle
+is placed at the end of the fftbuffer.
+And then we do exactly as
+we did before, we compute
+this array that has the triangle
+now centered around 0, and
+we obtain the magnitude and phase spectrum.
+So again this file is in our workspace,
+so we can just execute it,
+run test1.
+[SOUND] Okay?
+And now what we're interested 
+is in the fftbuffer.
+So if we show, we plot the fftbuffer.
+Okay, we see the triangle but
+placed around 0.
+What does that mean?
+Well, the center of the triangle,
+the value 1 is now at location 0.
+This is the second half of the triangle,
+and
+the first half is now
+placed in negative values.
+It's placed at the end.
+This would be the negative samples of n.
+Okay?
+And
+if we now look at
+the magnitude spectrum,
+well,
+it should be the same than before.
+It's exactly the same.
+The magnitude does not change.
+What we have done is a shifting operation.
+We have moved the triangle
+from 0 to 14 to minus 7 to 7.
+So the magnitude does not change.
+But the phase should
+be very much different.
+Okay?
+So let's plot the phase.
+Well, that looks strange, but let's
+understand that axis to understand it.
+This is, there is this factor,
+exponential factor here of e to the minus
+15, so basically these numbers are 0.
+Now, there is some numerical error,
+but these are tiny, tiny values.
+It's not 0 to 4, but
+it's 0 to 4, to the minus 15.
+Okay?
+So basically this means that this is
+all 0s.
+And of course there were some
+numerical error that is caused by
+when we use computers.
+So anyway, so this is 0 phase result.
+Okay now let's look at a real signal.
+Let's do the Fourier
+analysis of a real signal.
+And for that I created another file,
+test2.
+In which we basically use
+some of the same code but
+added code in order to be
+able to read a sound file.
+Okay?
+So we have the same packages,
+but here we need to include
+a file that is within the sms-tools
+directory, call utilFunctions
+the has the wavread function.
+Okay?
+The wavread function,
+is a function that reads a file and
+then it converts to floating point
+numbers, normalized to minus one to one.
+So this is what we needed,
+that's why we import that.
+And then instead of having
+some fixed values, we have
+defined some variables that allows
+us to define any section,
+or any type of M values that we want.
+any duration of input signal.
+So what we do here is a way to compute
+the duration of the second half and
+of the first half of the input signal,
+so we can then center things around 0.
+And this allows us to handle
+even an odd size values.
+Okay?
+So this is just simply two variables that
+allow us to decide where
+is the middle of a window.
+Then we read the input signal.
+We read a file, the soprano WAV file, and
+we store it into a variable x and
+the sampling rate fs.
+And then we just are going to take
+a fragment of that,
+So we are going to take from the x array,
+we going to take the values that go
+from 5,000 to 5,000 plus
+the size of the window.
+So 501.
+And then, we will multiply by a window,
+a smoothing window,
+we'll talk about that more next week.
+Okay?
+So now we have a signal,
+x1, which is a short signal,
+501 samples.
+And then we do what we did before,
+we are going to center this signal
+around 0 in the fftbuffer.
+And this code does that.
+And then we just compute the result.
+So let's execute that.
+So this is test2.
+And let's first plot the original
+sound that we read, so the whole
+soprano sound.
+Okay, this is the whole soprano sound, and
+it has more than 50,000 samples,
+close to 60,000 samples.
+And this is normalized from minus 1 to 1,
+so it's not that loud.
+So it goes
+from minus .10 to .15.
+Now let's plot the FFT, well let's first
+plot the fragment that we choose, the x1,
+the x1 is the fragment that we choose
+from the singing voice.
+Already windowed by this
+smoothing hamming window.
+So these are the 501 samples.
+And now we have to put them in
+the FFT buffer, centered around 0.
+Okay?
+So we plot the fftbuffer.
+and this now is the same fragment
+of the sound but centered around 0.
+The second half of the signal
+is in the positive time and
+the first part is in the negative time.
+Okay?
+And now, of course, we can plot the
+spectrum, we can plot
+the magnitude spectrum.
+Okay, so this is the magnitude spectrum
+and here
+we see symmetry that we saw before.
+So this is the positive
+part of the beginning and
+here is the negative part at the end.
+And we have 501 samples.
+Of course we only need half of it,
+because the other is redundant.
+And if we look at the phase,
+we can plot pX,
+and this is the phase,
+which looks quite noisy.
+And now we will try to improve that.
+But this is what it is.
+And it's anti-symmetric.
+So, the first half is the negative
+values of the second half, okay?
+Now, in order to use the fft
+what we want to be able to do
+is to take a power of two length
+signal, without having to change
+the fragment of sound we actually take.
+So what we can do is, well
+here the fft size N
+can be independent of
+the fragment of sound we take.
+So here so for example now
+we can have N independently of M,
+and N will the fftbuffer.
+In order to be able to use
+a power of two fft,
+so we can just for example put 1024.
+Now this will compute the FFT, and
+will use the FFT algorithm of 
+a 1024 samples, even though we
+are only going to take 501 samples.
+Let's try to understand that a little bit.
+So we will run the test2.
+And now, the fragment of
+the input signal is the same, but
+if we plot the FFT buffer.
+well,
+now see that the second half is
+stored in the same way, at the
+at the positive side.
+And the beginning of
+the sound is placed at the end,
+at the negative samples.
+And the whole middle are 0s.
+This is the zero-padding.
+Okay, so these are 0s that we have added
+in order to fill up to the FFT size.
+And this is good.
+Okay.
+Now if we look at the output, at mX, it
+will look similar to the previous one,
+but in fact there are more samples now.
+There are a 1024 samples.
+And maybe here we are not seeing 
+the difference.
+But now for example is we plot it in dB,
+we might be able to see more information.
+Okay?
+So instead, the magnitude spectrum,
+one of the things we mentioned is that
+we want to display it in a logarithmic scale.
+So what we are going to do is
+multiply 20 times the
+log 10, which is a numpy function,
+of the absolute value of X.
+Okay so now if we save it and
+run it again, okay run test2.
+And we plot the magnitude spectrum,
+it looks very different.
+Okay, it looks the, of course
+the vertical axis has change a lot.
+Here we see again the symmetry.
+Of course, here again now it doesn't
+make sense to plot the whole thing.
+So typically what we're going to do is we
+just going to plot the values that go
+from 0, from the beginning, to
+half of the FFT size, which is going to be 512.
+Okay?
+So 512 is half of the spectrum.
+And this is what we normally plot.
+Okay, this is the magnitude spectrum.
+And for the phase, one thing that
+we also talked about, when we
+talked about the properties, is that it's
+good to do an unwrapping of the phase.
+So what we going to do is call
+the unwrap function,
+Okay from numpy, and this will allow us
+visualize this phase spectrum better.
+Just, if you remember,
+the phase spectrum looked very strange.
+Now
+if we execute with the unwrapping
+function, let's execute again that,
+and we show the phase,
+it looks much nicer.
+This in fact, we should only be watching
+the first half, so in fact let's
+watch the part that goes from 0
+to 512, okay?
+And this is the phase spectrum.
+And this looks, as I said, much nicer.
+Let's unwrap the phase,
+it does this pi -two pi
+unwrapping, so it looks much smoother.
+Okay so
+this is the normal way that we will be
+computing the spectrum of a signal.
+And this would be of a real sound.
+So this is a pretty good code
+that implements the
+Fourier transform of a signal,
+using the FFT algorithm and using some
+of the properties that we mentioned,
+and understanding the issues of symmetry.
+Okay, and that's all I wanted to say.
+So basically we have used some of
+the Fourier theorems and properties,
+so please make sure that
+you understand them,
+especially the concept of symmetry,
+zero phase windowing,
+the concept of dB scale,
+the concept of unwrapping the phase.
+etcetera, so that when we
+compute the Fourier transform
+we can actually visualize and
+understand the values in a good way.
+We used iPython,
+which becomes very helpful,
+so we can use a text editor for
+some aspects and
+then for the plotting and
+to display some things interactively
+we can use iPython commands,
+so that's pretty good. We starting to
+use a number of packages, apart from
+numpy and matplotlib, the fft is part of scipy, that is going to be a very useful package for us.
+And that's all.
+So, we have tried 
+to use some of the properties we talked
+about in the context of programming,
+in the context of actual practical use and
+we have basically developed a piece of
+code that implements the Fourier
+analysis of a fragment of the sound.
+So we're starting to get
+something interesting.
+So I hope you continue and
+that I will see you next class.
+Bye bye.
+

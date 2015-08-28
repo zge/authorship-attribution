@@ -1,0 +1,212 @@
+Welcome back to algorithms. Today, we're
+going to talk about the union find
+problem. A set of algorithms for solving
+the so-called dynamic connectivity
+problem. We'll look at two classic
+algorithms. Quick Find and Quick Union,
+and some applications and improvements of
+those algorithms. The subtext of today's
+lecture really is to go through the steps
+that we'll follow over and over again to
+develop a useful algorithm. The first step
+is to model the problem. Try to
+understand, basically, what are the main
+elements of the problem that need to be
+solved. Then we'll find some algorithm to
+solve the problem. In many cases, the
+first algorithm we come up with would be
+fast enough and maybe it fits in memory
+and, we'll go ahead and use it, and be off
+and running. But in many other cases maybe
+it's not fast enough, or there's not
+enough memory. So, what we do is try to
+figure out why, find a way to address
+whatever's causing that problem, find a
+new algorithm and iterate until we're
+satisfied. This is the scientific approach
+to designing and analyzing algorithms,
+where we build mathematical models to try
+and understand what's going on, and then
+we do experiments to validate those models
+and help us improve things. So, first
+we'll talk about the dynamic connectivity
+problem, the model of the problem for
+union find. So, here's the idea. They're
+going to have a set of N objects. Doesn't
+really matter what they are. We're going
+to use the numbers, zero through N to
+model our objects. And then, we have the
+idea of a connection between two objects.
+And, we'll, postulate that there's going
+to be a command that says, connect two
+objects. Given two objects, provide a
+connection between them. And then key part
+of the problem is find query or the
+connected query, which just asks, is there
+a path connecting the two objects. So for
+example, in this set of ten objects, we
+performed already, a bunch of union
+commands, connecting four and three, three
+and eight, six and five, nine and four,
+two and one. And now we might have a
+connected query that says, is zero connect
+ed to seven? Well, in this case, there is
+no connection, so we say no. But if we ask
+is eight connected to nine? We are going
+to say yes, even no we don't have a direct
+connection between eight and nine. There
+is a path from eight to three to four to
+nine. So, that's our problem, to be able
+to officially support these two commands
+for given set of objects. Now, let's say
+we add a union five, zero. So, that
+creates a connection between five and
+zero. Seven and two creates a connection
+between seven and two. And six and one,
+between six and one. So, now if we ask our
+zero connected to seven, well one and zero
+we can do that too. And that's a redundant
+connection. And now, if we ask is zero
+connected to seven we're going to answer
+yes. So that's our problem, intermix
+union, commands and connected queries and
+we need to be able to officially support
+those commands for a large number of
+objects. So, here's a much bigger example.
+And you can see that we're going to need
+efficient algorithms for this. First of
+all, you can see we're going to need a
+computer for this. It would take quite,
+quite some time for a human to figure out
+whether there's a connection. In this case
+there is a connection. Now, the algorithms
+that we're looking at today are not going
+to actually give the path connecting the
+two objects. It's just going to be able to
+answer the question, is there a path? In
+part two of the course, we'll consider
+algorithms that explicitly find paths.
+They're not as efficient as union find
+because they have more work to do. Now,
+applications of these, these algorithms
+involve objects of all types. These are
+used for digital photos, where the objects
+are pixels they're used for networks,
+where the objects are computers, social
+networks, where it's people, or computer
+chips, where it's circuit elements or
+abstract things like variable names in a
+program, or elements in a mathematical
+set, or physical things like metallic
+sites in a composite system. So, all
+different types of objects for, but for
+programming we're going to associate each
+object with a name and we'll just name the
+objects with a number, integers from zero
+to N-1. That's a very convenient initial
+starting point for our programs because we
+can use integers as an index into an array
+then, and then quickly access information
+relevant to each object. And it also just
+supresses a lot of details that are not
+relevant to union find. In fact, to make
+this mapping from an object name to the
+integer zero through N - one is to find
+application of a symbol table or a
+searching algorithm, which is one of the
+things that we'll be studying later in
+this course algorithms and data structures
+for solving that problem. Now, the
+connections, well, we need, a few abstract
+properties that these connections have to
+satisfy. And they're all quite natural and
+intuitive. So we assume that is connected
+to is an equivalence relation. That is,
+every object's connected to itself, it's
+symmetric. If P's connected to Q, then Q's
+connected to P, and it's transitive. If
+P's connected to Q, and Q's connected to
+R, then P's connected to R. Now these
+properties are very intuitive. But it's
+worthwhile to state them explicitly and
+make sure that our algorithms maintain
+them. When we have an equivalence relation
+a set of objects and connections divide
+into subsets called connected components.
+A connected component is a maximal set of
+objects that's mutually connected. For
+example in this small example here,
+there's three connected components. One
+consisting of just object zero, second one
+objects one, four and five. And third one
+the other four objects. And these
+components have the property that if any
+two objects in them are connected and
+there is no object outside that is
+connected to those objects, that's
+connected components. Our algorithms will
+gain efficiency by maintaining connected
+components and using that knowledge to
+efficiently answer the query that's, that
+they're presented with. Okay, so to
+implement the operations, we have to find
+query and the union command. And so we're
+going to mai ntain the connected
+components. The find is going to have to
+check if two objects are in the same
+component and the union command is going
+to have to replace components containing
+two objects with their union. So, for
+example, if we have these components, and
+we get the command to union connect, two
+and five. Essentially, we need to merge
+the connected components containing the
+one containing two or the one containing
+five to get a big connected components and
+now we have only two connected components.
+All of that leads up to, in a programming
+world to specifying, a data type which is
+simply specification of the methods that
+we are want to going to implement in order
+to solve this problem. So you know,
+typical Java model, what we will do is
+create a class called UF that contains two
+methods, one to implement union, the other
+one to implement connected, which returns
+a boolean. The constructor, takes SR unit,
+the number of objects, so that it can
+build data structure based on the number
+of objects. So, and we have to, bear in
+mind, as we're building our logarithms,
+that both the number of objects can be
+huge, but also, the number of operations.
+We can have a, a very large number, of
+union and connected, operations and our
+algorithms are going to have to be
+efficient, under those conditions. One of
+the practices that will follow often in
+this course is to check our API design
+before getting too far into dealing with
+the problem, by building a client that is
+going to use the data type that we
+develop. So, for this example, we've got a
+client that, Will read information from
+standard input. First, an integer which is
+the number of objects that are going to be
+processed. And then a series of pairs of
+object names. And what the client does is
+it, it'll, first it'll read the integer
+from standard input, and create a, a UF
+object. And then as long as standard input
+is not empty, it's going to read two
+integers from the input. And if they're
+not connected, then it'll connect them and
+print them out. If they are connected
+it'll ignore. So, that's our test client
+and that's a fine test client to make sure
+that any implementation does what we
+expect that it will. So, that's the setup.
+We've described the operations we want to
+implement all the way down to code and we
+have client code that we're going to have
+to be able to service with our

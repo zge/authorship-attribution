@@ -1,0 +1,262 @@
+In this video, I am going to describe how 
+we might be able to combine recognition 
+of objects by using the relationships 
+between their parts and recognition of 
+objects using a deep neural network. 
+At present in computer vision, there's 
+broadly three approaches to recognizing 
+objects. 
+Either you use a deep convolutional 
+neural net and this currently works best. 
+Or you use a parts-based approach, which 
+I think in the long run is going to work 
+best,. Or you use the existing features 
+that computer vision people know how to 
+extract from images and make histograms 
+of them and then use lots of hand 
+engineering. 
+This is the approach that the 
+convolutional neural networks have 
+recently beaten. 
+The point of this video is to show how we 
+might combine a parts-based approach with 
+early stages that use convolutional 
+neraul networks. 
+Even though convolutional neural networks 
+have worked very well for recognizing 
+objects and images, 
+I think there's something missing. 
+When we pool the activities of a bunch of 
+replicator feature detectors, we lose the 
+precise position of the feature detector 
+that was most active. 
+This means we don't know exactly where 
+things are and that's fatal for high 
+level parts, such as the nose and the 
+mouth. 
+In order to recognize whose face it is, 
+you need to use the precise spatial 
+relationships between high level parts, 
+like noses and mouths. 
+If you overlap the pools so that each 
+feature occurs in several different 
+pools, you retain more information about 
+its position and that makes things work a 
+bit better, but I don't think that's the 
+answer. 
+A related problem is that convolutional 
+neural nets that use translations to 
+replicate feature detectors cannot 
+extrapolate their understanding of 
+geometrical relationships to radically 
+new viewpoints like different 
+orientations or different scales. 
+We could, of course, try replicating 
+across orientation and scale, but then, 
+we get huge numbers of replicated feature 
+detectors. 
+Now, people are very good at 
+extrapolating. 
+After seeing a new shape once, they can 
+recognize it from a very different 
+viewpoint. 
+Currently, the way we deal with that with 
+convolutional neural networks is to train 
+them on transformed data. 
+So this involves giving them huge 
+training sets, where we tried to 
+transform the data through different 
+orientations, and scales, and lightings, 
+and all sorts of other things so that the 
+network can cope with those variations. 
+But that's a very clumsy way of dealing 
+with the variations. 
+I think a much better way is to use a 
+hierarchy of coordinate frames and to use 
+a group of neurons to represent the 
+conjunction of the shape of a feature and 
+it's pose relative to the retina. 
+So when these neurons are active, it 
+tells you a feature of that kind is 
+there, like a nose. 
+And the precise activities or relative 
+activities of these neurons tell you the 
+pose of the nose. 
+If you think about representing the pose 
+of something, that's really a 
+relationship between two coordinate 
+frames. 
+So it's a relationship between a 
+coordinate frame embedded in the thing 
+and the coordinate frame of the camera or 
+retina. 
+So, in order to represent the pose of 
+something, we have to embed a coordinate 
+frame within it. 
+Once we've done this and we have a 
+representation of the pose of thoughts of 
+objects relative to the reckoner, it's 
+easy to use the relationships between 
+paths to recognize larger objects. 
+So we're going to use the consistency of 
+the poses of the parts as a cue for 
+recognizing a larger shape. 
+If you look at this picture, we have a 
+nose and we have a mouth and then the 
+right spacial relationship to one 
+another. 
+One way of thinking about that is that if 
+you ask the mouth to predict the pose of 
+the whole face, and if you ask the nose 
+to predict the pose of the whole face, 
+they'll make similar predictions. 
+If you look on the right share, we have 
+the same nose and the same mouth, but now 
+they're in the wrong spatial 
+relationship. 
+And that means that if they separately 
+make predictions about the pose of the 
+whole face, those predictions won't agree 
+at all. 
+So here's two layers in a hierarchy of 
+parts, where the larger parts can be 
+recognized by consistent predictions from 
+smaller parts. 
+Let's suppose we're looking for a face. 
+And so in the middle here the ellipse 
+with Tj in it is a collection of neurons 
+that are going to be used for recognizing 
+the pose of the face. 
+And the Pj next to it is a single 
+logistic neuron that's going to be used 
+for representing whether or not we think 
+there's a face there. 
+We have a similar representation in the 
+lab below, where we have a representation 
+of the pose for a mouth and a 
+representation of the pose for a nose, 
+and we can recognize the phase by 
+noticing that those two representations 
+make consistent predictions. 
+So we take a vector of activities that 
+represents the pose of the mouth. 
+We multiply by matrix Tij that represents 
+the spatial relationship between a mouth 
+and a face, and we get a prediction, Ti * 
+Tij for the pose of the face. 
+We do the same thing with the nose. 
+We take a vector of neural activities 
+that represents the pose of the nose, Th. 
+We multiply it by the relationship 
+between the nose and the face and we get 
+another prediction for the pose of the 
+face. 
+If those two predictions agree, there's a 
+face there, because the nose and the 
+mouth are in the right spacial 
+relationship and that's very unlikely 
+without there being a face there. 
+What we're doing here is inverse computer 
+graphics. 
+In computer graphics, if you knew the 
+pose of the face, you could now compute 
+by using the inverse of Tij, the pose of 
+the mouth and similarly for the nose. 
+So in computer graphics you're going from 
+poses of larger things to poses of their 
+parts. 
+In computer vision, you need to go from 
+the poses of the parts to the poses of 
+larger things and you need to check 
+consistency when you do that. 
+Now if we can get a neural net to 
+represent these pose vectors, as vectors 
+of neural activity, then we get a very 
+nice property. 
+Spatial relationships can then be 
+modelled as linear operations. 
+That makes it very easy to learn 
+hierarchy visual entities, 
+and it also makes it very easy to 
+generalize across viewpoints. 
+So, what's going to happen when we make 
+small changes in viewpoint is the pose 
+vectors, those vectors of neural 
+activities are all going to change. 
+What's going to be invariant is the 
+weights. 
+It was the weights that represented the 
+relationship between the part from the 
+hole, like Tij on the previous slide, and 
+those don't depend on viewpoint. 
+So we want to get the invariant 
+properties of a shape into the weights. 
+And we want to have the pose vectors in 
+the activities, 
+because when we change viewpoint, all 
+those pose vectors are going to change. 
+So, rather than trying to get neural 
+activities that are invariant to 
+viewpoint, which is what the pooling in 
+the convolutional net is trying to do. 
+We're going to aim to get neural 
+activities that are equivariant of 
+viewpoint. 
+As the pose of the object varies the 
+activities of the neurons vary. 
+That means the percept of an object, not 
+its label but what it looks like, is 
+going to change as the viewpoint changes. 
+I'm going to finish by giving you some 
+evidence that our visual systems really 
+do impose coordinate frames in order to 
+represent shapes. 
+This was pointed out a long time ago by a 
+great psychologist called Irvin Rock. 
+So if you look at this shape and I tell 
+you it's a country, most people don't 
+know which country it is. 
+They look at it, and they think it looks 
+a bit like Australia, but it's so sort, 
+sort of mirror image of Australia, 
+but it's not really a familiar country at 
+all. 
+If you tell them where the top is, that 
+it's that way up, they immediately 
+recognize that's it's Africa. 
+If they knew what coordinate frame to 
+impose on it, it immediately becomes a 
+familiar shape. 
+Similarly, if I give you a shape like 
+this one, you can perceive it as a square 
+or you can perceive it as a diamond. 
+Those are two completely different 
+percepts. 
+What you know about the shape is totally 
+different depending on which way you 
+perceive it. 
+So for example, if you perceive it as a 
+tilted square, you're acutely sensitive 
+to whether the angles are right angles. 
+If you perceive it as an upright diamond, 
+you're not sensitive to that at all. 
+The angles could be 5 degrees off and you 
+wouldn't notice it, but you are sensitive 
+to something else. 
+If you perceive it as an upright diamond, 
+you're acutely sensitive to whether the 
+corner on the left and the corner of the 
+right are at the same height. 
+And you'll probably notice now that, in 
+this figure, they're very slightly 
+different heights. 
+These kind of demonstrations are 
+evidence, that in order to represent 
+shapes we impose coordinate frames on 
+them. 
+Because when you're looking at that 
+square or diamond, it's the same thing 
+you're looking at, but the percept's 
+totally different depending on what 
+coordinate frame you impose. 
+

@@ -1,0 +1,407 @@
+Welcome back.
+Today we're going take a look at hashing,
+which is another approach to implementing
+symbol tables that can also be very
+effective in practical applications.
+Here's our summary where we left of with
+red black BSTs, where we can get
+guaranteed logarithmic performance for
+broad range of symbol table operations.
+And the question is, can we do better than
+that.
+Is logarithmic performance the best we can
+do.
+And the answer is that actually we can but
+it's a different way of accessing the
+data.
+And also doesn't support ordered
+operations.
+But there's plenty of applications where
+the extra speed for search and insert that
+we can get this way is worthwhile.
+The basic plan is to think of the symbol
+table, as really try to reduce the problem
+to being like an array.
+And what we do is use the function known
+as a hash function, that takes the key a
+symbol table key and reduces it to an
+integer and array index.
+Now we use that array index to store the
+key in the value in an array,
+Maybe the value in a parallel array.
+Now, there are a lot of issues in doing
+this.
+First thing is we need to be able to
+compute the hash function that is easy for
+some types of data, but it can get
+complicated for more complicated types of
+data.
+Then the other thing is that instead of
+doing comparatives we're going to be doing
+equality tests.
+So we have to be sure we've got the method
+that we want for checking whether two keys
+are equal.
+All we're going to do is look in to the
+table and try to see if the key that's
+there is equal to the key we're looking
+for.
+And then is the problem of collision
+resolution where it's, since there are so
+many possible values for typical data
+type, your going to get the situation
+where two values hash to the same array
+index.
+And we need a collision resolution
+strategy to try to figure out what to do
+in that case.
+And these things are not difficult, but
+they are all worth articulating as
+separate issues that we have to deal with
+in order to get an effective symbol table
+implementation.
+Hashing really at its core is a classic
+space time tradeoff.
+If we had no limitation on space at all,
+then we could have a very huge array with
+space for every possible key and just use
+the key itself as an index.
+If our keys are 32 bit integer keys and
+we've got a table of size two^32, then
+we're just fine.
+If there were no time limitation at all,
+Then I would just hash everything to the
+same place and then do sequential search.
+But sequential search can be slow if we
+have lots of keys.
+So what hashing is kind of in the real
+world where we're trying to trade off this
+idea that we don't have unlimited space
+and we also don't have unlimited time.
+So we are trying to find something in
+between.
+So we'll look at hash functions, separate
+chaining.
+And then two collision resolution methods,
+called separate chaining and linear
+probing.
+Now look at the implementation of hash
+functions.
+So idealistically what I'd like is to be
+able to take any key and uniformly
+scramble it to produce a table index.
+We have two requirements.
+Now one is that, we have to be able to
+compute the thing efficiently in a
+reasonable amount of time.
+And the other is that it should be the
+case that every table index is equally
+likely for each key.
+Now mathematicians and computer scientists
+have researched this problem in, a lot of
+detail and its quiet a bit known about it,
+but in practice, this is something that's
+still, we have to worry about, somewhat.
+So for example, lets suppose that our keys
+are phone numbers.
+Probably a bad idea if you use the first
+three digits of the phone number as a hash
+function because so many phone numbers'ill
+have the same area code.
+It's not equally likely that each phone
+number has the same, same first three
+digits.
+You have a better chance using the last
+three digits.
+But actually, in most cases, you want to
+find a way to use all the data.
+Another example, social security numbers.
+Again, it's not to good to use the first
+three digits because, their associated
+with some geographic region and it's
+better to try and use the last three
+digits.
+And the real practical challenge with
+hashing is that with developing hash
+function is,, that every type of key needs
+a hash function and you need a different
+approach for every key type.
+Now, for standard keys like integers, and
+strings, and, doubles, and so forth.
+The, we can count on the implement,
+designers and implementers of Java to
+implement good hash function.
+But, if we're going to be implementing
+symbol with our own types of data.
+We're going to have to worry about these
+things in order to get a hash function
+that's effective that leads to an
+effective symbol table implementation.
+So hashing is, widely used for, systems
+programming and applications, so, some
+conventions for hashing are built into
+Java.
+In particular, all Java classes inherit a
+method called hash code, which is, returns
+a 32 bit int value.
+And it's a requirement that if, x and t Y
+are equal, then their hash code should be
+equal.
+So,
+That's,
+Something that is a convention that's
+built into java and that enables the hash
+code to be used for hashing.
+Also, of course, if they're not equal then
+you'd like it, like it to be that their
+hash codes are not equal but you can't
+always get that.
+Now the default implementation for hashing
+is the, memory address, of the object.
+For hashing an object is the memory
+address of an object.
+So that, kind of, meets these two
+requirements for Java.
+The one that it doesn't, maybe, meet is
+the idea that every table position should
+be equally likely.
+So, so usually we'll do some more work, to
+try to, make that one happen.
+As far as the algorithms go, as far as the
+rules go, you could always return
+seventeen that's legal.
+It doesn't have this, highly desirable
+attribute.
+But everything would compile.
+So you have to be a little careful that
+somebody isn't in there doing that.
+And again for important.
+Key types that lots of people are going to
+use.
+Some care has gone into the design of hash
+functions and the built in
+implementations.
+So Java has customized implementations for
+the standard data types that people would
+use for simple table keys.
+And that's the sweet spot for hashing
+where some expert has done implementation
+of the hash-code.
+And also, your application does not need
+ordering.
+But for useful to find types, you're on
+your own.
+And we'll talk a little bit about how to
+implement hash codes.
+So here is the Java library
+implementations for a few standard types.
+And they are what they are, and what we'll
+do is, with knowledge that that's what the
+hash code is we'll do some extra work to
+try to get this extra property that every
+table position should seem to be equally
+likely.
+So if it's an integer, the hash code
+supposed to be 32 bits, the integer
+supposed to be 32 bits, so they just
+return the value.
+If it's a boolean, they pick out a couple
+of particular values that they return so
+hashing a boolean types, there's only two
+different values so well it's hard to
+think about what you really might want
+there.
+For double value this is the code they
+convert to 64 bit and x or the most
+significant 32 bits with the least
+significant 32 bits.
+This illustrates something that you want
+to do if you have a lot of bits, you want
+to try and involve all the bits somehow in
+the hash function.
+And for strings it kind of creates the
+string as a, a huge number and then really
+computes the value of that number a mod 32
+it uses an arithmatic a way of evaluating
+a polynomial or a number, a so called
+Horner's Method, where for each digit, you
+just multiply.
+So it treats it as a base 31 number and to
+get, to compute that whole number you
+multiply 31 times where you have so far
+and add the next digit.
+And that's called Horner's rule and if
+you're familiar with it, fine.
+If you're not you can look at this little
+example and decide what it is.
+And again it involves all the characters
+of the string, in completing the, hash
+function.
+So.
+And actually, since strings are immutable,
+what Java does is keep the hash value in
+an instance variable so it only gets
+computed once.
+And that is going to be very effective for
+performance in lots of applications.
+So once it computes the hashcode, it
+stores as an instance variable.
+And the next time you ask for the hascode
+for that string, it will just provide it.
+And that works because strings are
+immutable.
+So how about implementing a hash code for
+our own type of data.
+And so, we might have, our transaction
+type might have a couple of instance
+variables, a string, a date, and a double.
+And we need to compute a hash code, so
+return a 32 bit value.
+And again, we want to try to make use of
+all the pieces of data that we have.
+And we also want to make use of the hash
+code implementations for the types of data
+that we're using.
+So, one thing, to do is, start out with
+some, small prime number, and this kind of
+mimics, Horner's method, to, just add in
+more data as we get it.
+So we pick some other small prime number
+and for each field we multiply by 31 and
+then add the hash code for that field.
+So,
+If it's a reference type just use the hash
+code, so who was a string?
+So string has a hash code method, so we
+add that in and dates and when's a date,
+so we add that hash code, multiply it by
+31 and add that hash code in.
+Trying to take all the bits and scramble
+all the bits and use'em and for primitive
+types, take the wrapper type and use the
+hash code.
+So that's a, a simple example of
+implementing a hash code for our own type
+of data that might include several
+different types of instants variables.
+So that's the standard recipe.
+Use the 31 x plus y rule to combine all
+the fields.
+If it's a primitive type, use the wrapper
+hash code.
+If the field is null, return zero.
+And if it's a reference type, use that
+hash code and apply it recursively.
+And if you have an array, you have to
+apply it to each entry.
+Or actually Java implements that in the
+array, in its arrays library.
+So this recipe works pretty well in
+practice and it's used in several, in
+Java's libraries.
+Now in theory it's possible to do
+something that has the property that, that
+all positions are equally likely.
+It's called Universal Hash Functions.
+These things exist, but they're not so
+widely applied in practice.
+So the basic rule is if you're computing
+your own, try to use the whole key, but
+consult an expert if you're seeing some
+performance problems or you really want to
+be certain in some performance critical
+situation.
+Now what we get back from the hash code is
+a INT value that's between -two^31 and
+two^31 - one.
+Now, what we need is, if we have a table
+of size m, an array of size m that we're
+going to use to store the keys, we need an
+int value between zero and m - one.
+And the value of m is maybe a power of two
+or sometimes we pick, pick a prime because
+of the way that we normally would get the
+big hash code value down to be a number
+between zero and m - one is just to do Mod
+m.
+And if Mod, if m is a prime then, then
+from math, Modular arithmetic, we know
+that we are using all the bits in the
+number in that point too.
+Now, since the hash code can be negative
+this doesn't quite work the way this
+arithmetic is implemented in Java cuz it's
+one in a billion times.
+You really have to take the absolute value
+well sorry you have to take the absolute
+value I would because other wise it'd be
+negative and you cannot have a negative,
+you want it to be between zero and -one.
+But even if you take the absolute value
+there's going to have -two^31 is possible.
+so you have to just take the 31 bits.
+You get the hash code out make it positive
+and then mod M as the way to go.
+The math doesn't quite work out right so
+anyway, that code down at the bottom is
+You can use that as a template for what
+you might want to do.
+And that's what we do in order to get the
+hash code to be a number between zero and
+M minus one.
+And if M is prime, it gives us some
+comfort that we have some possibility of
+each table position appearing with equal
+likelihood.
+So that's our assumption.
+That each key is equally likely to hash to
+an integer between zero and m-1.
+And this assumption again, it's, with work
+it's possible to come close to this.
+Lots of researches have done good work to
+show this.
+We'll assume that as a starting point.
+And that allows us to model the situation
+with the so-called bins and balls model
+that directly relates the study of hash
+functions to classical probability theory.
+So we've got the n bins, that's our That's
+our corresponds to our hash table and we
+get M balls and with some number of balls,
+however many keys we have and we throw'em
+uniformly, at random, into M bins.
+And, with.
+These things are studied in classical
+combinatoric analysis.
+For example, there's the birthday problem.
+Which, how many balls do you throw before
+you find two hitting the same bin?
+When do you get the first collision?
+And the answer to that is, it's about
+square root of pi M over two.
+When does all the bins fill up?
+That's called the coupon collector
+problem.
+After about m, natural log m tosses, every
+bin has at least one ball.
+Those are just examples of classic results
+from commonatorial analysis.
+It help us understand what happens when we
+do this, which is what we're doing with
+hashing.
+And we'll look at more advanced versions
+of these problems when we wanna study
+hashing.
+And in particular it's known that after
+you've thrown n balls into the n bins,
+then the most loaded bin has about log m
+over log, log n balls.
+So that's going to help us get a handle on
+the performance of hashing algorithms when
+we get to the implementations.
+So this is just an example showing all the
+words in a tale of two cities using the
+modular hashing function for strings like
+the one that Java uses.
+And their pretty uniformly distributed.
+And that's the summary for hash functions.

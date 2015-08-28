@@ -1,0 +1,205 @@
+Now, we're going to take a look at ordered
+symbol table operations using the binary
+search tree data structure as the
+underlying implementation. Well, each one
+of these operations are fairly straight
+forward but just to check our ability to
+manipulate this data structure, we'll take
+a look at each. Suppose, we wanted to find
+the minimum key in a binary search tree,
+or the maximum key. Well, just looking at
+one example you can see almost immediately
+what to do to find the minimum, we move
+left from the root until we find a null
+key, that's where the smallest key in the
+data structure is. To find the maximum, we
+move right from the root, until we find a
+null key. What about floor and ceiling?
+Well, those are a little bit more
+complicated and we'll have to, not quite
+the same as in the ordered array for the
+binary search so we have to do a little
+bit more work for that. So just for
+example, let's take a look at the problem
+of computing the floor. So, what we want
+to find is so say, we're seeking the floor
+of G. So, that's the largest key in the
+data structure that is less than G. In
+this case, the answer is E. So let's just
+take a look at what we have to do in the
+tree, the path we have to take in the tree
+to figure that out. Well so, we are
+looking for the largest key that's less
+than G. And have S well, that key is
+definitely going to be in the left
+subtree. Its not going to be bigger than S
+because S is bigger than G so we go to the
+left. So now, we are sitting at E. And so
+what's the largest key that's less than G
+in this, in this tree here. Well, it might
+be E but there's no way it's to the left
+of E because those keys are all smaller
+than E and therefore smaller than G. So, E
+is a key candidate. But it might also be
+in the right so we move to the right in
+this case. Alright [cough]. So that's
+[cough] if K is equal to the key at the
+root, the floor of K is K. If K is less
+than the key, it roots i n the left
+subtree. That's the one we just did. If
+it's greater than the key at the root. The
+floor of K is in the right subtree, if
+there is any key smaller than K in the
+right subtree. So, in this case, there's
+no key smaller than G in the right
+subtree. So therefore, the answer is E.
+So, our code has to check for these three
+cases. And here's the code that does it.
+It's not that much code. It's just
+complicated code to understand. So if we
+find our key, that's the floor. If we're
+going to the left we find the floor, the
+one on the left. And in on the right we
+have to do a, a little bit of tricky code
+to make sure that we return the floor on
+the right subtree, if there's some tree
+there. If there's, if there's no node
+there then, then, then we, we return the
+root itself. So, that's a, a
+implementation that, that code is
+definitely tricky and a similar code for
+ceiling. So now, what about operations
+like rank and select? How many keys are
+there less than a given key? And, give us
+the seventh largest key to facilitate
+implementing those operations and also
+size all we do is keep an extra field in
+each node, which is the number of the
+nodes in the subtree rooted at that node.
+So, this tree has got eight nodes in it.
+This subtree has six nodes in it and so
+forth. And those counts are going to not
+only enable us to immediately implement
+the size function, just return the count
+at the root but also, they'll give us good
+implementations of rank and select. So,
+let's look at those now. So, we add
+account field to every node and then to
+implement the size function well, if it's
+null, we return zero. So a client might
+call us for a null tree or [cough] or an
+empty tree. Otherwise we return, x.count,
+which is the number of nodes in that, in
+that subtree by definition. The way we
+maintain, there's a number of ways we can
+maintain the thing but the one that we'll
+adopt un iformly because it adapts to more
+complicated situations is just before
+we're done with the put operation we'll
+say, okay we've done all our work and
+before we return the pointer to the given
+subtree we're going to take the size of
+what's on the left and the size of what's
+on the right and add one for us and that's
+going to be our count. So, whether or not
+there was a new node added we don't have
+to test for that this recursively takes
+care of the problem of maintaining the
+size in every node when there's a new node
+inserted. And, it also handles more
+general situations, as we'll see later on.
+So, that's how to maintain size. So now,
+how do we implement rank? Well, it's a
+little like floor. It's an easy recursive
+algorithm, but there are three cases. So
+let's look at the, at the three cases. So,
+we want to know the number of keys less
+than K. So [cough] we're going to have a
+recursive algorithm for our given key. So,
+let's, one of the easy ones is, if our key
+is equal to the, if were [cough] to the,
+the key at the current node then the
+number of keys less than our key is the
+size of the left subtree of that node. So,
+if we're looking for the rank of E say,
+how many keys are there less than E
+there's exactly two, that's by definition
+in the data structure that's the number of
+keys that are less than E. So, that's that
+one for rank. What about the [cough]
+starting at the root if we have the case
+where E is less than S. So, the rank of E
+in this whole tree is the same as the rank
+of E in the left subtree. So, there's that
+case and then if we're going to the right,
+then we have to add one for the root and
+one for the left subtree of the root and
+then find the rank of us on the right. So,
+that's an easy recursive algorithm for
+finding out the rank. And it's definitely
+an instructive exercise to check that you
+believe that, that method works. The other
+thing we h ave to do is iteration. And
+iteration is a fundamental operation on
+tree structure. And it's based on so
+called in-order traversal. And that's also
+a simple recursive algorithm. Traverse the
+left subtree enqueue the key, traverse the
+right subtree. So, to iterate we're going
+to maintain a queue of keys. And then,
+we're going to call this recursive
+in-order [cough] method. And that method
+is going to add all the keys in the tree
+to the queue. And then we'll just return
+that queue. And that's, a queue is an
+iterable data structure, and the client
+can iterate that. And, in order, it's just
+a simple recursive method. Put everybody
+to the left on the queue then put the root
+on the queue, then put everybody to the
+right on the queue. And to believe this
+method, you just have to think recursively
+and prove by induction that this in order
+method puts all the keys in the data
+structure on the queue in their natural
+order. First, it puts all the ones to the
+left on the queue. If that, that happens
+in their natural order, then the next
+thing that has to appear is the key at the
+root. And then if the ones on the right go
+in their natural order, and then, by
+induction, they're all in their natural
+order. That's a very simple implementation
+of an iterator for these symbol table with
+comparable keys. So we have to again prove
+that property by induction. And that's
+easy to do. The diagram at the right gives
+another simple way to look at it
+pictorially. All the keys that are smaller
+on the left we are going to put them out,
+and then we put the key at the root and
+then we put all the keys on the right out
+in order. And then that key is going to
+have all those keys in order by induction.
+So, here's the operation summary for
+ordered symbol table. And the quick
+summary is that every one of those
+operations, while ordered iteration is
+optimal, it just gets them in linear time.
+And all the res t of'em take time
+proportional to the height of the tree.
+Now, if the, the keys are inserted in
+random order, we know that height by
+analysis, is going to be proportional to
+log N. Or if it's some application where
+the order of insertion of the keys is well
+modeled by random order and that's not
+unusual at all. A binary search tree is a
+simple and extremely effective data
+structure that can support all of these
+operations in a quickly, much better than
+binary search in an ordered array which is
+not dynamic and slow for insertion. So,
+that's a look at binary search tree
+implementations of ordered operations when
+keys are comparable.

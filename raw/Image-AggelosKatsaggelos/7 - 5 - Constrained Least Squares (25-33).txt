@@ -1,0 +1,621 @@
+This CLS filter and it's variants is
+probably
+one of the most common utilized
+restoration filter.
+It simply turns an unconstrained least
+squares
+of optimization problem into a constrained
+one.
+It restricts the solution space of the
+least squares approach.
+By incorporating into the problem prior
+knowledge about the solution.
+A meaningful solution, therefore, results
+this way.
+The mechanics of finding the solution to
+the constrained problem are not a
+challenge.
+They present some standard optimization
+steps.
+The real challenge is how to best
+represent this prior knowledge.
+And the determination of the significance
+or the
+weight of this prior knowledge towards the
+final solution.
+This weight is typically referred to as
+a Lagrange multiplier or a regularization
+parameter.
+And controls the relative importance of
+the fidelity to the
+data term, and the prior knowledge term
+towards the final solution.
+We will explain all these aspects in
+detail in this segment.
+A way to improve upon the solution we
+obtained through the least squares filter.
+Or the English filter, that we just
+described
+is to impose a constrained on the
+solution.
+So as before, we minimize this error term.
+With respect to f but subject to the
+constraints shown here.
+C's an operator that needs to be chosen.
+It's by and large a high pass filter or
+operator.
+In which case this constraint tells us
+that the energy as imposed by the norm.
+Of the restored image at high frequencies
+is below a threshold here.
+Which means that we don't allow
+arbitrary high frequency fluctuations in
+the solution.
+Or put it differently, this imposes a
+smoothness requirement on the solution.
+So I have this term that reserves the
+fidelity
+to the data.
+And this standard expresses prior
+knowledge.
+[SOUND].
+And so the way to solve the constrained
+problem is to
+relax it, and turned it, turn it into an
+unconstrained problem.
+Through the introduction of a parameter,
+alpha here.
+Which is referred to as either a
+regularization
+parameter or Lagrange
+multiplier.
+The regularization is the process
+according to which you try to have the
+solution depend continuously on the data.
+Or not allowing the noise amplification
+that we saw in the previous examples.
+So now we have to minimize the function
+inside the parenthesis.
+We take the gradient of it, with respect
+to f, we set it equal to 0.
+Something that you can do now, since
+you've done it for the least squares.
+Plus I've given you all the formulas that
+you need to carry out this gradient
+operation.
+And if we do so, we'll see that the
+solution is given by this expression.
+So f is the restored image, here's a
+matrix that, again, I find it's
+generalized inverse.
+If it's invertible, that's a regular
+inverse.
+Times this vector here.
+Another way to interpret this introduction
+of
+the constrained is by looking at this
+matrix.
+If H dispose H, is not invertible, then
+the
+addition of this term might make the
+matrix invertible.
+Or by and large, the condition number
+based on expose H
+is large that's an expression of this
+reposeness as it's referred to.
+And the addition of this term makes the
+condition number smaller.
+And therefore, the problem behaves better.
+One choice for C is to be a high pass
+filter such as the
+2D Laplacian, and this is the impulse
+response of the 2D Laplacian.
+We did mention it when we talked about
+enhancement and we're going
+to study it a bit more, actually,
+carefully when we talk about segmentation.
+So if both C and H are block circulant,
+then
+I can take this expression to the discrete
+frequency domain.
+And this is the expression of the
+constrained least squares
+filter, under this case, again, of H and C
+block circulant.
+And therefore I can bring everything into
+the discrete frequency domain.
+Clearly, if alpha equals 0, then CLS,
+Constrained
+Least Squares becomes least squares or
+inverse filter.
+By and large the solution f is a function
+of alpha, clearly, right.
+As can be seen from here.
+And alpha should be chosen in such a way
+that C of
+f of a, the norm of these squares should
+be less than epsilon.
+So, assuming that we know epsilon, we have
+to adjust alpha appropriately so the
+constraint is satisfied.
+So let us see now how this filter performs
+and how it compares with the, the least
+squares filter.
+So again for the example of in
+considering.
+This is the magnitude of the frequency
+response of the degradation system, is
+just, the frequency response of this one
+dimensional motion blur.
+We've seen this before.
+This is u, this is v.
+And this is the frequency response of the
+constraint filter.
+So this is the magnitude of the 2D
+Laplacian.
+It's a high pass filter.There's 0 here at
+the center.
+It's the actually it's 0 at 0 if you look
+at the impulse response.
+And the just grows to high frequencies so
+if you look at
+you know the various frequencies like pie
+pie or minus pie pie.
+It's achieves it's largest value which is
+equal to four.
+Okay, so this is the filter we use
+to carry out the constrained least squares
+filtering.
+So, we see here that the denominator of
+the constrained least squares filter.
+This is the value of alpha, 0.1.
+So I add the magnitude of the low
+pass degradation filter to the magnitude
+of the high pass regularization filter.
+So this is the shape here, and the main
+characteristic is now.
+I don't have small values anymore, very
+small values.
+Actually, I don't have the exact 0s that I
+had before in, right, that this, this
+function has.
+And at high frequencies, you see that the
+values increase, right?
+So, when I'm going to invert this now
+according to the least
+squares filter, I'm, I'm not going to have
+1 over very small values.
+That will just amplify noise and, and
+things of that nature.
+So actually, this is the magnitude of the
+least squares filter for this particular
+choice of alpha.
+And of course for this particular C, we're
+talking about here.
+So again this 0, 0 is in the center so
+this is one over the sink with alpha
+equals 0.
+And we see that the restoration filter's
+tapered off at
+high frequencies, right it doesn't get
+amplified at high frequencies.
+So it has kind of large values at mid
+frequencies and
+then drops off as you go to, to high
+frequencies.
+So this does not allow, again there
+the noise amplification that we've seen
+before.
+[SOUND] As in the previous slide, we show,
+here, the denominator of the constrained
+least squares filter.
+For a different alpha, alpha is 0.01, an
+order of magnitude smaller than in the
+previous case.
+So because of that, the shape of H u, v
+has not been altered that much.
+However I don't have the exact 0s that I
+had before.
+So the addition of C has made the
+denominator of the constrained least
+squares filter better behaving.
+So now the magnitude of the constrained
+least squares filter looks like this.
+Again the main characteristic is that the
+high frequencies have tapered off.
+They don't go up to high values and is
+responsible for noise amplification.
+We show here three different restorations
+by the constrained least
+squares filter for three different values
+of alpha, the regularization parameter.
+So the general observation is that, as we
+explained already,
+as alpha becomes smaller and smaller, we
+move this direction.
+We move closer to the inverse filter and
+therefore we see
+more noise present in the restored image
+more noise of the fixation.
+Or going this way the as alpha increases
+the solution
+is a smoother solution because we have
+those two terms.
+Fidelity to the data and smoothness of the
+solution.
+So a higher alpha gives more weight to the
+smoothness of the solution.
+When I minimize it, therefore, I have to
+make
+the norm of CF much smaller now as alpha
+increases.
+And therefore, this results to a smoother
+solution.
+So I have this knob, I have this parameter
+alpha that now I can adjust and control
+the smoothness of the solution versus the
+noise amplification.
+And if epsilon again is given in the
+constraint.
+If epsilon is given, then I have to
+adjust alpha so that this constraint is
+satisfied.
+If epsilon is not given to us, then we
+just either
+pick alpha by trial and error, similar to
+what we show here.
+Or utilize a number of techniques that
+exist, such as cross-validation
+techniques that will let us, choose the
+appropriate alpha.
+Let
+us now have a closer look at the effect of
+the regularization
+parameter, which you called alpha, on the
+quality of the restored images.
+Based on constrained least squares filter.
+So it has been shown in this work shown
+here.
+That, the error between the restored
+image,
+which is a function of the regularization
+parameter.
+And the original image
+is given by this expression.
+Don't worry about this expectation value.
+This is an expression that holds through
+on the average.
+So there are two terms.
+A biased term, which is a function of the
+restored image.
+And the variance term, which is also a
+function of the restored image.
+Actually, the exact expressions for the
+variance and bias are shown here.
+All the quantities in these expressions
+have been defined previously.
+Sigma of N squared is the variance of the
+noise.
+And the image dimensions are n by n.
+If I plot these two quantities, the
+variance of
+the bias for a specific image, actually
+linear was used.
+The degradation was due to a 7 by 7 flat.
+Impulse response, the 2D Laplacian was
+used for C.
+And the [INAUDIBLE] signal-to-noise ratio
+was 20dB.
+We see this plot here.
+So, on the vertical axis, this error is
+shown.
+While on the horizontal axis, the values
+of alpha are shown.
+There's actually a very wide range of the
+values of alpha
+going from 10 to the minus 14 to 10 to the
+4th.
+So there 18 orders of magnitude.
+And actually the vertical scale goes from
+10 the minus 6, to then 10 to the 12th.
+So the main observation here is that, the
+biased
+term, this term here, increases as a
+function of alpha.
+So the larger the alpha, the larger the
+bias in the solution.
+While the variance term decreases as a
+function of alpha.
+We show here in solid line the sum
+of these two terms because this expresses
+the error.
+Our objective clearly is to minimize this
+error between the restoration and the
+original image.
+Therefore, we're interested in finding the
+minimum of this solid curve.
+A point around here.
+So then, the corresponding alpha should be
+the optimum one might say
+alpha with respect to mean square error
+that one would like to use.
+This function here could be rather flat
+for a range of values.
+So it may not be a single point, but a
+range of values of alpha.
+Let's say this one, for which the function
+of the
+error is pretty flat, achieves the, the,
+the smallest values.
+So this then shows that the solution is
+robust with respect to alpha.
+Seems there might be a couple of other
+magnitudes of
+values of alpha that will give, the
+smallest possible error.
+So let's see how these terms, the variance
+of
+the bias man, manifest themselves with a
+specific example.
+So let's look at the effect of the
+regularization parameter
+on the CLS solution, with the use of an
+example.
+So, using the same example throughout this
+lecture.
+So the blurred image is due to motion over
+eight pixels.
+Blurred signal to noise ratio is 20 db.
+And here is the restored image for alpha
+equals 0.01 and here is
+the error the absolute value of the error
+between the original and the restored.
+And since this is small, but in large it's
+mapped
+linearly into this range 32 to 55 for
+visualization purposes.
+There's the smallest alpha we'll use.
+So, the image is rather noisy.
+And then is we look at the arrow, it gives
+the appearance of noise.
+So if you recall from the previous drawing
+we had there.
+The figure at the small let's say value of
+alpha,
+the variance is rather large and the bias
+is, is small.
+And there's alpha increases, the bias
+increases, and the variance drops.
+So, looking again at this error here, we
+can say that it it looks again like noise.
+It has a large variance.
+It doesn't reveal much about the structure
+of the image may be a little bit.
+So if we increase out for now and to look
+at
+the restoration, we see as we know by now
+a smoother image.
+The noises reduced, but looking at the
+error the variance
+of these error image is reduced but the
+bias has increased.
+And by bias it means that now the error
+has has some structure.
+It tells you something about the original
+image and actually what it
+tells you is the error is dominant at the
+edges of the image.
+At the regions of high frequency.
+Because what happens, as alpha increases.
+You give more preference, more weight to
+the smoothness.
+You prefer the smooth solution, which
+means you filter out
+some of the high frequency of the image,
+as well.
+The image becomes smoother.
+And therefore, the error shows here.
+Its largest shows the, the edge
+configuration of the image.
+If you consider even a high alpha
+equals one, then the restoration is even
+smoother.
+And this is the error term.
+No noise in it, you might say, but the
+edges are pronounced.
+The, the bias of this image is, is
+greatest out, out of all the restorations
+we had.
+[BLANK_AUDIO].
+The choice of the regularization parameter
+alpha is of the utmost importance.
+Since as we saw, determines the tradeoff
+between noise amplification and smoothness
+of the solution.
+We briefly discuss here some of the
+methods to determine it.
+So if the noise variance is known then
+this problem is solved.
+We minimize the stabilizing functional
+subject to the constraint that,
+this, discrepancy is equal to epsilon
+square the noise variance.
+Then, we choose alpha so that y minus H f,
+which is a function of alpha, squared is
+approximately equal to epsilon squared.
+So one can derive here iterative ways to
+adjust alpha so that this is satisfied.
+Now if the noise variance is not known,
+one can
+use visual inspection that is the human
+the loop approach.
+The human operator assuming that he or she
+has some knowledge about the structure of
+the image.
+Say it's an image of a natural scene, can
+choose
+alpha so as to produce the most desirable
+or useful solution.
+Now if an iterative algorithm is used, to
+implement the CLS filter,
+then, as we saw, the number of iterations
+can be used as a means of regradization.
+So a second method, if the noise variance
+is not known, is the L-curve.
+If we plot here, in a log log scale,
+the fidelity to the data term.
+And the log of the stabilizing term
+then as a function of alpha this curve is
+going to have a shape like this.
+So here alpha is two small
+and therefore, it's under regularized
+solution.
+While at this end so as alpha changes I
+traverse this curve here.
+Alpha is too large
+which means that we over regularized the
+solution.
+So this point here, this looks like an
+L-curve.
+And this point, therefore, is a transition
+between and under regularized and an over
+regularized solution.
+And therefore it seems like a reasonable
+choice for, for alpha.
+So this is the alpha star that we are
+after.
+And the third approach I would like to
+mention
+here, where again the noise variance is
+not known.
+So for all these approaches.
+Noise variance
+unknown is the generalized
+cross-validation approach.
+The general idea behind it is to minimize
+the set of prediction errors.
+That is to choose alpha so that the
+regularized solution
+obtained with a data point removed
+predicts this missing point well.
+When averaged over all ways of removing a
+point.
+Specific expressions result in the, is
+quite
+some detail in this reference here about
+it.
+So here is a representative list of ways
+of choosing the regularization parameter.
+And when we cover Bayesian techniques,
+we'll see that they
+provide a means to estimate the
+regularization parameter as well.
+We want to briefly discuss here,
+extensions or generalizations
+of the constrained least squares filter,
+we discussed so far.
+We show the expression for the filter
+here.
+We minimize the sum of these quadratic
+terms.
+The fidelity to the data term, and the
+destabilizing function of it.
+So, both of these are L2 norms, or
+quadratic terms.
+And as we saw in the case, we can obtain a
+close form expression for the solution
+that minimizes this sum of quadratics.
+In general area restoration can be
+obtained by minimizing this function up
+here.
+Where j 1 represents the distance measured
+between the data and
+the restored image after it has been
+processed by the system.
+And J 2 is the general stabilizing term.
+So in general both J 1 and J 2 may be
+non-quadratic function of, of f.
+In this case, no closed form expression
+for the solution can be found.
+As was the case with CLS.
+And in this case, one has to result to
+iteratively optimization solutions.
+The successful approximations iteration we
+just
+covered might present one possible choice.
+But of course, there are a
+number of methods available from
+optimization theory.
+We will not discuss any of them here since
+this is outside the scope of this course.
+So here's some examples, and rather
+popular choices of these J1, J2
+functionals.
+So the first one is the maximum entropy
+regularization term.
+So this is the expression for the negative
+of the entropy.
+And instead of maximizing the entropy, we
+minimize the negative of the entropy.
+We'll talk about the entropy concept when
+we cover compression.
+But in general is a measure of
+the uncertainty or the randomness in the
+image.
+Therefore an image with maximum entropy is
+a smooth image.
+The entropy's a non-quadratic term and
+therefore a non-linear
+optimization problem results that needs to
+be solved iteratively.
+This is a regularization term or an an
+approach
+that maximental be approached that has
+been utilized quite widely.
+The t tv or total variation equalization
+is another popular approach.
+Delta of f here is the gradient of the
+image.
+And Is is the Ith component, or the
+gradient of the Ith pixel.
+So we assume that the nth pixel is very
+much, as was previously the case.
+And therefore, the total variation of the
+signal, is
+the total amount of change the signal goes
+through.
+And is therefore a measure of the signal
+variability.
+We want to control such variability and
+therefore a smoothness
+requirement is important to solution by
+minimizing the total variation.
+The resulting problem is also non linear
+and therefore
+either of the optimization methods need to
+be deployed.
+The main idea of the non-quadratic
+functional is to be such that they
+do not penalize large values of their
+argument as much as the quadratic.
+The L2 penalty does.
+A regularizer with such properties is the
+lp norm, that's shown here.
+So p is between 1 and 2, and we take the
+ith
+element of the vector z, we raise it to
+the p power.
+And with some of the old reentries of the
+vector of the pixels of the image.
+So if p is chosen between one and two as
+shown here, these functions are still
+convex functions of their arguments.
+And therefore, the optimization is rather
+straight forward relatively speaking.
+This lp norm can be used both for the J1,
+and the J2 functionals here.
+We're going to revisit actually these
+norms when we talk about sparsity
+in the last week of classes, since these
+norms promote sparse solutions.
+

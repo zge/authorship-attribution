@@ -1,0 +1,235 @@
+[SOUND]
+So, I showed you how we rewrite the into
+a form that looks like a,
+the formula on this slide.
+After we make the assumption about
+smoothing the language model
+based on the collection
+of the language model.
+Now, if we look at the, this rewriting,
+it actually would give us two benefits.
+The first benefit is, it helps us better
+understand that this ranking function.
+In particular, we're going to show that
+from this formula we can see smoothing is
+the correction that we model will give
+us something like a TF-IDF weighting and
+length normalization.
+The second benefit is
+that it also allows us to
+compute the query likelihood
+more efficiently.
+In particular,
+we see that the main part of the formula
+is a sum over the matching query terms.
+So, this is much better than if we
+take the sum over all the words.
+After we smooth the document
+the language model,
+we essentially have nonzero
+probabilities for all the words.
+So, this new form of the formula is
+much easier to score, or to compute.
+It's also interesting to note
+that the last of term here
+is actually independent of the document.
+Since our goal is to
+rank the documents for
+the same query,
+we can ignore this term for ranking.
+Because it's going to be the same for
+all the documents.
+Ignoring it wouldn't effect
+the order of the documents.
+Inside the sum,
+we also see that each matched
+query term would contribute a weight.
+And this weight actually,
+is very interesting because it
+looks like TF-IDF weighting.
+First, we can already see it has
+a frequency of the word in the query,
+just like in the vector space model.
+When we take adult product,
+we see the word frequency in
+the query to show up in such a sum.
+And so naturally,
+this part will correspond to
+the vector element from
+the document vector.
+And here, indeed, we can see it actually
+encodes a weight that has similar
+factor to TF-IDF weighting.
+I let you examine it.
+Can you see it?
+Can you see which part is capturing TF,
+and which part is capturing IDF weighting?
+So if you want, you can pause
+the video to think more about it.
+So, have you noticed that this p sub-seen
+is related to the term frequency
+in the sense that if a word occurs
+very frequently in the document,
+then the S probability here
+will tend to be larger.
+Right?
+So, this means this term is really
+doing something like TF weighting.
+Have you also noticed that
+this time in the denominator
+is actually achieving the factor of IDF?
+Why?
+Because this is the popularity of the term
+in the collection, but
+it's in the denominator.
+So, if the probability in
+the collection is larger
+than the weight is actually smaller.
+And, this means a popular term.
+We actually have a smaller weight.
+And, this is precisely what
+IDF weighting is doing.
+Only not, we now have
+a different form of TF and IDF.
+Remember, IDF has a log,
+logarithm of document frequency, but
+here we have something different.
+But intuitively,
+it achieves a similar effect.
+Interestingly, we also have something
+related to the length normalization.
+Again, can you see which factor is
+related to the length in this formula.
+Well, I just say that, that this
+term is related to IDF weighting.
+This, this collection probability.
+But, it turns out this term here
+is actually related to
+a document length normalization.
+In particular,
+D might be related to document N, length.
+So, it, it encodes how much probability
+mass we want to give to unseen words.
+How much smoothing you are allowed to do.
+Intuitively, if a document is long,
+then we need to do less smoothing.
+Because we can assume that
+it is large enough that,
+we have probably observed all of the words
+that the author could have written.
+But if the document is short,
+the unseen are expected to be to be large,
+and we need to do more smoothing.
+It's like that there are words that have
+not been retained yet by the author.
+So, this term appears to
+paralyze long documents
+tend to be longer than,
+larger than for long document.
+But note that the also occurs here.
+And so,
+this may not actually be necessary,
+penalizing long documents, and
+in fact is not so clear here.
+But as we will see later, when we
+consider some specific smoothing methods,
+it turns out that they do
+penalize long documents.
+Just like in TF-IDF weighting and
+the document ends formulas
+in the vector space model.
+So, that's a very interesting
+observation because it means
+we don't even have to think about
+the specific way of doing smoothing.
+We just need to assume that if we
+smooth with this language model,
+then we would have a formula that
+looks like a TF-IDF weighting and
+document length normalization.
+What's also interesting that we have
+a very fixed form of the ranking function.
+And see, we have not heuristically
+put a logarithm here.
+In fact, if you can think about,
+why we would have a logarithm here?
+If you look at the assumptions that
+we have made, it will be clear.
+It's because we have used a logarithm
+of query likelihood for scoring.
+And, we turned the product into
+a sum of logarithm of probability.
+And, that's why we have this logarithm.
+Note that if we only want to heuristically
+implement a TF weighting and
+IDF weighting, we don't necessarily
+have to have a logarithm here.
+Imagine if we drop this logarithm,
+we would still have TF and IDF weighting.
+But, what's nice with
+probabilistic modeling is that we
+are automatically given
+a logarithm function here.
+And, that's basically,
+a fixed reform of the formula that we did
+not really have to hueristically line.
+And in this case,
+if you try to drop this logarithm
+the model probably won't, won't work
+as well as if you keep the logarithm.
+So, a nice property of probabilistic
+modeling is that by following some
+assumptions and the probability rules,
+we'll get a formula automatically.
+And, the formula would have
+a particular form, like in this case.
+And, if we hueristically
+design the formula,
+we may not necessarily end up
+having such a specific form.
+So to summarize, we talked about the need
+for smoothing a document and model.
+Otherwise, it would give zero probability
+for unseen words in the document.
+And, that's not good for
+scoring a query with such an unseen word.
+It's also necessary,
+in general, to improve the acc,
+accuracy of estimating the model
+representing the topic of this document.
+The general idea of smoothing in retrieval
+is to use the connection language model
+to give us some clue about which unseen
+word would have a higher probability.
+That is the probability of the unseen
+word is assumed to be proportional
+to its probability in the collection.
+With this assumption, we've shown that we
+can derive a general ranking formula for
+query likelihood.
+That has a fact of TF-IDF waiting and
+document length normalization.
+We also see that through some rewriting,
+the scoring of such ranking function,
+is primarily based on sum of
+weights on matched query terms,
+just like in the vector space model.
+But, the actual ranking function
+is given us automatically by
+the probability rules and
+assumptions we have made.
+Unlike in the vector space model,
+where we have to heuristically think
+about the form of the function.
+However, we still need
+to address the question,
+how exactly we should we should
+smooth a document image model?
+How exactly we should use
+the reference language model based on
+the connection to adjusting
+the probability of the maximum.
+And, this is the topic
+of the next to that.
+[MUSIC]
+

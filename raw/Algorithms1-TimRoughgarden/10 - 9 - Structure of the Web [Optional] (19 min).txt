@@ -1,0 +1,505 @@
+So he's now put in a lot of work designing
+and analyzing super fast algorithms for
+reasoning about graphs. So in this
+optional video, what I want to do is show
+you why you might want such a primitive,
+especially for computation on extremely
+large graphs. Specifically, we're going to
+look at the results of a famous study that
+computes the strongly connected components
+of the web graph. So what is the web
+graph? Well, it's the graph in which the
+vertices correspond to web pages. So for
+example, I have my own web page where I,
+you know, list my research papers, and
+also links to courses such as this one And
+the edges are going to be directed, and
+they correspond precisely to hyperlinks.
+So, the links that, bring you from one web
+page to another. Note of course that these
+are directed edges, where the tail is the
+page that contains the hyperlink, and the
+head is the pa, page that you go to if you
+click the hyperlink, and so this is a
+directed graph. So from my home page you
+can get to my papers. You can get to my
+courses. Sometimes I have random links up
+to things I like, like say, my favorite
+record store And of course for many of
+these web pages there are additional links
+going out and going in. So for example
+from my papers I might link some to my
+co-authors, some of my co-authors might be
+linking from their home pages to me, or of
+course there's web pages out there that
+list the currently available free online
+courses And so on So obviously this is
+just part of a, massive, web graph, Just a
+tiny, tiny piece of it. So the origins of
+the web were probably around 1990 or so
+but it started to really explode in the
+mid'90s. And by the year 2000 it was
+already beyond comprehension. Even though
+in internet years the year 2000 is sort of
+the Stone Age relative to right now,
+relative to 2012 But still, even by 2000
+people were so overwhelmed with the
+massive scale of the web graph; they
+wanted to understand anything about it,
+even the most basic things. Of course one
+issue with understanding what the graph
+looks like is you don't even have it
+locally, right? It's distributed over all
+these different servers Over the entire
+world. So the first thing people really
+focused on when they wanted to answer this
+question Was on techniques for crawling.
+So having software which just follows lots
+of hyperlinks Reports back to the home
+base, from which you can assemble. At
+least some kind of sketch of what this
+graph actually is. So, but then the
+question is Even once you have this
+crawled information Even if, once you've
+accessed A good chunk of the nodes and the
+edges of this Of this network. What does
+it look like? So what makes this a
+difficult question, more difficult than,
+say, for any other directed graph you
+might encounter? Well, it's simply the
+massive scale of the web graph, it's just
+so big. So for the graph used in the
+particular study I'm gonna discuss, you
+know, like we said, it was in the year
+2000, which was sort of the stone age
+compared to 2012, so the graph was small,
+relatively, but still, the graph was
+really, really, big. So, it was something
+like 200 million nodes and one billion
+edges, really, one and a half billion
+edges. So the reference for the work I'm
+gonna discuss is a paper by a number of
+authors. The first author is Andrei Broder
+And then he has many co-authors And this
+was a paper that appeared in the Dub, Dub,
+Dub conference of the year 2000. That's
+the World Wide Web Conference And I
+encourage you, those of you who are
+interested, to go track down the, the
+paper on line And read the original
+source. So Andrei Broder the lead author.
+At this time he was at a company that was
+called Alta Vista. So how many of you
+remember a company called Alta Vista?
+Well, some of you, especially, you know,
+the youngest ones among you maybe have
+never heard of Alta Vista And the youngest
+ones among you maybe can't even conceive
+of a world in which we didn't have Google
+But in fact there was a time when we had
+Web Search that it would, but Google did
+not yet exist. That was sort of in the,
+you know, maybe 97 or so. And so this was
+in the very embryonic years of Google And
+this, this data set actually came out of,
+out of Alta Vista instead. So [inaudible]
+etc all wanted to get some answers to this
+question. What does the web graph look
+like? And they approached it in a few
+ways, but the one I'm going to focus on
+here is they asked, well. You know, what's
+the most detailed structure we can get
+about this web graph without doing an
+infeasible amount of computation? Really
+just sticking to linear time algorithms,
+at, at the worst And what have we seen?
+We've seen that in a directed graph you
+can get full connectivity information just
+really using [inaudible] first search. You
+can compute strongly connected components
+in linear time with small constants, and
+that's one of the major things that they
+did in this study. Now if you wanted to do
+this same computation today you'd have one
+thing going against you and one thing
+going for you. The obvious thing that
+you'd have going against you is that the
+web is still very much bigger Than it was
+here. Certainly by an order of magnitude
+The thing that you'd have going for you is
+now there's specialized systems which are
+meant to operate on massive data sets And
+in particular, they can do things like
+compute connectivity information on graph
+data. So what you have to remember, for
+those of you who are aware of these terms,
+in 2000, there was no map reduce. There
+was no [inaudible]. There were no tools
+for automated processing large data sets.
+These guys really had to do it from
+scratch. So let me tell you about what
+Broder et al found when they did strong
+connectivity computations one the web
+graph. They explained their results in
+what they called the bow tie picture of
+the web. So let's begin with the center of
+the knot of the bow tie. So in the middle
+we have what we're gonna call a giant,
+strongly connected component. With the
+interpretation being this is the core of
+the web in some sense. Alright, so all of
+you know what a, an SCC is at this point.
+A strongly connected component is the reg
+ion from which you can get from any point
+to any other point along a directed path.
+So in the context of the web graph, with
+this giant SCC, what this means is that
+from any webpage inside this [inaudible]
+you can get to any other webpage inside
+this [inaudible] just by traversing a
+sequence of hyperlinks. And hopefully, it
+doesn't strike you as too surprising that
+a big chunk of the web is strongly
+connected, is well connected in this sense
+Right? So if you think about all these
+different universities in the world. You
+know, probably all of the web pages
+corresponding to all of the different
+universities. You can get from any one
+place to any other place For example, from
+the homepage on which I put my papers,
+that often include links to my co-authors
+which very commonly are other universities
+so that already provides a web link from
+some Stanford page to some page at say,
+Berkeley or Cornell or whatever and of
+course I'm just a one person. I'm just one
+of many faculty members at Stanford. So
+you put all of these together, you would
+expect all of the different SCCs
+corresponding to different universities to
+collapse into a single one and so on for
+other sectors s well. An then of course if
+you knew that a huge chunk of the web was
+in the same shelling ham component, let's
+say ten percent of the web, which would be
+tens of millions of web pages, you
+wouldn't expect there to be a second one,
+right, it would be super weird if there
+were two different blobs, ten million web
+pages each, that somehow were not mutually
+reachable from each other. That would
+just, all it takes to collapse two SCCs
+into one, is a lone arc going from one to
+the other, and then a lone arc in the
+reverse direction. And then those two SCCs
+collapse into one. So we do expect a giant
+SCC, just sort of thinking anecdotally
+about what the web looks like, and then
+once we realize there's one giant SCC, we
+don't expect there to be more than one.
+Alright, so is that the whole story? Is
+the web graph just one big SCC? Well, one
+of the perhaps intere sting findings of
+this [inaudible] paper is that, you know
+there is a giant SCC, but it doesn't
+actually take up the whole web, or
+anything really that close to the entire
+web. So what else would there be in such a
+picture? Well, there's the other two ends
+of the bow tie. Which are called the in
+and the out regions In the out regions,
+you have a bunch of strongly connecting
+components, not giant SCCs. We've
+established that shouldn't be any other
+giant SCCs, but small SCCs Which you can
+reach from the giant strongly connecting
+component, but from which you cannot go
+back to the giant strongly connecting
+component. I encourage you to think about
+what types of web sites you would expect
+to see in this out part of the bow tie.
+I'll give you once example, very often if
+you look at a corporate site including
+those of well known corporations, which
+you would definitely expect to be
+reachable from the giant SEC. There's
+actually a corporate policy that no
+hyperlinks can go from something in the
+corporate site to something outside the
+corporate site. So that means the
+corporate site is going to be a collection
+of web pages which are certainly strongly
+connected, because it's a major
+corporation you can certainly get there
+from. The giant has [cough], but because
+of this corporate policy you can't get
+back out. Symmetrically, in the in part of
+the bow tie, you have a strong [inaudible]
+of components, generally small ones, from
+which you can reach the giant SCC But you
+cannot get through them from the giant
+SCC. Again I encourage you to think about
+all the different types of web-pages you
+might expect to see in this import of the
+bow-tie [inaudible]. Certainly one really
+obvious example would be new web-pages. So
+if you just create something, and then,
+you know if I just created a web-page and
+pointed it to Stanford University that
+would immediately be in this in-component,
+in this in-collection of components. Now,
+if you think about it, this does not
+exhaust all of the possibilities of where
+notes can log. There's a few other cases.
+They frankly are pretty weird, but they're
+there. You can have passive hyperlinks
+which bypass the giant FCC, and go
+straight from the in part of the Bowtie to
+the out part So [inaudible] suggested
+calling these tubes. And then there's also
+a kind of very curious outgrowths going
+out of the in component, but which don't
+make it all the way to the giant SCC, and
+similarly there's stuff which goes into
+the out component And [inaudible]
+recommended calling these strange
+creatures' tendrils And then in fact you
+can also just have some weird isolated
+islands of SCCs that are not connected
+even weekly to the giant SCC. So this is
+the picture that emerged from Broderall's
+strong component computation on the web
+graph and here's qualitatively some of the
+main findings that they came up with. So
+first of all, that picture on the previous
+slide I drew roughly to scale in the sense
+that all four parts, so the giant SCC, the
+in-part, the out-part and then their
+residual stuff; the tubes and tendrils,
+have roughly the same size. You know, more
+or less 25 percent of the nodes in the
+graph. I think this surprised some people.
+I think some people might have thought
+that the core that the giant SCC might
+have been a little bit bigger than just 25
+or 28%. But [inaudible] is a lot of other
+stuff outside of the stronger connected
+core. You might wonder if this is, is just
+an artifact of the, this data set being
+from the Stone Age, being from 2000 or so.
+But, people have rerun this experiment on,
+on the web graph again in later years. And
+of course the numbers are changing because
+the graph is growing rapidly, but these
+qualitatively findings, qualitative
+findings have seemed pretty stable,
+throughout subsequent, reevaluations of
+the structure of the web. On the other
+hand, while the. Core of the web is not as
+big as you might have expected. It's
+extremely well connected Perhaps better
+connected than you might have expected.
+Now you'd be right to ask the question.
+You know, what could I mean by unusually
+well connected? We've already established
+that this giant core of the web is strong
+and connected. You can get from any one
+place to any other place, via a sequence
+of hyperlinks. What else could you want?
+Well, in fact. It has a very richer notion
+of connectivity called the small world
+property. So let me tell you about the
+small world property or the phenomenon
+colloquially known as six-degrees of
+separation. So this is an idea which had
+been in the air at least since the early
+twentieth century, but it really it was
+kind of studied. In a major way and
+popularized by [inaudible]. Norgren was a
+social scientist back in 1967. So Norgren
+was interested in understanding you know
+are people at great distance in fact
+connected by short chains of
+intermediaries. So the way he evaluated
+this he ran the following experiment. He
+gave he identified a friend in Boston
+Massachusetts. A doctor I believe And so
+this was gonna be the target And then he
+identified a bunch of people who were
+thought to be far away both culturally and
+geographically. Specifically Omaha So for
+those of you who don't live in the US just
+take it on faith that many people in the
+US would regard Boston and, and Omaha as
+being fairly far apart geographically and
+otherwise And what he did is he wrote each
+of these residents of Omaha the following
+letter. He said look here's the name and
+address of this doctor who lives in
+Boston. Okay, your job is to get this
+letter to this doctor in Boston. Now,
+you're not allowed to mail the letter
+directly to the doctor, instead you need
+to mail it to an intermediary, someone who
+you know on a first name basis. So of
+course if you knew the doctor on a first
+name basis you could mail it straight to
+them, but that was very unlikely. So you
+know what people would do in Omaha is,
+they'd say, well. I don't know any
+doctors, or I don't know anyone in Boston,
+but at least I know somebody in
+Pittsburgh, and at least that's closer to
+Boston than Omaha, that's further eastward
+Or maybe someone would say, well I don't
+really know anyone at E ast coast, but at
+least I do know some doctors here in Omaha
+And so they give the letter to somebody
+depending on a first name basis in Omaha
+And then, the situation would repeat.
+Whoever got the letter, again they'd be
+given the same instructions: If you know
+this doctor in Boston on a first name
+basis, send him the letter. Otherwise,
+pass the letter on to somebody who seems
+more likely closer to them then you are
+Now of course many of these letters never
+reached their destination but shocking at
+least to me is that a lot of them did. So
+something like 25 percent at least of the
+letters that they started with made it all
+the way to Boston. Which I think says
+something about people in the late sixties
+just having more free time on their hands
+than they do in the early 21th century And
+I find this hard to imagine but it's a
+fact. So you had dozens and dozens of
+letters reaching this doctor in Boston.
+And they were able to trace exactly which
+path of individuals the letter went along
+before it eventually reached this doctor
+in Boston And so then what they did is
+they looked at the distribution of chain
+links. So how many intermediaries were
+required to get from some random person in
+Omaha to this doctor in Boston? Some were
+as few as two. Some were as big as nine
+But the average number of hops, the
+average number of intermediaries was in
+the range of five and one-half or six And
+so this is what has given rise to the
+colloquialism even the name of a popular
+play the six degrees of separation. So
+that's the origin myth. That's where this
+phrase comes from. These sorts of
+experiments with physical letters But now,
+in network science, the small world
+property is meant to be a network, which,
+on the one hand, is richly connected But
+also, in some sense, there are enough cues
+about which links are likely to get closer
+to some target. So that if you need to
+route information from point a, to point
+b. Not only is there a short path But if
+you, in some sense, follow your nose, then
+you'll actually exhibit a short path. So
+in some sense, routing information is easy
+in small world networks And this is
+exactly the property that [inaudible]
+identified with [inaudible] SCC, very rich
+with short paths and if you want to get
+from point A to point B just follow your
+nose and you'll do great. You don't need a
+very sophisticated [inaudible] path
+algorithm to find a short path. Some of
+you may have heard of Stanley Migrim, not
+for this small world experiment but for
+another famous, or maybe infamous, he did
+earlier in the Sixties which consisted
+into tricking volunteers into thinking
+they were subjecting other human beings to
+massive doses of electric shocks. So that
+wound up, you know, ended up causing a
+rewrite to certain standards of ethics in
+experimental psychology. You don't hear
+about that so much when people are talking
+about networks, but that's another reason
+why Migram's work is well known And just
+as a point of contrast, outside of this
+[inaudible] opponent which has this rich
+small world structure very poor
+conductivity in other parts of the web
+graph. So there's a lot of cool research
+going on these days about the study of
+information networks like, like the web
+graph. So they want you to get the
+impression that the entire interaction
+between algorithms and thinking about
+information networks is just being as one
+strong component competition in 2000. Of
+course, there is all kind of interactions,
+I have just singled one out that was easy
+to explain and also highly influential and
+interesting back in the day But you know
+these days; lots of stuffs are going on.
+People are thinking about information
+networks kind of different ways and of
+course algorithms and almost everything
+explained a very fundamental law. So let
+me just dash off to a few examples. I'm
+Whetting your appetite, maybe you want to
+go explore this topic in greater depth
+outside of this course. So one super
+interesting question is, rather than
+looking at a static snapshot of the web
+Like we were doing so far in this video
+Alright, the web is changing all the time.
+New pages are getting created, new links
+are getting created and destroyed and so
+on And How does this evolution proceed?
+Can we have a mathematical model which
+faithfully reproduces the most important
+first order properties of this
+evolutionary process? So the second issue
+is to not think not just about the
+dynamics of the graph itself, but the
+dynamics of information that gets carried
+by the graph. And you could ask this both
+about the web graph and about other social
+networks like say, Facebook or Twitter.
+Another really important topic which
+there's been a lot of work on, but we
+still don't fully understand by any means,
+is getting at the finer grain structure in
+networks, including the web graph And
+particularly what we really like to do is
+that full proof method for identifying
+communities. So groups of notes is going
+to be web pages and web graph for
+individuals and social network which we
+should think of as grouped together. We
+discussed this when we talked about
+applications of cuts. One motivation of
+cuts is to identify communities
+everything. Communities has been
+relatively densely connected inside and
+sparsely connected outside And that's just
+a, and that's just baby step, really we
+need much better techniques for both
+defining and computing communities in
+these kind of networks. So I think these
+questions are super interesting, both from
+a mathematical/technical level, but also
+they're very timely. Answering them really
+helps us understand our world better.
+Unfortunately these are gonna be well
+outside the course of just the bread and
+better design analysis of algorithms,
+which is what the, on task with covering
+here. But I will leave you with a
+reference of a book that I recommend if
+you want to read more about these topics
+Namely the, quite recent book by David
+Easley and Jon Kleinberg, called
+"Networks, Crowds, and Markets."

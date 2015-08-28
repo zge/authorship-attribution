@@ -1,0 +1,253 @@
+So in linear interpolation we are going to
+come up with an estimate that takes into
+account the maximum length of estimates at
+the trigram, bigram and unigram levels.
+And this new estimate is actually going to
+be a weighted average of these three
+maximum length estimates[SOUND] we have 3
+additional parameters, lambda 1, lambda 2,
+and lambda 3.
+And these dictate the relative weights of
+the 3 maximal likelihood estimates.
+And we have some constraints on these
+lambda values.
+They have to sum to 1.
+.
+And they have to be greater or equal to 0.
+So, for example, we might have lambda 1
+equals lambda 2 equals lambda 3 equals a
+third, which basically means we give
+one-third weight.
+To each of these maximum likelihood
+estimates.
+So let's go through a specific example, a
+specific parameter.
+Say we want to estimate the parameter
+corresponding to the probability of the
+word, laughs.
+Given that the previous 2 words are the
+and dog.
+Under this definition, and assuming that
+our lambda values are all equal to third.
+We would have 1 3rd times the maximum like
+estimate of laughs given their dog and
+then 1 3rd times the maximum like estimate
+of laughs.
+Given just the word dog, then finally a
+3rd times the maximum length of estimate
+of just laughs without any contextual
+sensitivity.
+So the motivation for this step is that in
+practice we end up with a new estimator
+which incorporates information.
+From all three maximal likely/g estimates,
+and thus in some sense, incorporates the
+strengths of all these three estimates.
+So we now have a new estimator which is
+sensitive to the previous two words in the
+context.
+But the estimator is also robust, in that
+it does incorporate information from these
+more robust estimates of the bigram and
+the unigram level.
+So, shortly we'll see how we can actually
+estimate these lambda parameters, again
+using some data.
+But first, I want to show you an important
+point, which is that this parameter
+estimate q is, in fact, a valid estimate.
+So it's important to verify that our
+estimate correctly defines a distribution.
+And by this I mean the following.
+Define v primed to be the vocabulary with
+the stop symbol.
+And now for any UV bigram we're
+conditioning on, we want to make sure that
+if we sum over all words w and v primed,
+we have something that sums to 1.
+And that's fairly simple to show, I'm just
+going to go over that in this slide.
+So here are the steps in proving this
+property.
+So what I've done here is substituted.
+For a q the expression I just showed you
+on the previous slide.
+So this is the interpolated estimate, so I
+have lambda one, lambda two, lambda three.
+These three paramaters dictating the
+relative weight of the three estimates and
+I have my three maximum length of
+estimates the trigram, bigram and unigram
+estimate.
+So the first thing to notice is that these
+lambda paramaters Do not vary as W varies.
+So, they can be brought outside the
+respective sums.
+And so, this expression simplifies,
+slightly.
+I have lambda 1 times sum of W of here,
+plus lambda 2, I have the sum of W here.
+Plus lambda 3, times[UNKNOWN] W of the
+unigram estimate.
+Next we can notice, it's simple enough to
+show that these sums are all equal to 1.
+That's because the maximum I could/g
+estimate themselves correctly define a
+distribution.
+Or equivalently you can go back to the
+definitions of terms of counts and, and
+convince yourself of this property.
+And so we end up with simply lambda 1,
+lambda 2, lambda 3.
+Some of these 3 terms and by definition
+remember this was a constraint of the
+lambdas.
+These 3 terms sum to 1.
+It can also be shown, this is the other
+property we need for this to directly
+define distribution, that for any UV
+bigram for any W in the set, V primed,
+this value is greater than or equal to 0,
+and that's, that's trivial to show in this
+case.
+So, the final question we need to answer
+is how do we actually estimate these
+Lambda values.
+So this is generally done as follows.
+So firstly we'll take part of our training
+set, and we will take some of our
+sentence, and we will take some of the
+sentences in our, in our training set, and
+hold these out.
+As what is called validation data.
+So you can visualize this as, as follows.
+Imagine we have our training data.
+It consists of many millions of sentences.
+We might take some portion, some
+relatively small portion And now roughly
+speaking say 5 percent to 1 percent of our
+data and use this as what we call
+validation data.
+So the counts used in the maximum
+likelihood estimates will be taken from
+the main portion of the training data.
+But in addition, for any trigram c, w1,
+w2, w3, I'll define c primed to be the
+number of times that trigram is seen in
+this validation portion of the training
+data.
+So, we then proceed as follows we're going
+to define a function L which is a function
+of 3 parameters which basically measures
+how well our model fits the validation
+data.
+So, L is defined as follows, we have a sum
+of all trigrams w1, w2, w3.
+And then here I have C primed, so this is
+going to be the number of times this
+particular trigram is seen in the
+validation data.
+Many of these counts of course are going
+to be zero.
+And then over here I have log.
+Of q, of w 3, given w 1, w 2.
+So this is my parameter estimate for this
+particular q.
+And q is defined through the[UNKNOWN] in
+fact hidden in here is an expression which
+depends on the[UNKNOWN] and is defined, as
+before, as the, the way to average of
+these 3 maximum likely hood estimates.
+So, as these 3 lander parameters vary,
+these Q values will vary, and because of
+that, the function, the value for L will
+vary.
+And so we'll set up an optimization
+problem.
+Where we attempt to maximize l.
+Under our constraints that these lambda
+are positive, and that they also sum to 1.
+So again, you can interpret l as a measure
+of how well the particular values for
+lambda 1, lambda 2, and lambda 3 Fit the
+validation data.
+In fact, it's a fairly easy exercise to
+show that if you maximize this function,
+with respect to lambdas, you also minimize
+the complexity of the model, on the
+validation data.
+So we're actually trying to pick the
+lambdas that minimize the complexity of
+our language model.
+And hence fit the validation data as well
+as possible.
+Now I'm not going to go into any details
+of how this maximization is performed in
+practice.
+But it is in fact a fairly simple
+operation to solve this problem.
+I want to talk about one last issue which
+is important in practice.
+And this is intended as a sketch but you
+hopefully get the idea.
+And this is that, in practice it's
+actually very important to allow these
+lambda to vary a little bit.
+In particular to allow them to vary
+depending on the different counts used in
+our estimate.
+And here, here's how this is done in
+practice.
+So say we're conditioning on a particular
+bigram wi minus 2 wi minus 1.
+We're actually going to partition
+different bigrams depending on the
+account.
+So in this definition I have partitioned
+into four different subsets.
+So this function pi takes a bigrammer's
+imput and returns 1 if the bi-gram count
+is 0, returns 2 if the count is between 1
+and 2.
+Returns 3 if the count's between 3 and 5.
+And returns 4 otherwise.
+So this partition is generally are chosen
+by hand.
+But this is probably a fairly typical of
+the kind of definition you might see.
+Now, once we've defined this partition, we
+give a slightly refined version of the
+linear interpolation.
+Where these landers vary, depending on the
+value for pi.
+So, I now have parameters lander 1.
+Sub one lambda one sub two lambda one sub
+three.
+And these three parameters are used if the
+count of the bigram is equal to zero.
+Where I have parameters lambda two one,
+lambda two, two, lambda two three.
+I use these three parameters if the count
+is between one and two.
+And so on and so on.
+So notice that these lambdas now vary
+depending on which partition the bigram
+falls into.
+Now, what's the motivation for this step?
+It basically means that these lambdas can
+vary depending on the partition which the
+bigram falls into.
+And, hence, they can vary depending on the
+count of the underlying bigram and this is
+actually important in practice.
+Again these landers can be optimized using
+validation data in a very similar way to
+the way I showed you on the previous
+slide.
+And one crucial aspect of this is that in
+particular if this bigram counter is equal
+to zero.
+This parameter, lambda 1, will actually
+be, be equal to 0, because this maximum
+likely estimate will actually not be
+defined in that particular case.

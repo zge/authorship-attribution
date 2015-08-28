@@ -1,0 +1,144 @@
+[SOUND]
+Hi,
+let's introduce the very
+famous Apriori Algorithm.
+This algorithm is that the first candidate
+generation and test approach for
+frequent pattern mining.
+Okay.
+It is a level-wise candidate
+generation test approach.
+Initially, the first time you
+just scan the database once to
+get frequent 1-itemset.
+Then taking this frequent
+1-itemset your going to
+generate length-2 candidate itemsets.
+The case iteration, you are going to
+take a length-k frequent itemsets
+to generate length-k
+plus 1 candidate itemset.
+Then you go against the database to
+test these candidates generated and
+to find the real frequent
+k plus 1-itemsets.
+Okay.
+Every iteration you set k to k plus 1,
+so you can go until no frequent
+itemsets can be generated or
+no candidate itemsets can be generated.
+Okay.
+Then after you exit from loop,
+you just return all the frequent itemsets
+that's derived, that's the algorithm.
+Let's look at the pseudocode.
+We set C sub k to be
+the candidate itemset of size k.
+F sub k to be the frequent
+itemset of size k.
+Initially, we just get a frequent
+1-itemset, then we get into the loop.
+Suppose the frequent k item set
+is not empty, then we get in.
+We use k's frequent item set to
+generate k plus 1's candidate itemsets.
+Then we go against the database
+using the menu support to see,
+which k plus 1 candidate
+itemsets are frequent.
+Okay.
+We derive the frequent k plus 1-itemsets.
+Okay.
+Then we reset k to k plus 1
+until we get out of this loop,
+we just return all the frequent k
+itemsets for all the k's derived.
+Okay?
+Let's look at a concrete example, okay?
+You'll look at this transaction database,
+it contains only four transactions.
+Okay.
+The first scan, you just try to find
+their support for every single itemset.
+Okay.
+Then we find D, the support is only 1,
+so it's not frequent.
+So then we just remove it, we get
+a frequent 1-itemsets and their support.
+Okay.
+Then we use this to derive
+the candidate 2-itemsets C sub 2,
+then we scan the Again,
+we find the real support Then we find
+these two blue marker ones are infrequent,
+we derive frequent 2-itemsets.
+Then using frequent 2-itemsets, we derive
+the frequent three candidate itemsets.
+Remember, this why you
+probably can't see a big cut.
+Why?
+Because you probably see A,
+C, B, C are frequent.
+You may think A, B, C could be candidate
+itemset, but A, B is not frequent here.
+So, A, B, C will not be derived.
+So we only derive B, C, E.
+Okay.
+With another scan, we find it support two,
+so it's frequent as well.
+Then we find all the frequent,
+one, two, three itemsets.
+The concrete implementation actually
+involve self-joining and pruning.
+Self-joining goes like this.
+Okay.
+We've got abc, abd.
+The first two are the same,
+the third one is different.
+So we generate this self-joined
+generate this candidate set.
+Okay.
+The similar thing, we've got acd,
+ace, the first two are just the same.
+The third one, we get them together.
+We get this candidate sets.
+But okay, we may need a pruning process.
+The pruning is pretty simple.
+Before you count against the database,
+you proceed for abcd.
+This bcd is there, so
+this is the candidate one.
+But for acde, cde it is not in
+the frequent three itemset.
+So acd cannot be the candidate,
+so it's pruned.
+So that's the simple
+way of self-joining and
+the pruning, we can solve this problem.
+Okay.
+The final we get only one candidate sets,
+abcd.
+Lets look at the SQL Implementation of
+this candidate set generation and test.
+So we proceed the candidate
+generation is essentially this.
+Okay.
+You perceive the self -joining,
+how to do self-joining?
+You will see the first pay minus 2,
+they are identical.
+Then the last one, k minus 1 item,
+1 is smaller than the other,
+we get it one candidate set.
+Then for this candidate set,
+we still need pruning.
+The pruning, essentially to
+check whether these subsets,
+the k minus 1 subset, containing this one.
+If s is not on f k minus 1,
+then we just delete this
+candidate from the candidate set, C sub k.
+So this is a candidate generation, the key
+step of SQL Implementation of app array.
+[MUSIC]
+

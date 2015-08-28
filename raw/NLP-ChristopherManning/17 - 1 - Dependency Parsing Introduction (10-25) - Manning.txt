@@ -1,0 +1,222 @@
+In this segment I'm going to return to
+dependency parsing. Right in the first
+segment, I introduced the idea of
+dependency syntax, but let's look again at
+how that worked. So the idea of dependency
+syntax is you connect up the words of a
+sentence by putting arrows between them
+that show relationships of being
+modifiers or arguments of other words. So
+here, in this example, we've got the head
+of the whole sentence submitted and it's
+got its dependents, so it's got bills
+submitted by somebody and then also the
+auxiliary verb were. Now, not necessarily,
+but quite commonly the arrows are typed by
+the name of some grammatic relation. And
+so we can see that here, where we've got
+the subject of a passive, the verbal
+auxiliary, and the prepositional
+relationship. The other things that you
+should know about is just a bit of the
+terminology. So firstly when we have an
+arrow we always have the thing that is the
+head, or the governor, here submitted,
+and the thing that is the dependent,
+modifier, inferior; various words are
+used as you can see over here, here bills.
+So that they're the two ends, the governor and
+the governed thing of a dependency.
+Now, beyond that there's actually some
+inconsistency about how things are done.
+So in these slides and in the original
+dependency grammar work of Tesnière
+the arrows run from the governor to the
+dependent. But you can absolutely also
+find other work that points the arrows the
+other way. And actually if like here
+you're using height in the tree to show
+what's dependent of what, you actually
+don't need to have any arrows at all. You
+could just draw these on lines without any
+arrowhead on them. Okay, so, as in this
+example, normally what you find is that
+dependencies form a tree. So that there's
+a root node, and then, from there,
+everything heads down with words having a
+single head, and in a nice acyclic manner.
+I should mention also that it's actually
+quite common to add sort of one pseudo
+node at the top, often called root or wall
+which points at the head of the sentence.
+That actually makes things a lot cleaner,
+both in terms of the parsing algorithms
+but also in terms of things like
+evaluation and representation because then you
+get the property that every word of the
+sentence including the root is the
+dependent of one thing. And so you can
+think of it as doing an assignment
+process of working out what is the
+governor of each word of the sentence.
+How does dependency grammar relate to the
+kind of phrase structure grammar
+that we've concentrated on so far? Well, the
+central innovation is really that
+dependency grammar is built around the
+notion of having heads and dependents, whereas
+the basic case of a context-free grammar,
+there's no notion of a head whatsoever.
+And actually things have moved on from
+there. If you look at modern ex, modern
+linguistic theory, that means things like
+X-bar grammar to linguists, or our modern
+statistical parsers whether the
+Charniak-Collins or Stanford parser. All
+of them have a notion of head and use it
+extensively. So for example, in all these
+parsers, there's a notion of head rules
+where it'll identify some category as the
+head of a larger category. And as soon as
+you have head rules of the kind that we
+discussed before, well then you can
+straightforwardly get the dependencies out
+of a phrase structure representation.
+So, basically you kind of have a spine of head
+chains, and then everywhere you have
+something coming off that, that's a
+dependent. So we have a dependency from
+walked to Sue, and a dependency from walked
+into, this is another head chain, and then
+we've got another dependency from into
+store, head chain, and dependency, store the.
+So, we have the basis for a dependency
+representation inside a phrase
+structured tree if and only if, we have
+heads represented. What about if we go in
+the opposite direction? If you try and go
+from dependencies to phrase structure, you
+can reconstruct a phrase structure tree by
+taking the closure of the dependencies of
+a word, and saying that those represent a
+constituent. But it slightly changes the
+representation from what we normally see
+in phrase structure trees. In particular,
+in a situation like this, you can't have a
+VP node. Because actually, both
+Sue and into are dependents of
+walked, and therefore all three of those
+must have a flat phrase structure
+representation, where you have the three,
+the head and its two dependents
+Sue and into. How do people go about
+doing dependency parsing? A whole variety
+of methods have been used for dependency
+parsing. One method to do it is with a
+dynamic programming algorithm like the CKY
+algorithm that we saw for phrase structure
+parsing. Now if you do this naively by
+adding in heads, you end up with something
+similar to the lexicalized probabilistic
+context free grammars we saw earlier, and
+end up with a big O n to the fifth
+algorithm. But there's a clever
+reformulation of what the parse items are
+due to Jason Eisner in 1996 which
+makes the complexity of doing dependency
+parsing also N cubed. Which is kind of
+what you'd hope it to be, just thinking
+about the nature of the operation. But
+there are a whole bunch of other methods.
+So people have directly used graph
+algorithms to do dependency parsing. So,
+one idea from the algorithm's literature
+is that you can construct a maximum
+spanning tree for a sentence. Because,
+since you want all words connected
+together, to be the dependent of
+something, that means you have to build a
+tree that spans all the words in the
+sentence. And that's the idea that's used
+in the well known MST parser. There are
+other ideas of constraint satisfaction
+where you start off with a dense set of
+edges between all words and then
+eliminate ones that don't satisfy hard
+constraints. But a final trained
+independency parsing and actually what
+we're going to focus on here, is a way of doing
+dependency parsing where you head left to
+right through the sentence and make greedy
+decisions based on machine learning
+classifiers as to which words to connect
+to other words as dependents. And so the
+most well known example of this framework is
+MaltParser, and I'm going to concentrate
+on this just partly because it's very different from
+what we did for our approach to phrase
+structure parsing we looked at in depth,
+but also because it's been shown that this
+kind of method of doing dependency parsing
+actually works extremely well. It can work
+accurately, and exceedingly quickly. So
+it's just a good thing to know about as a
+different point in the space. No matter
+how we do dependency parsing we need some
+sources of information to let us choose
+between possible analyses and which words
+to take as dependents of, of other words.
+So here's a list of the main
+sources of information people use. So, the
+most obvious source of information is
+bilexical dependencies. So if we have
+something like a dependency between issues
+and the. Well we can look at the word
+that's the head and look at the word of
+the, that's the dependent and say is that
+likely. That's similar to the bilexical
+dependencies of our earlier lexicalized
+PCFGs. But we don't want to use that as
+our only source of information partly
+because lexical information is so sparse.
+And there are several other good sources of
+information. So let's just go through
+those. So one is the distance between the
+head and the dependent, And if you look at
+this picture, what you'll see is that most
+dependencies are short. They're with
+nearby words. There are a couple of
+exceptions. So, this dependency here is a
+pretty long one. But most of them are
+pretty short. Other sources of
+information are, what is the intervening
+material? So, in general, dependencies
+don't cross over verbs, and commonly they
+don't cross over punctuation. Some
+exceptions, commas are quite often crossed over.
+So, looking at the words in between can
+give information about whether a
+dependency is likely or not. A final
+source of information is looking at the
+valency of heads. And that's saying, for
+a particular word, what kind of dependents
+does it typically take? So a word like the
+typically takes no dependents on the left
+and no dependents on the right, as in
+this case here. On the other hand, if you
+have a word that is, say, a noun,
+it will take dependents like adjectives
+and articles on the left. But it won't
+take those kind of dependents on the
+right, though can take other kinds of
+words as dependents on the right. For
+example, take prepositional phrase
+modifiers or relative clauses as dependents
+on the right. So you can develop a quite
+rich typology of what kind of dependents
+words take. Okay that should give you a
+better sense of what dependency
+representations look like and it's the big
+picture of how we go about parsing with
+them. In the next segment we'll introduce
+a concrete algorithm for dependency parsing.

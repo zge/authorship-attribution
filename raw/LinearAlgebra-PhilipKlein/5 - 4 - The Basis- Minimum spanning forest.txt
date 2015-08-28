@@ -1,0 +1,248 @@
+
+I'll illustrate some of the concepts with 
+a graph problem. 
+Now, this is a graph. 
+These are the nodes, they represent areas 
+of a university, and these are the edges. 
+Now, a sequence of edges Where the second 
+element of the first edge matches the 
+first element of the second edge, the 
+second element of the second edge matches 
+the first element of the third edge, and 
+so on is called a path. 
+It's an x1 to xk path if the first 
+element of the first edge is x1 and the 
+last, second element of the last edge is 
+x k. 
+So for example, here is a path from Main 
+Quad to Gregorian. 
+Another path goes this way. 
+Now a cycle is a collection of edges that 
+form a path starting and ending at the 
+same place. 
+So, here the dark edges form a cycle. 
+A set of edges in a graph is spanning if 
+for every edge of the graph, there's a 
+path in the set of edges connecting the 
+two endpoints of the edge. 
+For example, let s be the set of dark 
+edges in this diagram. 
+This is a spanning set. 
+For example, consider the edge between 
+biomed and atheletic. 
+Its end points are connected by a path 
+using edges of the set. 
+The edge from Main to Keeney its end 
+points are connected by a couple of paths 
+among the edges in the set. 
+So this is a spanning set. 
+Now, later on, we'll understand the 
+connection between this use of spanning 
+and the use and connection with vectors. 
+A set of edges in a graph is a forest if 
+the set includes no cycles. 
+So, for example, the set of dark edges 
+illustrated here is not a forest, because 
+there is a cycle here. 
+If we remove one of those edges, the 
+resulting set of dark edges is a forest. 
+The minimum spanning forest problem is a 
+fundamental problem in graph algorithms. 
+The input is a graph and an assignment of 
+weights to edges. 
+And the output is a set of edges that is 
+spanning and a forest and subject to 
+those requirements has minimum weight. 
+So, this might come up, for example, in 
+an application in which you must select 
+some of these edges to form a network 
+that can deliver hot water between 
+different areas of a campus. 
+The network must achieve the same 
+connectivity as the input graph. 
+And the edge weights, represent the cost of 
+installing pipes between the endpoints of 
+the edges and the goal is, to find a set 
+of edges that's spanning and of minimum 
+cost. 
+It will turn out because the edges all 
+have positive weight that the solution 
+will be a forest. 
+Let's consider algorithms for this 
+fundamental problem. 
+There are two natural approaches you 
+might take to coming up with a solution. 
+One is called the Grow algorithm. 
+Given a graph, start by initializing the 
+set s to be the empty set. 
+And consider the edges of this graph in 
+increasing order of weight. 
+For each edge in turn, consider whether 
+its end points are already connected 
+by a path, using edges in the set s of 
+edges selected so far. 
+If not, add that edge to the set s. 
+If so, move on to the next edge in 
+increasing order of weight. 
+Let's try this out. 
+The first edge is the weight two edge. 
+Now, so far, we've selected no edges. 
+So certainly, these end points are not 
+connected using the edges selected so 
+far. 
+So we'll add this to our set of selected 
+edges. 
+Next edge is 3. 
+All right. 
+The endpoints are not yet connected, so 
+we'll add this edge. 
+Next is 4. 
+Its endpoints are not connected, so we 
+add that edge. 
+5, up. 
+Now, the endpoints of the edge with 
+weight 5 are already connected using 
+edges we've selected. 
+So we skip 5. 
+Moving on to 6, it's endpoints are not 
+connected so we add that edge in. 
+7, it's endpoints are not yet connected 
+so we add that edge. 
+8, oh, it's endpoints are already 
+connected. 
+Using a path of edges already selected. 
+So we skip 8, and 9, its end points are 
+also already connected. 
+We've run out of edges so that's our 
+solution. 
+Is it indeed a minimum spanning forest? 
+Here's another natural algorithm for 
+solving the minimum spanning forest 
+problem. 
+I call it the Shrink algorithm. 
+You start by initalizing S to the set of 
+all edges. 
+And now you consider the edges in 
+decreasing order of weight. 
+For each edge in turn, if removing that 
+edge still leaves a path among the 
+selected edges, between the end points of 
+the edge, then go ahead and remove that 
+edge. 
+Let's try it out. 
+We start with the heaviest edge. 
+The one of wake nine. 
+Now, removing this edge will leave its 
+end points connected using the edges we 
+haven't yet removed. 
+So we can cross that out. 
+Now, we go to 8. 
+Removing the edge with weight 8 is safe. 
+We go to 7. 
+Removing the edge with weight 7 would 
+remove the endpoints of that edge without 
+a path between them among the edges. 
+We've kept so we don't remove 7. 
+Six if we remove the edge with weight 6 
+there won't be a path between its 
+endpoints among the edges we haven't yet 
+eliminated. 
+So we leave that in. 
+5, well, we can remove this edge. 
+Because its endpoints are connected using 
+edges we have. 
+4, if we remove this edge, there won't be 
+a path, so we leave that in. 
+3, the same. 
+We leave that in. 
+And 2, we'd better leave that in. 
+So, this is the set of edges selected by 
+the shrink algorithm. 
+Is this truly a minimum spanning forest? 
+You might've noticed that the grow 
+algorithm for minimum spanning forest 
+closely resembles the grow algorithm for 
+building up a set of generators. 
+And the shrink algorithm for minimum 
+spanning forest, closely resembles the 
+shrink algorithm For finding possibly 
+small set of generators. 
+It's not a coincidence, we can formulate 
+minimum spanning force as a problem in 
+linear algebra. 
+So here we start with a graph. 
+We'll let d the domain of our vectors be 
+the set of, of notes. 
+Now, we can represent a subset of d by a 
+vector over g of 2. 
+We just put a one in every position 
+represented by, in the set. 
+So the set Pembroke, Main, and Gregorian 
+is represented by this vector, which has 
+ones precisely in the positions Pembroke, 
+Main and Gregorian. 
+So here's the representation of all the 
+edges in this graph. 
+For example, the edge between Pembroke 
+and Athletic is represented by this 
+vector that has a one in Pembroke and a 
+one in Athletic and the rest are zeroes. 
+Now, the vector representing the subset 
+Keeney Gregorian this vector is the sum 
+of of the vectors representing the, the 
+set Keeney Main. 
+Main, Wriston and Wriston, Gregorian. 
+So let's see that. 
+Here's the vector for Keeney, Main. 
+Here's the vector for Main, Wriston. 
+And here's the vector for Wriston, 
+Gregorian. 
+If we add up these vectors, the ones in 
+this column Sum to 0. 
+The ones in this column sum to 0. 
+And we're just left with 1's in the 
+positions Keeney and Gregorian. 
+A vector with 1's in entries x and y is 
+the sum of vectors corresponding to edges 
+that trace out an x to y path in the 
+graph. 
+In this case the path from Keeney 
+Gregorian through Main and Wriston. 
+So here's another example. 
+Each of these sets represents one of the 
+edges shown in dark here. 
+The span of the corresponding vectors. 
+Contains, for example, the vector Main 
+Keeney because there's a path from Main 
+to Keeney using those dark edges. 
+It contains the vector Keeney Gregorian 
+because there's a path from Keeney to 
+Gregorian using those edges. 
+But it doesn't include, for example the 
+pair athletic and biomed, because there's 
+no path using dark edges between those 
+two nodes. 
+Similarly, it doesn't represent the pair, 
+athletic and main. 
+Or biomed and main because there's no 
+path of dark edges connecting those two 
+nodes. 
+Here's the grow algorithm for minimum 
+spanning force and here's the grow 
+algorithm for vectors. 
+Considering the edges of the graph. 
+Corresponds to considering vectors in the 
+vector space. 
+Testing whether an edge's endpoints are 
+connected using edges we've already added 
+to s corresponds to testing if a vector 
+lies in the span of the vectors we've 
+already selected. 
+So the grow algorithm. 
+For minimum spanning forest, there is a 
+specialization of the Grow algorithm for 
+vectors. 
+We can force this to make choices that 
+exactly mimic the execution of this 
+algorithm. 
+

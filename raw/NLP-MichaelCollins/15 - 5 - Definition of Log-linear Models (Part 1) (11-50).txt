@@ -1,0 +1,254 @@
+So that's the definition of features in 
+log-linear models. 
+Again, we're assuming we have m features, 
+f sub k, for k equals 1 to m. 
+Each feat, feature maps an x y pair to 
+some real value. 
+That value is very often 0, 1 in the 
+context of natural language processing 
+problems. 
+So in addition to features, we are going 
+to define parameter vectors. 
+These are the second key component in 
+log-linear models. 
+So if we have m features, we're going to 
+assume that we have a parameter vector 
+which is also of dimension m, and so here 
+I use R to the m, to refer to the space 
+of all possible m-dimensional, real 
+valued vectors, okay? 
+So, for example, if we have m features, 
+sorry. 
+For example, if we have m equals 4 
+features, then our parameter vector will 
+be some vector consisting of 4 real 
+values. 
+Each of these values might be any value 
+in in the reals, any positive or negative 
+value or 0. 
+So given a feature vector f, and a 
+parameter vector v, we can map any x, y 
+pair, to what we'll call a score what 
+we'll call a score, which again, is some 
+value which could be positive or 
+negative. 
+And we do this, simply by computing the 
+inner product between v and the feature 
+of vector f x y. 
+So I used this dot here to refer to the 
+inner product or dot product between 
+these two vectors. 
+A little more explicitly, what this means 
+is we sum from k equals 1 to m, we 
+multiply in v sub k times f sub k and we 
+need to sum these terms, okay? 
+So if I hand you an x, y pair, you can 
+compute the score by first computing the 
+values for the features, for each of 
+these m features, and then computing this 
+inner product, simply by looking up the 
+parameters and multiplying these by the, 
+the various feature values. 
+So, the key question which follows from 
+these definitions, is how do we go from 
+these scores, to probabilities? 
+We really want the probability of y given 
+x. 
+This could be any positive or negative 
+value, it's certainly not necessarily 
+between 0 and 1 it doesn't necessarily 
+form a well-formed distribution. 
+For example we want p, if we sum over y, 
+as we want this to sum to 1, we want p y 
+given x to be greater than or equal to 0. 
+Clearly we still have a bit of work to do 
+in going from these scores, which can be 
+arbitrary positive or negative values to 
+these probabilities. 
+But we'll see there is a very appealing 
+way of doing this, which is used within 
+log-linear models. 
+So let's continue with the language 
+modelling example to illustrate this 
+idea. 
+So, in practice, what is going to happen 
+is the following. 
+we have some history x, which in this 
+case is a sequence of previous words. 
+And we want to go from x to a 
+distribution, p y given x, for or y in 
+our label set. 
+Now the first thing to realize is that, 
+under the definitions I've just given 
+you, for each possible value of y, we can 
+compute its score, by taking the inner 
+product of v with f, applied to the 
+context x, conjoined with the label y. 
+So, if we think about you know, again, we 
+are trying to predict the, the 
+distribution of a, the next word in this 
+particular context. 
+We can enumerate all possibilities here. 
+So all labels in the set y. 
+In this case that's going to be the 
+vocabulary of this particular language 
+model we're interested in. 
+And for each of these labels we can 
+compute, this value, this score. 
+And we'll see in a moment how we go from 
+these scores, to a distribution of p, y, 
+given x. 
+Intuitively, we'll see that higher 
+scores, mean that we will end up with 
+higher probabilities, and these items 
+such as those here which have low scores, 
+will end up with lower probabilities. 
+So how do we this? 
+The key definition is going to be down 
+here. 
+So, to re, to recap, we have some input 
+domain x, a set of possible inputs, a 
+label set y, our aim is to provide a 
+conditional probability, y given x, for 
+any x in the input set, and y in the 
+label set. 
+a feature is a function, sorry, f sub k, 
+that takes a next way parent return some 
+real value. 
+We often have binary features which 
+returns 0 or 1. 
+we have a feature vector, f x y, which is 
+going to be some m dimensional vector. 
+So it might, for example, be 0,1, 0, 0, 
+0, 1, 0, for any x y pair. 
+And we have a parameter vector which is 
+some vector reals. 
+[SOUND] So we might have something like 
+this. 
+[SOUND] And of course, these two vectors 
+of the same dimension, we have as many 
+parameters as we have features. 
+And then we define the probability under 
+our model, as follows. 
+So this can be read as, the probability 
+of y, given x, under parameter values v. 
+So, for particular setting for these 
+parameters f, we'll have a distribution 
+of y given x. 
+And of course, a little later, we'll see 
+how we can actually estimate, our 
+parameter values v, from actual training 
+examples. 
+So let's look at this definition. 
+What do we do? 
+Well, for a particular y that we're 
+interested in, I can again calculate v 
+dot f x y, and this is going to be some 
+score. 
+It could be positive or negative. 
+Okay, so, it's positive or negative, it's 
+clearly not in any sense of probability. 
+But we'll see through this 
+transformation, which I show you here, we 
+can turn these values into probabilities. 
+So how do we do that? 
+Well firstly, if I exponentiate this, so 
+we take the value of e, and raise that to 
+the power of e dot f. 
+This thing, is now greater than 0, so, we 
+have a strictly positive value here. 
+And so in some sense we've gotten a 
+little closer to probabilities in that 
+we've at least gotten rid of negative 
+values, but more importantly, if v dot f 
+is a large value, a large positive value, 
+this will be large, if it's a large 
+negative value this'll be close to 0. 
+And in fact, we can get this arbitrarily 
+close to 0, if we set this to be more and 
+more negative. 
+Let's look at the denominator of this 
+definition. 
+So here I have a normalization term, 
+where I sum over all possible labels. 
+So I sum over all possible values for y 
+primed in my label set. 
+And I calculate the score for each of 
+these labels, [SOUND] and that is the 
+denominator. 
+So we have the ratio of these two terms. 
+This is a normalization constant. 
+Sorry, normalization term. 
+Which will ensure that we have a 
+well-formed distribution. 
+Okay, so, it's easy enough to see that we 
+have p of y given x under v is greater 
+than 0, because both the numerator and 
+the denominator are strictly positive 
+terms. 
+Now let's look at what happens if we sum, 
+over all possible values of y. 
+We want to ensure that this expression 
+sums to 1, okay? 
+So let's look back at this. 
+Say I sum over y, and the set of all 
+possible labels of the ratio of these two 
+terms. 
+It's easy enough to see that this is 
+equal to 1, because I can bring the sum 
+over here and I just have the ratio of 
+two terms which are the same. 
+So a little bit of algebra can verify 
+that these two conditions are satisfied. 
+So we've gone from scores v.f which can 
+be any value positive or negative, to 
+probabilities which satisfy these 
+criteria that they're greater than 0, and 
+they sum to 1, so these probabilities are 
+valid. 
+Let's trace this through for how this 
+works on the previous example, how this 
+definition works. 
+So say in this particular case, I want to 
+calculate the probability of the word 
+model, given the current history x, which 
+is the sentence under parameter values v. 
+And the first thing I'll do is I'll 
+calculate the score for every possible 
+label y. 
+So I have these scores, and I'm going to 
+transform them using the definition I 
+showed you on on the previous slide. 
+So the first thing I do is I take this 
+score, and that's going to be the 
+numerator, or at least e to that score is 
+going to be the numerator. 
+So e to the 5.6. 
+And then, on the denominator I have a sum 
+of terms, follows e to the 5.6, plus e to 
+the 1.5, plus e to the 4.5, plus e to the 
+minus 3.2, and so on, and so on. 
+To give another example, say we want to 
+calculate the probability of the word, 
+the, given the context x, under 
+parameters v. 
+That's going to be e to the minus 3.2 
+here. 
+And actually, I'll have the same sum on 
+the nominator. 
+So the same normalization term. 
+[SOUND]. 
+Okay, so the sum of several terms for 
+every possible term of the vocabulary 
+there. 
+You can see immediately that if the score 
+for any particular word is large, this 
+probability will be close to 1, at least 
+if it's much larger than the other 
+scores. 
+And similarly, if a score is strongly 
+negative, it in general it's going to 
+mean that the, the probability of the 
+associated word is going to be close to 
+0. 
+

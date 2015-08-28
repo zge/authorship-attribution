@@ -1,0 +1,315 @@
+Okay, so now again, when we have a 
+particular input sentence we're trying to 
+translate, we're going to define the idea 
+of a derivation which is basically just a 
+sequence of phrases drawn from the set p. 
+Okay, so a derivation is just a sequence 
+of phrases, p 1, p 2 up to p capital L. 
+Where L can be any constant integer. 
+Okay so these, these sequences can be any 
+length. 
+On the next slide, we'll talk about 
+constraints on these derivations, which 
+make them valid or invalid. 
+So here's one example derivation. 
+So this is saying, to translate the 
+example that I've just shown you we can 
+choose firstly a phrase which says that 
+we translate words 1 through 3 as we must 
+also. 
+Next, a phrase translating words 7 
+through 7 inclusive as take. 
+Then we have 4 5 as this criticism, and 6 
+6 is seriously. 
+Okay, so a derivation is just going to be 
+a sequence of phrases. 
+And these phrases are going to define a 
+translation in the obvious ways. 
+So I'm going to use e of y, just to pull 
+out the English string. 
+The translation underlying this 
+particular example, and that's taken just 
+by concatenating these English strings, 
+so we must also, followed by take, 
+followed by this criticism, followed by 
+seriously. 
+Okay? 
+So, in short, a derivation is just a 
+sequence of phrases where each phrases is 
+again, an s, t, e triple. 
+s is a start point, t is an end point, e 
+is an English sequence of words. 
+So, let's now look at what makes a valid 
+derivation, for an input sentence that 
+we're trying to translate. 
+So for any input sentence x, which 
+consists of n words, x 1 through x n, I'm 
+going to use y of x to refer to the set 
+of valid derivations for that sentence. 
+So this slide is going to give the 
+abstract definition. 
+On the next slide, I'll give them an 
+example illustrating these ideas. 
+So y of x is going to be a set of all 
+finite length sequences of phrases. 
+So p 1, p 2, up to p L, where L can be 
+any length. 
+Where we satisfy the following 
+constraints. 
+So firstly, we say that each phrase, 
+remember each phrase is a triple s t and 
+then e, which is a sequence of English 
+words. 
+So each of these phrases has to be a 
+member of the set of phrases for x 1 
+through x n. 
+So each phrase has to be valid under the 
+phrase, base lexicon. 
+second constraint, is kind of obvious, it 
+just says that each word in the input 
+sentence has to be translated exactly 
+once. 
+And the third case, is a little more 
+interesting. 
+So again, this is an abstract definition, 
+we'll give an example on the next slide 
+illustrating it in some detail. 
+But phrase based systems make use of 
+something called a distortion limit 
+[SOUND], and this is going to be a hard 
+constraint on how far phrases can move. 
+So a typical value might be little d 
+equals 4. 
+This is the distortion limit. 
+And, what this is basically saying, 
+remember t of p k is the end point, of 
+the k phrase. 
+And s of p k plus 1 is the start point of 
+the next phrase. 
+Okay, so we might have a sequence of two 
+phrases, we must, and then we might have 
+3, 3, also, or something. 
+And we're going to look at this endpoint, 
+that's t of p k, and this start point, 
+and make sure that those two values 
+aren't too far from each other. 
+So we're going to have a hard constraint, 
+over how far phrases can move. 
+And so this is taking the absolute value 
+of t of p k plus 1 minus s of p k. 
+So in this case it would be the absolute 
+value of 2 plus 1 minus 3, and this is 
+equal to 0 in this case, so this 
+distortion would be 0, which is less than 
+or equal to 4, and so we've satisfied the 
+distortion limit. 
+Okay, so, intuitively, these two phrases 
+are right adjacent to each other. 
+I've translated first words 1 and 1, and 
+then words 3 and 3, and 3 is adjacent to 
+2. 
+And so, the distortion for this 
+particular pair of phrases is 0, and that 
+satisfies the distortion limit. 
+In addition, we have a constraint at the 
+start of the sentence, saying the start 
+of the, the first phrase, 1 minus the 
+start of the first phrase has to be less 
+or equal to d. 
+Okay, so we come to this an example of 
+this in a moment. 
+the reason for this distortion limit is 
+really twofold. 
+Firstly it's going to reduce the search 
+space of possible translations, and that 
+will make translation more efficient. 
+And second empirically, it's been found 
+that having a distortion limit that's 
+formed, can very often improve 
+translation performance, proves that 
+these phrases are moving too far the 
+translations tend to be rather poor. 
+The flip side of that is that this is 
+really an incredibly crude, way to 
+control reordering between different 
+languages. 
+Different languages have different word 
+orders. 
+And we're simply imposing a limit, saying 
+we're only allowing two languages to vary 
+in word order by this hard limit, d 
+equals 4. 
+at the very end of this lecture, I'll 
+talk about, more recent methods, or 
+alternative approaches that try to build 
+more sophisticated models of this 
+reordering effect. 
+Okay, so let's illustrate these 
+definitions with an example. 
+I'm going to show you some different 
+possible derivations for this example 
+sentence, and were going to check if 
+they're valid or invalid. 
+So here's a first possible derivation. 
+So we first, you know, intuitively, we 
+first translate wir missen auch as we 
+must also. 
+And secondly we so these, let's number 
+these words 1, 2, 3, 4, 5, 6, 7. 
+The second phrase says let's translate 
+words 7 to 7 inclusive. 
+That's this single word, nehmen, and 
+we'll translate that as the word take, 
+and then we translate words 4 and 5, as 
+this criticism. 
+[SOUND] And finally we'll translate word 
+6, as seriously. 
+Okay. 
+So this is our final translation which is 
+actually a pretty good translation of 
+this German input. 
+We must also take this criticism 
+seriously. 
+And it's been produced through this 
+derivation, this sequence of phrases. 
+So this is actually a valid derivation 
+and we can check that. 
+So, one we need to check is, each word 
+translated once, or exactly once. 
+That's the first thing we need to check, 
+okay. 
+And if we look, we can see that, sure 
+enough, every one of these words is 
+translated exactly once, and so we 
+satisfy that constraint. 
+The second constraint is the distortion 
+limit. 
+And so, that's a little bit more 
+complicated let me go into that in some 
+detail. 
+So, we're going to assume, that that 
+distortion limit d, is equal to 4. 
+And this is how it goes, so, I'm going to 
+check the end point, of each phrase, and 
+the stop point of the next phrase, so 3 
+and 7, and I'm going to calculate the 
+value for 3 plus 1 minus 7. 
+If you remember, what we wanted was t, 
+the magnitude of t of p k plus 1 minus s 
+of p k plus 1, is less than or equal to 
+d, where k p k is the kth phrase, p k 
+plus 1 is the k plus 1 phrase, t is the 
+end point of a phra phrase, s is the 
+start point of a phrase. 
+So if I compare 3 and 7, I calculate 
+this. 
+This is equal to, this is the absolute 
+magnitude, this is the absolute magnitude 
+of 3 plus 1 is 4 minus 7 is minus 3, 
+which is equal to 3, and that's less than 
+or equal to 4. 
+Okay? 
+So, these two phrases are essentially 
+close enough to each other. 
+That's what this is saying. 
+We go through term by term. 
+So next I compare 7 to position 4. 
+Again, taking the end point of this 
+phrase, to the start point of the next 
+phrase. 
+And I got 7 plus 1 minus 4. 
+And that is actually equal to 4, which is 
+less than or equal to 4, so good, that's 
+also valid. 
+next one I check is 5 followed by 6. 
+The endpoint of this phrase, the stop 
+point of this phrase, so I look at 5 plus 
+1 minus 6. 
+This is actually the magnitude of 0 which 
+is clearly less than or equal to 4. 
+It's 0 because these two phrases actually 
+are consecutive in the sentence. 
+so 4, 5, and 6 are consecutive. 
+And then finally, I look at this very 
+first position. 
+So remember, I also had magnitude of 1 
+minus s of p 1 is less than or equal to 
+d. 
+So I have 1 minus the start point of the 
+first phrase is just 1. 
+So this is magnitude of 0, is less than 
+or equal to 4. 
+Okay, so in short this derivation 
+satisfies, firstly, this constraint that 
+each word is translated exactly once, and 
+second, that none of these phrases move 
+too far that the distortion limit is 
+satisfied. 
+Okay and the distortion limit is 
+calculated by looking at the end point of 
+each phrase and start point of next 
+phrase, and making sure that they are not 
+too far from each other. 
+Okay, so here's a second derivation, 
+which we can, we'll see we can rule out 
+very quickly as being invalid. 
+And so again, this is a sequence of 
+phrases where each phrase consists of a 
+start and end point in the sequence of 
+English words. 
+the problem with this, of course, is that 
+these two words have been translated 
+twice. 
+So let's just give a count of how many 
+times I've translated each word. 
+I think it were, 3 as once, 4 and 5 as 
+once, 6 as once, and 7 is zero times. 
+And so we've clearly, you know, this is a 
+failed derivation. 
+This is not a good derivation, because it 
+doesn't satisfy the constraint that each 
+word is translated exactly once. 
+Here's a fine, final example. 
+and so we'll again check the two 
+constraints with this particular 
+derivation. 
+So the first constraint is, you know, 
+exactly once. 
+Each word translated exactly once. 
+And in this particular case you can see 
+that that's the case, if you look at 
+these phrases, every word is translated 
+exactly once in this example. 
+And then the second question is, what 
+about the distortion limit? 
+[SOUND] And so, let's go through using 
+the procedure I just showed you to check 
+this. 
+So firstly let's compare 2 and 7. 
+And again, I'm going to assume that d, 
+the distortion limit, is equal to 4. 
+So 2 and 7. 
+So I take the magnitude of 2 plus 1 minus 
+7, which is the magnitude of 3, so minus 
+4 is less than or equal to d and so 
+that's fine. 
+So the, this first pair of phrases, 
+satisfy the distortion limit. 
+Let's look at the second pair though. 
+So here I compare 7 to 3, and here I have 
+7 plus 1 minus 3, this magnitude, this is 
+5. 
+And is that less or equal to d? 
+No. 
+So we've immediately seen that this pair 
+of phrases violated the distortion limit. 
+There's too much of a dist distance 
+between position 7, and position 3, under 
+this definition. 
+So this is actually an invalid 
+derivation. 
+So in spite of satisfying the constraint 
+that each word is translated exactly 
+once, we violate the distortion limit, 
+and this is ruled out. 
+

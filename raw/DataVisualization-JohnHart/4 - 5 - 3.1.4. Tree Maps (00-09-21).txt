@@ -1,0 +1,239 @@
+[MUSIC]
+So when we want to visualize
+hierarchical relationships,
+there's a particularly good method for
+doing that called a tree map.
+So as we visualize graphs, and graphs
+represent relations between data items.
+One relation that we'll want to visualize
+often is hierarchical relationships,
+things like parents and
+child relationships, ancestry and
+descendant relationships.
+And so
+in an undirected graph if you have a tree,
+any of these nodes could
+serve as the root.
+But often in layouts we
+can identify a root node.
+And we can look at ancestry and
+descendants relationships
+based on that root node based on the edge
+distance from a node to that root node.
+In a directed graph, we can set up
+a more definitive parent child
+relationship using a directed edge.
+And we can have child nodes
+point towards parent nodes,
+or the other way around
+if we set it up that way.
+We can specify a root
+node that has no parent,
+in this directed edge representation.
+And we can create hierarchies where
+a node could have multiple parents, where
+we could make them an actual tree, in
+which case each node has a single parent.
+And then we can also
+speak of a tree depth,
+which is basically the number of parents a
+node has at the bottom level of the tree.
+Or the number of descendants, the maximum
+number of descendants a root node would
+have along one chain of these edges.
+And so
+we often need to visualize these trees.
+This is an example from genetics of fish,
+and
+the nodes in this case
+are laid out radially.
+And then the tree structure
+is shown on the inside.
+Here's another example
+from the Tree of Life.
+And you can go to this website and
+zoom in on this image and
+see a lot more detail than is shown here.
+But this is a layout that shows
+a hierarchical relationship as well.
+One of the methods for
+displaying hierarchical relationships
+that I've found quite useful is treemaps.
+Treemaps were introduced by
+Ben Schneiderman in 1992.
+And, they map hierarchical organizations
+of quantities into areas, so
+it's a very visual method for displaying
+hierarchies based on subset operations.
+And so, we have an example of this
+in a utility called WinDirStat,
+which displays a Windows file system.
+And it represents the entire
+file system by this rectangle.
+And then that root directory is
+subdivided into smaller rectangles
+representing sub-directories.
+And each smaller rectangle is subdivided
+into smaller rectangles which
+are sub-directories of that subdirectory.
+All the way down to individual rectangles,
+where each of these individual
+rectangles represents a single file.
+And so it gives you this nice broad
+overview of your file system, but
+it also shows you how the file system is
+divvied up into individual directories and
+sub-directories and files.
+And so it's a good indication of
+quantitative views, in this case,
+of disk space.
+It's telling me how my files and
+subdirectories are taking up
+different amounts of disk space.
+And so it's mapping disk space to area.
+And I can get a pretty good
+quantitative measure of that
+disk space based on the area relationship
+of each of these sub-rectangles.
+So how do we compute a tree map?
+Well, if you're given some hierarchy,
+some tree.
+And for a tree map, it has to be a tree.
+It can't just be a regular hierarchy.
+Each node has to have a single parent.
+You have some value,
+usually at the bottom level.
+For that previous example,
+this would be the disk space
+taken up by each individual file.
+And so we first need to do a bottom up
+procedure that takes our tree nodes, and
+for the parent nodes of our tree,
+adds up the child nodes in
+order to assign them a value.
+So now each of the parent nodes is
+equal to the sum of its child nodes.
+This parent is equal to 4.
+It's 1 plus 2 plus 1.
+This parent is equal to 11,
+because it's 4 plus 4 plus 3.
+And finally 16, which is the sum
+of all of these adds up to 16.
+And then we're going to use that
+parent-child relationship and
+the values that it represents in order
+to subdivide some rectangular region.
+In order to display how these small
+quantities at the bottom are organized,
+as portions of this full 16 value
+at the top, at the root node.
+And so the first thing we do is we need
+to subdivide our rectangle into portions
+representing the first set of descendants,
+11 and 5.
+And so we subdivide the rectangle into
+a portion that is eleven sixteenths and
+five sixteenths.
+And so, we subdivide it horizontally
+with a single vertical division
+at eleven-sixteenths of the way
+from this edge to this edge.
+Into a portion that's
+eleven-sixteenths and five-sixteenths.
+Now we have two portions,
+and these portions are actually
+taller than they are wide.
+So we're going to subdivide them
+vertically instead of horizontally for
+the next step.
+So now we've got this portion
+here on the left representing 11.
+We need to subdivide that into
+portions representing 4, 4, and 3.
+So we subdivide them into a portion
+that's four-elevenths along the way,
+another four-elevenths along the way,
+and then finally another
+three-elevenths along the way,
+representing each of these three nodes.
+And now these are wider
+than they are tall, so
+we're going to subdivide them horizontally
+instead of vertically at the next step.
+And so we do this again, and we
+subdivide this top node into one-fourth,
+two-fourth, and
+one-fourth portions horizontally.
+We do this with all the rest of the nodes,
+and we get this tree map of
+all of the nodes we see here.
+And so here I've got 1, 2, 1.
+One-fourth, one-half, one-fourth of
+this rectangle representing four units.
+I've got 1, 1, and
+2 of this rectangle representing 4 units,
+and then 2 and
+1 of this rectangle representing 3 units.
+All together, those represent 11 units.
+And on this side, these 5 units,
+that were five-sixteenths
+of the entire triangle are being
+represented by 3 and 2.
+And I've got a slightly thicker line
+here differentiating between them.
+And then this 3 unit is
+by individual units here,
+and this 2 unit is by
+individual units here.
+And so, we're using area and
+a hierarchy of area into finer and
+finer rectangles in order to divvy up this
+large rectangle into its component pieces.
+You'll notice that for example,
+this rectangle here is
+eleven forty-eighths wide
+because it's one-third
+of eleven-sixteenths.
+It's one-third of the eleven-sixteenths
+on this side of this thick black line.
+So one-third times eleven-sixteenths
+is eleven forty-eighths.
+This bottom, the height of this
+is equal to three-elevenths.
+It was three-elevenths of this whole unit.
+And so we have three-elevenths times
+eleven forty-eighths is equal to
+one-sixteenth, which is exactly
+the portion one-sixteenth.
+Where is it?
+Right here, one-sixteenth of the entire
+area that we wanted to represent.
+And so that gives you a good
+visual connection between the area
+of this tree map layout as
+a portion of the whole.
+And the organization of this
+node representing one unit of
+this root node representing 16 units.
+Can also see some of the difficulty in
+doing ordinal connections between area.
+This is 2 units of area, and
+this is 2 units of area.
+If I didn't have these numbers here,
+it may not be as easy to see that this
+rectangle is the same area as
+this more square region is.
+So area's not that good at
+representing ordinal amounts.
+But it is a pretty good tool for
+representing quantities in general.
+So the tree map is a good method for
+visualizing hierarchies because it relates
+the region of that hierarchy to a region
+on the screen, associating it with area.
+That is,
+we've seen area can be a decent but
+not great method for
+ordinal relationships.
+[MUSIC]
+

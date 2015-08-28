@@ -1,0 +1,363 @@
+[SOUND].
+Now, let's come down to the very
+last session of this lecture,
+Mining Colossal Patterns.
+Another name for colossal patterns could
+be long patterns, or large pattern.
+However, large item sets.
+Those kind of idea, or term have been used
+in early days of mining frequent pattern
+research, so to avoid such confusion, we
+give a new term called colossal patterns.
+Actually, mining colossal pattern is
+very much needed in bioinformatics,
+social network analysis,
+software engineering, because quite often,
+they are going to find pre-large
+sets of genes sequences,
+subnetworks, or execution sequences.
+However, the method we just introduced
+before mines only short pattern,
+such as lengths around ten.
+'Kay.
+What's a major challenge for
+mining long patters?
+Actually, the major challenge comes
+from the downward closure property of
+frequent patters.
+Because any subpattern of
+a frequent pattern is frequent.
+If we want to mine a very large pattern,
+suppose a sub1 through
+a sub100 is frequent, then any of
+its subpatterns will be frequent.
+That means, we are going to mind to
+the power of 100, such frequent patterns.
+This is a huge number,
+it's just cannot be done by any
+computer no matter time, and the space.
+[NOISE] Actually, if we want my very
+large pattern, no matter we use
+breadth-first search like Apriori,
+or depth-first search like FPgrowth.
+If we just go step-by-step
+growing from smaller to larger
+we'll never be able to even reach
+very long, very large patterns.
+Now, let's look at one simple example.
+Suppose, we have 1 through
+40 different elements.
+[NOISE] If we copied this one 40 times,
+and
+then removed one by one,
+like the first transactions we remove 1,
+the second we remove 2,
+the fortieth we remove 40.
+Then we formed set of
+transactions of the elements 39.
+If we add another 39 elements, suppose,
+from 41 to 79 elements,
+but we copy it 20 times.
+If we say the minimum support is 20,
+actually the number of closed or
+maxed patterns of size 20 is about 40 20.
+Okay, this is a huge number.
+But there's only one pattern,
+really big, close to size of 40,
+which actually is this 1 through 39,
+like this, but the problem becomes, if
+we want to find this large patterns, but
+we have exponential number
+of size 20 patterns.
+Then no matter we use the fastest pattern
+mining algorithm like FPClose or LCM,
+because they have to go through these many
+patterns before they reaching size 39.
+So they're will never be able to complete.
+However, we develop a algorithm
+called Pattern-Fusion.
+It will output this colossal
+pattern within seconds.
+The trick is pattern-fusion.
+So, what is pattern-fusion?
+The general philosophy is,
+we know when we mine patterns,
+the size 1 pattern, usually small number.
+Once you get into size 2 size 3, a number
+of patterns will become more, and more.
+That means you were really have swamp
+of mid-size patterns before you
+can reach a small number
+of colossal patterns.
+If we only want to mine these
+small number of colossal patterns,
+how can we jump out of this
+swamp of mid-size patterns?
+Then the major trick is, suppose we
+give up the complete set of answers
+because if you say, your algorithm
+did not miss a single one, [NOISE]
+likely you have to finish mining of this
+big swamp, but it this is forbidden.
+Then, if we have a short-cuts, or
+some kind of leaps and bounds,
+we can jump out of this swamp.
+Quickly we can reach this small
+number of colossal patterns, so
+there is a good chance we can get it.
+Actually, we have
+an interesting observation.
+It's the, the larger of the pattern, or
+the more distinct of the pattern,
+essentially, for
+the colossal patterns, the greater chance
+it will generate many more small ones.
+Then, if we say, [NOISE] we can get
+a collection of small-size patterns.
+They may give a good hint on
+where are those large patterns.
+So the pattern fusion philosophy
+is not crawl but jump.
+That means we can fuse small
+patterns together in one
+step to generate new pattern
+candidates of very large size.
+[NOISE] Let's look at some example
+you probably will become eased.
+Okay.
+Suppose, we have a dataset,
+D, it contains only 4
+colossal patterns like this plus there
+could be many, many small patterns.
+Okay.
+Suppose we get, this pattern will get
+support at 40, [NOISE] this pattern
+support at 60, this pattern support is 80,
+this pattern's support is 100.
+Okay.
+Suppose, we have these patterns
+there we want to mine them.
+The interesting thing is if you just
+examine the pattern pool of size 3.
+What kind of pattern you may get,
+and what could be their support?
+Very likely you may get [NOISE] for
+example, the size a sub2, a sub4, and
+a sub45, you'll get something around 40.
+Because you can see there's a 40 here, but
+none of them of these patterns will never
+be able to generate anything like this.
+[NOISE] Similarly,
+a sub3, a sub34, a sub39.
+Now, you will get around 40, okay.
+Then similarly, you may get a sub5,
+a sub15, a sub85.
+You generate support is around 80,
+and this one is also 80.
+Okay, if you just watch this patterns,
+you will see if you merge
+those patterns with similar support like
+around 40, you'll merge them together.
+[NOISE] Actually, you will be able to
+obtain the candidates of much bigger size,
+but they likely indicate where
+are the two patterns, okay.
+It simply says, you will be able to
+merge multiple small-sized patterns of
+similar support to generate candidates for
+very large patterns.
+Such kind of patterns are the core
+patterns of a colossal pattern alpha.
+That means they are a set
+of subpatterns of alpha.
+They cluster around alpha by
+sharing a similar support.
+Because those are all sharing
+similar support, those clusters,
+we can merge them together.
+[NOISE] Actually,
+a colossal pattern should have far more
+core patterns than a small-sized pattern.
+Then if we randomly, draw from
+a complete set of small patterns,
+like this pattern size of 3.
+[NOISE] Then we would be more
+likely to pick up a core pattern,
+like these other core patterns.
+Then the colossal pattern can be generated
+by merging [NOISE] a set of core patterns.
+If we merge those set of core patterns,
+likely your were hint where
+are the true patterns?
+Now, we introduce some
+concept a little formerly.
+We can use a pattern of core ratio
+to denote, such core patterns.
+[NOISE] Like if you get a frequent
+pattern alpha, you get subpattern beta.
+There's support that means
+alpha's supporting this data and
+beta's supporting this dataset.
+They should be comparable.
+That means if they have exactly the same
+support their ration is should be 1.
+Otherwise, beta usually is
+a little bigger than alpha.
+[NOISE] So this tau represent the core
+ratio, should be within 0 and 1,
+and if they are really clustered together,
+likely it is very close to 1.
+Then we can define D tau robustness.
+[NOISE] We said a pattern
+alpha is D tau robust.
+If D is the maximum number of items
+that can be removed from alpha.
+'Kay, you can remove a lot
+of things from alpha, but
+the resulting pattern may still
+be a tau-core pattern of alpha.
+That means they may still
+share a very similar support.
+Then, [NOISE] we can prove actually for
+d, tau-robust pattern,
+it should have, you know, in the order
+of two to the power of D core patterns.
+Just think about this.
+If this alpha is size of 100,
+okay, then suppose this d is 97.
+Okay, so that means, you can remove 97.
+You get a only size of 3, may still
+have the similar support, then you press
+c that means this it will be 2 to
+the power 97, that will be a huge number.
+Simply says, [NOISE] you can see
+colossal pattern, were have many,
+many core patterns.
+Okay, that means we really
+have this property,
+this robustness of colossal patterns.
+That means a colossal pattern tends
+to have much more core patterns than
+the small patterns.
+Then such pattern can be clustered
+together to form dense bars.
+Based on such a distance.
+That means these two, the number of
+transactions they share actually,
+would be very close,
+the unit together would were also be,
+you know, very close, so
+this distance would be very small.
+Simply says, if we randomly
+draw from the pattern space,
+you'll likely hit somewhere in the ball.
+Then we come down to the algorithm.
+Actually, the algorithm
+based on observation.
+The algorithm can be naturally derived,
+like follows.
+Initially, we created initial pool,
+as we can
+use existing pattern mining algorithm to
+mine all patterns up to a small size.
+Say, 3 that means you use frequent
+pattern mining algorithm I
+would study before combine
+small-size patterns.
+[NOISE] Then we can get into iteration.
+That means at every iteration,
+we pick up K seed patterns
+from the current pattern pool.
+Then for these K seed pattern,
+we actually would be able to
+find all the patterns within the bounding
+ball centered at the seed pattern.
+Based on the seed pattern,
+we will be able to find a bounding ball.
+They have many,
+many such similar support patterns.
+[NOISE] Then, these patterns can be
+fused together to generate a set of
+super-patterns so we can test in the data
+to see these other real patterns.
+And these super-patterns generated can
+form a new pool for the next iteration
+because if they are real, they can form
+new patterns with even larger size.
+[NOISE] So when the current
+pool contains no more then K
+patterns at the beginning
+of a transaction,
+then you will know you almost finished
+everything they can determine.
+So let's look at the experiments to
+see whether this is the real thing.
+[NOISE] Actually tried many datasets.
+Here is one datasets from leukemia.
+There are two kinds of genes,
+one called ALL, one called AML.
+'Kay, and each of them actually,
+with a very wide columns.
+Okay.
+[NOISE] Then,
+when the minimum support is set really
+high, like 30, the pattern-fusion,
+everything, get all the largest
+patterns with size greater then 85.
+You probably, can see those experiments.
+That's a real pattern size, and these
+are the, what pattern-fusion can discover?
+You probably,
+can see [NOISE] for size 85, and
+over, they actually, the pattern-fusion
+discover every rear sect.
+[NOISE] 'Kay.
+For
+the smaller one, they may miss
+something but they do not miss much.
+So we are now striving for
+finding very complete set of patterns.
+But we, for
+the colossal pattern we find most of them.
+[NOISE] Actually for this y if you look
+at execution time on another datasets
+you probably, can see [NOISE] we
+compare pattern-fusion with LCM, and
+top K measures, these are quite efficient
+algorithm in the mining general patterns.
+[NOISE] So you can see, colossal pattern
+mining method like pattern-fusion,
+[NOISE] even you reduce the minimum
+support generated more and
+more, larger and larger patterns.
+Its cost remains low.
+[NOISE] But,
+if you look at the other two methods,
+once the minimum support
+structure goes down.
+Then you will generate larger and
+larger patterns.
+Their execution time go up very quickly,
+so that is a solid
+proof pattern-fusion is highly scalable,
+especially for mining very large patterns.
+Now, we summarize what we
+have studied in this lecture.
+We have examine a many different kinds of
+patterns, and we discuss the efficient
+mining algorithms, especially,
+we study Mining Multi-Level Associations,
+Mining Multi-Dimensional Associations,
+Mining Quantitative Associations,
+Mining Negative Correlations, Mining
+Compressed and Redundancy-Aware Patterns.
+Finally, we also discussed how to
+mine colossal patterns, efficiently.
+[NOISE] So, there are lots of papers
+around those diverse pattern mining.
+Here I just introduced several initial
+papers, you may like to go deeper,
+if you are interested in this topic.
+Thank you.
+[MUSIC]
+

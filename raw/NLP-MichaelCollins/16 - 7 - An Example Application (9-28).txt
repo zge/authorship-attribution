@@ -1,0 +1,227 @@
+So I want to finish this segment on 
+log-linear taggers, with an example of a 
+particular, application, that illustrates 
+their real strengths. 
+And this was in a paper by Andrew 
+McCallum and others. 
+Which was another absolutely seminal 
+reference in the use of log-linear moles. 
+So McCallum compared a hidden Markov 
+Model and and a log-linear tagger on a 
+fact segmentation test. 
+We'll see in a second just what that is 
+but the main point is that in this 
+particular domain Modeling conditional 
+probability of a word given a tag is very 
+difficult. 
+So remember, the HMMs had two types of 
+parameters. 
+For example trigram tag parameter, the 
+probability of v to the t of u. 
+And then admission parameters, word given 
+tag. 
+This can be a difficult distribution to 
+model, and it really hampers the ability 
+of HMMs to take into account compec, 
+complex features. 
+When you build tagging models. 
+So this is the, the FAQ segmentation task 
+that McCallum and his collaborators 
+looked at. 
+And so in fact they're going to be 
+tagging entire lines of a FAQ. 
+So a FAQ is going to be a sequence of 
+lines. 
+As we've seen here, we have one, two, 
+three, four, five, six, close to 15 
+lines. 
+Some of them will be blank, notice we 
+have a few blank lines here. 
+And the goal was to assign one of three 
+possible tags to each line. 
+So a line can either be part of a header, 
+so we have these head tags for the header 
+of the FAQ. 
+They can be part of a question, so we 
+have a tag here, question, saying this is 
+a question. 
+And finally, they can be the tag answer, 
+if we have an answer to a question. 
+So you can see how this is a useful task 
+in that if you can perform this kind of 
+tagging accurately. 
+Then you could automatically pull the 
+question answer pairs out of this rather 
+unstructured data that you would see on 
+these, at least these type of things. 
+So, one thing that's worth noting is that 
+each word in this tagger, is an entire 
+sentence. 
+Okay, so we're tagging sentence by 
+sentence. 
+So the items that I'm actually tagging 
+are quite complex objects. 
+They're entire sentences. 
+So it'll be critical in this model. 
+To make use of various features or entire 
+sentences or entire lines, rather. 
+So, here are some features that are used 
+in the sort of by McCallum and others. 
+And these are general binary features, 
+which will be true or false for a 
+particular line. 
+So we could ask whether a line begins 
+with a number. 
+Whether is begins with a automal. 
+Whether it begins with punctuation. 
+Whether it begins with a question word, 
+where these will be in a sort of closed 
+set of words like woo, who, where, what, 
+and so on. 
+we can look at whether the line is blank. 
+Whether it contains an alphanumeric, 
+whether it contains a number, and so on 
+and so on. 
+So you can imagine making up a whole 
+bunch of features of individual lines 
+which might give some strong evidence 
+about the content of that line. 
+And most importantly, would give strong 
+evidence about whether it falls into one 
+of those three categories, a header, a 
+question, or an answer. 
+So, we can now describe the features that 
+we used within the log linear tagger in 
+this work. 
+And they're really rather intuitive. 
+They are going to look at properties of 
+each line. 
+For example, the fact that a line begins 
+with a number. 
+In conjunction with the current tag, say 
+question, and also the previous tag. 
+So in this case we're going to look at a 
+bi-gram of tags. 
+Remember we always have the ability to 
+look at the previous one or two tags in 
+the context. 
+And in addition, we look at some feature 
+of the line. 
+For example, the fact that it begins with 
+a number or it contains an alphanumeric, 
+contains a nonspace, contains a number 
+and so on, and so on. 
+And so, this is the basic set of features 
+which were used in the log-linear tagger. 
+A more challenging task is actually 
+coming up with a HMM tagging model for 
+this particular problem. 
+Again, and this is because the quote, 
+words, in this particular. 
+application are entire lines. 
+So how do I estimate the probability of 
+this entire line, given the fact that 
+the, the tag is question? 
+So the first method that McCallum and the 
+others used was to break this down into a 
+sequence of terms, one for each word. 
+And so we'd have mission parameters where 
+we condition each word and term on the 
+identity of the tag question in this 
+case. 
+And so I have e of 2.6 given question, is 
+that first word, times e of what given 
+question is the second word. 
+And so, here, I just have one e term for 
+each word in the sentence. 
+This looks very much like a language 
+model for each tag, for example, 
+question. 
+In fact, this is essentially a unigram 
+language model, which is trying to define 
+the conditional probability of a 
+particular entire sentence or entire line 
+conditioned on a particular tag. 
+So, that's the first method that these 
+guys looked at. 
+And once we have these distributions, we 
+can apply the hidden Maskov model tagger 
+in the usual way. 
+Here's the second method they used. 
+And in this method, they took each line 
+in training or test data, and immediately 
+transformed it into a sequence of 
+features. 
+So, in this case, we'd have a sequence 
+saying that it begins with number, 
+contains alphanumeric, contains nonspace, 
+contains number, previous is blank. 
+Which means that the previous line is 
+blank, for example. 
+And then we again use what is basically 
+a, a kind of a unigram language model. 
+Where we have one term for each of these 
+features. 
+So we have, a probability that begins 
+with number given question, times the 
+probability of contains alphanumeric 
+given a question, and so on and so on. 
+So, it looks very much like the model on 
+the previous slide, but we just go 
+through this transformation step first. 
+Which extracts the important features 
+from each individual line rather than 
+simply staying with the words. 
+So let's look at the results for the 
+different methods. 
+And this is going to be In terms of 
+precision and recall at recovering entire 
+segments. 
+Where a segment might correspond to a 
+header or to a question or an answer. 
+So this first result or they called a ME 
+Stateless. 
+This stands for Maximum Entropy 
+Stateless. 
+Remember, a Maximum Entropy model is 
+basically a log-linear model. 
+This was a log-linear model but where 
+there was no conditioning on the previous 
+two tags in the context. 
+We only conditioned in each case on 
+features of the individual line being 
+tagged. 
+And that model performs quite poorly. 
+That's really just evidence that the 
+surrounding context in the form of the 
+previous two tags is actually very 
+useful. 
+TokenHMM is the first approach to 
+building a hidden Markov model that I 
+showed you in the previous couple slides. 
+Where we simply calculated the 
+probability of an entire line, by 
+basically creating a unigram language 
+model. 
+Which had a single term for each word in 
+the line. 
+FeatureHMM was the second HMM solution I 
+described to you, where in a first step, 
+we took a line. 
+And transformed it to the sequence of 
+features, representing that line, rather 
+representing features of that line. 
+And we can see, we get a slight 
+improvement here, these numbers are 
+getting better and better. 
+And of course, MEMM is a log-linear 
+trigram tagger. 
+And again, these things are sometimes 
+referred to as Maximum Entropy Markov 
+Models. 
+So an MEMM performed considerably better 
+than any of these other, the other 
+methods. 
+There's a very clear advantage of a 
+hidden Markov Models. 
+

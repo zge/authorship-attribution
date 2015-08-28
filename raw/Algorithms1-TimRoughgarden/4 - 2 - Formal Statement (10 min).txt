@@ -1,0 +1,250 @@
+So having motivated and hyped up the, the
+generality of the master method, and it's
+used for analyzing recursive algorithms.
+Let's move on to it's precise mathematical
+statement. Now the master method is, in
+some sense, exactly what you want. It's
+what I'm gonna call a black box for
+solving recurrences. Basically, it takes,
+as input, a recurrence in a particular
+format, and it spits out as output, a
+solution to that recurrence. An upper
+[inaudible] the running time of your
+recursive algorithm. That is, you just
+plug in a few parameters of your recursive
+algorithm, and boom, out pops its running
+time. Now, the master method does require
+a few assumptions, and let me be explicit
+about one. Right now. Namely, the master
+method, at least the one I'm gonna give
+you, is only gonna be relevant for
+problems in which all of the subproblems
+have exactly the same size. So, for
+example, in Merge Sort, there are two
+recursive calls, and each is on exactly
+one-half of the array. So Merge Sort
+satisfies this assumption both so problems
+have equal size. Similarly, in both of our
+integer multiplication algorithms, all
+subproblems were on integers with N over
+two digits with half as many digits. So
+those will also obey this assumption. If,
+for some reason, you had a recursive
+algorithm that recursed on the third of
+the array, and then on the other
+two-thirds of the array. The master method
+that I'm gonna give you will not apply to
+it. There are generalizations of the
+master method that I'm going to show you,
+which can accomodate unbalanced subproblem
+sizes, but those are outside the scope of
+this course. This will be sufficient for
+almost all of the examples we're going to
+see. One notable exception, for those of
+you that watch the optional video on the
+deterministic algorithm for liner time
+selection. That will be one algorithm
+which has two recursive calls on different
+subproblem sizes. So to analyze that
+recurrence, we'll have to use a different
+method, not the master method. Next I'm
+going to describe the format of the
+recurrences to which the master method
+applies. As I said, there are more general
+versions of the master method which apply
+to even more recurrences, but the one I'm
+going to give you is going to be
+reasonably simple and it will cover pretty
+much all the cases you're likely ever to
+encounter. So recurrences have two
+ingredients. There's the relatively
+unimportant, but, still necessary base
+case step. And we're gonna make the
+obvious assumption, which is just
+satisfied by every example we're ever
+going to see in this course. Which is
+that, at some point, once the input size
+drops two a sufficiently small amount,
+then the [inaudible], then the recursion
+stops, and the problem is solved, sub
+problem is solved in constant [inaudible].
+Since this assumption is pretty much
+always satisfied in every problem we're
+going to see, I'm not gonna discuss it
+much further. Let's move on to the general
+case, where there are recursive calls. So
+we assume there were recurrences given in
+the following format. The running time on
+an input of link N is bounded above by
+some number of recursive calls. Let's call
+it A different recursive calls. And then
+each of these sub-problems has exactly the
+same size and it's, one over B fraction of
+the original input size. So there's A
+recursive calls, each of on input of size
+N over B. Now as usual there's the case
+where I never be as a fraction and not an
+integer and as usual I'm going to be
+sloppy and ignore it and as usual that
+sloppiness has no implications for the
+final conclusion, everything that we're
+going to discuss is true, for the same
+reasons and the general case where N over
+B is not an integer, outside the recursive
+calls we do some extra work and lets say
+that it's O of N to the D for some
+parameter D so in addition to the input
+size N there are three letters here which
+we need to be very clear of what their
+meaning is. So first of all there's A,
+which is the number of subproblems, the
+number of recursive calls. So A could be
+as small as one or it might be some larger
+integer. Then there's B. B is the factor
+by which the input size shrinks before a
+recursive call is applied. B is some
+constant strictly greater than one. So for
+example if you re-curse oh half of the
+original problem then B would be equal to
+two. It better be strictly bigger than one
+so that eventually you stop recursion. So
+that eventually that you terminate.
+Finally, there's D, which is simply the
+exponent in the running time of the quote
+unquote combined step. That is, the amount
+of work which is done outside of the
+recursive calls. And D could be as small
+as zero, which would indicate constant
+amount of work outside of the recursive
+calls. One point to emphasize is that A, B
+and D are all constants. That's all,
+they're all numbers that are independent
+of N. So A, B and D are gonna be numbers
+like one, two, three or four. They do not
+depend on the input size and. And in fact,
+let me just redraw the D so that you don't
+confuse it with the A. So again, A is the
+number of recursive calls. And D is the
+exponent in the running time governing the
+work done outside of the recursive calls.
+Now, one comment about that final turn,
+that Big O of N to the D. On the one hand,
+I'm being sorta sloppy. I'm not keeping
+track of the constant that's hidden inside
+the Big O [inaudible]. I'll be explicit
+with that constant when we actually prove
+the master method, but it's really not
+gonna matter. It's just gonna carry
+through the analysis, without affecting
+anything. So you can go ahead and ignore
+that constant within the Big O. Obviously.
+The constant of the exponent, namely D. Is
+very important. Alright? So depending on
+when D. Is depends on whether that amount
+of time is constant, linear, quadratic, or
+so on. So certainly we care about the
+constant [inaudible]. D. So that's the
+input to the master method. It is a
+recurrence of this form, so you can think
+of it as a recursive algorithm which makes
+A recursive calls, each on some problems
+of equal size, each of size N over B, plus
+it does N to the D work outside of the
+recursive calls. So having setup the
+notation I can now precisely state the
+master method for you. So given such a
+occurrence we are going to get an upper
+ban on the running time. So the running
+time on. Inputs of size N is going to be
+upper bounded by one of three things. So
+somewhat famously the master method has
+three cases. So let me tell you about each
+of them. The trigger, which determines
+which case you're in, is a comparison
+between two numbers. First of all A.
+Recall A is the number of recursive calls
+made and B raised to the D power. Recall B
+is the factor by which the input size
+shrinks before you re-curse. D is the
+exponent in the amount of work done
+outside the recursive call. So we're gonna
+have one case for when they're equal,
+we're gonna have one case for when A is
+strictly smaller then B to the D And third
+case is when A. Is strictly bigger than B.
+To the D. And in the first case we get a
+running time of, big O. Of N. To the D.
+Times log in. Again this is D. The same D
+that was in the final term of the
+recurrence. Okay? That worked on the
+outside of the recursive calls. So the
+first case, the running time is the, is
+the same as the running time in the
+recurrence and outside the recursive calls
+but we pick up an extra log in factor. In
+second case where A is smaller than B to
+the D. The running time is merely Big O of
+N to the D. And this case might be
+somewhat stunning if this could ever
+occur. Because, of course, in recurrence,
+what do you do? You do some recursion,
+plus you do N to the D work outside of the
+recursion. So in the second case, it
+actually says the work is dominated by
+just what's done outside the recursion in
+the outermost call. The third case will
+initially seem the most mysterious, when A
+is strictly bigger than B to the D. We're
+gonna get a running time of Big O, of N to
+the log. Base B. Of a. For again recall A
+is the number of recursive cause and B is
+the factor by which the input size shrinks
+before you recurse. So that's the master
+method with its three cases. Let me give
+this to you in a cleaner slide to make
+sure there's no ambiguity in my
+handwriting. So here's the exact same
+statement, the master method. Once again,
+with it's three cases depending on how A
+compares to B to the D. So one final
+comment. You'll notice that I'm being
+asymmetrically sloppy with the two
+logarithms that appear in these formulas.
+So let me just explain why. In particular
+you'll notice that in case one, with a
+logarithm. I'm not specifying the base.
+Why is that true? Well, it's because the
+logrithm with respect to any two different
+bases differs by a constant factor. So the
+logrithm that is at base E, that is the
+natural logrigthm, and the logrithm base
+two, for example, differ by only a
+constant factor independent of the
+argument N. So you can switch this
+logrithm to whatever consant base you
+like. It only changes the leading constant
+factor, which of course is being
+suppressed in the bigger notation anyways.
+On the other hand, in case three, where we
+have a logarithm in the exponents. Once
+it's in the exponent, we definitely care
+about that constant. Constants is the
+difference between, say, linear time and
+quadratic time. So we need to keep careful
+of the ba-, the logarithm base in the
+exponent in case three. [inaudible], and
+that base is precisely B, the factor by
+which the input shrinks which each
+[inaudible], with each recursive call. So
+that's the precise statement of the master
+method. And the rest of this lecture will
+work toward understanding the master
+method. So first, in the next video, we'll
+look at a number of examples, including
+resolving the running time of [inaudible]
+recursive algorithm for integer
+multiplication. Following those several
+examples, we'll prove the master method.
+And I know now, these three cases probably
+look super mysterious. But if I do my job,
+by the end of the analysis.

@@ -1,0 +1,410 @@
+Welcome back to the course on analysis
+signal processing for music applications.
+In the previous two theory lectures
+we presented the sinusoidal model,
+the analysis part.
+Now in this third and final lecture,
+we will finish the topic by talking
+about the synthesis part of the model,
+therefore by generating sound out
+of the analysis that we did.
+We will first review the model and
+the concept of spectral peaks and
+spectral tracks.
+And then we will focus on the concept
+of sinusoidal synthesis, what is
+also called additive synthesis.
+And then we will finish by
+talking about the complete system,
+the complete sinusoidal model system,
+that does analysis and synthesis.
+So as we showed in the last lecture, the
+Sinusoidal model considers that the sound
+is the sum of time varying sinusoids.
+And it's expressed by this equation
+In which the output signal is the sum of
+sinusoids,
+of time varying sinusoids.
+So, a good way to show the results of
+the analysis is to plot the frequencies of
+the time varying sinusoids on top of
+the magnitude spectrogram of the sound.
+Of course, each sinusoid, apart from
+the frequency, it has also magnitudes and
+phases, which are not shown.
+So for example in this plot,
+here we are showing the
+spectrogram of a flute
+sound, that we can listen to.
+[SOUND].
+And then on top of that we
+are showing these lines, which
+are the frequency tracks of
+the sinusoids that have been identified.
+Of course, again, there is much more
+than that, but that's
+quite good compromise and it
+gives us quite a intuitive
+visualization of this sinusoidal model.
+But now from these values, the ones have
+analysed, we want to synthesize a sound.
+The standard way to synthesize
+sinusoids is to use additive synthesis.
+This is the standard block diagram
+of an additive synthesizer,
+in which we have a series of oscillators.
+Each one, from an input of 
+a given amplitude and
+frequency, it generates a sinusoid,
+a time varying sinusoid, and
+then we can sum all these things
+together to generate the output.
+But how do we generate,
+each individual sinewave?
+The most straightforward
+way to generate a sinusoid is to
+use the sinusoidal function directly.
+So this function that we see here can be
+easily implemented in a programming
+language like Python like you see here.
+So, we can we can have specific
+amplitudes, frequencies,
+to control these this function.
+But this is quite expensive, especially
+when we deal with complex signal
+in which we might have to call
+these functions hundreds of times, and
+at every sample.
+So let's propose another way.
+We can use the DFT to
+do synthesis.
+So if we start from
+the spectrum a sinusoid and
+do the inverse Fourier transform.
+In this equation we show how to do it.
+So basically we start
+from the magnitude spectrum
+of the sinusoid and
+the phase spectrum of the sinusoid and
+we just take the inverse DFT of that.
+So here the plots show a very
+special case in which we would have
+the spectrum of a sinusoid that has one
+of the discrete frequencies of the DFT, or
+the FFT, so we just have one value,
+then we just take the inverse
+DFT of the whole array and
+we get this nice
+looking sinusoid, of length 64.
+Too bad that things are not that simple.
+This only works for these
+frequencies that have
+a very discrete frequency,
+one of the DFT ones.
+But we know,
+also, how to represent sinusoids that
+might have frequencies different
+from these discrete frequencies.
+So such a sinusoid does not have
+a single spectral value,
+it has values for all frequencies.
+Values that depend on the window
+that we consider.
+And then to generate the sinusoid
+in the frequency domain
+we have to generate
+the transform of a window
+and place it at the right frequency,
+amplitude, and phase.
+So, in here, this equation expresses
+this idea, that the magnitude
+spectrum of the sinusoid is, in fact,
+the magnitude spectrum of the window,
+shifted to the right frequency, and
+multiplied by the right amplitude.
+And, again, the phase spectrum is
+also the phase spectrum shifted
+to that particular location.
+And the plots show two examples
+of two different windows.
+So, the same sinusoid with
+a different window applied to it,
+of course, it is expressed with different
+magnitude and
+phase spectra, and
+then when we take the inverse of that
+we get a nice looking sinusoids.
+Of course, with the
+windoweapplied to them.
+But in the time domain
+all samples have the same weight.
+And one great advantage of the frequency
+domain is that not all samples have
+the same weight.
+So, we might take advantage of
+that in order to make this
+whole process a little bit
+more efficient.
+For example, this emphasizes the idea
+of the main lobe of these windows.
+Those samples,
+the samples of the main lobe,
+are the one that carry the most weight,
+the most amplitude, so in the
+examples before, with the Hamming and
+the Blackman Harris,
+we can now plot just the spectrum
+of the main lobe samples.
+And here we see the main lobe
+samples with the dark red and
+the rest of the samples with a light red.
+And then it would just take
+the inverse DFT of just those samples,
+of the samples of the main lobe.
+Well, we get this blue shapes,
+these sinusoids, which, from a first look
+they look okay,
+but
+if we actually measure
+the signal to noise ratio.
+So, basically how this would be
+distinguished from a real sinusoidal.
+A very a very synthetic
+sinusoidal that would be perfect.
+We see that the Hamming
+window has a bigger signal to
+noise ratio than the Blackman Harris window.
+Because of course, the samples of
+the main lobe of a Hamming window
+carry less weight than for
+the case of the Blackman Harris.
+So in the Hamming window
+the signal to noise ratio is 53 dB and
+in the case of the Blackman Harris is
+very good, is 102 decibels so basically
+the distortion, or the noise, is
+insignificant for audio applications.
+So it's clear that the Blackman Harris
+is a good choice for
+generating sinusoids
+in the frequency domain.
+We just need 8 samples,
+which are the main lobe of,
+Blackman Harris has eight samples, and
+if we just that those eight samples and
+do the inverse we can generate a sinewave 
+as long as the FFT we have.
+and then if we want to
+generate several sinusoids 
+in the spectrum, we can just generate
+several main lobes.
+So from this equation we can see that the
+sum of sinusoids, in the frequency domain,
+is the sum of main lobes.
+The sum of the main lobes of this window,
+in this case the Blackman Harris window,
+because, as we will see, is
+the one that we'll be choosing.
+So in this example we
+are generating 3 sinewaves.
+One and a 1,000 hertz.
+Another at 4,000 hertz,
+and another 8,000 hertz.
+So we place the main lobes of
+the windows in those locations.
+Each one with a different amplitude.
+We also generate the phases for
+those main lobes.
+And we can just take then
+the inverse DFT of this spectrum,
+of this combined spectrum.
+And we get a signal which is in fact
+the sum of these three sine waves,
+of course,
+multiplied by a Blackman Harris window.
+Okay, and
+then we can put together an analysis
+synthesis approach using this idea.
+So, we start from a sound,
+a fragment of a sound,
+in this case an oboe sound,
+then we compute the spectrum.
+We find the locations, and for
+this we can use any window, any
+DFT size, any FFT size, so
+whatever is appropriate for the analysis.
+And then we basically
+do an additive synthesis approach
+in the frequency domain,
+by generating main lobes
+from these cross values,
+from these peak locations, the FFT
+can be a different size, the window in
+this case is a different one because
+we're using a Blackman-Harris window,
+and then we do the inverse of that, and
+hopefully, this resynthesized sound is
+identical, or similar to the original one.
+Of course.
+With now the idea that we have a Blackman
+Harris window applied to that.
+But we have one problem and
+that's the problem of overlap-add
+in the process of synthesizing.
+The Blackman Harris window requires 
+a big overlap.
+If we want to generate
+a time varying signal,
+the overlap of a Blackman
+Harris should be very high.
+Even bigger than one eighth
+of the window length.
+So the solution is to undo
+the Blackman Harris window and
+apply a window whose
+overlap factor is better.
+And this is a proposed
+approach that is commonly used.
+Which is, as we see in the top
+plot, is our synthesize signal,
+which has this Blackman
+Harris window applied to that.
+And then what we're going to do is
+divide by the Blackman-Harris and
+multiply a triangular
+function.
+But we are going to do it on, not the whole
+size, but only on half of the size.
+In fact, what we are going to do is
+multiply by this third shape, so
+we will
+divide by the Blackman Harris and
+multiply by the triangular, or
+multiply by this
+third shape that we see here.
+And then the result is a similar
+function than the previous one,
+but now this function, which is half
+as long, has been multiplied by a
+triangular function that
+can be overlapped by 50%.
+So, that's pretty good.
+So, like,
+would be 25% of the initial size.
+Okay, so, this is our approach
+that we will be doing.
+In which we can do an overlap of 25%,
+that's the one we require
+with this process.
+So we start with the spectrum,
+with Blackman Harris
+windows.
+then we do the inverse, we have the Blackman 
+Harris and then undo it and
+apply the triangular function.
+And that's it, we're done,
+we can do analysis synthesis,
+using sinusoidal approach.
+Like we did with the STFT
+we can put it all together into
+an analysis synthesis system.
+So we start from x of n,
+our signal, our complete signal.
+Then we multiply by our analysis window,
+compute the FFT, obtain the magnitude and
+phase spectrum, and now we are starting
+with the sinusoidal analysis.
+We are starting with detection of the peaks,
+Detecting in the magnitude spectrum,
+the location and amplitude and
+the phase of the peaks.
+And then
+we can track those peaks in time by
+applying some of these constraints of
+continuity of the frequency values.
+So that we construct Sinusoidal tracks.
+So we have a track per every time varying
+sinusoid and this is our analysis result.
+We have these tracks of sinusoidal values.
+And then we can synthesis with what
+we just explained in this lecture.
+So we can do it in the spectral
+domain by generating these main lobes
+of Blackman Harris windows,
+which is quite efficient.
+We just need to generate eight or
+nine samples
+per sinusoid in the frequency domain.
+And then compute
+the inverse Fourier transform.
+And obtained
+the synthesized, which 
+we can undo the window of the Blackman 
+Harris, apply the triangular
+function, in a way that we have an overlap
+add process that works at 25% and
+it reproduces quite well the original
+sound in some way, at least
+a part of it.
+Let's see an example.
+So this is an example of an analysis
+synthesis using the Sinusoidal model.
+So this is a sound of
+Bendir, which is 
+this Turkish drum, this is
+just one stroke of it.
+Let's hear that.
+[SOUND].
+Okay?
+And then the analysis shows just the
+the tracks, the sinusoidal tracks that
+we have obtained, so
+we see only the frequencies of
+of them, plotted in 
+the time frequency space, and
+then from those we can synthesize
+the sinusoids and
+hopefully recovered the sound.
+and let's hear that.
+[SOUND] If you pay a little bit of
+attention, well, it's not exactly the same,
+especially in the attack you can hear
+some difference, and that's one of
+the things that we will be trying
+to work on in the next few lectures.
+so for the references in this
+topic, as I said, there is not much. 
+For additive synthesis there is quite a bit, 
+you can look yourself in Wikipedia,
+again on my Julius’ online book you can
+find some relevant material.
+And this is all for the Sinusoidal topic,
+at least from a theoretical point of view.
+We will also demonstrate and
+do a more programming approach to that.
+In in these 3 lectures we have
+started from the short time Fourier
+transform and we have seen how
+to analyze sinusoids on top of that.
+And this is
+a way to simplify the spectrum.
+So in fact, it can be used for
+compression.
+But at the same is a very useful
+representation for many other things.
+As we will see in future classes.
+So we'll continue in this direction,
+towards a more useful and higher level
+representation that capture some of the
+prominent essence of a given sound.
+So next class we will take advantage of
+some of the characteristics of the sound.
+To apply some more
+constraint in the model, so
+that hopefully we'll get some other
+aspects of this analysis synthesis 
+that can be of interest for
+many applications.
+So thank you for your attention and
+I see you in next class.
+

@@ -1,0 +1,292 @@
+We've now looked in detail, how to make
+maximum entropy classifiers. And what I
+want to do in this segment is extend from
+there, to show how we can build sequence
+models out of classifiers. In particular,
+we are going to make maximum entropy
+sequence models. Many problems in NLP have
+data which is a sequence of something.
+It might be a sequence of characters, a
+sequence of words, a sequence of phrases,
+a sequence of lines, paragraphs,
+sentences. And we can think of the task,
+perhaps with a little coding as one of
+labeling each item. So a very
+straightforward example is part of speech
+tagging that we just looked at.
+So here we have the words and for 
+each word we're going to label it
+with a particular part of speech. Other 
+examples are fairly straightforward as well.
+So for named entity recognition here we 
+have the word and we're going to label it
+with an entity if it is one like organization 
+or if it's not an entity we're going to label it
+with an o. Some of the cases of things 
+that can be done as sequence problems,
+it's a little bit subtle to think about the
+encoding that is actually quite
+straightforward once you've worked through
+the ideas. So here we have a piece of
+Chinese text and what we want to do is
+word segmentation. So this is a word.
+This is a second word. This is a third word.
+This is a fourth word.
+This is a single-character word, and 
+so on. And what we can do, is we can use
+a labeling to capture that. So here we have
+what's called BI labeling where we're
+distinguishing just two states, begin and
+inside, and that sufficient to represent
+tasks like word segmentation. So this says
+this is the beginning of a new word,
+but then the next token says it's also the
+beginning of a new word.
+So we start a word here but then we've 
+got this I class so we continue,
+another I class, we continue. So that's 
+a three character word.
+And then we go back to a B, and we start 
+a new word, which is a two character word.
+So although, really we're segmenting the 
+characters into sub-sequences, we can encode
+the decisions we have to make by regarding 
+the problem as a sequence labeling task.
+Here's one more slightly different example, 
+so what we have here is a stretch of text,
+and we can think of the text as lines of an 
+old-fashioned file with hard line breaks
+or sentences. And so what this is, is 
+a FAQ, as you find commonly on websites.
+And what we want to do is to automatically 
+process it and work out
+where are the questions and where are 
+the answers.
+And so we're gonna regard that as a 
+sequence labeling task,
+where each of our items is representing 
+a line or a sentence.
+And so then we're encoding our decisions 
+using exactly the same kind of
+two-class classification over here, so each 
+line has been classified as either
+a question line or an answer line. And then 
+we have the answer lines grouped together
+for a particular answer. So what we're 
+gonna do with our maximum entropy models
+is we're going to put them into a sequence 
+model and these are usually referred to as
+maximum entropy Markov models, MEMMs 
+or conditional Markov models.
+So what the classifier does is it makes 
+a single decision at a time, but it's able
+to be conditioned on evidence, both from
+observations and from previous decisions.
+So here we're showing a picture, we're in
+the middle of doing part of speech tagging
+and we've already given part of speech
+tags to the first three words
+and so we're proceeding left to right and 
+that what we're up to is
+giving a part of speech tag for this word 
+here and so the idea is for features
+for classification we're going to be
+able to use features of the current word.
+We're going to be able to use features of
+other words if we wish. But we're also
+going to be allowed to use features of the
+previously assigned part of speech tag.
+Perhaps the part of speech tags two
+backwards. And all of these can influence
+the classification, and so that's what's
+being shown over here for our features.
+So we have current word, next word, previous
+word, previous tag, previous two tags taken
+jointly as a feature. And then we can also
+define other features of the kind that
+we've discussed before. So here we have a
+has-digit feature of the current word
+which is being used to generalize over
+different numbers cause maybe we don't
+know very much or anything about the
+number 22.6 in particular.
+So generalizing a little, this is the picture
+of how we move from our basic maxent
+classifier to a sequence model. So overall
+we have sequence data here
+and what we want to do is classification 
+at the sequence level.
+So we have individual words or characters 
+and we want to assign to them their classes.
+But the way we're gonna do that is we're 
+going to look at each decision individually.
+So we're going to say, okay, there's a particular
+classification of interest, this one here,
+and how are we going to make that
+classification. Well what we're gonna do
+is say for that particular classification,
+there's data locally of interest to it.
+So there's the current word, the previous
+word, the previous class.
+And so what we're going to do, is we're 
+going to do feature extraction over that data.
+And so we have the label that we're trying 
+to predict, or which we can see
+in supervised training data. We've got features 
+of the observed data in previous classifications,
+and then we're building a maximum entropy 
+model over that and so at that point we're doing
+all the stuff that we've talked about.
+We're doing optimization of a model,
+we're doing smoothing, and at the end of 
+the day we build a little local classifier
+that makes the individual decisions. So 
+what we'll do is we'll do it at this position,
+but then we'll repeat the same thing over
+at the next position and we'll go along
+tagging our sequence. It's extremely easy
+to see how to do that in one way, where we
+first of all decide this label, then we go
+on to decide this label and then this label,
+this label and at each point we can
+use preceding labels to help determine
+the next one. And if we do that we have a
+greedy sequence modeler that's just deciding
+one sequence at a time and moving on. That
+in many applications actually works quite well.
+But commonly people want to explore
+the search space a little bit better
+because sometimes although here you might
+decide one part of speech tag is best,
+that later on once you've looked over
+here, that that would give some reason to
+think that maybe you should have chosen
+differently back over here.
+And so there are couple of methods that 
+are commonly used to do that.
+One method is Beam Inference. So a 
+beam inference, at each position
+rather than just deciding the most likely label, 
+we can keep several possibilities.
+So we might keep the top k complete 
+subsequences up to the point where we're at
+so far and so then at each stage we'll 
+consider each partial subsequence and extend
+it to one further position. Now beam inference 
+is also very fast and easy to implement.
+And it turns out that a lot of the time that
+beam sizes of 3 or 5 gives you enough
+maintenance of a few possibilities and
+works almost as well as doing exact
+inference to find the best possible state
+sequence. And it's easy to implement.
+Of course that's not necessarily true. You
+get no guarantees that you've found the
+globally best part of speech tag sequence,
+or whatever your sequence problem is.
+And it can certainly be the case, that
+possibilities that would later have been
+shown to be good might fall of the beam
+before they get to be shown to be good.
+We can do better than that. We can actually
+find the best sequence of states that has
+the globally highest score in the model.
+And doing that is referred to in NLP
+as doing Viterbi inference, since Andrew
+Viterbi invented a lot of these algorithms
+for finding the best way of doing things. 
+Viterbi inference is a form of
+dynamic programming, or you can also think
+of it as an memoization. And you can do
+this kind of dynamic programming, providing 
+you have a small window of state influence.
+So, for example, when you're trying to 
+decide this label, if it depends on words
+however it wants to, but only depends on, 
+say, the previous label and the one before that,
+then you end up with this sort of fixed small 
+window of stuff you need to know about.
+to make decisions. And nothing back 
+here is affecting what decision you make.
+Providing that's true, you can write 
+dynamic programming algorithms to find
+the optimal state sequence. And so 
+that has the obvious advantage that
+you're guaranteed to find the best state 
+sequence. But it has some disadvantages.
+It's, requires a bit more work to implement. 
+And it forces you to restrict
+your use of previous labels in your 
+inference process to a fixed small window.
+That is a restriction, but a lot of the time 
+it's not such a bad restriction
+because in practice, it's hard
+to get long distance interactions to be
+working effectively anyway, even in
+something like a B model, which does allow
+long distance interactions. Okay. I've
+introduced maximum entropy Markov models
+and I hope that you now feel that you 
+understand them and will be able to build them
+as an assignment. Before I end I should just
+very briefly mention conditional random fields.
+So, conditional random fields are
+another probabilistic sequence model.
+And if you just sort of look big picture in
+the math of a, a conditional random field,
+boy, that equation looks exactly like the
+equation that we've been staring at in all
+of the recent slides. The difference with
+conditional random fields is, that these
+probabilities are in terms of the entire
+sequences. So this is the sequence of
+classes and the sequence of observed data
+values, that it's not in terms of
+particular points in that space. And so we
+get this whole sequence conditional model
+rather than a chaining of local models.
+That looks as if it would be very difficult
+to deal with cause the space of a sequence 
+of c's is exponential in its length.
+And the space of a sequence of data items 
+represented as features is at a minimum
+huge and perhaps even infinite. But it
+turns out that providing the fi features
+remain local permitting dynamic
+programming that the conditional sequence
+likelihood can be calculated exactly.
+Training is somewhat slower but CRF's have
+theoretical advantages of avoiding certain
+causal competition biases that can occur
+with maximum entropy markov models.
+However, to explain the details of these
+models we'd have to go quite a way afield
+looking at in general how to do markov
+random field inference, which I feel a
+better topic for other courses. So, let me
+just mention these and say that these days
+using CRFs or variants of them that use a
+max margin criterion coming out of SVMs,
+are seen as the state of the art method
+for doing sequence models. And there are
+various bits of software, including the
+Stanford software for named entity
+recognition you can download that
+implement CRFs. But a thing to know is
+that although CRFs are theoretically
+cleaner and can avoid some problems of
+MEMMs, that in practice, when you're
+building models with rich features which
+condition on observed data, both before
+and after you, that in practice they tend
+to have performance that can't really be
+distinguished from maximum entropy Markov
+models. And so there's really no problem
+with using maximum entropy Markov models
+to do the job of sequence classification,
+and that's what we'll use in the
+assignment. Okay, and so I hope that you
+guys now have a concrete idea of how 
+you can build a maxent classifier,
+and then incorporate it into a system for 
+doing sequencing inference.

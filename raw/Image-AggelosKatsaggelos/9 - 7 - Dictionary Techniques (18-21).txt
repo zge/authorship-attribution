@@ -1,0 +1,408 @@
+Welcome back.
+In many applications, such as the encoding
+of text,
+the output of the source consists of
+getting patterns.
+In such a case, a very reasonable approach
+is to encode such
+sources by creating a list or a dictionary
+of the frequently recurring pattern.
+Then the patterns are encoded by their
+address in the dictionary.
+So this way the input is split into two
+classes.
+The frequently occurring and the
+infrequently occurring patterns.
+The former are encoded by the dictionary,
+and the latter by less efficient method.
+We describe in this segment both static
+and adaptive dictionary techniques.
+The static ones are rather straight
+forward to understand and
+implement, but they have limited
+applicability and local operation
+efficiency.
+Most adaptive techniques have their roots
+in 2 papers by Ziv and Lempel.
+The 1977 paper, LZ77, and the 1978 paper,
+LZ78.
+We describe in this segment, both such
+papers and approaches.
+So let's proceed with the details about
+these algorithms.
+In many applications, like text, the
+output
+of the source consists of recurring
+patterns.
+In such a case, it's reasonable to encode
+such sources by
+making a list or a dictionary of the
+frequently occurring patterns.
+The patterns in the dictionary are encoded
+by their index, in the dictionary.
+So in essence the input is split into two
+classes.
+The frequently occurring patterns are
+included in the dictionary, and
+the infrequently occurring patterns are
+encoded with less efficient methods.
+For this method to be effective, the size
+of the
+dictionary must be much smaller than the
+number of possible patterns.
+There are two types of dictionary
+techniques, static and adaptive.
+Most of the adaptive techniques are based
+on these two papers by Ziv and
+Lempel, the 1977 paper, referred to as the
+LZ77 dictionary
+technique, and the 1978 paper referred to
+as the LZ78 technique.
+We're going to describe both of these
+techniques.
+Static dictionary techniques are quite
+straightforward to explain.
+They're suitable for specific
+applications, like for
+example, encoding the student records at
+the university.
+So in this toy example, this is the
+alphabet of the source,
+it contains five symbols, and here is that
+static dictionary that was designed.
+Fixed code word length are used, so we see
+that there are the code words for the five
+symbols, and then there are code words for
+combinations,
+of popular combinations of symbols, and
+these are called diagrams.
+So with this dictionary, we want to encode
+the sequence here, abracadabra.
+And in a straightforward way, we see
+that the symbol ab's included in the
+dictionary.
+This is the code word.
+R is in the dictionary with this code
+world.
+A,C is in the dictionary with this
+corresponding code word.
+A, D this code word.
+A, B, R and A.
+So for this particular toy example, we
+have 11 symbols in the sequence, and
+without the diagrams here, we would need
+times three 33 beats, while now we only
+use seven times three or 21 beats.
+In the LZ77 Approach, the dictionary is
+simply a portion of the previously encoded
+sequence.
+The encoder examines the input sequence,
+through a sliding window, as shown here.
+The window consists of the search buffer,
+that
+contains a portion of the recently coded
+sequence,
+and the look ahead buffer, that contains
+the
+next portion of the sequence to be
+encoded.
+To recall the sequence, in the look ahead
+buffer, the encoder moves a search pointer
+back
+through the search buffer, until it
+encounters a
+match to the first symbol the look ahead
+buffer.
+So let's assume that the pointer finds a
+match at this point.
+The distance of the pointer from the look
+ahead buffer is called the offset.
+So,
+here, this is the offset.
+[SOUND] The encoder then examines the
+symbols following
+the symbol at the pointer location, to see
+if they match
+consecutive symbols in the look-ahead
+buffer.
+So let's say these symbols here match
+these symbols here.
+The number of consecutive symbols in the
+search buffer that match consecutive
+symbols in
+the look-ahead buffer, starting with the
+first
+symbol, it's called the length of the
+match.
+So, this is the length here.
+Once the longest match is found, the
+encoder
+then encodes the, this triplet, where o is
+the offset, l is the length of the match.
+And c is the code for next symbol.
+The reason for sending this third element
+as
+a triplet is to take care of the situation
+where no match for the symbol in the look
+ahead buffer can be found in the search
+buffer.
+In this case both the offset and and match
+length values are set equal
+to 0, and the third element is the code
+for the symbol it's self.
+The bits needed to encode this triplet are
+shown here, this denotes here a single
+operation.
+So the offset can be as long as the length
+of the search buffer.
+To encode the length of the match, we
+notice here that we don't
+include log 2 of s, but log 2 of W,
+because the match can exceed
+into the look-ahead buffer and we'll see
+this in the example.
+And finally, to encode the code for the
+next symbol, this is the cardinality
+of the alphabet, the number of elements in
+the alphabet and using fixed
+length codes, we need log 2 of this
+cardinality code, the symbol.
+Let us look at a specific example of the
+application of LZ77.
+So we assume that the length of the search
+buffer is
+7, and the length of the look-ahead buffer
+equal to 6.
+Were given to encode this sequence here.
+And we know encoding with LZ77 means the
+generation of this triplet.
+Offset length of much and code word for
+next symbol.
+So here's the sequence again, and here's
+the current situation.
+We assume that we have encoded what's in
+the search buffer.
+So we look at the first symbol here d, we
+look
+into the search buffer, whether we have a
+match for d.
+Since there is no d in the search buffer,
+then
+clearly the code word generated this
+offset
+0 length, and the code for the symbol d.
+Then we move the search box over by one
+position, and
+now we try to see whether a matches into
+the search buffer.
+We have a march of a here, but it's just a
+single match.
+We'll move further back, another match of
+a, single match as well.
+Further back, we match a here as well, but
+now in
+addition, we match b, we match r, and we
+match a.
+So in this case, the offset is equal to 7.
+So encode 7 for the offset.
+The match equals 4 symbols, and we need
+the code for the
+next symbol which is this symbol here, the
+code for r.
+We'll move now the buffer over by five
+positions, and this is the
+situation, so we try to see if r can match
+in the previous segment of the
+search buffer, so we have a match of r
+here, but it's a single match.
+I move further back, and I see can match r
+here as well.
+And now, in addition, this a matches with
+this a.
+This r matches with this r.
+But I can keep going, since this r matches
+this r, and this a matches this a.
+So, this is the case I referred to
+earlier,
+whereby, the match which exceeds into the
+look-ahead buffer.
+So in this case, the offset is three,
+but the length of the match is five
+symbols.
+Therefore the code word is 3 for the
+offset, 5 from the length of
+the match, and the next symbol I need to
+encode is D, over here.
+Let us proceed with a decoding now of the
+stream.
+So, we assume that this part of the
+sequence has been decoded.
+And then, we receive the first code
+word, which is 00 and the code for D.
+So, 0, offset 0 length of the match, and
+therefore, I need to add D to my sequence.
+Then I receive the second code word 74 and
+the code for R, so
+we need to move back 7 positions, so I
+move the pointer here,
+and 4 symbols are matched, so these 4
+symbols are matched.
+And, therefore the symbol so long with the
+code for
+r need to be added to the already decoded
+sequence.
+So this is what, now the decoded sequence
+looks like.
+Then I receive the next code word which is
+3, 5, and the code for d.
+So I move the pointer back three
+positions, so the pointer
+is now at this location, but they have a
+module five symbols.
+I don't have five, I have only three but I
+will generate the three first.
+So, I generate the rar and now, looking at
+this point of location,
+I can see the five symbols, that they have
+been matched.
+That is, one, two, three, four, five.
+So, the first three have already been
+generated,
+so I need to add these two, and of course
+the
+last symbol is d because I have the code
+for d.
+So we see that through decoding I can
+generate again the original image with no
+error.
+An implicit assumption with LZ77 is that
+light particles will occur close together.
+Any particle that occurs over a period
+longer than
+what's covered by the coded window will
+not be captured.
+Actually, the worst case scenario is when
+we have a sequence
+to encode that is periodic, with period
+longer than the search buffer.
+So there are cases where this finite view
+of the past is indeed a drawback.
+And in LZ78 the reliance on the search
+buffer is dropped,
+and instead an explicit dictionary is
+generated.
+Since the dictionary needs to be built.
+Both the encoder and decoder,
+synchronization is
+very important so that the dictionaries
+are identical.
+So, with LZ78 what's encoded is the index
+here in the dictionary.
+And when we have a new entry, then the
+index is equal to 0.
+And since the code for the symbol, after
+the
+matched part, similarly to what we had in
+LZ77.
+So let us look at a simple example now.
+So here is a sequence we are asked to
+encode using LZ78.
+So we start with the first symbol, this is
+a new
+symbol, actually there's nothing in the
+dictionary so it's a new entry.
+i equals 0 is the first entry of the
+dictionary, and I need the code word for
+b.
+I look the next symbol, a does not exist
+in
+the dictionary, it's also a new entry, i
+equals 0.
+That's the second entry in my dictionary.
+Look at w, similarly a new entry, the
+fifth element in the dictionary.
+I look at this w, well w exists in the
+dictionary, so I look at the next symbol
+as well.
+So, w exists in the dictionary is, the
+index is 3 for
+w, and then this is the code word for the
+next symbol A.
+I move on, this is lets say the symbol for
+space, it's
+a new symbol I equals 0 is the fifth,
+enter the dictionary,
+then B exists in the dictionary.
+So
+it's actually the first element in the
+dictionary, the code word for a.
+And now ba is my 6th entry in the
+dictionary.
+Similarly, w exists, so here ww becomes a
+new entry in the dictionary.
+A exists so A-space is my new entry in the
+dictionary.
+Over here b exists, ba actually exist in
+the dictionary.
+So therefore this becomes a new entry,
+baw,
+w exists, wa exists in the dictionary so.
+W a space is my new entry.
+This
+is, the
+index of that is ten.
+Then I proceed here, b exists, b a exists,
+b a w exists in the dictionary.
+And therefore b-a-w-w is my new entry.
+Right?
+So the index of b-a-w is 9.
+This is the ninth entry in the dictionary,
+that's why i
+equals 9 here, and I need a code word for
+w.
+So a exists, a space.
+This exists, so a space w is my, I'm
+sorry,
+a space b is my new entry in the
+dictionary.
+O a new entry.
+O space becomes a new entry, and finally b
+o is the final entry.
+Into the dictionary and the index is 15.
+So it's a rather straightforward
+procedure.
+Simple I would say than LZ77.
+And as the encoding proceeds, we're going
+to see larger and
+larger lengthwise entries entering in the
+dictionary.
+I'm adding some final comments regarding
+dictionary techniques here.
+There have many variations of LZ77.
+Some of which are that the
+variable lengths to efficiently encode the
+triplets.
+There are versions where the sizes of both
+buffers can vary,
+and also versions where the third element
+in the triplet
+is eliminated by adding a flag when a
+single symbol
+is encountered.
+A variation of LZ78 is the LZW version,
+the Lempel-Ziv-Welch
+version, according to which the encoder
+only sends the index.
+Now, there are numerous applications of
+the family of LZ variants.
+It's been used in the Unix compress
+command.
+The command to compress data
+files or text files.
+It's also used in the GIF, the Graphics
+Interchange Format for images.
+And finally, is used as part of the
+standard
+V 42 bits, that is used for compression
+over modems.
+

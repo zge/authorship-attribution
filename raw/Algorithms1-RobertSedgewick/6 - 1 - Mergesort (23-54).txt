@@ -1,0 +1,635 @@
+Welcome back.
+Today we're going to look at Mergesort,
+which is one of two
+classic sorting algorithms that are
+critical
+components in the world's computational
+infrastructure.
+We have a full scientific understanding of
+the
+properties of these algorithms, and
+they've been developed
+as practical system sorts and application
+sorts that
+have been heavily used over the past 50
+years.
+In fact Quicksort, which we'll consider
+next time, was honored as one of the top
+10 algorithms of the 20th century in
+science and engineering.
+On this lecture we're going to look in
+Mergesort, which is
+the basic sort in plenty of different
+programming systems including Java.
+Next time we'll look at Quicksort which
+is also used in Java for different
+applications.
+Alright, so basic Mergesort algorithm.
+What's it going to look like?
+The idea is very simple.
+What we're going to do is divide an array
+into two halves.
+Recursively, recursively sort each of the
+halves.
+And then merge the result.
+That's the over-view of Mergesort.
+It was actually one of the first
+non trivial algorithms I implemented on a
+computer.
+John Von Norman realized that the
+development of
+the EDVAC, his EDVAC computer, one of the
+first
+general purpose computers that is going to
+need
+a sorting method and he came up with
+Mergesort.
+He's widely accredited as being the
+inventor of Mergesort.
+So the idea of Mergesort is, is based on
+the idea of merging.
+And so to understand how merging works
+we'll
+think about the idea of an abstract in
+place merge.
+So, we've got an array A and its first
+half is sorted and its second half is
+sorted and the computation we need to
+perform is to replace that with the sorted
+array where those two sub-halves are
+merged together.
+Let's look at a demo.
+[COUGH]
+The method that we're going to use is
+based
+on taking an auxiliary array to hold the
+data.
+This is a, one of the easiest ways to
+implement the merge.
+So the first thing we do is copy
+everything over to the auxiliary array.
+Now, once that's done, what we'll want to
+do is copy
+back to the original array to get it in
+sorted order.
+In order to do that, we're going to
+maintain three indices.
+I, the current entry in the left half, j,
+the current entry on the right half and
+k, the current entry in the sorted result.
+[COUGH] so the first thing we
+do is, take the smaller of the two entries
+pointed to by i and j, and compare
+those, and take the smallest one, and move
+that one to be the next item output.
+And whichever one is taken, we increment
+its pointer.
+Now we compare the minimum again, again,
+the one pointed group
+by j is smaller, so we move that one to k.
+Increment that pointer j and also
+increment k.
+Now there's two E's, equal we always take
+the first.
+So the one on the left array goes to k's
+position.
+And now we increment i and k.
+And again, it's an E and they're equal.
+We'll take the first one so we move that
+one up increment i and k.
+And now
+j's E is smaller than g.
+It's the next thing that has to go in the
+output.
+So we move that one up and increment j and
+k.
+Now the one pointed to my i, the G
+is smallest so move that and increment i
+and k.
+Move the M up and increment i and k.
+Now the last element in the left sub array
+is the one that's going to get moved next.
+And now
+that first subarray is exhausted so really
+all we need to do is take
+the rest of the elements from the right
+part and move them back in.
+Actually since we copied, we could
+optimize by avoiding these moves.
+That's an abstract in-place merge for
+taking the two sorted sub-halves
+of an array using an auxiliary array, move
+them out, and
+then put them back in in sorted order.
+Alright, so here's the
+code for merging, which is quite
+straightforward from the demo.
+We first in order to sort an array of
+comparables in this implementation we pass
+a link to
+the auxiliary array, in as well.
+And we have three arguments
+lo, mid, and hi.
+So lo is the first part of the array to be
+sorted.
+Mid's the midpoint that divides the first
+part from the second, so our conditions
+are
+that from lo to mid is sorted, and from
+mid plus 1 to hi is sorted.
+[COUGH] so the merge implementation then,
+the first thing
+it does is copy everything over to the
+auxiliary array.
+And then that sets up for
+this four loop that accomplishes the
+merge.
+We start our I pointer at the left heart
+on the left half.
+The J pointer on the left part of the
+right half.
+That's mid plus one.
+And we start the k Pointer at the
+beginning lo.
+And for every value of k what we're most
+often doing is comparing whether aux of j
+is less than aux
+of i.
+And if it is, we move the element of j
+over in increment j.
+If it's greater we move the element i over
+in increment i.
+And then in both cases, we increment a,
+not imple, increment k, and that
+implements the merge.
+If the i pointer is exhausted, then we
+just move over the j, next jth element.
+If the j pointer is exhausted
+we move over the next ith element.
+So every time we're moving
+a new element into k and that's the code
+that impelements the
+abstract in place merge.
+Now with this code,
+we're also introducing the idea of making
+assertions just to make it
+easier to debug our code and to have
+confidence that it's correct.
+In this case, this insertion just says we
+want to
+be sure that a of lo to mid assorted and
+that mid plus
+one to high is sorted before our code and
+then we
+want to check that, the whole thing is
+sorted after our code.
+And generally programmers, Java
+programmers know that it's a good idea to
+try to do these assertions.
+Not only does it help detect bugs, but it
+also documents what the code is supposed
+to do.
+And that merge code is a good example of
+this.
+If you put at the beginning of the code
+what you expect
+in the, in the form of an assertion, which
+is code itself.
+And you put at the end of the code what
+you
+think it's going to do, again in the form
+of an assertion.
+You're both testing that these conditions
+hold, and also telling someone reading the
+code, what you're trying to do with it.
+So Java is just an assert statement.
+It takes it, boolean condition.
+In this case, we're using that method is
+sorted that we were before.
+That returns true if the ported is sorted
+and false if it's not.
+And what assert will do is it will throw
+an exception
+unless that condition is true.
+Now the thing about assertions in Java is
+that you can enable or disable them at
+runtime.
+And that's really important, because it
+means you can
+put them into your code to check while
+developing.
+But it doesn't incur any extra cost at all
+in production code.
+So by default, insertions are disabled.
+Something goes wrong
+somebody analyzing the situation can
+enable insertions and they
+often will help find out where, what the
+problem is.
+So, the best practice is to use insertions
+just as we did in that
+example with merge and to assume that
+they're not going to be there in
+production codes.
+You shouldn't use them for the things like
+checking
+if the input is the way you like it.
+Alright, so with that merge
+implementation, then
+the sort implementation is a quite simple,
+recursive procedure shown here.
+So we use the merge procedure we just
+showed, and then our sort procedure.
+It's recursive so, checks that we have
+something to do first.
+Then it computes the value of the midpoint
+same way as we did
+for a binary search.
+Sort the first half.
+Sort the second half, and then merge them
+together.
+And then the actual sort is takes just the
+one argument
+of the array creates the auxiliary array
+and then uses that.
+Now, it's important to not create the
+auxiliary array in the re in
+the recursive routine because that could
+lead
+to extensive cost of extra array creation.
+And you'll sometimes see Mergesort
+performing poorly because of that bug.
+Otherwise this is a very straight forward
+implementation.
+And it's actually a prototype for
+algorithm design
+that we'll see come up again and again.
+It's called divide and conquer.
+Solve a problem
+by dividing it into two halves, solving
+the two halves,
+and then putting the solutions together to
+get the appropriate answer.
+[COUGH] here's a trace of what Mergesort
+does and if you haven't studied a
+recursive program before it's worthwhile
+studying this thing in, in some detail.
+This gives exactly what happens during
+each of the calls to merge.
+We start out with a big problem to solve
+but we divide it in half,
+then we divide that one in half, and then
+we divide that one in half.
+And the very first thing
+that we actually do is just compare
+and exchange if necessary the first two
+elements.
+And then we do the same thing for the next
+two elements.
+Then merge those two together to get the
+first four done.
+And then we do the same thing for the next
+four in the array.
+So now we have two sorted sub-arrays at
+size four.
+And we merge those together to get one of
+size eight.
+And then we do the same thing on the
+right,
+and eventually we have two eights that we
+merge together
+to get the final result.
+Very instructive to study this trace to
+really understand what this recursive
+algorithm is doing.
+So now we can animate and again
+Mergesort's more
+efficient, so we can do more and more
+items.
+You can see it's got the first half
+sorted, now it's working on the second
+half.
+And then once it gets the second half
+sorted,
+then it's going to go ahead and merge them
+right together to get the sorted result.
+It's got a little extra [COUGH] dynamics
+in the animation because of the auxiliary
+array.
+Let's look at it when it's in reverse
+order
+again it gets the first half done now it's
+working on the second half once
+it gets the second half done then it goes
+ahead and merges together the whole thing
+it's just as fast in reverse order as as
+in auditory order.
+So you can run a Mergesort on huge
+problems.
+It's a very efficient algorithm.
+And so, for example,
+what this table shows, if you were to try
+to use a insertion sort for a huge
+file, say a file with a billion elements,
+on
+your PC it'd take a few centuries to
+finish.
+Even on a super computer, if you're using
+insertion
+sort nowadays it'd maybe take a week or
+more.
+But if you have a good algorithm like
+Mergesort, and you're trying to do a
+billion items,
+you can do it in just less than half an
+hour on your PC.
+And a supercomputer can do it in an
+instant.
+And smaller problems only take an instant
+even on your PC.
+So you can spend a lot of money or a lot
+of time, or you can use a good algorithm.
+And that's one of our main themes in this
+course.
+A good algorithm is much more effective
+than spending
+money or time wasting money or time using
+a bad one.
+So let's look at the analysis of
+Mergesort, that's a bit of math but very
+instructive because this really shows the
+power of the divide and conquer method.
+And allow us to take a problem that was
+taking us quadratic time with methods
+like insertion and selection sort, and get
+it done in, in log N time with Mergesort.
+So that's the proposition Mergesort uses
+at most N lg N
+compares and 6 N lg N array accesses to
+sort any array of size N.
+And the way to prove this proposition is
+to from
+examining the code, to write down what's
+called a recurrence relation.
+And all that is, it's a mathematical
+reflection of what's going on in the code.
+If we're sorting N items then let C of N
+denote
+the number of compares that we need to
+sort the N items.
+In order to get that done, we're sorting
+the left half and the right half and
+this notation ceiling of N over 2 and
+floor of N over 2 that's the N over
+2 round up and N over 2 round down, that's
+the size of the two sub-arrays, and
+we're going to call the same routine for
+that
+size, so the number of compares you need
+to.
+For that is C of N over 2, ceiling of N
+over 2
+for the left and ceiling of, floor of N
+over 2 for the right.
+And then for the merge, we need at least,
+at most N compares.
+If neither one exhausts, we need exactly N
+compares.
+And so and that's true as long as N is
+bigger than 1.
+If there's only one thing, we're not
+doing any compares at all.
+So this is a mathematical formula that we
+derive by examining the code but it
+completely describes mathematically
+what we an upper bound on the number of
+compares that are going to be needed.
+And similarly for the number of array
+accesses, if you count up the number of
+times you're accessing an array for a
+merge you could be at most six in.
+So these are mathematical formulas and
+there's techniques
+for solving them and we won't go into
+that.
+This is not a course on discrete
+mathematics.
+But what we then do is show how to solve
+the recurrence when N is a power of 2.
+And then it turns out that it holds for
+all
+N, which we can prove by induction from
+the recurrence.
+So if you have this recurrence [COUGH]
+which
+is similar to the ones that we're talking
+about.
+It's exactly the same when N is a power of
+2 let's, let's look at this one.
+If
+D of N is 2D of N over 2 plus N with D of
+1 equals 0, then D of N equals N log N.
+We'll look at three proofs of that, just
+assuming that N is a power of 2.
+If N is a power of 2, then N over 2
+is also a power of two, so the recurrence
+makes sense.
+So this is just a graphical representation
+if we
+want to compute D of N we want to compute
+D
+of N over 2 twice.
+So that's 2 and then the extra cost
+for the merge is N, but if we're going to
+do this twice then we have 2N over 2.
+So let's, we have 2N over 2s and then for
+each one of these we have divided into N
+over
+4s and each one of those 4N over 4s has an
+extra cross for the merge of N over 4.
+Well 2N over 2 is N, 4N over 4 is N and we
+keep going down, doing that til
+we get down to D of 2 and we always for
+the extra cross for the merge, we have N.
+And how many stages do we have here?
+Well, it's the number of times you divide
+N by 2 to get down to 2.
+That's exactly log base 2 of N, so the
+grand total of
+all the costs for the merge, which is
+where the compares are,
+is log N times N, N log N.
+It's kind of a graphical
+proof or a proof by picture that that
+recurrence has that solution.
+Here's a little bit more mathematical one:
+we write the recurrence down,
+and then we divide both sides by N.
+So then this is D of N over N equals D of
+N over 2 over N over 2 plus 1.
+So it's dividing by N.
+So now, this is a recurrence that
+telescopes.
+The first term on the right hand side is
+exactly the same
+as the left hand side so we can apply the
+same formula.
+And all it does is divides by 2 again and
+then throws out another 1.
+And we keep doing that until
+we get down to D of 1 which is 0.
+And when we've done that, we've thrown out
+lg N 1s.
+So we get D of N over N equals log N, or D
+of N equals N log N.
+That's another proof by expansion.
+Or using either one of those techniques
+you could just get the idea that D of N is
+close to Log N or you can write a program
+to expand the recurrence and find that.
+And then once we have the idea that D of N
+equals N lg N, we can plug back into the
+original formula.
+With the inductive hypothesis that D of N
+equals
+N lg N, we want to show that D of 2N
+equals 2N lg 2N, using the recurrence D of
+2N equals 2D of N plus throw out the 2N.
+Plugging in N log N we get the desired
+result.
+We use this same idea on our initial
+recurrences
+for comparison array accesses to show that
+the running,
+the number of comparison array accesses is
+proportional to N log N for Mergesort.
+So that's the running time Mergesort is
+fast
+other thing that we usually want to know
+is memory.
+And one of Mergesort's characteristics is
+that in
+practical applications, it uses extra
+space proportional to N.
+That is, we need that extra auxiliary
+array for the last merge.
+We took two sorted subarrays and we talked
+about an abstract
+in place merge but we didn't have an
+actual in place merge.
+We were using an extra subarray.
+So N place is important.
+A lot of times, we're sorting everything
+we have.
+We want to fill up the memory with stuff
+to sort and then sort it.
+And search and selection in shellsort are
+in place, they don't use any extra memory.
+But Mergesort you can only sort really
+half of what you can
+fit in memory, because you need that
+auxiliary array for the other half.
+If you want, again, if you think that the
+things we're studying
+are easy, think about the idea of actually
+doing an in-place merge.
+People have come up with methods for
+getting this done.
+So it's theoretically possible, but the
+methods are
+generally too complex to be useful in
+practice and
+their not used.
+But there could be out there some easy way
+to doing in place merge.
+That's another great algorithm waiting to
+be discovered.
+Now there's a, a number of practical
+improvements that we can
+use to make Mergesort even more efficient
+than the simple one
+that we've looked at and we'll take a look
+of those
+because they're examples of techniques
+that we can use for other algorithms.
+First thing is that Mergesort is too
+complicated to use for tiny arrays.
+So say the subarrays are only of two, or
+three, or four there's too
+much overhead with the recursive calls and
+so forth to get that done efficiently.
+And what's worse is, the recursive nature
+of the sort definitely
+means that there's going to be lots of
+subarrays to be sorted.
+So, one improvement that we can make is to
+use insertion sort, and just
+cut off and use insertion sort which is
+simple and efficient for small subarrays.
+So that's adding this one line of code to
+Mergesort will make it quite a bit faster.
+Maybe 20% faster.
+The second improvement that we can make
+that'll improve the performance
+for cases when the array is partly sorted,
+is to just
+stop if it's already sorted.
+And that's going to happen in the case
+where the biggest element in the
+first half is less or equal to the
+smallest item in the second half.
+That means it's done.
+So that's easy.
+We just put a test in the recursive
+Mergesort for that,
+through this one line of code, to check
+whether we're done.
+That way, for example, if you were to call
+Mergesort for an array that's already in
+order it would
+just do this test every time and it would
+be done in linear time.
+That's pretty helpful although not, not
+totally helpful
+but there's a lot of situations where
+that's helpful.
+The other thing that's possible to do and
+it's a little mind bending so recommended
+only for experts.
+Is to save a
+little bit of time you don't really have
+to copy over into the auxiliary array.
+You can kind of switch the role of the
+input
+and the auxiliary array every time you
+make a recursive call.
+You still need that array but
+you can set up the code in this way which
+[COUGH]
+sort, to sort an array, put the result in
+the other one.
+To merge an array, put the result back in
+the first one.
+So it's recursive argument switchery to
+get the job done.
+And it's effective, it means you don't
+have to actually
+move items, and that saves a little bit of
+time.
+So here's a visualization
+of what the practical Mergesort might look
+like, and this is with
+big cutoff to small subfiles.
+So you
+got a visual feeling of how this sort gets
+the job done.
+So it's the first little chunck and then
+the next little
+chunk and then merges those together, and
+so forth and so on.
+It's a good visual representation of
+how Mergesort gets its job done.
+That's the basic Mergesort algorithm
+that we're going to look at different
+versions of in the next.
+

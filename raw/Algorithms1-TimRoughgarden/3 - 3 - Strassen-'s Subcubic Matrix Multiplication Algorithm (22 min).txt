@@ -1,0 +1,541 @@
+In this video, we'll apply the divide and
+conquer algorithm design paradigm to the
+problem of multiplying matrices. This will
+culminate in the study of Strassen's
+Matrix Multiplication Algorithm. And this
+is a super cool algorithm for two reasons.
+First of all, Strassen's Algorithm is
+completely non trivial. It is totally
+non-obvious, very clever. Not at all clear
+how Strassen ever came up with it. The
+second cool feature, is, it's for such a
+fundamental problem. So computers, as long
+as they've been in use, from the time they
+were invented, up'til today, a lot of
+their cycles are spent multiplying
+matrics, 'cause it just come up all the
+time in important applications. So let me
+first just make sure we're all clear on
+what the, what the problem is of.
+Multiplying two matrices. So, we're gonna
+be interested in three matrices, X, Y, and
+Z. They're all gonna, I'm gonna assume
+they all have the same dimensions, N by N.
+The ideas we'll talk about are also
+relevant for multiplying non square
+matrices, but we're not gonna discuss it
+in this video. The entries in these
+matrices, you know, you could think of it
+as whatever you want. Maybe they're
+integers, maybe they're rationals, maybe
+they're from some [inaudible] field. It
+depends on the application. But the point
+is, they're just entries that we can add
+and multiply. So how is it that you take
+two N by N matrices, X and Y, and multiply
+them producing a new N by N matrix, Z?
+Well, recall that the IJ entry of Z, that
+means the entry in the Ith row and Jth
+column, is simply the dot product of the
+Ith row of X with the Jth column of Y. So
+if IJ was this red square, this
+[inaudible] over in the Z matrix, that
+would be derived from the corresponding
+row of the X matrix, and the corresponding
+column of the Y matrix. And recall what I
+mean by dot product. That just means you
+take the products of the individual
+components, and then add up the results.
+So ultimately, the ZIJ entry boils down to
+a sum over N things, where each of the
+constituent products is just the XIK
+entry. The [inaudible] of the matrix X
+with the KJ entry, of the matrix Y, where
+your K is ranging from one to N. So that's
+how ZIJ is defined for a given pair of
+indices, I and J. One thing to note is
+where we often use N to denote the input
+size, here we're using N to note the
+dimension of each of these matricies. The
+input size is not N. The input size is
+quite a bit bigger than N. Specifically,
+each of these are N by N matricies and
+contain N squared entries. So since
+presumably we have to read the input which
+has size and square. Which happens to
+produce the output that also has size and
+squared. The best we can really hope for
+[inaudible] is multiplication hour with
+the running time n squared. So the
+question is how close when we get to it.
+Before we talk about algorithms for matrix
+multiplication, let me just make sure
+we're all crystal clear on exactly what
+the problem is. So let's just actually
+spell out what would be the result of
+multiplying two different, two bytes of
+matrices. So we can. [inaudible] 21
+generic 2x2 matricies by just giving the
+first one entries A, B, C, and D for these
+four entries could all be anything. And
+then we're multiplying by a second 2x2
+matrix, let's call it entries E, F, G, and
+H. Now, what's the result of multiplying
+these, where again, it's going to be a 2x2
+matrix for each entry, it's just the
+corresponding dot product of the relevant
+row of the first matrix and column of the
+second matrix. So to get the upper left
+entry. You take the doc product of the
+upper row of the first matrix and the
+first column of the left column of the
+second matrix. So, that results in. Ae
+plus BG. To get the upper right entry, we
+take the dot product of the top row of the
+left matrix with the right column of the
+second matrix. So that gives us AF+BH. And
+then filling in the other entries the same
+way, we get CE+DG and DF+DH. You know, so
+that's multiplying two matrices, and we've
+already discussed the definition in
+general. Now, suppose you had to write a
+program to actually compute to the result
+of multiplying two N by N matrices. One
+natural way to do that would just be to
+return to the definition and which defines
+each of the N squared entries in the Z
+matrix as a suitable sum of products of
+[inaudible] entries of the X and Y
+matrices. So on the next quiz, I'd like
+you to. Figure out what exactly would be
+the running time of that algorithm as a
+function of the matrix dimension N where
+as usual we count the addition or
+multiplication of two individual entries
+as a constant time operation. So the
+correct response to this quiz is the third
+answer, that the running time of the
+straightforward [inaudible] algorithm runs
+in cubic time relative to the matrix
+dimension n. To see this let's just recall
+what the definition of the matrix
+multiplication was. The definition tells
+us each entry zij of the output matrix z
+is defined as the sum from k=1 to n of.
+Xik times YKJ. That is the [inaudible]
+product of the [inaudible] row of the X
+matric and the J column of the Y matrix.
+Certainly assuming that we have the
+matrices represented in a way that we can
+access a given entry in constant time. And
+under that assumption, remember each of
+these, each of these products. Only takes
+constant time. And so then to compute ZIJ
+we just have to add up these end products.
+So that's gonna be theta of N time to
+compute a given ZIJ and then there's an N
+squared [inaudible] that we have to
+compute. There's N choices for I, N
+choices for J, so that gives us N squared
+times N or cubic running time overall for
+the natural algorithm, which is really
+just a triple for-loop which computes
+each entry of the output ray separately
+using the dot product. So the question as
+always for the keen algorithm designer is.
+Can we do better? Can we beat, in cube
+time, by multiplying two matrices? And we
+might be especially emboldened with the
+progress that we've already seen in terms
+of multiplying two integers. We apply the
+divide and conquer algorithm, to problem
+multiplying two end digit integers. And we
+had, both a naive recursive algorithm, and
+a seemingly better. Algorithm due to
+[inaudible], which made only three
+recursive calls. Now we haven't yet
+analyzed the running time of that
+algorithm. But as we'll see later, that
+does indeed beat the quadratic running
+time of the grade school algorithm. So
+it's very natural to ask, can we do
+exactly the same thing here? There's the
+obvious [inaudible] algorithm, which
+follow straight from the definition.
+Perhaps analogous to [inaudible], we could
+have some clever divide and conquer
+method, which beats cubic times. So that's
+what we're gonna explore next. [sound].
+Let's recall the divide and conquer
+paradigm, what does it mean to use it.
+Well, we first have to identify smaller
+problems. So if we want to multiply by two
+NxN matricies we have to identify
+multiplications of smaller matricies that
+we can solve recursively. Once we've
+figured out how we want to divide the
+given problem into smaller ones, then in
+the conquer step we simply invoke our own
+algorithm recursively that's going to
+recursively multiply the smaller matricies
+together. And then, in general, we'll have
+to combine the results of the recursive
+calls to get the solution for the original
+problem, in our case, to get the product
+of the original two matricies. From the
+product of what ever sub matrices we
+identify. So how would be apply the divide
+and conquer paradigm to matrices? So we're
+given two N by N matrices, and we have
+to somehow identify smaller pairs of
+square matrices that we can multiply
+recursively. So the idea, I think, is
+fairly natural. So we start with a big N by N matrix X. And so those N rows and
+N columns, we have to somehow divide
+into smaller pieces. Now, the first thing
+you might think about is that you put it
+in its left half and its right half and
+now it goes into what we've been doing
+with the rays, but then we're going to
+break X into two matrices which are no
+longer squared which are N over two in one
+dimension and have length N in the other
+dimension and we want to recursively call
+a subroutine that multiplies square
+matrices. So what seems like the clear
+thing to do is to divide X into quadrants.
+Okay, so we have four pieces of X. Each is
+gonna be N over two by N over two,
+corresponding to the different quarters of
+this matrix. So let's call these different
+quadrants or blocks, in matrix
+terminology, A, B, C, and D. All of these
+are N over two by N over two matrices. As
+usual, for simplicity, I'm assuming that N
+is even, and as usual, it doesn't really
+matter. And we can do the same trick with
+Y. So we'll divide Y into quadrants. And
+number two by N number two matrices which
+we'll call E, F, G and H. So one thing
+that's cool about matrices, is when you
+split them into blocks, and you multiply
+them, the blocks just behave as if they
+were atomic elements. So what I mean by
+that is that the product of X and Y can be
+expressed in terms of its quadrants and
+each of its four quadrants, each of its
+four corners can be written as a suitable
+arithmetic expression of the quadrants of
+X and Y. So here's exactly what those
+formulas are. They are exactly analogous
+to when we just multiplied pair of two by
+two matrices. So I'm not going to formally
+prove this fact. I'm sure many of you,
+have seen it before or are familiar with
+it. And if you haven't, it's actually
+quite easy to prove. It's not obvious, you
+can't see it off the top of your head,
+necessarily. But if you go back to the
+definition, it's quite easy to verify. The
+D, when you multiple X and Y, you can
+express as quadrants to blocks, in terms
+of the blocks of X and Y. So what we just
+did is completely analogous to when
+talking about integer multiplication and
+you wanted to multiply two integers,
+little x and little y, and we broke them
+into pairs of N over two digits. And then
+we just took the expansion and we observed
+how that expansion could be written in
+terms of products of N over two digit
+numbers. Same thing going on here except
+with matrices. So now, we're in business,
+as far as a recursive approach. We wanna
+multiply X and Y. They're N by N matrices.
+We recognize we can express that product X
+times Y, in terms of the products of N
+over two by N over two matrices. Things
+we're able to multiply recursively, plus
+additions. And additions [inaudible]
+clearly easy to multiply two different
+matrices with say, N squared entries each,
+it's gonna be linear in the number of
+entries. So it's gonna be N squared
+[inaudible] add two matrices that are N by
+N. So this immediately leads us to our
+first recursive algorithm. To describe it,
+let me quickly rewrite that expression we
+just saw on the previous slide. And now,
+our first recursive algorithm is simply to
+evaluate all of these expressions in the
+obvious way. So specifically, in step one,
+we recursively compute all of the
+necessary products, and observe that there
+are eight products that we have to
+compute. Eight products of N over two by N
+over two matrices. There are four entries
+in this expansion of X times Y. Each of
+the, each of the blocks is the sum of two
+products, and none of the products
+re-occurred, they're all distinct. So,
+naively, if you wanna evaluate this, we
+have to eight different products of N over
+two by N over two matrices. Once those
+recursive calls complete, then all we do
+is do the, necessary four additions. As we
+discussed, that takes time proportional to
+the number of entries in a matrix. So this
+is gonna take quadratic time overall,
+quadratic [inaudible] N, linear in the
+number of entries. Now, the question you
+should be asking is. Is this a good
+algorithm? Was this good for anything,
+this recursive approach, splitting X and Y
+into these blocks, expanding the product
+in terms of these blocks, the recursively
+computing each of the blocks. And I want
+to say it's totally not obvious, it is not
+clear what the running time of this
+recursive algorithm is. I'm going to go
+ahead and give you a spoiler which is
+going to follow from the master method
+that we'll talk about in the next lecture.
+But it turns out with this kind of
+recursive algorithm where you do eight
+recursive calls, each on a problem with
+dimensions half as much as what you
+started with, and then do quadratic
+[inaudible] outside. The right time is
+going to be. Cubic. So exactly the same as
+with the straightforward iterative
+algorithm that follows from the
+definition. That was cubic, it turns out,
+and that was clearly cubic. This one,
+although it's not obvious, is cubic as
+well. So no better, no worse than the
+straightforward iterative algorithm. So in
+case you're feeling disappointed that we
+went through all this work and this sort
+of seemingly clever divide and conquer
+approach for matrix multiplication, and,
+and came out at the end no better than the
+interactive algorithm. Well, there's
+really no reason to despair, cause remember,
+back in integer multiplication, we had a
+straightforward recursive algorithm where
+we had to do four recursive calls,
+products of N over two digit numbers. But
+then, we had [inaudible] trick which said,
+oh, if we only did more clever products
+and more clever additions and
+subtractions, then we can get away with
+only three recursive calls. And we'll see
+later that, that isn't even significant
+savings, in the time [inaudible]
+multiplication. And we've done nothing
+analogously. [inaudible] douse's trick, it
+was matrix multiplication problem. All we
+did is the naive expansion in terms of
+sub-matrices, and the naive evaluation of
+the resulting expressions. So. $64,000
+question is then, can we do something
+clever to reduce the number of recursive
+calls from eight down to something lower
+and that is where Strassen's algorithm
+comes in. So at a high level, Strassen's
+algorithm has two steps, just like the
+first recursive algorithm that we
+discussed. It recursively computes some
+products of smaller matrices and over two
+[inaudible] by two matrices. [sound] But
+there's only going to be seven of them.
+But they will be much less
+straightforward, they will be much more
+cleverly chosen than in the first
+recursive algorithm. [sound]. And step
+two, then, is to actually produce the
+product of X and Y, produce each of those
+four blocks that we saw, with suitable,
+additions and subtractions of these seven
+products. And again, these are much less
+straightforward than in the first
+recursive algorithm. [sound]. And so while
+the additions and tractions involved will
+be a little bit more numerous, then they
+were in the naive recursive algorithm.
+It's only gonna change the work in that
+part of the algorithm by a constant
+factor. So we'll still spend only theta
+even squared work adding and subtracting
+things. And we get a huge win in
+decreasing the number of recursive calls
+from eight to seven. Now, just in case you
+have the intuition that shaving off one of
+the recursive calls. Should only decrease
+the running time of an algorithm by
+one-eighth, by 12.5%, in fact it has a
+tremendously more amplified effect because
+we do one less recursive call over and
+over and over again as we keep recursing
+in the algorithm. So it makes a
+fundamental difference in the eventual
+running time of the algorithm, as we'll
+explore in detail in the next set of
+lectures, when we discuss the master
+method. So again. A bit of a spoiler
+alert. What you're gonna see in the next
+set of lectures is indeed. [inaudible]
+Rhythm does beat [inaudible]. It's better
+than [inaudible]. You'll have to watch the
+next set of lectures just so you know what
+the running time is. When right now, that
+[inaudible] call is what changes the
+[inaudible] cubic. Now, 1969 was
+obviously, quite a bit before my time,
+but. By all accounts, from people I've
+talked to who were around then, and from,
+you know, what the books say, Strassen's
+Algorithm totally blew people's minds at
+the time. Everybody was assuming that
+there's no way you could do better than
+the iterative algorithm, the cubic
+algorithm. It just seemed that matrix
+multiplication intuitively fundamentally
+required all of the calculations that are
+spelled out in the definition. So
+Strassen's Algorithm is an early glimpse
+of the magic and of the power. Of clever
+algorithm design. That if you really have
+a serious ingenuity, even for super
+fundamental problems, you can come up with
+fundamental savings over the more
+straightforward solutions. So those are
+the main points I wanted to talk about
+Strassen's Algorithm, how you can beat
+cubic time by saving a recursive call with
+soon to be chosen clever products and
+clever addition subtractions. Maybe a few
+of you are wondering, you know, what are
+these cleverly chosen products? Can you
+really do this? And I don't blame you.
+There's no reason to believe me, just cuz
+I sort of spelled out this [inaudible]
+idea. It's not obvious this should work.
+You might actually want to see the
+products. So, for those of you like that,
+this last slide is for you. So here is
+Straus' algorithm in it's somewhat gory
+detail. So let me tell you what the seven
+products are that we are going to form.
+I'm going to label them P1 through P7 and
+they're all going to be defined in terms
+of the blocks of the inter-matrices X and
+Y. So let me just remind you that we think
+of X in terms of it's blocks, A B C D. And
+we think of Y in terms of its blocks E, F,
+G, H. And remember, A through H are all N
+over two by N over two sub-matricies. So
+here are the seven products, P1 through
+P7. P1 is A times quantity F minus H. P2
+is quantity A plus B times H. P3 is C plus
+D times E. [sound]. P4 is D times G - E,
+P5 is quantity A+D + quantity A+H. P six
+is quantity B minus D times quantity G
+plus H and finally P seven is quantity A
+minus C E plus F. So I hope you'll agree
+that these are indeed only seven products,
+and we could compute these with seven
+recursive calls. We've preprocessed with a
+little bit of additions and subtractions.
+We have to compute F minus H, A plus B, C
+plus D and so on. We compute all these new
+matrices from the blocks, and we can then
+recursively, with seven recursive calls,
+do these seven products that operate on N
+over two by N over two matrices. Now, the
+question is, why is this useful? Why on
+Earth would we wanna know the [inaudible]
+of these seven products? So the amazing
+other part of the algorithm is that from
+just these seven products, we can, using
+only addition and subtraction, recover all
+four of the blocks of. A X times Y So x
+times y. You'll recall we expanded because
+of the blocks. So we previously computed
+this to be AE+BG in the upper left corner,
+and [inaudible] expressions for the upper
+right, lower left, and lower right blocks.
+So this we already know. So the content of
+the claim is that these four blocks also
+arise from the seven products in the
+following way. So the claim here is that
+these two different expressions for X
+times Y are exactly the same and they're
+the same block by block. So in other
+words, what the claim is then this. Crazy
+expression. P five plus P four minus P two
+plus P six. Where those were four of the
+products we listed above. That is
+precisely A plus B G. Similarly we're,
+we're claiming that P1 plus P2 is exactly
+AF plus BH. That's actually easy to see.
+P3 plus P4 is CE plus DG. That's also easy
+to see, and then the other [inaudible] one
+is that P1 plus P5 minus P3 minus P7 is
+exactly the same as CF plus DH, so all
+four of those hold. So let me just so you
+believe me cuz I don't know why you would
+believe me unless I actually showed you
+some of this derivation. Let's just look
+at the proof of one of the cases of the
+upper left corner. So that is, let's just
+expand out this crazy expression.
+P5+P4-P2+P6, what do we get? Well, from
+P5, we get AE+AH+D+DH, and we add P4, so
+that's gonna give us, Plus DG minus DE,
+then we subtract P2, so that it gives us a
+minus, minus DH and then we add in P6. So
+that gives us a PG plus BH minus DG minus
+DH. Okay, so what happens next, well now
+we look for cancellations. So we cancel
+the H's. We cancel the D.E.'s, we cancel
+the D.H.'s. We cancel the DGs. We cancel
+the BHs. And holy cow what do we get, we
+get A, E. Plus B G. That is, we get
+exactly what we were suppose to. In. The
+upper left block of X times Y. So we just
+actually verified that this equation holds
+for the upper left block. It's quite easy
+to see that it holds for the upper right
+and lower left blocks and a comparable
+calculation verifies it for the lower
+right blocks of the two. So summarizing,
+because this claim holds. >> Because,
+actually, we can recover the four blocks
+of S times Y from the seven products.
+Strauss' algorithm works in the following
+way: you compute the seven products, P1
+through P7, using seven recursive calls.
+Then you just compute the four blocks
+using some extra additions and
+subtractions as shown in the claim. So
+seven recursive calls on a number two by
+number two matrices, plus. N squared work
+to do the necessary additions as we'll see
+on the master method lecture that is
+actually sufficient for. Sub humid time.
+Now I sympathize with you if you have the
+following question. Which is how on Earth
+did Strauson come up with this? And
+indeed, this sort of illustrates, the
+difference between checking somebody's
+proof, and coming up with a proof. Given
+that I told you the magical seven products
+and how you, from them, can recover the
+four desired blocks of x times y, it's
+really just mechanical to see that it
+works. It's a totally different story of
+how you come up with p1 through p7 in the
+first place. So how did Strassen come up
+with them? Honestly, your guess is as good
+as mine.

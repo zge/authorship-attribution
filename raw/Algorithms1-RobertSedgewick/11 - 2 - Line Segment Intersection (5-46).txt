@@ -1,0 +1,112 @@
+So now let's look at a basic geometric
+data processing problem of determining
+intersections among a set of line
+segments. So, it's called the orthogonal
+line segment, segment intersection search
+where the lines segments or constrained to
+be either horizontal or vertical. And so,
+suppose we have a large number of such
+line segments and what we want to be able
+to do is to find all places where they
+intersect. And as we'll see this extends
+to a practical problem in a number of
+situations. So, in this case there's four
+places where these lines intersect. So,
+how are we going to be able to determine
+these intersections efficiently? Now, the
+natural algorithm, or the naive
+brute-force algorithm, is quadratic in
+time. So that is, for every line segment,
+you check whether it intersects with every
+other line segment. And again, as we know,
+such an algorithm is not going to be
+practical, for huge numbers of line
+segments. So, just, to simplify our code
+in the slides in it's off, off from the
+case for geometric data processing. We
+don't have to worry about degeneracies
+where lots of things have the same x or y
+coordinate. And just to simplify the code
+and to get it the main principles of the
+algorithms, we're going to assume that all
+the coordinates that we have are distinct
+that we've preprocessed in some way to
+remove the ones that touch without
+intersecting. So the method that we're
+going to look at is a so called Sweep Line
+algorithm and the idea is to think of
+vertical line that sweeps left to right
+through the data. In to. Consider it as a
+every time it hits some line segment as an
+event where we have to do something. So
+sweeping from left to right means we
+consider each x coordinate as an event. So
+first thing is if we hit a horizontal line
+segment. Well we're going to hit the left
+endpoint first, and so what we'll do when
+we hit the left, endpoint is, insert, the
+y coordinate of that line into a binary
+search tree. So, we're going to keep track
+of y coordinates in a binary search tree.
+So that's what's happening over in the
+right there. So now again, sweep from left
+to right. What's the next smallest x
+coordinate? In this case it's the line
+number one there, and we'll remember its y
+coordinate in a binary search tree. And
+then two and three. So those that's one
+kind of event that can happen as we sweep
+from left to right. Another kind of event
+is that we hit the right endpoint of a
+horizontal line segment. In this case we
+hit the right endpoint of line segment
+two. So, at that point the right point of
+a horizontal line segment we just remove
+it because we've processed that line
+completely. In this case we didn't find
+any intersections. So, left endpoint
+insert the y coordinate into a BST, right
+endpoint remove that ycoordinate from the
+BST. So, the BST contains the y
+coordinates of all the horizontal lines
+that currently might involve an
+intersection. And then the third kind of
+event is what happens when we hit a
+vertical line segment? Well, in that case
+all we want, need to do is just do a range
+search, for the interval of y end points.
+So, any point that's inside that interval,
+is going to represent a horizontal line
+segment that is an intersection. That's
+the basic idea behind the sweep line
+algorithm, to find intersections in sets
+of horizontal and vertical lines. And it's
+actually a very simple algorithm, and it's
+very easy to see that the running time is
+going to be proportional to N log N plus
+the number of intersections returned.
+Where there's N horizontal vertical line
+segments. And it's, and a couple of ways
+to implement it, one thing is you could
+sort according to the x coordinates, or
+you could just put them all on a priority
+queue. And then, so, so that's going to
+take N log N for every one of the lines to
+process them all either N to build the
+priorit y queue and then log N to take the
+smallest off each time, or N log N for the
+sort. And then putting the y coordinates
+into, into a binary search tree is, again,
+N log N. And same for deleting. Each point
+has to be inserted, deleted. It could be
+as many as N in the tree for each one. So
+it's a total of N log N. And then the,
+range search, in the binary tree, for
+each, each one of the range searches. It
+might take, log N, it might be as many as
+N. And then there's, plus the number of
+points return. So, That's a, quick sketch
+of the proof of this proposition. And with
+that 1D range search, implementation, we
+get an efficient N log N, 2D orthogonal,
+orthogonal line segment, intersection

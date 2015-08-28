@@ -1,0 +1,329 @@
+[SOUND]
+This
+lecture is about
+the Paradigmatics Relation Discovery.
+In this lecture we are going to talk about
+how to discover a particular kind of word
+association called
+a paradigmatical relation.
+By definition,
+two words are paradigmatically
+related if they share a similar context.
+Namely, they occur in
+similar positions in text.
+So naturally our idea of discovering such
+a relation is to look at the context
+of each word and then try to compute
+the similarity of those contexts.
+So here is an example of
+context of a word, cat.
+Here I have taken the word
+cat out of the context and
+you can see we are seeing some remaining
+words in the sentences that contain cat.
+Now, we can do the same thing for
+another word like dog.
+So in general we would like to capture
+such a context and then try to assess
+the similarity of the context of cat and
+the context of a word like dog.
+So now the question is how can we
+formally represent the context and
+then define the similarity function.
+So first, we note that the context
+actually contains a lot of words.
+So, they can be regarded as
+a pseudo document, a imagine
+document, but there are also different
+ways of looking at the context.
+For example, we can look at the word
+that occurs before the word cat.
+We can call this context Left1 context.
+All right, so in this case you
+will see words like my, his, or
+big, a, the, et cetera.
+These are the words that can
+occur to left of the word cat.
+So we say my cat, his cat,
+big cat, a cat, et cetera.
+Similarly, we can also collect the words
+that occur right after the word cat.
+We can call this context Right1, and
+here we see words like eats,
+ate, is, has, et cetera.
+Or, more generally,
+we can look at all the words in
+the window of text around the word cat.
+Here, let's say we can take a window
+of 8 words around the word cat.
+We call this context Window8.
+Now, of course, you can see all
+the words from left or from right, and
+so we'll have a bag of words in
+general to represent the context.
+Now, such a word based representation
+would actually give us
+an interesting way to define the
+perspective of measuring the similarity.
+Because if you look at just
+the similarity of Left1,
+then we'll see words that share
+just the words in the left context,
+and we kind of ignored the other words
+that are also in the general context.
+So that gives us one perspective to
+measure the similarity, and similarly,
+if we only use the Right1 context,
+we will capture this narrative
+from another perspective.
+Using both the Left1 and
+Right1 of course would allow us to capture
+the similarity with even
+more strict criteria.
+So in general, context may contain
+adjacent words, like eats and
+my, that you see here, or
+non-adjacent words, like Saturday,
+Tuesday, or
+some other words in the context.
+And this flexibility also allows us
+to match the similarity in somewhat
+different ways.
+Sometimes this is useful,
+as we might want to capture
+similarity base on general content.
+That would give us loosely
+related paradigmatical relations.
+Whereas if you use only the words
+immediately to the left and
+to the right of the word, then you
+likely will capture words that are very
+much related by their syntactical
+categories and semantics.
+So the general idea of discovering
+paradigmatical relations
+is to compute the similarity
+of context of two words.
+So here, for example,
+we can measure the similarity of cat and
+dog based on the similarity
+of their context.
+In general, we can combine all
+kinds of views of the context.
+And so the similarity function is,
+in general,
+a combination of similarities
+on different context.
+And of course, we can also assign
+weights to these different
+similarities to allow us to focus
+more on a particular kind of context.
+And this would be naturally
+application specific, but again,
+here the main idea for discovering
+pardigmatically related words is
+to computer the similarity
+of their context.
+So next let's see how we exactly
+compute these similarity functions.
+Now to answer this question,
+it is useful to think of bag of words
+representation as vectors
+in a vector space model.
+Now those of you who have been
+familiar with information retrieval or
+textual retrieval techniques would
+realize that vector space model has
+been used frequently for
+modeling documents and queries for search.
+But here we also find it convenient
+to model the context of a word for
+paradigmatic relation discovery.
+So the idea of this
+approach is to view each
+word in our vocabulary as defining one
+dimension in a high dimensional space.
+So we have N words in
+total in the vocabulary,
+then we have N dimensions,
+as illustrated here.
+And on the bottom, you can see a frequency
+vector representing a context,
+and here we see where eats
+occurred 5 times in this context,
+ate occurred 3 times, et cetera.
+So this vector can then be placed
+in this vector space model.
+So in general,
+we can represent a pseudo document or
+context of cat as one vector,
+d1, and another word,
+dog, might give us a different context,
+so d2.
+And then we can measure
+the similarity of these two vectors.
+So by viewing context in
+the vector space model,
+we convert the problem of
+paradigmatical relation discovery
+into the problem of computing
+the vectors and their similarity.
+So the two questions that we
+have to address are first,
+how to compute each vector, and
+that is how to compute xi or yi.
+And the other question is how
+do you compute the similarity.
+Now in general, there are many approaches
+that can be used to solve the problem, and
+most of them are developed for
+information retrieval.
+And they have been shown to work well for
+matching a query vector and
+a document vector.
+But we can adapt many of
+the ideas to compute a similarity
+of context documents for our purpose here.
+So let's first look at
+the one plausible approach,
+where we try to match
+the similarity of context based on
+the expected overlap of words,
+and we call this EOWC.
+So the idea here is to represent
+a context by a word vector
+where each word has a weight
+that's equal to the probability
+that a randomly picked word from
+this document vector, is this word.
+So in other words,
+xi is defined as the normalized
+account of word wi in the context, and
+this can be interpreted as
+the probability that you would
+actually pick this word from d1
+if you randomly picked a word.
+Now, of course these xi's would sum to one
+because they are normalized frequencies,
+and this means the vector is
+actually probability of
+the distribution over words.
+So, the vector d2 can be also
+computed in the same way, and
+this would give us then two probability
+distributions representing two contexts.
+So, that addresses the problem
+how to compute the vectors, and
+next let's see how we can define
+similarity in this approach.
+Well, here, we simply define
+the similarity as a dot product of two
+vectors, and
+this is defined as a sum of the products
+of the corresponding
+elements of the two vectors.
+Now, it's interesting to see
+that this similarity function
+actually has a nice interpretation,
+and that is this.
+Dot product, in fact that gives
+us the probability that two
+randomly picked words from
+the two contexts are identical.
+That means if we try to pick a word
+from one context and try to pick another
+word from another context, we can then
+ask the question, are they identical?
+If the two contexts are very similar,
+then we should expect we frequently will
+see the two words picked from
+the two contexts are identical.
+If they are very different,
+then the chance of seeing
+identical words being picked from
+the two contexts would be small.
+So this intuitively makes sense, right,
+for measuring similarity of contexts.
+Now you might want to also take
+a look at the exact formulas and
+see why this can be interpreted
+as the probability that
+two randomly picked words are identical.
+So if you just stare at the formula
+to check what's inside this sum,
+then you will see basically in each
+case it gives us the probability that
+we will see an overlap on
+a particular word, wi.
+And where xi gives us a probability that
+we will pick this particular word from d1,
+and yi gives us the probability
+of picking this word from d2.
+And when we pick the same
+word from the two contexts,
+then we have an identical pick, right so.
+That's one possible approach, EOWC,
+extracted overlap of words in context.
+Now as always, we would like to assess
+whether this approach it would work well.
+Now of course, ultimately we have to
+test the approach with real data and
+see if it gives us really
+semantically related words.
+Really give us paradigmatical relations,
+but
+analytically we can also analyze
+this formula a little bit.
+So first, as I said,
+it does make sense, right, because this
+formula will give a higher score if there
+is more overlap between the two contexts.
+So that's exactly what we want.
+But if you analyze
+the formula more carefully,
+then you also see there might
+be some potential problems,
+and specifically there
+are two potential problems.
+First, it might favor matching
+one frequent term very well,
+over matching more distinct terms.
+And that is because in the dot product,
+if one element has a high value and this
+element is shared by both contexts and
+it contributes a lot to the overall sum,
+it might indeed make the score
+higher than in another case,
+where the two vectors actually have
+a lot of overlap in different terms.
+But each term has a relatively low
+frequency, so this may not be desirable.
+Of course, this might be
+desirable in some other cases.
+But in our case, we should intuitively
+prefer a case where we match
+more different terms in the context,
+so that we have more confidence
+in saying that the two words
+indeed occur in similar context.
+If you only rely on one term and
+that's a little bit questionable,
+it may not be robust.
+Now the second problem is that it
+treats every word equally, right.
+So if you match a word like the and
+it will be the same as
+matching a word like eats, but
+intuitively we know
+matching the isn't really
+surprising because the occurs everywhere.
+So matching the is not as such
+strong evidence as matching what
+a word like eats,
+which doesn't occur frequently.
+So this is another
+problem of this approach.
+In the next chapter we are going to talk
+about how to address these problems.
+[MUSIC]
+

@@ -1,0 +1,162 @@
+So here is the Viterbi alogrithm, which
+puts these ideas together.
+So the input into the algorithm is a
+sequence of words x1, x2, up to xn.
+The output is going to be the maximum
+value for any sequence of tags y1 through
+yn plus 1 of p x1 through xn y1 through yn
+plus 1.
+Now, notice for now, this is simply going
+to return the maximum probability for any
+sequence.
+And of course, in reality, we want to find
+the tag sequence that actually achieves
+this max.
+We want to calculate the augMax, in fact
+but we'll see very soon how to do this,
+for now, we'll just worry about the max
+and we'll see on the next slide how a very
+simple change to the algorithm will allow
+us to actually compute the augMax.
+Okay, so we have an input sentence, x1
+through xn.
+We have these parameters q and d, which
+have typically been estimated from theta
+and then the algorithm proceeds as
+follows.
+Initialization step is to set pi 0, star,
+star equals one.
+Remember that was the base case of the
+recursion that I showed you.
+And then, we have these definitions where
+S sub k is the set of possible tags at
+position k.
+So, S minus 1 is S0 Is equal to the star
+symbol.
+Reflecting the fact that I can only have
+the star symbol, positions minus 1 or 0.
+And everywhere else, sk equals s.
+Where this is the set of tags.
+For example, we might have d, n, v, p as
+the set of possible tags.
+So, the algorithm is going to proceed to
+fill in these pi values, essentially left
+to right.
+So we go in order for k equals 1 to 3,
+right the way up to, to n.
+And at each point we rep, we apply this
+recursive definition.
+Okay, so for any position k.
+We consider all possible tag pairs, u and
+v, possible positions k minus 1 and k.
+And we simply compute pi k uv using this
+max over ws at sk minus 2, recall this is
+a set of tags.
+Possible tag the position k minus 2.
+I am going to have this pi value times the
+q value times the c value.
+And then the only final step remember
+we're returning the maximum probability
+for any tax sequence.
+The final step is to multiply in the stop
+probabilities.
+Okay, so we have a max of all possible u v
+pairs at the very end of the sequence at
+position n.
+And then we make sure to multiply in the
+stop probability, q is stop given u v.
+This is just sort of a pesky little bit of
+bookkeeping we need to remember about.
+We need to worry about the stop symbol,
+that's what this final step does, and so
+that is it.
+That is the Viterbi Algorithm.
+Okay, so, as I said, our real goal is the
+following to take as input a sequence of
+words, x1 through xn, and have this output
+augMax, y1 through yn plus 1, p of x1
+through xn, y1 through yn plus 1.
+So here I've actually shown the full
+Viterbi algorithm, which makes use of a
+crucial idea from dynamic programming
+called Backpointers.
+To actually allow us to recover the
+augMax, to recover the highest scoring tag
+sequence.
+And it's actually a, a very small
+modification to the algorithm I just
+showed you.
+So the algorithm has the same inputs.
+Again, it has the same initialization
+point.
+And it's going to make use of these pi
+values in the same way as before and the
+same definitions here.
+And we again, proceed from left to right k
+equals 1 to n, v, u, and v.
+We calculate the pi value at each point.
+And the only change to the algorithm is
+that in addition to recover to recording
+pi at each value of k, u, v.
+We also store a back pointer which I'll
+call bp of k,u,v and that is the augMax.
+So, that's actually going to record which
+tag achieved this max.
+Which tag was most likely at position k
+minus 2, given the fact that I had u and v
+at position of k, okay?
+So this is just an additional piece of
+bookkeeping, recording the augMax of each
+point.
+So once we've filled in these pi values
+and the backpointer values we can actually
+find the highest scoring tag sequence by
+going backwards to the sequence at the end
+of this outdoor about.
+So here's then how this works, so after
+this loop is completed I say yn minus one
+yn is the uv pair that maximizes pie and
+uv times q of stop given u, v, okay so if
+I found the last two tags in the sequence
+and then I go backwards through the
+sequence at each point saying that yk is
+the backpointer of k plus 2 yk plus 1 yk
+plus 2.
+Okay, so this is just unraveling the
+augMax's to find the highest scoring tank
+sequence and that's what we find in
+return.
+So that is it.
+This is the full Viterbi Algorithm, which
+now makes use of backpointers to actually
+recover the highest probability and
+sequence for an input x1 through xn.
+Let me just briefly talk about the runtime
+complex to this algorithm.
+It is x, actually order n, times number of
+tags cubed.
+So it's linear in the length of the
+sequence and it's cubic in the number of
+possible tags in the sequence.
+How do we get that complexity?
+Well, so if we look at this, we have,
+basically n times number of tags squared
+possible values entering this loop.
+Okay, so we enter this, this loop this
+many times, and at each point we have to
+do a search over S possible tags.
+And so, we get an extra factor of S there
+and that's how we get the n times S cubed
+runtime for this algorithm.
+So It is critically linear in the length
+of sentence.
+And that is an actually enormous gain over
+brute force.
+Which had complex d number of tags raised
+to the power n.
+We, we've gone from an exponential time
+algorithm to actually a linear time
+algorithm in n.
+And something which is cubic in the number
+of tags it has, so that's a dramatic
+improvement.

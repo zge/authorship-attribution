@@ -1,0 +1,219 @@
+[MUSIC]
+Okay.
+I promised to tell you
+how to time a function.
+It's very easy with MATLAB.
+You time a function with the help of two
+other functions called tick and tock.
+The names are supposed to sound like
+a clock ticking, you know, tick, tock.
+Tell you what,
+go rent an old horror movie,
+they have lots of tick
+tocking clocks in them.
+Anyway, tick and tock work more
+like a stopwatch than a clock.
+Tick starts the stopwatch, tock stops it.
+Well, let's time something.
+Let's times sum, adding up the first
+thousand positive numbers.
+Well, I thought it would never get done.
+That took, what?
+A little over 1,000th of a second.
+Let's give it more work.
+There, a million numbers.
+That took a whole 100th of a second.
+Okay.
+Time to really put it to work.
+Let's give it 100 million numbers.
+One second.
+These computers are pretty fast.
+But let's run this much
+slower function instead.
+It's one that I've got over
+here called noprealloc.
+We'll find out what that
+strange name means in a minute.
+And let's put this command window
+right underneath the editor down here.
+And I'll bring it up a little closer.
+And now that I've got things arranged
+to my liking let's have a look at this
+function.
+What it does is use explicit
+looping in these nested for
+loops to compute a good old fashioned
+multiplication table and put it in A.
+We are going to calculate 25 million
+of these numbers because we got
+N equals 5,000.
+So 5,000 times 5,000, that's 25 million.
+So we better get going.
+Well okay,
+yeah this is taking a long time, so
+sorry about that it's kind of boring.
+Tell you what,
+maybe this is a good time for a joke.
+All right, did you hear about the guy
+they asked how he felt about death?
+He says, you know,
+I'm not really afraid of dying,
+I just want to die peacefully
+in my sleep like my grandfather
+instead of screaming in terror
+like his passengers [LAUGH].
+Okay, as the laughter dies down, the
+function still seems to be working away.
+Here's one of these times
+where you start wondering.
+Okay.
+46.86 seconds, that's a pretty long time.
+But you know, we did a lot of work there.
+25 million calculations.
+Yeah we did a lot of work here,
+but on a modern computer,
+25 million calculations should
+go a lot faster than that.
+Here's a faster version of the same
+function, called prealloc.
+With just a single extra
+line added right here.
+Here, we created a matrix,
+A, by calling the function
+zeroes and
+made it a 5,000 by 5,000 matrix.
+How can this help?
+We're still going to do the same
+25 million calculations, and
+then all those zeroes
+are going to be written over.
+It seems like we're wasting time and
+we're going to make an already
+long function take even longer.
+And I don't have another joke ready.
+Let's get comfortable and
+start it running.
+Wow.
+That's a little better.
+0.596 seconds.
+That's how many times faster?
+Let's calculate that.
+78 times faster!
+How can this be?
+Well, in the no prealloc version,
+MatLab had no idea how large the matrix
+a is eventually going to become.
+So every time we added a new row, it had
+to find another place in the memory and
+copy the entire contents of the current
+array into the new location
+before it could add the next element.
+Finding a place in memory and
+reserving it for
+a variable is called memory allocation.
+And it had to do memory allocation
+over and over and over.
+While memory allocation is usually
+a minor part of the time required for
+a program to run, if we have to do
+it thousands of times it can take
+a noticeable amount of extra time.
+That is bad news.
+But the good news is that most of the time
+this extra time is completely unnecessary.
+In this example,
+we knew before the loop started,
+how large the matrix A needed to be.
+So in the second version,
+the initialized A to the right size
+before starting to compute its elements.
+That avoided all the time MATLAB
+spent on memory allocation,
+reallocation, using the first version.
+Allocating memory before you
+need it is called preallocation.
+Kind of an obvious name, I guess.
+The way you do it is called a function.
+We use the function zeroes,
+whose arguments tell it the dimensions
+of the array to allocate.
+It'll allocate the space and
+put zeroes into every element.
+There's another function
+like it named ones.
+Let's just say I won't insult your
+intelligence by telling you what that
+function does.
+But at the risk of a tiny insult,
+I'll give you this advice.
+Preallocate every time you use a large
+array whose dimensions you know.
+And guess what,
+MATLAB gives you that same advise.
+It's easy to miss.
+Let's look back at this
+nopreallocate function.
+The advice is right there.
+If you look very closely
+you'll see a little sq,
+red squiggle right here under this A.
+And if you hover the mouse over the A,
+you'll see a little hint pop up.
+First the one says the value assigned
+to variable a might be unused.
+Okay.
+The second one says the variable
+a appears to change size
+on every loop iteration.
+Consider preallocating for speed.
+The textbook has more detailed
+explanation about why
+this version without pre-allocation is so
+much slower than the other version.
+And it gives you a simple trick for
+speeding things up when you can't
+pre-allocate by simply changing
+the order in which you nest your loops.
+Well, that's about it for lesson six, but
+we'll leave you with this parting thought.
+Loops, whether they're for
+loops or while loops, and
+whether they're explicit loops or
+implicit loops are the programming
+constructs that let us exploit
+the amazing power of computer hardware.
+Power that hardware is measured in
+billions or trillions of memory cells, and
+billions or
+trillions of instructions per second.
+Without loops in the software directing
+the circuits in the hardware to iterate
+repeatedly through the paltry few
+commands that we humans can type into it,
+these big impressive
+numbers would mean nothing.
+The amazing things that computers do like
+searching through 30 trillion web pages,
+answering spoken questions
+in multiple languages,
+pulling your car out of a skid on a slick
+road, landing a rocket on Mars, calling
+the one phone you want out of 7 billion or
+even just playing this lesson for you.
+Would just not e possible without loops.
+Well, to be more precise,
+it might be possible.
+But only if you had a few
+billion years to get them done.
+If you don't want to wait that long,
+iteration's the only way to go.
+It's simple.
+If you look into every
+world-changing effect that
+computers have had in
+the last half-century You'll
+find a loop down there,
+somewhere inside, driving it.
+[MUSIC]
+[APPLAUSE]
+

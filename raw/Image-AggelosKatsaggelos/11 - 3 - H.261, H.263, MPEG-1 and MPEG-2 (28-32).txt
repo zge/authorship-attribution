@@ -1,0 +1,683 @@
+Hello, welcome back.
+In this segment we cover H.261, H.263,
+MPEG-1, and MPEG-2.
+These all have been very successful
+standards
+although there exist newer, more powerful
+ones.
+The reason for covering them as well, and
+not just showing the latest and the
+bravest is that there's a lot of
+innovation
+conveyed by them when they were first
+introduced.
+In addition, it's important to see the
+evolution of standards to realize and
+appreciate what
+improvements in the technology contribute
+to the advanced
+performance of every new generation of
+[INAUDIBLE] standards.
+We show the level of sophistication of
+each of these coders, and the decisions
+that need to be made for the encoding of
+each and every so-called macroblock.
+We also describe how MPEG-2 is handling
+interlaced video, the first standard to do
+so.
+So, with that, let's proceed with this
+topic.
+[BLANK_AUDIO].
+H2621 was one of the earliest video
+compression
+standards it was approved by ITU-T, in
+1990.
+It provided quite a bit of innovation,
+based on which subsequent standards build
+upon.
+The application in mind was video
+telephony, and video conferencing over
+ISDN.
+Therefore the rates are integer multiples
+of 64 kilobits per second.
+At these rates, small resolution frames
+are used, either SIF or QSIF.
+What we see here is that the luminous
+component, the y component is at this
+resolution,
+while the CBCR, the [UNKNOWN] components
+are sub-sampled
+by two in each direction, as shown here.
+On the progressive, video is accommodated
+and
+the aspect ratio is fixed, four over
+three.
+H.263 was introduced by ITU-T again five
+years later in 95.
+Now the application is video transmission
+over
+wireless networks and public switched
+telephone networks.
+So because of that, the range of rates is
+smaller than was .261.
+And smaller resolutions are accommodated.
+QCIF, but also sub-QCIF.
+And the same story goes here, that the
+chrominance components are sub-sampled
+versions of the luminance components.
+And the progressive also video is
+addressed,
+and a fixed four by three aspect ratio.
+Some of the major differences between
+H.263 and H.261 are discussed here.
+With 263, we can now achieve bitrates
+below 64 kilobits per second, of course
+we're
+dealing with QSIF and even sub- QSIF
+resolutions and the frame rate is below
+30.
+Can be seven and a half frames per second
+or ten frames per second.
+Unrestricted motion vectors are used, so
+the search area is not constrained.
+And various advance motion conversation
+mode.
+With 263, half pel motion vectors are
+estimated, while
+with H.261 only integer pel motion vectors
+were used.
+The loop filter is a filter that comes and
+go so it was introduced in 263, then
+was not used for some of the standards,
+came back in H.265 for example.
+So this is a filter that smooths out the
+prediction that is made
+so it's in the feedback loop there of, of
+the predictor.
+And also accommodates overlapping block
+motion compensation.
+It covers four different types of frames,
+I stands for intra, P for
+predictive or inter, B for bi directional,
+so prediction is perform
+from the past as well as the future, and
+we cover these things back
+in week four when we were talking about
+motion estimation.
+And PB is a combination of predictive and
+by directional frames.
+By and large these frames based on
+my understanding have not really been
+extremely useful.
+263 as compared with 261 satisfies the
+rule of thumb which is
+it pretty much it achieves the same
+performance at half the bit rate.
+Because of the contributions from MPEG,
+MPEG-1 was introduced
+in 92 with the main application in mind
+that coding
+of moving pictures and associated audio
+for storage applications
+for up to one and a half megabits per
+second.
+Two years later, MPEG-2 was introduced
+with a generic
+application of coding of moving pictures
+and associated audio.
+As I already mentioned, out of MPEG, came
+also MPEG-4 in 99, and to talk about it.
+And jointly with ITU-T H.264 and H.265
+became standards.
+There are however, two more standards out
+of MPEG, MPEG-7
+and MPEG-21 which are not video
+compression standards.
+MPEG-7 standardizes the features that can
+be used for search by a
+search engine, and MPEG-21 standardizes
+the seamless using,
+user experience as the user moves around
+different platforms.
+I've got to discuss the structure of the
+MPEG-1
+video bitstream since it sheds some lights
+into the
+inner workings of the coder, and also it's
+followed
+with some modifications of course by
+almost all standards.
+The basic building unit of any code there
+is the block, its size eight by eight
+pixels.
+Blocks are combined to form the macroblock
+layer.
+The luminous component consists of four
+blocks.
+While the CBCR, the chrominance components
+are sub sample
+by two in each direction, therefore
+consists of two blocks.
+Therefore there's six blocks for
+macroblock layer.
+Macroblocks are then combined to give rise
+to the slice layer.
+The idea of a slice is that this
+represents an independently decodeable
+unit within the frame.
+So we cut all dependencies from neighbors,
+and it can be therefore decode by itself.
+In MPEG-1 slices have this form here.
+It's all macroblocks.
+In other standards that you'll see, slices
+can have an arbitrary shape.
+So this many slices give rise to the
+picture layer.
+We very often refer to this as a frame.
+However, picture is a more general term
+because we may have interlaced for
+example, video, and we can have frames and
+fields in that particular case.
+Pictures are combined to give rise to the
+group of pictures layer or the GOP layer.
+Within MPEG-1 the structure is fixed of
+the GOP.
+So we have an intraframe, we have a
+predictive, or interframe,
+and in between we have two bidirectionally
+encoded frame.
+And then GOPs are combined to give rise to
+the sequence layer.
+So with this structure it's rather
+straightforward to indicate
+where a block belongs to which macroblock,
+to which slice layer,
+to which picture, to which GOP and to
+which sequence layer.
+I want to discuss here the very many
+different options that are available in
+encoding a
+macroblock, or the very many different
+decisions that
+need to be made by the rate controller.
+So if we deal with an I picture,
+intraframe picture, then all
+the macroblock within this picture are
+also I macroblocks.
+And in that case, the decision that needs
+to be made is whether to change
+the step of the uniform quantizer, MQUANT
+or leave it the same.
+And actually within the standards this
+change cannot be arbitrary.
+It cannot go from quantization step two to
+32, as an example, but it's done
+gradually.
+When we deal with a P picture, an
+interpicture or a predictive picture, then
+as we can see here, there are additionally
+many more decisions to be made.
+So at the first level, the question is
+whether to
+perform motion compensation, or set the
+motion vector equal to zero.
+After motion compensation is performed,
+still we can decide whether
+to treat this as an inter or an intra
+macro block.
+So if the prediction error is very large,
+then it's decided
+that this macroblock should be encoded as
+an intra one.
+And then the decisions are whether to
+change
+the quantizer step size or leave it the
+same.
+When the decision is made to encode this
+macroblock as an inter macroblock, still
+there are two options, we can choose to
+code the prediction error, or not code it.
+If the prediction error is very small then
+just
+doing motion compensation like pointing in
+the right direction
+of the macroblock is good enough, and no
+error
+is sent, it's very small, it's close to
+zero.
+Now, if the prediction error is coded,
+then we still have to
+decide whether to change or leave the same
+the quantize as step size.
+If the decision is made to set the motion
+vector equal to zero, then we'll still
+find the
+prediction error and the same level of
+decision is
+made whether to encode the macroblock as
+inter or intra.
+If intra, then we have to decide on the
+quantize or step size, step size.
+If inter, we have to decide whether to
+code or not code the prediction error.
+If the decision is not to code it, then
+this is the skipped mode.
+So zero motion vector and zero prediction
+error.
+So in other words the current macroblock
+is just replaced by
+the macroblock in the previous frame in
+exactly the same location.
+If the predictioner is coded, then the
+decision of whether to
+change the step size of the uniform
+quantizer needs to be made.
+When we deal with a bidirectional picture,
+then
+at the first level the decision has to
+be made whether a forward or a backward
+or a combination interpolated motion
+compensation should takes place.
+And then for each of these decisions their
+subsequent step
+is whether to encode the macroblock as
+inter or intra.
+If intra we have to decide on the step
+size
+of the uniform quantizer, if inter, you
+have decide whether
+to code the prediction error or not code
+it, and
+then decide again if coded on the
+quantizer step size.
+So we clearly see that for each and every
+macroblock, a multitude of decisions need
+to be made,.
+And this is the job of the rate cont, rate
+controller, and these decisions
+should be made in the array distortion
+optim out fashion, which means that for a
+given bitrate, we should allocate the
+available
+bits to encode the motion vectors and the
+prediction error, so that the quality of
+the reconstructed video is as high as
+possible.
+We show here the bit distribution among
+the various
+picture, or frames, I use, in the
+interchangeably, types.
+So this is for the encoding of an
+SIF video at 1.15 megabits per second
+using MPEG-1.
+On the horizontal axis you see the frame
+number, while on
+the vertical axis you see size of each
+picture or frame.
+So on the average the I frames consume 156
+kilobits, the
+P frames 62 kilobits, and the B frames 15
+kilobits.
+So we see that there's an order of
+magnitude fewer bits in going from
+I to B, and it's a reduction by more than
+50% in going from I to P.
+This is what we expect.
+More bits are required for I frames that's
+you
+might say the disadvantages compared to B
+and P frames.
+On the other hand, the advantage of the I
+frames is that they stop error propagation
+since they're decodable by themselves, and
+those who allow us to access the content.
+If for example, we want to fast forward
+through an encoded digital movie then we
+can only reconstruct the I frames and this
+will provide this functionality of a
+digital VCR.
+MPEG-1 supports a specific structure of
+the group of pictures.
+It consists of 16 pictures, where the
+first one is an I frame, its followed
+by two B's, a P, two B's, and so on, and
+this is exactly what we see here.
+So although the specific numbers have to
+do with the
+specific sequence that was encoded using
+MPEG-1, probably it goes
+without saying that it's the typical
+profile that we expect
+to see no matter which sequence, which
+movie we encode.
+That is again, we need to spend most of
+our bits in
+decoding an I frame, followed by a P,
+followed by a B.
+When bidirectionally predicted frames are
+utilized, then there
+are some issues that need to be addressed.
+So we see the three different types of
+pictures, I, B and P.
+What's important to notice is that P
+pictures are
+predicted either from an I picture or from
+another P picture.
+So this P one is predicted from another P.
+On the other hand, B pictures are only
+allowed
+to use either I or P pictures for the
+prediction.
+So this B one is utilizing one I and one P
+picture, while this B for
+example is utilizing one P from this side
+and one P from this side.
+So because of this constrain, if we number
+the
+frames it's clear that the order of
+encoding is one,
+four, two, three, seven, five, six, and so
+on.
+While clearly we want to play them back at
+the natural order.
+One, two, three, four, five, six, seven.
+So because of that there is some
+buffering, some delay that needs
+to be introduced during encoding,
+decoding, and playing back.
+To give a taste of how the macroblocks are
+distributed in encoding
+a sequence by MPEG-1 we have the three
+different picture types here, so
+when the picture is intra, then clearly
+all the macroblocks in it are intra.
+However, when the picture type is P then
+some
+macroblocks are intra coded, some are
+predictive, many more of
+them intra, for some the motion vector is
+zero but
+the prediction error is encoded and for
+some they're skipped.
+Zero motion vector, zero prediction error.
+Similarly for the bidirectionally encoded
+picture types there's some I
+macroblocks, B macroblocks, bidirectional
+macroblocks and skip macroblocks.
+And then the corresponding number of eight
+by eight blocks that were coded, right?
+Here is it's intra then all these are
+coded.
+And since one macroblock equals six
+blocks, then if you multiply
+this times six, we're going to find the
+number of blocks coded.
+And we have similar calculations along the
+way, created for the skipped
+ones, there are no motion vectors no
+prediction error that is encoded.
+We show here an example of the
+distribution of the computational load in
+MPEG-1 decoding.
+What we see and, it quite surprising maybe
+to some extent, is that the majority of
+the computational load, like almost 40%,
+is due to motion compensation.
+So just compensation, no estimation, the
+motion vectors are send
+over by the encoder takes, 40% of the
+computation alone.
+So one can imagine that if motion
+estimation was part
+of it as in encoding, then this percentage
+will increase considerably.
+Then, it's equally, almost distributed, by
+20% to Huffman decoding,
+inverse eight by eight DCTs and color
+transformation and display.
+MPEG-2 was introduced two years after
+MPEG-1.
+Although conceptually similar to MPEG-1,
+it includes
+extensions to cover wider range of
+applications.
+The main application is the broadcasting
+of TV quality
+video at bitrates between four and nine
+megabits per second.
+The syntax was found appropriate for other
+applications, such as HDTV,
+which was the result of the formation of
+the grand alliance.
+Some of the characteristics of MPEG-2 is
+that it is backwards compatible with
+MPEG-1,
+so if you have already an MPEG-1 decoder,
+it can decode an MPEG-2 bitstream.
+It also handles, I,P-and B type of
+pictures as MPEG-1.
+One of the significant enhancements is
+that now it can handle interlaced video.
+And to say a few things about this.
+It adopts this tool like approach, so is
+divided into profiles and levels.
+And finally it can produce scalable
+bitstreams.
+The idea of scalability is that the video
+is encoded once and then from
+this encoded bitstream we can extract sub
+bitstreams, parts of it.
+And you can construct the video, either at
+the lower
+quality, if it's a PSNR scalable bitstream
+or at the lower
+special resolution, and they are talking
+about special scalability or
+at the lower frame rate, and they're
+talking about temporal scalability.
+Interlaced video is a technique for
+doubling the perceived
+frame rate of a video display without
+consuming extra bandwidth.
+The interlace signal contains two fields,
+a top field and a
+bottom field as show here, or an odd and
+an even field.
+This enhances motion perception to the
+viewer, and reduces
+[UNKNOWN] error, by taking into account
+the so called FI
+phenomenon effect, which is the optical
+illusion of perceiving continuous
+motion between separated motions when they
+viewed rapidly in succession.
+So this effectively doubles their time
+resolution or the temple resolution as
+compares
+to, compare to non-interlaced video for
+frame rates that are equal to field rates.
+So interlaced signals require a display
+that is capable
+of showing the individual fields in a
+sequential order.
+And only CRT displays and some plasma
+displays are capable of doing so.
+So, because CRTs are not in existence
+anymore, most displays are progressive
+ones, interlaced video becomes less and
+less important as time goes on.
+So in the special representation we see
+here the two
+fields that I mentioned the top field and
+the bottom field.
+Over here we see the progressive scans and
+in the time domain here is the frame rate,
+so for NTSC this is one 30th of a second,
+the distance between two frames.
+Why when we deal with interlaced video the
+distance
+between fields now is one 60th of a
+second.
+When we deal with I frames we need to take
+the DCT of eight by eight blocks of
+intensity value.
+So given a 16 by 16 interlaced macroblock
+we have
+two ways to break it into four, eight by
+eight blocks.
+The first one shown here is the field
+mode.
+[UNKNOWN] the 16 by 16 macroblock is broke
+into
+these four eight by eight blocks, where
+here we
+put the pixels that belong to field one,
+which
+is also called the odd field or the top
+field.
+While in these two blocks we put the
+pixels that belong
+to the second field or the even field or
+the bottom field.
+Clearly if the frame mode is chosen then
+this 16 by 16 interlace macroblock
+is broken into four, eight by eight, also
+interlaced blocks as shown here.
+Clearly this is a rate control decision
+but needs to be made.
+MPEG-2 supports both the frame and the
+field prediction mode for motion
+estimation compensation.
+So, according to the frame prediction, the
+two fields are treated as a frame.
+It's an interlaced frame and the motion
+estimation compensation is done at the
+frame level.
+In the field prediction mode we have an
+example here
+where this field could be a top field or a
+bottom field, and can be predicted from
+either the top
+field or the bottom field of the previous
+frame in time.
+While in this example, we're looking at
+the bottom field of
+this particular frame at time t, let's
+say, which can be predicted
+from the first field of the same frame,
+the same time instance,
+or the bottom field of the previous field,
+times t minus one.
+So in this case, the distance here is one
+30th of a
+second, while the distance between these
+two fields is one60th of a second.
+Another motion compensation mode provided
+in MPEG-2 is the dual prime mode.
+This mode is applicable only to P pictures
+and to GOPs that
+have no B pictures between these P
+pictures and the reference frames.
+So for frame pictures, two motion vectors
+are associated with each field.
+So for this top field here, the motion
+vector v1 and
+pv1 are associated with this, this dotted
+line.
+If we, if we denote by pv1 X, the
+horizontal component
+of this vector, then pv1 X is encoded in
+terms of v1x.
+And, as you can see here, V1x connects
+this
+top fields which are one 30th of a second
+apart.
+While pv1 corrects the bottom field of
+this frame and the top
+field of this one, which are one 60th of a
+frame apart.
+Therefore, pv1 is half v1x, shown here.
+And delta of x is a correction there.
+If you can see there, the vertical
+component of pv1.
+It's the same course and duration.
+It's half of the v1 of y.
+Plus, minus this term here, which
+corrects, takes into account
+the shift between a top field and the
+bottom field.
+An even field and an odd field.
+And here is the correction term.
+So, what's included in the bitstream is
+not
+pv1 and pv2, but instead this correction
+factor delta.
+Similar considerations are made here, when
+we have the, the field picture.
+This table summarizes the key
+characteristics of the profiles and levels
+defined for both scalable and non-scalable
+MPEG-2 to bitstreams.
+In this table the upper bounds for the
+picture resolution, frame rate and
+bitrates are provided.
+The bitrate data refers to the maximum
+compressed
+bitrate supported by the input buffers of
+the decoder.
+While NA indicates that, that there
+is no conformance restrictions for these
+variables.
+It's expected that any implementations of
+the standard will
+support only the main profiles at the main
+level.
+The main profile provides the basic
+functionality of MPEG-2.
+The simple profile is a low-cost version
+of the main profile.
+Coding is similar, as in the main, but
+without any bidirectional prediction.
+Levels refer to picture resolution.
+The upper bound of the main level is C,
+CCIR, 601 picture format.
+The high 1440 and the high level
+resolutions correspond to picture
+resolutions for HDTV.
+The low level resolution corresponds to
+SIF format.
+So, these profiles and levels have a
+hierarchical relationship.
+That is, a syntax supported by higher
+profile level
+includes all of the elements of lower
+profile levels.
+A decoder that can decode bitstreams at a
+certain profile level should also
+be able to decode bitstreams at the lower
+profile level than it's own.
+We show here some of the systems
+supporting HDTV around the world.
+So in North America the result of the
+grand alliance goes
+to adopt for video encoding MPEG-2 main
+profile at high level.
+This is the aspect ratio, the similar one
+with movies the
+special resolution and then for audio,
+Dolby Advanced Coding three is used.
+In Europe there is digital video
+broadcast.
+It also adopted MPEG-2, but the simple
+profile at high 1440.
+The aspect ratio is different.
+The resolution is different, and for audio
+encoding MPEG layer two is chosen.
+And finally in Japan, there is Muse, is
+using the same aspect ratio as North
+America, the
+resolution is slightly different, but the
+video is
+also similar to main profile at high level
+MPEG-2.
+

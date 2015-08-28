@@ -1,0 +1,390 @@
+In the last video, we talked
+about gradient descent for minimizing
+the cost function J of theta for logistic regression.
+In this video, I'd like to
+tell you about some advanced
+optimization algorithms and some
+advanced optimization concepts.
+Using some of these ideas, we'll
+be able to get logistic regression
+to run much more quickly than
+it's possible with gradient descent.
+And this will also let
+the algorithms scale much better
+to very large machine learning problems,
+such as if we had a very large number of features.
+Here's an alternative view of
+what gradient descent is doing.
+We have some cost function J and we want to minimize it.
+So what we need to
+is, we need to write
+code that can take
+as input the parameters theta and
+they can compute two things: J
+of theta and these partial
+derivative terms for, you
+know, J equals 0, 1
+up to N.  Given code that
+can do these two things, what
+gradient descent does is it
+repeatedly performs the following update.
+Right?
+So given the code that
+we wrote to compute these partial
+derivatives, gradient descent plugs
+in here and uses that to update our parameters theta.
+So another way of thinking
+about gradient descent is that
+we need to supply code to
+compute J of theta and
+these derivatives, and then
+these get plugged into gradient
+descents, which can then try to minimize the function for us.
+For gradient descent, I guess
+technically you don't actually need code
+to compute the cost function J of theta.
+You only need code to compute the derivative terms.
+But if you think of your
+code as also monitoring convergence
+of some such,
+we'll just think of
+ourselves as providing code to
+compute both the cost
+function and the derivative terms.
+So, having written code to
+compute these two things, one
+algorithm we can use is gradient descent.
+But gradient descent isn't the only algorithm we can use.
+And there are other algorithms,
+more advanced, more sophisticated ones,
+that, if we only provide
+them a way to compute
+these two things, then these
+are different approaches to optimize
+the cost function for us.
+So conjugate gradient BFGS and
+L-BFGS are examples of more
+sophisticated optimization algorithms that
+need a way to compute J
+of theta, and need a way
+to compute the derivatives, and can
+then use more sophisticated
+strategies than gradient descent to minimize the cost function.
+The details of exactly what
+these three algorithms is well beyond the scope of this course.
+And in fact you often
+end up spending, you know, many days,
+or a small number of weeks studying these algorithms.
+If you take a class and advance the numerical computing.
+But let me just tell you about some of their properties.
+These three algorithms have a number of advantages.
+One is that, with any
+of this algorithms you usually do
+not need to manually pick the learning rate alpha.
+So one way to think
+of these algorithms is that given
+is the way to compute the derivative and a cost function.
+You can think of these algorithms as having a clever inter-loop.
+And, in fact, they have a clever
+inter-loop called a line
+search algorithm that automatically
+tries out different values for
+the learning rate alpha and automatically
+picks a good learning rate alpha
+so that it can even pick
+a different learning rate for every iteration.
+And so then you don't need to choose it yourself.
+These algorithms actually do
+more sophisticated things than just
+pick a good learning rate, and
+so they often end up
+converging much faster than gradient descent.
+These algorithms actually do more
+sophisticated things than just
+pick a good learning rate, and
+so they often end up converging much
+faster than gradient descent, but
+detailed discussion of exactly
+what they do is beyond the scope of this course.
+In fact, I actually used
+to have used these algorithms for
+a long time, like maybe over
+a decade, quite frequently, and it
+was only, you know, a
+few years ago that I actually
+figured out for myself the details
+of what conjugate gradient, BFGS and O-BFGS do.
+So it is actually entirely possible
+to use these algorithms successfully and
+apply to lots of different learning
+problems without actually understanding
+the inter-loop of what these algorithms do.
+If these algorithms have a disadvantage,
+I'd say that the main
+disadvantage is that they're
+quite a lot more complex than gradient descent.
+And in particular, you probably should
+not implement these algorithms
+- conjugate gradient, L-BGFS, BFGS -
+yourself unless you're an expert in numerical computing.
+Instead, just as I
+wouldn't recommend that you write
+your own code to compute square
+roots of numbers or to
+compute inverses of matrices, for
+these algorithms also what I
+would recommend you do is just use a software library.
+So, you know, to take a square
+root what all of us
+do is use some function
+that someone else has
+written to compute the square roots of our numbers.
+And fortunately, Octave and
+the closely related language MATLAB
+- we'll be using that -
+Octave has a very good. Has a pretty
+reasonable library implementing some of these advanced optimization algorithms.
+And so if you just use
+the built-in library, you know, you get pretty good results.
+I should say that there is
+a difference between good
+and bad implementations of these algorithms.
+And so, if you're using a
+different language for your machine
+learning application, if you're using
+C, C++, Java, and
+so on, you
+might want to try out a couple
+of different libraries to make sure that you find a
+good library for implementing these algorithms.
+Because there is a difference in
+performance between a good implementation
+of, you know, contour gradient or
+LPFGS versus less good
+implementation of contour gradient or LPFGS.
+So now let's explain how
+to use these algorithms, I'm going to do so with an example.
+Let's say that you have a
+problem with two parameters
+equals theta zero and theta one.
+And let's say your cost function
+is J of theta equals theta
+one minus five squared, plus theta two minus five squared.
+So with this cost function.
+You know the value for theta 1 and theta 2.
+If you want to minimize J of theta as a function of theta.
+The value that minimizes it is
+going to be theta 1
+equals 5, theta 2 equals equals five.
+Now, again, I know some of
+you know more calculus than others,
+but the derivatives of the
+cost function J turn out to be these two expressions.
+I've done the calculus.
+So if you want to apply
+one of the advanced optimization algorithms
+to minimize cost function J.
+So, you know, if we
+didn't know the minimum was at
+5, 5, but if you want to have
+a cost function 5 the minimum
+numerically using something like
+gradient descent but preferably more
+advanced than gradient descent, what
+you would do is implement an octave
+function like this, so we
+implement a cost function,
+cost function theta function like that,
+and what this does is that
+it returns two arguments, the
+first J-val, is how
+we would compute the cost function
+J. And so this says J-val
+equals, you know, theta
+one minus five squared plus theta
+two minus five squared.
+So it's just computing this cost function over here.
+And the second argument that
+this function returns is gradient.
+So gradient is going to
+be a two by one vector,
+and the two elements of the
+gradient vector correspond to
+the two partial derivative terms over here.
+Having implemented this cost function,
+you would, you can then
+call the advanced optimization
+function called the fminunc
+- it stands for function
+minimization unconstrained in Octave
+-and the way you call this is as follows.
+You set a few options.
+This is a options
+as a data structure that stores the options you want.
+So grant up on,
+this sets the gradient objective parameter to on.
+It just means you are indeed going to provide a gradient to this algorithm.
+I'm going to set the maximum number
+of iterations to, let's say, one hundred.
+We're going give it an initial guess for theta.
+There's a 2 by 1 vector.
+And then this command calls fminunc.
+This at symbol presents a
+pointer to the cost function
+that we just defined up there.
+And if you call this,
+this will compute, you know, will use
+one of the more advanced optimization algorithms.
+And if you want to think it as just like gradient descent.
+But automatically choosing the learning
+rate alpha for so you don't have to do so yourself.
+But it will then attempt to
+use the sort of advanced optimization algorithms.
+Like gradient descent on steroids.
+To try to find the optimal value of theta for you.
+Let me actually show you what this looks like in Octave.
+So I've written this cost function
+of theta function exactly as we had it on the previous line.
+It computes J-val which is the cost function.
+And it computes the gradient with
+the two elements being the partial
+derivatives of the cost function
+with respect to, you know,
+the two parameters, theta one and theta two.
+Now let's switch to my Octave window.
+I'm gonna type in those commands I had just now.
+So, options equals optimset. This is
+the notation for setting my
+parameters on my options,
+for my optimization algorithm. Grant option on, maxIter, 100
+so that says 100
+iterations, and I am
+going to provide the gradient to my algorithm.
+Let's say initial theta equals zero's two by one.
+So that's my initial guess for theta.
+And now I have of theta,
+function val exit flag
+equals fminunc constraint.
+A pointer to the cost function.
+and provide my initial guess.
+And the options like so.
+And if I hit enter this will run the optimization algorithm.
+And it returns pretty quickly.
+This funny formatting that's because
+my line, you know, my
+code wrapped around.
+So, this funny thing
+is just because my command line had wrapped around.
+But what this says is that
+numerically renders, you know, think
+of it as gradient descent
+on steroids, they found the optimal value of
+a theta is theta 1
+equals 5, theta 2 equals 5, exactly as we're hoping for.
+The function value at the
+optimum is essentially 10 to the minus 30.
+So that's essentially zero, which
+is also what we're hoping for.
+And the exit flag is
+1, and this shows
+what the convergence status of this.
+And if you want you can do
+help fminunc to
+read the documentation for how
+to interpret the exit flag.
+But the exit flag let's you verify whether or not this algorithm thing has converged.
+So that's how you run these algorithms in Octave.
+I should mention, by the way,
+that for the Octave implementation, this value
+of theta, your parameter vector
+of theta, must be in
+rd for d greater than or equal to 2.
+So if theta is just a real number.
+So, if it is not at least
+a two-dimensional vector
+or some higher than two-dimensional
+vector, this fminunc
+may not work, so and if
+in case you have a
+one-dimensional function that you use
+to optimize, you can look
+in the octave documentation for fminunc
+for additional details.
+So, that's how we optimize
+our trial example of this
+simple quick driving cost function.
+However, we apply this to let's just say progression.
+In logistic regression we have
+a parameter vector theta, and
+I'm going to use a mix
+of octave notation and sort of math notation.
+But I hope this explanation
+will be clear, but our parameter
+vector theta comprises these
+parameters theta 0 through theta
+n because octave indexes,
+vectors using indexing from
+1, you know, theta 0 is
+actually written theta 1
+in octave, theta 1 is gonna be written.
+So, if theta 2 in octave
+and that's gonna be a written
+theta n+1, right?
+And that's because Octave indexes
+is vectors starting from index
+of 1 and so the index of 0.
+So what we need
+to do then is write a
+cost function that captures
+the cost function for logistic regression.
+Concretely, the cost function
+needs to return J-val, which is, you know, J-val
+as you need some codes to
+compute J of theta and
+we also need to give it the gradient.
+So, gradient 1 is going
+to be some code to compute
+the partial derivative in respect to
+theta 0, the next partial
+derivative respect to theta 1 and so on.
+Once again, this is gradient
+1, gradient 2 and so
+on, rather than gradient 0, gradient
+1 because octave indexes
+is vectors starting from one rather than from zero.
+But the main concept I hope
+you take away from this slide
+is, that what you need to do,
+is write a function that returns
+the cost function and returns the gradient.
+And so in order to
+apply this to logistic regression
+or even to linear regression, if
+you want to use these optimization algorithms for linear regression.
+What you need to do is plug in
+the appropriate code to compute
+these things over here.
+So, now you know how to use these advanced optimization algorithms.
+Because, using, because for
+these algorithms, you're using a
+sophisticated optimization library, it makes
+the just a little bit
+more opaque and so
+just maybe a little bit harder to debug.
+But because these algorithms often
+run much faster than gradient descent,
+often quite typically whenever
+I have a large machine learning
+problem, I will use
+these algorithms instead of using gradient descent.
+And with these ideas, hopefully,
+you'll be able to get logistic progression
+and also linear regression to work
+on much larger problems.
+So, that's it for advanced optimization concepts.
+And in the next and
+final video on Logistic Regression,
+I want to tell you how to
+take the logistic regression algorithm
+that you already know about and make
+it work also on multi-class classification problems.

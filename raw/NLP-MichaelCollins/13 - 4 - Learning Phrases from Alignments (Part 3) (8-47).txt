@@ -1,0 +1,233 @@
+Okay. 
+So, having derived these alignments on 
+each of the training examples, the next 
+step is to extract phrases from each 
+training example. 
+Remember a phrase or a phrasal entry 
+looks like a sequence of English words 
+paired with a sequence of foreign words. 
+So, this would be an example. 
+So, the basic idea is going to be to 
+extract, all possible phrase pairs, which 
+are consistent with the alignments on 
+this particular example. 
+So, I could potentially take any sequence 
+of words on the foreign side. 
+So, maybe these 6 words here and any 
+sequence of words on the English side. 
+Say, these 4 words here and extract them 
+as a phrased pair, as long as they're 
+consistent with the alignments. 
+We'll talk in a second about what it 
+means to be consistent. 
+So abstractly we're going to consider all 
+possible sub sequences of words on the 
+foreign side and all possible 
+subsequences of word name the side and 
+consider all possible parents of those 
+two choices. 
+Okay. 
+So, how do we check if a potential 
+phrasal entry is consistent with the 
+alignment. 
+So, let me show you one alignment which 
+is consistent. 
+And, this is the phrase pair that pairs 
+Maria no with Mary did not. 
+And it's going to be useful to visualize 
+this by drawing a rectangle in the figure 
+corresponding to this particular pairing 
+of these two phrases. 
+Okay. 
+So, a phrase pair is consistent if three 
+conditions are satisfied. 
+So, one, there has to be at least one 
+word in the English phrase e aligned to a 
+word in f. 
+So, one of these three words has to be 
+aligned to one of these two foreign 
+words, and actually we have multiple 
+alignments. 
+Okay? 
+So, we definitely satisfy this first 
+condition. 
+We actually have three cases where a word 
+on the, in the English side is aligned to 
+a word on the foreign side. 
+The second condition is that there are no 
+words in f aligned to words outside e. 
+Okay? 
+So, let's check this one by one. 
+So, if we look at Maria, we can see that 
+all of its alignments are to words which 
+are within this phrase we're proposing. 
+So, it's a line actually only to Mary in 
+this case, and that's within these three 
+words that I'm considering. 
+And similarly, if we look at the word no, 
+it's only aligned to English word within 
+this phrase, and so this second condition 
+is satisfied. 
+It would be broken if there are any 
+alignment points in these one, two, 
+three, four, five, six, seven, eight 
+cells down here. 
+So, for example, if we also had an 
+alignment here, then no would now be 
+aligned to an English word which falls 
+outside the subsequence, Mary did not, in 
+which case this second constraint would 
+be violated. 
+But of course, that isn't present, so 
+we're fine. 
+Thirdly, it is a similar constraint 
+saying that there are no words in the 
+English side align-, aligned to words 
+outside f. 
+So, if we could check these English words 
+one by one, so Mary is only aligned to 
+Maria, that's within the phrase we're 
+considering. 
+Did is only aligned to no, it's within 
+the phrase we're considering. 
+Not is aligned to no, so it's within the 
+phrase we're considering. 
+And so, this phrase pair, Mary did not, 
+Maria no is certainly consistent. 
+And so, this would actually be extracted, 
+this phrase pair would be extracted from 
+this training example. 
+Let me show you one example of a phrase 
+pair which isn't consistent, so Mary did, 
+and Mary no, so that's the pair here 
+Maria no and then Mary did. 
+And we can fill in this rectangle here. 
+And this actually violates constraint 2 
+because this foreign wood is aligned to 
+not and not is outside this sequence of 
+English words Mary, Mary did. 
+And so, this is not a good phrase pair 
+and it would not be extracted from, from 
+this example. 
+So, notice that a very convenient way of 
+visualizing these phrase pairs, or the 
+consistent ones, is they correspond to 
+rectangles I can draw which surround 
+these alignments and for which we have no 
+alignment points in the rows or columns 
+outside of these rectangles. 
+So there are no alignment points in these 
+cells here, that corresponds to constrain 
+three, and there are no alignment points 
+in these columns here that corresponds to 
+constraint number two. 
+So, this is actually another perfectly 
+well formed phrase, did not slap, can be 
+no daba una bofetada , and there are many 
+other phrases. 
+Okay? 
+So, we can have verde aligned to green. 
+So, we can go through some single words 
+alignments on Maria to Mary. 
+bruja to witch. 
+Okay, so those are some single word 
+phrases or translations. 
+We can translate the as a la, that's 
+another good one. 
+And then, there are larger phrases. 
+So, if we look at this rectangle here, we 
+have bruja [SOUND] verde being aligned to 
+green witch. 
+[SOUND]. 
+And if we look at this case here, we have 
+a la bruja verde. 
+I'm sorry for my Spanish, I'm sure it's 
+terrible. 
+And aligned to the green witch. 
+[SOUND]. 
+And so on and so on. 
+So, we get everything from single word 
+translations to much longer sequences. 
+For example, this, these four Spanish 
+words align to these three English words. 
+And we do this on every training example, 
+okay? 
+So, from each training example, we're 
+going to get an English sentence paired 
+with some foreign sentence. 
+And we're going to extract a set of 
+phrases from each training sample. 
+And you can see how what we're going to 
+end up with this really pretty large 
+Lexicon of phrases, where the phrases 
+consist of everything from single word 
+correspondences like bruja to witch, to 
+larger strings such as this alignment 
+here. 
+Once we've extracted these phrases, we 
+can also calculate parameter estimates 
+based on the phrases we've extracted. 
+And this is very simple, or at least this 
+is the simplest way of doing this. 
+so for any pr-, ph-, phrase pair fe, for 
+example, f might be this sequence, e 
+might be a single word, slap. 
+we can derive the conditional probability 
+of f given e, as the ratio of these two 
+counts. 
+This looks just like the maximum 
+likelihood estimates we've seen elsewhere 
+in the course. 
+So, I can count the number of times I've 
+seen this sequence corresponding to the 
+word slap. 
+Count the number of times I've seen the 
+English word slap and take the ratio of 
+these two terms. 
+So, this is the simplest possible way for 
+estimating parameters of these models. 
+It's a little dubious from a 
+probabilistic point of view. 
+I don't want to get into the details of 
+that but the fact that we have multiple 
+overlapping phrases on each training 
+sample makes this somewhat suspect. 
+But empirically, when we actually perform 
+translation, these parameters are very 
+useful, actually work quite well when 
+used in a translation context. 
+Here's actually an example from a 
+tutorial by Phillip Kern, from EACL 2006, 
+which is a conference in natural language 
+processing. 
+here's an example he gave for the French 
+string den Vorschlag, which means roughly 
+speaking, the proposal in English. 
+And what I'm showing here, sorry, this 
+should be t not p. 
+These are translation parameters. 
+Is a list of phrases that are extracted. 
+So for example, one phrase is this German 
+sequence of words paired with the 
+proposal. 
+[SOUND]. 
+And the probability for this, the 
+parameter is about 0.62. 
+we have this funny-looking phrase here, 
+but this comes from something like their 
+government's proposal. 
+In that case, this has been extracted as 
+a phrase. 
+That's where this apostrophe s comes 
+from. 
+We have a proposal, we have the idea, we 
+have this proposal, which would have the 
+word proposal, of the proposal. 
+So, you can see we have a whole bunch of 
+phrases with varying probabilities. 
+These are the probabilities of each of 
+these phrases and they look quite 
+reasonable. 
+This is a real example extracted from 
+German English data. 
+

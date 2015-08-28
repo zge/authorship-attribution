@@ -1,0 +1,378 @@
+In this section I'm going to look at how
+you can get features from text that you
+can use in side discriminate models for
+various kinds of classification tasks. So
+in these slides, and in most max
+[inaudible] work, by feature what we mean
+is an elementary piece of evidence that
+links between what we observe, which is
+the data piece D and a category C that we
+want to present. So a feature. Is a
+function with a bounded real value, so
+what we can do is write that we have a
+feature F, which is mapping from. The
+space of classes, and pieces of data, onto
+a real number. So here there are a couple
+of examples of the kind of features that
+we have. So let's look at these features
+with respect to some particular pieces of
+data. Okay, so the first feature, the
+purple feature is saying that the class is
+locations so in these, so in these
+examples pieces of data, I'm assuming that
+I'm looking at the last word in the
+sequence and then the class about that is
+being shown in orange. So the feature
+[inaudible] examples where the class is
+locations so that the two pieces of data
+on the left and. The previous word is in,
+and the word is capitalized, so. All three
+of those criteria are true of these two
+pieces of data. But aren't true of the two
+pieces of data on the right. Really for
+multiple reasons, both because the class
+is wrong and the proceeding word is also
+wrong. Okay, so then if we go on. And look
+at the second feature. It's again saying
+the class's location. And for the rest of
+the feature, you can put in just anything
+that seems like it will be useful. So we
+might think it's a useful feature to know
+whether a word has in it something like
+accent and Latin characters, so it's not
+just plain, A to Z but has some other
+characters in there. So here, you know,
+we've sort of noticed that some names have
+accented letters in them. So this feature,
+it will be true, this piece of data, and.
+Again, it's not true of any of the other
+pieces of data. Okay, so then let?s look
+at feature three, so feature three set is
+the class is drug and the word ends in C.
+So that's a feature that's true of this
+piece of data but not any of the others.
+So in general, that, that's what's
+happening, we're imagining for our
+training we'll have data which already
+gives us the right answers. It, they'll be
+some words, and that they will have a
+class. And so, in this example, we're then
+also assuming that we have a particular
+position that we're looking at, so that
+this is the basic word W and then when we
+want to. That we can refer to something
+like the word minus one here, to ask
+features about other nearby words. And so
+then, our feature will then ask some
+question. About the class, is it a drug?
+And some question about the words. When,
+normally, it won't sort of just ask for
+the complete sequence of words. But ask,
+might ask for features of them, like an
+individual word or something in between,
+like in this example we gave, where we're
+just looking at whether the word ends in
+the letter C. At that point. The next
+thing is that the model will assign to
+each feature, a weight. Where the weight
+is a real number. So it might be something
+like 0.3, or -0.2. So this isn't the value
+of the feature, this is the weight of the
+feature. And so a positive weight votes
+that this configuration is likely correct.
+It's the kind of thing that happens in
+real text. So that's something like, for
+feature one, well, if the preceding word
+is. In and. The word is capitalized. Well,
+that's indeed a good indicator for the
+word is the location. So if a feature won
+that matches these two pieces of data,
+we'd expect it to have a positive light.
+[sound]. Then the other choice is you can
+have a negative weight. So the negative
+weight votes that a configuration is
+likely incorrect. So, we could have
+another feature, for example, which was
+kind of like feature one, that might be
+feature fourteen, which said the class
+equals [inaudible]. And the rest of the
+condition was the same, and so that
+feature would match a different
+classification, where we had in Arcadia
+and we were saying Arcadia was a drug. And
+feature fourteen would match that
+configuration, but what we'd like to say,
+is that's unlikely to be correct, and we
+could express that by giving a negative
+weight like -.620. Later on when we're
+working with features we can crucially
+make use of two expectations. So an
+expectation is an actual predicted count
+of a feature firing and we have two
+expectations, one is from our supervised
+data. We can just actually look how often
+a particular feature is satisfied by
+pieces of data and so I'll refer to that
+as the imperial count with the imperial
+expectation of the feature. So that's this
+guy. We simply just look through every
+piece of. Data that we are training of and
+we ask. Is the feature true of that piece
+of data and we count the number of times
+it's true and that sounds per the
+expectation. The other expectation is the
+model expectation of the feature. We'll
+look at this more in a minute, but what
+we're going to have is a probability
+distribution over pairs of a class and a
+data set. And so what we're gonna do is
+using that distribution we're gonna
+consider all classes and pieces of data
+and then say, well given that what is the
+expected value of f based on the
+probabilities of different configurations
+and what the value of f is to those
+configurations. In the particular case of
+natural language processing applications,
+what we find is that usually a feature is
+of a very particular form. So the feature
+consists of firstly an indicator function,
+a yes-no Boolean matching function of
+properties of the input. And secondly, it
+specifies a particular class. So the
+arbitrary feature is just. A feature of a
+class state of pair and it's returning.
+Some real number. But in practice, the
+features that we define have this very
+particular form. So we have a matching
+predicate against the data. So that's
+something like Ns and the letter C, and
+there's a capitalized word. And that's
+conjoined together with saying, like,
+particular classes matched. And the return
+value of the feature can, in general, be a
+real number. But our features here are.
+Logical bullion predicates. And so their
+return value is either zero or one. Now,
+every feature that we're going to present
+in this class is of exactly this form. And
+that's true of 99 percent of how these
+features have been used in natural
+language processing work. And so we can
+equally say that Phi D is a feature of the
+data D, when, for each class, CJ, the
+conjunction Phi D, and C equals CJ is a
+feature. Of a class data pair. And so
+that's how, FI, feature pair. So a lot of
+time, what we'll find is we'll think in
+terms of these Phi D, features. But you
+should remember that the actual math and
+programming we write is going to be
+working in terms of these FI features,
+where this I index is being particular to
+both matching a data predicate, and some
+particular class. [sound]. But the,
+nevertheless a good way to think about
+things is that each fit, feature
+identifies a subset of the data and
+suggests a label for it and that's what we
+saw in the examples before. In feature
+based models, the decision about a data
+point is based entirely on the features
+that are active at that point. So let's
+look at a couple of examples [inaudible]
+applications, and the kind of features
+that get defined for them. One of the
+simplest cases is text categorization. So
+we have an article which has data, like
+stocks hit. A yearly low and it's assigned
+some topical class here, business. And so
+typically in these kind of text
+categorization applications the features
+are just the words that occur in the
+articles. So each word typed that occurs
+in the article will be a feature. Of a
+five feature and so then a complete F
+feature will be, the word stocks occurred
+and the class is Business or the word
+stocks occurred and the class is sports.
+Word sense disambiguation is the task of
+determining the sense of the words in
+context. So, for example, whether usage of
+the word bank is referring to the bank of
+a river, or to the financial institution.
+In deci-, making a classifier that decides
+senses of words. In practice, it comes out
+kind of like a text categorization
+example, where you regard the context of
+the word as this little mini document
+around the word. So, here we have the
+observed data, the sequence of words.
+Here's the word we wanna [inaudible].
+[inaudible] and here it has the particular
+class and the training data. This is an
+instance of the money wand. So, we could
+just use the same kind of features as
+here, a bag of words, set of features of
+the words around and the context. But we
+can also use more particular features that
+look at particular things in the context.
+So we could have a feature that says, the
+word before is restructure the word
+afterwards is dead. And we can have other
+kinds of, features if we wanted to, too.
+Like we can have a feature that the length
+of the sentence is twelve. You should
+really think that you can make features in
+any way you want that will be good in
+predicting what the class is. And commonly
+in practice what you'll find is word since
+disambiguation systems have both bag of
+words features like this, and they have
+features that ask about particular words
+that are adjacent on the left and right.
+And it's been shown that actually having
+both of those types is useful. Here's one
+more example that's slightly different,
+which is when we're working out the part
+of speech of a word in context whether
+it's a noun or a verb. And so, here's fall
+which can be a verb, to fall down, or a
+noun. And in this particular case its
+actual class is noun. So if we're wanting
+to do part of speech taking we're likely
+to want to know particular things about a
+very narrow content and things in
+particular positions. So we'd want to know
+what word it is that we're tagging. The
+current word is fall. It's likely to be.
+Would indicate whether it's a verb or a
+noun, what the previous word is, and this
+example. Points in the direction of when
+we want to do a sequence of classifying
+decisions, where we actually wanna
+classify each word. And that's a topic
+that we'll return to later, when we show
+how to build sequence models. But the
+easiest way to think about it is that
+we're just going to give each word a part
+of speech in turn. So once we're deciding
+this word's part of speech, we can assume
+that we've already given parts of speech
+to the words that precede it. So we can
+also use, as a feature, for deciding this
+word's part of speech, what the part of
+speech of the previous word was. And so
+this is this feature here. Yeah, that
+saying the previous tag is adjective. So,
+look here at a couple of examples in more
+detail. Let's just go through a couple
+bits of work on feature based classifiers.
+So, Young and Oles is one well known piece
+of work for doing text categorization. And
+so, the features that they used are
+precisely bag of words features. So, the
+features are precisely presence of a word
+in the document and the document class.
+They actually don't use ever word that
+occurs in the document, document. And so.
+Common refinement is to do a process of
+feature selection, where you pick out a
+particular subset of words that are deemed
+to be reliable indicators. You might be
+dropping very rare words, or also dropping
+extremely common words, sort of viewed to
+be semantically empty. The test set that
+they use is a well known text
+categorization data set, the Reuter's news
+wire data set. And here are just some
+indicative results of what they find. So
+they build a naive base model, which gets
+77 percent F-1 across the different
+classes. And then they compare several
+discriminative classifiers. They've got a
+linear aggression model. Now, despite the
+fact that. Linear regression models
+shouldn't be right for doing these kind of
+categorical text predi-prediction tasks
+because of various reasons such as the
+numbers going out of bounds and not being
+probabilities. Actually, what you can see
+is that the linear regression works
+already much better than the naive Bayes
+model. In fact, what they find is that it
+works almost as well as the logistic
+regression model. The logistic regression
+model is a fraction better, but actually
+not very much. They also train a support
+vector machine model which is another very
+common popular discriminative classifier.
+Use widely the text base models like text
+categorization. Its performance is almost
+distinguishably different from the
+linguistic regression model. And. So
+that's something. Interesting that comes
+out of a lot of recent work. So you can
+see that the big difference here is
+between the naive Bayes model and all of
+the discriminate models. All the
+discriminate models do much better and in
+turn the differences between the
+discriminate models are very small, and so
+a lot of the time, yes, you want to use a
+appropriate model, but it doesn't actually
+matter very much which model you choose.
+What's going to matter very much more is
+the quality of the features that you
+define. Another thing that the paper
+emphasizes that we'll come back to is the
+importance of regularization or smoothing
+for successful use of discriminative
+models. That was something that wasn't
+used in much of the very early [inaudible]
+work in discriminative models that turns
+out to be very important. There are many
+places where you can use a Max-M
+classifier. It's whenever you have some
+data points that you want to assign to one
+of the number of classes. So let's just
+look thru a few more examples. So here is
+a fairly straightforward one, which is
+where what you want to do is decide
+whether a period is the end of sentence or
+an abbreviation. So, you might have
+something like i.e., u2s. [sound] And we
+have this period here. And what we'd like
+to say is that this period isn't the end
+of sentence. And we can kind of think that
+there are some ways that we could tell
+that, by seeing this abbreviation
+beforehand. And so we'll be wanting to
+make features that look at the stuff to
+the left of the period. And perhaps also
+things to the right of the period,
+[inaudible] this word isn't capitalized.
+We've already talked a bit about sentiment
+analysis, as to whether someone is giving
+a positive or negative review. And we can
+make a discriminative classifier for that.
+By putting in features for the words and
+perhaps not the kinds of features like
+word pair features, different parts of
+speech and things like that. Prepositional
+phrase attachment is the task we're
+working out with the prepositional phrase.
+Like with a beard, is modifying a
+particular noun or verb. And that's
+getting us into the realm of syntactic
+decisions. Or more in general, one way, in
+general, to make parsing decisions for the
+structure of the sentence, is to build
+classifiers for the particular decisions
+that are involved in making the
+classifier. Okay, I hope that's given you
+a good sense of what the features are,
+they're used modern discriminative NOP
+systems and some idea of the kind of
+applications to which they have been
+applied.

@@ -1,0 +1,316 @@
+So, in the remainder of this lecture, 
+we're going to describe how log-linear 
+models can solve many of these problems 
+that we've just seen. 
+So, I'll first give basic definitions of 
+log-linear models. 
+We'll then, talk about how to estimate 
+parameters in log-linear models. 
+And finally, we'll talk about smoothing 
+or what is often called regularization in 
+the log-linear models. 
+This is a way of dealing with parameter 
+estimation problems in very high 
+dimensional spaces in cases where we have 
+very large numbers of parameters. 
+We'll see how we can employ a very 
+simple, but highly effective method for 
+smoothing or so-called regularization in 
+these models. 
+Folks, so, first let's give a definition 
+of the problem that we're trying to 
+solve. 
+So, we're going to assume that we have 
+some set of possible inputs, call this 
+script x. 
+So, for example, this could be the set of 
+all possible document histories w1, w2, 
+up to wi minus 1. 
+So, i here, can vary, this is going to be 
+a sequence of words, the previous words 
+in the document, this set of inputs in 
+the set of all possible document 
+prefixes, that's clearly an infinite set 
+in this case. 
+We have a finite, okay, so we'll assume 
+that this label set is finite. 
+So, this is the set of possible, what we 
+call labels in the particular context. 
+So, for example, this could be the set of 
+all possible values for wi which would 
+typically be [UNKNOWN] to v if v is the 
+vocabulary that we're looking at. 
+Maybe v union stop, if in addition we 
+have a stop symbol. 
+Our aim is then, is to provide a 
+conditional probability, p of y given x 
+for any x y pair, where x is in the set 
+of possible inputs and y is in the set of 
+possible labels y. 
+And we're going to see how log-linear 
+models build a model of precisely this 
+form. 
+So, let's see how these definitions fit 
+with our first example problem, the 
+language modelling problem. 
+So, in this case, each x is a sequence of 
+i minus 1 words. 
+So, it's of the history as the previous 
+words in the document. 
+And each y is a word wi that we're trying 
+to predict. 
+And of course, given the definitions I 
+showed you on the previous slide, we're 
+trying to estimate the probability of y 
+given x. 
+So, in this case it's p of wi given w1 
+through wi minus 1. 
+And again, script x is a set of all 
+possible document prefixes. 
+And then, put an infinite set, and script 
+y is the set of all possible outcomes at 
+any position role. 
+All possible labels at any position. 
+This is the set of words in the 
+vocabulary. 
+So, a first key idea in log-linear models 
+is going to be the idea of features, and 
+what we'll call feature vector 
+representations. 
+So, here's how this works. 
+I'll first give the abstract definition, 
+and then we'll go through a particular 
+example. 
+So, in general, a feature is going to be 
+some function. 
+So, we're going to have features f1, xy, 
+f2 xy, up to fm xy. 
+We have little m features. 
+So, each feature fk is a function that 
+takes an x, y pair as its inputs. 
+So, x is again, in the set of all 
+possible inputs, y is in the set of all 
+possible labels. 
+Remember, we're trying to model the 
+probability of y given x. 
+So, each one of these features fk for k 
+equals 1 to m, is simply going to take an 
+x, y pairs input and map it to some 
+positive or negative value, some, some 
+real value. 
+So, I'm going to use this R symbol to 
+mean the set of all possible real values. 
+Everything negative values like minus 5 
+or minus 4, positive values, value 0, and 
+so on. 
+So, we could potentially map any x, y 
+pair to any real value. 
+In practice, at least in natural language 
+processing, the features that we often 
+see are what are called binary features 
+or indicator functions. 
+And these features are going to map each 
+x, y pair to either 0 or 1. 
+1is often in, interpreted as true. 
+And 0 is in, interpreted as false. 
+where we consider a feature to be asking 
+a particular question about an x, y pair. 
+We'll see many examples of this in a 
+moment. 
+So, we have these features f1 through fm. 
+It's often convenient to concatenate them 
+into a vector. 
+Okay, so I'm going to use angle brackets 
+to enclose a vector. 
+So, this is one possible vector of 
+dimension 4. 
+The feature vector f of x, y is the 
+vector formed by taking the output of 
+feature 1, and the output of feature 2, 
+and right away up to the output of 
+feature m. 
+So, we now have an m dimensional 
+representation of an x, y pair. 
+And this is often referred to as a 
+feature vector. 
+So, that's all rather abstract. 
+Let's go through a particular example 
+illustrating this kind of definitions. 
+Okay, so again, back to language 
+modelling. 
+Each x is a history, w1 through wy minus 
+1. 
+For example, this portion here, each y is 
+an outcome, for example wy might be 
+model. 
+Okay, it could any word in the 
+vocabulary. 
+And here are some example features and 
+these actually capture the kind of 
+features we saw in the when we considered 
+this example at the start of this 
+lecture. 
+Okay, so f1, xy might be defined to be an 
+indicator function that takes the value 
+either, either 0 or 1, takes the value 1. 
+If y is equal to model, and 0 otherwise. 
+So, this feature could potentially look 
+at any information in x or any 
+information in y. 
+And in this case, it's a very simple 
+feature that simply looks at the identity 
+of the label y, in this case. 
+This might be referred to as a unigram 
+feature. 
+Because it looks at the single word and 
+ignores all contexts, a bit like the 
+unigram estimates we saw in trigram 
+language models. 
+Here's a second feature, f2 x, y. 
+This is 1, if y is equal to model and wi 
+minus 1 is equal to the word statistical. 
+Okay. 
+So, this is what you might think of as a 
+bigram feature. 
+So, what I'm doing here really is 
+replicating the kind of information we 
+see in trigram language models. 
+But we'll soon see how we can go further 
+than trigram language models with this 
+approach. 
+The third feature, f3 of x, y is 1 if y 
+is equals to model. 
+If wi minus 2 is any, wi minus 1 is 
+statistical and 0 otherwise. 
+And so, this is basically a so called 
+trigram feature. 
+Okay, so again, each of these features 
+looks at an x, y pair and return some 
+real value. 
+These are indicator functions or binary 
+features which simply returns 0 or 1 
+depending on whether some question about 
+the x, y pair is true or false. 
+Let's define some more features. 
+Okay. 
+So, here are some others. 
+We could define f4 x, y to be 1 if y is 
+equal to model, and wi minus 2 is equals 
+to the word any. 
+This is often referred to as a skip 
+bigram feature. 
+It's a bigram because it looks at two 
+words. 
+But it's a skip because it skips wi minus 
+1. 
+So, it's looked immediately to the word 
+two words back, ignoring the identity of 
+the one word back. 
+These features can be useful in some 
+contexts. 
+Here's another feature. 
+This is 1 if the word being predicted is 
+model and the previous word is adjective, 
+is an adjective. 
+Assume for the sake of argument here, we 
+have some deterministic function that 
+looks at wi minus 1, and figures out 
+whether it's an adjective or not. 
+We have another feature which looks at 
+the fact that y is equal to model and the 
+previous word ends in the four letters 
+ical, i, c, a, l. 
+That might be a strong indicator of the 
+type of the previous work. 
+We might have a feature looking at the 
+fact, we have y equals model, and the 
+fact that the author of this document was 
+Chomsky. 
+we have feature conditioning on the fact 
+that y is equal to the word model. 
+And that the fact that the word model is 
+not seen in the previous i minus 1 words. 
+We have a feature which looks the fact 
+that y equals model and the fact that 
+grammatical is seen in the previous i 
+minus 1 words. 
+And you can see that you could define 
+many, many features of these types. 
+Which, in every case, look at the label. 
+Okay, so they're, in fact the feature we, 
+we see for reasons, we'll see shortly. 
+Always, in some sense, take the label 
+into account, but they, in addition, 
+consider some context. 
+Okay, some feature of the previous i 
+minus 1 words or some method feature of 
+the data, for example, the author. 
+It's important to think a little more 
+about how we actually define these 
+features in practice. 
+So, in the example I just showed you, we 
+had this feature f3 which was 1 if this 
+particular trigram. 
+Any statistical model was being formed 
+when we look at the x, y pair, and was 0 
+otherwise. 
+In practice, of course, this captures 
+information about just a single trigram. 
+And you would really want features which 
+consider, in some sense, all possible 
+trigrams or all possible bigrams or all 
+possible unigrams. 
+And that's exactly what we do with one 
+important caveat. 
+What you would probably do in practice is 
+the following. 
+You would introduce one trigram feature, 
+for every unique trigram scene in the 
+training data. 
+That is for all triples of words u, v, w 
+seen in the training data, we create a 
+feature which is 1 if we have that 
+trigram u, v, w and 0 otherwise. 
+So, rather than having just 1 trigram 
+feature [NOISE], you might easily have a 
+few million trigram features. 
+And actually, there's no real harm in 
+these models of having a very large 
+number of features. 
+what I have done here, I've just, been 
+slightly careful the number of this 
+feature is going to be defined as N u, v, 
+w, where N u, v, w is just a, a hash 
+function, that maps each trigram to a 
+different unique integer. 
+Okay. 
+So, we've just basically indexed all of 
+the distinct trigrams we see on our 
+training data and included each one of 
+those trigrams as a feature in our model. 
+Notice, key here is we do not include 
+trigrams not seen in training data. 
+One key reason for that is there are 
+simply too many that would lead to a huge 
+number of features. 
+Basically, a feat, a number of features 
+which is basically v cubed, where v is 
+the size of the vocabulary and that's way 
+too many. 
+And the other thing is these unseen 
+trigrams, as we'll see, we don't really 
+have any evidence in which to estimate 
+that parameters. 
+And so, every [UNKNOWN] including in the 
+model. 
+Okay. 
+So, when we see parameters of a 
+log-linear model, we'll see that for each 
+of these different trigrams, we have a 
+parameter. 
+We see how to estimate those parameters 
+from data. 
+We only estimate those parameters for the 
+trigrams that are actually seen in the 
+training data. 
+

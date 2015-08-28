@@ -1,0 +1,347 @@
+Welcome again to the course on Audio
+Signal Processing for Music Applications.
+Last week we talked about
+the Short-Time Fourier Transfer.
+That offered a sound
+representation from which we
+can synthesize sounds without
+losing any information.
+And at the same time it's a good tool for
+understanding, describing and
+transforming sound.
+This week, we go a step further in
+the direction of obtaining a higher level
+representation, that in exchange
+of losing a bit in terms of
+the identity properties of the STFT,
+we gain quite a lot of flexibility, and
+level of abstraction in the representation.
+This is what we call the Sinusoidal model.
+And we'll cover this topic
+in three theory lectures.
+So this is the first one.
+You will first present
+the model, the Sinusoidal model.
+And then talk about how these sinusoids
+can be expressed in the spectrum and
+how can they be identified in
+what we call spectral peaks.
+So the model is quite simple; it's
+just a sum of time varying sinusoids.
+So this equation, we have seen it before.
+But here we are emphasizing two aspects.
+One is the idea of summing
+a finite of number of sinusoids,
+capital R, so we have capital R sinusoids.
+And each of these
+sinusoids is time varying.
+It has an instantaneous and
+a frequency value that changes in time.
+So it changes as a function
+of the time index N.
+But, we're interested in modeling
+the sinusoids in the frequency domain,
+in the spectrum.
+So let's see how that looks like.
+Again, we have seen
+these equations before.
+So if we start from signal x,
+that is a real sine wave, and
+then we take the DFT of the windowed
+version of this sinewave.
+We see that, of course, the sinewave
+can be expressed as the sum of two
+complex sinewaves, that are then
+multiplied by the window we use.
+And, being the sum of
+two exponential sinewaves,
+we can split that into two sumatories,
+separate DFTs.
+So we'll have a DFT of
+the negative frequency and
+a DFT of the positive frequency.
+Each one, again
+multiplyed by a window and
+these complex exponentials
+can be grouped together and
+basically this is the DFT of a shifted
+version of the transform of the window.
+Okay so
+basically, at the end we see that the first
+summatory is the DFT of the function W,
+it's a big W, and the frequency
+index is shifted.
+So we have shifted 
+the window, and is scaled by
+the amplitude of the cosine, by half
+of the amplitude of the cosine.
+And the other element is the
+the same window but
+shifted by the positive frequency and
+also scaled by the same amplitude.
+So if we start from a sinewave, and
+we want to show it, the plot
+of one single spectrum of this windowed
+sinusoid, we can see it like this.
+So this is the positive spectrum, so
+we don't see the two windows,
+we only see the positive one.
+So we're seeing the positive
+frequencies and so
+the contribution
+of the positive exponential.
+And we see the shape of the window that
+we used but
+of course centered at
+the frequency of the sinusoid,
+which is 440 hertz which of course
+we can listen to the sine wave.
+[SOUND] And this is its spectrum,
+so a peak centered at 440 hertz and
+the phase, that during
+the main-lobe is flat,
+that corresponds to the phase of
+that sinewave at location zero.
+Let's make it a little bit more difficult.
+What happens when our sound
+is made up of two sinewaves.
+So these are two sinewaves,
+one at 440 hertz,
+the other at 490 hertz, together, and
+we can also listen to that [SOUND].
+Okay so,
+clearly it sounds like a modulated signal.
+And in the time domain
+we can see these modulations.
+We see the low frequency, which is like
+the modulation, and the high frequency.
+And if we compute the spectrum of that,
+the positive part of that,
+we are seeing the two contributions
+of the two sinusoids, so
+see the two peaks of the two sinusoids.
+And in the phase we see the phases
+of these two sinusoids.
+And now let's show an example
+of a real sound, a sound that
+includes many sinewaves,
+like the sound of an oboe.
+Let's listen to the oboe first.
+[SOUND] Okay, so this is an oboe playing,
+the A4 note so
+which is around,
+fundamental around 440 hertz,
+and in the spectrum we
+clearly see all these
+sinusoids which
+are the harmonics of the sound.
+Here we are only plotting
+the first 4,000 hertz.
+So, we're only seeing
+the first few harmonics,
+this sound has many more harmonics.
+But this a good way to zoom into 
+these shapes of the windows and
+also we see the phase spectrum of that.
+But, how do we detect the frequency,
+amplitude and
+phase of each of the sinewaves?
+A simple way to identify
+a sinusoid in the spectrum is by
+just focusing on the spectral magnitude,
+on its location and on its height.
+So the location is the frequency and the
+height is the amplitude of the sinusoid.
+So, therefore, we consider a sinusoid
+as a peak in the magnitude spectrum.
+And, of course, the issue is that 
+the resolution of a magnitude spectrum is
+is discrete, is finite, and the maximum
+resolution we'll be able to get
+is half of the distance between two
+frequency samples, between two bins.
+So, that's the maximum frequency
+resolution that we'll get in
+measuring a sinusoid.
+But we can do better than that.
+And, a way to do better than that, and
+related to things that we have already
+mentioned, is the idea of zero-padding and
+of spectral interpolation.
+So we'll be able to do zero-padding to get
+a bigger FFT, so that we get more samples.
+And we can also do interpolation
+directly on the resulting samples to
+even refine the value of the frequency and
+amplitude values.
+To detect the spectral peaks we have
+to understand the effect of the window and
+the most important factor
+is the window size.
+So, if we have a particular window, and
+one important concept is the bandwidth
+of the main-lobe in the spectral domain.
+So the bandwidth of
+the main-lobe is B sub f, expressed 
+Hertz, so that would be the main-lobe
+bandwidth of a window in Hertz.
+And that's defined as
+the product of B sub s, so
+the main-lobe width of
+the window expressed in samples,
+multiplied by the sampling-rate and
+divided by the window size.
+So that would be the width of
+the main-lobe, and then if we consider
+a particular delta, of the distance between
+two frequencies that we want to resolve,
+so we have two frequencies
+f sub k plus 1 and f sub k.
+So the absolute value of the difference
+is the delta frequency
+that we want to resolve.
+So what would be the window size,
+capital M, so
+that two main-lobes of
+the window are disjoint; so
+that we can see these two frequencies
+as separate peaks in the spectrum.
+So this equation here
+shows what has to happen.
+So M has to be bigger or
+equal than B sub s, so the number
+of samples of the window, 
+in the main-lobe, multiplied by the
+sampling rate and divided by this delta.
+Or, we can also
+change this delta as the absolute value of
+the difference of these two frequencies.
+But, in many cases this difference
+between the two frequencies corresponds
+to the fundamental frequency, because if
+it's a harmonic sound the distance between
+two consecutive harmonics is equal
+to the fundamental frequency.
+So if we consider the fundamental
+frequency this delta that we want to be
+able to discriminate, then
+the bandwidth in hertz of the main-lobe
+of the window has to be smaller or
+equal than this fundamental frequency.
+So, we see these lobes separate.
+And therefore, capital M, the window size,
+will have to be bigger or
+equal than B sub s multiplied
+by f sub s divided by f sub 0.
+Or if we express the period instead of
+the fundamental frequency,
+we express the
+the cycle length as the period in samples,
+then this M has to be big or equal than
+B sub s, multiplied by the period.
+And the period of the harmonic sound
+expressed in samples;
+which is this capital P.
+So let's show an example,
+let's start from a given window, like
+the Hamming window,
+that B sub s is equal to 4.
+So the main-lobe width is equal to 4 and
+we have a given sampling rate,
+And we have two particular frequencies
+that we want to distinguish, the ones we
+showed before, 440 hertz and
+490 hertz, so the difference is 50 hertz so
+we can calculate capital M that allows
+us to distinguish these two frequencies.
+So capital M will have to be bigger or
+equal than B sub s,
+4, multiplied by sampling rate, 44,100, and
+divided
+by this difference, the absolute value of
+this difference, which is going to be this
+50 hertz, and
+that M will be 3,528 samples.
+So if we take 3,528 samples of this signal and
+we compute the DFT of,
+with some zero padding so
+that we see a smooth spectrum,
+we see this magnitude spectrum.
+Clearly, we see two
+clearly distinct peaks.
+each one corresponding to
+the transform of a Hamming window, and
+of course in the phase spectrum we
+also see the corresponding phases.
+And let's see what happens
+with different sounds.
+So, for example, if we have
+the sound of an oboe, that has
+a particular frequency, which is
+440 hertz, 
+what should be the M, so
+if we take an M of 401 samples,
+these 401 samples basically correspond to
+four periods of this oboe sound, okay?
+And then, so, if we compute
+the DFT of this signal,
+multiplied by a Hamming window, and
+again with zero-padding to get N
+equal to 1024, we see these
+harmonics quite clearly separated,
+so each harmonic corresponds to
+one main-lobe of this Hamming window and
+they're quite clearly one after the other.
+But now, let's see if we increase this
+window size, instead
+of having this 401 sample,
+we have twice as many,
+so we have 801 samples, and
+then we do the same thing,
+we apply the Hamming window and
+then we take the FFT which is larger,
+we see this spectrum.
+And so here
+because we took more samples, the
+the distance that now we
+can discriminate is larger.
+So in fact, we see that the main-lobes
+are narrower than what we even need,
+that is, we even see the side-lobes
+in between the two main-lobes,
+because we took a bigger window size and
+therefore we are able to discriminate
+even more than the fundamental frequency.
+On the topics covered until now there
+are quite bit of references but
+starting from this lecture on
+the techniques are more specific
+to music applications and
+quite a bit less has been published.
+This is good for me, for
+the course, you have to pay more attention
+to what I'm going to be talking about.
+Anyway, so,
+apart from the standard references
+in Wikipedia, you can find,
+a little bit about it.
+And of course, again, on Julius
+references you can find,
+quite a bit more, a more in depth
+discussion about these things.
+And that's all for this lecture.
+We have presented the Sinusoidal Model; a
+sound representation that can be built on
+top of the Short-Time Fourier Transform.
+And that can reduce the amount of
+the spectral information to be considered.
+However to use it we have to understand
+a bit about spectra and about windows.
+Hopefully, you understood
+some of that in this lecture.
+Now we have to complete the explanation
+of how to identify the spectral peaks and
+how to synthesize them, so this will be
+covered in the next two theory lectures.
+So, thanks for your attention.
+

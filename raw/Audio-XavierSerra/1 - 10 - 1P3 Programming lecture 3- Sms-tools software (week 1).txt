@@ -1,0 +1,310 @@
+Welcome again to the course on
+Audio Signal Processing for Music Applications.
+In the last two programming
+classes we introduce python and
+some basic tools of how to read and
+process sounds.
+In this class,
+I want to introduce the SMS tools,
+which are the python tools that
+we have developed for this class.
+And the ones that we will
+really go through and
+try to understand quite deeply.
+SMS comes from Spectral
+Modeling Synthesis.
+And that's a name that I gave to
+these type of tools, a long time ago.
+And so it got stuck,
+and that's what I use.
+So, these tools Are available
+from Github, which is an online
+repository of software, which is a great
+tool and a great community of people.
+So a lot of the software initiative,
+free software initiatives are,
+are using these these repositories.
+So in this the sms-tools you
+can you can go through that and
+you will see several directories
+In the lectures you will see the,
+the slides, and the theory lectures, and
+the code that I use for all the plots from
+the slides, so that might be good for you.
+In the software that's we're going to
+focus now, then there is sounds, so
+where all the sounds that I
+use in class are stored, and
+then a work-space for
+you to work from etc.
+So if we open the, the software directory.
+Here you will see, the main,
+software, for the course.
+So these are the models,
+the software models that we will be using.
+And here you have the DFT,
+the harmonic model, the STFT, etc.,
+all the models that we will
+be talking quite a bit in class.
+And code to apply
+transformation to these models.
+And then the interfaces are the,
+the functions, and
+the files that are used
+to call these models.
+So, this is going to be the functions
+that we are going to be executing.
+Okay.
+And then If we go back here, there is
+readme file that, describes,
+basically, how to install it.
+The first thing, it tells, is that,
+of course, we need item 2.7.
+That we need to install all these
+packages we already did in lecture 1.
+And then that we need to
+compile the C function.
+There is some C functions
+that we need to compile.
+Okay, so, in order to do all that
+the first thing we have to do is to
+download the, the zip file with all this.
+So, if we click download.
+It will just.
+Create a zip file and
+it will save it locally.
+So, you already have done that.
+So, we have now, if we open the terminal
+in the home directory I have
+sms-tools-master which is the directory
+I have created with all this content.
+So if I go to the sms-tools-master I have
+the same content that I have here in,
+in Github, okay?
+And if we continue following the read
+me file, what it tells me is
+that I need to compile these,
+execute this command.
+So let me copy the command.
+And I have to go to the directory software
+models, util functions underscore C.
+Okay, so I need to go to
+the software models util functions,
+and I have to, execute, this command.
+Okay, and I already did it so
+it's, already compiled.
+We should not have any problem with that.
+Okay, so, basically we are ready.
+now, I mean if we don't want to
+go too much into coding,
+we can just execute
+the interfaces as it says here.
+That we presented in the,
+in another class, in a demo class.
+So we can execute the model ui or
+the transformation ui.
+But now what I want to do
+is to go into the models,
+directory, and
+here is where the core models.
+That we will be starting are included.
+So, let's open one of
+them from text editor.
+So, we, we have the Gedit.
+And then let's go into, for example,
+into the software into the models.
+And let's, for example,
+go into the sine model.
+okay?
+So, sine model is one of the models that
+basically analyzes sound,
+as if it was a sum of sinusoids.
+And in this code we have
+at the beginning of course
+Importing the packages that we need, and
+then it has a set of functions, so like
+different functions that implement
+different aspects of the sinusoidal model.
+Okay, let's focus into one of them.
+For example, let's focus on to this,
+sineModelAnal.
+This is the, the function that
+this from an input, which are, all
+these are the input parameters, the main
+one being the input sound as an array.
+And the control parameters
+that we need to have to,
+to decide what analysis to perform.
+Okay, it performs a whole bunch of things.
+It iterates over the whole sound,
+and it returns 3 variables,
+which are basically the frequencies,
+the magnitude and
+the phases of all the sinusoids
+included in this sound.tude and
+Okay?
+So these are big matrixes that store all
+this information.
+And all this is explained
+in this introductory text.
+This comment in which it
+tells us what it does,
+the input parameters, and
+the returning values.
+Okay, but
+to call this function we use another file.
+So, we go to the
+models interface directory,
+and here we will find
+the sine model function.
+And this is the function that we
+actually call in order to perform
+this sinusoidal analysis, okay?
+So this is a file that again,
+it imports the set of packages.
+And then it has one single function.
+Which is called main, and then in order
+for being able to execute these file,
+and not having to call the function that
+is this command here, that basically
+says that when we execute the file,
+it should execute the function main.
+So by default, when we just execute
+this file, it will run this function.
+And all the input parameters
+have default values, so
+it has input file as a default value.
+And it has all the other
+parameters as default values.
+Of course we can go in here, and
+modify all these values, and
+then within that, it performs all
+the steps for the sinusoidal analysis.
+It reads the sound file okay, and
+then it gets analysis window, it performs
+a Short Time Fourier Transform.
+Then it performs a sineModelAnal.
+This is the function that we just saw.
+So, It, it has gotten all the,
+values and variables from all
+these executing beforehand.
+And, so we can just call the function.
+And it returns.
+This three variables that store
+the frequencies, magnitudes,
+and phases of the sinusoids.
+And then we can synthesize the,
+the sound back, okay?
+And then we can write the sound again.
+As an output file.
+By the way, this way of reading and
+writing the sound files,
+is a function of wrapper to
+the SciPy that I talked about
+And in fact if we go to these utility
+functions that are within the models.
+We can go to this function
+the read and write sound file,
+the wavread and the wavwrite and
+basically it just reads.
+The input sound as we had done
+in the previous class, but
+what it does now is it normalizes,
+it converts to a floating point number and
+it normalizes to a value from 1 to
+minus 1, which kind of the convention
+to deal with sounds as floating
+point numbers going from minus 1.
+To one and, in writing the file,
+we have to undo the process so
+we have to create the integer,
+the 16 bit numbers, back.
+Okay, so
+that's an overview of basically what
+this file does, and we can execute it.
+So we can go to the, the interface,
+model's interface page and
+we can just type python and
+we can type this,
+sineModel_funcion.py
+And what these will do,
+is, will execute this main file.
+And it will write, a sound file.
+Where it will write it.
+Well, the first thing you will,
+do, is to plot,
+the analysis result, okay?
+And this is the, the,
+was the display of the input file and
+this is the analysis result and
+this is the output file.
+And basically, it has written a sound file
+into a directory called output_sounds.
+Within this directory.
+So if we look here, if we type ls,
+there's a directory called output
+sounds that has,
+if we type ls output sounds,
+it has this bendir_sineModel,
+which is the resulting file.
+Okay, so
+to play that we just type play, and
+we just put output sounds,
+and we just enter.
+[MUSIC]
+okay.
+So this is the synthesized sound that
+we have generated from these analysis.
+Synthesis, okay?
+Of course,
+this can be done within iPython.
+So with iPython and
+we are within the interactive mode.
+We also can execute this
+file by typing Run.
+And we just type Run,
+sine model and the function.
+And it will do the same thing.
+It will execute that function and
+then it will display the result and
+it will save the sound file, okay?
+The advantage of running it within
+iPython is that, if there is an error.
+Or we can really want to
+explore the intermediate steps
+of the function we can do it.
+We can run a debugger etcetera, etcetera.
+So that's going to be quite useful for us.
+Okay.
+And that's basically all I
+wanted to mention.
+So in this class.
+What we have gone through is
+explanation of the sms-tools,
+which is hosted within Github.
+So feel free to go there and
+download it and install it.
+In order to install it,
+the only thing we have to do apart from
+the previous installation with it.
+Was to compile the,
+the C functions with cython.
+And briefly today we just describe one
+of the models that we going to be
+analyzing, which is the sine model.
+We have executed and we have seen how.
+We can analyze and
+synthesis a sound from it.
+Okay, so that was it.
+That was a, a brief overview
+of what are the sms-tools.
+And together with the other class, the
+demo class in which I went through
+the, interface, and we actually
+analyze and transform some sounds.
+I hope you got an idea of
+what are these tools and
+the kinds of things that
+we will learn in class.
+So, thank you very much and
+I see you next class.

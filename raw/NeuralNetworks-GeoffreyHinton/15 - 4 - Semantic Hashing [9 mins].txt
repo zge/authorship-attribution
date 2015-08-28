@@ -1,0 +1,225 @@
+In this video, I'm going to describe a 
+technique called semantic hashing that 
+provides an extremely efficient way of 
+finding documents similar to a query 
+document. 
+The idea is to convert the document into 
+a memory address. 
+And in that memory to organize things so 
+that if you go to a particular address 
+and look at the nearby addresses, you'll 
+find documents that are very similar. 
+This is much like a supermarket where if 
+you go to a location where a particular 
+product is stored and look around, you'll 
+find similar products. 
+People have known for a long time that if 
+you could get binary descriptors of 
+images, you'd have a very good way of 
+retrieving images quickly. 
+Some binary descriptors are easy to get. 
+For example, is it an indoor scene or an 
+outdoor scene? 
+Is to color image or black and white 
+image? 
+But it's much harder to get a list of 
+say, 30 binary descriptors which are more 
+or less orthogonal to one another, which 
+is what we really need. 
+This is a problem that machine learning 
+can help us with. 
+We're going to start by looking at the 
+equivalent problem for documents, but 
+then we're going to apply it to images. 
+So consider, instead of getting real 
+valued codes for documents, 
+getting binary codes, from the word 
+cancer documents. 
+We do this by training a deep 
+auto-encoder that has a logistic units in 
+it's code layer. 
+That by itself is not sufficient because 
+the logistic units will be used in their 
+middle ranges where they have real values 
+in order to convey as much information as 
+possible about the 2,000 word counts. 
+To prevent that, we add noise to the 
+inputs to the code units during the fine 
+tuning stage. So, we first train it as a 
+stack of restricted Boltzmann machines. 
+We can unroll these Boltzmann machines by 
+using the transposes of the white 
+matrices for the decoder, and then we 
+fine tune it with back propagation. 
+And as we're doing that, we add 
+additional Gaussian noise to the inputs 
+to the code units. 
+In order to be resistant to that noise, 
+the code units need to be either firmly 
+on or firmly off. 
+And so the noise will encourage the 
+learning to avoid the middle region of 
+the logistic where it conveys a lot of 
+information, but it's very sensitive to 
+noise in its inputs. 
+At test time, we simply threshold the 
+logistic units in the middle layer to get 
+binary values. 
+So, if we can train an auto-encoder like 
+this, we will be able to convert the 
+counts for a bag of words into a small 
+number of binary values. 
+In other words, we'll have learned a set 
+of binary features that are good for 
+reconstructing the bag of words. 
+Later on, Alex Krizhevsky discovered that 
+we don't actually have to add Gaussian 
+noise to the inputs to the 30 code units. 
+Instead, we can just make them stochastic 
+binary units. 
+So, during the forward pass, we 
+stochastically pick a binary value using 
+the output of the logistic. 
+And then, during the backward pass, we 
+pretend that we've transmitted the real 
+value probability from the logistic, 
+and that gives us a smooth gradient for 
+back propagation. 
+Once we've got these short binary codes, 
+we could of course do a sequential search 
+where for each known document, we store a 
+code. 
+And then when a query document arrives, 
+we first extract its code, if it's not 
+one of our known documents, and then we 
+compare the code with the codes of all 
+the stored documents. 
+The comparisons can be very fast, because 
+they can use special bit operations on a 
+typical CPU which can compare many bits 
+in parallel. 
+But we have to go through a very long 
+list of documents, possibly billions. 
+There's a much faster thing we can do, 
+there's a much faster thing we can do. 
+We can treat the code as if it was a 
+memory address. 
+So, the idea is that we take a document, 
+and we use our deep auto-encoder as a 
+hash function that converts a document 
+into a 30 bit address Now, we have a 
+memory with 30 bit addresses. 
+And in that memory, each address will 
+have a pointer back to the documents that 
+have that address. 
+If several documents have the same 
+address, we can make a little list there. 
+Now, if the auto-ncoder is successful in 
+making similar documents have similar 
+addresses, we have a very fast way of 
+finding similar documents. 
+We simply take the query document, you go 
+to the address in memory that corresponds 
+to its binary code, and then you look at 
+nearby addresses. 
+In other words, you start flipping bits 
+in that address to access nearby 
+addresses. 
+And you could imagine a little humming 
+ball of nearby addresses that differ by 
+just a few bits. 
+What we expect to find at those nearby 
+addresses is semantically similar 
+documents. 
+So, we've completely avoided searching a 
+big list. 
+We simply compute a memory address, flip 
+a few bits, and look up the similar 
+documents. 
+It's extremely efficient especially if we 
+have a very large database of say, a 
+billion documents. 
+We've completely avoided the serial 
+search through a billion items. 
+I sometimes call this supermarket search 
+because it's like what you would do in a 
+supermarket. 
+Suppose you went to an unfamiliar 
+supermarket and you wanted to find 
+anchovies. 
+You might ask the teller at the 
+supermarket, where do you keep the cans 
+of tuna fish? 
+You'd then go to that address in the 
+supermarket and you'd look around. 
+Hopefully, near there is things like cans 
+of salmon and maybe cans of anchovies. 
+Of course, if you're unlucky, the 
+anchovies might have been stored in a 
+completely different place, 
+next to the pizza toppings. 
+And that's the downside of this kind of 
+search. 
+Known as supermarket, it's essentially a 
+2-D surface. 
+So, it's really a 1-D string of shells, 
+which have height and that gives you 2-D, 
+and so you only have two dimensions in 
+which to locate things. And that's not 
+sufficient to put all the things you'd 
+like to be near one another, near one 
+another. 
+You'd like, for example, to have the 
+vegetarian version of things nearby, or 
+the Kosher version of things nearby, or 
+the slightly out of date version of 
+things nearby. And in 2-D you can't do 
+all that. 
+But what we have here is a 30 dimensional 
+supermarket and that's a hugely more 
+complex space where it's very easy to 
+have things near an item for many 
+different reasons because of similarity 
+along many different dimensions. 
+Here's another view of what we're doing 
+in semantic haching. 
+Most of the first retrieval methods work 
+by intersecting stored lists that are 
+associated with cues extracted from the 
+query. 
+So, Google, for example, will have a list 
+of all the documents that contain some 
+particular rare word. 
+And when you use that rare word in your 
+query, they will immediately have access 
+to that list. 
+They then have to intersect that list 
+with other lists in order to find a 
+document that satisfies all the terms in 
+your query. 
+Now, computers actually have special 
+hardware that can intersect 32 very long 
+lists in a single machine instruction. 
+The hardware is called the memory bus. 
+So, each bit in a 32-bit binary address 
+specifies a list of half the addresses in 
+memory. 
+For example, if the bit is on and it's 
+the first bit in the address, it 
+specifies the top half of memory. 
+If the bit is off, it specifies the 
+bottom half of memory. 
+What the memory bus is doing is 
+intersecting 32 lists to find the one 
+location that satisfies all 32 values in 
+the binary code. 
+So, we can think of semantic hashing as a 
+way of using machine learning to map the 
+retrial problem onto the type of list 
+intersection computer's good at. 
+As long as our 32-bits correspond to 
+meaningful properties of documents or 
+images, 
+then we can find similar ones very fast 
+with no search at all. 
+

@@ -1,0 +1,144 @@
+As a final example of a symbol table
+client, we'll take a look at a
+mathematical application where we want to
+implement sparse vectors and matrices. So,
+this is a standard matrix vector
+multiplication that you learn in Math
+where we have a square matrix and a column
+vector and we want to do a dot product of,
+of first row with the column vector to get
+the first entry in the result. So, in this
+case, they're all zero, except for 0.04
+0.9 which is 0.36. And then similarly, dot
+product of this with that column is 0.297
+and so forth. So standard implementation
+of this is quite easy. We have a
+two-dimensional matrix one-dimensional
+column vector for the multiplicand and the
+result. And then they get initialized in
+some way, but the main computation is a
+pair of nested four loops for each row in
+the matrix we have to go through each
+entry in the column vector and compute a
+running sum of for that row in the matrix,
+that corresponding expanding entry with
+the entry in the column and them, keep the
+running sum and then that's the result
+that we put in the result column factor
+for every value of i. And the key thing
+about this standard implementation that
+it's two nested four loops that each run
+up to N. So, that's N^2 or quadratic
+running time. And that's fine in typical
+applications when the matrix is small, or
+when there's lots of entries in the
+matrix. But the fact is that in many
+practical applications, the matrices are
+what's called sparse. They, most of the
+entries are zero. And so, symbol tables
+provide us with a way to provide a more
+efficient implementation of, of this
+process when we have lots of zero entries.
+So in a typical thing, say, maybe the
+matrix dimension would be 10,000, and
+maybe there would only be ten non-zero
+entries per row. Or, even nowadays you
+might have matrices that are, are even
+bigger. 10,000 by 10,000 if, if there was,
+if it was full, that would be a billi on
+or 100 million entries. And so that's
+definitely going to be costly eh, if
+you're doing this operation a, a lot. And
+the idea is to cut down on that cost by
+taking advantage of idea that there's a
+lot of zeros. So let's start by just
+looking at vectors. So the standard
+representation that we use for vector is
+to simply use a one dimensional array. We
+have constant time access to every
+element, but the space is proportional to
+N. So, even if there's a lot of zeros we,
+we still have to take the space to store
+them all. Instead, we're going to use a
+symbol table representation where our key
+is the index and the value is the entry.
+And we just use that for every non-zero
+entry in the vector. So, this has got the
+same amount of information. It says that
+index one has got 0.36, index five also
+has 0.36, index fourteen has 0.18 and so
+forth. But the space is proportional
+instead of to N, it's just proportional to
+the number of non-zero entries which
+again, in typical applications, may be
+way, way less. And so now, just we, we
+know we have a symbol table implementation
+that has efficient iterator. And also
+access is not bad. It's just that we're
+able to do it with way less space. So,
+here's what the implementation of a sparse
+vector might look like. So first thing is
+the representation is going to be a symbol
+table. And in this case, we might as well
+use a hash table because the order in
+which we process things is not important.
+Uh-huh, we just want to get at the, all
+the non-zero entries. So the constructor
+is going to create in this [cough] symbol
+table. Just a new symbol table that
+associates integer indices with double
+values. So, the put which is to store a
+value associated with an index i, is just
+put into that hash table, associate key i
+with value x. Associate an integer with a
+double. And get I'll return zero if the
+index key is not in the symbol table. We
+didn't, that's the whole poin t was, we
+don't represent zeroes. Other, otherwise
+it returns the value associated with the
+index. And the iterable just returns all
+the key to iterate. And the most important
+thing is that if we want to do a dot
+product with a vector, say, then the time
+that it takes is only proportional to the
+number of non-zero keys. The zero keys are
+going to be zero on the dot product so
+what we're going to do is take the item
+key of the vector and multiply it by
+whatever value we get for the non-zero
+entries. So, it's a dot product that takes
+time proportional to the number of
+non-zero entries in the vector. And, and
+that's going to be important in the use of
+a matrix. So instead of using the standard
+matrix representation, where every row of
+a matrix is an array, that's what a two
+dimensional array is and the space is
+proportional to N^2. Now we're going to
+use a sparse matrix representation, where
+each row of the matrix is a sparse vector.
+We can iterate through the elements in, in
+constant time, and with a hash table, we
+can get at them in near constant time and
+then constant time in the average. But the
+space is only proportional to the number
+of non-zero elements plus N for the extra
+symbol table overhead. So, those are
+independent symbol table objects. But they
+allow us to have a much more efficient
+matrix multiplication method. So now if we
+have a sparse matrix times a vector our
+running time is going to be constant for
+each row or proportional to the number of
+non-zero entries for each row which means
+that the running time is going to be
+linear for a sparse matrix just by the use
+of a symbol table. And this clearly can
+make the difference between being able to
+address a huge problem. If we have a
+10,000 by 10,000 matrix we can get it done
+nearly instantly linear time versus
+10,000^2. If we now run out of space, we
+might run out of time. But with the symbol
+table implementation we can ef ficiently
+process huge sparse

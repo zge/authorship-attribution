@@ -1,0 +1,250 @@
+Some of the most popular reason algorithms
+for relation extraction are semi
+supervised or unsupervised algorithm.
+Let's look at them. [sound]. What happens
+if you don't have a large training set,
+but what you have instead are maybe just a
+couple of seed examples, or maybe you have
+a couple of high-precision patterns? Can
+you use those seeds to do something
+useful? In the seed-based or bootstrapping
+approaches to relation extraction, we use
+the seeds to directly learn how to
+populate a relation. The intuition of the
+seed based method from Hersh 1992 is to
+gather a set of seed pairs that have a
+relation. And then iterate the following.
+We find sentences with these pairs. We
+look at the context between or around the
+pairs, look at the words before or after,
+or in the relation itself. And we
+generalize this context to create some
+patterns. We use the patterns to search
+for more pairs. If we're on the web, we're
+searching the web. If we're in a large
+corpus, we look in this corpus. We find
+more pairs, and now we just iterate. We,
+we take, these pairs. We find sentences
+that have them. We find more patterns, we
+generalize the patterns and so on, in this
+iterative loop. So suppose we're looking
+for where famous authors are buried, and
+we know that Mark Twain is buried in
+Elmira New York. So we might start with
+that single C tuple. We might grap or
+google on the web for all environment to
+that C tuple. So we might find sentences
+like these Mark Twain is buried in Elmira,
+the grave of Mark Twain is in Elmira,
+Elmira is Mark Twain's final resting place
+and then we take out the actual entities
+and create little variables. So we learn
+that X is buried in y is a pattern or the
+grave of X's and Y's are pattern or Y's
+X's final resting place. So we learn these
+kind of patterns we take those patterns
+grap from mark tuple and then we iterate.
+This approach was first applied in 1998 by
+Sergi Brinn, who looked at the task of
+extracting author book pairs. So we might
+have authors like Isaac Asimov and the
+Robots of Dawn and William Shakespeare and
+the Comedy of Errors. So, first we might
+find instances, so imagine for Comedy of
+Errors we happen to find these four
+instances the Comedy of Errors by William
+Shakespeare was, the Comedy of Errors by
+William Shakespeare is, The Comedy of
+Errors was one of William Shakespeare's
+earliest attempts, and so on. And now we
+extract patterns from these, and one way
+that... To do this is to group all these
+patterns by what's in the middle. So these
+two both have comma by in the middle. And
+now we take the longest. Common prefix or
+suffix of the, of the before and after
+parts. So both of these have nothing
+before. And both of these have a comma
+after. So we'll extract a pattern saying
+we have an X followed by comma by, and
+then a Y, followed by a comma. Or in these
+two patterns, they both have comma one up
+in the middle and they both have nothing
+before, and they both have an's
+afterwards. We can extract the pattern x
+and then comma one of and then y and
+then's. And again, we iterate, now that
+we've got some new patterns and we find
+new seeds that match that pattern and can,
+and we continually iterate. The Brin
+approach, was improved in the snowball
+algorithm. Similar itera of algorithm and
+similar kinds of grouped instances to
+extract patterns and the extra intuition
+of snowball was the requirement that X and
+Y be named entities. So in the, in the
+[inaudible] algorithm, X and Y could be
+and string. Now we're gonna add the
+intuition that each of those things have
+to be a particular named entity. That's
+going to help us, because we know we have
+a relation between organization and
+location. And, again, we extract words
+[inaudible] in between or before or after
+the two patterns. And the [inaudible]
+algorithm also computed a confidence value
+for each pattern, so that's kind of a new
+intuition. Another semi supervised
+algorithm extends both of these ideas by
+combining the booth trapping algorithms
+that we saw with the seed based methods,
+with the supervised learning algorithms we
+saw of a previous lecture. So instead of
+five seeds in a distant supervision
+algorithm, we take a large database and we
+get a huge number of seed examples. Now
+from those huge number of seeds we have a
+big database. We could have hundreds of
+thousands of examples. We create lots and
+lots of features and now instead of
+iterating. We simply take all of those
+features and build a big supervise
+classifier, supervised by all these facts
+that we know are true in our large
+database. So, like supervised
+classification, in distance supervision we
+are learning a classifier with lots of
+features, that's supervised by the
+detailed, hand-created knowledge in some
+database, but we're not having to do the
+complex, [inaudible] expanding of patterns
+that we saw in the C based method. But
+like unsupervised classification, distance
+supervision lets you use lots and lots of
+unlabeled data and it's not sensitive to
+the genre issues that you might have in
+supervised classification. So let's see
+how it works. For each relation. Let's
+see. We're trying to distract the born in
+relation. We go to each tuple in some big
+database of the Bornin relations, we have
+lots of Bornin relations. Edward Hubble,
+born in Marshfield, Albert Einstein, born
+in Ulm. We find sentences in some large
+corpus, let's say we're using the web,
+that have both entities, and here's a
+bunch of sentences we might find, Hubble
+was born in Marshfield, Einstein born
+1879, Ulm, Hubble's birthplace in
+Marshfield, and so on. Lot's of sentences.
+And now from all of those sentences, for
+all of those different entities we extract
+frequent features, so we might parse the
+sentences, we might just use the words in
+between. We might have some [inaudible],
+we might have part of speech tags, all
+sort of things, we extract lots amounts of
+features. And now, we take all those
+features and do exactly what we did for
+supervised classification. We have a ton
+of features. And we have a large training
+set. And now we just train a supervised
+classifier. We'll need, like any
+supervised classifier, we need examples in
+the training set of positive and negative
+instances. We extract our positive
+instances from what we've seen in the
+database. So person, a particular person
+Albert Einstein born in [inaudible] is a
+positive instance. So from our supervised
+classifier we can get a probability of the
+born in relation for a particular data
+point and now what we can condition that
+on all sorts of features we can extract
+from each sentence, so a huge number of
+features. Most recently there's been a
+number of algorithms for doing
+unsupervised relation ex, extraction.
+Often called open information extraction.
+Where the goal is to extract relations
+from the web with no training data and no
+realistic relation. We just go to the web
+and pull information out. And here's the,
+the [inaudible] algorithm. Called the text
+runner algorithm. [sound] They first used.
+Parse data to train a classifier to decide
+if a particular relation [inaudible] is
+trustworthy or not. And so they have a
+small amount of parse data where they can
+use very expensive parse features to
+decide that a subject and a verb and an
+object are in a, likely to be in a
+relation. Train a classifier that can do
+that [inaudible] any relation. And now,
+they walk through the very large corpus,
+let's say it's the web, in a single pass,
+and they just extract any relation between
+NPs. And we keep them if the trustworthy
+classifier says this is likely to be a
+relation between the two entities. And
+then we rank these relations based on
+redundancy. If we. Relation occur and a
+lot of times between 2's and 3's in
+different websites when we guess this is a
+real relation. And this open information
+extraction algorithm extracts relations
+like, FCI specializes in software
+development or Tesla invented coil
+transformer, and so on, where we can
+extract a virtually infinite number of
+possible relations between any entities.
+All we have to do is see them often enough
+times on the web. How do we evaluate the
+semi-supervised and the unsupervised
+relation extraction algorithms. So since,
+all of these are extracting totally new
+relations from the web or from some large
+corpus, there is no gold set of correct
+instances. We can't pre-label the web,
+with all the relations that are on it. If
+we could do that, we'd be done, and that
+means that we can't compute precision,
+because we don't know which of the new
+relations we've extracted are correct, and
+we can't complete, compute recall, because
+we don't know which ones we missed. So
+what do we do? We can compute an
+approximate precision. And we do this by
+drawing a random sample of relations from
+the output of the system and we just check
+the precision of those manually. So we
+take some random sample, we pull out some
+the relations in that sample and we
+measure how many of those were correct and
+that will tell us an estimate of the
+precision of the system. And we can also
+do that at different levels of recall. So
+we could take let's say our, our relations
+are ranked and we've got a probability.
+There's probably a ranking. We could take
+the top 1,000 by that ranking, compute the
+precision for some sample of 100 of those,
+or take the top 10,000, compute the
+precision for some sample of 100 of those
+and so on, and get the precision at
+different levels of recall. So in each
+case we're taking a random sample. But
+there's no way to evaluate the actual
+recall, the complete recall of the system
+without labeling the entire database
+which, of course, we can't do. So semi
+supervised and unsupervised algorithms for
+the entity extraction are the two most
+exciting areas in model research and
+extracting relations and in general the
+use of rules with the entities to extract
+relations the use of supervised machine
+learning and these new unsupervised
+approaches are always to solve the very
+important task in relation extraction one
+of the core parts of information

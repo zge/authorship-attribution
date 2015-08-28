@@ -1,0 +1,583 @@
+[SOUND] This lecture is about
+the text retrieval problem.
+This picture shows our overall plan for
+lectures.
+In the last lecture, we talked about
+the high level strategies for text access.
+We talked about push versus pull.
+Search engines are the main tools for
+supporting the pull mode.
+Starting from this lecture,
+we're going to talk about the how
+search engines work in detail.
+So first,
+it's about the text retrieval problem.
+We're going to talk about
+the three things in this lecture.
+First, we'll define text retrieval.
+Second, we're going to make
+a comparison between text retrieval and
+the related task, database retrieval.
+Finally, we're going to talk about the
+document selection versus document ranking
+as two strategies for
+responding to a user's query.
+So what is text retrieval?
+It should be a task that's familiar
+to most of us because we're using web
+search engines all the time.
+So text retrieval is basically a task
+where the system would respond
+to a user's query with relevant lock-ins,
+basically through
+supported querying as one way to implement
+the poor mold of information access.
+So the scenario's the following.
+You have a collection of text documents.
+These documents could be all
+the web pages on the web.
+Or all the literature articles
+in the digital library or
+maybe all the text files in your computer.
+A user will typically give a query to the
+system to express the information need.
+And then the system would return
+relevant documents to users.
+Relevant documents refer to those
+documents that are useful to the user who
+typed in the query.
+Now this task is a often
+called information retrieval.
+But literally, information retrieval
+would broadly include the retrieval of
+other non-textual information as well.
+For example, audio, video, et cetera.
+It's worth noting that text
+retrieval is at the core of
+information retrieval in the sense
+that other medias such as
+video can be retrieved by
+exploiting the companion text data.
+So for example,
+can the image search engines actually
+match a user's query with
+the companion text data of the image?
+This problem is also called the,
+the search problem,
+and the technology is often called
+search technology in industry.
+If you ever take on course in databases,
+it'll be useful to pause
+the lecture at this point and
+think about the differences between
+text retrieval and database retrieval.
+Now these two tasks
+are similar in many ways.
+But there are some important differences.
+So, spend a moment to think about
+the differences between the two.
+Think about the data and information
+managed by a search engine versus
+those that are man,
+managed by a database system.
+Think about the difference between
+the queries that you typically specify for
+a database system versus the queries that
+typed in by users on the search engine.
+And then finally think about the answers.
+What's the difference between the two?
+Okay, so
+if we think probably the information out
+there are managed by the two systems.
+We will see that in text retrieval,
+the data is unstructured, it's free text.
+But in databases, they are structured
+data, where there is a clear defined
+schema to tell you this column
+is the names of people and
+that column is ages, et cetera.
+In unstructured text,
+it's not obvious what are the names
+of people mentioned in the text.
+Because of this difference,
+we can also see that text information
+tends to be more ambiguous.
+And we'll talk about that in the natural
+language processing lecture.
+Whereas in databases, the data tend
+to have well-defined semantics.
+There is also important
+difference in the queries, and
+this is partly due to the difference
+in the information, or data.
+So text queries tend to be ambiguous,
+whereas in their research,
+the queries are particularly well-defined.
+Think about the SQL query,
+that would clear the specify
+what records to be returned.
+So it has very well defined semantics.
+Queue all queries or naturally ending
+queries tend to be incomplete.
+Also in that it doesn't really,
+fully specify what documents
+should be retrieved.
+Whereas, in the database search,
+the SQL query
+can be regarded as a computer
+specification for what should be returned.
+And because of these differences,
+the answers would be also different.
+In the case of text retrieval,
+we're looking for relevant documents.
+In the database search,
+we are retrieving records or
+matched records with the SQL query,
+more precisely.
+Now in the case of text retrieval,
+what should be the right answers to
+a query is not very well specified,
+as we just discussed.
+So it's unclear what should be
+the right answers to a query.
+And this has very important consequences,
+and
+that is text retrieval is
+an empirically defined problem.
+And so this a problem because
+if it's empirically defined,
+then we cannot mathematically prove one
+method is better than another method.
+That also means we must rely
+on emperical evaluation
+more than users to know
+which method works better.
+And that's why we have one lecture,
+actually more than one lectures
+to cover the issue of evaluation.
+Because this is a very important topic for
+search engines.
+Without knowing how to evaluate
+an algorithm appropriately,
+there's no way to tell whether we
+have got the better algorithm or
+whether one system is better than another.
+So now let's look at
+the problem in a formal way.
+So this slide shows a formal formulation
+of the text retrieval problem.
+First, we have our vocabulary set which
+is just a set of words in a language.
+Now here,
+we're considering just one language, but
+in reality on the web there might
+be multiple natural languages.
+We have text that are in
+all kinds of languages.
+But here for simplicity, we just
+assume there is one kind of language.
+As the techniques used for
+retrieving data from multiple languages,.
+Are more or
+less similar to the techniques used for
+retrieving documents in one language.
+Although there is important difference,
+the principles and
+methods are very similar.
+Next we have the query,
+which is a sequence of words.
+And so here you can see the query
+is defined as a sequence of words.
+Each q sub i is a word in the vocabulary.
+A document is defined in the same way.
+So it's also a sequence of words.
+And here,
+d sub ij is also a word in the vocabulary.
+Now typically, the documents
+are much longer than queries.
+But there are also cases where
+the documents may be very short.
+So you can think about the,
+what might be a example of that case.
+I hope you can think of,
+of twitter search, all right?
+Tweets are very short.
+But in general,
+documents are longer then the queries.
+Now, then we have
+a collection of documents.
+And this collection can be very large.
+So think about the web.
+It could, could be very large.
+And then the goal of text retrieval is
+you'll find the set of relevant documents,
+which we denote by R of q,
+because it depends on the query.
+And this is, in general, a subset of
+all the documents in the collection.
+Unfortunately, this set of random
+documents is generally unknown,
+and usually depend in the sense that for
+the same query typed
+in by different users, the expected
+relevant documents may be different.
+The query given to us by
+the user is only a hint
+on which document should be in this set.
+And indeed, the user is generally unable
+to specify what exactly should be in
+the set, especially in the case of a web
+search where the collection is so large.
+The user doesn't have complete
+knowledge about the whole collection.
+So, the best a search system can do is
+to compute an approximation of
+this relevent document set.
+So we denote it by R prime of q.
+So, formally, we can see the task
+is to compute this R prime of q,
+an approximation of
+the relevant documents.
+So how can we do that?
+Now, imagine if you are now asked
+to write a program to do this.
+What would you do?
+Now think for a moment.
+Right, so these are your input.
+With the query, the documents and
+then you will have computed
+the answers to this query,
+which is set of documents that
+would be useful to the user.
+So how would you solve the problem?
+In general there are two
+strategies that we can use.
+All right, the first strategy
+is to do document selection.
+And that is, we're going to have
+a binary classification function, or
+binary classified.
+That's a function that
+will take a document and
+query as input, and
+then give a zero or one as output,
+to indicate whether this document
+is relevant to the query, or not.
+So in this case, you can see the document.
+The, the relevant document
+set is defined as follows.
+It basically, all the documents that
+have a value of one by this function.
+And so in this case,
+you can see the system must have decided
+if a document is relevant or not.
+Basically, that has to say
+whether it's one or zero.
+And this is called absolute relevance.
+Basically, it needs to know exactly
+whether it's going to be useful
+to the user.
+Alternatively, there's another
+strategy called document ranking.
+Now in this case,
+the system is not going to make a call
+whether a document is relevant or not.
+Rather, the system's going to
+use a real value function, f,
+here that would simply give us a value.
+That would indicate which
+document is more likely relevant.
+So it's not going to make a call whether
+this document is relevant or not,
+but rather it would say which
+document is more likely relevant.
+So this function then can be
+used to rank the documents.
+And then we're going to let the user
+decide where to stop when the user looks
+at the documents.
+So we have a threshold,
+theta, here to determine
+what documents should be
+in this approximation set.
+And we're going to assume that all
+the documents that are ranked above this
+threshold are in the set.
+Because in effect, these are the documents
+that we delivered to the user.
+And theta is a cutoff
+determined by the user.
+So here we've got some collaboration from
+the user in some sense because we
+don't really make a cutoff, and
+the user kind of helped
+the system make a cutoff.
+So in this case, the system only needs
+to decide if one document is more likely
+relevant than another.
+And that is, it only needs for
+determined relative relevance as
+opposed to absolute relevance.
+Now you can probably already
+sense that relevant,
+relative relevance would be easier
+to determine the absolute relevance.
+Because in the first case,
+we have to say exactly whether
+a document is relevant or not, right?
+And it turns out that ranking is indeed
+generally preferred to document selection.
+So let's look this these two
+strategies in more detail.
+So this pictures shows how it works.
+So on the left side,
+we see these documents.
+And we use the pluses to
+indicate the relevant documents.
+So we can see the true relevant
+documents here consists
+this set of true relevant documents
+consists of these pluses, these documents.
+And with the document selection function,
+we can do,
+basically classify them into two groups,
+relevant documents and non-relevant ones.
+Of course, the classifier will not be
+perfect, so it will make mistakes.
+So here we can see in the approximation of
+the relevant documents we have
+got some non-relevant documents.
+And similarly, there's a relevant document
+that that's misclassified as non-relevant.
+In the case of document ranking,
+we can see the system seems like
+simply ranks all the documents in
+the descending order of the scores.
+And we're going to let the user stop
+wherever the user wants to stop.
+So if a user wants to examine more
+documents, then the user will
+go down the list to examine more and
+stop at the lower position.
+But if the user only wants to
+read a few random documents,
+the user might stop at the top position.
+So in this case,
+the user stops at d4, so the effect,
+we have delivered these
+four documents to our user.
+So as I said,
+ranking is generally preferred.
+And one of the reasons is
+because the classifier,
+in the case of document selection,
+is unlikely accurate.
+Why?
+Because the only clue is usually
+the query.
+But the query may not be accurate, in the
+sense that it could be overly constrained.
+For example, you might expect the relevant
+documents to talk about all these
+topics you, by using specific vocabulary,
+and as a result,
+you might match no random documents,
+because in the collection,
+no others have discussed the topic
+using these vocabularies.
+All right.
+So in this case,
+we'll see there is this problem of
+no relevant documents to return in
+the case of overly constrained query.
+On the other hand, if the query is
+under constrained, for example,
+if the query does not have sufficient
+discriminating words you'll
+find in relevant documents,
+you may actually end up having.
+over delivery.
+And this is when you thought these
+words might be sufficient to
+help you find the relevant documents, but
+it turns out that they're not sufficient.
+And there are many distraction
+documents using similar words.
+And so this is the case of over delivery.
+Unfortunately, it's very hard to find the
+right position between these two extremes.
+Why?
+Because, when the users looking for
+the information in general,
+the user does not have a good knowledge
+about the the information to be found.
+And in that case, the user does
+not have a good knowledge about
+what vocabularies will be used
+in those random documents.
+So it's very hard for
+a user to pre-specify
+the right level of of constraints.
+Even if the class file is accurate,
+we also still want to rank these
+relevant documents because they
+are generally not equally relevant.
+Relevance is often a matter of degree.
+So we must prioritize these documents for
+user to exam.
+And this, note that this
+prioritization is very important,
+because a user cannot digest
+all the contents at once.
+The user generally would have to
+look at each document sequentially.
+And therefore, it would make
+sense to feed users with the most
+relevant documents, and
+that's what ranking is doing.
+So for these reasons ranking
+is generally preferred.
+Now, this preference also has
+a theoretical justification, and
+this is given by the probability
+ranking principle.
+In the end of this lecture
+there is a reference for this.
+This principal says, returning a ranked
+list of documents in descending order of
+probability, that a document
+is relevant to the query,
+is the optimal strategy under
+the following two assumptions.
+First, the utility of a document to a user
+Is independent of the utility
+of any other document.
+Second, a user would be assumed to
+browse the results sequentially.
+Now it's easy to understand why
+these two assumptions are needed,
+in order to justify for
+the ranking, strategy.
+Because, if the documents are independent,
+then we can evaluate the utility
+of each document that's separate.
+And this would allow us to compute
+a score for each document independently.
+And then we're going to rank these
+documents based on those scores.
+The second assumption is to say that the
+user would indeed follow the rank list.
+If the user is not going to follow
+the ranked list, is not going to examine
+the documents sequentially, then obviously
+the ordering would not be optimal.
+So under these two assumptions, we can
+theoretically justify the ranking strategy
+is in fact the best that you could do.
+Now I've put one question here.
+Do these 2 assumptions hold?
+Now I suggest you to pause the lecture for
+a moment to think about these.
+Now can you think of some
+examples that would suggest
+these assumptions aren't necessarily true?
+Now if you think for
+a moment you may realize none of
+the assumptions is actually true.
+For example in the case of
+independence assumption, we might have
+identical documents that have similar
+content or exactly the same content.
+If you look at each of them alone,
+each is relevant.
+But if the user has already seen
+one of them, we assume it's
+generally not very useful for the user
+to see another similar or duplicate one.
+So clearly the utility of
+a document is dependent
+on other documents that the user has seen.
+In some other cases, you might see
+a scenario where one document that may not
+be useful to the user, but when three
+particular documents are put together,
+they provide answer to
+the user's question.
+So this is collective relevance.
+And that also suggests that
+the value of the document
+might depend on other documents.
+Sequential browsing generally would make
+sense if you have a ranked list there.
+But even if you have a run list,
+there is evidence showing that
+users don't always just go strictly
+sequentially through the entire list.
+They sometimes would look at
+the bottom for example, or skip some.
+And if you think about the more
+complicated interfaces that would possibly
+use like, two dimensional interface
+where you can put additional information
+on the screen, then sequential browsing
+is a very restrictive assumption.
+So the point here is that,
+none of these assumptions is really true,
+but nevertheless,
+the probability ranking principle
+establishes some solid foundation for
+ranking as a primary task for
+search engines.
+And this has actually been the basis for
+a lot of research work in
+information retrieval.
+And many algorithms have been
+designed based on this assumption.
+Despite that the assumptions
+aren't necessarily true.
+And we can, address this problem by
+doing post processing of a ranked list.
+For example, to remove redundancy.
+So to summarize this lecture,
+the main points that you can
+take away are the following.
+First, text retrieval is
+an empirically defined problem.
+And that means which algorithm is
+better must be judged by the users.
+Second, document ranking
+is generally prefer and
+this is, will help users prioritize
+examination of search results.
+And this is also to bypass the difficulty
+in determining absolute relevance,
+because we can get some help from users
+in determining where to make the cut off.
+It's more flexible.
+So this further suggests that
+the main technical challenge
+in designing the search engine is with
+designing effective ranking function.
+In other words, we need to define
+what is the value of this function f
+on the query and document pair.
+Now how to design such a function is
+a main topic in the following lectures.
+There are two suggested
+additional readings.
+The first is the classic paper on
+probability ranking principle.
+The second, is a must read for anyone
+doing research information retrieval.
+It's classical IR book,
+which has excellent coverage of
+the main research results in early days,
+up to the time when the book was written.
+Chapter six of this book has
+an in depth discussion of
+the probability of the ranking principal,
+and
+the probabilistic retrieval models,
+in general.
+[MUSIC]
+

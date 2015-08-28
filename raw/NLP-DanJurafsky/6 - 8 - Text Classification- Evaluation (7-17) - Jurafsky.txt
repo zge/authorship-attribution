@@ -1,0 +1,193 @@
+We've introduced precision and recall.
+Now, let's turn to the remaining issues in
+the evaluation of text classification. 
+A commonly used data set for text
+classification is the Reuters Data Set.
+It's got 21,000 documents; there are
+standard training and test splits. The set
+has 118 categories and this is a class of
+multi-valued classification because an
+article can be in more than one category.
+So that means we're going to be learning
+118 separate classifiers, each one making
+a binary distinction. And the average
+document has about just over one class.
+And here's some common categories with
+some numbers of training and test documents.
+So there's 433 training documents about 
+grain and 149 test documents about grain.
+And we have classes like wheat and 
+corn and interest and so on.
+Here's a sample Reuters document. You
+can see it's about livestock and about hogs,
+so it has two topics and then here's the
+text. So our task is given this text
+to classify this document as about 
+livestock and about hogs.
+The confusion matrix is very important 
+for multiclass classification.
+The confusion matrix tells us, for any 
+pair of classes, C1 and C2,
+how many documents from C1 were 
+incorrectly assigned to C2?
+Here's a little example. We have some 
+documents about poultry or wheat or coffee,
+and here's their true classes, numbers of 
+documents in these true classes.
+And here's what our classifier assigned. 
+So, C sub 3,2, this 90 is documents that were
+about wheat, but our classifier thought 
+they were about poultry. So this is
+a classifier  that just loves the chickens. 
+Each cell of the classifier tells us
+how many documents of each class were 
+classified in the other class. And that means
+that the diagonals of this confusion 
+matrix give us the correct classifications.
+Here, 95 documents that we said were 
+about the U.K. are in fact about the U.K.,
+and no documents that we said were 
+about wheat are actually about wheat.
+We can use the confusion matrix to compute 
+the same measures we've talked about,
+precision and recall. Let's start with recall.
+Recall, the fraction of documents in class i that
+are classified correctly how many of these
+class i documents did we find. So true
+positives, c sub i,i divided by the sum
+of the entire row. Let's go back and look
+at our table.
+Here's an entire row of documents that 
+are actually about wheat.
+And let's say our true positives here are zero. 
+So a very, very bad classifier about wheat.
+We divide zero by the sum of all these 
+numbers.
+10+90+1 is gonna give us our precision, 
+our recall, excuse me.
+For precision, we're gonna ask, of the 
+documents that we returned, so that's
+an entire column, of that column, how many 
+are the documents that we were correct about?
+Of the documents that we said were 
+about wheat, how many of them
+were truly about wheat? So the documents 
+about wheat divided by all the documents
+that we said, the sum of all these 
+documents that we said were about wheat.
+And then accuracy is just the fraction of 
+documents classified correctly. So it's the sum
+of these diagonal entries divided by the sum 
+of all of the entries in the confusion matrix.
+Now, since we have more than one class 
+we're gonna need a way to combine
+the values, the precision and recall values 
+we get from each class into one measure
+cause it's often useful to have a single measure. 
+And there's two standard ways to do this.
+In macroaveraging we compute the 
+performance, the precision or recall or F score,
+for each class, and then we average 
+them to get a average value.
+So if we have 113 classes 
+we're gonna compute a 113 precisions
+and we're going to average them all to get 
+a macroaveraged precision.
+In microaveraging we instead collect all 
+the decisions for all the classes into
+one single contingency table and we get, 
+and then we evaluate our precision on that.
+Let's look at an example. Here we have 
+two classes, class one and class two.
+And here's all the things that are true 
+yesses and true noes for class one,
+and here's things that are really about, 
+really in class two and really not.
+And here's what our classifier returns. So 
+our macroaveraged precision
+we're gonna compute precision separately 
+for the two classes.
+So for class one, ten over ten
+plus ten, so that's .5.
+For class two,  90 over 90 plus ten, or .9. 
+So our macroaveraged precision
+is the average of point five and point nine, 
+or we get point seven.
+For microaveraging, on the other hand, 
+we're gonna take the two contingency tables
+and just add them all together to get a 
+single microaveraged contingency table.
+And now we're gonna compute precision directly from that.
+So we'll get 100 over 100 plus twenty, or 0.83.
+So you can see that the microaveraged score is
+dominated by the score in the common class.
+Class two is much more common than
+class one, these numbers are much bigger.
+In microaveraging, that class will dominate 
+these summed numbers in this summed
+contingency table. In macroaveraging, 
+each class is gonna participate equally.
+For text classification evaluation we need 
+more than just precision or recall.
+As in many machine learning based 
+algorithms for natural language processing,
+we'll need a training set, a test set for 
+measuring performance,
+and something called a
+development test set, or dev set.
+On the training set, we'll compute our
+parameters. And what we'll do with the
+dev set is test our performance while we're
+developing our system.
+And so whether we're looking at precision 
+recall F1, or whether we're looking at accuracy,
+we'll look at our scores on the development 
+test to find bugs in our algorithm, and
+develop new features. And once we're done
+developing the algorithm, we can then test
+on a clean unseen test set. And the reason
+why it's important to have this clean
+unseen test set is that, otherwise, if we
+report numbers on our development test set
+that we've been using all along, we're
+gonna end up overfitting.
+We're gonna report much higher accuracies 
+probably than are reasonable because,
+we've tuned our algorithm to this 
+development test set. A clean, unseen
+test set gives us a more conservative 
+estimate of performance.
+Now we can get sampling errors due to 
+small datasets. Maybe our test set is small,
+or our training set is unrepresentative. 
+So it's common, we talked about earlier,
+about cross-validation. So we're going to 
+tell multiple splits of our data and
+cross-validate. For example, let's say we set
+aside some portion of our data for a dev set.
+We'll take the rest of it, and we'll train 
+on this training set, and then look at
+our performance on the dev set. And
+then we'll take a different split,
+train on this part of the training set, and
+report on the dev set.
+Take this part of the training set, and
+get our performance on the dev set.
+And we're going to pool our results from 
+each split and then compute a total
+pooled dev set performance. This lets us 
+avoid having very small test sets or
+very unrepresentative test sets. A lot of 
+the data gets used for both training and test,
+in different splits. Still at the end, we need 
+to have our clean, unseen test set,
+so that we don't overfit to these dev sets. 
+We've now given you a number of ways
+to evaluate text classification. We've 
+introduced precision and recall and F score
+and talked about what to do in the 
+multi-class problem where we have
+more than two classes. We'll see the use 
+of these ideas, and also of microaveraging
+and macroaveraging throughout 
+natural language processing.

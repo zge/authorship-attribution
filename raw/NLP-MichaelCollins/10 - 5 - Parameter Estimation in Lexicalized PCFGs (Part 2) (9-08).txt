@@ -1,0 +1,210 @@
+So now, let's look at the second step in
+deriving this estimate.
+So, the first step was to break this
+parameter down into the product of two
+different terms essentially using the
+Chain Rrule of Probabilities , we first
+predict the rule and then we predict the
+lexical condition on the rule together
+with the head word.
+The second step is to use smoothed
+estimation for the parameter estimates of
+these two parameters we're left with and
+so, we'll apply exactly the same ideas we
+saw for language modeling, for example.
+So, in this example, I'm going to use
+linear interpolation.
+So we're going to have two parameters,
+lambda 1, lambda 2 greater than or equal
+to 0, and lambda 1 plus lambda 2 is equal
+to 1.
+And what do I have here?
+I have two maximum likelihood estimates.
+So, if we look at this first one, this is
+going to be estimated as the count of S
+saw, so this is s headed by saw, rewriting
+as NP VP with the second child, VP, as, as
+the head divided by the count of S saw.
+So, that maximum likelihood estimate is
+basically an estimate of the probability
+of s saw, rewriting with this particular
+rule.
+Again, it's a very natural symbol,
+intuitive estimate.
+The second one is basically a backed off
+estimate that completely ignores the
+lexical information.
+So now, we're going to back away from
+conditioning on the word, saw, and so
+we're going to have count of S goes to NP
+VP divided by count of S.
+Notice this is almost identical to the
+estimate you'd see in a regular PCFG, so
+we're essentially interpolating two
+different estimates, one, which conditions
+on lexicon information which isn't present
+in the PCFG and the other, which throws
+away the lexicon information.
+And by the usual arguments, this estimate
+will tend to be more robust in that the
+counts will be larger, we'll have fewer
+problems with counts being zero and so on
+whereas, this estimate will be more
+detailed and that it takes into account
+lexical information, which is very useful.
+And by interpolating these two estimates,
+we get a bounce.
+We get, in some sense, the strengths of
+both of these two estimates, robustness
+and also some sensitivity to lexical
+information.
+So now, let's look at the second
+parameter.
+This parameter here, and we'll use a very
+similar method, again a smoothed estimate.
+I'm using parameters lambda 3, lambda 4,
+lambda 5, to distinguish these from lambda
+1, lambda 2.
+So again, we have lambda 3, lambda 4,
+lambda 5 greater or equal to 0, lambda 3,
+plus lambda 4, plus lambda 5 is equal to
+1, the usual constraints.
+And now, let's look at these, these
+different maximum likelihood estimates.
+So, the first one is basically if we think
+about this schematically, if I have S saw,
+I have NP VP saw.
+This maximum likelihood estimate is going
+to be the ratio of two counts.
+The first count is just going to be the
+number of times I've seen this entire
+configuration.
+And the, the on this, on the numerator,
+I'm going to count the number of times
+I've seen man, in this particular
+position.
+Okay, so this estimate is basically
+conditioning on the entire structure, the
+entire rule, and the head word saw.
+At the second level, I throw away the word
+saw and simply say, given I have this
+structure and I have some head wood here,
+any head wood, what's the probability of
+seeing man in this position?
+The final level down here is, given I have
+an NP, what is the probability that I have
+man as the head word of that NP, okay?
+So, we've gone from a very detailed
+estimate, this is basically saying what's
+the probability of man being the subject
+of the saw, this one is saying what's the
+probability of man just being a subject
+irrespective of the head word, and
+finally, this is just saying, what's the
+probability of man being the head of an
+NP?
+And, you, again, by the usual arguments,
+this estimate will be more robust, but
+it's much less detailed.
+This will be less robust, robust, but more
+detailed, and we inter attempt to gain the
+strengths of all these estimates by
+interpolating between these three things.
+So, if we put this altogether, we can see
+that, you know, this was our goal, to
+estimate the parameter for an entire rule.
+We first decompose this into product of
+two different parameters and we've
+estimated these using the smoothing
+techniques.
+And if you look back at all of the counts
+that we've used in this model, we've used
+everything from extremely detailed
+accounts, the number of times man and saw
+are, are seen together in, in this
+particular configuration to very, very
+coarse accounts, things like number of
+times I've seen S goes to NP VP.
+So, we essentially have everything from
+the count and see in, in estimation for
+regular PCFG right up to these very
+detailed lexicalized counts.
+So, that's basically it.
+That is basically how we can estimate the
+parameters of a lexicalized PCFG.
+So, if we have a tree bank, we can just
+read off these counts and estimate the
+parameters in the way I've shown here.
+There are some other details which I'm not
+going to go into but which are important
+in getting these algorithms to work really
+well.
+So, let me just briefly mention them and
+give you a reference if you want to feed
+read further.
+One is that although I've shown you the
+case for lexicalized PCFGs in Chomsky
+normal form, it is important to deal with
+rules which have more than one child.
+So here, I have an example rule from the
+[unknown] tree bank, which has one, two,
+three, four children on the right-hand
+side of this rule.
+There are various ways of doing this.
+A very simple way is to bi binarize the
+rules, so we have a flat rule like this,
+[unknown] their, their head words here for
+brevity.
+You can convert this to a structure like
+follows, where we have intermediate cases
+here.
+So, this might be VP underbar or
+something, if we use VP underbar to
+signify an intermediate nonterminal within
+a VP.
+And so, what we've essentially done here
+is binarize the grammar by adding these
+intermediate rules to, to build the
+structure.
+That's a very simple way of dealing with
+this, there are other ways which are more
+sophisticated and work slightly better.
+It turns out that in addition to
+associating a headword, for example, told,
+with each nonterminal, it's useful also to
+propagate up the part of speech
+information for that headword.
+For example a V or a preposition, or a
+PRP, this is a personal pronoun such as
+him, or a complimentizer, that gives you a
+little bit more information in these
+lexicalized rules.
+So, you just don't have the lexical item,
+you also have the part of speech, and that
+can help.
+You can build more refined estimators
+using these smooth estimation techniques
+that can start to rely on these parts of
+speech that can be very useful.
+Another thing is that you need to modify
+these grammars to encode preferences for
+close attachment.
+So, going back to this example, John was
+believed to have been shot by Bill, it's
+much more likely for by to attach to shot
+rather than believed.
+And we still haven't really addressed that
+problem.
+But there are modifications to lexicalized
+PCFGs which will allow us to learn those
+kind of preferences, and they are also
+very useful.
+If you want to read more about this I'll
+post a link to a paper I wrote.
+This is actually my thesis work, which
+originates from about 1997, when I build,
+built one of these lexicalized PCFG
+pauses.
+And this goes through the details of
+driving a model that takes into account
+all of these different steps.

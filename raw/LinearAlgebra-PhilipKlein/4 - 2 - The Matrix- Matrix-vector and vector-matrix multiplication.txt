@@ -1,0 +1,318 @@
+
+What do we do with matrices? 
+Mostly we multiply them by vectors. 
+There are two ways to multiply a vector 
+and a matrix. 
+One is called matrix-vector 
+multiplication, and the other is called 
+vector-matrix multiplication. 
+For each of these, I'm going to give the 
+two equivalent definitions, and which 
+definition is most appropriate depends on 
+the situation. 
+We start with the linear combinations 
+definition of matrix vector multiply. 
+So, given an R by C matrix M, if V is a C 
+vector, then the product M times V Is the 
+linear combination of the columns of M, 
+where the coefficients are given by the 
+entries in D. 
+So, for example, given this matrix and 
+this vector, we take the product by 
+multiplying the first entry of the vector 
+By the corresponding column. 
+The second entry of the vector by the 
+second column. 
+And the third entry by the third column. 
+So we get this. 
+On the other hand, if V is not a C 
+vector, then the product M times V is not 
+even allowed. 
+So, for example this matrix vector 
+product is an error because the number of 
+entries in the vector isn't the same as 
+the number of columns in the matrix. 
+Here's another example. 
+The product of this matrix by this 
+vector 
+is obtained by taking this entry of the 
+vector and multiplying it by this column 
+of the matrix. This entry multplied by 
+this column and this entry multiplied by 
+this column. 
+And here's the result. 
+Recall the lights out puzzle. 
+We said that a solution to a given 
+configuration for lights out, is a linear 
+combination of the button vectors. 
+We can write a linear combination as a 
+matrix vector product. 
+For example, this linear combination, 
+which expresses this configuration in 
+terms of button vectors, can be written 
+as the matrix vector product. 
+Where the columns of the matrix are the 
+button vectors. 
+And the vector specifies the coefficients 
+in the linear combination. 
+Solving instance of lights out therefore 
+can be expressed as solving a matrix 
+vector equation that is. 
+Given the desired configuration, and given 
+the matrix, find the entries of the 
+vector such that the matrix times the 
+vector equals that desired configuration. 
+This is a fundamental computational 
+problem, solving a matrix vector 
+equation. 
+The input is a matrix and a vector. 
+And, the goal is to find a vector X such 
+that A times X equals V. 
+Here's a way to solve a special case 
+where the matrix is two by two. 
+Solve an equation of this form We require 
+that ad is not equal to bc. 
+And if that's the case, we solve by 
+setting x equal to dp minus cq over ad 
+minus bc. 
+And y equals aq minus bp over ad minus 
+bc. 
+So, for example, to solve this matrix 
+vector equation, 
+we would set x and y according to the 
+formulas. 
+Later we'll study algorithms for the more 
+general case. 
+We provide a module solver that defines a 
+procedure solve a, b that tries to find a 
+solution to the matrix vector equation Ax 
+equals b. 
+Now, currently solve A, b is a black box. 
+Over the course of time, we've figure out 
+how to code it. 
+Lets see how we can use it to solve 
+lights out, for example. 
+We start with 2 by 2 lights out, first we 
+create the domain for the button vectors, 
+its the Cartesian product of 0 1 0 1. 
+Now, we're going to create some vectors. 
+So we better import the vec class. 
+And these vectors will be over gf2 so 
+we'll import the value 1 from the gf2 
+module. 
+And now we are ready to make these button 
+vectors. 
+So first we'll create the button vector 
+corresponding to the button position zero 
+zero. 
+Okay. 
+Here is its. 
+Notice that it has a 1 in position 00, 01 
+and 1 0. 
+Next we create the button vector 
+corresponding to the button in position 
+ 01. 
+That has ones is positions 00, 01 and 11. 
+ 
+Next we create the button vector for the 
+button in position 1 0 that has ones in 
+positions 00, 100 and 11. 
+And finally, we create the button vector for the button in position 1 1 and notice 
+that this has 1's in positions 0 1 1 0 
+and 1 1. 
+Now, we want to solve a 2 by 2 lights out 
+puzzle. 
+Starting from, this configuration, with 
+lights on in position zero, zero and one, 
+zero. 
+Which buttons do we have to push to get 
+all the lights to go out? 
+We formulate this as a matrix vector 
+equation. 
+the matrix has as it's columns the button 
+vectors. 
+So the first thing we want to do is 
+construct that matrix. 
+We use call dict to mat. 
+The labels of the columns will be the 
+positions of the corresponding buttons. 
+0 0 0 1. 
+1 0 and 1 1 Our goal is to find the 
+vector, alpha 1, alpha 2, alpha 3, alpha 
+4, such that this matrix a times this 
+vector equals the vector corresponding to 
+this, so let's construct this vector. 
+We'll call it b. 
+It has ones in positions zero zero and 
+one zero. 
+Our goal is to solve a matrix vector 
+equation. 
+So we'll import the solve procedure from 
+the solver module. 
+We'll try to find the solution. 
+Alright, it came up with something. 
+We have yet to know if it's really a 
+solution. 
+Let's test it out. 
+A times x, is that equal to b? 
+Yes, good and here's the solution. 
+It's a little easier to read out the 
+solution if we. 
+Print the vector. 
+Alright. 
+So this tells us that the solution is to 
+press the buttons at zero, one and one, 
+one. 
+That is, we press the button 
+corresponding to this, and corresponding 
+to this. 
+Vector-matrix multiplication is different 
+from matrix-vector multiplication. 
+Let's start with the definition of matrix 
+vector multiplication. 
+Remember it's the linear combination of 
+the columns of, the matrix, with 
+coefficients given by the entries of the 
+vectors. 
+And here's the definition of vector 
+matrix multiplication. 
+To multiply a vector w times M, you take 
+the linear combinations of the rows of 
+matrix M with coefficients given by the 
+entries of the vector. 
+So for example multiplying this vector by 
+this matrix, we take the linear 
+combination of the two rows with 
+coefficients 
+equal to the entries in the vector. 
+Remember our Junk Co example from a while 
+back. 
+Junk Co makes a bunch of products. 
+And for each one uses a certain amount of 
+each of these resources per item. 
+We can write this data as a matrix. 
+Now, the total resources used equals this 
+vector times M, where the entries of the 
+vectors tell us how many of each item are 
+being manufactured. 
+Recall that in industrial espionage we 
+might want to calculate how many of each 
+item JunkCo's produced. 
+Assuming that we know the total resources 
+used, and of course we know the matrix M. 
+To find the number of items produced. 
+We would solve a vector matrix equation, 
+B equals X times M, where B is the vector 
+of total resources used. 
+So again, solving a matrix vector 
+equation is a fundamental computational 
+problem. 
+And of course, if we had an algorithm for 
+this problem we could use it to also solve a 
+vector-matrix equation, just by using 
+transpose. 
+When using the solver module to solve 
+equations over the real numbers, we have 
+to be aware that Python is using floating 
+point numbers, floats, so round-off 
+errors occur. 
+For example, 
+10 to the 16 plus 1 is equal to 10 to the 
+16, according to Python. 
+So, algorithms such as that used in the 
+solve procedure don't find exactly 
+correct answers. 
+So to see if the solution obtained by the 
+solver is a reasonable solution to the 
+matrix vector equation 
+we see if the difference between the 
+target vector b and the vector A times u 
+has entries that are close to zero. 
+So these entries are very close to zero 
+so we consider that a success. 
+We've found the solution. 
+Now this vector, the difference between B 
+the target vector and A times U is called 
+the residual of the matrix vector 
+equation. 
+An easy way to test if the entries of the 
+residual are close enough to zero is to 
+compute the dot product of the residual 
+with itself. 
+In this case, the dot product is this 
+tiny number. 
+So we're pretty confident that we've 
+gotten a solution to this equation. 
+Let's go ahead and use the solve 
+procedure to solve the industrial 
+espionage problem. 
+It involves solving this vector matrix 
+equation. 
+So first we have to construct the matrix 
+itself. 
+Import of mat class. 
+Now, the row labels of our matrix will be 
+the products and the column labels will 
+be the resources. 
+Now I'm going to actually construct that 
+matrix of data. 
+Next, suppose that this factory specifies 
+the observed resource utilization, 1409.5 
+units of electricity. 
+We want to solve this vector matrix 
+equation. 
+We use the solve procedure. 
+Solve procedure inspects the solve matrix 
+vector equation so we have to transpose 
+the matrix. 
+Now let's look at the solution. 
+Alright it looks like a thousand gnomes 
+were produced along with 175 groups, 590 
+silly putty's, 75 salad shooters and 860 
+Slinkies. 
+Should the fact that these values are 
+integer give us some kind of confidence 
+in the solution? 
+Well, perhaps, but let's look at the real 
+entries of u. 
+You can see that the print procedure did 
+some rounding. 
+Let's just see if the solution makes 
+sense by multiplying u by m and seeing if 
+the result looks anything like b. 
+All right. 
+Plastic 677 was what we observed. 
+And this gives us 676.9999. 
+And so on. 
+So it's pretty good. 
+Let's compute the residual. Now, compute the dot product of 
+the residual with itself. 
+And it's this very tiny number. 
+So we're convinced that the vector U is 
+in fact a solution to this vector matrix 
+equation. 
+Now, for some, matrix vector equations. 
+There is no solution. 
+And in this case, the dot product of the 
+residual will not be so small. 
+That'll indicate that the vector we got 
+is not a solution to the equation, and, 
+in this case, there is no solution. 
+And we'll learn later that the algorithm 
+used here actually computes a solution 
+that's in a sense, as close as possible. 
+So that the residual is, in a sense, as 
+small as possible. 
+Some matrix vector equations are ill 
+conditioned. 
+Which means, even if there is a solution, 
+we won't be able to get it using, the 
+solver. 
+So this is an example where there's a 
+solution, 
+but the residual is quite large. 
+We're not going to study conditioning in 
+this course. 
+To learn more about that, study numerical 
+analysis. 
+

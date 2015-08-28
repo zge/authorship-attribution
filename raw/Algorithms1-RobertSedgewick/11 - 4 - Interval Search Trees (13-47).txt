@@ -1,0 +1,256 @@
+Okay next we're gonna look at another
+extension of geometric algorithms to
+process slightly more complicated objects
+and then we'll see an important
+application. This is called interval
+search. So now instead of points, our data
+is intervals. So this is, we'll start with
+one dimension as before and right away you
+can see that it's a more complicated
+problem than we've been dealing with. So
+we want to support the following
+operations. We wanna be able to insert an
+interval. So an interval is just a left
+endpoint, right endpoint of a
+1-dimensional data or points on the line.
+We wanna be able to Insert an interval
+search for an interval, delete an interval
+but the main thing is we want the interval
+intersection query. So given a query
+interval, we want to find all intervals in
+the data structure that overlap that
+interval or find any interval we'll start
+with that simpler problem. So how are we
+going to support that? So this is the API
+in Java code [cough], so We, have,
+intervals, so instead of one key we have
+two, which is left and right end points of
+the interval for input. And [inaudible],
+and then we have delete, and then we have
+intersects. And again simplify the code,
+we are going to make the non degeneracy
+assumption that no two intervals have the
+same left end point. [cough] and, [cough].
+Easy, easy to fix but, but we don't
+simplify the code. So now we'll look at a
+data structure called an interval search
+tree that helps to solve this problem.
+And, it's a extremely, simple algorithim,
+but surprisingly, complicated to
+understand, so we'll go slowly. So the
+first thing is what we're going to do is
+use the left end point of each interval as
+the binary search tree key. So our, eh,
+our node stored intervals, but we only use
+our left end point as the key. So this is
+the binary search tree that's built from
+those five intervals, six intervals in our
+example. Seventeen, nineteen is at the
+root, so everybody with a le ft end point
+less than seventeen is to the left, the
+left end point greater than seventeen is
+to the right and so forth. So that's a
+binary search tree built, from those
+intervals. So that's easy. I just build a
+binary search tree. I just use, the left
+end point, as the search key. But we're
+also in the, each node of the tree, we're
+gonna store, not just the interval. But
+we're gonna store the, largest endpoint in
+the subtree rooted at that node. So at
+every node, we're gonna store the maximum
+endpoint and subtree rooted at that node.
+So at the root, the maximum endpoint or
+the rightmost point covered by an
+interval, is 24. So we [inaudible] 24 at
+the root, and, of course, the right
+subtree. And the left subtree. The max end
+point is that eighteen so that's what we
+store for the associated data with the
+note to the left of the root and so forth.
+So. We going to have to, that's data that
+we're going to have to maintain when we do
+an insert and it's data that we'll use
+when we're doing an interval-intersection
+search. So let's take a look at an
+insertion into an interval search tree
+with a demo. All right, so, the, insertion
+algorithm is pretty simple. We do the BST
+insertion, just so we have to do that,
+update of the maximum in each node on the
+search path. So, to insert 16/22 in this
+tree, while we use the, left endpoint as
+the search key, sixteen is the left
+endpoint of our insert interval [cough].
+We compare that with seventeen and
+therefore go left. How sixteen is bigger
+than five so we go right. Now sixteen is
+bigger than fifteen so we go right. And
+that's null, so that's where we insert our
+new, interval. [sound]. So now, we're
+gonna go back up the tree. And, for every
+node that we encounter, it could be that,
+our right endpoint of our interval, is
+bigger than what was there. So we have to
+check, all the way up the path, the
+maximum in each node on the path. So we
+have to check each node, to see if 22 is
+bigger, and, for the three nodes to the
+left it is bigger than eighteen. For the
+node at the root, it's not. That stays to
+be 24. So, it's just binary tree
+insertion, but then after the insertion on
+the way up, we go ahead and, check, if the
+maximum that we have is bigger than the
+maximum there and update it if necessary.
+So easy to code. [sound]. Alright, so now
+about, how do we do a, a search. So the
+searches is definitely more complicated
+and kind of mysterious, but let's look at
+the rules for search in an interval search
+tree. Alright so now we're gonna look to
+see if we have an intersection what a. We
+want to find just. Any interval that
+intersects this query interval 23 25.
+We're not gonna try to find them all we'll
+get back to that in a minute. Try to find
+any interval that intersects our query
+interval. So let's, let's see what we have
+to do. So first thing is if At the root,
+we have an intersection, then we're done.
+We just return. In this case, 2325 does
+not intersect, 1719. So, we have to go
+down the tree somewhere. So left subtree
+is [inaudible] right, okay? Otherwise, we
+have to check whether the max endpoint in
+the left subtree is less than, the low
+point in our interval. [inaudible] it's
+easy to see, well, if that's the case,
+then we're not gonna find an intersection.
+In the left. The maximum end-point in the
+left is 22, and we're looking for 23, and
+we're not gonna find anything there, so we
+just wanna go right. So in this case we'll
+go right 22, 23 no inter sectional left,
+so we go right and now we do find an
+intersection 21, 24 does intersect with
+23, 25 because 23 is in the middle there,
+so we find an intersection. Now on the
+other hand, let's say they were looking
+for 1214, so no intersection. So. All the
+algorithm says is that, if you didn't go
+right, go left. So let's go left, in this
+case. So we weren't able to show that
+there was no intersection, on the left.
+So, so we're gonna go left. In this we
+compare twelve fourteen to five eight, so
+now we apply the same rules. Does it
+intersect? No, it doesn't intersect. So
+should we go left. Well no, the maximum,
+end point in the left node is eight. So we
+can have intersection there, so we gonna
+go right, [inaudible] to twelve and go
+right. So, now does twelve, fourteen
+intersect fifteen, eighteen it does not so
+there's no intersection so now what do we
+do. Should we go left no the max in point
+on left is ten so we shouldn't go left. So
+we're going to go right. Those 12-14
+intersect 16-22. It does not, So, now, the
+left end point's null. And so we're just
+gonna go right. And there's no
+intersection. So in both cases we just
+went along one path in the tree to
+determine whether or not there was an
+interval or intersection. Let's look at
+one more example. 21, 23. So let's see. 21
+thru 23 to seventeen, nineteen. They do
+not intersect, so now, what are we gonna
+do next? Well we're gonna compare the left
+sub-tree, and it's Not, 22 falls within
+our interval so it's not less than'r' so
+there might be an intersection there so we
+better go to the left, so we do go to the
+left. Now we compare against 5-8, and
+there's no intersection. So now, we're
+gonna go left to right. Well, we're gonna
+go to the right, because, the max endpoint
+in the left subtree is eight, and our
+interval's 21, so no intersection on the
+left. So we're gonna go right.
+Intersection 21231518. They do not
+intersect. So now, do we go left or right?
+Again ten is less than our left endpoint
+21. So we better go to the right. [cough].
+And now 2123 does intersect 1622, so we
+return and intersection. Again one path
+through the tree to determine an
+intersection. So from these rules you can
+see that the man of code required to
+implement this intersecting inter role is
+extremely low. Just check for an
+intersection, if we find it ret urn if
+left is no we go right. Otherwise if the
+max is less than low we go right.
+Otherwise we go left. Could hardly be
+simpler. Really amazingly simple and
+efficient algorithm. We should convince
+ourselves really that it always works and
+so we'll spend just a moment on a short
+proof. So let's look at the, the cases
+that could happen. So first thing is if
+the search goes right. Then there's no
+intersection on the left. And that's easy
+to convince ourselves of that just from,
+from what we did in the demo. Of course,
+if the last sub-tree's empty, there's no
+intersection there. But if the max
+endpoint in the left sub-tree is less than
+low, that means every interval in the left
+sub-tree has a max endpoint less than mah,
+low, and so therefore it can't intersect.
+So if you go right, there's no
+intersection in the left. Any possible
+intersection would have to be in the
+right, And then the other point is that if
+you go left, then either there's an
+intersection there, or there's no
+intersections at all. So Lets suppose that
+there is no intersect, and that's
+equivalent to saying, if there is no
+intersection in the left then there is no
+intersection in the right. So lets look at
+it if there is no intersection in the
+left, since we went to the left and then
+we have got, low less than max. But, for
+any interval, in the right subtree, its
+got to appear after. Low. Be, because
+since there's no intersections in the left
+sub tree high has gotta be less than C.
+Where, because they're sorted by left N
+point. And then that means that C-s got to
+be less than A if it is in the right, so
+therefore there can't be any interesection
+in the right either. No intersection in
+the left means no intersections at all, so
+those two cases is enough to show that
+this algebroid finds an intersection, if
+there is one. And the other thing we can
+do with this is just use a red-black BST
+to guarantee that we solved this in time
+proportional to log in. So insert, find,
+delete, and find any interval that
+intersects. All take time, guaranteed,
+proportional to log in. And if we wanna
+find all intervals we just have to run the
+algorithm fur Each interval that's, until
+we come up against no intersection, so
+it'll take time proportional to R log N if
+there's R intervals that intersect. The
+theoretical best that you could possibly
+do would be R plus log N but in practice R
+log N is quite efficient. This is an easy
+and very efficient algorithm to solve this
+interval search problem and as we'll see
+this algorithm. It's applicable to an
+important application that we'll see in a

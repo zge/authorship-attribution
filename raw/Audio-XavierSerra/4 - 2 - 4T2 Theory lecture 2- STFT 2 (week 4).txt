@@ -1,0 +1,371 @@
+Welcome again to the course on Audio Signal Processing for Music Applications.
+In the first part of this lecture,
+we started talking about
+the short-time fourier transform.
+Now let's continue.
+We will cover quite a few topics,
+but each one is quite short.
+We will first review the concept
+of the STFT and analysis window.
+Then, talk about the window size and
+the FFT size,
+then the hop size, then what we
+call the time-frequency compromise.
+And then, once we have covered all that,
+we can do the inverse of this
+analysis process, and we'll do the inverse
+of the Short-term Fourier Transform.
+And finally we can put it together into
+an analysis/synthesis system that can be used
+to analyze and synthesize any sound. 
+So we saw this equation in
+the first part of the lecture.
+We now know that
+the Short-Time Fourier Transform is
+the time varying version of the DFT.
+And that windowing is a key
+concept to understand the STFT.
+So for example in these plots,
+if we start from violin sound,
+that we can listen too.
+[SOUND] Okay, then the
+magnitude spectrum of one
+fragment of one of the frames, is quite
+different, depending on the window we use.
+If we use a rectangular window
+we can see this first magnitude spectrum.
+If we use the Blackman window
+we can see this second one.
+Okay, so now let's try to understand
+a few more things about 
+the short-time Fourier transform, about
+the windowing process.
+So, we talked about different types
+of windows in the last class,
+but these windows can be of any size.
+And what is the effect of this size.
+So, here we see an example of
+the same sound and choosing the same
+window but with different sizes.
+One is with size 128, and the other
+is with a size 1024.
+Clearly very different, and
+the result is amazingly different.
+The magnitude spectrum of the small
+window has very little information.
+It has very few samples,
+it has basically 128 samples, and
+in the larger window we see quite a lot.
+We see a lot more detail of
+the sound of what's going on.
+So, that's going to be a very
+important compromise to be done
+when we use the window size.
+And the phase spectrum, of course,
+is also different but
+A lot of these issues will be
+much more clear in the magnetic spectrum.
+So, we'll focus a lot on discussing
+the effect on magnitide spectrum.
+Okay, another important issue
+that has a significant effect,
+even though it's a tiny difference,
+is the concept of even and
+odd size window.
+So, we can take the same window and
+have a size 32,
+Which is an even size,
+Or we have a size 31,
+which is 1 sample less
+and it is an odd size.
+If you look at the magnitude spectra
+they basically look the same,
+the magnitude spectra are the same,
+the difference is not significant.
+But, the phase spectrum
+is quite different.
+In one, in the even size,
+there is a slope.
+So, these are by the way,
+of course, centered around zero.
+So, clearly, if it's an even size
+it cannot be perfectly centered.
+Because we have to have a sample at zero.
+And then if it's even
+it will have different number of samples
+on the right hand or on the left hand.
+In the other hand,
+if we have an odd size window
+we can have a sample right in the middle.
+And then have the same number
+of samples on both sides.
+Therefore it can be perfectly
+symmetric around zero and
+therefore get the zero phase value
+that we have talked about before.
+So, whenever we can
+we're going to be using odd size windows.
+Ok, the window size, has been chosen
+according to some resolution criteria.
+The number of periods or
+the resolution that we need to have.
+We will, 
+again be talking more about that.
+But now we have to choose the FFT size.
+Which is independent of the window size,
+because we have the opportunity
+to do zero padding.
+So in this example
+we show,
+we start from a given window size,
+512, and
+if we choose the same window size than the
+the FFT size we get the this
+first magnitude plot.
+And, we we see a pretty magnitude
+spectrum with all these peaks.
+That correspond to the harmonics
+of this oboe sound.
+But if we do an FFT size larger.
+So, we do an FFT size in
+this case of 2048 samples.
+Also, we zero padd quite a bit,
+is four times larger the FFT size
+than the window size.
+We see a spectrum which is
+much smoother and much nicer.
+This is something that's going
+to be very much desirable.
+Something that
+people will be looking for 
+is a spectrum that are quite smooth so
+we can identify things much better.
+Okay.
+Then the final step of the short time
+Fourier Transform analysis loop is
+the advancements of the
+the windows, the advancements of 
+the frames what we call the hoping,
+the hop size.
+So the window advances eight
+samples after each DFT.
+And then, with this equation we
+see the effect of this hopping.
+So, by just taking
+the window function and
+hopping by a given H
+we get a function, A,
+that depends on 
+this hopping factor and of course
+of the window size, and here we have two
+examples, two hopping factors, different.
+Okay, in the first one with
+a window of 201
+samples we are hopping
+a 100 times, like half of it.
+And the red function is this A function,
+the sum of these windows.
+Clearly is not a very smooth result.
+It has like this oscillation.
+Basically we call it a modulation,
+that in fact will be heard
+in in the resynthesis that we will
+do with the short time Fourier transform.
+On the second plot
+we see the hopping of 50,
+so basically,
+one fourth of the window size.
+And, apart from the boundaries,
+in which we see clearly that there is 
+the effect, kind of a distortion.
+All the middle is very
+much like a straight line.
+And this is the kind of things
+that we would like to have.
+We would like that the hopping does not
+affect, so it can maintain an identity.
+And so
+this A function should be a straight line.
+Now, we can put all these concepts
+together to analyze a real and
+complex signal.
+Like a piano phrase.
+So, first lets listen to the input sound
+[MUSIC].
+Okay, so, choosing all the parameters
+in the STFT
+it has an number of effects in the output.
+The most important one is what we
+call the time frequency compromise.
+One the top plot we see the
+the magnitude spectrum of
+the whole STFT analysis.
+So basically it's a sequence of DFT.
+The vertical axis is the frequency,
+the horizontal axis is the time, and
+the color intensity basically
+is the magnitude, and
+the magnitude value in
+the magnitude spectrum.
+Okay, so here we see very clearly
+the attacks of the piano.
+and kind the horizontal aspect
+correspond respond to the harmonics of the piano.
+But on the second plot
+which has a bigger window and FFT size,
+four times,
+it has 1024 samples for the window.
+we see that the horizontal lines
+are much better defined, even though
+in exchange of the vertical lines of the
+attached that are not as crisp as clear.
+So this is what we call
+time-frequency compromise.
+If the window size small
+we might get a good time resolution
+in exchange of a poor
+frequency resolution.
+If we take a bigger window size, we
+will get a better frequency resolution so
+that's what we see better horizontal
+lines in exchange of not so
+good time resolutions, so
+not so good crisp attacks.
+As we see in this second plot.
+And then, of course, typically we only
+show the magnitude spectrum, but
+the phase has also valuable information.
+So in here we see both the magnitude
+spectrogram and the phase spectrogram.
+In fact, what we are seeing is
+the derivative of the phase.
+And if we take the derivative, what we are
+seeing is kind of when there is 
+a flat region or when there is 
+a phase that changes a lot.
+So in fact here, we can also kind of see
+these horizontal structure
+that relates to the stable
+peaks that correspond to the
+the harmonics.
+So whenever the color is more clear
+it means that is more stable.
+And when we see these darker color it
+means that there is a bigger slope so
+that there is a bigger phase change.
+So, it's a little bit harder to read
+this visualize this phase spectrum, but
+they have some very interesting
+information that we are going to be using.
+And like the DFT, the Short-Time Fourier
+Transform has the inverse transform.
+If we do things right we can recover
+the original sound from the amplitude and
+phase spectrogram.
+How to do that what, we're basically
+doing is what we call overlap and
+adding these different output spectra.
+So, we'll be computing every
+individual spectrum of every frame.
+so X sub l, and we take the inverse
+DFT of every X sub l, and
+then there is this shifting and
+summing, which correspond to
+this idea of shifting and
+adding over the previous frame, in such
+a way that we basically compensate all
+this windowind and
+we recover the output signal.
+So, basically, the output frame of
+one single frame is going to be
+this yw sub l, which is going to
+be the result of one fragment of
+the input sound multiplied by the window.
+And then, the overall output sound will be
+the sum of this windowed output fragments.
+And what we see here is, in this equation,
+is we identify the effect of the window.
+Basically, we have this summing
+over all the windows and
+this is the possible distortion or
+artifact that might be
+applied using this process, so if this
+sum of the windows is a constant and
+is one, then the input will
+be equal to the output.
+But if the sum of windows
+is not equal to a constant,
+then we're definitely going
+to have some distortion, modulation,
+that will be heard in the output sound.
+So, graphically, basically,
+we are just doing exactly the same
+So is the inverse process.
+We are overlapping and adding every single
+fragment to recover the whole signal.
+And now that we know how to analyze and
+synthesize a sound with the
+STFT we can build a system.
+And we will show that and
+we'll implement that in
+the programming lectures.
+And this is the diagram of
+a complete analysis synthesis system
+using the short-time Fourier transform.
+So we have the input sound, x of n,
+then we have the window that we apply and
+we use to select portions of the sound.
+And from this windowed
+fragment we compute the FFT and
+results in the magnitude and
+phase spectrum.
+Then, at every frame we
+do the inverse of that
+and recovers the output sound,
+which is going to be a windowed signal.
+Because it has the window in it.
+And then with the overlap-add factor.
+And if we do it correctly we generate
+an output signal that should be identical,
+if the window and the hop sizes is correct,
+to the input signal. So this would be
+an example of a complete sound analysis and
+synthesis of a sound with varying time.
+We start with piano sound
+that we already heard.
+We see that magnetic spectrum with a given
+window size, FFT size, and hop size.
+In a way that the overlap is correct.
+We see the derivative of
+the phase spectrum and
+then we see the y,
+the output sound, which is the
+inverse of this spectrum.
+And we can listen to that.
+[SOUND] And clearly, in
+this case is identical to the original
+because we did the hopping and
+the windowing correctly.
+So again,
+quite a bit of references are available on
+this topic about Wikipedia and
+on Julius' website.
+And that's al for this class.
+With this second part of the lecture,
+we have completed the topic on
+the Short-Time Fourier Transform.
+We now know how to analyze and
+synthesize any sound.
+And of course,
+in the demonstration classes and
+in the programming classes of this week,
+we're going to put that in practice.
+But even that, this is just
+the beginning of the interesting stuff.
+We will now be able to
+really do powerful things.
+Building on top of the short
+time Fourier Transform.
+So, stay with me and you will see.
+See you next time.
+

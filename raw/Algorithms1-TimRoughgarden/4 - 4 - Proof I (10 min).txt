@@ -1,0 +1,264 @@
+In this video, we'll begin the proof of
+the master method. The master method,
+you'll recall, is a generic solution to
+recurrences of the given form, recurrences
+in which there's a recursive calls, each
+on a sub-problem of the same size, size n
+over b, assuming that the original problem
+had size n. And, plus, there is big O of n
+to the d work done by the algorithm
+outside of these a recursive calls. The
+solution that the master method provides
+has three cases, depending on how a
+compares to b to the d. Now. This proof
+will be the longest one we've seen so far
+by a significant margin. It'll span this
+video as well as the next two. So let me
+say a few words up front about what you
+might want to focus on. Overall I think
+the proof is quite conceptual. There's a
+couple of spots where we're going to have
+to do some computations. And the
+computations I think are worth seeing once
+in your life. I don't know that they're
+worth really committing to long term
+memory. What I do think is worth
+remembering in the long term however, is
+the conceptual meaning of the three cases
+of the master method. In particular the
+proof will follow a recursionary approach
+just like we used in the running time
+analysis of the Mertshot algorithm. And it
+worth remembering what three types of
+recursion trees the three cases Is that
+the master method corresponds to. If you
+can remember that, there will be
+absolutely no need to memorize any of
+these three running times, including the
+third, rather exotic looking one. Rather,
+you'll be able to reverse engineer those
+running times just from your conceptual
+understanding of what the three cases mean
+and how they correspond to recursion trees
+of different type. So, one final comment
+before we embark on the proof. So, as
+usual, I'm uninterested in formality in
+its own sake. The reason we use
+mathematical analysis in this course, is
+because it provides an explanation of,
+fundamentally, why things are the way they
+are. For example, why the master method
+has three cases, and what those three
+cases mean. So, I'll be giving you an
+essentially complete proof of the master
+method, in the sense that it has all of
+the key ingredients. I will cut corners on
+occasion, where I don't think it hinders
+understanding, where it's easy to fill in
+the details. So, it won't be 100 percent
+rigorous, I won't dot every I and cross
+every t, but. There will be a complete
+proof, on the conceptual level. That being
+said, let me begin with a couple of minor
+assumptions I"m going to make, to make our
+lives a little easier. So first, we're
+gonna assume that the recurrence has the
+following form. So, here, essentially, all
+I've done is I've taken our previous
+assumption about the format of a
+recurrence, and I've written out all of
+the constants. So, I'm assuming that the
+base case kicks in when the input size is
+one, and I'm assuming that the number of
+operations in the base case is at most c,
+and that, that constant c is the same one
+that was hidden in the big O notation of
+the general case of the recurrence. The
+constant c here isn't gonna matter in the
+analysis, it's just all gonna be a wash,
+but to make, keep everything clear, I'm
+gonna write out all the constants that
+were previously hidden in the big O
+notation. Another assumption I'm going to
+make. Now goes to our murtured analysis,
+is that N is a power of B. The general
+case would be basically the same, just a
+little more tedious. At the highest level,
+the proof of the master method should
+strike you as very natural. Really, all
+we're going to do is revisit the way that
+we analyze Merge Short. Recall our
+recursion tree method worked great, and
+gave us this [inaudible] log [inaudible],
+and the running time of Merge Short. So
+we're just gonna mimic that recursion
+tree, and see how far we get. So let me
+remind you what a recursion tree is. At
+the roots, at level zero, we have the
+outermost, the initial indication of the
+recursive algorithm. At level one, we have
+the first batch of recursive calls. At
+level two, we have the recursive calls
+made by that first batch of recursive
+calls, and so on. All the way down to the
+leaves of the tree, which correspond to
+the base cases, where there's no further
+recursion. Now, you might recall, from the
+Merge Sort analysis that we identified a
+pattern that was crucial in analyzing the
+running time. And that pattern that we had
+to understand was, at a given [inaudible]
+J, at a given level J of this recursion
+tree. First of all, how many distinct
+subproblems are there at level J? How many
+different level J [inaudible] are there?
+And secondly, what is the input size that
+each of those level J subproblems has to
+operate on? So think about that a little
+bit and give your answer in the following
+quiz. So the correct answer is the second
+one. At level J at. Of this recursion
+tree, there are A to, to the J
+sub-problems and each has an input of size
+of N over B to the J. So first of all, why
+are there A to the J sub-problems? Well,
+when J equals zero at the root, there's
+just the one problem, the original
+indication of the recursive algorithm. And
+then each. Call to the algorithm makes a
+further calls. For that reason the number
+of sub problems goes up by a factor of A
+with each level leading to A to the J sub
+problems at level J. Similarly, B is
+exactly the factor by which the input size
+shrinks once you makea recursive call. So
+J levels into the recursion. The input
+size has been shrunk J times by a fctor of
+B each time. So the input size at level J
+is N over B to the J. That's also the
+reason why, if you look at the question
+statement, we've identified the numbers of
+levels as being log of base B. Of N. Back
+in Merge Short, B was two. We [inaudible]
+on half the array. So the leaves all
+resided at level log base two of N. In
+general, if we're dividing by a factor B
+each time, then it takes a log based B of
+N times before we get down the base cases
+of size of one. So the number of levels
+overall, zero through log base B event.
+For a total of log based B event plus one
+levels. Here then is what the recursion
+tree looks like. At level zero we have the
+root corresponding to the outer most call.
+And the input size here is N. The original
+problem. Children of a node correspond to
+the recursive calls. Because there are A.
+Recursive calls by assumption, there are
+A. Children or A. Branches. Level one is
+the first batch of precursor calls. Each
+of which operates on an input of size N
+over B. That level log base B. Of N. We've
+cut the input size by a factor of B. This
+many times, so we're down to one. So that
+triggers the base case. So now, the plan
+is to simply mimic our previous analysis
+of Merge Sort. So let's recall how that
+worked. What we did is we zoomed in, in a
+given level. And for a given level J, we
+counted the total amount of work that was
+done at level J subproblems, not counting
+work that was gonna be done later by
+recursive calls. Then, given a bound on
+the amount of work at a given level J, we
+just summed up overall, the levels, to
+capture all of the work done by all of
+the, recursive indications of the
+algorithm. So inspired by our previous
+success let's zoom in on a given level J.,
+and see how much work gets done, with
+level J. Sub problems. We're going to
+compute this in exactly the way we did in
+merge sort. And we were just going to look
+at the number of problems that are at
+level J and we're going to multiply that
+by a bound on the work done per
+sub-problem. We just identified the number
+of level J sub-problems as A to the J. To
+understand the amount of work done for
+each level j sub-problem, let's do it in
+two parts. So, first of all, let's focus
+on the size of the input for each level j
+sub-problem. That's what we just
+identified in the previous quiz question.
+Since the input size is being decreased by
+a factor b each time, the size of each
+level j sub-problem is n over b to the j.
+[inaudible] Now we only care about the
+size of a level J sub problem in as much
+it determines the amount of work the
+number of operations that we perform per
+level J sub problem. And to understand the
+relationship between those two quantities
+we just return to the re currents. The
+recurrent says how much work gets done in
+the specific sub problem well there's a
+bunch of work done by recursive calls the
+A recursive calls and we're not counting
+that we're just counting the work done
+here at A level J and the recurrence also
+tells us how much is done outside of the
+recurrent calls. Namely it's no more than
+the constant C times the input size.
+Raised to the d power. So here the input
+size is N over B to the J, so that gets
+multiplied by the constant C. And it gets
+raised to the D power. Okay. So C. Times
+quanity N. Over B. To the J. That's the
+emphasized. Raised to the D. Power. Next,
+I wanna simplify this expression a little
+bit. And I wanna separate out the terms
+which depend on the level number J, and
+the terms which are independent of the
+level number J. So if you look at it A and
+B are both functions of J, where the C and
+end of the D terms are independent of J.
+So let's just separate those out. And you
+will notice that we have now our grand
+entrance of the ratio between A and B to
+the D. And foreshadowing a little, recall
+that the three cases of the master method
+are governed by the relationship between A
+and B to the D. And this is the first time
+in the analysis where we get a clue that
+the relative magnitude of those two
+quantities might be important. So now that
+we've zoomed in on a particular label J
+and done the necessary computation to
+figure out how much work is done just at
+that level, let's sum over all of the
+levels so that we capture all of the work
+done by the algorithms. So this is just
+gonna be the sum of the epression we saw
+on the previous slide. Now since C into
+the D doesn't depend on J, I can yank that
+out in front of the sum, and I'll sum the
+expression over all J. That results in the
+following. So believe it or not, we have
+now reached an important milestone in the
+proof of the master method. Specifically,
+the somewhat messy looking formula here,
+which I'll put a green box around, is
+going to be crucial. And the rest of the
+proof will be devoted to interpreting and
+understanding this expression, and
+understanding how it leads to the three
+different running time bounds in the three
+different cases. Now I realize that at the
+moment this expression's star probably
+just looks like alphabet soup, probably
+just looks like a bunch of mathematical
+gibberish. But actually interpreted
+correctly this has a very natural
+interpretation. So we'll discuss that in
+the next video.

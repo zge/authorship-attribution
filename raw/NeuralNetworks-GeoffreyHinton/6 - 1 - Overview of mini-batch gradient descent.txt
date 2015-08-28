@@ -1,0 +1,230 @@
+In this video, we're going to look at
+stochastic gradient descent learning for a
+neural network,
+Particularly the mini batch version, which
+is probably the most widely used learning
+algorithm for large neural networks.
+We've seen this before, but let's start
+with a reminder about what the error
+surface looks like for a linear neuron.
+The error surface means a surface that
+lies in a space where the horizontal axes
+correspond to the weights of the neural
+net.
+And the vertical axis corresponds to the
+error it makes.
+For a linear neuron with a squared error,
+that surface always forms a quadratic
+bowl.
+The vertical cross sections are parabolas,
+and the horizontal cross sections are
+ellipses.
+For multilayer non linear nets the error
+surface is much more complicated,
+But as long as the weights aren't to big
+it's a smooth error surface, and locally
+it's well approximated by a fraction of a
+quadratic bowl.
+It might not be the bottom of the bowl but
+there's a piece of quadratic bowl that
+will fit the local error surface very
+well.
+If we look at the conversion speed when we
+do full-batch learning, when the error
+surface is a quadratic bubble,
+The obvious thing to do is go downhill,
+this will reduce the error.
+But the problem is, that the direction of
+steepest descent does not point to the
+place we want to go to.
+As you can see in the ellipse, the
+direction of steepest descent is almost at
+rectangles to the direction we want to go
+in.
+You've got a gradient that's very big
+across the ellipse, which is the direction
+which we only want to travel a small
+distance, and the gradient's very small
+along the ellipse, and that's the
+direction which we want to travel a large
+distance.
+It's precisely the wrong way around.
+Now you might think that studying linear
+systems like this, is not a good idea if
+you want to optimize big non-linear nets.
+But even for these non-linear multi-line
+nets, this kind of a problem arises.
+It's a very similar problem that arises
+even though the error surfaces aren't
+globally quadratic bowls.
+Locally they have all these same kind of
+properties.
+That is they tend to be very curved in
+some directions, and very uncurved in
+other directions.
+So the way the learning goes wrong if you
+use a big learning rate is that you slash
+to and fro in the directions in which the
+area surface is very curved.
+So we'll say call that slashing across a
+ravine.
+And with the line rate too big you'll
+actually diverge.
+What we want to achieve, is that we go
+quickly along the ravine in directions
+that have small, but very consistent
+gradients.
+And we move slowly in directions with
+these big, but very inconsistent
+gradients.
+That is if you go in that direction for a
+short distance, the gradient will reverse
+sign.
+Before we go into how we achieve that, I
+need to talk a little bit about stochastic
+gradient descent, and the motivation for
+using it.
+If you have a data set that's highly
+redundant, then if you compute the
+gradient for a weight on the first half of
+the data set, you'll get almost exactly
+the same answer as you get if you compute
+the gradient on the second half.
+So it's a complete waste of time to
+compute the gradient on the whole data
+set.
+You'd be much better off computing the
+gradient on a subset of the data, then
+updating the weights and on the remaining
+data, computing the gradient for the
+updated weights.
+We can take that to extremes and say we're
+going to compute the gradient on a single
+training case, we're going to update the
+weights and then we're going to compute
+the gradient on the next training case
+using those new weights.
+That's called online learning.
+In general, we don't want to go quite that
+far.
+It's usually better to use small mini
+batches, typically ten or a 100 or even
+1000 examples. One advantage of a small
+mini batch, is that less computation is
+used for actually updating the weights,
+cuz you do that less often, compared with
+online.
+Another advantage is that when you compute
+the gradient, you can compute the gradient
+for a whole bunch of cases in parallel.
+Most computers are very good at doing
+matrix, matrix multiplies, and that will
+allow you to consider a whole bunch of
+training cases and apply the weights to a
+whole bunch of training cases at the same
+time to figure out the activities going
+into the next layer for all of those
+training cases.
+That gives you a matrix, matrix multiply,
+and it's very efficient, especially on a
+graphics processor unit.
+One point about using mini batches is you
+wouldn't want to have a mini batch in
+which the answer is always the same and
+then on the next mini batch have a
+different answer that's always the same.
+That would cause the weights to slosh
+unnecessarily.
+The ideal, if you have say ten classes,
+would be to have a mini batch with say ten
+examples or 100 examples, that has exactly
+the same number from each class in the
+mini batch.
+One way to approximate that is simply to
+take all your data and just put it in
+random order and grab random mini-batches.
+But you must avoid having mini batches
+that are very uncharacteristic of the
+whole set of data because the mini-batches
+are all of one class.
+So basically there's two types of learning
+algorithms for neural nets.
+There's full gradient algorithms, where
+you compute the gradient from all of the
+training cases.
+And once you've done that, there's a lot
+of clever ways to speed up learning.
+There's things like nonlinear versions of
+a method called conjugate gradient.
+The optimization community has been
+studying the general problem of how you
+optimize smooth nonlinear functions for
+many years.
+Now multi-layer neural networks are pretty
+untypical of the kinds of problems they
+study.
+So applying the methods they developed may
+need a lot of modification to make them
+work for these multi-layer neural
+networks.
+But when you have highly redundant and
+large training sets, it's nearly always
+better to use mini batch learning.
+The mini batches may need to be quite big,
+But that's not so bad because big mini
+batches are more computationally
+efficient.
+I'm now going to describe a basic
+mini-batch grading descent linear
+algorithm.
+This is what most people would use when
+they started training a big neural net on
+a big redundant data set.
+Tyou start by guessing an initial learning
+rate,
+And you look to see if the network learned
+satisfactorily or if the error keeps
+getting worse, oscillates wildly.
+If that happens, you reduce the learning
+rate.
+You also look to see if the error is
+falling too slowly.
+You expect that the error might fluctuate
+a bit if you measure it on a validation
+set, because the great electronic
+mini-batch is just a rough estimate of the
+over all gradient.
+So you don't want to reduce the learning
+rate every time the error arises.
+But what you're hoping is that the error
+will fall fairly consistently.
+And if it is falling fairly consistently
+and very slowly, you can probably increase
+the learning rate.
+Once you've got that working, you can then
+write a simple program to automate that
+way of adjusting the learning rate.
+One thing that nearly always helps is,
+towards the end of learning with
+mini-batches. It helps to turn down the
+learning rate.
+That's because you're going to get
+fluctuations in the weights caused by the
+fluctuations in the gradients that come
+from the mini batches.
+And you'd like a final set of weights.
+As a good compromise.
+So, when you turn down the learning rate,
+you're smoothing away those fluctuations,
+and getting a final set of weights that's
+good for many mini-batches.
+So a good time to turn down the learning
+rate is when the error stops decreasing
+consistently.
+And a good criterion for saying the error
+stopped decreasing is to use the error on
+a separate validation set.
+That is, it's a bunch of examples that you
+are not using for training and also
+they're not going to be used for your
+final test.

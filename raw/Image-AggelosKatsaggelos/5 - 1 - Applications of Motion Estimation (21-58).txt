@@ -1,0 +1,516 @@
+[BLANK_AUDIO]
+Hello and welcome to week four.
+I hope you enjoyed the last three weeks.
+We covered during them fundamental
+materials and tools That will
+serve you well for the purpose of this
+course and beyond.
+As I mentioned earlier, do not discouraged
+if
+not everything is crystal clear at this
+point.
+If you're comfortable with these home work
+problems, you'll be in good shape.
+And you'll be able to apply these tools to
+real life problems in your work or school
+environment.
+This week, similar to the last two weeks
+we will cover a tool, you might
+call it so, which is needed almost always
+when we deal with the processing of
+videos.
+The tool consists of the techniques of
+estimating
+the motion in a video of a dynamic scene.
+In other words, in finding how each and
+every pixel in the scene Has moved over
+time.
+This is a fundamental step in a number of
+applications like for example tracking.
+This is a problem of following an object
+over
+time like a player let's say in a
+basketball game.
+Something which is done automatically by
+us humans
+but it is rather challenging task for the
+computer.
+Or human computer interaction.
+That is interacting with a computer, not
+with a
+traditional mouse and click anymore, but
+by assuming that the
+computer or, say, a robot has eyes that
+can see
+us and understand, for example, our
+motions and our actions.
+As
+we will see when we cover in detail video
+compression in a few
+weeks, motion estimation is an integral
+part
+of any video compression algorithm or
+standard.
+We'll talk primarily about the so-called
+direct methods for estimating motion.
+That is, face correlation, block matching,
+and special temporal gradient techniques.
+We will also talk about color.
+We will cover some of the basic
+information
+about it, we'll describe some spaces for
+representing
+color, and we will also discuss some basic
+considerations when we process color
+images and videos.
+In this first segment we will distinguish
+between 3D and 2D motion.
+And also between true motion and optical
+flow.
+We'll then provide some examples of the
+application of motion.
+We will be encountering motion in
+different parts of
+this course, especially when we talk about
+video compression.
+So let us proceed with this material and
+Enjoy week four.
+The world we live in is three dimensional.
+I therefore need the three dimensional
+axis system.
+An x, y, z system is shown here to
+describe the
+motion of objects, or their trajectories
+in this three dimensional world.
+So what we see here is this ball at times
+t
+T plus one, t plus two, t plus three and
+so on.
+Now if I only have available one
+combination here when we talk about
+monocular vision.
+All I am able to acquire is the projection
+of this Three-dimensional
+motion onto the two-dimensional plane,
+let's call it x y plane.
+If the camera's not calibrated, I'm not
+able to correspond,
+for example, sizes from the image plane to
+the world.
+So if for example this diameter of the
+ball is 20 pixels here and the image I do
+not know what the size of the ball in the
+rear well is equal to how many centimeters
+for example this diameter is Similarly we
+see that
+intentionally you know at time t+1 here
+the ball
+is Smaller than the ball at times T on the
+image plane and this is because the depth,
+the distance of the ball from the image
+plane has changed.
+So although I'm interested in estimating
+the motion
+of objects in the three dimensional world
+All I'm
+able to do with one camera is estimate the
+motion of the objects in the two dimension
+world.
+Again, if a calibrated camera were
+available,
+and they also knew the geometry of
+the scene, then I would be able to go from
+the 2D motion to
+the 3D motion Similarly, if two or more
+cameras were available, I would be
+able to find the depth in this scene with
+an escape factor, and so on.
+However, for the better part of the
+course,
+we'll only deal with one camera, as shown
+here.
+And therefore, we'll deal with the
+estimation of the two dimensional motion.
+So the basic form of the motion estimation
+problem is depicted here.
+Given two or more frames I am interested
+in finding out how
+an object such as this one moves from one
+frame to the next.
+So from frame k minus 1 to frame k.
+And how to move from frame k to frame k
+plus 1.
+Similarly, I might define a region such as
+this one, and be interested
+in finding out how this stranger moved
+from one frame to the next.
+Or, I might be interested how a single
+pixel move from one frame to the next.
+And these vectors denote the motion in
+this two dimensional
+plane, of this particular object, or
+region, or, or pixel.
+As far as notation goes, time will be
+denoted as subscript here, as shown here,
+or alternatively I can use the notation I
+x y t minus
+1 To denote the image frame, the intensity
+is I ,coordinates
+x, y and t-1 and here becomes x y t and so
+on.
+Diffusion of the optical flow is the
+change of the light of the
+image or on the retina of the eye or on
+the camera sensor.
+Due to the relative motion between the
+camera and the scene.
+So in general, by estimating the optical
+flow in
+an image, we are obtaining an estimate of
+the
+motion in the scene, or as we discussed,
+the
+two-dimensional projection of the
+three-dimensional motion on to the camera.
+There are however two cases that I want to
+discuss here.
+One when the optical flow is zero although
+there is motion in the scene and
+two when the optical flow is non-zero but
+there is no motion in the scene.
+The first case, non Zero
+through motion
+at zero optical
+flow is demonstrated by this video.
+This cylindrical water bottle here is
+rotated on a vertical axis.
+And since the reflective properties on the
+surface of
+the cylinder is constant the generated
+optical flow is zero.
+You might see actually some displacement
+of the
+cylinder here since I was holding it and
+rotating it while filming it and it's
+rather
+hard to hold it steady while rotating it.
+So let me play the video for you, so it
+is hard to observe any motion since the
+optical flow is zero, there is no No
+change in the optical flow in this scene.
+I want to demonstrate the second case by
+this video.
+The case of zero through, motion
+non-zero optical flow, due to
+the change in the ambient light
+the optical flow in non-zero.
+If you focus for example on this statue or
+the,
+this business card holder However, nothing
+moves in this scene.
+So let me play this video for you.
+[BLANK_AUDIO]
+So if the ambient light is constant, we
+don't have to worry about the second case.
+And therefore with the exception of this
+issue that was described here, the
+estimation of
+the optical flow would provide us with a
+good estimate of the motion in the scene.
+There are numerous applications in
+computer vision, video processing,
+robotics,
+animation, where motion is estimated and
+used to perform various tasks.
+Some examples of such applications are
+listed here.
+In object tracking, the objective is to
+determine the
+location of an object at any given time
+instance.
+In human computer interaction using visual
+inputs The objective is
+to communicate information to the computer
+with the use of
+a camera capturing the motion of the body,
+arms, hands
+of a person, as well as the expression of
+a person.
+In temporal interpolation, the objective
+is to create
+or estimate missing frames in between
+existing frames.
+Video rate up-conversion is a primary
+example, in the stopping.
+In removing noise from a sequence, we are
+interested in using both the spatial
+neighborhood of a pixel in a frame, as
+well as the temporal neighborhood.
+In this case, we want to filter along the
+motion trajectory.
+Finally in video compression, we are
+predicting the values of each and
+every pixel in the current frame by
+utilizing their motion as determined from
+the previous frame or the previous frames
+then encode the predictive parameters,
+the motion as well as the prediction
+error, or the, displays very different.
+Clearly we want to perform as accurate
+motion estimation as possible.
+This is indeed the case with the first
+four applications mentioned here.
+For the video compression application
+however,
+accurate motion estimation is also
+important.
+But we can trade accuracy of the motion
+with reduction
+in computational com, complexity or speed
+of estimating the motion.
+We can afford this because we're given the
+chance to correct for the inaccuracies in
+the motion estimates by encoding the
+prediction due
+to motion error or the displace frame
+difference.
+In any case, don't worry, this is not
+crystal clear right now, since we'll cover
+video
+compression in considerable detail in
+later weeks, we
+show next some examples of the first four
+applications.
+Object tracking is a very challenging
+problem, with
+considerable research and development in
+academia, and industry alike.
+We use here a micro program to demonstrate
+the basic idea.
+The name of the program is typed in this
+command window.
+The name BIP traffic OF_WIN
+And this window pops up.
+If we press Play, then we these four
+individual windows
+showing up, so the block diagram of the
+system is shown here.
+The, the raw traffic data are input into
+the
+system, and the raw data are shown in this
+window.
+Actually they go out this way, and this is
+the video that is displayed.
+The, the frames are 120 by 160, and the
+frame rate is fifteen frames per second.
+Then the color video is converted to
+intensity to gray scale, and
+based on the gray scale the optical flow
+is estimated using a particular algorithm.
+Algorithm by the name of Hor,
+Horn–Schunck.
+We're going to talk about optical flow
+later in this presentation.
+So these motion vectors, velocity here are
+displayed in this window.
+You can see those yellow motion vectors.
+Then based on this velocity threshold is
+taking
+place and it generates this binary images
+shown here.
+So, if there is a velocity vector in an
+area in a pixel, then this is after
+the thresholding shown as white, while the
+stationary part is shown as black.
+And finally, based on this segmentation
+here,
+A bounding box appears around the objects.
+And this is really what we are after, we
+want
+to know at each time instance the location
+of the object.
+So it is a motion based segmentation of
+the objects,
+the segmentation, again, is shown here in
+this binary image.
+Is not extremely accurate, for example,
+you see
+that you have two cars here, and one
+and there are, you know, stationary parts
+in the car while the car is moving as, as
+a complete object, so These are errors in
+the motion based segmentation, however as
+long as
+the, the bounding box is correctly
+identified around
+the moving object, then our objective has
+been accomplished.
+So let me continue playing the video here.
+You see that again in this for win windows
+original video the motion vector
+field super imposed on the video the
+binary image due to thresh holding
+the motion field and finally the bounding
+box around the moving object.
+So if I kind of stop it here you see that
+there is
+a bounding box here, a green bounding box
+around the moving object.
+So this is a program you can also run on
+your own and pay closer attention to
+it, But it clearly demonstrates Rather
+straight forward
+approach towards object dragging based on
+the motion vectors.
+We show here an example of a vision
+based interface system or visual panel
+which utilizes a
+panel such as an ordinary piece of paper
+and a tip pointer, for example, a finger
+tip.
+As an intuitive, wireless and mobile input
+device.
+[BLANK_AUDIO]
+The system can accurately and reliably
+track the panel and the T-point.
+The panel tracking continuously finds the
+projective
+mapping between the panel and the display
+which in turn maps the tip position to the
+corresponding position on the display.
+By detecting the clicking and dragging
+actions the system can
+perform many tasks such as controlling a
+remote large display.
+And simulating the physical keyboard.
+Users can use their fingers or other
+pointers to
+issue commands and type text and in
+addition by
+writing the three dimensional position and
+orientation of the
+visual panel, the system can also provide
+three dimensional information.
+And can therefore serve as a virtual
+joystick
+by which one can control three-dimensional
+virtual objects.
+So this is another example of how motion
+can
+be utilized in developing these human
+computer interaction systems.
+[BLANK_AUDIO]
+Motion compensated temporal interpolation
+is another problem
+where motion plays a, an important role.
+This is the problem encountered in frame
+up conversion.
+For example, you're going to convert the
+24 frame per second movie up
+to a 30 frame per second video that would
+be used for broadcasting.
+So the problems depicted here, I have the
+frame at
+times t one and the frame at times t two.
+And I'm interested in generating a frame
+typically the middle of
+these two are an identical distance
+between these two at time t.
+One approach towards this temporal
+interpolation is
+to duplicate frame T one into frame T.
+So in this case, if for example I look at
+the blocks such as
+the one show here I'm going to reproduce
+this block at exactly the same location.
+So if this is, this point here is n1, n2.
+Then this point here is also n1, n2.
+So this is 0 order hold.
+Now this is of course a, we have a very
+straightforward way to generate the
+missing frame, however, it can generate
+jagged motion, because during going from t
+to t two, we see that the, the person here
+has considerably moved.
+So, another approach which provides
+generally speaking a much smoother
+motion is based on, on, on motion
+compensation.
+So i find the motion between this block at
+frame T and frame T2.
+And therefore, the location now of this
+block is
+Here at let's say n1 prime and two prime
+along the motion trajectory.
+So then I'll take the intensity of that
+block and reproduce it here.
+So this is the basic idea
+of motion compensated temporal
+interpolation and again.
+By and large, it produces a much smoother
+motion than the zero-order hold.
+And here in this example again, the, the
+frame
+we interpolated is in the middle of the
+two frames.
+It can be anywhere between the time t1 and
+t2, and we can have more than one frame,
+so we can just introduce two or three New
+frames between frames t1 and t2.
+[BLANK_AUDIO]
+Let
+us assume we are given three noisy frames,
+and our task is to reduce the noise.
+We assume that the same type of noise with
+the
+same strength, the same variance was added
+to all three frames.
+Then if there's no motion among the
+frames,
+if the frames, let's say, are identical in
+that respect, if I take a small region
+as indicated here, and then average it
+across time.
+The meta effect is that the variance of
+the
+noise is reduced by the number of frames
+I'm operating.
+So in this case, it has been divided by
+three.
+In videos of points of interest, dynamic
+videos there is motion
+between the frames, but I want to
+Reproduce the same operation
+and in doing so I have to be able to find
+the motion
+and perform this averaging this filtering
+along motion trajectories.
+So what is, this is what is shown here in
+the
+second row of images I have tracked the
+motion and therefore
+this block here is not the same at one and
+two
+locations, but it moves from frame to
+frame by following the motion.
+So then I'm going to average the three
+frames here the three other blocks shown
+in
+red but they are located in different
+locations
+because again I am smoothing along motion
+trajectories.
+So this is the simplest possible idea one
+can perform when dealing with
+temporal filtering but the general idea is
+that I want to be able to find the motion.
+And then perform a type of filtering,
+spacial temporal filtering along the
+motion trajectories.
+Clearly the problem becomes more
+challenging, the motion estimation problem
+that is simply because the data are noisy
+and
+therefore I have to invent robust Motion
+estimation techniques robust to noise.
+

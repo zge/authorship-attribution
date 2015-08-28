@@ -1,0 +1,576 @@
+Arithmetic coding is discussed in this
+segment, which
+addresses some of the shortcomings of
+Huffman coding.
+According to it, a unique identifier or a
+tag is generated for a particular sequence
+of symbols.
+Without the need to generate all possible
+code words for sequences of the same
+length.
+As were the case for Huffman coding.
+We show how this stack is generated, by
+mapping its
+symbol to the real line segment form 0 to
+1.
+And, keep zooming in to the segment as
+more and more symbols are observed.
+Arithmetic coding is also suitable for
+dealing with short
+dictionaries, as is the case with binary
+fax images.
+And also for taking context into account,
+therefore locally changing the probability
+of the symbols.
+Because of this, if the code chosen by the
+joined bileveling processing group,
+JBIG, a group of experts that established
+the standard for bilevel images.
+The basic principles of JBIG are also
+described in this segment.
+So let us now have a closer look at this
+material.
+We saw that it is more efficient to
+generate code words for groups or
+sequences of symbols.
+Instead of generating code words for
+individual symbols.
+And we call this, Block Coding.
+[BLANK_AUDIO].
+In terms of Huffman Block Coding though,
+we saw that.
+If we want to encode a particular sequence
+of length m
+then we have to find the code words for
+all possible sequences of the same length.
+And this clearly has a major disadvantage
+that the size of the alphabet grows
+tremendously.
+So if I have an alphabet of size n, and
+extend the source by m,
+then the new alphabet of the extended
+source is size n to the m.
+We would like, clearly, to address this
+and
+the way to address it is through
+arithmetic coding.
+So with arithmetic coding, we can assign a
+code word to a particular sequence
+without having to generate codes for all
+sequences of the same length.
+The way it's done is by finding a unique
+identifier or tag.
+For this particular sequence we want to
+encode.
+And this tag corresponse to a binary
+fraction,
+which becomes the binary code for the
+sequence.
+So, we would like to separate the
+generation of
+the tag, and the generation of the binary
+code.
+We'll just discuss, at some high level,
+how the tag is generated.
+But we will not get into any of the
+details of how the code is generated.
+It's a rather complicated matter.
+One possible set of tags for representing
+sequences of
+symbols are the numbers in the interval 0
+to 1.
+Because there are infinitely many real
+numbers in this interval it should
+be possible to assign a tag to any
+sequence where in this interval.
+In order to do so, we need the function
+that will map sequences of symbols into
+the unit interval.
+Such a function is the cumulative
+distribution function.
+So we are given enough of it here with
+little m symbols.
+And here are the associated probabilities.
+We know that a random variable maps the
+outcomes of an experiment to the realign.
+So we'll use this random variable here, x,
+that will
+map the outcome of the experiment, the
+element of the alphabet here, the symbols.
+Into the index of the symbol i.
+So now given the probabilities of the
+source, we
+are given the probability function of this
+random variable.
+So the probability that the random
+variable is equal to
+i is simply the probability of the symbol
+a i.
+And of course we can have the cumulative
+distribution function f of x of y,
+the sum k one to i of this probability
+that the random variable is equal to k.
+With this assignment, the main idea behind
+the tag
+generation is to reduce the size of the
+interval in which the tag resides.
+As more and more elements of the sequence
+are received.
+So we partition the unit interval into
+sub-intervals of this form.
+So this is the line from 0 to 1.
+And symbol a of 1.
+Resides in this interval from the
+cumulative at 0, and the cumulative
+at 1, and more specifically a y, a of i
+belongs to this interval
+so it's closed at the lower side and it's
+open at the upper side.
+So the appearance of the first symbol in
+the sequence
+restricts the interval containing the tag
+to one of the sub-intervals.
+So let's assume that the first symbol is
+a2.
+Then the tag will be in this interval
+here.
+And this sub-interval is partitioned in
+exactly
+the same proportions as the original
+interval.
+So each succeeding symbol causes the tag
+to be further restricted
+to a sub interval, that is further
+partitioned in the same way.
+So let's look at an example where
+hopefully this idea will become even more
+clearer.
+Let us now look at the simple example of a
+tag generation.
+We're given a source with this alphabet,
+and here are the associated probabilities
+of the symbols, based on what I just
+discussed in the previous slide.
+Through the assignment of a random
+variable, we can
+find the cumulative distribution function
+of that random variable.
+And we have got F of x1 equals Pa1.
+F of x2 equals Pa1 plus Pa2, equals 0.8.
+And f of x 3 equals 1.
+So with this values of the cumulative
+distribution function,
+we take now the segment between 0 and 1.
+And
+divide it, here is f of x 0, here is
+f of x 1, f of x 2.
+And therefore X3.
+So A1 resides in this interval, A2 in this
+interval, and A3 in this interval.
+Let us assume that the first symbol we
+observe is A1.
+This means that any number in this
+interval between 0
+and 0.7 can serve as the tag to uniquely
+identify A1.
+I take the 0 to 0.7 sub-interval, and
+sub-divide it proportionally to
+the original probability, so seventy
+percent of eight is occupied by A1.
+10% by a2 and 20% by a3.
+If the second symbol we observe is a2 then
+the tag resides in this interval.
+I take the interval sub divided
+proportional to the original
+probabilities, if the
+third symbol I observe is 3, then the tag
+resides in this interval.
+I can further sub-divide this, and so on
+and so forth.
+So if the sequence we observe and we want
+to encode
+is a1 a2 a3, then any real number in the
+interval
+0546 to 2056 can serve as the tag, to
+uniquely identify this particular
+sequence.
+It is clear that I'm looking for an
+identifier.
+Just for this particular sequence and not
+for any three symbol
+element as were the case with Huffman
+encoding.
+Typically, the middle point of this
+interval is chosen as the tag.
+And also there are recursive ways to
+evaluate the computed
+tag, as well as to compute the, the
+boundings of each
+of the sub intervals, each time I take a
+sub
+interval and further subdivide it and so
+on and so forth.
+So, this is the basic idea of how a tag is
+generated.
+Let us see with a simple example how to
+decipher the
+tag and find out what is the sequence that
+was encoded.
+So we can see again the same source as
+shown here.
+And we're given that the tag is equal to
+0.55.
+So we want to find again what is the coded
+sequence.
+We have, of course, in addition to the tag
+the number of symbols in the
+sequence, and we're given that there are
+three symbols that were encoded.
+The main idea in deciphering the tag is to
+mimic the encoder so that we decode.
+The, the, the tag, decipher the tag.
+So, we take this information about the
+source, we take
+the segment between 0 and 1 and subdivide
+it proportionally as we did before.
+Now, clearly the tag resides in this
+interval.
+If you recall the steps we followed while
+encoding, the first observed
+symbol sets the stage, in some sense, to
+where the tag is going to belong.
+In other words, the tag cannot belong to a
+segment outside the initial
+segment because in each step we are
+subdividing the initial segment.
+So the five that the tag, for this
+particular example, belongs to this
+interval means that the first symbol that
+was encoded is the symbol of a1.
+So, we mimic the encoder.
+Take this interval, subdivide it
+proportionally.
+And now we observe that the tag resides in
+this interval.
+Therefore the second sequel that was
+encoded was a2.
+Limit the encoder, subdivide this.
+We see that the tag belongs to this
+interval, and therefore the
+first symbol that was encoded, and we're
+decoding it now, is a three.
+So in summary and conclusion the coded
+sequence a1, a2, a3.
+We liked to briefly compare the
+performance of automatic coding and
+Huffman.
+As we already saw, this is the
+relationship the Huffman rate
+satisfies as a function of the encoding
+block size capital N.
+The, related relationship for arithmetic
+coding is given here.
+By comparing these two expressions, it
+seems that
+AC does not have that good of efficiency.
+As Huffman coding, since 2 over N here
+goes to 0 slower than 1 over N.
+However, as we discussed, Huffman coding
+suffers from the explosion of the size of
+the dictionary, and in practice it is
+arithmetic coding that achieve rates close
+to entropy.
+Of course we did not discuss how the tag
+is encoded.
+It should be clear that as the size of
+the message N increases, the precision of
+the tag increases.
+We need to represent the real number with
+a lot of decimal points.
+Scaling and incremental coding are used to
+address this issue.
+If the tag is in the 0 to 0.5 interval,
+for example.
+It's clear that it's restricted to stay
+there, therefore the 0
+to 0.5 range can be scaled back to zero to
+one range.
+By doing so, we lose the most significant
+bit, which however was already
+sent to the decoder by signaling which
+half of the line we are using.
+And this is called incremental coding.
+I'm going to demonstrate with a simple
+example, the benefit of taking
+the context of a symbol being encoded into
+account when encoding an image.
+And then using multiple code, there's each
+of
+them adapting to the statistics of this
+context.
+The words, context, and content are
+both used in image and video processing,
+but at times they're confused.
+By what I'm describing here, the content
+of an image is taken into account.
+But we are adapting the code then to the
+context
+of the pixel or the symbol in general
+being processed.
+So it's also content adaptive the
+processing I'll describe next, but to be
+more precise we are looking again at the
+context of the pixel being encoded.
+This actually will become much clearer in
+the next few slides.
+We will also talk later in the
+course about other examples of
+content-adaptive processing.
+So we are looking at a document which
+has these probabilities of black and white
+pixels.
+The white pixels dominate, which typically
+is the case with a lot of documents.
+We know how to find the entropy of this
+source.
+And it's equal to this, so, so many bits
+per pixel.
+So based on what we've learned, if the
+model here that
+was used to find the entropy of a discrete
+memoryless source
+is accurate in describing this document,
+then we know that we
+cannot find a coder than can have a
+performance below entropy.
+Now, we divide the document into two
+regions.
+Region one is the larger one, it includes
+80% of the pixels.
+And region two includes the remaining of
+the pixels.
+Region one is dominated by white pixels,
+95% of them are white.
+So if we find the entropy for region one
+is equal to the number shown here.
+Region two is dominated by black pixels,
+and the corresponding entropy is shown
+here.
+Now, the total entropy of the source is
+the weighted sum of the two entropies
+of the regions where the weights are
+proportional
+to the number of pixels in each region.
+So in other words, the total entropy is
+0.8 H1, 0.2 H2.
+And this is the resulting number.
+So what we see, is that, by dividing the
+document of two regions.
+The entropy has been reduced almost a half
+of the original entropy.
+And therefore, the use of multiple coders,
+which adapt to the
+context of the symbol being encoded is
+beneficial and this same
+idea has been used extensively, of course
+in a more refined
+form that I will explain later when
+arithmetic coders are used.
+I should mention here that that this is
+the case.
+Of a small alphabet, of a source with
+a small alphabet, and skewed probabilities
+of symbols.
+So we know that for this case, Huffman
+coding has low or problematic
+performance, while a source like this is
+very suitable for arithmetic coding.
+A case where context-adaptive arithmetic
+coding is used in the JBIG standard.
+JBIG actually stands for: joint bi-level
+image processing group.
+So this is a group of experts that
+established
+the standard for the progressive
+transmission of bi-level images.
+JBIG is therefore a combination of a
+progressive transmission and a lost list
+coding algorithm.
+Medicoding again is use for the lossless
+coding part, and medicoding is suitable,
+for the use of multiple coders since they
+all use the same, machinery.
+They simply use a different set of
+probabilities.
+So, JBIG encodes the pattern of big cells
+in the neighborhood of a big cell being
+encoded.
+That's the context.
+To decide which set of probabilities to
+use in encoding a particular pixel.
+So it uses these two neighborhoods.
+Each of these neighborhoods has ten
+pixels, so
+I'm interested in encoding the pixel at
+location X.
+And I look at these ten neighbors.
+Here they extend over three lines.
+Or I use this pattern.
+So for encoding this, I look at these ten
+neighbors that extend only over two lines.
+Since there are ten neighbors, there are 2
+to the 10, or 1,024 different contacts.
+Or different coders.
+Actually JBIG is using as many as 496
+different coders,
+when we deal with a, a high-resolution
+image.
+A here, is a floating member of the
+neighborhood and it can
+be placed anywhere in the image to
+possibly uncover specific structures in a.
+We also notice that the shape of
+the neighborhood allows the recursive
+comput-, computability.
+But as the neighborhood includes
+previously
+encoded pixels, and therefore these pixels
+are
+available to both encoder and decoder, so
+that they can synchronize their operation.
+So if we look at the particular example of
+this
+first neighborhood, so we want to encode
+0,
+and we look again at these ten neighbors.
+We see that, in this particular example
+there, 70% of the pixels are black,
+the 0's, and 30% of the pixels are white,
+corresponding to ones.
+So in arithmetic code, that works with
+this probability of
+symbols is going to be utilized in a code
+the value of the 0.
+Similarly if this were the situation of
+the neighborhood, so in encoding
+the value of one here, this particular
+case 60% of the pixels are black.
+And 40% white.
+So I've made a code there using this
+probability will
+be utilised in the coding of this
+particular pixel bite.
+The idea behind progressive transmission
+is
+to present an image at various
+resolutions.
+So at low resolution the first value
+of the image is transmitted to the
+destination.
+If the recipient is interested in this
+image, might request
+a high-resolution version of the same
+image to be transmitted.
+It's same idea of the thumbnails we see on
+the web.
+It's a tiny image.
+If interested, we click on it and we see a
+higher version of the same image.
+Now, one of the challenges when we deal
+with binary images, is how to down sample
+them.
+JBIG allows a 2 by 2 factor down sampling.
+So, if we have four pixels here, we want
+to replace them by one pixel.
+So if I take the average of these four,
+the average is clearly 1 4th.
+So one might think, okay.
+We could compare this to a half.
+Since this is less than a half, then this
+should be replaced by a 0.
+But clearly, we have difficulty when we
+have this situation.
+Because the average of the pixels is half.
+And therefore it's not clear how to
+resolve the situation.
+If the down sample version of this 4 by 4
+neighborhood should be a 0 or a 1.
+To address this JBIG is considering a
+scheme as shown here.
+So the, we're interesting in finding the
+low resolution value of x.
+And instead of using just the four,
+enables at the high resolution, right?
+We want to find how to replace this for
+valued higher resolution by one value.
+We are also utilizing additional values at
+higher resolution, these are
+the small case letters, as well as the all
+ready previously computed.
+Values of the low resolution will match
+the capital letters.
+Then the standard proposes the evaluation
+of this formula here, where
+again all these label pixels at low and
+high res are taken into account.
+And if the value of this expression is
+greater than 4.5 x is
+equal to 1; otherwise x is equal to 0.
+I guess it's always a question, where did
+this expression come from and very often
+in standards.
+There's a lot of thinking and
+experimentation
+that takes place before something is
+standardized.
+So, this at the end, if one stares at it
+and tries
+to reason make sense and this is how it's
+implemented in the standard.
+In progressive transmission, the decoder
+has already received the low
+resolution image, and of course this image
+is available at the
+encoder, and therefore the low res values
+can be used as
+context when we perform arithmetic
+encoding of the high res image.
+The advantage now is that the received low
+resolution
+values are in the past with respect to
+time.
+But include information about the pixel
+that is being encoded as well
+as future volumes with respect to space of
+the hight of the image.
+Therefore, the context can be more
+informative in this game.
+Here are the four context templates that
+are utilized by JBIG.
+X, again in red, is the pixel value being
+encoded.
+We see that past values of the high-res
+image are used.
+And these big o's are the role resolution
+pixel values.
+And values a again is this floating
+location of the big [INAUDIBLE].
+So you see for a example that in computing
+this o
+value of the load as the value we tried to
+encode
+of the high-res was taken into account, as
+well as future values,
+and this is the case for all these four
+low-resolution pixels.
+So, in this template it's this
+low-resolution value that has
+included the value that we try to encode
+in the high resolution image.
+Since we have to include 2 bits to
+indicate which of the four context
+templates we are using, we have therefore
+used 12 bits and there
+are four that are 2 to the 12, 4,096
+different contexts.
+

@@ -1,0 +1,228 @@
+[SOUND]
+This lecture is about the specific
+smoothing methods for language models
+used in Probabilistic Retrieval Model.
+In this lecture we will continue
+the discussion of language models for
+information retrieval, particularly
+the query likelihood retrieval method.
+And we're going to talk about
+the specific smoothing methods used for
+such a retrieval function.
+So, this is a slide from a previous
+lecture where we show that with
+query likelihood ranking and the smoothing
+with the collection language model.
+We end up having a retrieval function
+that looks like the following.
+So, this is the retrieval function,
+based on these assumptions
+that we have discussed.
+You can see it's a sum of all
+the matched query terms here.
+And inside the sum it's
+a count of term in the query,
+and some weight for
+the term in the document.
+We have TFI, TF weight here.
+And then we have another constant here,
+in n.
+So clearly, if we want to implement this
+function using a programming language,
+we'll still need to figure
+out a few variables.
+In particular, we're going to
+need to know how to estimate the,
+probability of would exactly.
+And how do we set alpha?
+So in order to answer these questions,
+we have to think about this very specific
+smoothing methods, and
+that is the main topic of this lecture.
+We're going to talk about
+two smoothing methods.
+The first is the simple linear
+interpolation, with a fixed coefficient.
+And this is also called a Jelinek and
+Mercer smoothing.
+So the idea is actually very simple.
+This picture shows how we estimate
+document language model by using
+maximum [INAUDIBLE] method,
+that gives us word counts normalized by
+the total number of words in the text.
+The idea of using this method is to
+maximize the probability
+of the observed text.
+As a result, if a word like network,
+is not observed in the text.
+It's going to get zero probability,
+as shown here.
+So the idea of smoothing, then,
+is to rely on collection average model,
+where this word is not going to have
+a zero probability to help us decide
+what non-zero probability should
+be assigned to such a word.
+So, we can know that network as
+a non-zero probability here.
+So, in this approach what we do is,
+we do a linear interpolation between
+the maximum likelihood or estimate here
+and the collection language model.
+And this controlled by
+the smoothing parameter, lambda.
+Which is between 0 and 1.
+So this is a smoothing parameter.
+The larger lambda is the two the more
+smoothing we have, we will have.
+So by mixing them together, we achieve the
+goal of assigning non-zero probability.
+And these two are word in our network.
+So let's see how it works for
+some of the words here.
+For example if we compute to
+the smallest probability for text.
+Now, the next one right here
+is made give us 10 over 100,
+and that's going to be here.
+But the connection probability is this, so
+we just combine them together
+with this simple formula.
+We can also see a, the word network.
+Which used to have zero probability
+now is getting a non-zero
+probability of this value.
+And that's because the count is going
+to be zero for network here, but
+this part is non zero and
+that's basically how this method works.
+If you think about this and
+you can easily see now the alpha sub d
+in this smoothing method is basically
+lambda because that's, remember,
+the coefficient in front of
+the probability of the word given by
+the collection language model here, right?
+Okay, so
+this is the first smoothing method.
+The second one is similar, but it has
+a find end for manual interpretation.
+It's often called a duration of the ply or
+Bayesian smoothing.
+So again here, we face the problem of
+zero probability for like network.
+Again we'll use the collection
+language model, but
+in this case we're going to combine
+them in a somewhat different ways.
+The formula first can be seen as
+a interpolation of the maximum
+and the collection
+language model as before.
+As in the J M's [INAUDIBLE].
+Only and after the coefficient [INAUDIBLE]
+is not the lambda, a fixed lambda, but
+a dynamic coefficient in this form,
+when mu is a parameter,
+it's a non, negative value.
+And you can see if we
+set mu to a constant,
+the effect is that a long document would
+actually get smaller coefficient here.
+Right?
+Because a long document
+we have a longer length.
+Therefore, the coefficient
+is actually smaller.
+And so a long document would have
+less smoothing as we would expect.
+So this seems to make more sense
+than a fixed coefficient smoothing.
+Of course,
+this part would be of this form, so
+that the two coefficients would sum to 1.
+Now, this is one way to understand
+that this is smoothing.
+Basically, it means that it's
+a dynamic coefficient interpolation.
+There is another way to
+understand this formula.
+Which is even easier to remember and
+that's this side.
+So it's easy to see we can rewrite
+this modern method in this form.
+Now, in this form, we can easily see
+what change we have made to the maximum
+estimator, which would be this part,
+right?
+So it normalizes the count
+by the top elements.
+So, in this form, we can see what we did,
+is we add this to the count of every word.
+So, what does this mean?
+Well, this is basically
+something relative to the probability
+of the word in the collection..
+And we multiply that by the parameter mu.
+And when we combine this
+with the count here,
+essentially we are adding pseudo
+counts to the observed text.
+We pretend every word,
+has got this many pseudocount.
+So the total count would be
+the sum of these pseudocount and
+the actual count of
+the word in the document.
+As a result, in total, we would
+have added this minute pseudocount.
+Why?
+Because if you take a sum of this,
+this one, move over all the words and
+we'll see the probability of the words
+would sum to 1, and that gives us just mu.
+So this is the total number of
+pseudo counters that we added.
+And, and so
+these probabilities would still sum to 1.
+So in this case, we can easily
+see the method is essentially to
+add these as a pseudocount to this data.
+Pretend we actually augment the data
+by including by some pseudo data defined
+by the collection language model.
+As a result, we have more counts.
+It's the, the total counts for, for
+word, a word that would be like this.
+And, as a result,
+even if a word has zero counts here.
+And say if we have zero come here and
+that it would still have none,
+zero count because of this part, right?
+And so this is how this method works.
+Let's also take a look at
+this specific example here.
+All right, so for text again,
+we will have 10 as original count.
+That we actually observe but
+we also added some pseudocount.
+And so, the probability of
+text would be of this form.
+Naturally the probability of
+network would be just this part.
+And so, here you can also
+see what's alpha sub d here.
+Can you see it?
+If you want to think about
+you can pause the video.
+Have you noticed that this
+part is basically of a sub t?
+So we can see this case of our sub t
+does depend on the document, right?
+Because this lens depends on the document
+whereas in the linear interpolation.
+The James move method
+this is the constant.
+[MUSIC]
+

@@ -1,0 +1,430 @@
+[SOUND].
+This lecture is about
+the Inverted Index Construction.
+In this lecture, we will continue
+the discussion of system implementation.
+In particular, we're going to discuss
+how to construct the inverted index.
+The construction of the inverted index
+is actually very easy if the data set is
+very small.
+It's very easy to construct a dictionary
+and then store the postings in a file.
+The problem's that when our data
+is not able to fit to the memory,
+then we have to use some
+special method to deal with it.
+And unfortunately, in most retrieval a
+petitions, the data set would be large and
+they generally cannot be,
+loaded into the memory at once.
+And there are many approaches
+to solving that problem, and
+sorting-based method, is quite common and
+works in four steps as shown here.
+First, we collect the the local termID,
+document ID, and frequency tuples.
+Basically, you overlook kinds of terms
+in a small set of documents, and, and
+then, once you collect those counts, you
+can sort those counts based on terms so
+that you build a local,
+a partial inverted index.
+And these are called, runs.
+And then, you write them into
+a temporary file on the disk.
+And then, you merge in step three with do
+pair-wise merging of these runs, and here,
+you eventually merge all the runs,
+we generate a single inverted index.
+So this is an illustration of this method.
+On the left, you see some documents.
+And on the right, we have, show a term
+lexicon and a document ID lexicon.
+And these lexicon's are to map a stream
+based representations of document IDs or
+terms into integer representations.
+Or, and, map back from,
+integers to the screen representation.
+And the reason why we want, are interested
+in using integers represent these IDs,
+is because,
+integers are often easier to handle.
+For example,
+integers can be used as index for
+array and they are also easy to compress.
+So this is a, one reason why we,
+tend to map these streams
+into integers so that so that we don't
+have to, carry these streams around.
+So how does this approach work?
+Well, it's very simple.
+We're going to scan these
+documents sequentially, and
+then pause the documents and
+a count the frequencies of terms.
+And in this, stage we generally sort
+the frequencies by document IDs because we
+process each document that sequentially.
+So, we first encounter all the terms in,
+the first document.
+Therefore, the document IDs,
+are all once in this stage.
+And so, and, this would be
+followed by document IDs 2.
+And, and they're naturally sort in this
+order just because we process the data in
+this order.
+At some point, the,
+we will run out of memory and
+that would have to,
+to write them into the disk.
+But before we do that,
+we're going to a sort them, just,
+use whatever memory we have,
+we can sort them, and
+then, this time,
+we're going to sort based on term IDs.
+Note that here, we're using, this,
+the term IDs as a key to sort.
+So, all the entries that share the same
+term would be grouped together.
+In this case,
+we can see all the, all the IDs
+of documents that match term
+one would be grouped together.
+And we're going to write this into
+the disk as a temporary file.
+And that would, allow us to use the memory
+to process the next batch of documents,
+and we're going to do that for
+all the documents.
+So we're going to write a lot of
+temporary files into the disk.
+And then,
+the next stage is to do merge sort.
+Basically, we're going to,
+merge them and the sort them.
+Eventually, we will get a single
+inverted index where the,
+their entries are sorted
+based on term IDs.
+And on the top,
+we can see these are the order entries for
+the documents that match term ID 1.
+So this is basically how we can do,
+the construction of inverted index,
+even though that they're or
+cannot be, or loaded into the memory.
+Now, we mentioned earlier that
+because the po, postings are very large,
+it's desirable to compress them.
+So let's now talk a little bit about
+how we compress inverted index.
+Well, the idea of compression, in general,
+is you leverage skewed
+distributions of values.
+And we generally have to use variable
+lengths in coding instead of the fixed
+lengths in coding as we', using,
+by defaulting a program language like C++.
+And so, how can we leverage the skewed
+distributions of values to,
+compress these values?
+Well, in general, we would use fewer
+bits to encode those frequent words
+at a cost of using, longer bits from
+the code than those, rare values.
+So in our case, let's think about how
+we can compress the tf, term frequency.
+If you can picture what the inverted
+index would look like and
+you'll see in postings there are a lot of,
+term frequencies.
+Those are the frequencies of terms,
+in all those documents.
+Now, we, if you think about it, what
+kind of values are most frequent there?
+You probably will, be able to guess
+that the small numbers tend to occur
+far more frequently than large numbers.
+Why?
+Well, think of about
+the distribution of words, and
+this is due to Zipf's law and
+many words occur just, rarely.
+So we see a lot of small numbers,
+therefore, we can use fewer bits for
+the small, but highly frequent integers,
+and at the cost of using more bits for
+large integers.
+This is a trade-off, of course.
+If the values are distributed uniformly
+and this won't save us any, spacing.
+But because we tend to see many
+small values, they're very frequent.
+We can save on average
+even though sometimes,
+when we see a large number we
+have to use a lot of bits.
+What about the document IDs
+that we also saw in postings.
+Well, they are not,
+distributed in a skewed way, right?
+So, how can we deal with that?
+Well, it turns out you can
+use a trick called the d-gap,
+and that, that is to store
+the difference of these term IDs.
+And we can, imagine if a term
+has matched many documents,
+then there will be a long
+list of document IDs.
+So when we take the gap, and when we take
+difference between adjacent document IDs,
+those gaps will be small.
+So we'll again see a lot of small numbers,
+whereas,
+if a term occurred in only a few
+documents, then the gap would be large.
+The larger numbers will not be frequent,
+so this creates some skewed distribution
+that would allow us to,
+to compress these values.
+This is also possible because in order to
+uncover or uncompress these document IDs,
+we have to sequentially process the data
+because we stored the difference.
+And in order to recover the,
+the exact document ID,
+we have to first recover the previous
+document ID, and then, we can add
+the difference to the previous document ID
+to restore the, the current document ID.
+Now, this was possible because we
+only needed to have sequential
+access to those document IDs.
+Once we look up a term we fetch all
+the document IDs that match the term,
+then we sequentially process them.
+So it's very natural that's why this,
+trick actually works.
+And there are many different methods for
+encoding.
+So binary code is a common used code in,
+in just any program.
+Language that we use basically
+a fixed length in coding.
+Unary code and gamma code, and
+delta code are all possible in this and
+there are many other possible in this.
+So let's look at some
+of them in more detail.
+Binary code is really
+equal-length in coding.
+And that's a property for
+the randomly distributed values.
+The unary coding is is a variable and
+it's important [INAUDIBLE].
+In this case, integer that is,
+I've missed one or
+we encode that as x minus 1,
+1 bit followed by 0.
+So for example, 3 would be encoded
+as two 1s followed by a 0,
+whereas 5 would be encoded as
+four 1s followed by 0, et cetera.
+So now, now you can imagine how
+many bits do we have to use for
+a large number like 100.
+So, how many bits do I have to use for
+exactly for a number like 100?
+Well, exactly, we have to use 100 bits,
+but so, it's the same number of
+bits as the value of this number.
+So, this is very inefficient.
+If you were likely to
+see some large numbers,
+imagine if you occasionally see a number
+like 1000, you have to use 1000 bits.
+So, this only works where if you
+are absolutely sure that there would be no
+large numbers.
+Mostly very frequent,
+they're often using very small numbers.
+Now, how do you decode this code?
+Since these are variables
+lengths in coding methods, and
+you can't just count how many bits and
+then just stop.
+Right?
+You can say eight bits or 32 bits,
+then you, you will start another code.
+There are variable lengths, so,
+you have to rely on some mechanism.
+In this case for unary, you can see
+it's very easy to see the boundary.
+Now you can easily see 0 would
+signal the end of encoding.
+So you just count how many 1s you
+have seen, and then you hit the 0.
+You know you have finished one number,
+you start another number.
+Now which is to start at unary code is to
+aggressive in rewarding small numbers.
+And if you occasionally can see a very
+big number, it will be a disaster.
+So what about some other
+less aggressive method?
+Well, gamma coding is one of them.
+And in this method, we can do,
+use unary coding for
+a transformed form of the value.
+So it's 1 plus the flow of log of x.
+So the magnitude of this value is
+much lower than the original, x.
+So that's why we have four
+using urinary code for that so,
+and so we, first we have the urinary
+code for coding this log of s.
+And this will be followed by
+a uniform code or binary code, and
+this is basically the same uniform
+code and binary code are the same.
+And we're going to use this code to code
+the remaining part of the value of x.
+And this is basically, precisely,
+x minus 1, 2 to the flow of log of x.
+So the unary code or basically code
+with a flow of log of x, well,
+I added one there, and here.
+But the remaining part will,
+we using uniform
+code to actually code
+the difference between the x and
+and this, 2 to the log of x.
+And, and it's easy to to show that for
+this this value, there's difference.
+We only need to use up to,
+this many bits and
+in flow of log of x bits.
+And this is easy to understand,
+if the difference is too large then we
+would have a higher flow of log of x.
+So, here are some examples.
+For example, 3 is encoded as 101.
+The first two digits are the unary code.
+Right.
+So, this is for the value 2.
+Right.
+10 encodes 2 in unary coding.
+And so, that means log of x,
+the flow of log of x is 1,
+because we will actually use unary code
+to encode 1 plus the flow of log of x.
+Since this is 2, then we know that
+the floor of log of x is actually 1.
+So but,
+3 is still larger than 2 to the 1, so
+the difference is 1, and
+that 1 is encoded here at the end.
+So that's why we have 101 for 3.
+Now, similarly 5 is encoded
+as 110 followed by 01.
+And in this case,
+the unary code encodes 3.
+So, this is the unary code for 110 and
+so the floor of log of x is 2.
+And that means, we will compute
+the difference between 5 and
+the 2 to the 2, and that's 1, and
+so we now have again 1 at the end.
+But this time, we're going to
+use two bits because with this
+level of flow of log of x,
+we could have more numbers, 5, 6, 7.
+They would all share the same prefix here,
+110.
+So, in order to differentiate them,
+we have to use two bits,
+in the end to differentiate them.
+So you can imagine 6 would be, 10 here
+in the end instead of 01, after 110.
+It's also true that the form
+of a gamma code is always,
+the first odd number of bits,
+and in the center, there was a 0.
+That's the end of the unary code.
+And before that, or to, on the left
+side of this 0, there will be all 1s.
+And on the right side of this 0,
+it's binary coding or uniform coding.
+So how can you decode such a code?
+Well, you again first do unary coding,
+right?
+Once you hit 0,
+you know you have got the unary code.
+And this also will tell you how many
+bits you have to read further to
+decode the uniform code.
+So this is how you can
+decode a gamma code.
+There is also delta code, but
+that's basically same as gamma code,
+except that you replace the unary
+prefix with the gamma code.
+So that's even less
+conservative than gamma code,
+in terms of avoiding the small integers.
+So that means it's okay if you
+occasionally see a large number.
+It's, it's, you know,
+it's okay with delta code.
+It's also fine with gamma code.
+It's really a big loss for unary code,
+and they are all operating,
+of course, at different degrees of
+favoring short favoring small integers.
+And that also means they would
+appropriate for sorting distribution.
+But none of them is perfect for
+all distributions.
+And which method works,
+the best would have to depend on
+the actual distribution in your data set.
+For inverted index, compression,
+people have found that gamma
+coding seems to work well.
+So how to uncompress inverted index?
+We just, talked about this.
+Firstly, you decode those encode integers.
+And we just, I think discussed how we
+decode unary coding and gamma coding.
+So I won't repeat.
+What about the document IDs that
+might be compressed using d-gap?
+Well, we're going to do
+sequential decoding.
+So suppose the encoded idealist is x1,
+x2, x3 et cetera.
+We first decode x1 to obtain
+the first document ID, ID1.
+Then, we will decode x2,
+which is actually the difference between
+the second ID and the first one.
+So we have to add the decoded value
+of x2 to ID1 to recover the value
+of the,
+the ID at this secondary position, right.
+So this is where you can see the advantage
+of, converting document IDs into integers.
+And that allows us to do this
+kind of compression, and
+we just repeat until we
+decode all the documents.
+Every time we use the document
+ID in the previous position
+to help recover the document
+ID in the next position.
+[MUSIC]
+

@@ -1,0 +1,423 @@
+In this sequence of lectures we're going 
+to learn Asymptotic Analysis. 
+This is the language by which every 
+serious computer programmer and computer 
+scientist discusses the high level 
+performance of computer algorithms. 
+As such, it's a totally crucial topic. 
+In this video, the plan is to segue 
+between the high level discussion you've 
+already seen in the course introduction 
+and the mathematical formalism,which 
+we're going to start developing in the 
+next video. 
+Before getting into that mathematical 
+formalism, however. 
+I want to make sure that the topic is 
+well motivated. 
+That you have solid intuition for what 
+it's trying to accomplish. 
+And also that you've seen a couple 
+simple, intuitive examples. 
+Let's get started. 
+[UNKNOWN] analysis provides basic 
+vocabulary for discussing the design and 
+analysis in algorithms. 
+More, it is a mathematical concept it is 
+by no means math for maths sake. 
+You will very frequently hear serious 
+programmers saying that such and such 
+code runs at O of n time, where such and 
+such other code runs in o of n square 
+times. 
+It's important you know what programmers 
+mean when they make statements like that. 
+The reason this vocabulary is so 
+ubiquitous, is that it identifies a sweet 
+spot for discussing the high level 
+performance of algorithms. 
+What I mean by that is, it is on the one 
+hand coarse enough to suppress all of the 
+details that you want to ignore. 
+Details that depend on the choice of 
+architecture, the choice of programming 
+language, the choice of compiler. 
+And so on. 
+On the other hand, it's sharp enough to 
+be useful. 
+In particular, to make predictive 
+comparisons between different high level 
+algorithmic approaches to solving a 
+common problem. 
+This is going to be especially true for 
+large inputs. 
+And remember as we discussed in some 
+sense. 
+Large inputs are the interesting ones. 
+Those are the ones for which we need 
+algorithmic enginuity. 
+For example, asotonic analysis will allow 
+us to differentiate between better and 
+worse approaches to sorting. 
+Better and worse approaches to 
+multiplying two integers, and so on. 
+Now most serious programmers if you ask 
+them, what's the deal with asymptotic 
+analysis anyways? 
+They'll tell you reasonably, that the 
+main point is to suppress both leading 
+constant factors and lower order terms. 
+Now as we'll see there's more to 
+Asymptotic Analysis than just these seven 
+words here but long term, ten years from 
+now, if you only remember seven words 
+about Asymptotic Analysis I'll be 
+reasonably happy if these are the seven 
+words that you remember. 
+So how do we justify adopting a formalism 
+which essentially by definition 
+suppresses constant factors and 
+lower-order terms. 
+Well lower-order terms basically by 
+definition become increasingly irrelevant 
+as you focus on large inputs. 
+Which as we've argued are the interesting 
+inputs, the ones where algorithmic 
+ingenuity is important. 
+As far as constant factors these are 
+going to be highly dependent on the 
+details of the environment, the compiler, 
+the language and so on. 
+So, if we want to ignore those details it 
+makes sense to have a formalism which 
+doesn't focus unduly on leading constant 
+factors. 
+Here's an example. 
+Remember when we analyzed the merge sort 
+algorithm? 
+We gave an upper bound on its running 
+time that was 6 times n log n plus 6n 
+where n was the input length, the number 
+of numbers [COUGH] in the input array. 
+So, the lower order term here is the 6n. 
+That's growing more slowly than n log n. 
+So, we just drop that. 
+And then the leading constant factor is 
+the 6 so we supress that well after the 2 
+supressions we're left with a much 
+simpler expression N log N. 
+The terminology would then be to say that 
+the running time of merge search is big O 
+of N log N. 
+So in other words when you say that an 
+algorithms is big O of some function what 
+you mean is that after you drop the lower 
+order terms. 
+And suppress the leasing, leading 
+constant factor, you're left with the 
+function f of n. 
+Intuitively that is what big O notation 
+means. 
+So to be clear I'm certainly not 
+asserting the constant factors never 
+matter when you're designing an alg, 
+analyzing algorithms. 
+Rather, I'm just saying that when you 
+think about high-level algorithmic 
+approaches, when you want to make a 
+comparison between fundamentally differnt 
+ways of solving a problem. 
+Asymptotic Analysis is often the right 
+tool for giving you guidance about which 
+one is going to perform better, 
+especially on reasonably large inputs. 
+Now, once you've committed to a 
+particular algorithmic solution to a 
+problem Of course, you might want to then 
+work harder to improve the leading 
+constant factor, perhaps even to improve 
+the lower order terms. 
+By all means, if the future of your 
+start-up depends on how efficiently you 
+implement some particular set of lines of 
+code, have at it. 
+Make it as fast as you can. 
+In the rest of this video I want to go 
+through four very simple examples. 
+In fact, these examples are so simple, if 
+you have any experience with big O 
+notation You're probably just better off 
+skipping the rest of this video and 
+moving on the mathematical formalism that 
+we begin in the next video. 
+But if you've never seen it before I hope 
+these simple examples will get you 
+oriented. 
+So let's begin with a very basic problem, 
+searching an array for a given integer. 
+Let's analyze the straight forward 
+algorithm for this problem where we just 
+do a linear scan through, through the 
+array, checking each entry to see if it 
+is the desired integer t. 
+That is the code just checks each array 
+entry in turn. 
+If it ever finds integer t it returns 
+true. 
+If it falls off the end of the array 
+without finding it it returns false. 
+So, what do you think? 
+We haven't formally defined big O 
+notation but, I've given you an intuitive 
+description. 
+What would you say is the running time of 
+this algorithm as a function of the 
+length of the array of capital A. 
+So the answer I am looking for is C, the 
+O(n) or covalently we would say that the 
+running time of this algorithm is linear 
+in the input length n. 
+Why is that true? 
+Well, let's think about how many 
+operations this piece of code is going to 
+execute. 
+Actually, the lines of code executed is 
+going to depend on the input. 
+It depends on whether or not the target t 
+is contained in the array a, and if so, 
+where in the array a it lies. 
+But, in the worse case, this code will do 
+an unsuccessful search. 
+ >> T will not be in the array and the 
+code will scan through the entire array A 
+and return false. 
+The number of operations then is a 
+constant. 
+There's some initial setup perhaps and 
+maybe it's an operation to return this 
+final boolean value, but outside of that 
+constant which will get suppressed in the 
+big annotation, it does a constant number 
+of operations per entry in the array. 
+And you could argue about what the 
+constant is, if it's 2, 3, 4 operations 
+per entry in the array, but the point it 
+whatever that constant is, 2, 3, or 4, it 
+gets conveniently suppressed by the Big O 
+notation. 
+So as a result, total number of 
+operations will be linear in n, and so 
+the Big O notation will just be O of N. 
+So that was the first example, and the 
+last three examples, I want to look at 
+different ways that we could have two 
+loops. 
+And in this example, I want to think 
+about one loop followed by another. 
+So two loops in sequence. 
+I want to study almost the same problem 
+as the previous one. 
+Where now we're just given two arrays, 
+capital a and capital b, we'll say both 
+of the same length n, and we want to know 
+whether the target t is in either one of 
+them. 
+Again, we'll look at the straightforward 
+algorithm, where we just search through 
+A, and if we fail to find t in A, we 
+search through B. 
+If we don't find t in B either, then we 
+have to return false. 
+So the question then is exactly the same 
+as last time. 
+Given this new longer piece of code, 
+what, in big O notation, is its running 
+time? 
+Well the question was the same and in 
+this case the answer was the same so this 
+algorithm jsut like the last one has 
+running time big O of N if we actually 
+count the number of operations it won't 
+be exactly the ssame as last time it will 
+be roughly twice as many operations. 
+As the previous piece of code. 
+That's because we have to search two 
+different arrays, each of length n. 
+So whatever work we did before. 
+We now do it twice as many times. 
+Of course, that, too, being a constant 
+independent of the input length n, is 
+going to get suppressed once we passed a 
+big O notation. 
+So, this, like the previous algorithm, is 
+a linear time algorithm. 
+It has running time big O of n. 
+Let's look at a more interesting example 
+of two loops where rather than processing 
+each loop in sequence, they're going to 
+be nested. 
+In particular let's look at the problem 
+of searching whether two given input 
+arrays each of length n contain a common 
+number. 
+The code that we're going to look at for 
+solving this problem is the most 
+straightforward one you can, you can 
+imagine where we just compare all 
+possibilities. 
+So for each index i into the array a and 
+each index j into the array b, we just 
+see if A i is the same number as B j. 
+If it is, we return true. 
+If we exhaust all of the possibilities 
+without ever finding equal elements Then 
+we're save in returning false. 
+The question is of course is, in terms of 
+big O notation, asymptotic analysis, as a 
+function of the array length n, what is 
+the running time of this piece of code? 
+So this time, the answer has changed. 
+For this piece of code, the running time 
+is not big O of n. 
+But it is big O of n squared. 
+So we might also call this a quadratic 
+time algorithm. 
+because the running time is quadratic in 
+the input length n. 
+So this is one of those kinds of 
+algorithms, where, if you double the 
+input length. 
+Then the running time of the algorithm 
+will go up by a factor of 4, rather than 
+by a factor of 2 like in the previous two 
+pieces of code. 
+So, why is this? 
+Why does it have [UNKNOWN] running time 
+[UNKNOWN] of n squared? 
+Well again, there's some constant setup 
+cost which gets suppressed in the big 
+[UNKNOWN]. 
+Again, for each fixed choice of an entry 
+i into array a, and then index j for 
+array b for each fixed choice for inj. 
+We only do a constant number of 
+operations. 
+The particular constants are relevant, 
+because it gets suppressed in the big O 
+notation. 
+What's different is that there's a total 
+of n squared iterations of this double 
+four loop. 
+In the first example, we only had n 
+iterations of a single four loop. 
+In our second example, because one four 
+loop completed before the second one 
+began. 
+We had only two n iterations overall. 
+Here for each of the n iterations of the 
+outer for loop we do n iterations of the 
+inner for loop. 
+So that gives us the n times n i.e. 
+n squared total iterations. 
+So that's going to be the running time of 
+this piece of code. 
+Let's wrap up with one final example. 
+It will again be nested for loops, but 
+this time, we're going to be looking for 
+duplicates in a single array A, rather 
+than needing to compare two distinct 
+arrays A and B. 
+So, here's the piece of code we're going 
+to analyze for solving this problem, for 
+detecting whether or not the input array 
+A has duplicate entries. 
+There's only 2 small difference relative 
+to the code we went through on the 
+previous slide when we had 2 different 
+arrays the first surprise, the first 
+change won't surprise you at all which 
+instead of referencing the array B I 
+change that B to an A so I just compare 
+the ith entry of a to the Jth entry of A. 
+The second change is a little more subtle 
+which is I changed the inner for loop so 
+the index J begins. 
+At I plus 1. 
+Where I is the current value of the outer 
+four loops index. 
+Rather than starting at the index 1. 
+I could have had it start at the index 
+one. 
+That would still be correct. 
+But, it would be wasteful. 
+And you should think about why. 
+If we started the inner four loops index 
+at 1. 
+Then this code would actually compare 
+each distinct pair of elements at a to 
+each other twice. 
+Which, of course, is silly. 
+You only need to compare two different 
+elements of a to each other one. 
+To know whether they are equal or not. 
+So this is the piece of code. 
+The question is the same as it always is 
+what in terms of bigger notations in the 
+input link n is the running time of this 
+piece of code. 
+So the answer to this question, same as 
+the last one. 
+Big O of n squared. 
+That is, this piece of code is also a 
+quad-, has quadratic running time. 
+So what I hope was clear was that, you 
+know? 
+Whatever the running time of this piece 
+of code is. 
+It's proportional to the number of 
+iterations of this double four loop. 
+Like in all the examples, we do constant 
+work per iteration. 
+We don't care about the constant. 
+It gets suppressed by the big O notation. 
+So, all we gotta do is figure out how 
+many iterations there are of this double 
+four loop. 
+My claim is that there's roughly n 
+squared over two iterations of this 
+double four loop. 
+There's a couple ways to see that. 
+Informally, we discussed how the 
+difference between this code and the 
+previous one, is that, instead of 
+counting something twice, we're counting 
+it once. 
+So that saves us a factor of two in the 
+number of iterations. 
+Of course, this one half factor gets 
+suppressed by the big O notation anyways. 
+So the big O, running time doesn't 
+change. 
+A different argument would just say, you 
+know? 
+How many, there's one iteration for every 
+distinct choice of i and j of indices 
+between one and n. 
+And a simple counting argument. 
+Says that there's n choose 2 such choices 
+of distinct i and j, where n choose 2 is 
+the number n times n minus 1 over 2. 
+And again, supressing lower-order terms 
+and the constant factor, we still get a 
+quadratic dependence on the length of the 
+input array A. 
+So that wraps up some of the sort of just 
+simple basic examples. 
+I hope this gets you oriented, you have a 
+strong intuitive sense for what big O 
+notation is trying to accomplish. 
+And how it's defined mathematically. 
+Let's now move onto both the mathematical 
+developments and some more interesting 
+algorithms. 
+

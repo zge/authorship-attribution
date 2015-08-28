@@ -1,0 +1,219 @@
+[MUSIC]
+We have just introduced the graph
+pattern mining methods.
+So, people may wonder, what's the use
+of mining such sub-patterns, okay?
+Of course, one usage is you mine this,
+you can find some interesting
+substructures you can study.
+Another interesting application,
+actually, this may help you search.
+That means we're going to discuss one
+interesting method called gIndex,
+which is using frequent sub graph
+to index the graph database.
+We know in many cases the graph,
+the large databases may,
+which may contain many interesting,
+useful graphs, for example,
+you go to a chemical compound database,
+there are hundreds of thousands
+of different chemical compounds.
+If you want to search
+based on the structures,
+you may want to build a structure-based
+index, like a graph index, okay.
+If you do a graph query in such database,
+if you have index structure,
+then the corresponding graph, you can
+fetch them very efficiently, and also you,
+it will help you to do a lot of studies,
+'kay, this is like Google Search, right.
+Google Search is search documents, and
+the graph search is search subgraphs.
+So you can look at this.
+Suppose we have a graph query, 'kay?
+Then you have a big database,
+a graph database to store many many
+chemical compounds, of course you may not
+want to index every possible structure.
+But if this graph query contains
+some structure which is indexed,
+then this index will be able to
+grab only those graphs which
+contain this indexing structure out for
+you to do further matching,
+to see whether this graph really contains
+this query graph, you can return it.
+This will help similarity
+search a lot as well.
+So index is a very powerful tool.
+The problem becomes what kind of
+index we should have, of course,
+a simple way to do index is pass index.
+That means, because a graph has so
+many possible structures,
+it is quite big number,
+it's like it explode,
+exponential number, so you want to
+have limited number of index entries.
+You may say instead of indexing everything
+in the graph, I only index the path.
+For example, for this query graph,
+we may think we may index this
+query graph using four carbons,
+like a carbon, carbon, carbon carbon,
+in this path, then we can do the search.
+That means the path index maybe
+you can index one carbon.
+You can index two linked together.
+You can index three or four,
+but if you index in this way,
+even you use the largest graph index
+like four carbons link like a chain,
+this path index, suppose we have a,
+b, c as three chemical compounds,
+you use this path, you actually
+everyone will contain this path.
+You grab everybody out, but actually, so
+only c will match this graph correctly.
+You probably can see if you index a graph,
+it does not help you much.
+You would try to grab everybody out.
+Actually, it's not efficient,
+not effective as well.
+So the best solution is we
+directly index substructures,
+that means on graphs instead
+of indexed just on the paths.
+Then the problem becomes there are so
+many potential subgraphs.
+We better only index frequent
+substructures instead of index any
+possible substructures because you
+give me a very large substructure,
+like you have 100 added substructures,
+you will have 2 to the power
+of 100 possible substructures.
+It will be too many
+substructures to index.
+You don't want to do that.
+Okay, then we may only want to
+index frequent substructures.
+Why index the frequent one?
+Because the frequent one is much smaller,
+and
+that you index them, you actually
+will have the overall search, so
+the interesting thing is, if on index
+them, what is the min-support threshold?
+We actually decide using what we call
+size-increasing support threshold.
+That means the smaller size, we actually
+use very low minimum support threshold.
+When the size increases we will use higher
+and higher minimum support thresholds.
+Why we do this?
+The reason is, remember,
+you get a large graph.
+Actually, the if you only think of
+the single vertex or single edge,
+they may not have that many, but if you
+look at a, all the possible mid-size
+substructure, the, you'll really reach
+the communitorial stretcher, the status.
+But actually,
+the large structure are likely to be
+covered by smaller substructures.
+That's the reason if we
+want to maintain limited size
+structure to achieve the same
+effectiveness, we will want to use this
+size increasing minimum support
+threshold to index the graphs.
+But on the other hand, not only we want
+an index of frequent substructures,
+but we also want to index
+discriminative substructures.
+The discriminative substructures
+means if you already have
+some substructures in your
+index structure, 'kay,
+then you get some new subgraphs,
+even they are frequent, but
+if they are very similar to your current
+one, or covered by your current one,
+you probably don't want to pick
+this as an index structure.
+This will reduce the index size
+by another order of magnitude.
+Then, how to select
+discriminative substructures?
+Suppose you have a substructure
+like f sub 1 to f sub n
+already selected as your index structure,
+okay, then you get a new structure x.
+Should x be selected into this one
+as a new substructure, new index, or
+we should not select this one?
+Okay.
+The interesting thing is you see
+whether your existing structure,
+based on your existing structure,
+whether they can cover your
+x in the high probability.
+That means if your x,
+you have a several substructures,
+they can easily covered
+by the existing indexing
+structure components,
+like f sub 1 to f sub n.
+Then probably indexing x
+will be least beneficial,
+you probably don't want to pick enough,
+but if this structure,
+these substructure based on their
+combination to, to predict this x,
+to campaign this x, actually,
+the probability is small.
+Then that means x is quite distinct,
+quite discriminative,
+then this discriminative structure
+should be selected as a new index entry.
+This is similar, like,
+suppose we have several students,
+they have different job skills or
+programming skills, if you find you
+have those skills in your research group,
+then you get a new student.
+If this student his or
+her skill be well covered by the group
+of students you already included, okay,
+you probably say this student will be
+less in demand rather than you get
+a student who has some exceptional skill.
+You may want,
+really want to pick him or her up.
+So this is the similar idea picking
+up these indexing structures.
+The research paper for gIndex, the gIndex
+structure constructed using this
+frequent and discriminative
+substructure idea, it is very compact.
+Okay, but our experiments also
+show not only it is small but
+it is also very effective.
+Okay, that means most the structure
+you can find them in a very efficient,
+effective way and they are stable as well,
+stable in the sense,
+if you add some new chemical compound,
+new graphs into it
+actually do not need to change
+this gIndex structure much, 'kay.
+So that's a very nice,
+efficient structure to use for
+indexing graph database or
+any other structured databases.
+[MUSIC]
+

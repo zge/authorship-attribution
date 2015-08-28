@@ -1,0 +1,188 @@
+In this video, I'm going to show a simple
+example of a restricted Boltzmann machine
+learning a model of images of handwritten
+twos.
+After it's learned the model, we'll look
+at how good it is at reconstructing twos.
+And we'll look at what happens if we give
+it a different kind of digit and ask it to
+reconstruct that.
+We'll also look at the weights we get if
+we train a restricted Boltzmann machine
+that's considerably larger on all of the
+digit classes.
+It lends a wide variety of features, which
+between them are very good at
+reconstructing all the different classes
+of digits, and also are quite a good model
+of those digit classes.
+That is, if you take a binary vector, this
+image of a hundred digit, the model will
+be able to find low energy states,
+compatible with that image and if you give
+it an image that's a long way away from
+being an image of a hundred digit, the
+model will not be able to find low energy
+states compatible with that image.
+I'm now gonna show how a relatively simple
+RBM can learn to build a model of images
+of the digit two.
+The images of sixteen pixels by sixteen
+pixels.
+And it has 50 binary hidden units that
+they're gonna learn to become interesting
+feature detectors.
+So when it's presented with the data case,
+the first thing that it does is use the
+weight and the connection from pixel to
+feature like this, to activate the
+features like this.
+That is for each of the binary neurons, it
+makes the sarcastic decision about whether
+it should deduct the state of one or zero.
+It then uses the binary pans for
+activation to reconstruct the data.
+That is, for each pixel, it makes a binary
+decision about whether it should be a one
+or a zero.
+It then reactivates the binary feature
+detectors using the reconstruction to
+activate them rather than the data.
+The weights are changed by incrementing
+the weights between an active pixel and an
+active feature detector when the network
+is looking at data.
+And that will lower the energy of the
+global configuration of the data, and
+whatever hidden pattern went with it.
+And it decrements the weights, between an
+active pixel and an active feature
+detector, when it's looking at a
+reconstruction, and that would raise the
+energy of the reconstruction.
+Near the beginning of learning when the
+weights are random, the reconstruction
+would almost certainly have lower energy
+than the data.
+Because the reconstruction is what the
+network likes to reproduce on the visible
+units, given the hidden pattern of
+activity.
+And obviously it likes to reproduce
+patterns that have low energy according to
+its energy function.
+And you can think of what learning does as
+changing the weights so the data is low
+energy.
+And the reconstructions of the data are
+generally higher energy.
+So let's start with some random weights
+for the 50 feature detectors.
+We'll use small random weights and each of
+these squares shows you the weights to the
+pixels coming from a particular feature
+detector.
+The small random weights are used to break
+symmetry.
+That because the update were stochastic,
+we don't really need that.
+After seeing a few hundred examples of
+digits, and digesting the weights a few
+times, the weights are beginning to form
+patterns.
+If we do it again, you can see that many
+of the feature detectors are detecting the
+pattern of a hole two.
+They're fairly global feature detectors.
+And those feature detectors are getting
+stronger,
+And stronger, and now some of them begin
+to localize, and they're getting more
+local, and even more local, and even more
+local, and these are the final weights and
+you can see that each neuron has become a
+different feature detector and most of the
+feature detectors are fairly local.
+If you look at the feature detector in the
+red box, for example, it's detecting the
+top of a two,
+And it's happy when the top of a two is
+where its white pixels are and where
+there's nothing where the black pixels
+are.
+So it's representing where the top of the
+two is.
+Once we've learned the model, we can look
+at how well it reconstructs digits.
+And we'll give it some test digits that it
+hasn't seen before.
+So we'll start by giving it a test example
+of a two.
+And its reconstruction is pretty faithful
+to the test example.
+It's slightly blurry.
+The test example has a hook at the top and
+that's been blurred after the
+reconstruction, but it's a pretty good
+reconstruction.
+The more interesting thing we can do, is
+give it a test example from a different
+digit class.
+So if we give it an example of the three
+to reconstruct.
+What it reconstructs actually looks more
+like a two then like a three.
+All of the feature detectors is learned,
+are good for representing twos, but it
+doesn't have feature detectors for things
+like representing that cusp in the middle
+of the three.
+So it ends up reconstructing something,
+but obeys the regularities of a two,
+better than it represents the regularities
+of a three.
+In fact, the network tries to see
+everything as a two.
+So here's some feature detectors that were
+learned in the first hidden layer of a
+model that uses 500 hidden units to model
+all ten digit classes.
+And this model has been trained for a long
+time with contrastive divergence.
+It has a big variety of feature detectors.
+If you look at the one in the blue box,
+that's obviously going to be useful for
+detecting things like eights If you look
+at the one in the red box, it's not what
+you expect to see.
+It likes to see pixels on very near the
+bottom there, and it really doesn't like
+to see pixels on in a road that's 21
+pixels above the bottom.
+What's going on here is that the data is
+normalized and so the digits can't have a
+height of greater than twenty pixels.
+And that means if you know that there's a
+pixel on where those big positive weights
+are, there can't possibly be a pixel on,
+where those negative weights are.
+So this is picking up on the long range
+regularity that was introduced by the way
+we normalized the data.
+Here's another one that's doing the same
+thing for the fact that the data can't be
+wider than twenty pixels.
+The feature detected in the green box is
+very interesting.
+It's for detecting where the bottom of a
+vertical stroke comes and it will detect
+it in a number of different positions and
+then refuse to detect it in the
+intermediate positions.
+So it's very like one of the least
+significant digits in a binary number, as
+you increase the magnitude of a number it
+goes on again, and off again, and on
+again, and off again and it shows that
+this is developing quite complex ways of
+representing where things are.

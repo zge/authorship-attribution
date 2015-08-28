@@ -1,0 +1,300 @@
+In this video, I'm going to talk about
+improving generalization by reducing the
+overfitting that occurs when a network has
+too much capacity for the amount of data
+it's given during training.
+I'll describe various ways of controlling
+the capacity of a network.
+And I'll also describe how we determine
+how to set the metric parameters when we
+use a method for controlling capacity.
+I'll then go on to give an example where
+we control capacity by stopping the
+learning early.
+Just to remind you, the reason we get
+over-fitting is because as well as having
+information about the true regularities in
+the mapping from the input or output, any
+finite set of training data also contains
+sampling error.
+There's accidental regularities in the
+training set, just because of the
+particular training cases that were
+chosen.
+So when we fit the model, it can't tell
+which of the regularities are real, and
+would also exist if we sampled the
+training set again,
+And which are caused by the sampling
+error.
+So the model fits both kinds of
+regularity.
+And if the model's too flexible, it'll fit
+the sampling error really well, and then
+it'll generalize badly.
+So we need a way to prevent this over
+fitting.
+The first method I'll describe is by far
+the best.
+And it's simply to get more data.
+There's no point coming up with fancy
+schemes to prevent over fitting if you can
+get yourself more data.
+Data has exactly the right characteristics
+to prevent over fitting.
+The more of it you have the better.
+Assuming your computer's fast enough to
+use it.
+A second method is to try and judiciously
+limit the capacity of the model so that
+it's got enough capacity to fit the true
+regularities but not enough capacity to
+fit the spurious regularities caused by
+the sampling error.
+This of course is very difficult to do.
+And I'll describe in the rest of this
+lecture, various approaches to trying to
+regulate the capacity appropriately.
+In the next lecture, I'll talk about
+averaging together many different models.
+If we average models that have different
+forms and make different mistakes, the
+average will do better than the individual
+models.
+We could make the models different just by
+training them on different subsets of the
+training data.
+This is a technique called bagging.
+There's also other ways to mess with the
+training data to make the models as
+different as possible.
+And the fourth approach, which is the
+basian approach, is to use a single neural
+network architecture, but to find many
+different sets of weights that do a good
+job of predicting the output.
+And then on test data, you average the
+predictions made by all those different
+weight vectors.
+So, there's many ways to control the
+capacity of a model.
+The most obvious is via the architecture.
+You limit the number of hidden layers, and
+the number of units per layer.
+And this controls the number of
+connections in the network, i.e.
+The number of parameters.
+A second method which is often very
+convenient is to start with small weights
+and then stop the learning before it has
+time to overfit.
+Again on the assumption that it finds the
+true regularities before it finds the
+spurious regularities that have just to do
+with the particular training set we have.
+I'll describe that method at the end of
+this video.
+A very common way to control the capacity
+of a neural network is to give it a number
+of hidden lairs or units per lair is a
+little to large, but then to penalize the
+weights using penalties or constraints
+using squared values of the weights or
+absolute values of the weights.
+And finally, we can control the capacity
+of a model by adding noise to the weights,
+or by adding noise to the activities.
+Typically, we use a combination of several
+of these different capacity control
+methods.
+Now for most of these methods, there's
+meta parameters that you have to set.
+Like the number of hidden units, or the
+number of layers, or the size of the
+weight penalty.
+An obvious way to transit those meta
+parameters is to try lots of different
+values of one of the meta parameters like,
+for example, the number of hidden units,
+and see which gives the best performance
+on the test set.
+But there's something deeply wrong with
+that.
+It gives a false impression of how well
+the method will work if you give it
+another test set.
+So the settings that work best for one
+particular test set are unlikely to work
+as well on a new test set that's drawn
+from the same distribution because they've
+been tuned to that particular test set.
+And that means you get a false impression
+of how well you would do on a new test
+set.
+Let me give you an extreme example of
+that.
+Suppose the test set really is random,
+quite a lot of financial data seems to be
+like that.
+So the answers just don't depend on the
+inputs or can't be predictive from the
+inputs.
+If you choose the model that does best on
+your test set, that will obviously do
+better than chance because you selected it
+to do better than chance.
+But if you take that model and try it on
+new data that's also random, you can't
+expect it to do better than chance.
+So by selecting a model, you got a false
+impression of how well a model will do on
+new data and the question is, is there a
+way around that?
+So here's a better way to choose the
+meta-parameters.
+You start by dividing the total data set
+into three subsets.
+You have the training data, which is what
+you're going to use to train your model.
+You hold back some validation data, which
+isn't going to be used for training.
+But is going to be used for deciding how
+to set the meta parameters.
+In other words, you're going to look at
+how well the model does on the validation
+data to decide what's an appropriate
+number of hidden units or an appropriate
+size of weight penalty.
+But then once you've done that, and
+trained your model with what looks like
+the best number of hidden units and the
+best weight penalty,
+You're then going to see how well it does
+on the final set of data that you've held
+back which is the test data.
+And you must only use that once.
+And that'll give you an unbiased estimate
+of how well the network works.
+And in general that estimate will be a
+little worse than on the validation data.
+Nowadays in competitions, the people
+organizing the competitions have learned
+to hold back that true test data and get
+people to send in predictions so they can
+see whether they really can predict on
+true test data, or whether they're just
+over-fitting to the validation data by
+selecting meta-parameters that do
+particularly well on the validation data
+but won't generalize to new test sets.
+One way we can get a better estimate of
+our weight penalties or number of hidden
+units or anything else we're trying to fix
+using the validation data, is to rotate
+the validation set.
+So, we hold back a final test set to get
+our final unbiased estimate.
+But then we divide the other data into N
+equal sized subsets and we train on all
+but one of those N, and use the Nth as a
+validation set.
+Then we can rotate and a hold back a
+different subset as a validation set, and
+so we can get many different estimates of
+what the best weight penalty is, or the
+best number of hidden units is.
+This is called N-fold cross-validation.
+It's important to remember, the N
+different estimates we get are not
+independent of one another.
+If for example, we were really unlucky and
+all the examples of one class fell into
+one of those subsets,
+We'd expect to generalize very badly.
+And we'd expect to generalize very badly,
+whether that subset was the validation
+subset or whether it was in the training
+data.
+So now I'm going to describe one
+particularly easy to use method for
+printing over fitting.
+It's good when you have a big model on a
+small computer and you don't have the time
+to train a model many different times with
+different numbers of hidden units or
+different size weight penalties.
+What you do is you start with small
+weights, and as the model trains, they
+grow.
+And you watch the performance on the
+validation set.
+And as soon as it starts to get worse, you
+stop training.
+Now, the performance civilization on the
+set may fluctuate particularly if you're
+error rate rather than a squared error or
+presentory error.
+And so its hard to decide when to stop and
+so what you typically do is keep going
+until you're sure things are getting worse
+and then go back to the point at which
+things were best.
+The reason this controls the capacity of
+the model, is because models with small
+weights generally don't have as much
+capacity, and the weights haven't had time
+to grow big.
+It's interesting to ask why small weights
+lower the capacity.
+So consider a model with some input units,
+some hidden units, and some output units.
+When the weight's very small, if the
+hidden unit's a logistic units, their
+total inputs will be close to zero, and
+they'll be in the middle of their linear
+range.
+That is, they'll behave very like linear
+units.
+What that means is, when the weights are
+small, the whole network is the same as a
+linear network that maps the inputs
+straight to the outputs.
+So, if you multiply that weight matrix W1
+by that weight matrix W2, you'll get a
+weight matrix that you can use to connect
+the inputs to the outputs and provided the
+weights are small, a net with a layer of
+logistic hidden units will behave pretty
+much the same as that linear note.
+Provided we also divide the weights in the
+linear note by four, which take into
+account the fact that when there's hidden
+units there, in that linear region, and
+they have a slope of a quarter.
+So it's got no more capacity than the
+linear net, so even though in that network
+I'm showing you there's three  six + six
+two weights, it's really got no more
+capacity than a network with three  two
+weights.
+That's the way its grow.
+We start using the non linear region of
+the sequence.
+And then we start making use of all those
+parameters.
+So if the network has six weights at the
+beginning of learning and has 30 weights
+at the end of learning,
+Then we could think of the capacity as
+changing smoothly from six perimeters to
+30 perimeters as the weights get bigger.
+And what's happening in early stopping is
+we're stopping the learning when it has
+the right number of parameters to do as
+well as possible on the validation data.
+That is when it's optimized the trade off
+between fitting the true regularities in
+the data and fitting the spurious
+regularities that are just there because
+of the particular training examples we
+chose.

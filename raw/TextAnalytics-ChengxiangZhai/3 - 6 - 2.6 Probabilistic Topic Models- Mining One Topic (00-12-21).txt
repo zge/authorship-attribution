@@ -1,0 +1,282 @@
+[SOUND] This lecture is a continued
+discussion of probabilistic topic models.
+In this lecture, we're going to continue
+discussing probabilistic models.
+We're going to talk about
+a very simple case where we
+are interested in just mining
+one topic from one document.
+So in this simple setup,
+we are interested in analyzing
+one document and
+trying to discover just one topic.
+So this is the simplest
+case of topic model.
+The input now no longer has k,
+which is the number of topics because we
+know there is only one topic and the
+collection has only one document, also.
+In the output,
+we also no longer have coverage because
+we assumed that the document
+covers this topic 100%.
+So the main goal is just to discover
+the world of probabilities for
+this single topic, as shown here.
+As always, when we think about using a
+generating model to solve such a problem,
+we start with thinking about what
+kind of data we are going to model or
+from what perspective we're going to
+model the data or data representation.
+And then we're going to
+design a specific model for
+the generating of the data,
+from our perspective.
+Where our perspective just means we want
+to take a particular angle of looking at
+the data, so that the model will
+have the right parameters for
+discovering the knowledge that we want.
+And then we'll be thinking
+about the microfunction or
+write down the microfunction to
+capture more formally how likely
+a data point will be
+obtained from this model.
+And the likelihood function will have
+some parameters in the function.
+And then we argue our interest in
+estimating those parameters for example,
+by maximizing the likelihood which will
+lead to maximum likelihood estimated.
+These estimator parameters
+will then become the output
+of the mining hours,
+which means we'll take the estimating
+parameters as the knowledge
+that we discover from the text.
+So let's look at these steps for
+this very simple case.
+Later we'll look at this procedure for
+some more complicated cases.
+So our data, in this case is, just
+a document which is a sequence of words.
+Each word here is denoted by x sub i.
+Our model is a Unigram language model.
+A word distribution that we hope to
+denote a topic and that's our goal.
+So we will have as many parameters as many
+words in our vocabulary, in this case M.
+And for convenience we're
+going to use theta sub i to
+denote the probability of word w sub i.
+And obviously these theta
+sub i's will sum to 1.
+Now what does a likelihood
+function look like?
+Well, this is just the probability
+of generating this whole document,
+that given such a model.
+Because we assume the independence in
+generating each word so the probability of
+the document will be just a product
+of the probability of each word.
+And since some word might
+have repeated occurrences.
+So we can also rewrite this
+product in a different form.
+So in this line, we have rewritten
+the formula into a product
+over all the unique words in
+the vocabulary, w sub 1 through w sub M.
+Now this is different
+from the previous line.
+Well, the product is over different
+positions of words in the document.
+Now when we do this transformation,
+we then would need to
+introduce a counter function here.
+This denotes the count of
+word one in document and
+similarly this is the count
+of words of n in the document
+because these words might
+have repeated occurrences.
+You can also see if a word did
+not occur in the document.
+It will have a zero count, therefore
+that corresponding term will disappear.
+So this is a very useful form of
+writing down the likelihood function
+that we will often use later.
+So I want you to pay attention to this,
+just get familiar with this notation.
+It's just to change the product over all
+the different words in the vocabulary.
+So in the end, of course, we'll use
+theta sub i to express this likelihood
+function and it would look like this.
+Next, we're going to find
+the theta values or probabilities
+of these words that would maximize
+this likelihood function.
+So now lets take a look at the maximum
+likelihood estimate problem more closely.
+This line is copied from
+the previous slide.
+It's just our likelihood function.
+So our goal is to maximize
+this likelihood function.
+We will find it often easy to
+maximize the local likelihood
+instead of the original likelihood.
+And this is purely for
+mathematical convenience because after
+the logarithm transformation our function
+will becomes a sum instead of product.
+And we also have constraints
+over these these probabilities.
+The sum makes it easier to take
+derivative, which is often needed for
+finding the optimal
+solution of this function.
+So please take a look at this sum again,
+here.
+And this is a form of
+a function that you will often
+see later also,
+the more general topic models.
+So it's a sum over all
+the words in the vocabulary.
+And inside the sum there is
+a count of a word in the document.
+And this is macroed by
+the logarithm of a probability.
+So let's see how we can
+solve this problem.
+Now at this point the problem is purely a
+mathematical problem because we are going
+to just the find the optimal solution
+of a constrained maximization problem.
+The objective function is
+the likelihood function and
+the constraint is that all these
+probabilities must sum to one.
+So, one way to solve the problem is
+to use Lagrange multiplier approace.
+Now this command is beyond
+the scope of this course but
+since Lagrange multiplier is a very
+useful approach, I also would like
+to just give a brief introduction to this,
+for those of you who are interested.
+So in this approach we will
+construct a Lagrange function, here.
+And this function will combine
+our objective function
+with another term that
+encodes our constraint and
+we introduce Lagrange multiplier here,
+lambda, so it's an additional parameter.
+Now, the idea of this approach is just to
+turn the constraint optimization into,
+in some sense,
+an unconstrained optimizing problem.
+Now we are just interested in
+optimizing this Lagrange function.
+As you may recall from calculus,
+an optimal point
+would be achieved when
+the derivative is set to zero.
+This is a necessary condition.
+It's not sufficient, though.
+So if we do that you will
+see the partial derivative,
+with respect to theta i
+here ,is equal to this.
+And this part comes from the derivative
+of the logarithm function and
+this lambda is simply taken from here.
+And when we set it to zero we can
+easily see theta sub i is
+related to lambda in this way.
+Since we know all the theta
+i's must a sum to one
+we can plug this into this constraint,
+here.
+And this will allow us to solve for
+lambda.
+And this is just a net
+sum of all the counts.
+And this further allows us to then
+solve the optimization problem,
+eventually, to find the optimal
+setting for theta sub i.
+And if you look at this formula it turns
+out that it's actually very intuitive
+because this is just the normalized
+count of these words by the document ns,
+which is also a sum of all
+the counts of words in the document.
+So, after all this mess, after all,
+we have just obtained something
+that's very intuitive and
+this will be just our
+intuition where we want to
+maximize the data by
+assigning as much probability
+mass as possible to all
+the observed the words here.
+And you might also notice that this is
+the general result of maximum likelihood
+raised estimator.
+In general, the estimator would be to
+normalize counts and it's just sometimes
+the counts have to be done in a particular
+way, as you will also see later.
+So this is basically an analytical
+solution to our optimization problem.
+In general though, when the likelihood
+function is very complicated, we're not
+going to be able to solve the optimization
+problem by having a closed form formula.
+Instead we have to use some
+numerical algorithms and
+we're going to see such cases later, also.
+So if you imagine what would we
+get if we use such a maximum
+likelihood estimator to estimate one
+topic for a single document d here?
+Let's imagine this document
+is a text mining paper.
+Now, what you might see is
+something that looks like this.
+On the top, you will see the high
+probability words tend to be those very
+common words,
+often functional words in English.
+And this will be followed by
+some content words that really
+characterize the topic well like text,
+mining, etc.
+And then in the end,
+you also see there is more probability of
+words that are not really
+related to the topic but
+they might be extraneously
+mentioned in the document.
+As a topic representation,
+you will see this is not ideal, right?
+That because the high probability
+words are functional words,
+they are not really
+characterizing the topic.
+So my question is how can we
+get rid of such common words?
+Now this is the topic of the next module.
+We're going to talk about how to use
+probabilistic models to somehow get rid of
+these common words.
+[MUSIC]
+

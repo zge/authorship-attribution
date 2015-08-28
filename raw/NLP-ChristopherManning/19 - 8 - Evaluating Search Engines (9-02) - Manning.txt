@@ -1,0 +1,194 @@
+In this section I'll tell you a little bit
+more about evaluating the quality of a
+search engine. There are many measures for
+the quality of a search engine. There are
+technical ones such as how fast does it
+index, and how fast does it search. We can
+look at things like the expressiveness of
+the query language, whether they're able
+to express complex informational needs
+with things like phrase queries,
+negations, disjunctions. People have other
+desires like having an uncluttered UI and
+a system that doesn't cost a lot to use.
+All of these are measures that are
+measurable. That we can quantify them and
+we can get some, some kind of score of
+what is their goodness. But in practice
+all of those measures while important tend
+to be dominated by another measure of user
+happiness that, is the user happy in using
+this search engine? And speed of response
+and size of the index are certainly
+factors. But by themselves, blindingly fast
+useless answers won't make a user happy.
+So a huge part of user happiness is, are
+the results returned the results that they
+want? And so that's the metric of
+relevance of results to a user's
+information need. I mentioned this right
+at the beginning, but just to reiterate
+once more, when evaluating an IR system
+that we evaluate with respect to an
+information need. So an information need
+is translated into a query, and that's
+what the IR system actually runs. But
+relevance is assessed relative to the
+information need, not the query. So for
+example, if the information need is the
+person's looking for information on
+whether drinking red wine is more
+effective than white wine for reducing your
+risks of heart attacks, they'll come up with
+some query. For example it might be wine
+red white heart attack effective. And that
+will be submitted to a search engine. And
+in evaluating the effectiveness of the
+search engine in returning relevant
+results, we're not asking are the results
+that the search engine returns documents
+that simply have those words on the page.
+Rather, we're saying do these documents
+address the user's information need.
+Okay, well how can we go about doing that?
+Well, if the search engine returns a set
+of results. Well, then, what we can do for
+evaluation is if we start off with three
+things, if we have some benchmark
+collection of documents that we can use
+for evaluation. And we have some benchmark
+set of queries, which are in some sense
+representative of information needs of
+interest. And then we've gathered this
+third thing which is assessor judgments of
+whether particular documents are relevant
+to particular queries. Commonly in
+practice this can't be a, assembled
+exhaustively, certainly not if the
+document collection is large. But at least
+for a particular set of documents that are
+returned by particular search engines, we
+can get the assessor to judge whether
+those documents are relevant to the
+queries. Well, if we have a result set
+with just these three things, we're in
+business because we can use exactly the
+same measures that we looked at
+previously: precision, recall, and the F
+measure that combines them. And these are
+suitable good measures for exactly the
+same reason that they are good measures
+for when we're talking about things like
+named entity recognition. That normally
+only a few documents will be relevant to a
+particular query, and so we can measure
+that much better by looking at these
+measures of precision and recall. But what
+if we've now moved on to a search engine that
+returns ranked results. We can't just,
+totally straightforwardly use these
+measures of precision, recall, and F
+measure, because the system can return any
+number of results. In fact the number it
+returns normally depends on how often we
+keep on clicking asking for more. But if
+we sort of look at any s-, initial subset
+of the results, we can then work out the
+precision recall for that subset. And then by
+putting them together we can come up with
+a precision recall curve. Let's look at
+how that works. So here are the first ten
+results for a search engine, where we've
+labeled each result as either relevant or
+not relevant according to an assessor's
+judgment. So then we can take any initial
+sub sequence of these documents and work
+out a recall and precision. So for the
+first document, the system got it right,
+it's a relevant document. And let's
+assume that overall there are ten relevant
+documents in the collection. So it's
+gotten one out of the ten relevant
+documents, and so its recall is 0.1. And
+well since that document was relevant, the
+system was right on the first answer, its
+precision is one at this point. Well, the
+next document was not relevant so the
+recall of the first two documents, we're
+down to here now, is 0.1, and the
+precision is now 0.5. Another not relevant
+document so the precision is, I'm sorry
+the recall was still 0.1, and the precision
+is now dropped to 0.33. And the, if we
+look at the set of the top four documents
+we've now found two of the ten relevant
+ones, so recall is 0.2, and our precision
+has gone back up again to 0.5. The fifth
+one is also relevant so now our recall is
+up to 0.3, and our [precision] is up to three
+out of five, 0.6, then we can keep on
+going down. Maybe you guys could work out
+what some of these entries are down here.
+The other measure I want to mention, one
+of the most recently, most used recent
+measures is mean average precision. If we
+look at the ranked retrieval results
+ordered this way to give me a bit more
+room. And so the first document returned
+is relevant. The second one is not
+relevant. Say, the third one is not
+relevant. Then a relevant one, then
+another relevant one, not relevant,
+relevant, relevant. Let's say those are
+our top eight results. What you're doing
+for mean average precision, first of
+all you're working in average precision
+for one query. And so the way you do that
+is by saying, let's work out the precision
+at each point that a relevant document is
+returned ,'cause that's when you're
+increasing recall. So here, the precision
+is one. Here, there are now four documents
+so the precision is a half. Here there are
+five documents so the precision is 0.6.
+Here there are seven documents of which,
+four of them are relevant. So that's. this
+is around 0.58. You guys can correct my
+arithmetic. Here we now have eight
+documents, of which five are relevant, and
+that's 0.625 and then what we're doing to
+work out the mean average precision is
+we're kind of keeping on calculating those
+numbers. In practice, normally, they
+aren't calculated exh-, exhaustively, but
+they're calculated up to some point, let's
+say 100. And then you're calculating an
+average function of all those numbers. And
+that's then the average precision for one
+query. You then calculate the same average
+precision for all the other queries in
+your benchmark query collection. And you
+would again take the average of that and
+that then gives you mean average
+precision. So, in particular, this is
+what's referred to as macro-averaging.
+It's each query that counts equally in the
+calculation of mean average precision. So
+this is a good measure that evaluates to
+some extent, precision at different recall
+levels, while still being weighted most to
+what the precision is like for the top
+few returned documents. Then at the level of
+across different queries, it's giving
+equal weight to different queries, which
+tends to be a useful thing to do because
+you are always interested in how systems
+return, work on queries of rare terms as
+well as queries of common terms. So this
+is a pretty good measure to think about
+using for evaluating information retrieval
+systems. Okay there's even more methods
+that I could talk about, but that's
+probably a good sense of how about, how to
+go about evaluating the performance of a
+ranked retrieval system.

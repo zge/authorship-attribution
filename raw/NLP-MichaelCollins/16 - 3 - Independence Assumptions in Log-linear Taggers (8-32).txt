@@ -1,0 +1,187 @@
+Okay, so now let's consider how we can 
+develop a log linear model for this 
+tagging problem. 
+So in general we'll assume that we have 
+some input sentence, W1 through WN. 
+For example, this might be something 
+like, the dog barks. 
+And I'll sometimes use the following 
+notation. 
+I will use w sub 1 colon n to refer to 
+this entire sequence. 
+Okay, so wi is the i'th word in the the 
+particular sentence. 
+And in addition, we have some tag 
+sequence, t1 through tn. 
+So from here, we might, for example, have 
+the sequence d n v equal to t1 through 
+tn, and similarly, I'll use this notation 
+t sub 1 colon n as shorthand for this 
+entire sequence. 
+Now the key idea in log-linear models, 
+is, we'll see how to construct a model, 
+of the conditional probability of any tag 
+sequence. 
+Given an underlying word sequence. 
+So there are going to be many possible 
+tag sequences for our given input 
+sentence. 
+So let's say, for example we have, you 
+know, many other possible tag sequences. 
+I'm writing a few of them down here and 
+so on and so on. 
+We are going to assign each of these tag 
+sequences a probability. 
+So we might have 0.1, 0.2, 0.01, 0.001, 
+0.005, and so on. 
+And if we sum up all of these 
+probabilities, they will sum to 1. 
+Okay so we have a well defined 
+conditional distribution over the set of 
+possible tag sequences for this 
+particular input sentence. 
+Now one very important thing to realize 
+is that this is in quite stark contrast 
+to the case we saw for Hidden Markov 
+Models, for HMMs. 
+So remember, in Hidden Markov Models, we 
+actually defined a joint probability 
+distribution, over tag sequences, paired 
+with word sequences. 
+Okay? 
+So, first interesting thing to see in 
+these log-linear models, is that we will 
+directly Model this conditional 
+distribution, and we wont actually 
+attempt to model this joint distribution 
+here. 
+So that's the first key difference from 
+Hidden Markov Models. 
+Once we've derived a model of this 
+particular form, we can then apply it to 
+a new test sentence. 
+So if I have some test sentence w1 
+through wn then I can take the most 
+likely text sequence t star to be the tag 
+sequence t1 through tn that maximizes 
+this conditional probability and remeber 
+with HMMs we would had something very 
+similar. 
+In fact we would have t star Lin 2n, is 
+equal to augmax. 
+t, 1, 2n. 
+You have the joint probability of t, 1 
+2n, and w, 1, 2n. 
+So, it's really very similar, except 
+again, we're using a conditional 
+probability here. 
+For the Log-Linear case where it's in, 
+be, before the hidden Markov model, we 
+had the joint probability. 
+So there are going to be some key 
+questions we'll answer in this lecture. 
+You know, firstly, how do we define this 
+conditional distribution? 
+How do we estimate the parameters of the 
+model? 
+Which underlies this definition. 
+And finally, we'll have to answer the 
+question how do we actually efficiently 
+find this most likely tag sequence for a 
+given input sentence? 
+So the critical question is going to be 
+how do we model this conditional 
+distribution? 
+The probability of a given tag sequence, 
+t one through tn Given a particular word 
+sequence w1 through wn. 
+And again we'll see this method used 
+where we first use the chain rule and 
+secondly we use independence assumptions 
+which, simplify the model. 
+So here. 
+Is a first application of the chain rule. 
+So I'm going to write this probability, 
+as a product of terms. 
+So I have one term for each position, j 
+equals 1 to n. 
+And then I have the conditional 
+probability of the jth tag value. 
+Conditioned on the full sequence of 
+words, W one through WN. 
+And in addition conditioned on the 
+previous J minus one tags. 
+This step is as usual with the chain 
+rules, it's exact in that any 
+distribution, any conditional 
+distribution of tags given words can be 
+decomposed into a product of terms in 
+this way. 
+So that's step 1, the second step is to 
+make an independence assumption. 
+Which actually looks very similar to the 
+Markov independence assumptions Seen in 
+trigram language models and then in our 
+trigram HMMs. 
+So what have I done here? 
+I have basically replaced this sequence 
+of tags t1 through tJ minus 1 with just 
+the last two tags in that sequence. 
+tj minus 2, tj minus 1. 
+And, I've just been a little careful here 
+to make sure to define t0 and t minus 1 
+to be a special star symbol, which is 
+basically the symbol of the start of the 
+sentence. 
+So what I'm saying here, is that each tag 
+informally only depends on the previous 
+two tags. 
+More formally it means that the value for 
+this random variable, tj, is 
+conditionally independent of all the tags 
+preceding the previous two tags once I 
+condition on the entire sentence, and 
+also the previous two tags. 
+So, again this looks very much like the 
+log of assumptions we'd seen earlier in 
+the class. 
+The only real difference is with 
+conditioning on the entire sentence 
+throughout this decomposition. 
+Sort of carrying along this entire 
+sentence. 
+Here again is the independence assumption 
+thus made in this model. 
+So let me give you a particular example. 
+Say I want to write down the conditional 
+probability of the tag sequence DNV given 
+the three words the dog barks. 
+Then this is going to be decomposed into 
+product of three terms. 
+Firstly the probability of D given that I 
+have the sentence the dog barks and given 
+to the previous two text with star which 
+were all start symbols. 
+So our sequence, essentially, looks like 
+this, we have star, star, D N V. 
+We're going to have 1 probability term 
+for each of these 3 tags. 
+So the second term is going to be P of N 
+given the dog barks, and star D. 
+And the third term is going to p of v 
+given the dog barks, end of d n. 
+So again each tag has a probability term 
+p of t j that's conditioned on the 
+previous two tags, and the entire input 
+sentence. 
+The critical question now is going to be, 
+how do I estimate these probabilities? 
+How can I define a model for these 
+probabilities, and estimate the 
+parameters of that model from training 
+examples? 
+And we'll see that this is going to be a 
+direct application of the ideas from log 
+linear models that you saw in the 
+lectures in the last week of this class. 
+

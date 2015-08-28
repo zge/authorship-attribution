@@ -1,0 +1,338 @@
+[SOUND] This lecture is
+about the word association
+mining and analysis.
+In this lecture,
+we're going to talk about how to mine
+associations of words from text.
+Now this is an example of knowledge
+about the natural language that
+we can mine from text data.
+Here's the outline.
+We're going to first talk about
+what is word association and
+then explain why discovering such
+relations is useful and finally
+we're going to talk about some general
+ideas about how to mine word associations.
+In general there are two word
+relations and these are quite basic.
+One is called a paradigmatic relation.
+The other is syntagmatic relation.
+A and B have paradigmatic relation
+if they can be substituted for each other.
+That means the two words that
+have paradigmatic relation
+would be in the same semantic class,
+or syntactic class.
+And we can in general
+replace one by the other
+without affecting
+the understanding of the sentence.
+That means we would still
+have a valid sentence.
+For example, cat and dog, these two
+words have a paradigmatic relation
+because they are in
+the same class of animal.
+And in general,
+if you replace cat with dog in a sentence,
+the sentence would still be a valid
+sentence that you can make sense of.
+Similarly Monday and
+Tuesday have paradigmatical relation.
+The second kind of relation is
+called syntagmatical relation.
+In this case, the two words that have this
+relation, can be combined with each other.
+So A and B have syntagmatic relation if
+they can be combined with each other in
+a sentence, that means these two
+words are semantically related.
+So for example, cat and sit are related
+because a cat can sit somewhere.
+Similarly, car and
+drive are related semantically and
+they can be combined with
+each other to convey meaning.
+However, in general, we can not
+replace cat with sit in a sentence or
+car with drive in the sentence
+to still get a valid sentence,
+meaning that if we do that, the sentence
+will become somewhat meaningless.
+So this is different from
+paradigmatic relation.
+And these two relations are in fact so
+fundamental that they can be
+generalized to capture basic relations
+between units in arbitrary sequences.
+And definitely they can be
+generalized to describe
+relations of any items in a language.
+So, A and B don't have to be words and
+they can be phrases, for example.
+And they can even be more complex
+phrases than just a non-phrase.
+If you think about the general
+problem of the sequence mining
+then we can think about the units
+being and the sequence data.
+Then we think of paradigmatic
+relation as relations that
+are applied to units that tend to occur
+in a singular locations in a sentence,
+or in a sequence of data
+elements in general.
+So they occur in similar locations
+relative to the neighbors in the sequence.
+Syntagmatical relation on
+the other hand is related to
+co-occurrent elements that tend
+to show up in the same sequence.
+So these two are complimentary and
+are basic relations of words.
+And we're interested in discovering
+them automatically from text data.
+Discovering such worded
+relations has many applications.
+First, such relations can be directly
+useful for improving accuracy of many NLP
+tasks, and this is because this is part
+of our knowledge about a language.
+So if you know these two words
+are synonyms, for example,
+and then you can help a lot of tasks.
+And grammar learning can be also
+done by using such techniques.
+Because if we can learn
+paradigmatic relations,
+then we form classes of words,
+syntactic classes for example.
+And if we learn syntagmatic relations,
+then we would be able to know
+the rules for putting together a larger
+expression based on component expressions.
+So we learn the structure and
+what can go with what else.
+Word relations can be also very useful for
+many applications in text retrieval and
+mining.
+For example, in search and
+text retrieval, we can use word
+associations to modify a query,
+and this can be used to
+introduce additional related words into
+a query and make the query more effective.
+It's often called a query expansion.
+Or you can use related words to
+suggest related queries to the user
+to explore the information space.
+Another application is to
+use word associations to
+automatically construct the top
+of the map for browsing.
+We can have words as nodes and
+associations as edges.
+A user could navigate from
+one word to another to
+find information in the information space.
+Finally, such word associations can also
+be used to compare and summarize opinions.
+For example, we might be interested
+in understanding positive and
+negative opinions about the iPhone 6.
+In order to do that, we can look at what
+words are most strongly associated with
+a feature word like battery in
+positive versus negative reviews.
+Such a syntagmatical
+relations would help us
+show the detailed opinions
+about the product.
+So, how can we discover such
+associations automatically?
+Now, here are some intuitions
+about how to do that.
+Now let's first look at
+the paradigmatic relation.
+Here we essentially can take
+advantage of similar context.
+So here you see some simple
+sentences about cat and dog.
+You can see they generally
+occur in similar context,
+and that after all is the definition
+of paradigmatic relation.
+On the right side you can kind
+of see I extracted expressly
+the context of cat and
+dog from this small sample of text data.
+I've taken away cat and
+dog from these sentences, so
+that you can see just the context.
+Now, of course we can have different
+perspectives to look at the context.
+For example, we can look at
+what words occur in the left
+part of this context.
+So we can call this left context.
+What words occur before we see cat or dog?
+So, you can see in this case, clearly
+dog and cat have similar left context.
+You generally say his cat or my cat and
+you say also, my dog and his dog.
+So that makes them similar
+in the left context.
+Similarly, if you look at the words
+that occur after cat and dog,
+which we can call right context,
+they are also very similar in this case.
+Of course, it's an extreme case,
+where you only see eats.
+And in general,
+you'll see many other words, of course,
+that can't follow cat and dog.
+You can also even look
+at the general context.
+And that might include all
+the words in the sentence or
+in sentences around this word.
+And even in the general context, you also
+see similarity between the two words.
+So this was just a suggestion
+that we can discover paradigmatic
+relation by looking at
+the similarity of context of words.
+So, for example,
+if we think about the following questions.
+How similar are context of cat and
+context of dog?
+In contrast how similar are context
+of cat and context of computer?
+Now, intuitively,
+we're to imagine the context of cat and
+the context of dog would
+be more similar than
+the context of cat and
+context of the computer.
+That means, in the first case
+the similarity value would be high,
+between the context of cat and
+dog, where as in the second,
+the similarity between context of cat and
+computer would be low
+because they all not having a paradigmatic
+relationship and imagine what words
+occur after computer in general.
+It would be very different from
+what words occur after cat.
+So this is the basic idea of what
+this covering, paradigmatic relation.
+What about the syntagmatic relation?
+Well, here we're going to explore
+the correlated occurrences,
+again based on the definition
+of syntagmatic relation.
+Here you see the same sample of text.
+But here we're interested in knowing
+what other words are correlated
+with the verb eats and
+what words can go with eats.
+And if you look at the right
+side of this slide and
+you see,
+I've taken away the two words around eats.
+I've taken away the word to its left and
+also the word to its
+right in each sentence.
+And then we ask the question, what words
+tend to occur to the left of eats?
+And what words tend to
+occur to the right of eats?
+Now thinking about this question
+would help us discover syntagmatic
+relations because syntagmatic relations
+essentially captures such correlations.
+So the important question to ask for
+syntagmatical relation is,
+whenever eats occurs,
+what other words also tend to occur?
+So the question here has
+to do with whether there
+are some other words that tend
+to co-occur together with each.
+Meaning that whenever you see eats
+you tend to see the other words.
+And if you don't see eats, probably,
+you don't see other words often either.
+So this intuition can help
+discover syntagmatic relations.
+Now again, consider example.
+How helpful is occurrence of eats for
+predicting occurrence of meat?
+Right.
+All right, so knowing whether eats occurs
+in a sentence would generally help us
+predict whether meat also occurs indeed.
+And if we see eats occur in the sentence,
+and
+that should increase the chance
+that meat would also occur.
+In contrast,
+if you look at the question in the bottom,
+how helpful is the occurrence of eats for
+predicting of occurrence of text?
+Because eats and
+text are not really related, so
+knowing whether eats occurred
+in the sentence doesn't
+really help us predict the weather,
+text also occurs in the sentence.
+So this is in contrast to
+the question about eats and meat.
+This also helps explain that intuition
+behind the methods of what
+discovering syntagmatic relations.
+Mainly we need to capture the correlation
+between the occurrences of two words.
+So to summarize the general ideas for
+discovering word associations
+are the following.
+For paradigmatic relation,
+we present each word by its context.
+And then compute its context similarity.
+We're going to assume the words
+that have high context similarity
+to have paradigmatic relation.
+For syntagmatic relation, we will count
+how many times two words occur together
+in a context, which can be a sentence,
+a paragraph, or a document even.
+And we're going to compare
+their co-occurrences with
+their individual occurrences.
+We're going to assume words
+with high co-occurrences but
+relatively low individual occurrences
+to have syntagmatic relations
+because they attempt to occur together and
+they don't usually occur alone.
+Note that the paradigmatic relation and
+the syntagmatic relation
+are actually closely related
+in that paradigmatically
+related words tend to have syntagmatic
+relation with the same word.
+They tend to be associated
+with the same word, and
+that suggests that we can also do join
+the discovery of the two relations.
+So these general ideas can be
+implemented in many different ways.
+And the course won't cover all of them,
+but
+we will cover at least some of
+the methods that are effective for
+discovering these relations.
+[MUSIC]
+

@@ -1,0 +1,323 @@
+Welcome to the course on Audio Signal
+Processing for Music Applications.
+This week
+we're talking about the Sinusoidal model.
+In the theory lectures
+we actually presented the model and
+we presented it from a signal processing
+and mathematical point of view.
+In this demonstration class I want to
+present it from a practical point of view.
+So, actually using it.
+So, let's go directly to the sms-tools GUI
+
+and let's start with the DFT model and
+let's open one sinewave.
+This sine wave at 440 Hz.
+Okay, so let's listen to that.
+[SOUND] Okay, so
+let's use a Hanning window, that's fine,
+Maybe let's use window size of 511 and
+maybe an FFT size of 1,024.
+We compute it, Okay.
+So this is the sinewave,
+the magnitude and phase spectra and the
+reconstructed signal from the spectrum.
+The sinusoidal model will attempt to
+find the peak, the spectral peak,
+the height, the location, and
+the phase corresponding to that location.
+Of course, you will do it for
+the whole sound.
+So we'll start from the STFT.
+So if we get the same sound
+and get the same type of parameters,
+511 and 1024.
+And let’s just put this half of that
+window, and this will be the STFT,
+the spectrogram.
+we can listen the output [SOUND] right.
+Pretty good.
+So in here we are seeing this red line
+Which is basically the peak as it
+evolves in time, which is very stable
+and in the phase we see this clear area
+which is the flat phase of the main lobe.
+Okay, but now let's go to the sinewave,
+the sine model and
+let's do the same thing.
+Let's open the sine.
+Let's use the same parameters.
+511 and 1024.
+And now we starting with the parameters that
+are specific for the sinusoidal analysis.
+For example,
+we have the magnitude threshold,
+which is the magnitude
+threshold in decibels,
+that we're going to be looking for.
+So we're going to be looking for
+peaks that are within
+50 dB from 
+the 0 dB, from the maximum of the sound.
+We can restrict
+the duration of the tracks.
+For example let's just put 0.
+So no restriction.
+We can restrict the maximum
+number of sinusoids.
+150 is plenty.
+In fact there is only one.
+And we can restrict the deviation
+from frame to frame in terms of
+how this track evolves.
+And here we have put ten
+at the lowest frequency.
+And then normally it's good that this
+deviation changes as the frequency goes up.
+And as the frequency goes up it's
+good to increase this deviation.
+So this is the increasing factor of this
+deviation as the frequency goes up.
+Okay, so let's compute that.
+And okay, interestingly enough,
+we are seeing more than one line.
+Okay.
+That's the synthesis.
+We can listen to that.
+[NOISE] That's pretty good.
+It's a sinusoid.
+But, in the analysis, here we are only
+seeing the frequency values of the peaks.
+We are not seeing the magnitude or
+the phase, being there four lines.
+But clearly
+they may not be the same amplitude.
+So where do these come from?
+In fact, they come from the side lobes.
+We specified
+magnitude threshold of minus 50.
+And if we go back to the
+the signal, the DFT.
+And we zoom into the peak.
+Well, we're going to see that apart
+from the main peak, there is side lobes,
+that are peaks, and are within 50
+decibels of the maximum energy.
+So therefore, these have been picked up.
+If we want to not pick up
+these side lobes
+we should reduce this threshold,
+for example, minus 20.
+And now, yeah, now there is only one line.
+Okay.
+Let's complicate this and let's
+analyze a little bit more complicated signal,
+for example, two sine waves.
+So, let's go back to the DFT and
+and, let's get rid of all these windows,
+And let's open the sum of two sinewaves, 
+440 and 490 Hz summing together.
+And, let’s, maybe,
+well we have to choose the
+window size appropriate for
+a specific window.
+And we talked in the theory
+class that in order to do that
+we can use an equation that says that
+it has to be the number
+of bins of the window,
+in the case of hanning window is four, times
+the sampling rate which is,
+in this case 44100.
+And we have to divide it by the frequency
+distance that we want to resolve.
+In this case, between 440 and 490 Hz.
+So 50 hertz, okay?
+So this number 3,528 is the size of M,
+the minimum size of M.
+If we want the two main lobes of
+these two sinusoids to be separate.
+So we put here 35, and
+we'll put it as an odd size, 
+we'll put 3529.
+The FFT has to be bigger than that,
+a power of two, and
+let's just analyze at this point.
+Okay, and now we maybe we zoom in
+into this region.
+We will see, okay,
+the two peaks of the two sinusoids.
+OK, then we'll do
+the sinusoidal model,
+we do the short time Fourier transform,
+let's go directly to the sinusoidal
+model and lets put the same values.
+Let's get the sum of these two sinusoids,
+which maybe let's listen it
+[SOUND].
+Okay and
+now we can set up the values as 3529.
+Okay and again the FFT size 4096.
+And okay, the rest of the parameters
+let's lower the threshold.
+I think
+minus 20 will be too little,
+just put minus 30 for example.
+Okay?
+And let's leave 
+the others the same as we had before.
+Okay?
+Let's compute that.
+Okay.
+And now we have the original sound and
+the resynthesized, we can listen to that.
+[SOUND].
+Okay, that's pretty good.
+And then if we zoom into this area
+we see these two lines, the 440Hz and
+490Hz.
+What happens if this
+size is not large enough?
+For example, what happens if it's 1,800?
+And of course we don't
+need such a big FFT.
+Let's 2048 is suficient and
+I think in here
+let's make sure to be safe and
+let's have a lower threshold,
+Let's say minus 40 and
+let's leave the others the same.
+Okay, and
+now we see something interesting.
+Okay.
+So if we listen to the output sound.
+[SOUND] is not that bad, but
+if we look at the analysis it is
+definitely very different.
+Okay, if we look at the analysis
+what we are seeing is
+kind of, it gets confused,
+Sometimes it finds two,
+sometimes it doesn't.
+So, clearly
+we don't have enough resolution for
+discriminating clearly
+these two sinusoids.
+Even though when we sum it all together
+it doesn't sound that bad.
+Okay, but anyway
+we'll have to pay attention to this
+and make sure that we understand how
+the parameters have to be set for
+analyzing a specific type of sound.
+And now let's go to
+a sound, a real sound.
+Let's use the oboe sound and
+let's go directly to
+the oboe sound, which is
+the note A4, 440 Hz.
+So, let's calculate again this
+distance that we need to,
+the size of the window
+that we need to have.
+Maybe let's change the window.
+And let's put for
+example a Blackman window, it's okay.
+What should be the window size for
+this sound?
+Okay, the Blackman window,
+the number of bins is six,
+the sampling-rate is the same, 44,100,
+And now we have to divide by
+the fundamental frequency,
+the fundamental frequency
+of this sound is 440 Hz,
+and that's the distance between
+two consecutive harmonics.
+So we will put 440 Hz here.
+And this is the size that
+we need 601 samples,
+Okay.
+So, let's put 601 samples.
+FFT size,
+well let's put the next power of 2,
+and now, of course, we're dealing with
+a big sound that has a lot of harmonics
+and they will go pretty much down.
+So let's put more,
+bigger threshold, so lower value.
+OK, so let's put minus 80.
+And now we can, these
+these parameters matter a bit, so
+they might be spurious kinds of tracks.
+So let's get read of track that
+are small, so for example 0.05.
+So we get rid of that.
+In this case
+now we will need quite a bit of sinusoids.
+And we definitely will
+need this deviation.
+So this will be a deviation
+that will be quite useful.
+Okay.
+On, let's compute it.
+Of course, it takes longer because it's
+a much more complex sound.
+Okay, and this is the result,
+the original sound.
+The tracks, here we're only
+visualizing the first 5,000,
+but if we would go higher,
+we would see more.
+And, we see pretty good
+all the horizontal lines.
+And of course, here at the end there may
+be some harmonics that are disappearing.
+Let's listen to the original.
+[SOUND].
+On the synthesized
+[SOUND]
+Okay, that's pretty good.
+What happens if, for example,
+the threshold is not low enough?
+Let's put minus 30, for example.
+Now, let's recompute it.
+Okay?
+Now, what we are seeing is that it has not
+been able to capture all the harmonics.
+The harmonics that were too
+soft were not analyzed.
+So let's hear what we got back.
+[SOUND].
+Yeah.
+Clearly this is only a part of that sound.
+And that is basically what
+I wanted to talk about.
+So, this was
+a class that I tried to introduce the
+the sinusoidal model from
+a practical perspective.
+And of course, we have used the sms-tools,
+the GUI, and these sinusoidal sounds that
+we have, the oboe sound, we have been
+playing around with come from freesound.
+And that's all, hopefully
+that has given you a practical
+view of the sinusoidal model.
+Of course this requires for
+you to practice quite a bit more.
+it's very important to
+analyze many sounds and
+to actually see what is the effect of the
+different parameters on different sounds.
+And in fact, that's what we're going
+to do next demonstration class.
+So, I hope to see you in next
+demonstration class where
+we'll actually analyze
+some more complex sound
+and go into the sinusoidal
+model more deeply.
+So, see you next time.
+

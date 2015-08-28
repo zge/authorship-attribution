@@ -1,0 +1,226 @@
+Now we're going to take a look at what
+happens when we have significant numbers
+of duplicate keys which is not at all
+unusual in practical applications. So, in,
+in fact, often, the purpose of a sort is
+to bring items with equal keys together
+for like the example that I gave where we
+had cities and time. There's a lot of
+detailed data and the time and maybe the
+whole goal of the sort is to group them by
+cities so we can ship out the data for
+each city, to each city and there's plenty
+of other examples like that in data
+processing where we find maybe remove
+duplicates from a mailing list or all the
+job applicants that we get, we might want
+to sort them by the college attendant. So
+the sort does huge files with huge numbers
+of duplicate keys. So, a sort, it's
+worthwhile to take a careful look at what
+the implication of that is. So again,
+typical characteristics we have a huge
+file but small number of different key
+values. So let's look at our algorithms in
+that situation. So Mergesort, it doesn't
+matter that much what the key values are
+like and it's actually, we can show that
+Mergesort always uses between one-half, N
+log N and N log N compares. Quicksort
+actually, they're up until the 1990s the
+most widely used implementation took
+quadratic time. For files with large
+numbers of equal keys and that was
+actually found by applications user and,
+and that's the standard Quicksort that was
+in all the textbooks almost all the
+textbooks if you did not stop the
+partitioning on equal keys it would run in
+quadratic time. So we want to do better
+than this. So the mistake happens if we
+put all the items equal to the
+partitioning item on one side which is a
+natural way to implement it and the
+consequence is if you have all the keys
+equal, then partitioning doesn't really do
+anything. You just peels off one key to do
+file size n then you get a sub file size n
+- one and then n - two and so forth and
+the result is a quadratic tim e algorithm.
+Our implementation, we stopped the
+partitioning scans on items equal to the
+partitioning item and then in that case,
+when all the keys are equal, it's going to
+divide it exactly in the middle. And then
+in that case, when all the keys are equal,
+it's going to divide at exactly in the
+middle. And then in that case you get an N
+log N compares. But actually when you
+think about it, why don't we just put all
+the items equal to the partitioning item
+in place. That's, that's really a
+desirable way to look at it and let's take
+a look at that option. So the goal is so
+called three way partitioning. So what we
+want to do is get the array into three
+parts so then now we have two pointers
+into the middle. One that is the boundary
+between the keys that are less than the
+partitioning element and those that are
+equal of the partitioning element. Another
+one that's the boundary between the keys
+that are equal of partitioning elements
+and the one that is greater. And then in
+the middle are all the equal keys and
+that's what we'd like to arrange. Now
+until the 1990s, conventional wisdom among
+people implementing system was, wasn't
+worth doing this. But, but actually it's a
+problem that Edsger Dijkstra had proposed
+in the 70s as an example of, of
+programming problem. He was really
+interested in analyzing correctness of
+programs and showing that this how you
+could convince yourself that this program
+was operating as expected. But in the
+1990s we figured out that really this was
+going to be an effective way to sort. And
+this was taking a look at the Qsort that a
+user found was broken and, and now, this
+method is incorporated into some plenty of
+system sorts. So let's take a look at how
+it works with the demo its more
+complicated than standard Quicksort
+partitioning. A bit more complicated
+because there's more to do. So now we have
+our i pointer which is right to the left
+of stuff we haven't seen ye t and then, we
+have two other pointers that maintain,
+maintain these boundaries everything to
+the right of gt is known to be greater
+than partitioning element. Everything to
+the left of lt is known to be less and
+between lt and i is known to be equal. And
+all the method does is maintain this in
+variants so let's do an example or two and
+see how that works. So we increment i and
+then figure out what to do. So, now it's
+less than the partitioning element. So,
+what we want to do is increment lt's. So
+now we have one that's definitely less
+than the partitioning element and lt is,
+is pointing at the partitioning element.
+And so now in, increment both lt and i so
+that's the first case there. So now we
+have a second item b. That's less than the
+partitioning element so exchange with lt
+and increment them both. So, we're moving
+the smaller ones than the partitioning
+element to the left of lt and keeping lt
+pointing on a partitioning element. Now,
+what about when we get one that's greater
+than the partitioning elements? So, in
+that case, we exchange greater the one
+over at the right with i and decrement gt.
+So now, we have one over to the right that
+we know is greater than the partitioning
+element. Notice that we didn't increment i
+because that element z that is over in the
+right, really hasn't been compared to the
+partitioning element yet. But we did
+decrement gt so we made progress. So now
+what happens here, now i is pointing to a
+bigger one so we're going to exchange it
+with the one at gt and decrement gt again.
+And again, y is bigger, so exchange it,
+decrement gt. Now we have the c, that one
+smaller so that's the first case. So we'll
+move it to the left of lt and increment
+both lt and i. W is a bigger one, let us
+to go over to the right. Now we have i
+pointing to an element that's equal to the
+partitioning element. And what are we
+supposed to do then? Well, to maintain the
+variant there we just need to increment i.
+And again it 's pointing to one that's
+equal of partitioning element increment i.
+And now one more time and now it's
+pointing to one that's greater so we
+exchange that with gt and decrement gt and
+i is pointing to the one that was there
+and that ones smaller. So we exchange it
+will lt and increment both i and lt and
+now where the point, where the pointers
+have crossed i and gt across there's
+nothing that we haven't examined yet. So,
+our partitioning is complete. Here's a
+trace of Dijkstra 3-way partitioning for
+his problem which is when there's just
+three different values in the file. Our
+problem we were treating partitioning,
+equal of partitioning element as one value
+less than as another and greater than as
+another. And so this, this trace
+illustrates how we always make some
+progress and eventually we get the file
+sorted. The implementation is amazingly
+simple. The whole partitioning process for
+three-way partitioning and the modern
+programming language like Java simply
+maintains the invariances described in the
+demo. If we find one that's less we
+exchange i and lt and increment them both.
+If it's greater we exchange i and gt and
+decrement that. Otherwise, we increment i.
+Could, could hardly be simpler. In fact,
+is simpler in many ways than these
+standard implementation of Quicksort. In
+fact, there's an argument for just using
+this implementation of Quicksort and
+forgetting about horse because it performs
+so well in so many practical situations.
+Here's a visual trace of 3-way Quicksort
+for situation with plenty of equal keys.
+And again, when there's a lot of equal
+keys then there's going to be place where
+one of those is chosen, it's partitioning
+element then a big chunk of the array gets
+handled just in a partitioning process.
+Now, there's actually some deeper reasons
+why this method is important and one thing
+to do is to realize that the lower bound
+that we talked about before depended on
+the keys being distinct. So, worst case
+for lower bounds is when the keys are all
+distinct. But if we have a situation where
+there are a lot of equal keys, that model
+is wrong. It's not too difficult to get a
+similar lower bound for the model when we
+know that there are some equal keys. So,
+for example this is a rather complicated
+formula but not too bad but in a sense
+that if you know that the i-th key, it
+occurs xi times you can write down a lower
+bound for the number of comparisons that
+are going to be required in the worst
+case. And, what's interesting about three
+way partitioning is that the number of
+compares that it uses is equal to this
+lower bound within a constant factor. So
+that's entropy-optimal and what that means
+is whatever the distribution of equal keys
+in there, this thing is going to use a
+number of compares that's proportional to
+the best that you could possibly do. The
+proof for this fact is quite beyond the
+scope of this course but it's still an
+important fact. And the, the bottom line
+is that if you randomize the order and use
+three-way partitioning then there's lot of
+applications where your sort routine is
+going to be linear not N log N so it will
+be much more faster than Mergesort and you
+know, the methods for really a broad class
+of applications. So, taking a look at
+equal keys is carefully is something that
+can lead us to very efficient Quicksort

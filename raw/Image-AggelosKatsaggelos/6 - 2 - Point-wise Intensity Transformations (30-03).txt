@@ -1,0 +1,678 @@
+Welcome back.
+What we will learn in this segment is how
+to define
+the appropriate function or mapping that
+will take each and every
+intensity value of the input image, and
+map it onto an
+appropriate intensity value in the output
+image, at the same spatial location.
+So that our objective of an enhanced image
+is fulfilled.
+We will discuss, for example, how to take
+the
+negative of an image, or for what
+objectives we might
+need to apply the logarithmic
+transformation to an image
+or its discrete fourier transform or apply
+the power-law transformation.
+One application of the latter is gamma
+correction, which we will discuss in some
+detail.
+We'll also discuss how to stretch the
+contrast
+or increase the dynamic range of an image.
+Finally, we will discuss how to slice or
+extract a range of intensity values in
+the image, which if done appropriately
+will
+better highlight the important features in
+the image.
+We'll actually perform the slicing not on
+the intensity values, directly, but
+on the bit planes of the binary
+representation of each intensity value.
+The material of the segment represents
+simple tools, which,
+however, can prove to be very powerful in
+visualizing
+an image or providing the enhanced image
+as input
+to another processing step, such as
+pattern matching or recognition.
+So let us then proceed with the coverage
+of this fun material.
+So let us look first at point-wise
+intensity transformations.
+We are operating directly on the intensity
+values of an image, but we are
+processing each big cells separately and
+independently
+of the values of the neighboring big
+cells.
+So the general expression for this
+transformation is shown here x n1 and 2 is
+the intensity of eight pixel at the input
+image and y n1 and 2 is
+intensity of the output image at exactly
+the same fixture location.
+For emphasis with the subsequent point
+here a distance formation
+here to again indicate this fact that I
+only need one
+intensity value, one pixel location at the
+input to find
+the intensity value at the corresponding
+pixel location at the output.
+A more general case, you might say, is
+when
+now x and y are not scalars, but are
+vectors.
+So this is the case for example when I
+deal with the calorie much.
+So x is a vector, with three by one
+vector, for example, the RGB
+channels of the input image and the RGB
+channels of the output image.
+Actually here we might have cases where
+let's say x is a vector but y is a scalar.
+So I transform one color image into a gray
+scale image and
+the other way around, x is a scalar and y
+is a vector.
+So I'm doing pseudo-coloring.
+I'm turning a black and white image into a
+color image.
+The generalization you might say of both
+these expressions is shown here.
+So first of all, n here is a vector.
+Three by one or four by one vector, if
+I'm dealing with a three dimensional or
+four dimensional image.
+And also x and y are shown here as
+vectors.
+We're understanding as already explained,
+that not both of them need to be vectors.
+One of them can be vector and the other
+a scaler to cover the cases I just
+described.
+Now this point-wise intensity
+transformations can be linear
+or piecewise linear or in general can be
+non-linear.
+And we are going to see example of all of
+these cases in what follows.
+Let's look at some examples of point-wise
+transformations here.
+First of all, on the horizontal axis, we
+have the intensity values of the input
+image.
+They range from 0 to 255.
+Assuming that we're using 8 bits per
+pixel.
+This however without lack of generality if
+more bits are used then their range
+changes.
+On the vertical axis similarly we have the
+intensity values
+of the output image also ranging form 0 to
+255.
+So the first transformation we see here
+is the identity transformation, indicated
+by this diagonal.
+It does absolutely nothing to the
+intensity values of the input image.
+They are mapped exactly the same into the
+output image.
+The second linear transformation is the
+negative
+transformation, it maps the value 0 to
+255 and the value 255 of the input image
+to 0.
+So it gives us the analogy between a
+negative film and the
+print for those of you that are old enough
+to remember films.
+Then I have the log transformation in red
+and the nth root transformation in this
+solid blue.
+What digital transformations that lie
+above
+the diagonal are doing is they expand
+the low intensity values of the image
+while they compress the high intensity
+values.
+So if we look at the log transformation
+for example, then clearly
+this range of input values, low intensity
+values
+are mapped into much larger range of
+output values.
+Therefore, we have this expansion.
+The remainder of the values here, the
+higher values are mapped into the much
+smaller range of values of the output,
+therefore we have this compression.
+Let's look now at the two transformations
+non-linear transformations that are below
+the diagonal.
+We have the inverse log here.
+And the nth power transformation indicated
+by this curve.
+So, the transformations below the diagonal
+do
+the reverse of the transformations above
+the diagonal.
+In other words, they compress the low
+intensity
+values while they expand the higher
+intensity values.
+And this can be seen, let's say with the
+inverse log here this range of values
+of the input image is mapped into a
+much smaller range of values of the output
+image.
+While this small range values, high
+intensity values of the
+input are mapped into a much larger range
+of values at the output image.
+So, low intensity values are compressed,
+high intensity values are expanded.
+Let us now look at some examples of these
+transformations.
+Here is an example of the negative
+transformation of the intensity of an
+image.
+Here is the positive image and here is the
+negative image.
+This is a CT scan,
+of the ruptured abdominal aortic aneurysm.
+So it's Ruptured AAA, as it's typically
+referred to.
+So the aneurysm is this ballooning, this
+dilation of the aorta.
+If it exceeds a certain diameter it's
+called an aneurysm, so here it's a
+ruptured aorta shown here, while the
+second
+arrow here indicates the free flow of
+blood.
+So for the specialist, the negative image
+might provide a
+better visualization of the condition, or
+be more useful in the
+sense that certain conditions can be
+easier to be diagnosed.
+Let us look now at an example of
+the application of the logarithmic
+transformation to an image.
+Here is the mathematical expression of the
+transformation.
+I take the log of the input intensity and
+y of n is the output intensity.
+We are adding this value of one here, so
+that the log is defined.
+Since log of 0 is minus infinity, by
+adding 1 for that case
+when x of n is 0 log of 1 is equal to 0.
+In addition clearly now the output of the
+log is a non-negative number.
+We have also this multiplicative factor
+here,
+c, to kind of adjust this transformation.
+One of the important applications of this
+log
+transformation is when we want to display
+Fourier Spectra.
+Here is a endoscopic image.
+And here is the magnitude of its discreet
+fourier transform.
+We can hardly see anything, there is only
+a non-zero point here.
+This is actually the center of the
+spectrum, so this is the 0, 0 point.
+So what happens clearly is that there is a
+large value or a few large values
+around 0, 0, while the rest of the values
+of the spectrum are, are very small.
+So when I map this range of intensities
+linearly into the
+0 to 255 range, so that they can display
+it here the small values
+become very, very small, very close to 0,
+and the large values map to 255.
+So, it's the wide spot I see here in the
+center.
+So, instead of displaying the magnitude in
+a linear fashion as I explained,
+if we take the log of the magnitude of the
+DFT, we see the image here.
+So clearly there's considerably more
+information of course I see the 0, 0
+frequency here in the center is still
+displayed, but
+due to the fact that the low intensities
+were expanded, they're now visible.
+And the high intensity were compressed now
+so they can know
+now all these intensities can feed into
+this 0 to 255 range.
+I use the output image for displaying
+purposes and clearly visually
+there is considerably more information in
+this image than in this one.
+Medically speaking the same values exist
+in both images, but again for displaying
+or visualization purposes, this log
+transformation
+improves the quality of the image
+considerably.
+The power-law transformation is depicted
+here again on the
+horizontal axis are the intensity values
+of the input image.
+They range from 0 to L minus 1, so if K
+bits per pixel used to
+represent the intensity values, then 2 to
+the K equals L.
+Similarly on the vertical axis we show the
+intensity of the values of the output
+image.
+The mathematical expression for the
+power-law transformation is shown here.
+So the output value equals a constant
+times the input value
+raised to a power, to the exponent there
+is denoted by gamma.
+The graph shown here are for c equals 1.
+So therefore gamma is equal 1, and you
+have a straight line here along the
+diagonal.
+So this is the identity transformation, it
+maps the intensity values
+of the input image to the output image
+with absolutely no change.
+For gamma less than 1 we have the curves
+above
+the diagonal gamma greater than 1 becomes
+below the diagonal.
+For gamma less than 1, we have the similar
+behavior we had, let's say with the
+logarithmic function.
+That is small intensity values of
+the input are expanded, while high
+intensity values are compressed in going
+from the input to the output image.
+The reverse takes place for gamma, greater
+than one.
+[BLANK_AUDIO]
+If a right of device is used for image
+capture, printing and display respond
+according to this power-law.
+Since, by convention, the exponent of the
+power
+law is a gamma is denoted by a gamma.
+The process used to correct the power-law
+phenomena is referred to as the gamma
+correction.
+[SOUND].
+So for display devices, the relationship
+between the input
+voltage or current and the intensity
+follows this power-law.
+So, we can have intensity that's a
+displayed intensity
+equals the input voltage raised to the
+gamma power.
+Since the gamma is in general, different
+for each
+device this is the reason that the
+intensity and the
+color of an image might look different on
+different monitors
+or on or when it is projected on a screen.
+We show here an example of gamma
+correction.
+Here is an original image, it's, it's an
+intensity ramp.
+So the intensity increases as you go from
+left to
+the right, that you would like to display
+on a monitor.
+The gamma of the monitor is 2.5
+and therefore the displayed image looks
+like this.
+Raising each value to the power of 2.5
+compresses the range of small values
+and expands the higher values, so the end
+result is this darker looking image.
+Our objective is that the displayed image
+on the monitor
+looks very similar, exactly the same
+ideally to the original one.
+So, if before sending it to the monitor we
+correct the image with a gamma which is
+equal to 1 over 2.5 which is equal to 0.4,
+0.4.
+Then, this image going to the monitor will
+appear as shown here.
+This is the correct image and in this
+particular case since we know exactly
+the gamma of the monitor we're able to
+perfectly correct for this gamma and
+therefore the original here and corrected
+image, images are identical.
+The challenge clearly in practice is to
+find the exact value of the
+gamma of the monitor or the display device
+in general, or the projection device.
+[BLANK_AUDIO]
+Here's another example of the application
+of the power-law transformation to an
+image.
+This is an image obtained by the Hubble
+Space Telescope of the Ring Nebula.
+This image is rather dark and in some
+sense it
+should remind you of the specter that we
+talked about earlier.
+So we would like to transform it, so that
+more information is visible.
+And if we apply the power-law
+transformation with a gamma equal to
+0.5, then as we know the low intensity
+values will be expanded and
+the high will be compressed and here is
+the result of this
+transformation, so clearly, a lot of the
+small intensity values are now visible.
+And this, again, should remind you of the
+log
+transformation we perform to the spectrum
+of an image.
+This is yet another example of the
+application of the power-law
+transformation to an image.
+We see, here, an image that has this
+appearance of being too bright, or too
+light.
+Therefore we would like to transform it
+and make it look darker.
+This by the way the engineering building
+here at Northwestern back in the 40s
+when the, when Lake Michigan was coming
+all the way to the front of the building.
+We know therefore that to make this image
+look darker the gamma we should apply
+should be
+greater than 1, and if we use gamma equal
+to 2 then the transformed image looks like
+this.
+So this is an image that probably is more
+pleasing or it balances the
+intensities better than the original one,
+but again, this is an enhancement problem.
+We have no objective criterion that
+we're optimizing and obtaining the
+enhanced image.
+We're given an image like this and would
+like to enhance it.
+So what's wrong with this image?
+It's too dark.
+It's hard to see bright spots.
+It seems like details are hidden under
+this darkness.
+So I want to stretch its contrast, and we
+want to do that in a linear way.
+I just want to use a linear function, a
+straight line to do so.
+So what one can do is just, take the
+input, the image this
+input image and find the minimum and
+maximum value.
+So Xmin and Xmax and then map this to the
+full range
+of the output image, so the output
+re-image will
+have intensities from 0 let's write it in
+general
+2 to the B minus 1, so B bits per pixel
+are used.
+So 8 bits, this is 0 to 255.
+And then we would like to map the maximum
+value of the
+input image to 2B minus 1 and the minimum
+value to 0.
+So therefore we would like to map
+according to this straight line here.
+The equation of this straight line is
+given here.
+It's straight forward to define this
+equation.
+And, if I use this linear mapping on the
+input image, what we obtain is this output
+image.
+So, clearly the Xmax of the input is now
+mapped to
+255, this is an 8-bit image, so the
+highest possible value.
+So, you can see clear whites now.
+And you have stretched, you've mapped a
+smaller region of
+the input here to a larger range of output
+values.
+So we have stretched the dynamic range or
+the contrast of this image.
+So, certainly, visually there is
+considerably more information that can be
+observed in the process the image over
+here, the enhanced image.
+Here is yet another example of image
+enhancement
+it comes under the name of dynamic range
+expansion.
+We call the previous one contrast
+stretching.
+They all express that the same idea.
+So again, what's wrong with this image,
+it's dark, it's hard to see details.
+It's hard to see changes, differences
+between black and white.
+So in this case I'm allowed to
+use a transformation that it is piecewise
+linear.
+So if I use this transformation of this
+image, so
+it has three pieces, this transformation
+linear pieces, and we see that I
+compress the low intensity values, as well
+as the high intensity values.
+While I expand the values in the middle,
+right?
+So the range 95 to 159 was mapped to the
+range of intensity values 31 to 223 in the
+output image.
+So if I apply this transformation I obtain
+this image here.
+So it's clear that the definition of the
+clouds in
+the sky is much more pronounced and clear
+now, the waves
+here and the wide waves and so on, it's a
+much more informative image as well as
+more pleasing to see.
+So a piecewise linear transformation like
+this I
+have two control points this one and this
+one,
+and by adjusting them appropriately I can
+observe
+the effect of this transformation on any
+input image.
+Ideally you'd like to have a, an interface
+here
+that will allow you to dynamically adjust
+again digital control points and for each
+position, see the output image and of
+course keep the resolve
+that it is the most informative, the most
+pleasing to the viewer.
+Another piecewise linear transformation is
+intensity-level slicing.
+In this case we are interested in
+highlighting or enhancing
+a certain range of intensity values of the
+input image.
+Applications may include enhancing
+features in satellite imagery such as
+masses of water, lakes, rivers or
+enhancing the flaws in an x-ray image.
+Two approaches to do so are shown here.
+So here on the left we map a range of
+values of the input image
+into a specific level, this level let's
+say A here which could be equal to 255.
+While the rest of the input intensities
+are mapped
+to this value B, which could be 0 as well.
+So clearly in this case a binary image is
+generated.
+With the second approach shown here, a
+similar approach is
+taken when it comes to the range of values
+of interest.
+That, these, these are range of values we
+want to enhance or highlight.
+However, for the rest of the values we
+keep them unchanged.
+So this is the identity transformation
+that supplied to them.
+We shown example of the intensity level
+slicing enhancement technique on this
+angiogram image.
+So with the transformation as shown here
+in how the image is normalized
+between 0 and 1, and then the range of
+values between 0.2 and 0.55.
+Let's say this is 0.2, this is 0.55, these
+values are going
+to be mapped to 1 and the rest will be
+equal to 0.
+So this is the transformation that was
+applied
+to this image and the result is this one.
+It can be argued that some of the blood
+vessels are easier to
+pull out, to pick up in this
+intensity-level sliced image.
+We can also obtain this image by applying
+the same
+transformation, but now the background
+values remain, remain unchanged.
+So, so this is the 1, 1, point, then,
+we pull out the values between 0.2 again,
+0.55.
+But the remaining of the values remain
+unchanged.
+And again, the same comment can be made
+here, but for the spacial is possibly
+additional
+information can be perceived by looking at
+either
+this or this image than that the original
+one.
+Instead of highlighting intensity level
+ranges, we can highlight the
+contribution made to the total image
+appearance by specific bits.
+So if we consider an 8-bit image, it can
+be considered as being composed of 8 1-bit
+planes.
+Bit plane 1 here formed by the least
+significant bit, all
+the way to bit plane 8 formed by the most
+significant bit.
+[BLANK_AUDIO]
+Clearly each of these planes being in one
+big plane is a binary plane.
+It only has two values.
+Let us now see an example of how these
+different bit planes manifest themselves.
+We show here an 8-bit gray scale image of
+an $1 bill.
+The 8 binary planes that can be derived
+from this I have shown here.
+So this is the bit-plane one,
+bit-plane-two,
+three, four, five, six, seven, and eight.
+[BLANK_AUDIO]
+It should be clear that the two or three
+higher
+order bit-planes contain a significant
+amount of the visually important
+information.
+On the other hand, the lower order bit
+planes
+contribute to more subtle intensity
+details in the image.
+We can actually obtain this bit-plane 8
+here.
+[BLANK_AUDIO]
+By binarizing directly the original image,
+by
+mapping the intensity values from 0 to 127
+to 0, and the values 128 to 255 to 1, if
+we do solve this binary image will
+dissolve.
+This decomposition also ties to
+compression, that we'll be discussing
+later.
+In the sense that it demonstrates which
+of the bits are important towards
+preserving the
+original appearance of, of the image or
+which
+planes are important in reconstructing the
+original image.
+So, for example, and let's look at the
+next slide.
+So we show here the construction by using
+the bit-planes 8 and 7,
+the construction is done by multiplying
+the big cells of the nth plane.
+So nth plane
+is multiplied by 2 to the n minus 1, so
+big cells in
+bit-plane 8 are multiplied by 128.
+Bit-plane 7 then multiplied
+by 64 and then the results are added up to
+obtain this image shown here.
+Let's compare it to actually to the
+original image.
+So it's clear that the main features of
+the original image are restored.
+However, the reconstructed image looks
+rather flat, especially in the background.
+And also there's this false contouring
+appearance in it.
+This is not surprising because the two
+planes that
+were used can only produce four different
+intensity values.
+So if we add one more plane, so now we're
+using planes 8, 7, and 6, we
+see that now the reconstructed image looks
+considerably closer to the original one.
+And by adding also bit-plane 5 we can
+say that these two images are almost
+indistinguishable.
+Actually adding more planes will not help
+and from that
+we can conclude that 4-bits in the image
+convey all the
+useful information about the original
+image and then since we were
+using 4 out of 8-bits we are achieving a
+50% compression.
+

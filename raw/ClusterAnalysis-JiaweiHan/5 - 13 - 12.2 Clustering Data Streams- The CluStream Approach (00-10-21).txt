@@ -1,0 +1,241 @@
+[SOUND] In this session, we are going
+to introduce an interesting approach, for
+clustering data streams called
+the CluStream Approach.
+This approach was developed by IBM,
+and the UIC group working together.
+And published the paper in VLDB 2003.
+The general goal of CluStream is we
+try to get high quality clustering,
+of evolving data streams
+with rich functionality.
+We follow the stream mining philosophy,
+that means there's only one
+pass over the stream data,
+with very limited space usage,
+but still have high efficiency.
+This clustering methodology
+contains three major points,
+one called tilted time frame work,
+t hat means we store more
+recent data in a fine scale.
+When the time become more and more remote,
+we store the data in the closer,
+and closer scale.
+Because we can not store all
+the previous history, but
+if we do not store in this way,
+we will lose dynamic changes.
+Then, the second philosophy
+is micro-clustering.
+That means we store the data
+in a fine clustering scale.
+It's not confined to k,
+it's not even linked to k, but
+we have much better quality than
+the k-means, and the k-median methods.
+Because it is incremental,
+it has online processing,
+and it facilitates cluster maintenance.
+Then the third major point is,
+we have two stage processing.
+We have micro-clustering for maintaining
+online data streams, and its history.
+And for the macro-clustering,
+we will be able to answer adhoc queries.
+Therefore, with the limited overhead, we
+will be able to achieve high efficiency,
+scalability, quality of the results, and
+the power of evolution/change detection.
+Let's first look at
+this tilted time model.
+Essentially, tilted time frame
+is a trade-off between space,
+and granularity of time.
+That means we want to decide,
+at what moments the snapshots of the
+statistic information should be stored.
+So the general design,
+we'll have natural tilted time frame,
+logarithmic tilted time frame, and
+a pyramidal tilted time frame.
+The natural tilted time frame,
+the general philosophy is we
+follow the natural time boundary.
+For example,
+every quarter we store a frame.
+Then after four quarters,
+every hour store a frame.
+And every 24 hours,
+every day we store one frame.
+After 31 days,
+every month we store a frame, and so on.
+So, that will maintain the most recent
+one, actually store in a fine scale,
+and gradually we get a closer and
+closer scale.
+The logarithmic tilted time frame
+maintains a similar philosophy,
+but it jumps in a logarithmic way.
+That means every t time we store a frame,
+and then, later we store every 2t,
+then every 4t, every 8t,
+every 16t, every 32t.
+We jump in an exponential way.
+So, we have limited time frame, but
+we can store the really, really,
+long you know, the pass.
+Pyramidal tilted time frame
+was designed by CluStream.
+It's a interesting design this way.
+For example,
+just give you a small example.
+Suppose we only have six frames.
+Each frame may only be able to
+store three snapshots, okay.
+Then the, supposed we give
+a snapshot number say now,
+we store 69 70, suppose the 71 counts.
+If the frame number 71 counts,
+it could not mod by any 2 to the power d,
+if d is 1, or over.
+So, because it's an odd number, so,
+we'll store it in frame 0, okay.
+Then frame 0 we're kee, because there,
+there are already three frames,
+we'll kick out 65.
+Okay?
+So if, it, it's, 72 comes,
+72 mod 2 to the power 3, you get mod 0.
+So then,
+we'll store 72 in the frame number 3.
+Okay.
+By doing so,
+you probably can see the most reason,
+why we almost store every single one.
+Then later, we start become every
+2 every 4, every 8, and every 16.
+So, it gradually changes, but most recent
+one, we store in quite some details.
+Okay.
+Then, these kind of snapshots
+maintain a micro-cluster,
+we can store in the pyramidal pattern.
+And then, they can store different levels
+of granularity depends on the recency.
+Then the snapshots can be classified into
+different order varying from 1 to log(T).
+And the, the i-th order snapshots,
+will occur at the levels
+of alpha to the power of i.
+Only the last alpha plus
+1 snapshots are stored.
+So, it's a gradually increasing the gap,
+and
+decreasing the quality, or
+timestamp to be maintained, okay.
+Then, these clustering framework
+is a micro-clustering approach.
+Essentially, underneath the structure
+is a BIRCH CF-Tree Structure.
+That one, we already introduced in
+the BIRCH in the hierarchical clustering.
+Generally, a CF-Tree is a height-balanced
+tree that stores the clustering features.
+The non-leaf nodes store sums
+of the CF of their children.
+Okay.
+Then, of course, we could not store
+every single point, to that's why their
+so-called leaf node, will still
+store at some minimum level, okay?
+We call these as a micro-cluster.
+Okay?
+So, the micro-clus,
+cluster is stored in the CF-Tree.
+It maintain the statistic
+information of data locality.
+It has temporary extension,
+of clustering feature vector because
+it contains multi-dimensional
+points with timestamps.
+Then, each point will
+contain d dimensions.
+Then, for the micro-cluster for
+n points is defined by
+these 2 d plus 3 tuple.
+Okay?
+You probably can see
+these are the vectors.
+These are additional 3 points,
+since you have d dimensions.
+So, this vector,
+the lengths actually it's d.
+That's why you get a 2 d plus 3 tuple.
+We have online, and offline components for
+clustering evolving data streams.
+The online components essentially,
+is micro-cluster maintenance.
+The offline component essentially,
+serve as query-based macro-clustering.
+That means, when the data stream comes,
+we will [COUGH] store this summary
+statistics about data stream.
+We will incrementally store into
+this micro-clustering structure,
+okay, using the CF-Tree.
+Initially, we can create
+a q micro-clusters.
+The q usually is significant larger
+than the number of natural clusters.
+For example, supposed the num,
+number of natural clusters is k, and
+this q is substantially bigger than k.
+But of course, your main memory
+will still be able to hold it.
+Then, when the online
+incremental updates come then,
+you will check i, if this new
+points is within the max-boundary,
+you'll insert this one into micro-cluster.
+Otherwise, you can create a new cluster,
+if it's out of the boundary.
+And then, these cluster can be further,
+every time you insert them,
+sometimes you may need to merge
+to maintain the size of the.
+With a timestamp, we will be able to
+delete some obsolete micro-clusters,
+and also, we can merge two closest ones
+into a little bigger micro-cluster, okay?
+Then, maintaining those micro-clusters,
+we will be able to answer queries
+based on macro-clustering.
+That means, when the user query comes,
+you can ask him many different
+kinds of queries, okay?
+And then, based on stored summary
+statistics in this CF-Tree,
+you will be able to further cluster
+those micro-clusters to generate
+the macro-clusters.
+That means,
+based on a user-specified time-horizon.
+For example, you say,
+I want to see last ten base.
+Okay?
+And the number of macro-clusters k.
+Okay, suppose I want to
+generate the 20 clusters.
+Then, we can compute a macro-clusters
+using like a k-means, or
+some other clustering algorithms.
+So, this is a very effective structure
+to handle online data streams.
+And we can generate quality clusters,
+with minimal overhead,
+and a very limited space.
+So, this is the design of clustering.
+[SOUND]
+[MUSIC]
+

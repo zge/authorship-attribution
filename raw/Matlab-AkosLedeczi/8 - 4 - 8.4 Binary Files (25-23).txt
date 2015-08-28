@@ -1,0 +1,608 @@
+[MUSIC]
+For all practical purposes,
+any file that's not a text file
+can be considered a binary file.
+Binary files can contain
+all kinds of data, but
+most typically they store numbers.
+And there are many ways to represent
+these numbers in a computer.
+The lesson on data types gives you a hint.
+MATLAB makes it easy to deal with these
+different types, when we want to read or
+write a binary file all we
+need to know is the type.
+But more on that later.
+Binary files need to be opened and
+closed with the same functions, fopen and
+fclose, that we use with text files.
+The permission's similar too,
+the only difference is that we omit the t,
+which you'll remember, means text file.
+In other words, the default type for
+these two functions is the binary file.
+The w, the r, the a and
+the plus characters have
+the same meanings as before.
+Here's an example that'll show you
+why we have to know the data type.
+The right array bin function takes
+one array of doubles and a filename
+as input arguments, and it writes the
+elements of the array into a binary file.
+We start by opening the file,
+and checking for an error,
+as we did before with the text file.
+Now we're ready to write
+the numbers into the file, so
+let's see that code, that's it.
+The built-in fwrite function takes the
+file identifier, the array to be written,
+and a string that specifies the type
+of the elements and array, and
+does it's job, that's all there is to it.
+The only way to mess this up is
+to give the wrong data type.
+That's unlikely to happen
+if you created the data,
+but it can happen if someone else wrote
+the function that passes the data in.
+And it's very easy to get the wrong type
+later, when you're reading the file,
+because unless you included a type
+in the filename, when you wrote it,
+there's just no way to determine
+the type of numbers inside the file.
+And if you specify a type that's different
+from the type in the file when you read
+it, the result will be just nonsense.
+Once we're written the array to the file,
+the only thing left to do is
+to close the file with fclose.
+So putting data into
+a binary file is easy, and
+getting the data out of
+this file is just as easy.
+Consider the function read_bin_file,
+which takes the filename and the data
+type as input, and returns, as output,
+the array that was read from the file.
+We start the same way we
+started twice before.
+We open the file with fopen and
+we handle any errors.
+Reading the array is another one liner.
+The fread function takes
+the file identifier, and
+the number of items to read, and the data
+type, and it returns the values it read.
+Here, instead of specifying the exact
+number of items, we specify inf,
+meaning infinity.
+That causes it to read
+everything in the file.
+That's the easy way to get all of them,
+and it's what you do when you don't know,
+or don't care how many numbers are there.
+Finally, as always, we close the file.
+By the way, it's important that
+our program close the file,
+whether it be a text file or
+a binary file, because if it doesn't,
+then the file can't be reopened in other
+programs, it'll blocked from accessing it.
+Okay, so far so good.
+We'll soon see that things can get
+a little more complicated, but
+first lets just try these
+functions out in MATLAB.
+Lets create a data array first.
+As usual, I initialize the pseudo
+random number stream so
+you can duplicate what I do.
+Now let's look at
+the function right_array_bin
+that I showed you in PowerPoint.
+It's over here in the current
+folder window, right there.
+And let's see it looks just as
+simple as it did on the slide.
+It opens a file whose name is
+given as an input argument.
+It checks for an error, everything's okay,
+then it simply writes into
+that file using the file ID.
+It writes the first argument in as
+type double, then it closes the file.
+So let's run it, and
+use data as the input array.
+And I'm going to store it in
+a file called datafile.dat.
+Now that's not over here, but
+watch right here where this arrow is,
+in this vicinity, as I hit Return.
+And the file appears.
+Now let's try to look at
+the contents of this file.
+We use the function that I showed you
+in PowerPoint called, view_text_file,
+which I happen to have right here.
+And here it is in the editor window.
+There.
+Wait, let me show you something
+really nice about the editor.
+If we click view here, and
+come over here to the left,
+we see this little divided screen
+icon here named, Left/Right.
+I'm going to click that.
+And watch what happens
+over here on the screen.
+View_text_file moved
+over here to the right.
+Now these two files are lined up for
+easy side-by-side comparison.
+With this arrangement, you can see that
+they start out almost exactly the same.
+Both open the file the same way,
+this one uses w+, this one uses rt.
+Then they check for an error,
+it checks for an error.
+Right_array_bin does it work in one line.
+But working with text files
+is more complicated than
+working with binary files.
+So view_text_files' work is complicated
+enough to warrant a couple of
+explanatory comments here.
+Then they both call fclose, and
+close with the fid, the file ID.
+So let's use view_text_file
+to look inside data.dat.
+Whoa.
+Okay.
+I'd call that garbage.
+And that's what we should expect.
+Any time we try to read a binary file as
+a text file, we're going to get garbage,
+because the binary file is not
+encoded with a text encoding scheme.
+This particular case,
+it's encoded as a stream of doubles.
+What we should have done is use
+the function I showed you in PowerPoint,
+called read_bin_file,
+which is designed to read doubles stored
+in a binary file, reads it into an array.
+Here it is, right over here.
+I double-clicked it, and it popped up
+on the right, on top of view_text_file.
+Well these two functions
+are almost identical.
+They both open the file.
+This one uses a w+, this one uses an r.
+They check for the errors.
+Then each use one line,
+fwrite, to write the file, or
+fread, to read the file,
+then they close the file.
+That's how simple it can be to write and
+read binary files.
+Okay.
+Let's use read_bin_file To read
+datafile.dat the right way.
+Remember that the first
+argument is the file name.
+The second argument is the type of the
+numbers that are written into the file.
+That type is given to f read, which,
+you'll remember, requires the data
+type as its third argument and
+requires the number of values to
+be read as the second argument.
+We've specified infinity here, which means
+that it reads all of them in the file.
+So, there.
+We should now have two variables in our
+workspace with the same values in them,
+named Data and X.
+Let's check that with whos.
+Well, they're both there, Data and
+X, and they're both doubles.
+But you may be surprised
+to find that X is a vector.
+120 one column vector and
+not 10 by 12 array like the original.
+So what's going on?
+Well, inside write_array_bin here,
+when f-write copied the input array into
+the file, it wrote each element one after
+the other in one long stream of numbers,
+with nothing written about the dimensions
+of the array that it came from.
+So the data file contains 120 doubles
+arranged like one long vector.
+Then inside read_bin_file over here,
+when f read retrieved those numbers,
+it simply read them in the way they
+were arranged in the file, as a vector.
+So A ended up as a vector.
+If we want to preserve the dimensions of
+the variables when using binary files,
+we have two options.
+We either try to remember that a file with
+a certain name contains an array with such
+and such dimensions, or
+we write the dimension information
+into the file as well.
+Writing the dimensions into the file
+is a much better option, but
+it still requires us to remember
+the format of the file.
+Let me explain.
+Suppose we decide to write out
+the dimension information as the first few
+values that we write in the file, and
+follow those values by
+the contents of the array.
+We still have to remember
+that we've done that.
+There's no way to figure that out
+by examining the file itself.
+I'm sure you see the problem.
+Yeah, maybe not.
+Okay, let's do an example.
+Let's look at a modified version
+of write_array_bin over here that
+stores the dimensions in
+the file along with the data.
+It's called write_dims_array_bin.
+I'm going to load it into the left
+side of the editor this time and
+I do that by clicking the function over
+here, you want to make it the active one,
+and then double-clicking
+the file over here.
+There, it shows up here.
+It's all fancy with the little
+header I put into it.
+And as I said, it's a modification
+of write_array_bin over here.
+Let's move that over to the right so
+we can compare them.
+It's pretty simple, the original version.
+This is a little more complicated.
+The first modification is that we
+now use the size function here
+to get the dimensions of A,
+the input argument.
+Here we didn't do that.
+We've put them into the vector DIMS,
+so for example,
+if A is a 9 by 5 by 6 array,
+DIMS would contain the numbers 9, 5 and 6.
+For a scalar, DIMS would contain a 1 and
+another 1 and so forth.
+The second modification is that we call
+f-write, instead of one time, three times.
+One call is to write
+the number of dimensions of A.
+The number of dimensions is equal to
+the number of elements in DIMS, so
+it's equal to the length of DIMS.
+And we write it as a double.
+A second call puts the list of
+the dimensions into the file
+after the number of dimensions.
+An important feature of f-write
+is that every time you call it,
+it starts writing at the point in the file
+where its previous call left off.
+So a given call doesn't write over what
+was written by the previous calls.
+And there's a third column and
+that's when we write the elements
+in after the list of dimensions.
+Really that's all there is to it.
+Then we close the file.
+I'm going to close this one.
+We're done with it.
+I'm going to close view text.
+We're done with that.
+And now I'm going to look at a companion
+function that reads files written by
+write_dims_array_bin.
+I'm going to put it over here on the right
+so we can see the similarities between
+the new function I'm going to show you and
+write_dims_array_bin.
+It's called read_dims_array_bin.
+So let's put that in.
+And here it is,
+again with the fancy header.
+And let's compare these.
+We open the file using
+an r instead of a w+.
+We check for an open error, and
+then we begin doing things in earnest.
+First we read one element of the file.
+That's what this second argument, the 1,
+says to f-read, and we store it in n.
+You will remember that the first number
+we wrote was the number of dimensions.
+So this n now will hold
+the number of dimensions.
+The next thing we do is tell
+f-read we want to read n elements.
+So if it was a three-dimensional array,
+we'd be reading three dimensions and
+we read in them into DIMS.
+And then we call a third time.
+So just as we called three times the
+f-write function, here we call three times
+the f-read function, and
+the third time we read the elements of A.
+Note that this last call doesn't
+tell f-read how many items to read.
+In that case, it just reads in
+everything to the end of the file.
+After we've read these elements into A,
+there's one problem.
+We did this before.
+And remember, A turns out to be a vector.
+Well, we want A to have
+the dimensions specified in DIMS.
+So what do we do about that?
+Well, there happens to be a function,
+a built-in function called reshape that
+will take a vector like this, and if you
+give it the dimensions, it will produce as
+an output an array with the same elements
+but with the specified dimensions.
+If you look really closely here,
+you'll see the transpose operator.
+That's because this vector in
+reshape has to be a row vector,
+but f-read returns a column vector.
+Okay, that's it for the
+read_dims_array_bin function except for
+closing the file, which it does just the
+same way that write_dims_array_bin did.
+And we're done.
+All right.
+Let's try this new pair of functions.
+Let's write data here into a file again,
+but
+this time we'll name it
+dimsarray.dat to remind
+us that the file contains
+both the dimensions and
+the elements of an array in that order.
+Then we'll read it back
+into the variable Y.
+Well, here goes the write, all right,
+if things work properly over here
+in this file that we just wrote,
+the number of dimensions,
+the list of dimensions and
+the elements of data should have
+been written into the file.
+Let's try reading the array.
+[SOUND] Well,
+if everything went according to plan,
+y should contain an array that's
+identical to the array in data.
+Let's cross our fingers and
+look at our variables using whose.
+Well, as you can see, data is 10 by 12 and
+y is 10 by 12, looks better than x was.
+And they're doubles, of course.
+What about their elements?
+Wonder if they're the same values?
+There's a way to check that.
+There's a function, a built-in function
+called is equal which will return true
+if and only if it's two arguments have
+the same size and contain the same values.
+So let's try that.
+Y equal to data.
+One is true, excellent.
+Let me emphasize a key point again here,
+this particular pair of functions
+right dims array bin and
+redims array bin work properly only if
+we remember the following things about the
+format of any file that they work with.
+First, all the data in
+the file must be doubles.
+And second, the file must contain
+the number of dimensions and
+a list of those dimensions and
+then the elements.
+That's what write does.
+That's what read expects.
+We shouldn't rely on
+remembering these rules.
+We should write them
+into comments in a header
+at the beginning of each
+function just as we've done here.
+So that we can jog our memory
+with a help function like this
+and here we see write dims array bin,
+writes dimensioned array in binary,
+and then we give an example.
+It writes the number of dimensions of A,
+then a list of the dimensions, and
+then the elements of A into a file
+named fname, encoded as doubles.
+And there's a similar explanation
+down here for read dims array bin.
+And we should do one more thing.
+In the folder in which we store the files
+that are written in this format,
+we should include a text file
+that describes the format.
+You may not believe me yet, but
+if you write formatted files and
+let them sit there a while and
+then go back a few weeks or
+even just a few days and try to use them,
+you'll become a believer.
+You'll see that you actually do need to go
+to such lengths to make sure that you'll
+remember all this when you need
+to use these functions, and
+use the files written by
+write dims array bin later.
+And so that you can help other
+people working on the same problem,
+to understand these rules as well.
+We may even want to make up a new
+file extension for these files,
+to differentiate them
+from other binary files,
+say, .DAR for dimension array,
+or something like that.
+In fact, let's do one more example with
+a three dimensional array instead of a two
+dimensional one.
+[SOUND]
+Great.
+B and Beta are both 6 by 2 by 5 arrays.
+And are their values equal?
+See that.
+Success again.
+So by writing a binary file in this
+special format, we can read it later and
+retrieve an array of any dimensions
+without having to remember its dimensions.
+Sure, our binary file format may be
+a little more complicated than a simple
+stream of elements, but I think you'll
+agree that it's worth the complication.
+Note that this last call doesn't
+tell fread how many items to read.
+In that case it just reads in
+everything to the end of the file.
+And keeping files small can be important
+when you're dealing with big data.
+Not just to save memory on your machine,
+but
+to save time when you upload that data
+to the web for someone else to access.
+So now you know how to read and
+write information into files, and
+you can do it in a way that
+suits the problem at hand.
+Whether you're using MATLAB's map files
+to save your work from one session to
+another, Excel files to interface with
+spreadsheet applications, text files
+to allow humans to read them, or binary
+files to get the highest efficiency.
+File IO is the last piece of the puzzle
+that gives your programs access to
+the world's vast data resources.
+It allows the world to benefit from
+the results of your programming.
+And that brings us to
+the end of Lesson eight.
+With the end of Lesson eight,
+we bring our course to a close.
+On behalf of Robert Terrace,
+the people of Vanderbilt's Institute for
+Digital Learning, and
+myself I'd like to thank you for taking
+part in computer programming with MATLAB.
+If you followed along with us from
+the beginning taking the quizzes and
+working the exercises then
+you're a MATLAB programmer,
+congratulations, welcome to the club.
+Whether you took this course for
+a programming class for your job or
+to get a job or if you just took it
+simply out of intellectual curiosity,
+you now know how to program a computer.
+And you're part of the worldwide
+community that programs in MATLAB.
+[MUSIC]
+Wait.
+Turn down the music.
+This is not the end,
+it's really just the beginning.
+Programming is a lifetime thing.
+Those of us who have been programming for
+10 or 20 or
+40 years will all tell you the same thing.
+We're still learning today.
+I learn something new every one of the 10
+wonderful years that I taught MATLAB to
+those incredibly bright and inquisitive
+first year students at Vanderbilt.
+And I'd been programming for
+30 years before that.
+You learn by doing.
+And the more you learn,
+the more satisfying it becomes.
+Both because you write better programs and
+because you're more valued
+by the world when you do.
+If I can offer some advice for
+your lifelong learning
+would be to do two things.
+First, find real problems that need
+real solutions and solve them.
+Textbook problems are good, of course, and
+they're focused, but the thrill that will
+keep you hanging in there, trying to make
+a program work while you look for those
+frustrating bugs Is the knowledge that you
+are the first person to solve the problem.
+Second, read code written by
+more experienced programmers.
+You can find lots of that on the web
+in many programming languages.
+A very convenient place to find really
+good MATLAB code is in MATLAB itself.
+Many of the built in functions
+are actually open source meaning that
+anyone can look at the code
+anytime they want to.
+The command edit will
+let you look at them.
+Type edit num to string,
+for example, NUM2STR.
+An m file containing num to string will
+pop up almost immediately in the editor.
+And you can see how the Math Works
+programmers solve the problem
+converting a number to a string.
+On the web a great place to go to see the
+handiwork of other MATLAB programmers is
+MATLAB central.
+There you'll find code contributed by
+people from all over the world and
+with a bonus.
+There are often commentaries included
+that were written by other programmers.
+Okay, you can bring up
+the theme music now.
+That's the end of my advice and
+the end of the course.
+It's time for you to begin the next
+phase of your programming career.
+This course has helped
+get to that next phase,
+then we've achieved the goal
+that we set ourselves.
+That goal was simply to use MATLAB,
+to make computer programming,
+more accessible to you.
+We've done our best.
+The rest is up to you.
+We wish you well.
+[MUSIC]
+[APPLAUSE]
+

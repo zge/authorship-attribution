@@ -1,0 +1,443 @@
+This lecture is about document length
+normalization in the vector space model.
+In this lecture we are going to continue
+the discussion of the vector space model
+in particular we are going to discuss.
+The issue of document
+length normalization.
+So far in the lectures about
+the vector space model,
+we have used the various
+signals from the document to
+assess the matching of the document
+though with a preorder.
+In particular we have
+considered the term frequency,
+the count of a term in a document.
+We have also considered a,
+it's global statistics such as
+IDF in words document frequency.
+But we have not considered
+a document length.
+So, here I show two example documents.
+D4 is much shorter with only 100 words.
+D6 on the other hand has 5,000 words.
+If you look at the matching of these
+query words we see that in D6 there
+are more matchings of the query words but
+one might reason that D6 may
+have matched these query words.
+In a scattered manner.
+So maybe the topic of d6 is not
+really about the topic of the query.
+So the discussion of a campaign
+at the beginning of the document
+may have nothing to do with the mention
+of presidential at the end.
+In general,
+if you think about the long documents,
+they would have a higher
+chance to match any query.
+In fact, if you generate a,
+a long document that randomly sampling,
+sampling words from
+the distribution of words,
+then eventually you probably
+will match any query.
+So in this sense we should
+penalize no documents because they
+just naturally have better
+chances to match any query.
+And this is our idea of document answer.
+We also need to be careful in avoiding
+to overpenalize small documents.
+On the one hand,
+we want to penalize a long document.
+But on the other hand,
+we also don't want to over-penalize them.
+And the reason is because a document that
+may be long because of different reason.
+In one case the document may be more
+long because it uses more words.
+So for example think about
+the article of a research paper.
+It would use more words than
+the corresponding abstract.
+So this is the case where we probably
+should penalize the matching of
+a long document such as, full paper.
+When we compare the matching
+of words in such
+long document with matching of
+the words in the short abstract.
+Then long papers generally have a higher
+chance of matching query words.
+Therefore we should penalize them.
+However, there is another case
+when the document is long and
+that is when the document
+simply has more content.
+Now consider another
+case of a long document,
+where we simply concatenated a lot
+of abstracts of different papers.
+In such a case, obviously, we don't
+want to penalize such a long document.
+Indeed, we probably don't want to penalize
+such a document because it's long.
+So that's why we need to be careful.
+About using the right
+degree of penalization.
+A method that has been working well
+based on recent research is called,
+pivot length normalization.
+And in this case the idea is to use.
+The average document length as a P word,
+as a reference point.
+That means we will assume that for
+the average length documents,
+the score is about right.
+So, the normalizer would be 1.
+But if a document is longer than
+the average document length
+then there will be some penalization.
+Where as if it's shorter than
+there's even some reward.
+So this is an illustrator
+that using this slide.
+On the axis,
+s axis you can see the length of document.
+On the y-axis we show the normalizer,
+in the case pivoted length normalization
+formula for the normalizer is
+is seem to be interpolation of one and
+the normalize the document lengths,
+controlled by a parameter b here.
+So, you can see here,
+when we first divide the lengths of the
+document by the average document length.
+This not only gives us
+some sense about the,
+how this document is compared with
+the average document length, but
+also gives us a benefit of not
+worrying about the unit of
+length, we can measure the length
+by words or by characters.
+Anyway this normalizer has
+an interesting property.
+First we see that if we set the parameter
+b to 0 then the value would be 1,
+so there's no pair,
+length normalization at all.
+So b in this sense controls the length
+normalization, where as if we set
+d to a non-zero value, then
+the normalizer will look like this, right.
+So the value would be higher for
+documents that are longer than
+the average document length.
+Where as the value of the normalizer
+will be short- will be smaller for
+shorter documents.
+So in this sense we see there's
+a penalization for long documents.
+And there's a reward for short documents.
+The degree of penalization
+is conjured by b.
+Because if we set b to a larger
+value then the normalizer.
+What looked like this.
+There's even more penalization for
+long documents and more reward for
+the short documents.
+By adjusting b which
+varies from zero to one
+we can control the degree
+of length normalization.
+So if we're plucking this length
+normalization factor into
+the vector space model ranking functions
+that we have already examined.
+Then we will end up heading with formulas,
+and
+these are in fact the state of
+the are vector space models.
+Formulas.
+So, let's talk an that,
+let's take a look at the each of them.
+The first one's called a pivoted length
+normalization vector space model.
+And, a reference in the end has detail
+about the derivation of this model.
+And, here, we see that it's basically
+the TFIDF weighting model that we have
+discussed.
+The IDF component should be
+very familiar now to you.
+There is also a query term
+frequency component, here.
+And, and then in the middle there is.
+And normalize the TF.
+And in this case,
+we see we use the double algorithm,
+as we discussed before, and this is to
+achieve a sublinear transformation.
+But we also put document length
+normalizer in the bottom, all right so
+this would cause penalty for
+a long document, because the larger
+the denominator is, the denominator is
+then the smaller the shift weight is.
+And this is of course controlled
+by the parameter b here.
+And you can see again, b is set to 0, and
+there, there is no length normalization.
+Okay.
+So this is one of the two most effective.
+Not this base model of formulas.
+The next one called a BM25,
+or Okapi, is, also similar.
+In that, it also has a i, df component
+here, and a query df component here.
+But in the middle, the normalization's
+a little bit different.
+As we expand there is this or
+copied here for transformation here.
+And that does, sublinear
+transformation with an upper bound.
+In this case we have put the length
+normalization factor here.
+We are adjusting k, but
+it achieves a similar factor
+because we put a normalizer
+in the denominator.
+Therefore again, if a document is longer,
+then the term weight will be smaller.
+So, you can see, after we have gone
+through all the instances that we talked
+about, and we have,
+in the end, reached the,
+basically the state of
+the art mutual function.
+So, so far we have talked
+about mainly how to place
+the document matter in the matter space.
+And this has played an important role
+in uh,determining the factors of
+the function.
+But there are also other dimensions
+where we did not really examine detail.
+For example can we further
+improve the instantiation of
+the dimension of the vector space model.
+Now we've just assumed
+that the back of words.
+So each dimension is a word.
+But obviously we can see
+there are many other choices.
+For example, stemmed words, those
+are the words that have been transformed
+into the same rule form.
+So that computation and computing will all
+become the same and they can be matched.
+We need to stop water removal.
+This is removes on very common
+words that don't carry any content.
+Like the or of,
+we use the phrases to define that [SOUND].
+We can even use late in the semantica,
+an answer sort of find in the sum cluster.
+So words that represent
+a legend of concept as one.
+We can also use smaller units,
+like a character in grams.
+Those are sequences of n characters for
+dimensions.
+However, in practice people have found
+that the bag-of-words representation
+with the phrases is where
+the the most effective one.
+And it's also efficient so
+this is still so
+far the most popular dimension
+instantiation method and
+it's used in all the major search engines.
+I should also mention that sometimes
+we did to do language specific and
+domain specific organization.
+And this is actually very important as
+we might have variations of the terms.
+That might prevent us from
+matching them with each other.
+Even though they mean the same thing.
+And some of them, which is like Chinese,
+the results of the.
+Segmenting text to obtain word boundaries.
+Because it's just
+a sequence of characters.
+A word might, might correspond to
+one character or two characters or
+even three characters.
+So it's easier in English when we
+have a space to separate the words.
+But in some other languages we may need
+to do some natural language processing
+to figure out the,
+where are the boundaries for words.
+There is also possibility to
+improve this in narrative function.
+And so
+far we have used the about product, but
+one can imagine there are other matches.
+For example we can match the cosine
+of the angle between two vectors, or
+we can use Euclidean distance measure.
+And these are all possible.
+The dot product seems still the best and
+one of the reasons is
+because it's very general.
+In fact, it's sufficiently general.
+If you consider the possibilities of
+doing weighting in different ways.
+So, for example,
+cosine measure can be regarded as the dot
+product of two normalized vectors.
+That means we first normalize each vector,
+and then we take the dot product.
+That would be equivalent
+to the cosine measure.
+I just mentioned that the BM25.
+Seems to be one of the most
+effective formulas.
+But there has been also further
+development in, improving BM25, although
+none of these works have
+changed the BM25 fundamentally.
+So in one line of work,
+people have derived BM25 F.
+Here F stands for field, and
+this is a little use BM25 for
+documents with a structures.
+For example you might consider
+title field, the abstract, or
+body of the reasearch article, or
+even anchor text on the web pages.
+Those are the text fields that
+describe links to other pages.
+And these can all be
+combined with a appropriate
+weight on different fields to help
+improve scoring for document.
+Use BM25 for such a document.
+And the obvious choice is to
+apply BM25 for each field, and
+then combine the scores.
+Basically, the ideal of BM25F,
+is to first combine
+the frequency counts of tons in all
+the fields and then apply BM25.
+Now this has advantage of avoiding over
+counting the first occurrence of the term.
+Remember in the sublinear
+transformation of TF,
+the first recurrence is very important
+then, and contributes a large weight.
+And if we do that for all the fields, then
+the same term might have gained a, a lot
+of advantage in every field, but when we
+combine these word frequencies together.
+We just do the transformation one time,
+and
+that time then the extra occurrences will
+not be counted as fresh first occurrences.
+And this method has been working very
+well for scoring structured documents.
+The other line of extension is called
+a BM25 plus and this line, arresters
+have addressed the problem of over
+penalization of long documents by BM25.
+So to address this problem,
+the fix is actually quite simple.
+We can simply add a small constant
+to the TF normalization formula.
+But what's interesting is that we can
+analytically prove that by doing such
+a small modification,
+we will fix the problem of a,
+over penalization of long
+documents by the original BM25.
+So the new formula called
+BM25-plus is empirically and
+analytically shown to be better than BM25.
+So to summarize all what we have
+said about the Vector Space Model.
+Here are the major takeaway points.
+First, in such a model,
+we use the similarity notion of relevance,
+assuming that the relevance of
+a document with respect to a query is
+basically proportional to the similarity
+between the query and the document.
+So, naturally,
+that implies that the query and
+document must be represented in
+the same way, and in this case,
+we represent them as vectors in
+high dimensional vector space.
+Where the dimensions are defined by
+words or concepts or terms in general.
+And we generally need to use a lot of
+heuristics to design a ranking function.
+We use some examples which show
+the need for several heuristics,
+including TF waiting and transformation.
+And IDF weighting, and
+document length normalization.
+These major heuristics are the most
+important heuristics to ensure such
+a general ranking function to
+work well for all kinds of tasks.
+And finally BM25 and
+Pivoted normalization seem
+to be the most effective
+formulas out of that Space Model.
+Now I have to say that, I've put BM25
+in the category of Vector Space Model.
+But in fact the BM25 has
+been derived using model.
+So the reason why I've put it in
+the vector space model is first
+the ranking function actually has a nice
+interpretation in the vector space model.
+We can easily see it looks very
+much like a vector space model
+with a special weighting function.
+The second reason is because the original
+BM25 has a somewhat different from of IDF.
+And that form of IDF actually
+doesn't really work so
+well as the standard IDF
+that you have seen here.
+So as a effective original function
+BM25 should probably use a heuristic
+modification of the IDF to make that
+even more like a vector space model.
+There are some additional readings.
+The first is a paper about
+the pivoted length normalization.
+It's an excellent example of using
+empirical data enhances to suggest a need
+for length normalization, and then further
+derived a length normalization formula.
+The second is the original
+paper when the was proposed.
+The third paper has
+a thorough discussion of and
+its extensions, particularly BM-25F.
+And finally, the last paper
+has a discussion of improving
+BM-25 to correct the overpenalization
+of long documents.
+[MUSIC]
+

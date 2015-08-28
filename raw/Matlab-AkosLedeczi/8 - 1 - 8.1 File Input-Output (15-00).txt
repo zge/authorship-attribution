@@ -1,0 +1,358 @@
+[MUSIC]
+Hi, and welcome to lesson eight,
+file input/output.
+This week, we'll be talking about how to
+read data from and write data to files.
+So what is a file?
+Well, a file is an area in permanent
+storage, typically a disk drive,
+that stores information.
+Files are managed by the operating
+system of your computer.
+They can be copied, moved,
+renamed, deleted, et cetera, and
+they can be accessed by programs
+running on your computer.
+A very important use of
+files is to exchange data
+between different programs and
+different computers.
+In that case,
+a file is input to one program, and
+is output from a different program.
+We abbreviate the interchange of
+information between programs and
+files as file I/O for
+file input and output.
+For example, you might want to write
+a document with a word processor and
+generate a PDF.
+And you can give that PDF file to someone
+else who can open it with Adobe Acrobat on
+another computer and print it.
+And files can be used to exchange data
+between the physical world and computers.
+For example, an EKG machine,
+which measures your heart activity,
+will save the data into a file.
+And your doctor can open that file on
+a computer and evaluate your health.
+The most common use of files
+is to save your work so
+you can continue with it later.
+Examples of that include,
+documents that you write on word
+processors or spreadsheets.
+And extends to the files we've been seeing
+MATLAB save when he needed to save data or
+functions like MATLAB files and M-files.
+But you can handle much more than
+Mat-files and M-files with MATLAB.
+As we'll soon see, with MATLAB,
+you can read and write text files,
+binary files, and
+even Microsoft Excel spreadsheets.
+At the beginning of our journey,
+we saw how to use the user interface of
+the MATLAB desktop to change folders,
+and how MATLAB shows the contents of the
+current folder in this window over here.
+Sometimes however,
+we may need to have our MATLAB program
+itself change the current folder, or get
+a list of the names of the files in there.
+Fortunately, MATLAB provides
+commands to do just that.
+To get the fully qualified
+name of the current folder,
+we can use the PWD command.
+PWD stands for print working directory.
+It originates from
+the UNIX operating system,
+where folders are called directories.
+And the command returns a string,
+containing the complete path of
+the current folder, complete path or
+fully qualified name.
+It's exactly the same path as that
+shown up here in the address line.
+We haven't talked about the address
+line since lesson two, so
+you may not have thought
+about it since then.
+But it shows the current folder,
+which is called Lesson 8,
+and shows that it's contained
+in the folder, Tutorials,
+which is contained in the folder, Computer
+Programming with MATLAB, et cetera.
+More commonly, we say that
+Lesson Eight is a child of Tutorials,
+which is a child of Computer Programming
+with MATLAB, and so forth.
+Or to put it the other way,
+computer programming
+with MATLAB is the parent of Tutorials,
+which is the parent of Lesson 08.
+In operating systems,
+they're all single parent families.
+The only difference between here and
+here, is that these little arrows
+in the address line are represented
+by slashes in the output from PWD.
+We're doing this on a Mac, but
+if you're using Windows, the output
+from PWD will be slightly different.
+These slashes turn into backslashes,
+and there'll be a letter and
+a colon at the front
+representing the hard drive.
+So if we're using Windows,
+the output would look like this.
+To make this Windows like string here,
+I've used the built-in function strrep,
+which means string replace.
+It replaces every slash
+that's in the output from pwd
+here with the backslash.
+You can see how the Syntax and
+semantics of this command work, but
+you should look it up in the help.
+It's a handy function.
+To get a list of the files and
+subfolders in the current folder,
+you can use the command LS,
+which stands for list.
+Use an output argument.
+LS produces an array of chars.
+Let's do that.
+You can see here that it's
+a 1 by 198 string of chars.
+To change folders,
+MATLAB provides the CD command.
+This cd doesn't mean compact disc or
+certificate of deposit.
+It stands for change directory.
+You have to give it a string as
+an argument to tell it the directory you
+want to go to.
+Suppose your program's organization is
+such that it starts working in the current
+folder, where ever that folder may be,
+then it needs to move to the parent.
+Like here, for example,
+if it started in lesson 08,
+it would want to move to the parent,
+Tutorials.
+You're always going to start
+to program in lesson eight, or
+some other child of tutorials,
+like lesson seven.
+Then you could just store the complete
+path name of tutorials in a string in
+a program like this.
+And then, when it was time to change
+to the parent, you could do this.
+Before I hit return, let's look up
+here and watch as I hit return.
+So, here comes return.
+And you see,
+that we're now up in tutorials.
+Let's go back to lesson 08.
+There, we're back in lesson 08.
+But suppose your program was
+run from another directory.
+Then the parent that it needs to
+move to will be different, and
+so using this complete path
+name idea just won't work.
+This is a very common situation.
+And for this situation, our program can
+use a so-called relative path name.
+What that means is that, instead of
+specifying the complete path name,
+we can specify the target folder
+relative to the current folder.
+Or to press the family
+metaphor a little further,
+we specify relative of the current folder.
+In this case, the relative is the parent,
+and there's a special syntax for
+specifying the parent.
+We want to go to the parent of the current
+folder, we can do it like this.
+Two dots.
+Now we're back at the tutorials again.
+The two dots means parent folder.
+Now let's use LS to see
+what's here in tutorials.
+Of course, we can see it but,
+the program couldn't.
+And if your program needs to see what's
+inside of one of the children of
+tutorials, it can give its name as an
+argument to LS, without the complete path,
+like this.
+Not much in there.
+By the way,
+this is how the function would do it,
+it would give the string containing
+the target directory in parentheses.
+But if we want to do that
+ourselves in the command window,
+as in fact we just did,
+there's a second way to do it.
+Like this, does the same thing.
+When function takes a string as an
+argument, the parentheses can be omitted.
+When there are no spaces in the name,
+the quotes can be omitted too, and
+this is whether you write the function or
+it's a built in function.
+That's how commands like help work.
+The command help square root, for
+example, is different in form.
+In other words,
+different in syntax from this command.
+But both have the same meaning in,
+in other words,
+they both have the same semantics.
+Now let's use cd to go back to
+lesson eight, using relative naming.
+By the way, the dot dot, which means
+parent, which we saw a little earlier,
+can be used multiple
+times within the path.
+Before we show you that,
+you may have noticed that I slipped a
+subfolder into Lesson 8 a few minutes ago.
+It's called Additional Examples.
+Let's go there.
+I cheated and just clicked.
+That's just one file in there
+called knothole, it's an M-file
+with a function in it that checks to see
+if its argument is not a whole number.
+Anyway, now that we're way down here,
+in additional examples,
+we can leap back up to tutorials,
+which is the grandparent like this.
+There.
+Back to tutorials.
+Here's some other commands that allow
+you to do things with folders and files.
+This one makes a new directory.
+It just showed up over here.
+And this one removes the directory.
+It just disappeared over here.
+But it removes only empty directories.
+It'll do nothing,
+except give an error if you try to
+remove a folder with anything in it.
+Let's go into eight, and try to remove
+my additional examples folder,
+which you just saw has a file in it.
+I'd hate to lose that.
+Oops.
+Then as you can see, it's still there.
+And there are three commands for
+doing things to files, and
+the names of the files tell what they do.
+They're called move file,
+copy file and delete.
+Each of these commands is
+relatively simple to use.
+As you can see by reading their
+descriptions with the help command, but
+I'll give you a warning about delete.
+Delete gives you no warning.
+When you tell it to delete a file,
+no pop-up will show up saying,
+are you sure and that sort of thing.
+But all is not lost.
+There's a setting in preferences up here,
+that will cause the file
+to be sent to trash.
+It's probably a good idea to set that.
+Okay, I've started working
+on another project,
+since I did all that stuff
+with folders and files.
+I want to show you all the variables
+I've got in the workspace now.
+There, isn't that nice?
+In week one, we mentioned briefly how
+you can save your current workspace with
+the save command, like this.
+And now if you look over
+here in the current folder,
+you will see this file appear matlab.mat.
+It's got everything that we had
+in our workspace saved in it.
+Then you can safely quit MATLAB and later
+when you are ready to continue your work,
+you can start MATLAB and
+load the workspace back with
+this load command here.
+And when you check your workspace,
+it's all the same.
+Course I didn't actually quit MATLAB
+just now, so you might not be convinced.
+Maybe this will convince you.
+There, everything's gone.
+And everything's back.
+The only thing you have
+to be careful about,
+is that if you have an existing variable
+in the workspace with the same name as
+the one you're loading, the load operation
+will overwrite the existing value.
+Usually that isn't a problem though,
+if the last thing you do is save
+when you quit and the first thing
+you do is load when you start again.
+By the way, you should look up the
+function startup, which is executed when
+MATLAB starts, and finish,
+which is executed when MATLAB quits.
+You can put a load command in startup,
+and a save command in finish.
+Sometimes that's all you need
+to preserve your variables.
+MATLAB provides even more flexibility
+in loading and saving variables.
+You don't have to save
+the entire workspace.
+Instead you can list the variables you
+want to save, and similarly you can load
+only a subset of the variables
+from a file, using their names.
+Finally, you don't have to use the default
+file name matlab.mat, like right here.
+You can supply your own
+favorite file name.
+Check this out.
+Here I've specified that I
+want to save variables into
+a file called my_data_file.mat.
+You can see it's showed
+up right over here.
+And then I specify the data
+I want to save into it.
+Data s and a.
+Now let's clear.
+Run whos.
+There's nothing there.
+And now let's just load my data file.
+It's back.
+What if I just wanted to load,
+say, S and A?
+Let's try that.
+All I get is S and A.
+These load and save commands supply a
+flexible means to provide data persistence
+for your MATLAB programs,
+from one running of MATLAB to the next.
+[MUSIC]
+[APPLAUSE]
+

@@ -1,0 +1,229 @@
+So let's now consider our second example 
+problem, which was part of speech 
+tagging. 
+So remember in this case, each x is a 
+history which consists of a sentence. 
+For example we might have the dog saw the 
+cat. 
+We have some position i, which is the 
+position being tagged, so let's say for 
+the sake of argument, it's position 4 in 
+this case. 
+So we're trying estimate distribution of 
+potential tags of the word the. 
+And then we have a sequence of previous 
+tags. 
+t 1 through t i minus 1, so we might for 
+example have D N V as the context, the 
+previous tags in the sentence before this 
+fourth position. 
+So each x encapsulates all of this 
+contextual information, the entire 
+sentence, the previous sequence of tags 
+and, just for a little bit of 
+bookkeeping, the position that we're 
+actually tagging. 
+Each label y, is a part of speech tag, so 
+it's going to be one of, say, 30 or 40 or 
+50 tags typically, you might see in a 
+given language. 
+And again, we're going to assume that we 
+have m features, f k x y. 
+Each of these features is going to take 
+an entire x y pair and return some real 
+value. 
+And again, we will make heavy use of 
+indicator functions, which return 0 or 1, 
+depending on whether some property of x 
+paired with y is true. 
+Here are some example features, and these 
+are actually taken from a part of speech 
+tagger, developed by Adwate Radner Parky, 
+in the mid 90s, which made direct use of 
+log-linear models in a very elegant and 
+effective way for tagging problems. 
+Here are some example features. 
+So f 1 x y is 1, if the current word w i 
+is the word base, and the tag we're 
+predicting is V t. 
+So, this looks at a word tag pair, and 
+for this particular feature, we look at 
+the word base in conjunction with the tag 
+V t. 
+In practice, you would again introduce, a 
+very large set of features of this form, 
+basically for every possible combination, 
+of word and tag, or at the very least, 
+every possible combination of word and 
+tag that you've actually seen in your 
+training data, assuming we have tagged 
+sentences to train the parameters of this 
+model. 
+So this is one clearly very important 
+type of feature, the feature that 
+basically captures the tendency of a 
+particular word to take a particular tag. 
+You can think of this, if you think back 
+to hidden Markov models, as being anal, 
+analogous to e of base, given V t, or at 
+least when we see the parameters 
+associated with this feature. 
+That parameter is going to play a similar 
+role to the submission parameter that you 
+saw in hidden Markov models. 
+Here's a more interesting feature though, 
+f 2, as I've defined it here, is 1, if 
+the word you're predicting ends in ing, 
+and the tag is v b g. 
+This is a Van Trebach tag reserved for 
+verbs which are gerunds. 
+So things like liking, or talking, all of 
+these verbs in English which typically 
+end in ing, and this feature is going to 
+capture the tendency for words ending in 
+ing to take this particular tag. 
+Again, you might design a very large 
+number of features like this for say, all 
+possible prefixes and suffixes combined 
+with all possible tags, or again, at 
+least those combinations which you've 
+seen in training data. 
+Actually, we can, essentially, give the 
+full set of feature types that are used 
+in Ratnaparkhi's tagger. 
+It's a fairly simple set of definitions. 
+So let me go through these. 
+So he used features which looked at the 
+word and tag in exactly the same, as I've 
+shown you in the previous slide. 
+He used spelling features which 
+considered all prefixes and suffix, 
+suffixes up to length 4, in conjunction 
+with tags. 
+So here are some examples. 
+You know, this feature we just saw, 
+conjoining ing as a suffix, together with 
+v b g. 
+Here's another feature which is one if 
+the current word starts with the, the 
+three letter prefix pre, and the tag is 
+NN. 
+And you can imagine these are just two 
+features of a very large number looking 
+at all prefixes and suffixes seen in 
+training data, in conjunction with all 
+possible tags. 
+Here are some other features that 
+Ratnaparkhi used. 
+He used contextual features. 
+So, these are features which actually are 
+analogous to the trigram tag parameters 
+you saw in HMM. 
+So, remember, we had parameters such as 
+this, which is the probability of seeing 
+a transitive verb, given the previous two 
+tags of determiner and adjective. 
+The analogous feature to that, is this 
+feature, which is 1, if T i minus 2, T i 
+minus 1 and y form this particular 
+triagram. 
+Okay, so again, remember we have some 
+sentence, w 1 through w n. 
+For example, the dog saw the cat. 
+[NOISE] We have some position we're 
+tagging. 
+For example, i equals 4. 
+And we have previous tags t 1 through t 
+3, for example, equal to D N V. 
+And so I can basically look at these 
+previous 2 tags in conjunction with the 
+label y being predicted, and create a 
+feature like this, tracking a trigram of 
+tags. 
+This is the bigram feature, so it looks 
+at the fact that t i minus one is J J and 
+y is equal to V t. 
+And finally, unigram feature, which only 
+looks that the label y, and basically 
+this will allow us, to basically capture 
+the relative frequency of different tags, 
+maybe V t is a frequent tag or not so, so 
+frequent, frequent tag. 
+This is the most naive feature, because 
+it conditions in the no context. 
+But, of course, it can be useful, because 
+it does provide some evidence that's very 
+robust. 
+We don't need to estimate we don't need 
+too much data to estimate the parameters 
+associated with this feature. 
+Here are some other features that 
+Ratnaparkhi used. 
+Here is a feature which looks at the 
+label y, the fact that its equal to V t, 
+and it looks at the previous word. 
+Again, this going to be one feature of 
+many, which look at the previous word in 
+conjunction with the current tag. 
+This is very different from anything we 
+saw in HMM. 
+We didn't see hidden Markov models making 
+use of these features, conjoining the 
+previous word, with the current tag, and 
+indeed it would be quite, quite difficult 
+to extend, hidden Markov models to take 
+into account this information. 
+We have another feature, which looks at 
+the identity of the next word. 
+And the current tag, and again, this will 
+be one of many features which look at the 
+next word on the current tag. 
+So in summary, the final result of all 
+this is the following. 
+We can come up with practically any 
+questions, what we've called features, 
+which look at history tag pairs. 
+And basically, for a given history x 
+conjoined with a label y, we get a 
+feature vector, and because our features 
+have been indicator functions, binary 
+functions that return 0 1, we could sort 
+of picture this as follows. 
+f is going to take into account an entire 
+history, so this is x. 
+Takes into account sentence position in 
+previous tags, and it considers a 
+particular tag for example V t of the 
+sixth position, and it just returns a 
+binary vector summarizing the results of 
+all the questions that we've asked about 
+x and y together. 
+And we get a different binary vector for 
+every possible tag in the sixth position. 
+Now, I don't want to go into this in too 
+much detail, but, in practice, these 
+feature vectors are often sparse, in fact 
+they're almost always sparse. 
+they have relatively few [SOUND] 1s 
+versus 0s. 
+So while we might have a very large 
+number of features in these models, it's 
+not uncommon to have a few hundred 
+thousand, or a few million features. 
+Typically, a much smaller number of those 
+features are equal to 1, for any 
+particular x y pair. 
+You might have, I don't know, the order 
+of a few tens, of features for example, 
+which are equal to 1, because most of the 
+questions we ask can be false, and only 
+some of them are going to be true. 
+See the notes, which are posted along 
+with this lecture, for much more 
+discussion of this particular issue. 
+And it's important, because it leads to 
+models which are rather more efficient 
+than you might think, given the large 
+number of features which are in these 
+particular models. 
+

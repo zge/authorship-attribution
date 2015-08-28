@@ -1,0 +1,341 @@
+Hello, welcome back to the course
+on [INAUDIBLE] processing for
+music applications.
+In the previous programming lecture,
+we talked about the,
+the HPR model,
+the harmonic plus residual model.
+That was the idea of modeling a sound
+with a harmonic and a residual component.
+And we talked about the implementation.
+In the SMS tools package.
+Now we want to go a step further and
+talk about the hpsModel,
+the harmonics, plus stochastic model.
+So now we are modeling
+the residual that we
+obtain with the stochastic
+modeling approach.
+So we obtain a harmonic and
+an stochastic representation.
+Of a particular sound.
+So the diagram,
+the block diagram is very similar.
+The, the whole thing for
+the analysis is the same until,
+we obtain the residual spectrum of X.
+No?
+X X R of K,
+and then instead of just going and
+summing it with the harmonic component.
+What we're doing is,.
+Approximating it with
+a stochastic approximation.
+So by smoothing the magnitude spectrum and
+then the synthesis is done by generating
+random numbers for the phase and
+combining it with a sort of
+an interpolated version of
+these approximations so
+that we generate a complete spectrum.
+And this stochastic spectrum can then be
+added back to the harmonic component.
+The, the great advantage of this
+stochastic approximation is that
+now we are more flexible.
+We can do many more things
+on this representation,
+apart from being much more compact.
+This stochastic approximation
+reduces the amount of
+information that is required
+to reconstruct the signal.
+So, apart from being a compact or
+presentation is, more flexible and
+we'll be able to do quite
+a few things with that.
+So, let's start from the same code that
+we looked at last in the last lecture.
+Which was this code in which
+well now I changed the,
+the sound now I use a fruit sound,
+but basically it performs.
+The harmonic analysis by taking FFT and
+the, the, the detecting the F and0,
+so it performs the harmonic analysis
+steps and then it synthesizes
+those harmonics and it subtracts
+them from the original signal.
+It recomputes the, a spectrum of
+the original signal with the same window
+size and the type than the one there is in
+the, in the, in this generated spectrum.
+So, we need to multiply it by a window.
+And we need to choose the,
+the window size that was the same,
+then was used for
+the sinusoidal synthesis.
+And we can then subtract the harmonic from
+the original signal and
+obtain the residual signal.
+And now in this lecture,
+basically we focus on.
+The stochastic approximation
+of this residual.
+And these are,
+these three lines are doing that.
+So the first is,
+we are converting it to a dB scale.
+So we are converting half of
+the magnitude spectrum to dB scale and
+we obtain a new magnitude spectrum.
+And then we call this function
+called re-sample; with
+this magnitude spectrum and of course with
+values that above a certain threshold.
+And we're converting it to
+a shorter array, and the,
+the size of these new array is the s,
+the size that we started from,
+multiply by a stock f.
+And stock f is our stochastic
+factor approximation, basically,
+is our smoothing approximation or,
+or down sampling factor.
+So basically,
+it means that the output array will be
+40% of the original spectrum.
+And then, we are up sampling again,
+to the size that we started with in order
+that then we can do the re-synthesis.
+So in fact re-sample can be used both for
+down sampling, and for up sampling.
+And it uses the DFT approach.
+So let's,
+let's talk a little bit about that.
+So, we can go to the documentation on
+the re-sample function within scipy.
+Okay?
+So this is the, the documentation.
+So, it takes an array.
+It takes the size of the output array.
+So either.
+Less or more.
+So you can down sample or up sample.
+And, well there is some optional
+arguments also that allow us to
+give a particular window or
+to give a more multidimensional array,
+and, and, process only part of that.
+And since of course is all open source
+we can also see the source code
+of these this function, and
+as I said well an example
+is a uses an free base approach to
+do down sampling and up sampling.
+And what he does it, it performs first
+the, the FFT of the input signal.
+Then it will basically cut the spectrum or
+append samples depending if it's up sample
+or, or down sampling or up sampling.
+And then once we have recomputed a,
+a, a longer or a shorter spectrum,
+by cutting or appending zeros,
+we perform the inverse at 50.
+That's a quite, straightforward,
+simple way of performing interpolation or.
+Down sampling or up sampling.
+'Kay, so we go back here.
+So, this ris, returning the, for the first
+re-sample we will return less samples.
+And then, afterwards,
+we will convert it to this up sample
+version that will be a smooth version of.
+The spectrum we started with.
+Let's, let's run this, so
+we can see how that works.
+So let's run test 4.
+Okay?
+And now we can plot the original spectrum.
+So, MXR is already the db,
+Version of the spectrum and half of it.
+Okay, so this is our residual spectrum.
+And then if we plot on top of that the,
+the stock m.
+That's of the same size, but,
+a smooth version because it's the result
+of having first down sample and then.
+Up sample with interpolation.
+Okay so, as you see, it,
+we are very much in fact,
+if we zoom into any of these regions,
+we see that the,
+green line is the,
+the smooth version but is.
+It of course is, is,
+is smoother than the original one,
+but it follows quite quite
+well the original signal.
+So let's change the Stochastic
+factor of .4 and let's put maybe.
+Point 1.
+Okay, so
+then that will be a stronger,
+smoothing factor.
+And, we say these and then we compute it.
+Okay, now we plot, again, the,
+the original residual spectrum,
+and now let's plot the smooth envelope.
+Okay.
+And this clearly shows,
+the smooth envelope on top of that and
+it's much smoother than, before.
+Okay, so that's basically what
+the stochastic approximation does.
+And if we now go into the HPS model code.
+Of the, of the SMS tools, but we'll see
+the analysis function, the synthesis
+function, and also one function that does
+analysis and synthesis at the frame level.
+And, the analysis, for example, is
+basically the same, then for the hprModel.
+We only add one input parameter
+which is this stock F,
+the factor, this smoothing factor.
+And then in the analysis,
+we first perform the harmonic analysis,
+then we subtract the from
+uh,the original signal
+to obtain the residual, and
+then we run the stochastic model anal?,
+the one that we already.
+Discuss when we talked
+about the stochastic model.
+So we just, The stochastic model receives
+the, signal, the residual signal.
+And, it has the hop size.
+The same hop size that we are using.
+And now, the, the window size that we
+use for the stochastic approximation.
+Is just twice the hop size, so
+in fact the, the Stochastic approximation
+does not require big window.
+In fact it, it's all the other,
+the, the win, the other way around.
+The smaller the better, so
+we can capture time information, the,
+the Stochastic component,
+the residual component.
+The time information.
+The attacks of the nodes,
+et cetera, are, most critical.
+So the smaller the window, the better.
+So, in fact, if H, many times
+is by default, like 128 samples.
+Here, we are using windows of 256 samples.
+So, we'll be computing an FFT of 260
+256 samples and approximating that.
+Okay?
+And of course,
+then we return the harmonics, and
+instead of returning the residual,
+we return these envelopes,
+these sequences of envelopes
+that we are computing.
+And in the synthesis part, well,
+it's a in a, it's a similar situation;
+we synthesize the and
+then synthesize the stochastic component.
+Using the stochastic model synth
+that also we talked about.
+So from these envelope.
+We can synthesize
+the stochastic component and
+the function that puts it all together,
+there is this HPF model function that
+includes analysis and synthesis using the
+harmonic plus and stochastic model, so.
+It has some parameters,
+default parameters.
+And then it performs analysis and
+it performs a synthesis.
+And in the, in the, in the process it
+plots certain intermediate values.
+Okay so let's go to the terminal and
+now instead of.
+Running the, the code.
+Or running the, the,
+the code by calling the, the file.
+We can also run the function directory.
+And that allows us to be able
+to change the parameters.
+So if we import this function.
+The HPS, model.
+Function.
+'Kay, now we have imported,
+we haven't executed it.
+Now, oh, well, we, better to just import
+it with a given name, for example, HPS.
+Okay, and now, we can call HPS and
+the function within HPS.
+So within this file,
+there is this function main.
+So, we can just call main and
+here now we will be able to change
+the values of this parameter.
+So, let's just get
+the values by by default.
+Okay.
+So, this computes.
+This analysis and syntheses of
+these sound of these sax phrase,
+with default parameters.
+And now, if we can, we can play around,
+of course we could use the,
+the interface that we have been showing
+in the demo classes, but here maybe
+sort of more More intuitive in terms
+of understanding what is going on and
+being able to go deep into the code
+to just replace parameters here.
+So for example,
+now if I want to change the threshold and
+make it a smaller a threshold.
+Instead of minus 100 let's put minus 40.
+then, we will, run the same code but,
+changing the threshold.
+And of course, changing the threshold has
+meant that it found only, few harmonics.
+In fact, it contributed
+everything as stochastic and
+in here, the,
+the stochastic representation.
+Is the one that is more prominent, okay?
+And you can change any parameter.
+You can change the,
+the sound, for example.
+Okay, let's we can,
+we can change the, the sound file, or
+we can change the, the minimum duration
+of the, of the harmonics, etc.,
+etc.
+So no need to to explain that any more or
+basically we can just
+execute it in anyway we want.
+Okay, and that's all I wanted to say.
+So, this is basically an extension
+of the harmonic plus model.
+And we have seen how it works.
+So basically this is the,
+the most complex model.
+That we're going to see in this course.
+And all the others can be understood
+as Related with with this one.
+So if you understand this model.
+I think it's a, it's a good way to
+understand a lot of the things we,
+we have been talking about.
+So that's all for for today.
+So I hope to see you next lecture.
+Thank you.
+

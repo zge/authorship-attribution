@@ -1,0 +1,452 @@
+In this video, I'll talk about a 
+different way of learning sigmoid belief 
+notes. 
+This different method arrived in an 
+unexpected way. 
+I stopped working on sigmoid belief nets 
+and went back to Boltzmann machines. 
+And discovered that restricted Boltz 
+machines could actually be learned fairly 
+efficiently. 
+Given that a restricted Boltzmann machine 
+could efficiently learn a layer of 
+nonlinear features. It was tempting to 
+take those features, treat them as data, 
+and apply another restricted Boltzmann 
+machine to model the correlations between 
+those features. 
+And one can continue like this, stacking 
+one Boltzmann machine on top of the next 
+one to learn lots of layers of nonlinear 
+features. 
+This eventually led to a big resurgence 
+of interest in deep neural nets. 
+The issue then arose. Once you stacked up 
+lots of restricted Boltzmann machines, 
+each which is learned by modeling the 
+patterns of future activities produced by 
+the previous Boltzmann machines. 
+Do you just have a set of separate 
+restricted Boltzmann machines or can they 
+all be combined together into one model? 
+Now, anybody sensible would expect that 
+if you combined a set of restricted 
+Boltzmann machines together to make one 
+model, what you'd get would be a 
+multilayer Boltzmann machine. 
+However, a brilliant graduate student of 
+mine called G.Y. 
+Tay, figured out that that's not what you 
+get. 
+You actually get something that looks 
+much more like a sigmoid belief net. 
+This was a big surprise. 
+It was very surprising to me that we'd 
+actually solved the problem of how to 
+learn deep sigmoid belief nets by giving 
+up on it and focusing on learning 
+undirected models like Boltzmann 
+machines. 
+Using the efficient learning algorithm 
+for restricted Boltzmann machines. 
+It's easy to train a layer of features 
+that receive input directly from the 
+pixels. 
+We can treat the patterns of activation 
+of those feature detectors as if they 
+were pixels, 
+and learn another layer of features in a 
+second hidden layer. 
+We can repeat this as many times as we 
+like with each new layer of features 
+modelling the correlated activity in the 
+features in the layer below. 
+It can be proved that each time we add 
+another layer of features, we improve a 
+variational lower bound on the log 
+probability that some combined model 
+would generate the data. 
+The proof is actually complicated, and it 
+only applies if you do everything just 
+right, 
+which you don't do in practice. 
+But, the proof is very reassuring, 
+because it suggests that something 
+sensible is going on when you stack up 
+restricted Boltzmann machines like this. 
+The proof is based on a neat equivalence 
+between a restricted bolson machine and 
+an infinitely deep belief net. 
+So here's a picture of what happens when 
+you learn two restricted Boltzmann 
+machines, one on top of the other, 
+and then you combine them to make one 
+overall model, which I call a deep belief 
+net. 
+So first we learn one Boltzmann machine 
+with its own weights. 
+Once that's been trained, we take the 
+hidden activity patterns of that 
+Boltzmann machine when it's looking at 
+data and we treat each hidden activity 
+pattern as data for training a second 
+Boltzmann machine. 
+So we just copy the binary states to the 
+second Boltzmann machine, and then we 
+learn another Boltzmann machine. 
+Now one interesting thing about this, is 
+that if we start the second Boltzmann 
+machine off with W2 being the transpose 
+of W1, and with as many hidden units in 
+h2 as there are in v, then the second 
+Boltzmann machine will already be a 
+pretty good model of h1, 
+because it's just the first model upside 
+down. 
+And for a restricted Boltzmann machine, 
+it doesn't really care which you call 
+visible and which you call hidden. 
+It's just a bipartite graph that's 
+learned to model. 
+After we've learned those two Boltzmann 
+machines, we're going to compose them 
+together to form a single model and the 
+single model looks like this. 
+Its top two layers adjust the same as the 
+top restricted Boltzmann machine. 
+So that's an undirected model with 
+symmetric connections, but its bottom two 
+layers are a directed model like a 
+sigmoid belief net. 
+So what we've done is we've taken the 
+symmetric connections between v and h1 
+and we've thrown away the upgoing part of 
+those and just kept the dangering part. 
+To understand why we've done that is 
+quite complicated and that will be 
+explained in video 13F. 
+The resulting combined model is clearly 
+not a Boltzmann machine, because its 
+bottom layer of connections are not 
+symmetric. 
+It's a graphical model that we call a 
+deep belief net, where the lower layers 
+are just like sigmoid belief nets and the 
+top two layers form a restricted 
+Boltzmann machine. 
+So it's a kind of hybrid model. 
+If we do it with three Boltzmann machines 
+stacked up, we'll get a hybrid model that 
+looks like this. 
+The top two layers again are a restricted 
+Boltzmann machine and the layers below 
+are directed layers like in a sigmoid 
+belief net. 
+To generate data from this model the 
+correct procedure is, 
+first of all, you go backwards and 
+forwards between h2 and h3 to reach 
+equilibrium in that top level restricted 
+Boltamann machine. 
+This involves alternating Gibbs sampling, 
+where you update all of the units in h3 
+in parallel, and update all of the units 
+in h2 in parallel, 
+then go back and update all of the units 
+in h3 in parallel. And you go backwards 
+and forwards like that for a long time 
+until you've got an equilibrium sample 
+from the top-level restricted Boltamann 
+machine. 
+So the top-level restricted Bolson 
+machine is defining the prior 
+distribution of h2. 
+Once you've done that, you simply go once 
+from h2 to h1 using the generative 
+connections w2. 
+And then, whatever binary patent you get 
+in h1, you go once more to get generated 
+data, using the weights w1. 
+So we're performing a top-down pass from 
+h2, to get the states of all the other 
+layers, 
+just like in a sigmoid belief net. 
+The bottom-up connections, shown in red 
+at the lower levels, are not part of the 
+generative model. 
+They're actually going to be the 
+transposes of the corresponding weights. 
+So they're the transpose of w1 and the 
+transpose of w2, 
+and they're going to be used for 
+influence, but they're not part of the 
+model. 
+Now, before I explain why stacking up 
+Boltzmann machines is a good idea, I need 
+to sort out what it means to average two 
+factorial distributions. 
+And it may surprise you to know that if I 
+average two factorial distributions, I do 
+not get a factorial distribution. 
+What I mean by averaging here is taking a 
+mixture of the distributions, so you 
+first pick one of the two at random, and 
+then you generate from whichever one you 
+picked. 
+So, you don't get a factorial 
+distribution. 
+Suppose we have an RBM with 4 hidden 
+units and suppose we give it a visible 
+vector. 
+And given this visible vector, the 
+posterior distribution over those 4 
+hidden units is factorial. 
+And lets suppose the distribution was 
+that the first and second units have a 
+probability of 0.9 of turning on and the 
+last two have a probability of 0.1 of 
+turning on. 
+What it means for this to be factorial is 
+that, for example, the probability that 
+the first two units were both be on in a 
+sample from this distribution, is exactly 
+0.81. 
+Now suppose we have a different angle 
+vector v2, and the posterior distribution 
+over the same 4 hidden units is now 0.1, 
+0.1, 0.9, 0.9, which I chose just to make 
+the math easy. 
+If we average those two distributions, 
+the mean probability of each hidden unit 
+being on, is indeed, the average of the 
+means for each distribution. 
+So the means are 0.5, 0.5, 0.5, 0.5, 
+but what you get is not a factorial 
+distribution defined by those 4 
+probabilities. 
+To see that, consider the binary vector 
+1, 1, 0, 0 over the hidden units. 
+In the posterior for v1, 
+that has a probability of 0.9^4, because 
+it's 0.9 * 0.9 * 1 - 0.1 * 1 - 0.1. 
+So that's 0.43. 
+In the posterior for v2, this vector is 
+extremely unlikely. 
+It has a probability of 1 in 10,000. 
+If we average those two probabilities for 
+that particular vector, we'll get a 
+probability of 0.215, 
+and that's much bigger than the 
+probability assigned to the vector 1, 1, 
+0, 0 by factorial distribution with means 
+of 0.5. 
+That probability will be 0.5^4, which is 
+much smaller. 
+So, the point of all this, is that when 
+you average two factorial posteriors, you 
+get a mixture distribution that's not 
+factorial. 
+Now, let's look at why the greedy 
+learning works. 
+That is why it's a good idea to learn one 
+restricted Boltzmann machine. 
+And then learn a second restricted 
+Boltzmann machine that models the 
+patterns of activity in the hidden units 
+of the first one. 
+The weights of the bottom level 
+restricted Boltzmann machine, actually 
+define four different distributions. 
+Of course, they define them in a 
+consistent way. 
+So the first distribution is the 
+probability of the visible units given 
+the hidden units. 
+And the second one is the probability of 
+the hidden units given the visible units. 
+And those are the two distributions we 
+use for running our alternating mark of 
+chain that updates the visibles given the 
+hiddens and then updates the hiddens 
+given the visibles. 
+If we run that chain long enough, we'll 
+get a sample from the joint distribution 
+of v and h. 
+And so the weights clearly also define 
+the joint distribution. 
+They also define the joint distribution 
+more directly in terms of E to the minus 
+the energy, 
+but for nets with a large number of 
+units, we can't compute that. 
+If you take the joint distribution, 
+p(v|h), and you just ignore v, we now a 
+distribution for h. 
+That's the prior distribution over h, 
+defined by this restricted Boltzmann 
+machine. 
+And similarly, if we ignore h, we have 
+the prior distribution over v, defined by 
+the restricted Boltzmann machine. 
+And now, we're going to pick a rather 
+surprising pair of distributions from 
+those four distributions. 
+We're going to define the probability 
+that the restricted Boltzmann machine 
+assigns to a visible vector v as the sum 
+over all hidden vectors of the 
+probability it assigns to h times the 
+probability of v given h. 
+This seems like a silly thing to do, 
+because defining p(h) is just as hard as 
+defining p(v). 
+And nevertheless, we're going to define 
+p(v) that way. 
+Now, if we now leave p(v|h) alone, 
+but learn a better model of p(h), 
+that is, learn some new parameters that 
+give us a better model of p(h) and 
+substitute that in instead of the old 
+model we had of p(h). 
+We'll actually improve our model of v. 
+And what we mean by a better model of 
+p(h) is a prior over h that fits the 
+aggregated posterior better. 
+The aggregated posterior is the average 
+over all vectors in the training set of 
+the posterior distribution over h. 
+So, what we're going to do, is use our 
+first RBM to get this aggregated 
+posterior and then use our second RBM to 
+build a better model of this aggregated 
+posterior than the first RBM has. 
+And if we start the second RBM off as the 
+first one upside down, it will start with 
+the same model of the aggregated 
+posterior as the first RBM has. 
+And then, if we change the weights we can 
+only make things better. 
+So, that's an explanation of what's 
+happening when we stack up RBMs. 
+Once we've learned to stack up Boltzmann 
+machines, then combine them together to 
+make a deep belief net, 
+we can then actually fine-tune the whole 
+composite model using a variation of the 
+wake-sleep algorithm. 
+So we first learn many layers of features 
+by stacking up IBMs. 
+And then we want to fine-tune both the 
+bottom-up recognition weights and the 
+top-down generative weights to get a 
+better generative model and we can do 
+this by using three different learning 
+routes. 
+First, we do a stochastic bottom-up pass, 
+and we adjust the top down generative 
+weights of the lower layers to be good at 
+reconstructing the feature activities in 
+the layer below. 
+That's just as in the standard wake-sleep 
+algorithm Then, in the top level RBM, we 
+go backwards and forwards a few times, 
+sampling the hiddens of that RBM, and the 
+visibles of that RBM, and the hiddens of 
+the RBM, and so on. 
+So that's just like the learning 
+algorithm for RBMs. 
+And having done a few iterations of that, 
+we do contrastive divergence learning. 
+That is, we update the weights of the RBM 
+using the difference between the 
+correlations when activity first got to 
+that RBM and the correlations after a few 
+iterations in that RBM. 
+We take that difference and use it to 
+update the weights. 
+And then, the third stage, we take the 
+visible units of that top-level RBM by 
+its lower level units. 
+And starting there, we do a top-down 
+stochastic pass, using the directed lower 
+connections, which are just a sigmoid 
+belief net. 
+Then, having generated some data from 
+that sigmoid belief net, we adjust the 
+bottom up rates to be good at 
+reconstructing the feature activities in 
+the layer above. 
+So that's just the sleep phase of the 
+wake-sleep algorithm. 
+The difference from the standard 
+wake-sleep algorithm is that that 
+top-level RBM acts as a much better prior 
+over the top layers, than just a layer of 
+units which are assumed to be 
+independent, which is what you get with a 
+sigmoid belief net. 
+Also, rather than generating data by 
+sampling from the prior, what we're 
+actually doing is looking at a training 
+case, going up to the top-level RBM and 
+just running a few iterations before we 
+generate data. 
+So now we're going to look at an example 
+where we first learn some RBMs, stacking 
+them up, 
+and then we do contrastive wake-sleep to 
+fine-tune it, 
+and then we look to see what it's like. 
+Is it a generative model? 
+And also if we're recognizing things. 
+So first of all, we're going to use 500 
+binary hidden units to learn to model all 
+10 digit classes in images of 28 by 28 
+pixels. 
+Once we've learned that RBM, without 
+knowing what the labels are, 
+so it's unsupervised learning. 
+We're going to take the patterns of 
+activity in those 500 hidden units that 
+they have when they're looking at data. 
+We're going to treat those patterns of 
+activity as data and we're going to learn 
+another RBM that also has 500 units, 
+and those two are learned without knowing 
+what the labels are. 
+Once we've done that we'll actually tell 
+it the labels. 
+So the first two hidden layers are 
+learned without labels, 
+and then, we add a big top layer and we 
+give it the 10 labels. 
+And you can think that we concatenate 
+those 10 labels with the 500 units that 
+represent features, 
+except that the 10 labels are really one 
+soft match unit. 
+Then we train that top-level RBM to model 
+the concatenation of the soft match unit 
+for the 10 labels with the 500 feature 
+activities that were produced by the two 
+layers below. 
+Once we've trained the top-level RBM, we 
+can then fine-tune the whole system by 
+using contrastive wake-sleep. 
+And then we'll have a very good 
+generative model and that's the model 
+that I showed you in the intro video. 
+So if you go back, and you find the 
+introduction video for this course, 
+you'll see what happens when we run that 
+model. 
+You'll see how good it is at recognition 
+and you'll also see that it's very good 
+at generation. 
+In that introductory video, I promised 
+you, you would eventually explain how it 
+worked, 
+and I think you've now seen enough to 
+know what's going on when this model is 
+learned. 
+

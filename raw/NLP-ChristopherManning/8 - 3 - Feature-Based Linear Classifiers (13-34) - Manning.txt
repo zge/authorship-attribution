@@ -1,0 +1,270 @@
+Okay, now let's look at how these features
+are used inside a classifier. And in
+particular I want to introduce the notion
+of linear classifiers. Our feature based
+Maxent classifiers are linear
+classifiers. And so, what that means is
+that, at the end of the day, what they're
+going to do is going to have a set of
+features. And then it's gonna calculate a
+linear function of those features, which
+will end up as a score for a particular
+class. And the way that we do that, is
+that for each feature FI, we assign it a
+weight lambda I. And, so what we're gonna
+do is then consider for an observed datum,
+every particular class that we can give
+it, and then we're gonna work out what
+features match against that datum and
+therefore what the weight of the votes for
+the class are, in terms of this land dry
+weights. So let's look through a concrete
+example. So this is again the example for
+where we're gonna be wanting to determine
+the class of this word, we have our
+choices here, a person, location or drug
+and so what we're gonna do is consider
+Which of the classes gets the most votes
+in terms of the three features that we
+defined before? So the vote for class is
+just going to be the sums of the weights
+that are assigned to each of the features.
+So if you remember the three features from
+before, the first feature, looked whether
+the preceding word was in. Whether the
+word is capitalized, and then whether the
+class is location. So it's not gonna match
+here, but it is going to match over here.
+And so that's a feature that would tend to
+pick out locations. So we'll assume that
+it has a positive weight of 1.8. The
+second feature was then also feature that
+matched on locations and looked for an
+accented Latin character here. So. It will
+match against this datum, but not against
+the other two datums, and again, and so in
+general, I'm assuming that, that feature,
+at least for American English, will have a
+negative weight, because you're more
+likely to see accents in things like
+person names, so it might have a weight of
+-0.6. Okay. Then the third feature that we
+had defined was that. The class was drug
+and the word ends in C. So of these three
+datums the one which will match is this
+one here. And it's not true in this case.
+But in general I think that's likely be
+true because quite a few drug names like
+Zantac, Intimacy, or not that many regular
+names do. So, maybe we'll give that a weak
+positive vote and say that, that feature
+has 0.3. And so then what we're going to
+be doing is that we're going to be
+choosing the class that has the highest
+total votes. And so, there three class
+choices here. So this. Class choice of
+person actually matched no features, so
+its total vote is zero, which is that kind
+of neither a positive nor a negative
+preference. This class choice of location,
+in aggregate, had a vote for it of 1.2 and
+this class choice of drug, in aggregate,
+had a vote for it of 0.3. And so what
+we're going to choose is the class which
+maximizes this voting quantity is going to
+be location. [sound] There many ways to
+chose the weights of the features in our
+classifier. So, for example [inaudible]
+algorithms what they do is look for a
+currently misclassified example. And then
+they nudge the weights in a direction that
+will correct the classification of that
+one example. Another popular form of
+discriminative classifier support vector
+machines, which we're not gonna cover in
+these classes, but what they're trying to
+do is create a lot of distance between
+examples of different classes by adjusting
+the feature weights to achieve that
+direction. So they're called max margin
+classifiers. But the classifiers that
+we're gonna look at here Max m
+classifiers. Which are in a family which
+are referred to as exponential or log
+linear classifiers. In general this family
+has lots and lots and lots of names. So,
+there's things in the class also referred
+to logistic classifiers and gibs models
+which are very closely related to max m
+models. And so, the idea. Of this class is
+that what we're gonna do is we're gonna
+make a probabilistic model out of the
+linear combination that we already saw.
+The sum over the dot product. So it's a
+dot product, the lambda F dot product,
+which is the sum of lambda IFI of C and D.
+So how do we do it? Well what we're going
+to imagine doing it is kind of in the
+simplest possible way. So here's the sum
+of lambda IFI. Of, which is a function of
+C and D. Now the problem with this linear
+combination is that it might come out as
+either positive or negative. And that's
+bad if you're a probability. And so what
+we're gonna want to do is we're gonna make
+that always positive. And the way we're
+gonna do that is taking an exponential of
+it. So we're gonna take E to this power.
+So this is something that will always make
+the vote positive. [sound] And this form
+I'm showing here, so it's e, that's, you
+know, the 2.818 etc. And then you're
+raising the feature dot product to that,
+so you can all associate [inaudible] as e
+to the lambda dot f, where these are all
+vectors of features. Okay, so now we've
+got something that's a positive quantity
+but it's not necessarily. A probability.
+So we're going to make it a probability in
+the simplest way possible too, which is
+we're going to normalize it. So this is
+some kind of score for one class. And so
+then what we can do is work out the score
+for every class and divide through by it.
+[sound], [sound] Okay, and then we're
+gonna say that this quantity here is the
+probability that we assign to a class.
+Probability of a particular class for a
+datum given a certain set of parameters,
+where this is our vector of all the
+parameters. And so we can work out a
+concrete example so that for our previous
+example where we had the probability of
+choosing location given in Quebec. Well,
+what we're going to work out is for our
+numerator we've got the features that
+match. So we're working out E to the 1.8 +
+-.6. And then we're going to divide that
+through by the total votes for all of the
+classes. So, one class had no features
+matching. The second class had the single
+vote of 0.3. And then, here's the one for
+location, which is E to the 1.8+ -0.6. And
+you can work that out on your calculator
+and it comes out to be equal to about
+0.59. And so these kinda [inaudible]
+there. You can also simplify them. So
+having exponents is just the same as
+multiplying. So you can also think of this
+as [inaudible] one point eight times E to
+the minus zero point six. And so that's
+the sense in which each of these features
+give them extra multiplicative term that
+changes the probability. That when you add
+a feature you're adding an extra
+multiplicative term that changes the
+probability. So if you work through all of
+the examples of the different classes,
+I'll just skip and show the math, that
+what you get is, that these are different
+probabilities and so note that we're
+giving a probability of each of our three
+class choices and together that they do
+add up to one, and that's precisely by the
+normalization that we've defined here. So
+these weights Lambda are now the
+perimeters of a probability distribution
+and we're combining them. Like this
+function here. This function is also
+referred to as the soft max function and
+the reason for that is because when you're
+using this exponent function to make
+things positive, things get bigger. So, if
+you takes something like eight to three,
+that's approximately 25 or something. And
+so, the effect of that is the features
+with the strongest votes dominate more
+strongly in this form here. And, so sort
+of like a soft maximum, so [inaudible] it
+will give you a value. If it's much
+strongly determined by the biggest votes.
+So [inaudible] exponential models. What
+we're wanting to do is say, given this
+model form, what we're gonna do is try and
+choose parameters in lambda I that
+maximize the conditional likelihood of the
+data according to this model. So we've
+defined probabilities over data and
+classes. And we're going to maximize that
+choice of classes, according to that
+probability distribution. So a feature of
+these models is that we construct not only
+a classification function, but also
+probability distribution over
+classifications. So there are many good
+ways of discriminating classes. So, SVMs
+boosting perceptions, many machine
+learning algorithms will give you a way to
+just distinguish between classes. But
+these other ones aren't as naturally and
+inherently thought of as distributions
+over classes. Their people have thought of
+ways to extend them in this direction. You
+may have seen logistic regression or
+multiclass logistic regression in our
+statistics for our machine loading model.
+So, that maybe divides people. If you
+haven't seen this before, don't worry
+about it.'Cause the presentation and
+derivations that we show here are
+completely self contained. But on the
+other hand, if you have seen these models
+before. That something you might want to
+do is just think about how, what is
+presented here is a little bit different.
+And it's effectively different in two
+ways. One is the choice of
+parameterization. So the parameterization
+is slightly different than the
+parameterization that's normally shown for
+multi class logistic regression models and
+statistics. And there are kind of pluses
+and minuses to the presentation here. The
+minus is it's slightly statistically
+inelegant, because the model's
+over-parameterized. But the plus is that
+this style of parameterization is actually
+very [inaudible]. Take this to NOP models,
+which have the property that they're
+always a very large number of features
+most of which are inactive for any
+particular data. But secondly the thing to
+observe is that the way things are
+formulated here is in terms of feature
+functions, feature functions of both. The
+observed data and of the class, this both
+shows how you can put text into the model
+most simply, but it's actually also a more
+general formulation than you normally see
+from multi-class logistic regression
+models. We actually won't use the more
+general formulation in the material that
+is presented here. But it actually has
+been shown to be useful once you go onto
+more complex natural language processing
+structure prediction tasks. [sound] Here's
+a quiz question for you guys to work
+through. So we're still in the situation
+that we're wanting to choose some class
+[inaudible] final word, which is now
+[inaudible]. And our choice of classes are
+the same classes as before, personal
+location or drug. And we have exactly the
+same three features that we've been using
+throughout these examples. And so, what
+we'd like you to do is just concretely
+work through what the probabilities that
+are assigned to each of the three classes
+this time. Okay now I hope you understand
+the math of accent model and the sense in
+which it's one of the family of linear

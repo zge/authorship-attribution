@@ -1,0 +1,159 @@
+Okay, so let's look at another example. 
+So this is q, say this state here. 
+The two ends of must and also, at the end 
+of the translation we have words 1, 2, 3 
+translated, the other ones aren't. 
+We have the position of the last endpoint 
+of the last phrase is 3, and then -2.5. 
+So ph q, is again going to be a set of 
+possible phrases, which could follow the 
+state. 
+And so let's see. 
+So we've translated words 1 to 3. 
+So natural things here would be things 
+like 4, 5 this, criticism. 
+Okay, because, this phrase certainly 
+doesn't overlap with this bit string. 
+And, in addition, 4 is close enough to 3 
+that this is allowed. 
+or we can have 6, 6 seriously. 
+Again, there's no overlap in the bit 
+string and 6 is far enough, sorry, close 
+enough to three, but there's no 
+violation. 
+we might even have 7, 7 take. 
+Again, there's a no overlap in the bit 
+string and we can verify 3 plus 1 minus 7 
+is equal to magnitude of minus 3 is less 
+than equal to 4, that's fine, assuming 
+that the distortion limit is again 4 and 
+so on and so on. 
+So it's going to be a whole set of 
+possible phrases, and notice that just by 
+looking at the state, we can calculate 
+which phrases can actually follow it. 
+another very useful definition is going 
+to be the following. 
+So, for any q, and for any phrase p, I'm 
+going to define next of q and p to be the 
+state formed by combining state q of 
+phrase p. 
+So what does that mean? 
+So, next let's say we take q here. 
+And we take one of these phrases, for 
+example 7 7 take. 
+Okay? 
+So this is going to return a new state, 
+which is formed by basically 
+concatenating this phrase on the end of 
+this state I've shown you here. 
+so the state in this case would be, also 
+take. 
+Because those would be the last two words 
+in the translation. 
+We would have the following: one, two, 
+three, and then take is in position one, 
+two, three, four, five, six, seven. 
+And so, now, we update the seventh bit to 
+reflect that. 
+So one. 
+We record the endpoint of this phrase, 
+seven. 
+And, we update the score. 
+So this would be minus 4.9 or something, 
+where this is again calculated using a 
+combination of the trigram language 
+parameters, the phrase score and the 
+distortion score. 
+Okay? 
+So this is basically just implementing 
+the graph definition I showed you 
+earlier, so we have this transition. 
+7, 7, take with this particular phrase, 
+so this is just exactly what I've shown 
+you here. 
+So here are the formal details of how we 
+actually define this next function. 
+I'll just go over this quickly, because I 
+think you've gotten the intuition from 
+the last slide. 
+So the next function takes in this state 
+q and a phrase p. 
+So the state q consists of e1, e2, bit 
+stream b, a position r and a score alpha. 
+And the phrase consists of a start point 
+and an endpoint and a sequence of capital 
+M words will cause epsilon 1 through 
+epsilon M. 
+Then this next state is a state q primed 
+with new elements e1 prime and e2 prime, 
+b primed, r primed, alpha primed. 
+These are calculated as is follows. 
+So let me just, briefly give a sketch 
+here, e1 primed is e, epsilon M minus 1. 
+e2 primed epsilon M, so we just take the 
+last two words in this phrase, and we've 
+got to be slightly careful about the case 
+where this phrase is just one word long. 
+These definitions capture that. 
+and then we update the bit string, so we 
+say the new bit string has value 1 for 
+any i in the range s to t. 
+So these, these the start and endpoint of 
+the phrase, otherwise, we just copy 
+across the bit string from the previous 
+bit string. 
+We define the endpoint, r prime to be the 
+endpoint of this new phrase, that's t. 
+So r primed is just t, and then, alpha 
+primed, the score for the new state is 
+going to be alpha, the score for the old 
+state plus the score of the phrase, g of 
+p. 
+And then we have some language model 
+scores, these are trigram language model 
+scores, and then we have a distortion 
+parameter, and then we have a distortion 
+cost. 
+Notice that we have r, the endpoint of 
+the last phrase, we have s, the stop 
+point of this new phrase, and we can 
+calculate this distortion cost in a very 
+straightforward manner from them. 
+Okay, so that's a formal definition of 
+the next function. 
+We're almost there in terms of defining 
+beam search but here's one more 
+definition which will be very useful. 
+It's a very simple function, which will 
+return true or false. 
+depending on whether two states, q and q 
+prime, are equal under a particular 
+definition of equality. 
+So, say I have two states, q and q 
+primed. 
+The equal function is going to return 
+true, if e1 is equal to e1 primed, e2 is 
+equal to e2 primed, b is equal to b 
+primed, and r is equal to r primed. 
+So it's actually going to ignore the 
+scores, and it's just going to come take 
+into account these four examples. 
+And it's going to return true only if 
+these four things were equal. 
+We'll see too, why, this definition is 
+important, and why in particular we don't 
+check the alpha and alpha primed scores. 
+'Kay, so we may, have, for example, two 
+different ways of reaching a particular 
+setting. 
+So say, we must also maybe something like 
+this, and maybe we have another state 
+which looks like this. 
+so it actually has the same components 
+for these first few entries, but has 
+different score. 
+So they say this is q and this is q 
+primed, in this case, eq of q and q 
+primed is equal to true. 
+

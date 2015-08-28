@@ -1,0 +1,197 @@
+[SOUND] Hi, I'm going to introduce you
+another interesting pattern mining
+approach called Pattern Growth Approach.
+This approach is represented by
+an interesting algorithm called FPGrowths.
+Let's look at how this algorithm works.
+The general idea is, first,
+we find the frequent single items.
+And then we partition the de,
+database based on each such item.
+Then we recursively grow frequent
+patterns by doing the above.
+Each or
+recursively for each partition database,
+also called conditional database.
+To facilitate efficient processing, we
+use a new data structure called FP-tree.
+The whole mining can be
+summarized as follows.
+We recursively construct and
+mine conditional FP-trees.
+Until the resulting FP-tree is empty,
+or until it contains only one path,
+this single path will generate all
+the combinations of its sub-paths,
+each of which is a frequent pattern.
+Let's look at a simple example.
+For this connection database it
+has only five connections each
+contains a set of items.
+So we can scan the database once,
+find the single item frequent
+pattern like the following.
+Suppose the minimum support
+is 3 we will be able to find.
+The falling frequent single items.
+Then we can sort
+the frequent items based on
+its support frequency in
+descending order like this.
+Based on this, we can construct a tree.
+But first construct the header
+following this order.
+Then scan the database.
+We can construct this tree as follows.
+For example, okay if you look at the,
+the first transaction,
+it's f c a b m p, so we constructed
+f c a b m p with only support as 1.
+Then we get f c a b m,
+we constructed this f c a b m.
+And this power support
+becomes 2 this need to be 1.
+It, you know, one by one we
+reconstruct the falling tree.
+Then to mine this tree, we can use divide
+and conquer and do it recursively.
+We can do it like this.
+Okay, for each such tree,
+we can construct this pattern base, or
+we call p's conditional pattern base,
+m's conditional pattern base.
+So let's look at how p's conditional
+pattern base is constructed, okay?
+So you probably can see, p.
+Is the leaf of the note.
+You want to look it up.
+You get f, c, a, m.
+The support is 2 because p occurs
+together with this branch only twice.
+That's why you get f c a m 2.
+Then for the same reason.
+You look at the other p, its cb
+happens only once together with its p.
+That's why it gets cb:1.
+Okay.
+Then if you want to look at m's
+conditional database,
+the philosophy you are thinking
+the patterns having m but not.
+Having p, because p all ready been taking
+care by the p's conditional pattern base.
+So you look at it,
+m's conditional database.
+Actually, you also look up.
+You get fca.
+So for, for this branch,
+it'll occur twice.
+That's why you get fca:2.
+For the same reason you look at this m,
+you get fcab:1, so you get fcab:1.
+You can do this on and on.
+Then with this you can get it to
+transform the prefix pass of p.
+Okay, then the remaining task is just
+mine this conditional pattern base.
+For this conditional pattern base,
+we mine single item patterns,
+we construct this FP-tree and
+mine it recursively.
+For example, for p's conditional
+pattern base, you will get only c: 3.
+The reason is f, a, m, and
+b; they never occurred more than
+three times, so they are out.
+They are not frequent, you only get three.
+Therefore, m's conditional pattern base,
+you can see fca really occurs three times.
+The b only occur once,
+you, then you get a fca:3.
+Then b's conditional pattern base,
+you probably can none of
+them actually pass a support
+threshold of 3, so it's empty.
+So let's just look at, of course,
+you'll, you will get a and
+a c's pattern base like the,
+like f's 3 and fc:3.
+Actually, for the single branch, you can
+dump all the possible combinations there,
+so for all three.
+But if we just, look at the,
+in the recursive way, how we can mine this
+pattern-base, for this pattern-base,
+you plug in c, you can say for a,.
+Conditional pattern base you'll get this.
+You'll get fc:3.
+And for c, you'll get f3.
+You can see that's the same thing.
+Then for this particular a m
+conditional FP-tree you might,
+you just take a c,
+you say c's that means a m c or c a m.
+Their conditional pattern
+base is only f:3.
+You get this.
+Then you can, you can dump all
+the patterns, you know, like this.
+For single branch, essentially that's the
+same thing, you'll dump all the patterns.
+Like all the possible combinations,
+they are all three.
+Okay.
+You probably can see,
+if you get a single prefix pass,
+you actually can partition
+this into two parts.
+Like this pass, you can mine and
+this part you can mine it too.
+Then you can just concatenate
+the pattern results.
+What about this tree?
+Can that fit in the main memory?
+If it cannot fit in the memory,
+we can use database projection.
+That means we project the database
+based on the patterns.
+Based on single item set, okay?
+So, then we can construct and
+mine this tree for each project database.
+So we can have parallel projection, or
+partition projection,
+two different methods.
+The parallel projection means,
+for this one, you will get a.
+F4 project database and
+f3 project database.
+For example, for this first string
+you'll see g h suppose it's not
+frequent only f, f's are frequent.
+You'll get f4's project database,
+you get f2, f3.
+Okay, then f3's projected base you get f2,
+that's a one and
+every one of these projected database
+is independent of the others so
+you can mine them in parallel, but then
+you also can have partition projection.
+Projected the general philosophy is for
+each string, you only put into one place.
+For example, this one contains f 4,
+you only put f 2 or
+f 3 but you don't put this f
+2 to f 3 projected database.
+When you finish mine this f 4.
+When you do this projection,
+then you think this one is related
+to f 3 you will put one into f 3.
+Okay.
+So that's a, just a different choices.
+You know, for different partition.
+Or parallel projection.
+I, it's just different
+way of implement it.
+Thank you
+[MUSIC]
+

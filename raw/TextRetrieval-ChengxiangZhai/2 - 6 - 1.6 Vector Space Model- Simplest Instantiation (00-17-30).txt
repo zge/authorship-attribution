@@ -1,0 +1,401 @@
+[SOUND].
+In this lecture, we're going to talk about
+how to instantiate a vector space model,
+so that we can get a very
+specific ranking function.
+So this is the, to continue
+the discussion of the vector space model.
+Which is one particular approach
+to design ranking function.
+And we are going to talk about how
+we use the general framework of
+the the vector space model.
+As a guidance to instantiate the framework
+to derive a specific ranking function.
+And we're going to cover the simplest
+instantiation of the framework.
+So as we discussed in
+the previous lecture.
+The vector space model
+is really a framework.
+It isn't, didn't say.
+As we discussed in the previous lecture,
+vector space model is really a framework.
+It doesn't, say many things.
+So for
+example here it shows that it did not say
+how we should define the dimension.
+It also did not say how we place
+a documented vector in this space.
+It did not say how we place a query
+vector in this vector space.
+And finally, it did not say how
+we should match a similarity
+between the query vector and
+the document vector.
+So, you can imagine,
+in order to implement this model.
+We have to see specifically,
+how we are computing these vectors.
+What is exactly xi and what is exactly yi?
+This will determine where we
+place the document vector.
+Where we place a query vector.
+And of course, we also need to say exactly
+what will be the similarity function.
+So if we can provide a definition
+of the concepts that would
+define the dimensions and
+these xi's, or yi's.
+And then, the waits of terms for
+query and document.
+Then we will be able to
+place document vectors and
+query vector in this well defined space.
+And then,
+if we also specify similarity function,
+then we'll have well
+defined ranking function.
+So let's see how we can do that.
+And think about
+the the simpliciter instantiation.
+Actually, I would suggest you to
+pause the lecture at this point
+spend a couple of minute to think about.
+Suppose you are asked
+to implement this idea.
+You've come up with the idea
+of vector space model.
+But you still haven't figured out
+how to compute this vector exactly,
+how to define this similarity function.
+What would you do?
+So think for a couple of minutes and
+then, proceed.
+So let's think about some simplest ways
+of instantiating this vector space model.
+First, how do we define a dimension.
+Well the obvious choice is we use
+each word in our vocabulary
+to define a dimension.
+And a whole issue that there
+are n words in our vocabulary,
+therefore there are n dimensions.
+Each word defines one dimension.
+And this is basically the Bag
+of Words Instantiation.
+Now let's look at how we
+place vectors in this space.
+Again here, the simplest of strategy is to
+use a bit vector to represent
+both a query and a document.
+And that means each element xi and
+yi would be taking a value
+of either zero or one.
+When it's one,
+it means the corresponding word is
+present in the document or in the query.
+When it's zero,
+it's going to mean that it's absent.
+So you can imagine if the user
+types in a few word in your query.
+Then the query vector,
+we only have a few ones, many, many zeros.
+The document vector in general
+we have more ones of course,
+but we also have many zeros.
+So it seems the vocabulary
+is generally very large.
+Many words don't really
+occur in a document.
+Many words will only occasionally
+occur in the document.
+A lot of words will be absent
+in a particular document.
+So, now we have placed the documents and
+the query in the vector space.
+Let's look at how we
+match up the similarity.
+So, a commonly used similarity
+measure here is Dot Product.
+The dot product of two
+vectors is simply defined as
+the sum of the products of the
+corresponding elements of the two vectors.
+So here we see that it's
+the product of x1 and the y1.
+So here.
+And then, x2 multiplied by y2.
+And then finally xn multiplied by yn.
+And then we take a sum here.
+So that's the dot product.
+Now we can represent this in a more
+general way, using a sum here.
+So this only one of the many different
+ways of matching the similarity.
+So now we see that we have defined the,
+the dimensions.
+We have defined the, the vectors.
+And we have also defined
+the similarity function.
+So now we finally have
+the Simplest Vector Space Model.
+Which is based on the bit vector
+representation, dot product similarity,
+and bag of words instantiation.
+And the formula looks like this.
+So this is our formula.
+And that's actually a particular retrieval
+function, a ranking function all right?
+Now, we can finally implement this
+function using a program language and
+then rank documents for query.
+Now at this point you should
+again pause the lecture
+to think about how we can
+interpret this score.
+So we have gone through the process
+of modeling the retrieval problem
+using a vector space model.
+And then, we make assumptions.
+About how we place vectors in the vector
+space and how we define the similarity.
+So in the end we've got a specific
+retrieval function shown here.
+Now the next step is to think about
+what of this individual function
+actually makes sense?
+I, can we expect this function
+to actually perform well?
+Where we use it to ramp it up,
+for use in query.
+So, it's worth thinking about, what is
+this value that we are calculating?
+So in the end, we've got a number,
+but what does this number mean?
+Is it meaningful?
+So spend a couple minutes
+to think about that.
+And of course,
+the general question here is do you
+believe this is a good ranking function?
+Would it actually work well?
+So again,
+think about how to interpret this value.
+Is it actually meaningful?
+Does it mean something?
+So related to how well that
+document matches the query.
+So in order to assess
+whether this simplest
+vector space model actually works well,
+let's look at the example.
+So here I show some sample documents and
+a simple query.
+The query is news about
+the presidential campaign.
+And we have five documents here.
+They cover different, terms in the query.
+And if you look at the,
+these documents for a moment.
+You may realize that
+some documents are probably relevant
+in some cases or probably not relevant.
+Now if I ask you to rank these documents,
+how would you rank them?
+This is basically our ideal ranking.
+Right.
+When humans can examine the documents and
+then try to rank them.
+Now, so think for a moment and
+take a look at this slide.
+And perhaps by pausing the lecture.
+So I think most of you
+would agree that d4,
+and d3, are probably better than others.
+Because they really cover the query well.
+They match news,
+presidential, and campaign.
+So, it looks like that these two documents
+are probably better than the others.
+They should be ranked on top.
+And the other three, d1, d2, and
+d5, are really non-relavant.
+So we can also say d4 and
+d3 are relevent documents, and d1, d2, and
+d5 are non-relevant.
+So, now lets see if our vector
+space model could do the same or
+could do something closer.
+So let's first think about how we actually
+use this model to score documents.
+Right here I show two documents, d1 and
+d3, and we have the query also here.
+In the vector space model, of course we
+want to first compute the vectors for
+these documents and the query.
+Now I issue with the vocabulary
+here as well, so
+these are the n dimensions
+that we'll be thinking about.
+So what do you think is the vector
+representation for the query?
+Note that we are assuming
+that we only use zero and one
+to indicate whether a term is absent or
+present in the query or in the document.
+So these are zero, one bit vectors.
+So what do you think is the query vector?
+Well the query has four words here.
+So for these four words, there would be a
+one and for the rest, there will be zeros.
+Now what about the documents?
+It's the same.
+So d1 has two rows, news and about.
+So there are two ones here and
+the rest are zeros.
+Similarly, so
+now that we have the two vectors,
+let's compute the similarity.
+And we're going to use dot product.
+So you can see when we use dot product we
+just, multiply the corresponding elements.
+Right.
+So
+these two would be, form a,
+be forming a product.
+And these two will
+generate another product.
+And these two would generate yet
+another product.
+And so on and so forth.
+Now you can,
+you need to see if we do that.
+We actually don't have to
+care about these zeroes
+because if whenever we have a zero,
+the product will be zero.
+So, when we take a sum
+over all these pairs,
+then the zero entries will be gone.
+As long as you have one zero,
+then the product would be zero.
+So in the fact, we're just counting
+how many pairs of one and one, right?
+In this case, we have seen two.
+So the result will be two.
+So, what does that mean?
+Well that means, this number or
+the value of this scoring function.
+Is simply the count of how many unique
+query terms are matched in the document.
+Because if a document,
+if a term is matched in the document,
+then there will be two ones.
+If it's not, then there will
+be zero on the document side.
+Similarly, if the document has a term,.
+But the terms not in the query there
+will be zero in the query vector.
+So those don't count.
+So as a result this
+scoring function basically
+meshes how many unique query
+terms are matched in a document.
+This is how we interpret this score.
+Now we can also take a look at the d3.
+In this case,
+you can see the result is three.
+Because d3 matched the three distinctive
+query words, news, presidential, campaign.
+Whereas d1 only matched two.
+Now in this case, it seems
+reasonable to rank d3 on top of d1.
+And this simplest vector
+space model indeed does that.
+So that looks pretty good.
+However, if we examine this model in
+detail, we likely will find some problems.
+So here I'm going to show all
+the scores for these five documents.
+And you can even verify they are correct.
+Because we're basically counting
+the number of unique query
+terms matched in each document.
+Now note that this method
+actually makes sense.
+Right?
+It basically means if a document matches
+more unique query terms, then the document
+will be assuming to be more relevant.
+And that seems to make sense.
+The only problem is here, we can note set
+there are three documents, d2, d3, and d4.
+And they tied with a three, as a score.
+So that's a problem, because if you
+look at them carefully it seems that
+d4 should be right above d3.
+Because d3 only mentioned
+the presidential once.
+But d4 mentioned it much more times.
+In case of d3,
+presidential could be extended mentioned.
+But d4 is clearly above
+presidential campaign.
+Another problem is that d2 and
+d3 also have the same soul.
+But, if you look at the,
+the three words that are matched.
+In the case of d2, it matched the news,
+about, and the campaign.
+But in the case of d3, it match the news,
+presidential, and campaign.
+So intuitively, d3 is better.
+Because matching presidential is more
+important though than matching about.
+Even though about and
+the presidential are both in the query.
+So intuitively,
+we would like d3 to be ranked above d2.
+But this model, doesn't do that.
+So that means this is still not good
+enough, we have to solve these problems.
+To summarize,
+in this lecture we talked about how
+to instantiate a vector space model.
+We may need to do three things.
+One is to define the dimension.
+The second is to
+decide how to place documents
+as vectors in the vector space.
+And to also place a query in
+the vector space as a vector.
+And third is to define
+the similarity between two vectors,
+particularly the query vector and
+the document vector.
+We also talked about a very simple way
+to instantiate the vector space model.
+Indeed, that's probably the simplest
+vector space model that we can derive.
+In this case,
+we use each word to define a dimension.
+We use a zero one bit vector to
+represent a document or a query.
+In this case, we basically only care
+about word presence or absence.
+We ignore the frequency.
+And we use the dot product
+as the similarity function.
+And with such a, a, in situation.
+And we showed that the scoring
+function is basically to score
+a document based on the number of distinct
+query words matched in the document.
+We also show that such a single vector
+space model still doesn't work well,
+and we need to improve it.
+And this is the topic that we're
+going to cover in the next lecture.
+[MUSIC]
+

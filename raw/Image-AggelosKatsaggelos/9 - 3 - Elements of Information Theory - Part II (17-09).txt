@@ -1,0 +1,405 @@
+Hello, in this segment we continue with
+the concepts
+from information theory we started with in
+the previous segment.
+We see that it is not easy to measure the
+entropy or the uncertainty of a source.
+There is typically structural or
+dependencies in
+the data, which means that there is
+redundant information, which need to be
+acknowledged
+when measuring the entropy of the source.
+So if anyone just presented to us and we
+are
+asked to find its entropy, it's not a
+straightforward task.
+We'll address this issue with some simple
+examples in the segment.
+We also look at desirable properties of
+codes,
+such as unique decodability and the prefix
+property.
+We finally look at the representation of
+codes in terms of
+binary trees, since these will become
+handy in the next segment.
+So, let's continue with the coverage of
+this material.
+According to the Source Coding theorem, we
+cannot design a lossless compression
+scheme that
+will perform better than entropy, when we
+have a [INAUDIBLE] that is smaller than
+entropy.
+The natural question, then, is, how well
+can we estimate the entropy of a source.
+Given an image for example, or a video
+segment, what can we say about its
+entropy?
+The answer is that estimating the entropy
+of a source is a very difficult task.
+Shannon himself actually looked into this
+question in trying to estimate the
+entropy of the English language in his
+1948 seminal paper and in other papers.
+So if we assume a discrete memoryless
+source
+model for the language and we assume that
+all
+the letters are equally represented, have
+equal probabilities, then
+this is the estimate of the entropy we
+obtain.
+It's actually about 4.76, if we include
+the space as the 27th letter.
+We can do better than that.
+We still use a DMS model, but now we go
+and measure the probabilities of
+appearance of each individual letter.
+And in this case, the estimate of
+the entropy becomes smaller, 4.14 bits per
+letter.
+We still know, however, that this is not a
+very accurate model, because there are
+dependencies amongst letters.
+There are combinations of letters that are
+more probable than
+others and combinations that do not exist
+in the English language.
+So therefore, if one looks at these
+dependencies
+by considering up to eight letters, then
+this
+is the estimate of the source, of the
+entropy of the source, that one can
+obtain.
+So this is the most accurate or one of the
+most accurate estimates of the source of
+the English language.
+And therefore, this is the number one
+should try to come
+close to in designing efficient codes for
+encoding the English language.
+In general, the more we know about the
+structure of the
+data, the better our estimate of the
+entropy is going to be.
+We're going to demonstrate this with two
+simple toy examples.
+So assume we have this stream here of
+symbols.
+So this source has six symbols in it's
+alphabet.
+In this stream we go and measure the
+appearance of two and four.
+So it's two out of ten.
+Therefore the probability of two is 0.2
+and so it
+is a probability of four and so on and so
+forth.
+We use the formula of the entropy for a
+DMS source
+and we find that in this particular case
+this is the entropy.
+We need 2.44 bits per symbol.
+But the way here, since they have six
+symbols if I, if I were to use a fixed
+code then I would need three bits per
+symbol because two to the third is eight.
+So with three bits I can express eight
+different codewords.
+Here I have only six symbols but using a
+variable length code, in
+principle, I could go closer to the
+entropy of 2.44 bits per symbol.
+Now, if we stare at this particular stream
+here for, for
+a little, we can possibly see some
+structure in it and to
+express the structure we propose a
+prediction model.
+So what this tells me, so x of n first
+of all, the value in this stream at
+location n.
+So if this n, then the one to the left is
+n minus 1 and so on.
+So this first order linear prediction
+model tells us that I
+can find the value of the signal at
+location n by
+assuming it's equal to the value at the
+previous location n
+minus 1, plus the residual or the
+correction tell or the error.
+So if we apply this prediction model to
+the
+data, then the residual you obtain is
+shown here.
+So the residual consists only of plus and
+minus 1.
+I measure the probability of one, the
+probability of minus 1.
+I utilized the DMS formula for the
+entropy.
+And we see that the entropy is 0.7 bits
+per symbol.
+So it's more than three times lower the
+estimate than the entropy we, we first
+obtained.
+We're going to look at predictors of this
+nature multiple times in this segment of
+the course.
+We'll talk about compression.
+And the idea here is that we build a
+predictor to predict, as here, the value
+of x
+at location n, and then all we have to
+encode is the unpredictable part, which is
+the residual.
+Of course, in decoding it, I need to have
+the predictor model.
+It's a static predictor, in this
+particular case.
+So given the predictor model of the
+residual
+I am able to construct the original
+sequence.
+A similar example is represented here.
+So this is now the generated message, the
+stream of symbols.
+I have here I see three different symbols.
+So I measure the probability.
+So the source generates only symbol three,
+symbol four, and symbol five.
+And I do see that I need 1.5 bits
+per symbol to represent this, according to
+the entropy.
+Now if we again stare at it for a second,
+we see that, in essence,
+if I look at two symbols at a time, so
+it's like I'm extending
+the source, I now use a block code, you
+might say, then I
+only have the symbol 33, and this should
+be 45 here.
+And, then in this case since they're
+equally probable, the entropy's
+one bit per new symbol or therefore half a
+bit per original symbol.
+So again, we can, reduce the entropy
+estimate considerably by looking
+into the structure of the data, exploiting
+it, and capitalizing on it.
+Let us look now into a simple example of
+codes.
+In getting a better understanding of them
+and then
+also introducing and discussing some other
+properties of codes.
+We are given this toy source.
+It emits one of four symbols and
+here are the associated probabilities of
+the symbols.
+The source is modeled as a discreet
+memoryless source and therefore
+based on these probabilities we can find
+the entropy of the source.
+We substitute these values into that
+expression for
+the entropy, the minus sum, PI log PI.
+And we can find that for this particular
+source here is its entropy, 1.75 bits per
+symbol.
+You are given this code, Code 1.
+And we are asked to figure out whether
+this is a good code, a useful code.
+It takes a quick second to look at it and
+realize that if we are given for example
+code word 0.
+It's not clear whether we should decipher
+it as symbol S1 or as symbol S2.
+So this code is not uniquely decodable or
+uniquely decipherable.
+We can find the average codeword length
+for this code or the rate for this code.
+It's 1.125 bits per symbol and since this
+is smaller than the entropy, this
+is already a red flag that there's
+probably something wrong with this code.
+We are also presented with Code 2 and
+we're asked the same question.
+Probably takes an additional second to
+also
+realize that this code is not uniquely
+decodable.
+If we are given, for example, the sequence
+of
+code word 00, we could decipher them as
+S1,
+S1 or we could decipher them as symbol S3.
+So this code is not uniquely decodable.
+Again, we look at the rate of the code is
+below
+entropy, the Source Coding theorem is
+violated, it's not a useful code.
+We're given Code 3.
+One of the observation about this code is
+that this is a prefix code.
+The name might be a bit misleading.
+It's actually a prefix(-free) code, which
+means no
+code word is a prefix of another code
+word.
+As such, it's intuitively clear that this
+code is uniquely
+decodeable and more than that, the
+decoding is instantaneous.
+In other words, if we look at the bit
+stream, let's say 010110,
+we start deciphering it, so as long as,
+as soon as we see 0, we know that this
+should be coded as 1, because 0 exists.
+Is a code where there can find in Code 3.
+Then I see that 10 is a code that exists
+there, so this is deciphered as S2.
+110 is deciphered as three.
+So this is a prefix code and it's uniquely
+decodable, any prefix code.
+And it's also an instantaneous.
+We see actually that its rate, the average
+code word length,
+is exactly entropy, so this is an optimal
+you might say, code.
+It achieves entropy.
+We cannot do better than that.
+We are also given Code 4.
+It takes a bit more thinking now to see
+whether this is uniquely decodable or not.
+Actually, there is a specific algorithmic
+test based on
+which you can test whether a given code is
+decodable.
+And this is indeed a uniquely decodable
+code.
+It's not a prefix code, because zero, for
+example,
+appears as a prefix to all other code
+words.
+So not prefix.
+And this not instantaneous either, since
+it's not prefix.
+So we see that unique decodability and
+prefix code relationship goes one way.
+So prefix means uniquely decodable, but
+uniquely decodable does
+not mean that the code is a prefix code,
+as indicated by Code 4.
+We see that the rate of this last code is
+a bit higher than entropy.
+So if one were to choose one out of the
+four codes, then
+Code 3 would be the one of choice, because
+being a prefix and
+instantaneous is an advantage and also its
+rate is the lowest one among the four,
+although as we've already discussed, these
+are not useful or acceptable codes.
+We can use binary trees to represent
+codes.
+This helps us to visualize certain
+properties of the codes, but also
+by transforming this trees, we can
+potentially obtain additional properties
+of the code.
+So let's look at Code 2 that we talked
+about in the previous slide.
+We can represent it by this binary tree.
+So we start with a root node,
+this one.
+And then, arbitrarily, we assign, let's
+say 1 or 0
+to the left branch and the opposite to the
+right branch.
+So here we assign 0 to the left branch and
+1 to the right branch.
+So clearly, to get to codeword S1, I have
+one 0, so S1 is represent by 0.
+S3 is represented by 00.
+And S4 is represented by 11.
+This ending nodes are called leaf nodes.
+And actually, the root is also a branch
+node, because
+the tree branches out at that particular
+location.
+So let's do the same thing for Code 3.
+This is the tree representation of Code 3.
+So again 0 is assigned to the left branch
+and 1 to the right branch.
+So to obtain the code word for symbol S3,
+we see that we
+have to go through a 1 here, a 1 here, and
+a 0 here.
+So the code word for S3 is 110.
+Now, an important observation here is that
+this Code
+3, if you remember, it's a prefix code,
+which you can
+observe right away by looking at the 3
+representation,
+in order to get to any of the code words,
+we don't need to go
+through another code word, which was the
+case for example
+with Code 2.
+To get to S3 for example, we have to go
+through S1.
+So S1 is a prefix to S3, but here this is
+not the case.
+So none of the code words is a prefix
+from another code word and therefore is a
+prefix code.
+And equally importantly is that the leaf
+nodes here are represented by symbols.
+So the symbols, rather, are
+represented by leaf nodes.
+If we look at Code 4 and its binary
+representation, it's clearly that it's not
+a prefix code.
+To get to S1, for example, is a prefix of
+S2 and S3 and S4.
+And therefore, the symbols are not
+represented by the leaf nodes.
+So, I put here also the various terms that
+I introduced.
+So this is an important point that we see
+here for prefix codes and we'll
+see that when we talk pretty soon about
+the Huffman code,
+that due to the construction I end up with
+a construction like this.
+In other words, the symbols are
+represented by leaf nodes
+and therefore, we know that this is a
+prefix prefix code.
+We summarize here some of the results and
+statements made about prefix
+and uniquely decodable codes in the last
+few slides for easy reference.
+So, as mentioned, it's hard to tell if a
+code is uniquely decodable.
+However, there is a systematic procedure,
+which, based on which one can determine
+in a finite number of steps if, indeed,
+the code is uniquely decodable.
+As mentioned, prefix codes are uniquely
+decodeable, but
+the converse is not true, prefix codes are
+instantaneously decodeable and prefix
+codes are by and
+large easy to design and easy to decode.
+Now, the good news is that for any
+uniquely decodable code that
+is not prefix, we can find a prefix with
+the same rate.
+

@@ -1,0 +1,294 @@
+So let's consider this modeling problem 
+that we're left with a little bit more 
+closely. 
+And to do this, I'm going to use the 
+following example. 
+So if we consider this word base, there 
+are many possible tags. 
+At this particular position for this word 
+base. 
+And we'll use script y to refer to the 
+set of possible tags. 
+So we have, for example, singular nouns, 
+plural nouns, transitive verbs, 
+intransitive verbs, prepositions, 
+determiners, and so on and so on. 
+And our task is to going to be to 
+estimate the probability for any one of 
+these possibilities given the context. 
+So, what is the context? 
+The context is going to be the previous 2 
+tags. 
+And in this case the determiner 
+adjective, and potentially any features 
+of the sentence. 
+So remember we have p of t j, given w 1 
+through w n, sentence, then TJ minus 2 TJ 
+minus one. 
+So we can condition on the previous two 
+tags, and we can condition on any 
+information in the entire sentence. 
+And of course, this is a very complex 
+object that we're conditioning on. 
+There are many, many possible features of 
+this context, which could be useful And 
+that's really the motivation for using 
+log-linear models in this context. 
+So, to apply log-linear models, we're 
+going to have to develop a little bit of 
+a notation. 
+And a critical idea is going to be the 
+idea of a history, which basically 
+captures all of the information in the 
+context. 
+All of the contextual information we can 
+condition on. 
+And a history is going to be a 4-tuple 
+considering consisting of the following. 
+We have the previous two tags, t minus 2, 
+and t minus 1. 
+We have the entire sequence of words in 
+the input sentence. 
+W1, through wn. 
+And then, we also need to be a little bit 
+careful, to make sure we condition on the 
+position of the sentence that we are 
+tagging. 
+So i, is going to be an index, of the 
+word being tagged, the position in the 
+center. 
+So let's see how this 4-tuple, is 
+substantiated for this particular 
+example. 
+In this case we have t minus 2 and t 
+minus 1, equal to the 2 tags dt, followed 
+by jj. 
+We have w1 through n, consisting of the 
+entire input sentence, the entire 
+sequence of words. 
+And then we have the position i is equal 
+to 6 because if we count the words in the 
+sentence, we have one, two, three, four, 
+five 6, this is at position 6 in the 
+sentence. 
+So again, this history basically captures 
+all of the information about the context. 
+The previous two tags, the entire 
+sentence, and the particular position in 
+the sentence. 
+We'll use script X to refer to the set of 
+all possible histories. 
+So that's going to be a very large set. 
+Actually, it potentially, an an infinite 
+set, a countably infinite set, if we 
+allow sentences of all possible lengths. 
+So given these definitions we can apply a 
+Log Linear model in a very direct way. 
+And so here the gain is a re cap of the 
+idea of feature vector representations as 
+used very directly in Log Linear models. 
+So, in general in a log linear model 
+we're going to assume some sets of 
+possible inputs or histories, in all 
+tagging case, this again is going to be a 
+4-tuple, T minus two, T minus one, W one 
+to W N and some position I. 
+And we'll also assume that we have some 
+finite label set which we use, which we 
+denote by script Y For example, this 
+might be the set of all possible part of 
+speech tags, maybe D, N and V. 
+Our aim is to provide a conditional 
+probability, PY given X, for any history 
+x combined with any label y. 
+So the key representational trick in 
+log-linear models is to make use of 
+features. 
+So a feature is a function that takes a 
+history paired with a label, and maps it 
+to some value. 
+And we saw last week, when we considered 
+Log-Linear models that many of the 
+features used in NLP are these rather 
+simply binary features where the result 
+of the function is either zero or one. 
+These, these features typically ask 
+questions about the input x in 
+conjunction with the label y and return 
+zero if that question is false one if the 
+answer to that question is true. 
+And then, given a set of n features, f 
+sub k if equals one to m, we can define a 
+feature vector to be a vector consisting 
+of the m values of these m different 
+features in the model. 
+And so, basically we end up with mapping, 
+a particular. 
+History or input paired with a particular 
+tag, to some feature vector which 
+represents the outputs sorry the results 
+of all of these features or questions 
+about the history in conjunction with the 
+label. 
+So here's some examples of how we might 
+instantiate features in the tagging 
+problem. 
+So we have x instead of all possible 
+histories of this form, y is a set of 
+tags. 
+We have various features. 
+So the first example featured is the 
+following. 
+So f1 is going to be 1 if the current 
+word wi is the word base and the tag t is 
+equal to Vt. 
+So this intuitively is going to capture 
+the affinity. 
+For that particular word base we were 
+considering, for having the transitive 
+verb tag. 
+Now this is just one feature, of course. 
+You would in practice define many 
+potential features. 
+quite likely corresponding to every 
+possible word paired with every possible 
+part of speech tag. 
+Here's a second type of feature, f two, 
+and this says the following. 
+It's going to be one if the current were 
+wi, ends in the suffix ing, and that tag 
+is vbg. 
+This is a gerund verb. 
+This is the tag for a gerund in the pen 
+tree bank, for example. 
+And, words ending in ing in English are 
+very often tagged as VBG. 
+Now, you'll start to see something 
+interesting happening here, which is that 
+in a sense this feature is captured by 
+the parameter in an HMM which is e of 
+base given vt. 
+That is the natural parameter in an HMM 
+which captures the affinity for the word 
+base to be a trasitive verb. 
+But this really is a new type of feature, 
+which looks at some spelling feature of 
+the word being tagged. 
+In this case, the suffix -ing. 
+These kind of features are much more 
+difficult for HMMS. 
+And in fact, we saw in the programming 
+assignment to this course And actually in 
+the lecture slides for HMMs. 
+The you know one common way of dealing 
+with these kind of spelling features was 
+to introduce mappings from rare and 
+infrequent words to maybe 10 or 20 
+different word classes. 
+But that was really a rather crude way of 
+doing things. 
+It's much more convenient to be able to 
+define features like this which will look 
+at the spelling In conjunction with the 
+tag. 
+And actually those are two feature types 
+from Road[/g] by Adwait Ratnaparkhi which 
+is one of the earliest applications of 
+log-linear models to tagging. 
+Actually probably the earliest. 
+And I can actually describe the full set 
+of features he used in his model. 
+So there's a pretty simple set of 
+features and yet, it's still close to 
+state of the art in that, if you use 
+these features in a part of speech tagger 
+for example, you will get a state of the 
+art model. 
+So, he introduced word/tag features, so 
+features like the one I've shown you 
+here, that pair a particular word, with 
+the identity of wi as a particular word 
+with a particular tag. 
+And he included one feature like this for 
+every word/tag pair seen in your training 
+sample. 
+So, a quite large number of features 
+which pair words with underlying tags. 
+He also considered spelling features, 
+which looked at all prefixes or suffixes 
+of length, less than equal to four. 
+Okay, so here is this example feature 
+again, which looks at the suffix being i 
+of g in a particular tag. 
+And here is a feature, which looks at the 
+prefix, and fires if the particular word 
+wi, starts with the three letters pre. 
+And the tag in this case is a common or a 
+rather a singular noun. 
+So again, we're going to consider all 
+prefixes and suffixes of length less than 
+or equal to four potentially combined 
+with all possible tags which are 
+possible, a quite large number of 
+features. 
+But these features are invaluable when 
+you're dealing with infrequent or unknown 
+words. 
+These kind of spelling futures can be 
+very useful in dis, disambiguating those 
+words. 
+Ratnaparkhi also looked at contextual 
+features. 
+So these first three features look very 
+much like trigram. 
+bigram, and unigram features, over tags. 
+So this first feature is one, if the tag 
+sequence, t minus 2, t minus 1t is equal 
+to DT JJ VT, and it's zero otherwise. 
+So this captures a particular trigram of 
+tags and you would most likely have one 
+feature like this for every possible 
+trigram of tags. 
+Or at the very least one feature like 
+this for every trigram of tags seen in 
+your training sample. 
+Here's a bigram feature, so this face is 
+if the previous tag is JJ and the current 
+tag being proposed is VT, so that's a 
+bigram of text. 
+And then finally we have a feature which 
+just looks like a unigram, looks like a 
+tag itself, a lone T And just flies on 
+the fact that it's a Vt. 
+Now, of course, we're going to have 
+features, sorry, parameters in our model. 
+V103, V104, and V105, which are basically 
+going to be in some sense correlated with 
+the probability or likelihood of this 
+trigram or this bigram or this unigram, 
+of tags. 
+Ratnaparkhi also made use of features, 
+which, in addition to looking at the 
+current word wi being tagged, so 
+generally we might have, for example, 
+this might be the word base. 
+We can also look at words surrounding 
+this. 
+See if its left or the immediate right. 
+So here is one feature which is one if 
+the previous word. 
+Wi-1 equals there and the tag equals vt. 
+Well we might have a feature looking at 
+the next word. 
+The fact that wi plus 1 equals the and 
+the t equals vt. 
+So you can see that the flexibility of 
+log-linear models, allows us to define 
+all kinds of features, which look at the 
+current tag being proposed as well as 
+features of the context. 
+Whether those features are the previous 
+two tags in the context, or their 
+surrounding words, in this particular 
+context. 
+

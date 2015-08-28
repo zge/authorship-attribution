@@ -1,0 +1,347 @@
+So if we go back to this problem. 
+So this is the translation problem, we 
+have an input sentence x, we're going to 
+search through all possible derivations 
+for the sentence. 
+Each one has this score, so f of y is 
+equal to the score I showed you before. 
+And we're going to try to find the 
+highest scoring derivation under this 
+score, okay? 
+So, again, this set y of x is typically 
+exponential in size. 
+[SOUND] And so, certainly the, the brute 
+force method of explicitly enumerating 
+every possible derivation, then scoring 
+it, is in no way going to be feasible. 
+So, the next thing we're going to do is 
+develop an algorithm for this problem. 
+Now, it's worth noting, this problem is 
+actually very hard, it's almost certainly 
+an NP-hard problem. 
+And, that is going to mean that we're 
+going to have to develop a heuristic 
+method of, for solving this problem, 
+based on beam search. 
+So we'll see how we develop an 
+approximate search algorithm for this 
+problem, but an algorithm which really 
+performs quite well in practice. 
+So, a first key idea in this algorithm is 
+going to be the idea of a state. 
+So a state is a 5 tuple. 
+Here's an example. 
+We might have a state, we must, and then, 
+say we have a sentence of length x 1, x 
+2, up to x 7. 
+the first two elements of this tuple are 
+two words, we must, essentially 
+corresponding to the last two words for 
+translation, we'll see again with an 
+example in the next slide how this works 
+out. 
+b is going to be a bit string of length 
+of, the, the of the same length as the 
+input sentence. 
+So, we might have this bit string here. 
+r is going to be some integer, and alpha 
+is going to be some score. 
+Okay, so what are these states 
+intuitively correspond to? 
+This is saying, I formed a translation 
+ending the words we must. 
+And, which translates words 1 and 2 in 
+the sentence, but none of the other 
+words. 
+So this bit string is going to record, 
+keep track of which words in the input 
+sentance have actually been translated. 
+this position 2, is going to be the 
+endpoint of the last phase. 
+So, for example, we might have used the 
+phrase we must, as the last phrase in 
+building the state. 
+And this records this. 
+This is going to allow us to enforce the 
+distortion limit and also to calculate 
+distortion scores. 
+And then finally, this is going to be 
+some score, indication the score of the 
+partial translation that has reached this 
+state. 
+The initial state is always going to be 
+the following. 
+It has star, star. 
+So these are the usual start symbols in 
+our language models, and this just 
+reflects that the start of the 
+translation always starts off with star, 
+star. 
+We have a bit string specifying that none 
+of the input words are being translated, 
+so it's all 0s, seven 0s in this case 
+assuming the input is of length seven. 
+We have 0 as the endpoint of the previous 
+phrase, because we're at the very start 
+of the sentence. 
+And we have 0 for the score because this 
+partial translation hasn't used any 
+phrases yet, and so the score is 
+essentially 0. 
+So it's going to be very useful to think 
+of the search space in this translation 
+problem, as essentially, a directed 
+graph, with the states I've shown you, on 
+the previous slide, as the modes in this 
+graph. 
+Let me explain what I mean. 
+So let's assume that this is again the 
+sentence we're trying to translate, and 
+what I've shown you here is again, the 
+start state. 
+So we have star, star, we have seve 0s 
+specifying these seven words, none of 
+them have been translated at this point. 
+We have 0, this is the endpoint, of the 
+last phrase, and 0 is the score. 
+So given this state, I can choose the 
+first phrase in the translation. 
+So let's, for example, assume we choose 
+this phrase here. 
+So we translate the first two words as we 
+must. 
+I'll label this arc with this choice of 
+phrase. 
+And here's the state we end up with. 
+So it's going to be, we must. 
+Now I'm going to have the following bit 
+string, specifying that the first two 
+words have been translated. 
+The other ones haven't. 
+I'll have 2, because that's the end point 
+of this phrase here. 
+And I'll have some score like minus 1.5, 
+for example. 
+Okay? 
+So these arcs are going to be labeled 
+with choices of phrases, and they're 
+going to leave from one state to another. 
+Intuitively, this arc corresponds to the 
+choice of this phrase 1, 2, we must, at 
+the very start of the sentence. 
+Let me talk a little bit about how the 
+score is calculated. 
+So in this case it would be the 
+following. 
+It would be a combination of the language 
+modeling scores, the phrase scores, and 
+also the distortion scores. 
+So we'd have language modeling scores, 
+which were log q of we, given star, star, 
+plus log q must, given star, we. 
+So, we have one of these log q terms for 
+each word we and must. 
+And then we have g of 1, 2, we, must. 
+Recall that that's the score for this 
+choice of phrase, for cor, matching we 
+must with wir mussen. 
+And finally, we have ader times the 
+distortion. 
+And in this case, the distortion is where 
+we have the previous phrase ended at 
+point 0, we have 1 here, so we have by 
+the usual rules 0 plus 1 minus 1, and 
+this is actually equal to 0, so there's 
+no distortion cost here. 
+And, that sum of terms is going to give 
+us this score here. 
+So this is basically the score sorry, 
+it's 0 plus that. 
+So we started with a score of 0, and then 
+I've added in these terms corresponding 
+to this transition. 
+Now, there might be several other 
+possibilities, so here's another one. 
+So we could also say 1, 3, we must also. 
+So now we have an auch corresponding to 
+the choice of translating the first three 
+words, as we must also. 
+And this would lead to a state with must, 
+and also, as the last two words. 
+A bit string specifying that the first 
+three words were translated. 
+An endpoint of 3 because this phrase ends 
+at point 3, and then it gains some score, 
+which in this would have three log q 
+terms, one for we, one for must one but 
+also. 
+You'll have a g term of 1, 3, we must 
+also, and in fact the distortion cost 
+will again be 0 here. 
+Here's a third example. 
+Another choice might be the following, 1, 
+2, 3, so we might say 3, 3, also. 
+So that corresponds to translating this 
+word auch as also. 
+And, this would lead to the state star, 
+also. 
+And we'd have 0010000 specifying that 
+this third word had been translated. 
+We would have 3, because this ends in 
+point 3, and again, some score minus, 
+maybe minus 3.8 or something. 
+Okay. 
+Now, each of these states can also have 
+outgoing on. 
+I should also say at this point there can 
+be many, many more. 
+Essentially, we have one auch for every 
+possible phrase that could come at the 
+start of a sentence. 
+So these phrases will also have outgoing 
+auch's. 
+So for example, we might have the 
+following. 
+So we might then say let's, 1, 2, 3, 4, 
+5, let's translate words 4 and 5 as this 
+criticism. 
+Okay, so that's another choice of phrase, 
+and that would actually lead to a state 
+which is this criticism, and for them we 
+would have 1101100. 
+We would have 5 as the end point, and 
+we'd have some new score, maybe minus 
+3.7. 
+That new score is calculated as this 
+score plus various terms, language 
+modeling terms for each of these two 
+words in the phrase. 
+Again a score for the phrase itself and a 
+distortion score and so on. 
+And similarly, these different states 
+will also have outgoing auchs. 
+Okay, so, if we think of this entire 
+graph, where for each state we list all 
+possible outgoing auchs, all possible 
+phrases that can follow the state, we can 
+have a very large search space. 
+so every path through this directed graph 
+is going to correspond to a translation, 
+and the final states in these 
+translations will look like the 
+following. 
+we might have something like criticisms, 
+seriously, so some choice of two words at 
+the end of a sentence. 
+Critically, the bit string, at these 
+final states, is going to be complete, 
+specifying that we've completed all the 
+words in the sentence. 
+We might have some end point, for example 
+6, and some minus, some score, 10.4. 
+Okay. 
+And so the translation task can be 
+visualized as trying to find a path to 
+one of these end, end states, that has 
+the, the high score. 
+We're trying to find the end state as the 
+highest possible score. 
+So that's a useful way to visualize the 
+search space. 
+it's important to realize that this graph 
+is exponential in size. 
+Why is that? 
+Well if we take any one of these bit 
+strings, there are 2 to the n possible 
+bit strings. 
+So, there are going to be an exponential 
+number of notes in this graph. 
+And so that means that we are not 
+going to be able to explore this graph, 
+exhaustively. 
+But, this is a very useful picture to 
+have in mind, a graph, a directed graph 
+where we have states at the, at the 
+nodes, and these outgoing auchs are 
+labeled with choices and phrases. 
+And at each point, the phrase combined 
+with the previous state specifies the 
+next state in this graph. 
+So, a little bit of notation to reflect 
+this. 
+so for any state q, for example star, 
+star 1, 2, 3, 4, 5, 6, 7, 0, 0. 
+and so if this is q, we'll define p h of 
+q, to be a function that returns the set 
+of possible phrases that can follow this 
+state. 
+So there might be things like 1, 2, we 
+must. 
+1, 3 we must also. 
+may have 3, 3, also, and so on, and so 
+on. 
+so, each of these phrases has to satisfy 
+two different constraints, okay? 
+So, for one thing, we've gotta make sure 
+that we don't translate the same word 
+twice. 
+And so, the phrase p, so if p is a member 
+of the set p h of q, p must not overlap 
+with the bit-string b. 
+Okay. 
+So in this case the bit-string is empty. 
+And so it, any of these phrases will be 
+fine, because, for example, words 1 to 2 
+are certainly not translated. 
+But if we consider a different state, so, 
+say we take q equals we must, and then 1 
+1. 
+So, we have the state reflecting the fact 
+that the first two words translated 
+something like this. 
+then the state we, sorry the phrase. 
+Start again, the phrase 1, 1, we. 
+This is maybe one possible phrase, is 
+definitely not in p h of q. 
+So it's not a phrase that can follow 
+this, because it would mean that we 
+translate word one again. 
+So you can see now how these bit strings 
+come into play. 
+They constrain the set of possible 
+phrases you can choose at each point. 
+And particularly, you can only choose 
+phrases which translate new words. 
+Okay. 
+The second condition is the distortion 
+limit must not be violated. 
+So remember in each of these states, we 
+store the end-point of the previous 
+phrase. 
+So for example this 2, means that the 
+last phrase I chose ended at point 2, and 
+that allows us to immediately check the 
+phrase distortion. 
+So, we can, for example, following this 
+phrase, choose something like 3, 3, also, 
+because 2 plus 1 minus 3 is equal to 0, 
+which is less than or equal to, d, 4 
+rather. 
+Let's say the distortion limit is equal 
+to 4 again. 
+On the other hand, if we take some phrase 
+like I don't know 8,8 seriously. 
+Okay, then in this case, if we look at 
+the distortion, we have 2 plus 1 minus 8, 
+that is equal the magnitude of minus 5, 
+which definitely violates this 
+constraint, and so this phrase would not 
+be allowed to follow this state. 
+Okay. 
+So, to summarize, two constraints, any 
+phrase in a set p h q, remember this is 
+the set of phrases that can follow the 
+state q, must not overlap with the bit 
+string, and also must satisfy the 
+distortion limit. 
+

@@ -1,0 +1,545 @@
+So in this video we'll take a peek under
+the hood of hash functions. And I'll
+discuss some of the high level principles
+by which their implemented. So let's
+briefly review the raison d'etre of a hash
+table. So the purpose in life for a hash
+table is to support super-fast lookups. So
+maybe you're keeping track of the
+transactions that happened on your website
+yesterday. Maybe you're keeping track of
+your employees; maybe you're keeping track
+of IP addresses in an Internet router.
+Maybe you're keeping track of chess
+configurations in a, in a chess-playing
+program, Whatever, The point is, you want
+to be able to insert stuff into a hash
+table, and later remember whether
+something's there or whether something's
+not there. So the implementations we'll
+discuss will generally also support
+deletions. But that's pretty much it. It's
+a very restricted set of operations. But
+the hash, It was going to execute them at
+very, very well. So, basically in constant
+time, again subject to some fine print,
+which we'll discuss a little bit in this
+video but, then more deeply in a separate
+optional video. So, the two caveats are
+first of all the hash table had better be
+properly implemented. It's actually pretty
+easy to screw up a hash table to screw up
+hash functions. We'll talk a bit about
+that in a few minutes and, then, also, the
+data should, in some sense, be
+non-pathological, and that, we will
+discuss more deeply in a separate video.
+Alright, so let me give you an initial
+glimpse of some of the magic that's
+happening under the hood in hash
+functions. So, at first let me say exactly
+what the setup is. The first step is to
+identify all the things that you might
+want to be storing. So, in other words,
+the universe of your application, So this
+would be something like, all possible I-P
+addresses, of which there's 2^32 .
+All possible names you might
+encounter, perhaps with a maximum of, say,
+30 characters. All possible configurations
+of a chessboard, and so on, And one thing
+I hope you can appreciate from these
+examples is that, in many cases, this
+universe is really big. Sothe number of ] IP
+address is, quote unquote, only two 2^32.
+The number of all names, you're
+probably talking more like 26 raised to the 30.
+All chessboard configurations I
+don't even wanna think about. And what you
+wanna accomplish is, you wanna maintain an
+evolving subset of this universe U. So
+maybe you wanna keep track of all the IP
+addresses you've seen on your website in
+the last 24 hours. You wanna keep track of
+the phone numbers of all of your friends.
+You wanna keep track of the chessboard
+configurations that you've explored in the
+past three seconds, whatever. And again I
+hope what is clear from the applications
+we've been discussing, is that the set S
+is usually of a reasonable size. It's,
+it's something you could store in main
+memory. You know, it maybe it's tens of
+thousands of IP addresses. Maybe it's, you
+know, a few hundred names of your various
+friends. You know, maybe it's in the, you
+know, millions of chessboard
+configurations, but still way, way, way
+smaller than the size of the universe. So
+without data structures, you'd have to
+resort to other unsatisfactory solutions
+to maintaining this set. So the first
+thing you could try, as we discussed in
+the previous video, would be just have an
+array with one position for every
+imaginable thing you might want to store
+in your set. So this is the solution
+that's going to work well if all of your
+friends happen to have names that are
+integers between 1 and 10,000, but
+doesn't scale when the universe size
+becomes really big, as in most of these
+applications. So, the good news is, is of
+course, is an array of and it's of course
+fast random access so you can access any
+position in constant time. So, if you have
+an array base solution index by all the
+elements of the universe, you can do
+constant time, insert, delete and look up.
+The bad news is, is the space
+requirement is proportional to the
+universe. And again, forget about being
+unsatisfactory. That's just literary
+impossible. Infeasible in many
+applications in which you'd use hash
+tables.  Now of course to get the memory
+proportional to the size of the set stuff
+that you're storing, an easy solution
+would just be to use a list. You know, say
+a doubly-linked list. Something like that.
+Now with a list-based solution the good
+news is, is your memory is certainly
+proportional to the size of the set that
+you're storing, and independent of the
+size of the universe from which these
+elements are drawn. The bad news is that
+to figure out whether something is, or is
+not, in a list you generally have to
+traverse through most of that list. And
+that's gonna take up time proportional to
+the length of the list. So, really the
+question we're faced in implementing cache
+table is, can we get the best Of both
+worlds, of these two naive solutions. And
+the one hand, we want to have the constant
+time operations enjoyed by the array based
+solution. But on the other hand, we wanna
+have the, linear space in the size of the
+set that we're storing; that we get in the
+list based solution. So to get the best of
+both worlds, we are going to use an array
+based solution. But the array will not be
+big. It'll not be with size proportional
+to the universe. The array will only have
+size, you know, roughly the same as the
+set that we're storing, So somewhere in
+the ball park of the cardinality of S. So
+the first thing we do is we decide on how
+big we want our array to be. So that, that
+length is gonna be called n. We're gonna
+have an array of length n. And n is gonna
+be in the ballpark of the size of S. It's
+gonna depend on a few things. Exactly how
+n compares to S, but for now think of n as
+like double the size of S. We're gonna be
+calling each entry of the array a bucket,
+so there's n buckets, and then, the size
+of S is about 50 percent of the number of
+buckets, let's say. So one objection you
+might legitimately raise at this point is,
+you know I thought, I said the set was
+dynamic. The set S. Right? Stuff can be
+added, stuff can be deleted. So the size
+isn't always the same. It can fluctuate
+over time. So what does it mean to define
+an array which is the, roughly the same
+length as this changing set. So for
+simplicity, for the purposes of this video
+to focus on the key points I am going to
+assume that the set size S. While S itself
+can be changing, I'm going to assume that
+the size of S doesn't fluctuate too much.
+So there are additional bells and whistles
+you can add to a hash table
+implementation, and they're all quite
+natural. I think most of you could
+probably figure them out on your own, to
+deal with the fact that S might be
+changing sizes. So for example, you can
+just keep track of how many elements are
+in your hash table. And when it exceeds a
+big, a certain threshold, so when it's too
+big relative to the size of your array,
+you just double the array. And then you
+reinsert all of the elements into this new
+doubled array. Similarly, if you want to,
+if the set shrinks, you can have tricks
+for shrinking the array dynamically as
+well. So I'm not gonna discuss these bells
+and whistles for resizing your hash table
+dynamically. They are, of course Important
+for a real implementation, and they are
+part of the implementations in the
+standard programming libraries. But I view
+those as sort of a, a second order point
+in the implementation of a hash table. And
+I wanna focus on the first order points,
+in this video. So, summarizing, think of
+the set S. There are insertions and
+deletions we have to accommodate. But, you
+know, S is gonna be roughly the same size.
+And the number of buckets will be, you
+know, within a constant factor of the size
+of the set. All right so there we have our
+array with totally reasonable space, space
+proportional to the size of the set that
+we are storing. And now what we want is we
+want is some way of translating between
+the things that we care about, say our
+friends names or whatever the elements in
+the universe are to the positions in this
+array. So the object responsible for that
+translation from keys drawn from this universe to
+positions in this array is called a hash
+function. So formally, a hash function
+Takes as input a key. So this is gonna be
+an IP address or the name of somebody or a
+chessboard configuration or whatever. And
+it's going to spit out an position in this
+array. So I'm gonna label the array
+entries from 0 to n-1 for this lecture.
+Obviously at the moment this is super
+underspecified. There's a zillion
+functions you could choose. Which one you
+use, we'll talk about that, but for now
+there's just gonna be some hash function
+mapping from elements of the universe to
+buckets, to positions in this array. Now,
+as far as the semantics of this hash
+function, what the hash function is doing,
+it's telling us in which position we
+should store a given key from the
+universe. So, if we have some new friend
+named Alice.  And we run Alice, we key
+Alice through the hash function and it
+gives us a 17. It says we should
+store Alice's phone number in position
+17 of the array. If we have some
+crazy chessboard configuration, we feed it
+into a hash function and it spits out 172,
+it says we should remember this chessboard
+configuration in the 172nd bucket of this
+array. So again, given x, which is some
+key from this universe, we invoke a hash
+function to get a position in this array,
+to get a bucket. And then that is where we
+try to store this x and any associated
+data with it. So that's the high
+leveled idea of how you implement a hash
+table, but we're quite far from done, And
+in particular there is a serious issue,
+that we're going to have to deal with,
+that's fundamental to implementing hash
+tables, and that's the notion of a
+collision. So probably many of you may
+have already noticed that this problem
+might occur. Which is well what happens if
+we're storing our friend's phone numbers,
+and you know Alice shows up and we ask our
+hash function where to store Alice's phone
+number, and it says oh bucket number
+17, And then our friend Bob shows
+up, and we ask our hash function where to
+store Bob's phone number, and what if the
+hash function also says bucket number
+17 for Bob? What do we put in
+bucket at 17? Do we put Alice
+there, do we put Bob there, do we put them
+both there? How do we deal with these
+so-called collisions? So, the next quiz is
+meant to give, to get you thinking about
+collisions, and in some sense, how truly
+unavoidable they really are. [sound],
+[sound] All right. So the correct answer
+to this question is the first answer,
+believe it or not. All you need is 23
+people in a room before you're equally
+likely to have two people with the same
+birthday as not. So if you're looking to,
+to skim a little money off of your
+non-mathematical friends, this is one way
+you can do it. Go to cocktail parties with
+about 40 people and place bets with people
+that there are two people in the room with
+the same birthday. So if you have 367
+people, well there's only 366 distinct
+birthdays, I'm counting February 29th
+here as one of them. So by
+the pigeonhole principle, certainly the
+probability is 100%. By the time you get
+to 367. Now, by the time you're at 57.
+You're already at 99%. So you already have
+overwhelming probability to have a
+duplicate birthday with 57 people. So of
+course, with 184 you're gonna be almost at
+100%, 99.99. Who knows? Some large number
+of 9's, And at 23, you're at 50%. So many
+people find this quite counter-intuitive
+that you only need 23 people to get a
+duplicate birthday on average. And so this
+is a, this is a quite famous example and
+it sometimes goes by the birthday paradox.
+Calling it a paradox is sort of a
+misnomer. A paradox, you know, often
+suggests some kind of logical
+inconsistency. There's no logical
+inconsistency here. It's just that
+people's brains are not really wired to
+have this intuition, for whatever reason.
+So, but it's really just math. You can
+work out the math, and, and, and you can
+just solve it. So, more generally, the
+principle behind the birthday paradox is
+the following. So suppose you have a
+calendar, perhaps on some different
+planet, which has K days. Where each,
+everybody's equally likely to have each of
+the K days as their birthday. Then it's
+about the square root of k people that you
+need in a room before you're equally
+likely to have a duplicate, or not have a
+duplicate. Okay, and the reason that you
+get the square root effect is because if
+you think about it. There's a quadratic
+number of pairs of people in the room, so
+that's a quadratic, and the number of
+people Opportunities to have a duplicate.
+Right? So, each pair of people could be a
+duplicate, there's a quadratic number of
+pairs. And so, that's why, once the number
+of pairs starts reaching about the number
+of different days, you're, you're about,
+you're likely to see a duplicate around
+that point. So you might be wondering why
+I'm telling you about the birthday paradox
+in the middle of a lecture about hashing,
+but really it's quite relevant. So imagine
+for example you defined a hash function in
+the following way. Now to be clear, this
+is not a practical hash function, but just
+for the purposes of discussion, imagine
+you have a hash function which randomly
+assigned every single key to a uniform
+bucket. 'Kay, so for each, each of the 1/n
+buckets equally likely. Then what
+the birthday paradox says is, even for a
+very small dataset, you are already gonna
+have a pair of things colliding. All
+right, So if you have an n buckets, so
+maybe your n is like, 10,000, all you need
+is roughly 100 elements in your data set,
+and despite the fact that the table is
+only going to be one percent full, you're
+already going to see a collision, okay? So
+99 percent of them are empty, but you're
+going to have one bucket that has two, so
+that's sort of annoying. So the birthday
+paradox says, you start getting collisions
+with the hash function, even with the
+really tiny data sets. So in this sense,
+if you're going to have hash tables,
+you've got to deal with collisions.
+There's going to be a fair number of them,
+and you need some method for resolving
+them So, collisions are a fact of life
+when you're talking about hashing. Where
+again, by collision, what I mean is two
+different keys. So two different elements
+x and y from the universe that hash to the
+same bucket, Who have the same hash value,
+So in general we can think of a hash
+function as doing a compression of sorts.
+So we have a huge universe U and we have
+this very modest size array A with the
+only n buckets. Where n, we're thinking
+of as being much, much, much smaller than
+U. So, of course, this hash function has
+to map various elements of U to the same
+bucket. So what are we gonna do about it?
+How are we going to resolve these
+collisions? Well, there's two different
+solutions which are both quite prevalent
+in practice. So solution number one is
+called chaining, or sometimes you'll also
+see it called separate chaining. And this
+is a very natural solution; it's also the
+one that's relatively easy to analyze
+mathematically. What you do is just for
+elements that hash to the same bucket, you
+just revert to the list-based solution
+that we talked about in a previous slide.
+So, each of the n buckets will not
+necessarily contain just merely 0 or 1 element
+, it will contain a list within
+a principle unbounded number of elements.
+Okay, so when we use chaining, it's done
+quite straight-forward to figure out how
+to implement all of the hash table
+operations, namely, insert, delete and
+look-up, you just hash something to the
+appropriate bucket and then you just do
+insert, delete or look-up, as appropriate,
+in the list that's in that bucket. So just
+to make clear that everything is type
+checking, so here h(x), this is the bucket
+for x. That's what's specified by the hash
+function. And then, in the h(x) position
+of this array A, in the h (x), the bucket
+is where we find the linked list that is
+going to contain x. So just to give a
+cartoon example, if you had, say, four
+buckets, Maybe, you know, the first bucket
+has exactly one record. Corresponding to
+Alice, maybe the second bucket just has a
+null pointer. No one's been inserted in the
+second bucket. And then the third bucket
+we have, let's say, both Bob as well as
+Daniel. And then maybe in the fourth
+bucket we have Carol. Okay, so because we
+have a collision between Bob and Daniel,
+both map to the third bucket, and we
+resolve that just by having a linked list,
+with Bob and Daniel in some order. So the
+second solution which is trickier to talk
+about mathematically but still quite
+important practically is called open
+addressing. And the principal in open
+addressing is you're not going to use
+any space for pointers. You're not gonna
+have lists. So you're only gonna have one
+object per bucket of the array. So another
+question is what happens if, you know, you
+try and insert Daniel and you go, you
+invoke the hash function on Daniel and it
+takes you to a bucket that already
+contains Bob? That means there's no room
+for Daniel. So what you're going to do is
+you're gonna probe the hash table in some
+other position. So a hash function is, is
+now gonna be replaced by a hash sequence,
+where you try, the hash function tells you
+the first bucket to try to insert Daniel;
+failing that, a second bucket in which to
+try to insert Daniel; failing that, a
+third bucket to try to insert Daniel; and
+so on. And you just keep trying till you
+find an open position somewhere in the
+array. So there's various strategies for
+trying to figure out the probe
+sequence. One strategy is if you fail and
+save bucket 17, which is where the
+hash function tells you to go first. You
+just try bucket 18, then 19,
+then, 20, then 21 and so on, until you
+find your first open slot. So that's
+called linear probing. And another
+approach is double hashing. So this is a
+solution where you actually have two hash
+functions, hash function 1 and hash
+function 2. And the idea is, suppose
+you're trying to insert, say, Daniel, into
+a hash table with open addressing, and you
+evaluate both of the hash functions. And
+the first one comes up 17, and the
+fir-, the second one comes up 23. So, as
+usual, the has-, first hash function will
+specify where you look first. So if it
+evaluates on Daniel to 17, you look
+in the seventeenth position of the array,
+And if, if it's empty, that's where you
+insert Daniel. Now, if it's full, what you
+do is you use the second Hash value to be
+an additive shift, so. Unlike linear
+probing where after seventeen, you look at
+eighteen. With double hashing, if the
+second hash function gives you 23, that's
+gonna be your offset. So after seventeen,
+you look at bucket 40. If 40 is already
+full, you look at bucket 63. If bucket 63
+is already full then you look at bucket
+86. So you keep adding increments of 23
+until you finally find a bucket where,
+that's empty and that's where you insert
+Daniel. Now of course, if you try to
+insert some other name, if you try to
+insert Elizabeth, you're gonna get two
+totally different numbers in general. So
+maybe you'll get 42 and 27, and so here
+the probed sequence will be 42, failing
+that 69, failing that 96 failing that 123
+and so on, So a question you should have
+at this point, is, you know. I've told you
+two solutions to resolving collisions in a
+hash table. And you're probably asking,
+well, which ones should you use if you
+have to implement your own hash table?
+And, you know, as usual, if I present you
+with two different solutions for the same
+problem. You can probably rest assured
+that neither one dominates the other,
+right? Otherwise I wouldn't waste your
+time by presenting both of them to you.
+So, sometimes chaining's gonna perform
+better, and sometimes, open addressing's
+gonna perform better. And of course, it
+also depends on what kind of metric that
+you care about. So there are a couple of
+rules of thumb that I can tell you. So
+first of all if space is at a real premium
+you might want to consider open addressing
+instead of chaining, and that's cause with
+chaining you do have this excess, not
+huge but you do have this little bit of
+space overhead and dealing with all these
+pointers in this link list. So if you want
+to avoid that, you might want to think
+about open addressing. The second rule of
+thumb is deletion is trickier with open
+addressing than with chaining, but
+deletion is clearly not difficult at all,
+either to code or understand when you use
+chaining cause it just reduces chaining to
+a linked list which of course you all know
+how to do. Open Addressing is, it's not
+impossible to implement deletion but it's
+much trickier. So if deletion's a, a
+crucial operation for you, that might
+steer you towards thinking about chaining.
+But ultimately, if it's really kinda
+mission critical code, probably the best
+thing to do is implement both kinds of
+solutions and just see which one works
+better. It's a little hard to predict how
+they're gonna interact with memory
+hierarchies and that kind of thing.
+They're both useful in their own contexts.
+Alright so we've covered the two most
+prevalent ways of handling collisions. And
+we argued that collisions are inevitable
+no matter you design you hash function.
+You're stuck with collisions and you can
+do chaining or linked lists per bucket, or
+you can do addressing, where you actually
+have a probe sequence in order of which
+you look at buckets until you find an
+empty one. And the elephant in the room at
+this point is, you know, what is this hash
+function? I have told you nothing about
+hash functions. All I told you is there is
+some mapping from the set of the universe,
+so IP addresses, or names, or whatever to
+a bucket number. Well what kind of
+function should you use? Excellent
+question, Tons of research on that
+question, And to this day as much art as
+science. But let's start talking about it.

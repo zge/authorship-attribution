@@ -1,0 +1,343 @@
+So, before we embark in the analysis, what
+are we hoping to understand? Well, it
+seems intuitively clear is that there is
+going to be some trade off between the two
+resources of the bloom filter. One
+resource is space consumption, the other
+resource is essentially correctness so the
+more space we use, the larger number of
+bits, we'd hope that we'd make fewer and
+fewer errors. And then as we compress the
+table more and more, we use bits more and
+more for different objects then presumably
+the error rate is going to increase. So,
+the goal of the analysis that we're about
+to do is to understand this trade off
+precisely at qualitative level. Once we
+understand the trade off occur between
+these two resources, then we can ask is
+there is a sweet spot which gives us a
+useful data structure? Quite small space
+and quite manageable error probability. So
+the way we're going to proceed with the
+analysis, we'll be familiar to those of
+you who watched the open addressing video
+about hash tables so to make the
+mathematical analysis tractable, I'm going
+to make a heuristic assumption The strong
+assumption which is not really satisfied
+by hash functions you would use in the
+practice. We're going to use that
+assumption to derive a performance
+guarantee for bloom filters but as all as
+any implementation you should check that
+your implementation actually is getting
+performance comparable to what the
+idealizing analysis suggest. That said, if
+you use a good hash function and if you
+have a non-pathological data, the hopes
+and this is going out many empirical
+studies is that you will see performance
+comparable to what this heuristic analysis
+will suggest. So, what is the heuristic
+assumption? Well, it's going to be again
+familiar from my hashing discussions.
+We're just going to assume that all the
+hashing is totally random. So, for each
+choice of a hash function hi and for each
+possible object ax, the slots, the
+position of the array which the hash
+functions gives for that object is
+uniformly random and first of all and it's
+independen t from all other outputs of all
+hash functions on all objects. So the set
+up then is we have n bits. We have a data
+set, S which we have inserted into our
+bloom filter. Now our eventual goal is to
+understand the error rate or the false
+positive probability. That is the chance
+that an object which we haven't inserted
+into the bloom filter looks as if it has
+been inserted into the bloom filter but as
+a preliminary step, I want to ask about
+the population of 1s after we've inserted
+this data set S into the bloom filter. So,
+specifically let's focus on a particular
+position of the array and by symmetry it
+doesn't matter which one. And let's ask
+what is the probability that a given bit,
+a given position on this array has been
+set to one after we've inserted this
+entire data set S? Alright, so this, this
+is a somewhat difficult quiz question
+actually. The correct answer is the second
+answer. It's one - quantity one - 1/n
+raised to the number of hash functions k
+the number of objects cardinality of S,
+that's the probability let's say the first
+bit of the bloom filter has been set to
+one after the data set S has been
+inserted. So the, maybe the easiest way to
+see this is to first focus on the first
+answer. So, the first answer is going to
+be the probability I claim that the first
+bit is zero after the entire data set has
+been inserted. Then of course it's
+probably it's a one, is just the one - its
+quantity which is equal to the second
+answer. So we just seem to understand why
+the first choice is probably the first bit
+= zero. Well, it's initially zero,
+remember stuff is only set from zero to
+one. So we really need to analyze the
+probability that this first bit survives
+all of these darts that are getting thrown
+to the bloom filter over the course of
+this entire data set being inserted. So
+there, the cardinality of these objects
+each get inserted on an insertion k darts
+uniformly at random and independent from
+each other or effectively thrown at the
+array at the bloom filter. Any position of
+the dart hits, gets set to one. Maybe it
+was one already but if it was zero, it
+gets set to one. If it's one then it stays
+one. So, how is this first pick going to
+stay zero? We'll have to be missed by all
+of the darts. A given dart, a given bit
+flick is uniformly likely to be any of the
+n bits so the probability of the ones that
+being this bit is only 1/n but, if it even
+it's fortunately somebody else? Well,
+that's one - 1/n so you have a chance of
+surviving a single dart with probably one
+- 1/n There is the number of hash
+functions k the number of objects
+cardinality that's a dart being thrown.
+Right k per object that gets inserted so
+the overall probability of eluding all of
+the darts is one - one or n raised to the
+number of hash functions k the number of
+insertions cardinality of S. Again, the
+probability that is one which is the one -
+that quantity which is the second option
+in the quiz. So, let's go ahead and resume
+our analysis using the answer to that
+quiz. So, what do we discover, discover
+the probability that a given bit is one,
+is one - quantity one - 1/n or n is the
+number of position raised to the number of
+hash functions k the number of insertions
+cardinality of S. So, that's the kind of
+messy quantity so let's recall a simple
+estimation facts that we used once
+earlier. You saw this when we analyzed
+cardinals construction algorithm and the
+benefit of multiple repetitions or
+cardinals contraction algorithm. And the
+trick here is to estimate a quantity
+that's on the form of one + x or one - x
+by either the x or the - x as the case
+maybe. So you take the function one + x
+which goes through the points -ten and 01.
+And of course it's a straight line and
+then you also look at the function e to
+the x. Well, those two functions are going
+to kiss at the point 0,1 and everywhere
+else e to the x is going to be above one +
+x. So for any real value of x we can
+always upper bound the quantity one + x by
+either the - x. So let's apply this fact
+to this quantity here, one - 1/n raise to
+the k cardinality of S. We're going to
+take x to the - 1/n so that gives us an
+upper bound on this probability of one - e
+to th e - k the number of insertions over
+n, okay? So that's taking x to the - 1/n.
+Let's simplify and finalize a little bit
+further by introducing some notation. So,
+I'm going to let b denote the number of
+bits that were using per object. So this
+is the quantity I was telling you to think
+about as eighth previously. This is the
+ratio n, the total number of bits divided
+by the cardinality of S. So, this green
+expression becomes one - e^k where b is
+the number of bits per object. And now
+we're already seeing this type of trade
+off that we're expecting. Remember we're
+expecting that as we use more and more
+space, then the error rate we think should
+go down so if you can press the table a
+lot or use bits for lots of different
+objects that's when you start going to see
+a lot of false positives so in this light
+blue expression if you take the number of
+bits per objects with the number space,
+the amount of space, little b if you take
+that going very large expanding to
+infinity, this exponent to zero. So either
+the -zero is one. So overall, this
+probability of a given bit being one is
+turning to zero. So, that is, the more
+bits you have, the bigger space you have.
+The, well, the smaller of the fraction of
+1s. The bigger the faction of 0s. That
+should translate to a smaller false
+positive probability unless we will make
+precise on the next and final slot. So
+let's, let's rewrite the upshot form the
+last slide but probability that a given
+bit is equal to one is that at above by
+one - e to the - k over b where k is the
+number of hash functions and b is the
+number of bits we're using per object. Now
+this is not the quantity that you care
+about. The quantity we care about is a
+false positive probability where something
+looks like it's in the bloom filter even
+though it's never been inserted so it's
+focused on some object like some IP
+address which is never ever been inserted
+into this bloom filter. So for a given
+object x which is not in the data set,
+that this has not been inserted into the
+bloom filter or what has to happen for us
+to have a success ful look up for false
+positive for this object? Well each one of
+its k bits has to be set to one. So, we
+already computed the probability that a
+given bit is set to one. So, what has to
+happen for all k of the bits that
+indicates x's membership in the bloom
+filter all k of them has to be set to one.
+So we just take the quantity we computed
+on the previous slide and we raise that to
+the kth power. Indicating that it has to
+happen k different times. So believe it or
+not we now have exactly what we wanted.
+What we set out to do which is derive a
+qualitative understanding of the intuitive
+trade off between the one hand space used
+and on the other hand on the error
+probability. The false positive of
+probability. So, we're going to call this
+green circle quantity and name it. We'll
+call it epsilon for the error rate and
+again all errors are false positives. And
+again as b goes to infinity, as we use
+more and more space, this exponent goes to
+zero so one - e to that quantity is going
+to zero as well. And of course, once we
+power it through the kth power, it gets
+even closer to zero. So if the bigger b
+gets the small of this error rate epsilon
+gets. So now let's get to the punch line.
+So remember the question is, is this data
+structure actually useful? Can we actually
+set all of the parameters in a way that we
+could both really usefully small space but
+a tolerable error epsilon? And, of course
+we wouldn't be giving this video if the
+answer wasn't yes. Now one thing I've been
+alluding all along is how do we set k? How
+do we choose the number of hash functions?
+I told you at the very beginning We think
+of k as a small constant like 2345. And
+now that we have this really nice
+qualitative version of how the error rate
+in the space trade off with each other. We
+can answer how to set k. Namely set k
+optimally so what do I mean? Well, fix the
+number of bits that you're using per
+object. Eight, sixteen, 24, whatever. For
+fixed b, you can just choose the k that
+minimize the screen quantity. That
+minimizes the error rate epsilon. So, how
+do you minimize t his quantity? Well, you
+do it just like you learn in calculus and
+I'll leave this as an exercise for you to
+do in the privacy of your own home. But
+for fixed b, the way to get this green
+quantity epsilon as small as possible is
+to set the number of hash functions k to
+be roughly the natural log of two. That's
+a number of < one notice that's like
+.693 b. So, in other words the number of
+hash functions for the optimal
+implementation of the bloom filter is
+scaling linearly than the number of bits
+that you're using per object. It's about
+.693 the bits per object. Of course this
+is generally not going to be an integer so
+you just pick k either this number rounded
+up or this number rounded down. But,
+continuing the heuristic analysis, now
+that we know how to set k optimally to
+minimize the error for a given amount of
+space we can plug that value of k back in
+and see well, how does the space and the
+error rate trade off against each other
+and we get a very nice answer.
+Specifically, we get that the error rate
+epsilon is just under an optimal trades to
+the number of hash functions k decreases
+exponentially in the number of bits that
+you use per object. So, it's roughly one
+half raised to the natural log of two or
+.693 roughly the number of bits per object
+b. But, again the key qualitative point
+here is notice that epsilon is going down
+really quickly as you scale b. If you
+double the number of bits that you're
+allocating per object, you're squaring the
+error rate and for small error rates,
+squaring it makes it much, much, much
+smaller. And of course this is just one
+equation in two variables. If you prefer,
+you can solve this equation to express b,
+the space requirement as a function of an
+error requirement. So if you know that the
+tolerance for false positives in your
+application is one percent you can just
+solve this for b and figure out how many
+bits per object you need to allocate. And
+so rewriting what you get is that the
+number of bits per object that you need is
+roughly 1.44 the log base two of one over
+epsilon. So, as expected as epsilon gets
+smaller and smaller, you want fewer and
+fewer errors, the space requirements will
+increase. So, the final question is, is it
+a useful data structure? Can you set all
+the parameters so that you get you know,
+really interesting space error trade off
+and the answer is totally. So, let me give
+you an example. Let's go back to having
+eight bits of storage per object so that
+corresponds to b = eight. Then, what this
+pick formula indicates is we should use
+five or six hash functions and already you
+have an error probability of something
+like two percent which for a lot of the
+motivating applications we talked about is
+already good enough. And again, if you
+double the number of bits to say sixteen
+per object, then this error probability
+would be really small. Pushing you know
+one in 5,000 or something like that. So,
+to conclude at least in this idealized
+analysis which again, you should check
+against at any real world implementation
+although empirically, it is definitely
+achievable with well implemented bloom
+filter in nonpathological data to get this
+kind of performance even with really a
+ridiculously minuscule amount of space per
+object much less generally than storing
+the object itself, you can get fast
+inserts, fast look ups, you do have to
+have false positives but with a very
+controllable amount of error rates and
+that what's make bloom filters a win in a
+number of applications.

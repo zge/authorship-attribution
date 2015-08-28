@@ -1,0 +1,283 @@
+[SOUND] In this session, we are going
+to introduce spectral clustering method.
+Why do we want to do spectral clustering?
+Because spectral clustering
+have some unique advantages.
+So first spectral clustering makes no
+assumption on the shapes of clusters.
+So you can cluster, like any kind of
+a shape, even intertwined spirals,
+you'll be able to find nice neat
+clusters not to say other shapes.
+However, many other clustering algorithm,
+like a k-means or EM tend to
+find non convex shaped clusters.
+And another advantage is usually EM or
+like a k-means,
+those algorithms require an iterative
+process to find local minima
+and they are very sensitive
+to initialization, so
+you usually need multiple restarts
+to get a high quality clusters.
+However, spectral clustering where
+you have no such burden, okay.
+The general process of spectral clustering
+is partitioned into these three steps.
+The first step is construct
+a similarity graph, for example,
+we can use k-nearest neighbor based
+on their neighborhood using like
+a Euclidean distance or other distances,
+you like to do your clustering.
+Okay.
+And for all the points you can construct
+a such similarity graph, for example,
+if you look at this illustrative example,
+you can see the original data points,
+if you do, symmetric k-nearest neighbor.
+You will find this k-nearest neigh,
+neighbor graph like the following.
+Then we can embed the data points
+in a low-dimensional space using
+spectral clustering embedding.
+What is this?
+This essentially is we
+can do graph Laplacian,
+compute the eigenvector
+of such graph Laplacian.
+After this embedding the cluster,
+structures become more obvious.
+Then we will be able to
+apply classical clustering
+algorithms, like a k-means
+on this embedding.
+That means we will be able to
+partition the embedding graph
+into nice clusters, so
+this is the general idea.
+Now we look at how we do it step by step.
+First, suppose we have a graph.
+This usually is obtained by the neighbor,
+then we get a weights.
+Suppose the weight, w sub 12 is the weight
+connecting the vertices 1 and 2.
+Okay.
+Then the adjacency matrix is a n by
+n symmetric matrix, like this one.
+Then the, for each element,
+what you've got, the,
+the assignment is if there's
+an edge between, like 1 and
+2, then you can base on the edge weight,
+w sub 1, 2,
+you can get the weight,
+w sub ij is the weight of this cell.
+Okay.
+If there's no connected edge,
+like one, four is not connected,
+then one and four,
+this cell will be assigned a zero.
+Okay.
+Then we can perform
+Laplacian on this matrix.
+Essentially if we use a diagonal
+matrix of degrees minus this
+adjacency matrix, we will get a Laplacian.
+Okay.
+What is diagonal matrix of the degrees?
+Simply says, you,
+the degree is defined by, for
+each row you just sum up all the degree,
+all the weights.
+Or you say, all the shared values in,
+in this row.
+For example, for row one,
+what you get is w sub 1 2 plus w sub 13.
+You get the weights,
+that's the degree you will get.
+Okay.
+That's d1.
+Similarly for other degrees,
+you just calculate it in the same way.
+Laplacian, this matrix value is
+if this one is diagonal matrix,
+i equals j, then you get the d sub i.
+Okay.
+That's the real value of this degree.
+If the if it's other cells,
+like ij has an edge,
+then because 0 minus this w sub ij,
+you get minus w sub ij.
+That's what you got.
+If original was zero,
+you would still get zero.
+Okay.
+So that's the value you get from
+calculate this Laplacian matrix,
+then we can see how we can calculate
+the graphs for eigenvalue and eigenvector.
+Okay.
+So we probably can see the eigen
+value computation is based on
+these formula, which has been
+used very popularly in linear.
+It's probably in matrix computation, okay.
+We will not get into very detail, but
+general philosophy is you get a matrix, A.
+A lambda is eigenvalue of A and
+for some vector v,
+you'll follow this, this equation and
+a v is the eigenvector and
+the lambda is the eigenvalue of A.
+So then for a graph,
+G, if we have n nodes,
+when its adjacency you
+will have n eigenvalues.
+And that this n eigenvalue you can sort
+them according to the descending order,
+you can, lambda one,
+lambda two to lambda sub n of this
+n corresponding eigenvectors,
+where the x sub 1, to x sub n.
+You look at this figure y,
+you probably can see.
+This is the original graph you,
+we have six vertices and
+they're, they're connections.
+Weight of the connection is marked
+using those weight, those values, okay?
+Then obviously, the,
+the original matrix, adjacency matrix
+is marked here, you probably can see and
+that's the original adjacency matrix.
+Then we calculate the,
+this originally a ei,
+this matrix eigenvalue and
+you probably can see this
+is their eigenvector and
+these is there eigenvalue.
+And you pro, you, you,
+you probably see this is mu one to mu six.
+Okay.
+So that's the spect,
+spectrum of the graph.
+Okay.
+Then the eigenvalue and
+eigenvector of the graph,
+the graph Laplacian of G is calculated,
+you, for this graph.
+Essentially is you get lambda one,
+lambda two, lambda n and
+we know the value lambda one, lambda two,
+lambda n, we can sort them in this order.
+Okay.
+So, if this zero, zero you,
+you get a spectrum is you,
+you get that this lambda value,
+this eigenvalue and eigenvector.
+Then eigenvalue reveals
+a global graph property,
+which is not apparent from the ed,
+edge structure itself.
+Essentially, if you get
+a zero this eigenvalue with k
+different to eigenvector,
+you probably will see these,
+essentially it's a k k com,
+connected components.
+That means if lambda y is zero
+that one connective component.
+Okay.
+Then if [COUGH] graph is connected,
+then lambda two will
+be greater than zero and
+lambda two is algebraic connectivity of G.
+Here you probably can see LG,
+L sub G has lambda one, lambda two,
+lambda three at zero,
+you get a three connected components.
+And if you have are this G1 and
+G2, you probably can see G1 is,
+has only one connected component and
+G2 also has one connected component.
+That's why lambda two
+is greater than zero.
+However, you also can see G2 is much
+denser is much more connected than G1.
+That's why G2's lambda two value will
+be greater than G1's lambda two value,
+then we can workout the partitioning
+via spectral methods.
+The general philosophy is if we got
+this original graph, we map them
+into Laplacian of this
+original graph is this value.
+Okay.
+Then we actually also know,
+we can calculate the second the,
+the second eigenvector and the second vec,
+eigenvector v sub 2 cor,
+corresponding to lambda sub 2.
+And for lambda sub two, the smaller,
+the better quality of the partitioning,
+because it, if lambda is zero,
+means it's not connected.
+And if lambda two actually is greater,
+means they,
+they are more tightly connected.
+If you want to get nice partitioning,
+you want to find the smaller lambda two.
+Then if we calculated this for
+each node i in G, we can guess assign it
+the value v2, then we, v2 sub i.
+So for, for example,
+this note once v2 is 0.1,
+0.41, then if we want to
+find this other six nodes,
+their corresponding v2 value.
+Then if we get to this v2's value
+we can get a greater than zero then
+we can assign to C1 and these v2's.
+The value is less than zero
+it could be another cluster,
+then we actually will get
+a nice partitioning C1,
+C2 this one, two,
+three will become one cluster,
+four, five six will
+become another cluster.
+So we can extend this
+algorithm to k partitions.
+the Ng Jordan and and
+Weiss Algorithm you know,
+worked out by Andrew Ng,
+Michael Jordan and
+and this published in 2002
+was normalized Laplacian.
+Essentially, the original Laplacian
+vertices is not normalized.
+But once you use this formula,
+we can normalize the graph, so
+the degree, that part is all one and
+all the other rows you add up.
+Actually it's minus 1, so
+you finally get a normalized graph.
+So we can compute the first
+k eigenvectors v1 to vk,
+then we can calculate the,
+the matrix the, you,
+you in a similar way,
+we can do the partition into,
+you know,
+because we take the i-th row of U as its
+feature vector after
+normalizing to norm one.
+Then we can cluster the points
+with k-means into k clusters and
+this method is commonly used
+as a dimension reduction,
+dimensionality reduction methods for
+clustering.
+[MUSIC]
+

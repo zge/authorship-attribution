@@ -1,0 +1,252 @@
+So, we'll first talk about how to
+lexicalize a treebank.
+We'll then give definitions of lexicalized
+PCFGs.
+We'll talk about parameter estimation in
+these models, and we'll actually make
+direct use of the smoothing techniques we
+saw for the language modeling in the first
+lecture from this class.
+We'll talk also about parsing with these
+models.
+And then finally, I'll talk a bit about
+accuracy of these models comparing, for
+example, to PCFGs and going into some
+depth about how we actually evaluate
+different parsing models.
+Okay, so the first key idea, idea in
+lexacalized PCFGs is to add annotations
+specifying what's called the head of each
+rule in a context-free grammar.
+So, I've shown you a simple grammar here.
+And I'm going to assume that the rules
+fall into two types.
+We either have some part of speech
+rewriting as a word or we have some
+non-terminal rewriting as a, a sequence of
+non-terminals, which could be
+non-terminals like a prepositional phrase
+or parts of speech like Vi or Vt.
+The key idea here is going to be for each
+rule in the grammar to identify one of the
+children of that rule, as what's called
+the head of that rule.
+So, I've used red to denote the head of
+each rule.
+So, VP is the head of S, Vi is the head of
+VP, Vt is the head of VP and so on.
+So, we are choosing one of the children to
+be the head of the rule, and so this is in
+some sense an additional piece of
+information in our context-free grammar.
+We don't just have the rules, we also have
+annotation specifying the heads.
+So, that's the abstract idea.
+Let me talk a little bit more about where
+it comes from.
+It's actually a core idea in linguistics.
+This idea of head and rules goes back to
+very, very early work in linguistics.
+Some intuitions in some sense, the head is
+sort of the core of the rules, is the most
+important part.
+So, a verb, a verb phrase, for example,
+will always have some verb on the
+right-hand side of the rule, whether it's
+an intransitive verb or transitive or
+ditransitive verb.
+And this verb is, in some sense, the
+semantic center of that rule.
+It's the most important part of the rule.
+Similarly for an S, you can argue that the
+VP is sort of the semantic center of that
+rule, is the predicate in that rule.
+And also for these noun phrases, the
+rightmost noun is again the most important
+part of the rule.
+So, these head annotations are actually
+often not present in treebanks.
+And they certainly weren't present in the
+Pan Wall Street Journal treebank, which
+was the treebank used for, for many of the
+original experiments in statistical
+parsing.
+And so, these annotations have to be
+recovered with a set of rules, so let me
+give you some examples of how we might do
+this.
+This is an example for noun phrases of a
+set of deterministic rules which will
+recover the head for each noun phrase.
+For example, they would make these
+annotations I've just shown you down here.
+So, the first rule says, that if the rule
+contains a singular noun, a plural noun,
+or a proper noun, then choose the
+rightmost of those nouns, so that would
+apply to these two rules here.
+They both contain one of these three
+categories, in which case, we just return
+the rightmost category as being the head
+of that rule.
+If this fails however, we go on to the
+next rule, which says that if the rule
+contains an NP, choose the leftmost NP.
+So, this is going to apply to cases like
+the following.
+If I have a structure like that, it
+doesn't contain one of these three
+categories.
+It does however, contain NP.
+And in that case, we take the leftmost NP
+as the head.
+That's this rule down here.
+Those are, by far, the most common cases.
+Most noun phrases, at least in the Wall
+Street Journal treebank have either one of
+these three categories or a noun phrase on
+the right-hand side of the rule.
+But there are some funny corner cases.
+And so, we go through a few of these cases
+here.
+If the rule contains a JJ, this is an
+adjective, choose the rightmost JJ,
+they're awesome, rather strange noun
+phrases which composed which don't contain
+nouns, but do contain adjectives.
+Cd is a number.
+This is something like a 100, or a 1,000,
+or something like this.
+And then finally, we just have some
+default rules saying we choose the
+rightmost child under the noun, noun
+phrase.
+Here's a second example.
+This is an example for verb phrases
+specifying a set of rules which recover
+the heads of verb phrases, and they're
+awfully similar to what I showed you
+before.
+The first rule says that if the rule
+contains an intransitive verb or
+transitive verb, choose the leftmost Vi or
+Vt.
+So, that would be this here.
+In fact, we'd probably be careful to
+specify all verb categories here.
+There might be several different
+subcategories of verb.
+On the other hand, if the rule contains a
+VP, choose the left most VP.
+Okay, so, if we have a structure like the
+following, then this rule fails.
+The VP doesn't dominate Vi or Vt.
+And instead, in this case, we just choose
+the leftmost VP as the head of the rule.
+And finally, we have a default case just
+saying if we don't find any of these
+categories, just choose the leftmost
+child.
+So, why are we doing this?
+The main motivation is going to be the
+following.
+In a moment, I'll show how once we have
+these anotations of heads and rules, we
+can use them to propagate lexical
+information up through the tree.
+So, we will actually transform our tree
+bank from these kind of structures which
+are kind of [unknown] PCFG structures with
+rules such as, NP S goes to NP VP.
+And we're going to add lexical information
+in the tree, in particular, for each
+non-terminal in the tree, for example,
+here we have VP, we'll now add a lexical
+item questioned which is drawn from
+somewhere below it in the subtree.
+So, the question came from this word down
+here.
+And the head of annotations will be used
+to define how headwords flow up through
+the tree.
+So, in one sense, you can just view these
+new structures as entire as a new set of
+non-terminals.
+So, whereas before, I had non-terminals
+like S or VP.
+Now, I have non-terminals like S
+questioned or NP lawyer.
+So, there might be around 50 non-terminals
+in my original grammar.
+In this new grammar, I have 50
+non-terminals times the vocabulary size so
+it could easily be in the thousands of
+non-terminals.
+But in a formal sense, nothing has
+changed, we've just vastly increased the
+number of non-terminals in the grammar.
+You can see that by adding this lexicon
+information to these non-terminals higher
+in the tree, it will allow us to be more
+sensitive to lexical information at higher
+levels in the tree.
+And that's going to be the key, key idea
+in these lexicalized PCFGs.
+This is how we make the, the PCFGs more
+sensitive to lexical information.
+So, how is this process performed?
+Let's again look at this example.
+The critical idea is to propagate lexical
+items bottom up through the tree where
+each constituent receives its headword
+from its head child.
+So, let's look at this tree in a little
+bit more detail.
+The first case is simple.
+Whenever I have a part of speech, for
+example, DT, we simply get its lexical
+head, its lexical item from the word below
+it.
+So, this just goes straight up.
+And so, each of these parts of speech just
+immediately receives the headword from the
+word below.
+I should have said, by the way, these
+words are often referred to as headwords,
+the headword of a constituent.
+Now, let's go a little higher in the tree.
+Let's take this noun phrase here.
+And so, for this noun phrase, we have the
+following rule.
+Np goes to determiner NN.
+And let's assume that our head rules have
+identified NN as the head of that
+particular rule.
+Well, our rules for propagating lex,
+lexical items up through trees, say, that
+words are propagated from the head to the
+parent.
+And so, witness, for example, is
+propagated up through the tree like this.
+So, this noun phrase receives its head
+word from its head child in the rule.
+Similarly, if we look at VP goes to Vt NP,
+let's say, for the sake of argument Vt has
+been identified as the head of this rule,
+that means that this VP gets the word,
+questioned from there.
+We have a similar step here.
+And finally, if we have S goes to NP VP.
+Let's assume that the VP is the head until
+this lexical item gets propagated up
+through here.
+So, it's, it's really very simple.
+We propagate lexical items, bottom up
+through these trees using these head
+annotations, where each non-terminal
+receives its head word from its head
+child.
+And the final result is, we've transformed
+our trees in a way that each non-terminal
+now includes lexical information taken
+from the subtree below it.

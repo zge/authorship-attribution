@@ -1,0 +1,281 @@
+[SOUND]
+This
+lecture is about probabilistic and
+latent Semantic Analysis or PLSA.
+In this lecture we're going to introduce
+probabilistic latent semantic analysis,
+often called PLSA.
+This is the most basic topic model,
+also one of the most useful topic models.
+Now this kind of models
+can in general be used to
+mine multiple topics from text documents.
+And PRSA is one of the most basic
+topic models for doing this.
+So let's first examine this power
+in the e-mail for more detail.
+Here I show a sample article which is
+a blog article about Hurricane Katrina.
+And I show some simple topics.
+For example government response,
+flood of the city of New Orleans.
+Donation and the background.
+You can see in the article we use
+words from all these distributions.
+So we first for example see there's
+a criticism of government response and
+this is followed by discussion of flooding
+of the city and donation et cetera.
+We also see background
+words mixed with them.
+So the overall of topic analysis here
+is to try to decode these topics behind
+the text, to segment the topics,
+to figure out which words are from which
+distribution and to figure out first,
+what are these topics?
+How do we know there's a topic
+about government response.
+There's a topic about a flood in the city.
+So these are the tasks
+at the top of the model.
+If we had discovered these
+topics can color these words,
+as you see here,
+to separate the different topics.
+Then you can do a lot of things,
+such as summarization, or segmentation,
+of the topics,
+clustering of the sentences etc.
+So the formal definition of problem of
+mining multiple topics from text is
+shown here.
+And this is after a slide that you
+have seen in an earlier lecture.
+So the input is a collection, the number
+of topics, and a vocabulary set, and
+of course the text data.
+And then the output is of two kinds.
+One is the topic category,
+characterization.
+Theta i's.
+Each theta i is a word distribution.
+And second, it's the topic coverage for
+each document.
+These are pi sub i j's.
+And they tell us which document it covers.
+Which topic to what extent.
+So we hope to generate these as output.
+Because there are many useful
+applications if we can do that.
+So the idea of PLSA is
+actually very similar to
+the two component mixture model
+that we have already introduced.
+The only difference is that we
+are going to have more than two topics.
+Otherwise, it is essentially the same.
+So here I illustrate how we can generate
+the text that has multiple topics and
+naturally in all cases
+of Probabilistic modelling would want
+to figure out the likelihood function.
+So we would also ask the question,
+what's the probability of observing
+a word from such a mixture model?
+Now if you look at this picture and
+compare this with the picture
+that we have seen earlier,
+you will see the only difference is
+that we have added more topics here.
+So, before we have just one topic,
+besides the background topic.
+But now we have more topics.
+Specifically, we have k topics now.
+All these are topics that we assume
+that exist in the text data.
+So the consequence is that our switch for
+choosing a topic is now a multiway switch.
+Before it's just a two way switch.
+We can think of it as flipping a coin.
+But now we have multiple ways.
+First we can flip a coin to decide
+whether we're talk about the background.
+So it's the background lambda
+sub B versus non-background.
+1 minus lambda sub B gives
+us the probability of
+actually choosing a non-background topic.
+After we have made this decision,
+we have to make another decision to
+choose one of these K distributions.
+So there are K way switch here.
+And this is characterized by pi,
+and this sum to one.
+This is just the difference of designs.
+Which is a little bit more complicated.
+But once we decide which distribution to
+use the rest is the same we are going to
+just generate a word by using one of
+these distributions as shown here.
+So now lets look at the question
+about the likelihood.
+So what's the probability of observing
+a word from such a distribution?
+What do you think?
+Now we've seen this
+problem many times now and
+if you can recall, it's generally a sum.
+Of all the different possibilities
+of generating a word.
+So let's first look at how the word can
+be generated from the background mode.
+Well, the probability that the word is
+generated from the background model
+is lambda multiplied by the probability
+of the word from the background mode.
+Model, right.
+Two things must happen.
+First, we have to have
+chosen the background model,
+and that's the probability of lambda,
+of sub b.
+Then second, we must have actually
+obtained the word w from the background,
+and that's probability
+of w given theta sub b.
+Okay, so similarly,
+we can figure out the probability of
+observing the word from another topic.
+Like the topic theta sub k.
+Now notice that here's
+the product of three terms.
+And that's because of the choice
+of topic theta sub k,
+only happens if two things happen.
+One is we decide not to
+talk about background.
+So, that's a probability
+of 1 minus lambda sub B.
+Second, we also have to actually choose
+theta sub K among these K topics.
+So that's probability of theta sub K,
+or pi.
+And similarly, the probability of
+generating a word from the second.
+The topic and the first topic
+are like what you are seeing here.
+And so
+in the end the probability of observing
+the word is just a sum of all these cases.
+And I have to stress again this is a very
+important formula to know because this is
+really key to understanding all the topic
+models and indeed a lot of mixture models.
+So make sure that you really
+understand the probability
+of w is indeed the sum of these terms.
+So, next,
+once we have the likelihood function,
+we would be interested in
+knowing the parameters.
+All right, so to estimate the parameters.
+But firstly,
+let's put all these together to have the
+complete likelihood of function for PLSA.
+The first line shows the probability of a
+word as illustrated on the previous slide.
+And this is an important
+formula as I said.
+So let's take a closer look at this.
+This actually commands all
+the important parameters.
+So first of all we see lambda sub b here.
+This represents a percentage
+of background words
+that we believe exist in the text data.
+And this can be a known value
+that we set empirically.
+Second, we see the background
+language model, and
+typically we also assume this is known.
+We can use a large collection of text, or
+use all the text that we have available
+to estimate the world of distribution.
+Now next in the next stop this formula.
+[COUGH] Excuse me.
+You see two interesting
+kind of parameters,
+those are the most important parameters.
+That we are.
+So one is pi's.
+And these are the coverage
+of a topic in the document.
+And the other is word distributions
+that characterize all the topics.
+So the next line,
+then is simply to plug this
+in to calculate
+the probability of document.
+This is, again, of the familiar
+form where you have a sum and
+you have a count of
+a word in the document.
+And then log of a probability.
+Now it's a little bit more
+complicated than the two component.
+Because now we have more components,
+so the sum involves more terms.
+And then this line is just
+the likelihood for the whole collection.
+And it's very similar, just accounting for
+more documents in the collection.
+So what are the unknown parameters?
+I already said that there are two kinds.
+One is coverage,
+one is word distributions.
+Again, it's a useful exercise for
+you to think about.
+Exactly how many
+parameters there are here.
+How many unknown parameters are there?
+Now, try and
+think out that question will help you
+understand the model in more detail.
+And will also allow you to understand
+what would be the output that we generate
+when use PLSA to analyze text data?
+And these are precisely
+the unknown parameters.
+So after we have obtained
+the likelihood function shown here,
+the next is to worry about
+the parameter estimation.
+And we can do the usual think,
+maximum likelihood estimator.
+So again, it's a constrained optimization
+problem, like what we have seen before.
+Only that we have a collection of text and
+we have more parameters to estimate.
+And we still have two constraints,
+two kinds of constraints.
+One is the word distributions.
+All the words must have probabilities
+that's sum to one for one distribution.
+The other is the topic
+coverage distribution and
+a document will have to cover
+precisely these k topics so
+the probability of covering each
+topic that would have to sum to 1.
+So at this point though it's basically
+a well defined applied math problem,
+you just need to figure out
+the solutions to optimization problem.
+There's a function with many variables.
+and we need to just figure
+out the patterns of these
+variables to make the function
+reach its maximum.
+>> [MUSIC]
+

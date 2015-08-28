@@ -1,0 +1,316 @@
+In this video, I'm going to introduce
+Hopfield Nets.
+Together with back propagation, these were
+one of the main reasons for the resurgence
+of interest in neural networks in the
+1980s.
+Hopfield networks are beautifully simple
+devices that can be used for storing
+memories as distributed patterns of
+activity.
+We are now going to learn about a
+different kind of model from a feet
+forward neural net.
+These are sometimes called energy based
+models because their properties derive
+from a global energy function.
+So, a Hopfield net is one of the simplest
+kinds of energy-based model.
+It's composed of binary threshold units
+with recurrent connections between them.
+In general, if you have networks of
+non-linear units with recurrent
+connections, they're very hard to analyze.
+They can behave in many different ways.
+They can settle to a stable state.
+They can oscillate.
+They can even be chaotic which means that,
+unless you know their starting state with
+infinite precision, you can't predict the
+state they'll be in very far into the
+future.
+Fortunately, John Hopfield and various
+other groups, like Stephen Grossberg's
+group, realized that if the connections
+are symmetric, there's a global energy
+function.
+Each binary configuration of the whole
+network has an energy.
+And so what I mean by binary configuration
+is, an assignment of binary values to each
+neuron in the network.
+So, every neuron has a particular binary
+value in that configuration.
+The thing that Hopfield realized is that,
+if you set up the right energy function
+for binary threshold decision rule, is
+actually causing the network, to go down
+hill in energy, and if you keep applying
+that rule, it'll end up in a energy
+minima.
+So, everything's controlled by the energy
+function. The global energy of a
+configuration is the sum of a number of
+local contributions, and the main
+contributions have the form of the product
+of one connection weight, with the binary
+states of two nuerons.
+So, the energy function looks like this.
+Energy is bad, so low energy is good.
+And that's what those minus signs are
+doing in there.
+If you look at the main term here, it has
+a weight which is the symmetric connection
+strength between two neurons.
+And it has the activities of the two
+connected neurons.
+So, Si is a binary variable that has
+values of one or zero.
+Or in another kind of Hopfield net, it has
+values of one or minus one.
+In addition to that quadratic term that
+involves the states of two units, there's
+also a bias term that only involves the
+state of individual units.
+The quadratic energy function makes it
+possible for each unit to compute locally
+how changing its state will change the
+global energy.
+So, we first need to define the energy
+gap.
+The energy gap for a unit i is the
+difference in the global energy of the
+whole configuration depending on whether
+or not i is on.
+So, the energy gap can be actually defined
+as the difference between the energy when
+i is off and the energy when i is on.
+And that difference is what is just what
+is being computed by the binary threshold
+decision rule.
+So, if you look at the equation for the
+energy and you differentiate it with a
+respect to the state of the i-th unit,
+it's a funny thing to do cuz it's a binary
+variable. But, if you differentiate it,
+you'll see you get the binary threshold
+decision rule, but without the minus sign
+cuz that's for going down hill in energy.
+So, by following the binary threshold
+decision rule, a Hopfield net will go
+downhill in its global energy.
+One way to find an energy minimum in a
+Hopfield net is to start from a random
+state and then update the units one at a
+time in random order.
+So, we're doing a sequential update.
+And for each unit that you pick, you
+compute whichever of its two states gives
+the lowest global energy and you put it in
+that state independent of what state it
+was previously in.
+That's equivalent to saying you just used
+the binary threshold decision rule.
+So, let's look at a little example for the
+net on the right.
+We'll start with a random global state.
+This was a carefully selected random
+state,
+And that has an energy of -three, or a
+goodness of three.
+It's easier to think about negative
+energies which are called goodnesses.
+There aren't any biases here.
+So to compute the goodness, you just look
+at all pairs of units that are on and add
+in the weight between them.
+And in this configuration, there's only
+one pair of units that's active.
+And that has a weight of three,
+So we get a goodness of three.
+Now, let's start probing the units.
+Let's pick a unit at random, like that
+one.
+And ask, what state should that be in,
+given the current states of all the other
+units?
+So, if we look at total input to that, it
+gets an input of one  -four + zero
+three, plus another zero  three, so it
+gets a total input of -four.
+That's below zero, so we turn it off, i.e.
+It stays in the off state.
+And let's probe another unit.
+If we look at this unit, again, it gets a
+total input of one  three + -one  zero,
+so it gets a total input of three, so the
+binary threshold decision rule will make
+it turn on.
+Let's probe one more unit.
+This unit's more interesting.
+It's getting an input of one  two + one 
+-one + zero  three + zero <i>, -one, So</i>
+that's a total input of one.
+So, it will now turn on.
+Previously it was off.
+And so, when it turns on, the global
+energy changes.
+We now have a global energy of -four or a
+goodness of four,
+And that's a local energy minimum.
+If you now try probing any of the units,
+you'll see that they don't want to change
+their current state.
+The next is settled to a minimum.
+However, the minimum it settled to is not
+the deepest energy minimum.
+It's just one of two minima that this net
+has.
+The deepest energy minimum is shown on the
+right here,
+And it's when the other triangle of units
+that support each other is on.
+That has a goodness of three + three +
+-one is five.
+So, that's a slightly better energy
+minima.
+If you look at that net, you can see the
+nets composed of these two triangles in
+which the units mostly support each other,
+although there's a bit of disagreement at
+the bottom. And each of those triangles
+mostly hates the other triangle via that
+connection at the top.
+The triangle on the left differs from the
+one on the right by having a weight of
+two, where the other one has a weight of
+three.
+So, the triangle on the right will give
+you the deepest minimum.
+So, if you ask, why did the decisions need
+to be sequential in the Hopfield net?
+The problem is that if units make
+simultaneous decisions, they could each
+think they were using energy but actually
+the energy could go up.
+With simultaneous parallel updating, we
+can get oscillations which always have a
+period of two.
+So, here's a little network where the
+units have biases of +five, and a weight
+between them of -100.
+So when both units are off, the next
+parallel step, if we update them both at
+the same time, will turn both units on
+because they each think they cam improve
+things by the bias term.
+But, as soon as you do that, you get this
+-100,
+And so you've actually made things much
+worse.
+So then, in the next parallel step, both
+units will turn off again.
+If we do the updates in parallel but with
+random timing.
+In other words, we don't wait for one
+update to communicate the state to
+everybody before we consider another
+update,
+But we do wait for random lengths of time
+between doing updates of a given unit.
+Then, those random timings will often
+destroy these bi-phase oscillations.
+That means that the idea that the updates
+have to be sequential isn't quite as bad
+as it seems from a biological perspective.
+Now, what Hopfield suggested was that we
+could make use of this kind of energy
+based model that settles to a minimum of
+it's energy for storing memories.
+So, we had a very influential paper in
+1982 that proposed that memories could be
+energy minima of a neural net with
+symmetric weights.
+The binary threshold decision rule can
+then take partial memories, and clean them
+up into full memories. So, the memory
+could be corrupted by part of it being
+wrong, or part of it could just be
+undecided, and we can use the net, to fill
+out the memory.
+The idea of memories as energy minima goes
+back a long way. The first example I know
+of is in a book called Principles of
+Literary Criticism by I.
+A.
+Richards, where he proposes that memories
+are like a large crystal that can sit on
+different faces.
+Using energy minima to represent memories
+gives a content erasable memory, as
+Hopfield realized.
+So, that you can access an item just by
+knowing part of its content.
+I can tell you a few properties of
+something that'll set the states of some
+of the neurons in the net.
+And if you've put the other neurons in
+random states and now go around applying
+the binary threshold rule,
+With a bit of luck, you'll feel like that
+memory to be some stored item that you
+know about.
+When Hopfield nets were proposed in 1982,
+that was a very interesting property.
+1982 was sixteen years before Google, now
+that we have Google, we regard this as
+perfectly obvious.
+Another property of Hopfield netsg is
+biologically interesting, is their robust
+against hardware damage.
+You could remove a few of the units in the
+netg and unlike the central processor of
+your computer, everything will still work
+fine.
+Psychologists have a nice analogy for this
+kind of memory.
+It's like reconstructing a dinosaur from
+just a few of its bones because you know
+something about how the bones are meant to
+fit together.
+So, the weights in the network give you
+information about how states of neurons
+fit together.
+And now, given the state of a few neurons,
+I can fill out the whole state to recover
+a whole memory.
+The storage rule for memories in the
+Hopfield net is very simple.
+The idea is, if we use activities of one
+and minus one, that we can store a binary
+statement by just incrementing the weights
+between any two units by the product of
+their activities.
+So, it's a very simple rule shown on the
+right.
+One nice thing about this rule, is that
+you just go through the data once and
+you're done. So, it really is the genuine
+online rule. that's because it's not error
+driven. You're not comparing what you
+would have predicted with what the right
+answer is, and then making small
+adjustments.
+The fact that it's not an error correction
+rule is both it's strength and it's
+weakness.
+It means it can be online, but as we'll
+see later, it also means it's not a very
+efficient way to store things.
+We can also have biases, and as usual, we
+treat the biases as weights from a
+permanently on unit.
+If you want to use states of zero and one
+for units, which is what we'll use later,
+the update rule is only slightly more
+complicated.

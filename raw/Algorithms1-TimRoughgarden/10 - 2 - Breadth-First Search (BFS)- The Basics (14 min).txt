@@ -1,0 +1,380 @@
+So in this lecture we're going to drill
+down into our first specific, search
+strategy for graphs and also explore some applications. Namely, breadth first
+search. So let me remind you the intuition
+and applications of breath first search.
+The plan is to systematically
+explore the nodes of this graph beginning
+with the given starting vertex in layers.
+So let's think about the following example
+graph. Where S is the starting point for
+our breadth first search. So to start
+vertex S will constitute the first layer.
+So we'll call that L zero. And then
+the neighbors of S are going to be the
+first layer. And so those are the vertices
+that we explore just after S. So those are
+L one. Now the second layer is going
+to be the vertices that are neighboring
+vertices of L one but are not
+themselves in L one or for that
+matter L zero. So that's going to be
+C and D. That's going to be the second
+layer. Now you'll notice for example S is
+itself a neighbor of these nodes in layer
+one, but we've already counted that in a
+previous layer so we don't count S toward
+L two. And then finally the
+neighbors of L two, which are not
+already put in some layer is E. That will
+be layer three. Again notice C and D are
+neighbors of each other but, they've
+already been classified in layer two. So,
+that's where they belong, not in layer
+three. So that's the high level picture of
+breadth first search you should have. We'll
+talk about how to actually
+precisely implement it on the next slide.
+Again just a couple other things that you
+can do with breadth first search which we'll
+explore in this video is computing shortest
+paths. So it turns out shortest path
+distances correspond precisely to these
+layers. So, for example if you had that as
+S, you had that as the Kevin Bacon node in
+the movie graph, then Jon Hamm would pop
+up in the second layer from the breadth
+first search from Kevin Bacon. I'm also
+going to show you how to compute the
+connected components of an undirected
+graph. That is to compute its pieces.
+We'll do that in linear time. And for this
+entire sequence of videos on graph
+primitives, we will be satisfied with
+nothing less than the holy grail of linear
+time. And again, remember in a graph you
+have two different size parameters, the
+number of edges M and the number of nodes
+N. For these videos I'm not going to
+assume any relationship between M and N.
+Either one could be bigger. So linear
+time's gonna mean O of M plus N. So let's
+talk about how you'd actually implement
+breadth first search in linear time. So
+the sub routine is given as input both the
+graph G. I'm gonna explain this as if
+it's undirected, but this entire procedure
+will work in exactly the same way for a
+directed graph. Again, obviously in an
+undirected graph you can traverse an edge
+in either direction. For a directed graph,
+you have to be careful only to traverse
+arcs in the intended direction from the
+tail to the head, that is traverse them
+forward. So as we discussed when we talked
+about just generic strategies for graph
+search, we don't want to explore anything
+twice, that would certainly be
+inefficient. So we're going to keep a
+boolean at each node, marking whether
+we've already explored it or not. And by
+default, I'm just, we're just going to
+assume that nodes are unexplored. They're
+only explored if we explicitly mark them
+as such. So we're going to initialize the
+search with the starting vertex S. So we
+mark S as explored and then we're gonna
+put that in what I was previously calling
+conquered territory the nodes we have
+already started to explore. So to get
+linear time we are gonna have to manage
+those in a slightly non naive but, but
+pretty straightforward way namely via a
+queue, which is a first in first out data
+structure that I assume you have seen. If
+you have never seen a queue before, please
+look it up in a programming textbook or on
+the web. Basically a queue is just
+something where you can add stuff to the
+back in constant time and you can take
+stuff from the front in constant time. You
+can implement these, for example, using a
+doubly linked list. Now recall that
+in the general systematic approach to
+graph search, the trick was to, in each
+iteration of some while loop, to add one
+new vertex to the conquered territory. To
+identify one unexplored node that is now
+going to be explored. So that while loop's gonna
+translate into one in which we just check
+if the queue is non-empty. So we're
+assuming that the queue data structure
+supports that query in constant time which
+is easy to implement. And if the queue is
+not empty we remove a node from it. And
+because it's a queue, removing nodes from
+the front is what you can do in constant
+time. So call the node that you get out of
+the queue V. So, now we're going to look
+at V's neighbors, vertices with which it
+shares edges, and we're gonna see if any
+of them have not already been explored.
+So, if W's something we haven't seen
+before, that's unexplored, that means it's
+in the unconquered territory, which is
+great. So, we have a new victim. We can
+mark W as explored. We can put it in our
+queue and we've advanced the frontier and
+now we have one more explored node than we
+did previously. And again, a queue by
+construction, it supports adding constant
+time additions at the end of the queue, so
+it's where we put W. So, let's see how this
+code actually executes in this same graph
+that we were looking at in the previous
+slide. And what I'm gonna do is I'm gonna
+number the nodes in the order in which
+they are explored. So, obviously
+the first node to get explored is S.
+That's where the queue starts. So now, when we
+follow the code, what happens? Well in the
+first iteration of the while loop we ask
+is the queue empty? No it's not, because S is
+in it. So we remove in this case the only
+node of the queue. It's S. And then we iterate over
+the edges incident to S. Now there are two
+of them. There's the edge between S and A
+and there's the edge between S and B. And
+again this is still a little under
+specified. In the sense that the algorithm
+doesn't tell us which of those two edges
+we should look at. Turns out it doesn't
+matter. Each of those is a valid
+execution of breadth first search. But
+for concreteness, let's suppose that of
+the two possible edges, we look at the
+edge S comma A. So, then we ask, has A
+already been explored? No, it hasn't. This
+is the first time we've seen it, so we
+say, oh goody. This is sort of new grist
+for the mill. So, we can add A to the
+queue at the end and we mark W as, sorry
+mark A as explored. So, A is gonna be the
+second vertex that we mark. So, after
+marking A as explored and adding it to the
+queue, so now we go back to the for loop,
+and so now we move on to the second edge.
+It's into S, that's the edge between S and
+B. So, we ask, have we already explored B?
+Nope, this is the first time we've seen
+it. So, now we have the same thing with B.
+So, B gets marked as explored and gets
+added to the queue at the end. So the
+queue at this juncture has first a record
+for A, cause that was the first one we put
+in it after we took S out. And then B
+follows A in the queue. Again, depending
+on the execution this could go either way. But
+for concreteness, I've done it so that A
+got added before B. So at this point, this
+is what the queue looks like. So now we go
+back up to the while loop, we say is
+the queue empty? Certainly not. There's
+actually two elements. Now we remove the
+first node from queue, in this case,
+that's the node A that was the one we put in
+before the node B. And so now we say,
+well, let's look at all the edges incident
+to A. And in this case A has two
+two incident edges. It has one that it
+shares with S and it has one that it
+shares with C. And so, if we look at the
+edge between A and S, then we'd be asking
+an if statement. Has S already been
+explored? Yes it has, that's where we
+started. So, there's no reason to do
+anything with S. That's already been
+taken out of the queue. So, in this for
+loop for A, there's two iterations. One
+involves the edge with S, and that one we
+completely ignore. But then there's the
+other edge that A shares with C, and C we
+haven't seen yet. So, at that part of the
+for loop, we say ahah. C is a new thing,
+new node we can mark as explored and put
+in the queue. So, that's gonna be our
+number four. So now how has the
+queue changed. Well, we got rid of A. And
+so now B is in the front and we added C at
+the end. And so now the same thing
+happens. We go back to the while loop, the
+queue is not empty, we take off the first
+vertex, in this case that's gonna be B. B
+has three incident edges, it has one
+incident S but that's irrelevant, we've
+already seen S. It has one incident to C,
+that's also irrelevant, that's also
+irrelevant, because we've already seen C.
+True, we just saw it very recently, but
+we've already seen it. But the edge
+between B and D is new, and so that means
+we can take the node D, mark it as explored
+and add it to the queue. So D is going to
+be the fifth one that we see. And now the
+queue has the element C followed by D. So now
+we go back to the while loop and we take C off
+of the queue. It again has four now edges. The
+one with A is irrelevant, we've already
+seen A. The one with B is irrelevant,
+we've already seen B. The one with D is
+irrelevant, we've already seen D. But we
+haven't seen E yet. So, when we get to the
+part of the for loop, or the edge between
+C and E, we say, aha, E is new. So E will
+be the sixth and final vertex to be marked
+as explored. And that will get added at
+the end of the queue. So then in the
+final two iterations of the while loop
+the D is going to be removed, we'll iterate through its three edges, none of
+those will be relevant because we've seen
+the three endpoints. And then we'll go
+back to the while loop and we'll get rid of
+the E. E is irrelevant cause it has two
+edges we've already seen the other
+endpoints. Now we go back to the while loop.
+The queue is empty. And we stop. That is
+breadth-first search. And to see how this
+simulates the notion of the layers that we
+were discussing in the previous slide
+notice that the nodes are numbered
+according to the layer that they're in, so
+S was layer zero. And then the two nodes
+that S caused to get added to the queue, the A
+and the B, are number two and three, and
+the edges of layer three are precisely the
+ones, sorry the edges of layer two are
+precisely the ones that got added to the
+queue, while we were processing the nodes
+from layer one. That is, C and D are
+precisely the nodes that got added to the
+queue while we were processing A and B.
+So, this is level zero, level one, and
+level two. E is the only node that got
+added to the queue while we were
+processing level, layer two. The vertices
+C and D. So E will be the third layer. So,
+in that sense, by using a first in first
+out data structure, this queue, we do wind
+up kinda processing the nodes according to
+the layers that we discussed earlier. So,
+the claim that breadth first search is a
+good way to explore a graph, in the sense
+that it meets the two high level goals
+that we delineated in the previous video.
+First of all it finds everything findable,
+and obviously nothing else, and second of
+all, it does it without redundancy. It
+does it without exploring anything twice,
+which is the key to its linear time
+implementation. So a little bit more
+formally, claim number one. At the end of
+the algorithm, the vertices that we've
+explored are precisely the ones such that
+there was a path from S to that vertex.
+Again this claim is equally valid, whether
+you're running BFS in an undirected
+graph or a directed graph. Of course in an
+undirected graph, meaning an undirected
+path from S to V, whereas a directed graph
+in a directed path from S to V. That means
+a path where every arc in the path gets
+traversed in the forward direction. So,
+why is this true? Well, this is true, we
+basically proved this more generally for
+any graph search strategy of a certain
+form of which breadth first search is one.
+If it's hard for you to see the right way
+to interpret breadth-first search as a
+special case of our generic search
+algorithm, you can also just look at our
+proof for the generic search algorithm and
+copy it down for breadth-first search. So
+it's clear that you're only gonna,
+again, the forward direction
+of this claim is clear. If you actually
+find something, if something's marked as
+explored, it's only because you found a
+sequence of edges that led you there. So
+the only way you mark something as
+explored is if there's a path from S to V.
+Conversely, to prove that anything with an
+S to V, for with a path from V will be
+found, you can proceed by contradiction:
+you can look at the part of the path from
+S to V that, that BFS does successfully
+explore, and then you gotta ask, why
+didn't it go one more hop? It never
+would've terminated before reaching all
+the way to V. So, you can also just copy
+that same proof that we had for the
+generic search strategy in the previous
+video. Okay? So, again, the upshot.
+Breadth first search finds everything
+you'd wanna find. Okay? So, it only
+traverses paths, so you're not gonna find
+anything where there isn't a path to it.
+But it never misses out. Okay? Anything
+where there's a path, BFS, guaranteed to
+find it. No problem. Claim number two is
+that the running time is exactly what we
+want and I am gonna state it in a form
+that will be useful later when we talk
+about connected components. So the running
+time of the main while loop, ignoring any kind
+of pre processing or initialization is
+proportional to what I am gonna call NS
+and MS which is the number of nodes that
+can be reached from S and number of edges
+that can be reached from S. And the reason
+for this claim it just becomes clear if
+you inspect the code which we'll do in a
+second. So let's return to the code and
+just tally up all the work that gets done.
+So I'm gonna ignore this initialization.
+I'm just gonna focus on the main while
+loop. So we can summarize the total work
+done in this while loop as follows. First
+we just think about the vertices so in
+this search we're only gonna deal, ever
+deal with the vertices that are findable
+from S, so that's NS. And what do we do
+for the given node, well we insert it
+into the queue and we delete it from the
+queue. Alright? So we're never gonna deal
+with a single node more than once. So
+that's constant time overhead per vertex
+that we ever see, so that's the proportion
+of the NS part. Now, a given edge, we
+might look at it twice. So, for an edge V
+W, we might consider it once when we first
+look at the vertex V, and we might
+consider it again when we look at the
+vertex W. Each time we look at an edge we
+do constant work. So that means we're only
+gonna do constant work per edge. Okay. So
+we look at each vertex at most once. We
+look at each edge findable from S at most
+twice. We do constant time, constant work
+when we look at something. So the overall
+running time is going to be proportional
+to the number of vertices findable from S
+plus the number of edges findable from S.
+So, that's really cool. We have a linear
+time of implementation of a really nice graph
+search strategy. Moreover we just need
+very basic data structures, a queue, to
+make it run fast with small constants. But
+it gets even better. We can use breadth
+first search as a work horse for some
+interesting applications. So, that's what
+we'll talk about in the rest of this video.

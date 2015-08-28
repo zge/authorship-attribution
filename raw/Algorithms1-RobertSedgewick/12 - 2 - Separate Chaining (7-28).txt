@@ -1,0 +1,144 @@
+Next we'll look at separate chaining, a
+collision red solution strategy that makes
+use of elementary link list. So, what are
+we supposed to do when two different keys
+hash to the same index? The birthday
+problem tells us that we're going to have
+collisions. You need a quadratic amount of
+memory to avoid collisions. In the lower
+balancing, a coupon collector analysis
+tell us that the collisions are going to
+be evenly distribute, distributed among
+the table, around the table. So, what we
+want to do is have an easy way to deal
+with collisions. And so the first way
+we'll look at is called Separate Chaining
+and it's a very diagonal idea back1953,
+and the idea is just build a link list for
+each of the table positions. So, we'll
+have a table that's smaller than the
+number of keys that we have, the hash
+function will map each key to some
+integer. So in this case, we have a table
+of size five. So the hash function will
+map any key. In this case, we use single
+letter keys. It'll map any key to an
+integer between zero and four and then to
+[cough] do an insertion we'll just keep a
+link list at the table position
+corresponding to the hash value. So S hash
+is to position two, it'll be on the link
+list that is first link is at position
+two. And E goes to zero, and A goes to
+zero. And for search, we're going to have
+to go to, if we're going to look at is C
+in this table say, we're going to find the
+hash value for C and we'll look down the
+list to see if we can find C. So we have
+to look through the whole list for search
+but you only have to look through one list
+out of all the lists. Essentially if you
+have M entries in the hash table and M
+keys the link of list you're going to look
+at is about N over M cuz they're evenly
+distributed. So that's a straightforward
+and simple scheme for implementing symbol
+tables with hashing. Now, we could use a
+interval bag or some data structure like
+that and hide the link list structure
+underneath and that's a perfectly fine way
+to proceed in modern programming. This
+implementation directly implements the
+link list. Now, for a practical situation
+we picked some kind of, some value of M.
+You could make it so that the hash table
+itself grows once it gets really huge and
+such hybrid methods are easy to implement.
+So we won't talk to much about that. We
+need to just in terms of implementation
+details, our keys and values have to be
+objects. Because we can't have an array of
+generics. So, since we're making array of
+nodes, a node would have generics if we
+use to key in value. So we have to make
+them objects then when we get things off,
+we're going to have cast. So [cough] this
+is the get procedure. So to look for a key
+in the hash table we compute the hash
+value. In our hash function is pull out
+the system hash code, make it positive by
+ending off the sign bit and then mark with
+M to get a number of, zero and -one. So we
+pick that number, I and then we just go to
+that list and this is the standard code
+for diversing a link list start at the
+first node as long as it is not null go x
+= x dot x. And if you find a key that's
+equal to the key you're looking for,
+return the value and we have to cast it to
+value because of the generic recreation
+problem in Java, otherwise return null. So
+that's not much code, and it's trivial
+code at that for doing an efficient symbol
+table search using hashing. And insertion
+is not much more difficult if you do the
+same thing and if you find a node where
+key equal to key on the link list, reset
+the value and return. Otherwise, you make
+a new node and put it at the beginning of
+the link list with the standard code. Now,
+replace STFI with a new node that links to
+the old STFI. So again, very little code
+to implement search and insert using
+hashin g and that's why it's so popular.
+And what about the analysis? Well, again
+this the [cough] standard probabilistic
+analysis of the balls and bins problem
+tells us a lot of information of what goes
+on. And again, if the uniform hashing
+assumption holds the probability that the
+number of keys within a list is within a
+constant factor of N over M is extremely
+close to one. So, it means that we've
+divided the search cost which would be N
+if we have a sequential search by a factor
+of M. And, and in many applications even
+setting M = 100 or 1,000 is going to be
+very effective. And that's why so many
+system programs refuse that. So, number of
+pros for search and insert's proportional
+to N over M. Now typically, what we'd what
+a programmer would do is try to figure on
+making M about equal to the number of keys
+divided by five say. So, you can't make M
+too large, you have too much space and
+you'll have empty chains or short chains.
+And if you make M too small then they're
+too long, you have to search through them
+all. So let's say, N over five and then
+you get constant time searches and not
+much extra space. You have extra space for
+the links to implement the link lists but
+the rest of the table is not much extra
+space. And those are typical parameters.
+If you want a full service symbol table
+which is going to, going to grow from
+small to huge and then back down to small
+again then you'd want to use array
+re-sizing to make sure that M is always
+within a constant factor of N but we will
+leave that detail out for now. So that
+brings us to this summary where red-black
+trees, we were happy with a log based two
+of N for search and insert with separate
+chaining, you can really get it down to a
+constant number of operations for search
+and insert. So hashing's going to be
+preferred for short keys where the hash
+function's easy to compute. And where we
+don't need ordered iteration or any of the
+ordered symbol table operations because it
+has really fast access to the symbol
+table. That's our first collision
+resolution method, hashing with separate
+chaining.

@@ -1,0 +1,423 @@
+For this final video on binary search 
+trees I want to talk a little bit about 
+implementation, implementation details 
+for the red black tree data structure in 
+particular the insertion operation. 
+As I've said in the past it really 
+doesn't make sense for me to spell off 
+all of the gory details about how this is 
+implemented. 
+If you want to understand them in full 
+detail. 
+Detail You should check out various 
+demonstrations readily available on the 
+web, or a comprehensive textbook, or an 
+open source implementation. 
+Red black trees, you'll recall satisfy 
+four invariants and the final two 
+invariants in particular ensure that the 
+red black tree Always has logarithmic 
+height and therefore all of the supported 
+operations run in logarithmic time. 
+The problem is we've got to pay the 
+piper. 
+Whenever we have a operation that 
+modifies the data structure, it 
+potentially destroys one or more of the 
+invariants, and we have to then restore 
+that invariant. 
+Without doing too much work. 
+Now amongst all of the supported 
+operations there are only two that modify 
+the data structure insertion and 
+deletions. 
+So from thirty thousand feet the approach 
+to implementing insert and delete is to 
+just implement them as if it's a normal 
+binary search tree as if we didn't have 
+to worry about these invariants and then 
+if an invariant is broken we try to fix 
+it with minimal work and two tools that 
+we have our disposal to try to restore an 
+invariant are first of all. 
+Recoloring, flipping the color of nodes 
+from to black and second of all left and 
+right rotations as covered in the 
+previous video. 
+My plan is to discuss the insertion 
+operation not in full detail but I'll 
+tell you about all of the key ideas. 
+Now deletion you got to remember that 
+even in a regular binary search tree 
+deletion is not that trivial and in a red 
+black tree its down right painful. 
+So, that I'm not going to discuss onto 
+for you to text books or online resources 
+to learn more about deletion. 
+So here's how insert is going to work. 
+So suppose we have some new node with the 
+key x. 
+And we're inserting it into a red black 
+tree. 
+So we first just forget about the 
+invariance, and we insert it as usual. 
+And remember, that's easy. 
+all we do is follow left and right shot 
+pointers, until we fall off the end of 
+the tree until we get to a null pointer, 
+and we install this new node with key x, 
+where we fell off the tree. 
+That makes x a leaf in this binary search 
+tree. 
+Let's let y denote x's parent, after it 
+gets inserted. 
+Now in a red-black tree every node has a 
+color. 
+It's either red or black. 
+So we have a decision to make. 
+We just added this new node with key x 
+and we gotta make Get either red or 
+black. 
+And we're sort of between a rock and a 
+hard place, whichever color we make it we 
+have the potential of destroying one of 
+the invariants. 
+Specifically, suppose we color it red. 
+Well remember what the third invariant 
+says, it says you cannot have two reds in 
+a row. 
+So if Y, X's new parent is already red, 
+then when we color X red, we have 2 reds 
+in a row. 
+And we've broken invariant number 3. 
+On the other hand, if we color this new 
+node, X, black, we've introduced a new 
+black node to certain root null paths in 
+this tree. 
+And remember, the 4th invariant insists, 
+that all the root null paths have exactly 
+the same number of black. 
+Notes, so by adding a black note to some 
+but not all of the paths, we're in 
+general, going to destroy that invariant, 
+if we color x black. 
+So what we're going to do is, we're going 
+to choose the lesser of two evils, and in 
+this context the lesser of the two evils 
+is to color x red. 
+Again, we might destroy the third 
+invariant, we'll just deal with the 
+consequences later. 
+So why you ask, is coloring x red and 
+destroying the third invariant, the 
+lesser of two evils? Well, intuitively, 
+it's because this invariant violation is 
+local. 
+The flaw in our not quite red black tree 
+is small and manageable, it's just a 
+single double red and we know exactly The 
+word is it's x and y. 
+So.this sort of more hope in squashing it 
+with minimal work. 
+I can't trust if we coated x black then 
+we violated this much more global type of 
+property involving all of the route in 
+all paths and that's a much more 
+intimidating violation to try to fix. 
+Then just as local one of having a double 
+red between x and it's parent. 
+Indeed some of the time we'll just get 
+lucky and it will just so happen that x 
+is parent y is colored black and then 
+we're golden. 
+This new node x that's colored red, it 
+doesn't create a double red, there's no 
+other violations of the other invariants 
+and so boom, we've got a new red black 
+tree and we can stop. 
+So, the tricky case then is when x's 
+parent y is also red in this case we do 
+not have a red, black tree we have a 
+double red and we have to do some more 
+work to restore the third invariant. 
+So suppose y is red. 
+What do we then know? Well remember, 
+before we inserted x, we had a red black 
+tree, all 4 of the invariants were 
+satisfied. 
+So therefore Y, by virtue of being red, 
+it could not have been the root. 
+It has to have a parent. 
+Let's call that parent W. 
+Moreover by the third invariant there was 
+no double red in this tree before we 
+inserted X so by virtue of Y being red, 
+it's parent W must have been black. 
+So, now the insertion operation branches 
+into 2 different cases and it depends on 
+the color, on the status of w's other 
+child. 
+So in the first case we're going to 
+assume that w's other child that is not y 
+but the other child of w exists in its 
+colored red. 
+In the second case, we're going to treat 
+when w either doesn't have a second 
+child. 
+Y is its only child or when its other 
+child is colored black. 
+So let's recap where things stand. 
+So we just inserted this new node, and it 
+has the key x. 
+And our algorithm colored this node red. 
+So x is definitely red. 
+Now, if it's parent y was black, we 
+already halted. 
+So we've already dealt with that case. 
+So now, we're assuming that y. 
+X's parent is also red, that's what's 
+interesting. 
+Now by virtue of y being red, we know 
+that y's parent, that is x's grandparent 
+w, has to be colored black. 
+And, for case two of insertion, we are 
+assuming that w has a second child, call 
+it z, and that z is colored red. 
+So, how are we going to quash this double 
+red problem? We again, we have 2 tools at 
+our disposal. 
+One is to re-color nodes. 
+The second is to do rotations. 
+So for case 1, we're only going to 
+actually have to do re-coloring. 
+We're not even going to have to bust out 
+per rotations. 
+In particular what we're going to do is, 
+we're going to recolor z and y black and 
+we're going to recolor w red. 
+So, in some sense we take the reds that 
+are at z and y and we consolidate them at 
+w. 
+The important property of this recovering 
+is that it does not break the fourth 
+invariant, remember the forth invariant 
+says that no matter which path you take 
+from the root to a no pointer you see 
+exactly the same number of black nodes. 
+So why is invariance still true after 
+this recoloring, well for any path from a 
+route to a no pointer which doesn't go 
+through the vertex w its relevant. 
+None of these nodes are on that path, so 
+the number of black dots is exactly the 
+same. 
+So think about a path which does go 
+through w. 
+Well if it goes through w to get to a no 
+pointer has to go through exactly one of 
+z or y. 
+So before we did the recoloring this path 
+picked up a black node via w and it did 
+not pick up a black node via z or y both 
+of those were red. 
+Now any such path does not pick up a 
+black node w that's now red but it does 
+pick up exactly one black node either z 
+or y. 
+So, for every single path in the tree, 
+the number of black nodes it contains is 
+exactly the same before or after this 
+recoloring, therefore since the fourth 
+invariant held previously, it also holds 
+after this recoloring. 
+The other great thing is that it seems 
+like we've made progress on restoring the 
+third invariant. 
+The property that we don't want any 
+double-reds at all in the entire tree. 
+Remember, before we did this recoloring, 
+we only had a single double-red. 
+It involved x and y. 
+We just recoded y from red to black. 
+So certainly we no longer have a double 
+reded walling x and y and that was the 
+only one in the tree. 
+So are we done, do we now have a bonafied 
+red black tree? Well the answer depends, 
+and it depends on the core of W's parent. 
+So remember W just got recolored from 
+black to red. 
+So there's now a possibility that W being 
+this new red node participates in some 
+new double red violation . 
+Now w's children, z and y, are black. 
+So those certainly can't be double reds. 
+But w also has some parent, and if w's 
+parent is red, then we get a double red 
+involving w and its parent. 
+Of course, if w's parent was black, then 
+we're good to go. 
+We don't get a double red by recoloring 
+double. 
+W red, so we have no w reds in the tree, 
+and we can just stop. 
+Summarizing, this recoloring preserves 
+the fourth invariant, and either it 
+restores the third invariant, or if it 
+fails to restore the third invariant, at 
+least it propagates the double red 
+violation upward into the tree, closer to 
+To the root.. 
+We're perfectly happy with the progress 
+represented by propagating the double red 
+upward. 
+Why? Well, before we inserted this new 
+object x, we had a red black tree. 
+And we know red black trees have 
+logarithmic height. 
+So the number of times that you can 
+propagate this double red upward is 
+bounded above by the height of the tree, 
+which is only logarithmic. 
+So we can only visit case 1 a logarithmic 
+number of times before this W is 
+propagated all the way to the top of the 
+tree, all the way of the root. 
+So we are not quite done, the one final 
+detail is what happens when this 
+recoloring procedure actually recolors 
+the root. 
+So, you could for example look at this 
+green picture on the right side and ask, 
+well what if w is actually the root of 
+this red black tree and we just recolored 
+it red? Now notice in that situation 
+where the, we are dealing with the root 
+of the tree we're not going to have a 
+double red problem. 
+So invariant three is indeed restored 
+when we get to the top of the tree, but 
+we have a violation of invariant number 
+two which states that the root must 
+always be black. 
+Well if we find ourselves in this 
+situation, there's actually a super 
+simple fix which is this red root, we 
+just recolor it black. 
+Now clearly that's not going to introduce 
+any new double reds. 
+The worry instead is that it breaks 
+invariant four. 
+But, the special property of the root for 
+text is that it A lies exactly once on 
+every route on all path. 
+So if we flip the color of the roof from 
+red to black it increases the number of 
+black nodes on every single routinal path 
+by exactly 1. 
+So if they all have the same number of 
+black nodes before, they'll have the same 
+number of black nodes now, after the 
+recoloring. 
+That completes case 1 of how insertion 
+works. 
+Let's move on to case 2. 
+So case 2 gets triggered when we have a 
+double red and the deeper node of this 
+double red pair, call it X, its uncle, 
+that is if it has grandparent W, parent Y 
+and W's other child, other than Y either. 
+Doesn't exist or if it exists it's 
+labeled it's colored black. 
+That is case 2. 
+I want to emphasize you might find 
+yourself in case 2 right away when you 
+insert this new object x it might be 
+there immediately it has some uncle which 
+is covered x or it might be that if 
+already visited case 1 a bunch of times 
+propagating this double red up the tree 
+and now at some Point. 
+The deeper red node X has a black uncle. 
+Either way, as soon as that happens, you 
+trigger case 2. 
+Well it turns out, case 2 is great in the 
+sense that, with nearly constant work, 
+you can restore in variant number 3 and 
+get rid of the double red without 
+breaking any of the other invariants. 
+You do have to put to use both of the 
+tools we have available in general. 
+Both recolorings and rotations, left and 
+right rotations, as we discussed in the 
+previous video. 
+But, if you do just a constant number of 
+each, recolorings and rotations, you can 
+get all four of the invariants 
+simultaneously. 
+There are unfortunately a couple of sub 
+cases depending on exactly the 
+relationships between x, y, z, and w. 
+For that reason I'm not going to spell 
+out all the details here, check out a 
+textbook if you're interested, or, even 
+better, work it out for yourself. 
+Now that I've told you that two to three 
+rotations plus some recolorings is always 
+sufficient in case two to restore all of 
+the In variance, follow your nose and 
+figure out how it can be done. 
+So let's summarize everything that we've 
+said about how insertion works in a red 
+black tree. 
+So, you have your new node with key x, 
+you insert it as usual. 
+So you make it a leaf, you tentatively 
+color it red. 
+If it's parent is black, your done. 
+You have a red black tree, and you can 
+stop. 
+In general, the interesting case is this 
+new. 
+And you know that x's parent is red. 
+That gives you a double-red of violation 
+of invariant three. 
+Now, what happens is you visit this case 
+1, propagating this double red upward 
+imagery. 
+This upward propagation process can 
+terminate in one of three ways. 
+First of all, you might get lucky and at 
+some point the double-red doesn't 
+propagate, you do the recoloring in case 
+1. 
+And it just so happens you don't get a 
+new double red. 
+At that point you have a red black tree 
+and you can stop. 
+The second thing that can happen is the 
+double-red propagation can make it all 
+the way to the root of the tree, then you 
+can just recolor the root black and you 
+can stop with all of the invariants 
+satisfied. 
+Alternatively at some point when you're 
+doing this upward propagation you might 
+find yourself in case 2 as was discussed 
+on this slide. 
+Where the lower red node on the double 
+red pair x has a black or non-existent 
+uncle, Z. 
+In that case, with constant time, you can 
+restore all of the Fourier theories. 
+So the work done overall is dominated by 
+the number of double red propagations you 
+might have to do, that's bounded by the 
+height of this tree and that's bounded by 
+O of log n. 
+So in all of the cases you restore all 4 
+invariants, you do only a logarithmic 
+amount of work, so that gives you a 
+logarithmic insertion operation for red 
+black trees, as promised. 
+

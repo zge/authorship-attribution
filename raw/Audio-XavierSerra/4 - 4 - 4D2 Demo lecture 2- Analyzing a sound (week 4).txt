@@ -1,0 +1,323 @@
+Hello.
+Welcome to the fourth week
+of the course on audio signal processing for music applications.
+And in this demonstration class I want to
+continue what we started in the last one,
+which was to analyze a sound,
+in that case, a sound of a soprano,
+using the Short Time Fourier Transform,
+the topic of this week.
+So in this lecture
+I want to analyze another sound.
+A sound that can give us another view
+of the Short-Time Fourier Transform.
+So let's open the SonicVisualizer and
+this is the sound we are
+going to analyze today.
+And this is the sound of a piano.
+And so let's let's listen that.
+[MUSIC]
+Okay, so this is a very simple piano
+phrase, quite clear, five notes.
+So let's go directly to the sms-tools and
+let's go to
+the Short Time Fourier Transform model.
+So let's go to the piano sound.
+is here, piano.wav.
+Okay.
+And now let's decide about the parameters.
+Okay, in the last class we mentioned that
+the Blackman was quite a good choice for
+what we were doing, so let's keep it.
+The window size, okay,
+this is not as high pitch as the
+as the voice so
+we would need quite a bigger window size.
+So, I don't know, let's start with for
+example, let's say 1501.
+This is an odd size window and
+this is something that we will,
+whenever possible, we will do.
+If we take windows with an odd
+size that means that they can be
+centered around zero and especially for
+the phase analysis,
+that's going to be very convenient.
+So let's now use that and
+let's take that as a habit of
+using always odd sized windows.
+The FFT has to bigger than that.
+And of course, normally now we will
+be always be using power of two, so
+that is efficient and
+you can use the FFT algorithm.
+So the power of two
+bigger than 1500 is 2048.
+Okay?
+That's a good size.
+On the hope-size has to be,
+for the Blackman window,
+has to be hop so
+the windows overlap correctly.
+So let's say, they have to be,
+at least, one fourth of 1,500,
+so that would be around, let's say 325.
+okay.
+That would be around one fourth.
+And let's compute.
+Okay.
+This was the input sound,
+the magnitude and
+phase spectrogram and
+the output reconstructed.
+So let's first just listen
+to the reconstruction.
+[MUSIC]
+Okay, that's pretty good.
+So, I guess we haven't lost any
+information from the analysis so
+that means that the hop size and
+the window size were chosen correctly, so
+that they overlap correctly.
+And well, in the phase spectrum we
+see it looks like very minimalist,
+but it's quite interesting.
+We see this very clear vertical lines.
+And this corresponds to the attacks,
+basically,
+this means that during these attacks,
+the phase is quite disrupted.
+It's quite changed.
+There is a quite big transition there.
+That's something that we see
+very clearly in the phase information.
+And in the more steady, during the notes,
+we see more of these horizontal structure.
+That means that the harmonics maintain
+a kind of a phase continuity,
+that can be identified in
+the phase spectrogram.
+In the magnitude spectrogram, we see well,
+we see very clearly the harmonics.
+These red lines and we see that, as
+the sound evolves, piano being
+a percussive instrument, in the attack
+there is more energy, and so
+there is more harmonics, and
+as the time evolves,
+the harmonics are decaying and
+especially they decay, the high harmonics,
+and the low harmonics, are staying more.
+We also see quite clearly,
+the attacks of the sounds and what
+is going on during the attacks, so
+that's that's quite interesting.
+Okay, now let's, zoom in and
+let's go into some detail of that.
+So let's use the option of this figure
+of doing zooming into rectangle.
+And let's just take this middle note,
+the fourth note,
+from a little bit before the attack
+to around when the note ends, okay.
+And that's that's what we're getting.
+And what we're seeing in fact is
+the discretization of the analysis.
+We have zoomed enough, so
+that we can see this vertical kind of
+quantization, these vertical bars.
+This corresponds to every frame,
+every spectrum, computed.
+So, at every bar correspond to
+the number of samples of the hop size.
+So this was these 325 samples, that we
+are hopping from one frame to the next.
+And vertically, we also see this kind of
+discretization, these horizontal lines.
+That are are more narrower,
+because we have taken quite
+a bit of samples in the FFT.
+We have taken 2048 samples.
+So that's, we have a pretty
+good frequency resolution.
+Let's compute with a different
+set of parameters.
+For example,
+let's use a window size which is smaller.
+For example, let's use 201 samples.
+And let's use an FFT size
+correspondingly smaller.
+It does not have to be that big,
+so let's say 256.
+And of course
+the hop size has to be accordingly to
+the window size, at least one 4th.
+So let's use 50.
+And now, lets compute it.
+Okay, it takes a little bit because
+its of course, being the hop size smaller,
+it has to compute more FFT's.
+And this is the what we get.
+Basically we, we're visualizing
+a similar thing, the analysis and
+then the synthesis, and
+the synthesis is going to be pretty good.
+Let's listen to that.
+[MUSIC]
+Since we have maintained the same
+relationship between the hop size and
+the window size,.
+The identity is preserved.
+So, the output sound is
+identical to the original.
+But now let's zoom in to the same
+region that we zoomed before,
+to try to understand the differences.
+Let's get a little bit before the attack,
+and
+let's get a little bit
+of the steady state.
+Okay.
+And let's compare it
+with the previous one.
+Okay, this was the previous and
+this is this one.
+Well, quite different.
+If we mention what we were talking about
+before, the concept of the vertical and
+horizontal lines, in terms of
+the vertical lines we see them narrower.
+There are more frames per second here.
+So, the resolution,
+the time resolution, is bigger.
+Okay?
+So we see more things, in terms of what
+how things evolve in time.
+In exchange, at the vertical axis,
+the frequency resolution,
+is worse,
+because the FFT-size was much smaller.
+Therefore, these boxes are kind of
+larger in the vertical axis.
+So, we see less information 
+in the frequency resolution domain.
+And this is at the core of one of
+the things that are fundamental for
+the Short-Time Fourier Transform, is what
+we call the Time Frequency compromise.
+In the first case,
+we had a good frequency resolution and
+a not so good, time resolution.
+In exchange, in this second example,
+we have a pretty good time resolution,
+but not so good frequency resolution.
+And that's a quite important
+consideration to take into account
+when we analyze the sound, and to decide,
+what is the best set of parameters for
+a particular sound.
+Okay.
+Now, let's go into one
+aspect, to the attack, and
+try to understand some aspect
+of this sound by looking at
+this find spectrum analyses
+that we have started to do.
+So let's, for that, let's do the DFT.
+Okay we will just compute
+the DFT of one location at the attack.
+Okay?
+The attack, more of less it was around,
+let's see, it was 1.54.
+That's kind of where the attack is.
+And let's keep this same
+resolution that we have.
+So let's keep the 1501 and
+let's have the FFT size 2048.
+And let's use the piano sound.
+Okay, now, we will compute it.
+Okay.
+This is the beginning and
+we see here is
+the attack of the piano.
+So we see quite a bit of
+things going on here.
+The phase and the reconstruction.
+Let's zoom into the beginning.
+So, let's just get magnitude
+spectrogram up to,
+let's say,
+well let's get up to 10,000 Hertz.
+Okay.
+So we see quite a bit of things.
+Let's now recompute 
+with the same parameters, but
+a little bit beyond the attack.
+So when more is a steady state.
+So let's say
+100 milliseconds after,
+so 1 second and
+64, with the same parameters.
+Okay.
+And this is another analysis.
+And let's again zoom into the same region.
+Let's just zoom into the region that goes
+until 10,000 hertz.
+And that we get all the information.
+Okay.
+And let's compare it, and
+let's see if we can understand what is
+is going on,
+what is going on at the sound level.
+All right.
+This was, the top is the attack,
+the bottom is the more steady state.
+In the time domain clearly,
+we see the difference.
+In the frequency domain I believe we
+can see also significantly difference.
+For example in the attack,
+the harmonics are not so well defined.
+Because it's the beginning of the sound
+the harmonics have not
+been started completely.
+Instead, in the steady state, these peaks
+are much more clear, much more resolved.
+Okay?
+Then another thing,
+is that, in the attack,
+kind of the noise floor, basically the
+energy or the high frequencies, is higher.
+So the high frequencies are much louder,
+than or at least substantially louder than
+during the stead state, in which, are the
+lower harmonics are clearly louder.
+Okay, so this is a good way to try
+to understand a particular sound,
+a particular fragment of a sound 
+and do some analysis using
+the Short Time Fourier Transform that
+gives us some insight into the sound.
+Okay.
+So that's basically all I wanted to say.
+So we have been looking at the
+at a sound,
+in this case the piano sound,
+using the sms-tools, and of course,
+this sound is available on the freesound.
+And hopefully this has given
+you another insight into the
+the tool we are building.
+In this case,
+the Short Time Fourier Transform.
+But at the same time has given you
+some insight into the piano sounds.
+And I believe it’s a quite
+interesting instrument and sound.
+And using these tools
+we can appreciate quite a bit of it.
+So anyway, so that's it for 
+the demonstrations of this week.
+So, I hope to see you next class.
+Thank you.
+

@@ -1,0 +1,167 @@
+In this video, I'll talk about another way
+of restricting the capacity of a neural
+network.
+We can do that by adding noise, either to
+the weights or to the activities.
+I'll start by showing, that if we add
+noise to the inputs in a simple linear
+network, that's trying to minimize the
+squared error, that's exactly equivalent
+to imposing an L2 penalty on the weights
+of the network.
+I'll then describe uses of noisy weights
+in more complicated networks and I'll
+finish by describing a recent discovery
+that extreme noise in the activities can
+also be a very good regularizer.
+So let's look at what happens if we add
+Gaussian noise to the inputs to a simple
+neural network.
+The variance of the noise gets amplified
+by the squared weights on the connections
+going into the next hidden layer.
+If we have a very simple net, with just a
+linear output unit that's directly
+connected to the inputs, the amplified
+noise then gets added to the output.
+So if you look at the diagram,
+We put in an input Xi with additional
+Gaussian noise that's sampled from a
+Gaussian with zero mean and variant sigma
+I^..
+That additional noise has it's variants
+multiplied by the squared weight.
+It then goes through the linear output
+unit j. And so what comes out of j is the
+yj that would have come out before plus
+Gaussian noise but has zero mean and has
+variance Wi^ sigma I^..
+This additional variance makes an additive
+contribution to the squared error.
+You can think of it like Pythagoras
+theorem, that the squared error is going
+to be the sum of the squared error caused
+by Yj, and this additional noise, because
+the noise is independent of Yj.
+So when we minimize the total squared
+error, we'll minimize the squared error
+that will come out if it was a noise-free
+system. And in addition, we'll be
+minimizing that second term.
+That is, we'd be minimizing the expected
+squared value of that second term and the
+expected squared value is just Wi^2, sigma
+I^2, so that corresponds to an I2 penalty
+on wi with a penalty strength of sigma
+I^2.
+For those of you who like math, I'm gonna
+derive that on this slide.
+If you don't like math, you can just skip
+this slide.
+The output, Y noisy, when we add noise to
+all of the inputs, is just what the output
+would have been with noise-free system.
+The sum of all the inputs at wixi, plus wi
+times the noise that we added to each
+input.
+And those noises are sampled from a
+Gaussian with zero mean of variance sigma
+I^..so
+So if we compute the expected squared
+difference between Y noise E and the
+target value t, that's the quantity that's
+shown on the left-hand side of the
+equation.
+And I'm using an e followed by square
+brackets to mean an expectation.
+That's not the arrow, that's an
+expectation.
+And what we're computing the expectation
+of is the thing in the square brackets.
+So in this case, we're computing the
+expectation of the squared arrow that
+we'll get with the noisy system.
+So if we substitute the equation above for
+Y noisy, we need the expectation of Y.
+Plus the sum of all the I, WI, epsilon I
+So when we complete the square, the first
+time we get is Yt^ and that's not in the
+side of expectation bracket because it
+doesn't involve any noise.
+The second term is the cross product of
+the two terms above and the third term is
+the square of the last term.
+Now that equation simplifies a lot.
+In fact, it simplifies down to the normal
+squared error.
+Plus the expectation of WI^2, epsilon I^2,
+summed over all I.
+The reason it simplifies is because
+epsilon I is independent of epsilon J.
+So if you look at the last term, when we
+multiply at that square, all of the cross
+terms have an expected value of zero.
+Because we're multiplying together two
+independent things that are zero mean.
+If you look at the middle chart, that also
+has an expectation of zero, because each
+of the epsilon I's is independent of the
+residual error.
+So we can rewrite the expectation of the
+sum over all I of Wi^ epsilon squared, as
+simply the sum over all I with w I
+squared, sigma I squared, because the
+expectation of up to I squared is just
+sigma I squared, because that's how we
+generated epsilon i.
+And so we see that the expected squared
+error we get is just the squared error we
+get in the noise free system.
+Plus this additional term.
+And that looks just like an L2 penalty on
+the WI.
+With the sigma I^ being the strength of
+the penalty.
+In more complex nets, we can restrict the
+capacity by adding Gaussian noise to the
+weights.
+This isn't exactly equal to an L2 penalty.
+But it seems actually to work better,
+especially in recurring networks.
+So Alex Graves recently took his recurrent
+net that recognizes handwriting and tried
+it with noise added to the weights.
+And it actually works better.
+We can also use noise in the activities as
+a regularizer So suppose we use back
+propagation to train a multi-lanural match
+with logistic hidden units.
+What's gonna happen if we make the units
+binary and stochastic on the forward pass
+but then we do the backward pass as if
+we'd done the normal deterministic forward
+pass using the real values?
+So we're going to treat a logistic unit,
+in the forward pass, as if it's a
+stacastic binary neuron.
+That is, we compute the output of the
+logistic P, and then we treat that P as
+the probability of outputting a one.
+And in the forward pass, you make a random
+decision whether to output a one or a zero
+using that probability.
+But in the backward paths, you use the
+real value of p for back propagating
+derivatives through the hidden unit.
+This isn't exactly correct, but it's close
+to being a correct thing to do for the
+stochastic system if all of the units make
+small contributions to each unit in the
+layer above.
+When we do this the performance on the
+training set is worse and training is
+considerably slower.
+It may be several times slower.
+But it does significantly better on the
+test set.
+This is currently an unpublished result.

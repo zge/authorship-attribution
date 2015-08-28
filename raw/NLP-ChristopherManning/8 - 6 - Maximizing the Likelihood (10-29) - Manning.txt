@@ -1,0 +1,218 @@
+In the last segment we saw how to define a
+maximum entropy or exponential model which
+had parameters which were the weights of
+the various features. In this segment,
+we're going to look at how we can set
+those parameters so as to maximize the
+likelihood of observed data. The log
+conditional likelihood of a maxent model
+is a function of the observed data, the
+actual datums and their classes, D and C
+which we assume to be independent and
+identically distributed. And the
+parameters lambda of the model. And it has
+the form that we see here. So, this here
+was the same form for the model that we
+saw in the previous section. And what we
+can see is that in principle it's
+straightforward to work out the log
+likelihood of some data but it's only
+gonna be easy to do in practice if the
+number of classes is reasonably modest
+because we're summing over the classes
+here. We'll actually come back to that
+issue later in this segment. We can take
+this log likelihood and separate it out
+into two components, so here we have what
+used to be the numerator and here we have
+what used to be the denominator. So we can
+say that the log likelihood of the entire
+model is a difference between the log
+likelihood of the numerator, and the log
+likelihood of the denominator. The
+derivative of the numerator is really easy
+to work out. We start here with working
+out the partial derivative of the
+numerator with respect to each parameter
+of the model. And so this is the numerator
+over here. And well, first of all we see
+that the log exp just cancels out because
+they're inverses of each other, which gives
+us the form over here. And then we simply
+move the partial derivative inside the
+sum, which we can do twice. And then move
+it in here. And then we ask, what are the
+partial derivatives with respect to these
+lambda I, FI terms? Well, the partial
+derivative with respect to lambda I is
+going to be zero, except for the term that
+involves lambda I. And so the partial
+derivative for that term is simply F.
+fi of c,d. So, by summing that up, we give the,
+get the numerator. And the thing to notice
+here, is that the numerator actually has a
+very simple and intuitive form. So, what
+this is calculating, is precisely the
+empirical count of feature FI. Derivative of the
+numerator is just this empirical count.
+Working out the derivative of the
+denominator is a fraction more complex.
+You actually need to remember a little bit
+of calculus for this one. But it's not
+that hard. So, here we have taken the
+denominator term from before and we're
+taking the derivative of it with respect
+to each parameter weight as a partial
+derivative. So now. First of all. We can
+move the partial derivative inside the
+sum, but then we need to take the
+derivative of the log of something and so
+to do that we have to then use the chain
+rule. So the chain rule is that you take
+the derivative of the outside function
+times the original function, times the
+derivative of the inside function. So the
+derivative of log is the one on X
+function. So we get one on X of the
+original function here. And then we take
+the derivative of the inside function
+right here. Working then on that right
+hand side, we now can move the derivative
+inside the sum again, and then we're
+getting the derivative of the exp function,
+so at that point we have to invoke the
+chain rule a second time. So, the
+derivative of exp is itself, so then we have
+exp times the inside function here. And then
+we take the derivative of the inside
+function over here. Okay. So, at this
+point to go down then to the next line,
+what we're doing is we're regrouping these
+two terms, and that gives this part over
+here. And then on the right hand side
+we're still working on the derivative of
+this function. And well this time this
+function has the same form we saw in the
+numerator. Since we've taken the derivative
+of this sum. Here, that the only term that
+is going to be non-zero is the one that
+involves lambda I. And so then that term
+in the derivative is just FI of C prime D
+and so what we end up with here is this
+term. It looks exactly like our model.
+We've got the exp, the same exp for a
+particular class over the sum of the exp of
+all the different classes. So what we have
+here is the model probability of class C
+prime and then here we have the function,
+the feature value on the value C prime.
+And so what we're getting at here is the
+model expectation, i.e. the predicted count
+of FI given the parameter weights lambda.
+So, putting those two parts together, what
+we have is the derivative of the
+log likelihood with respect to a particular
+parameter lambda I is simply the
+difference between the actual count of
+that feature minus the predicted count of
+that feature, according to our current
+parameter weights. And well how do we
+maximize the function? We maximize the
+function in the standard case, at the
+point at which this derivative is zero. So
+we want this difference to be zero. And so
+that in other words is saying that the
+optimum parameters in the model are found
+when the model's predicted expectation
+equals its empirical expectation. So this
+optimum is always unique. The actual
+parameter values that give it to you may
+not be unique. But the value that is the
+maximum of the function is unique, because
+we have a convex function. And
+providing you estimate
+your models from real data it always
+exists. This is something I will come back
+to later, but these models are also called
+maximum entropy models because, we find
+that what we are actually doing is finding
+the model that has maximum entropy while
+satisfying these constraints on the
+expectations. Okay. Now we know about
+working out the partial derivatives for
+the conditional log likelihood function.
+So, to recap, what we then want to do is
+choose values for the parameters, lambda
+one, lambda two, et cetera, that maximize
+the conditional log likelihood of the
+training data. And what we find is, the
+way we do that is to make use of these
+partial derivatives. In particular, if we
+take the vector of all partial
+derivatives, that gives us the gradient of
+the function. Let's see that in a picture.
+So here. We are imagining that we have two
+parameters, lambda one and lambda two, and
+depending on the settings of those
+parameters, we get different values for
+the conditional log likelihood and if we map
+them out we get this kind of likelihood surface.
+So the idea of what we want to do, is
+we're going to start with the lambda one
+and lambda two set to some value, and
+we're going to calculate the derivatives,
+the partial derivatives at this point and
+those partial derivatives give us the
+gradient and direction of steepest ascent
+on this likelihood surface. And so we're
+gonna walk in that direction a little,
+calculate the gradient again. Walk in the
+direction of the gradient a bit, calculate
+the gradient again, walk. And we're gonna
+head off and come to the maximum value of
+the conditional log likelihood function.
+So, for maxent models, this log
+likelihood surface is always convex, and
+has a maximum. But while it looks fairly
+easy to maximize in this example, in the
+real problems we deal with, there might be
+hundreds of thousands or millions of
+parameters. And so it's considerably
+more difficult. So how we solve that
+problem is that we find a good numerical
+optimization package and get it to find
+good parameter values. Now in particular,
+let me just note that commonly these
+packages, including the one that we use
+for the programming assignment actually
+minimizes, so instead you minimize the
+negative of the conditional log likelihood,
+which is equivalent. Now there are many
+numerical optimization techniques. The,
+the simplest is gradient descent. Which
+just says that you walk always in the
+direction of the gradient. A var-, a
+variant of it is a stochastic version,
+stochastic gradient descent This one is
+actually quite effective and is still
+often used for big problems. [sound],
+In the early work on maxent
+models in statistics and NLP, people
+commonly use iterative proportional
+fitting methods, like generalized
+iterative scaling or improved iterative
+scaling. These aren't used much anymore
+though. Other standard numerical
+optimization methods like conjugate
+gradient are quite effective. But the
+method of choice that's usually used,
+these days is quasi Newton methods, in
+particular one well known algorithm is
+this L-BFGS which is the one that we use in
+our assignment code. And that's a good
+method to use in general. Okay. So I hope
+that means you've now got a good sense of
+how to calculate the partial derivatives
+of the log likelihood function, and
+understand how that can be used to find
+the optimal parameters for the model.

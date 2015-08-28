@@ -1,0 +1,204 @@
+Let's now formalize the naive based
+classifier. In classification we have a
+document D and a class C. And our goal is
+to compute the probability for each class
+of it's proba-, it's conditional
+probability given a document. And we're
+gonna see that the we're gonna use this
+probability to pick the best class. Now,
+how do we compute the probability of a
+class, given a document? By Bayes rule,
+this is equal to the probability of a
+document given the class, times the
+probability of the class over the
+probability of the document. So let's see
+how to use that in the classifier. The
+best class, the maximum [inaudible] class,
+the class that we're looking for to assign
+this document to is out of all classes the
+one that maximizes the probability of that
+class given the document. So we're looking
+for the class whose probability given the
+document is greatest. By Bayes rule.
+That's the same whichever class maximizes
+probability of c given d, also maximizes
+this equation the probability of d given
+c, the probability of the class over the
+probability of the document. And, as is
+traditional in [inaudible] classification.
+Whichever, document, whichever, excuse me,
+whichever class, maximizes this equation,
+also maximizes this equation. What we've
+done here is dropped the denominator,
+crossed out the denominator. Why is it
+okay? To cross out the denominator d.
+Probability of D is how likely the
+document is. Now if I give you a document
+and I say which of these ten classes of
+this document belong to. And if for each
+of these classes, I'm computing the
+probability of the document given the
+class, the probability of the class, and
+the probability of the document, the
+document, probably the document is
+identical for all ten classes. For each
+class, one more time I have to compute the
+probability of the document. And that
+means that if I'm comparing ten things,
+each of which is divided by probability of
+the document, the probability of the
+document is a constant, and I can
+eliminate that. So, the most likely class
+camp is that class which maximizes the
+product of two probabilities, the
+probability of the document given the
+class, we'll call that the likelihood,
+[sound] and the probability of the class,
+we'll call that the prior. Prior
+probability of the class. So the most
+likely class is the one that maximizes the
+product of these two probabilities. The
+probability of a class will turn out to be
+relatively simple to compute. What do I
+mean by the probability of a document
+given a class? What do I mean to say, this
+particular movie review was, was, how
+likely isn't it, given the class positive?
+Seems like a very complicated and
+confusing things to compute. And one way
+to operationalize that is to say, let's
+represent the document by a whole set of,
+of features, x one through x n. So when I
+say the probability of a document given a
+class. I'm gonna; I'm gonna say all that
+means is the probability of a vector of
+features given a class. P of D given C.
+We're going to represent that probability
+by the joint probability of x1, x2 up
+through xn given the class. In other
+words, we're representing this document D
+as a set of features X1 through XN. That
+still doesn't tell me how to compute this
+probability but, but it'll, it's, it's a
+start. So let's talk about these two
+pieces now. How do I compute probability
+of a class? Well, really that's just
+asking how often does this class occur.
+Are positive reviews much more common than
+negative reviews? Is Madison a much more
+frequent author? Computing the probability
+of a class can be done just by counting
+relative frequencies in some corpus or
+data set. So the probability of a class is
+relatively easy to compute. What about the
+likelihood of the document, of these
+features in a document given the class?
+Well there's a lot of parameters for this
+probability, there's, if, if there's N
+different features. And each of them has a
+certain length, that's a lot of parameters
+that have to be computed and we have to
+compute them one for each class. So
+that's, that's far too many parameters
+that we could possibly computer. We can
+only estimate at this number if we had a
+huge number of trainee examples and we
+easy don't have such an enormous amount of
+trainee examples. So we are gonna make
+some simplifying assumptions in an Ibased
+classifier to make this computation more
+possible. The first simplifying assumption
+we're going to make is called the bag of
+words assumption, and we're going to
+assume that the position in the document
+doesn't matter. So this is what I gave you
+the intuition of a few slides ago. The
+position of the doc, of the word in the
+document, whether it's the first word or
+the seventh word or the one hundred and
+fiftieth word isn't going to matter. All
+we care about is which, which word or
+which feature occurs. And the second thing
+we're gonna, second assumption we're gonna
+make, is we're gonna assume that the
+different features X1, X2, X3, that their
+probabilities are independent given the
+class. So that the, the whether one
+feature occurs given a class and whether
+another feature occurs given a class, are
+independently gonna be true. And of course
+this is a, both of these assumptions are
+incorrect simplifying assumptions.
+They're, they're absolutely wrong.
+They're, they're, they're terribly
+completely not true. Nonetheless, by
+making these simplifying, these incorrect
+simplifying assumptions, we can make our
+problems so much simpler that in practice,
+we're able to solve the problem with a
+high degree of accuracy despite the
+simplifications. So the result of these
+two simplifying assumptions is we're gonna
+represent the probability, the joint
+probability, of a whole set of features.
+X1 through X1 condition on a class. As the
+product of a whole bunch of independent
+probabilities. Probability of X1 given the
+class, probability of X2 given the class,
+probability of X3 given the class and so
+on up to probability of XN given the
+class. We're just going to multiply them
+all together. We're not going to care
+about X1 wh, which position it occurred
+in. All we care about is that it, it, it
+was, it was this particular order feature
+and we're not going to care about the
+dependencies between X1 and X2. In other
+words. In order to compute or simplifying
+our e-based assumption, to compute the
+most likely class. By multiplying a
+likelihood. The probability of a whole, a
+whole joint string of features, times a
+prior probability of a class. We're gonna
+simplify that, and say that the best class
+by the naive Bayes assumption is that
+class that maximizes these the prior
+probability of the class, so that's the
+same. But now, more simply, we're just
+gonna multiply, for every feature in the
+set of features, the probability of that
+feature given the class. Much simpler
+equation. [sound]. So now looking
+specifically at text. First let's look,
+we're gonna assume we're gonna look at all
+positions, all word positions in a text
+document. So, we have a text document and
+it has a, it has 100 words in it, so for
+all, for position of word number one,
+position number two, position number
+three, we're gonna take Look at all the
+classes, and for each class, we're gonna
+say, what's the probability of the class?
+And then, for each class, we're gonna walk
+through every position in the text, and
+for each position, we're gonna look at the
+word in that position and ask, what's its
+probability given the class I'm looking
+at? So, we'll do this for, class one.
+We'll compute P of class one, times the
+product over all the Is of P of word I,
+given class one. So we'll compute that,
+and then we'll do the same for class two.
+For class two we'll compute P of class
+two. And then the product overall
+positions I of the P, of word I, given
+class two. And then we're going to pick
+whichever of these, two is the highest. If
+this is higher we're going to pick class
+two and assign to the document that this
+is higher we'll assign class one to the
+document. And of course I've shown you
+this with just two classes but in general
+this is true for, for any number of
+classes. So that's the formalization of an
+IE based classifier.

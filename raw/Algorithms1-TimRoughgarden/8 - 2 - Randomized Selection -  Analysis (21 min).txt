@@ -1,0 +1,537 @@
+In this video I'll explain the
+mathematical analysis of the randomized
+linear time selection algorithm that we
+studied in the previous video.
+Specifically, I'm going to prove to you
+the following guarantee for that
+algorithm. For every single input array of
+length n the running time of this
+randomized selection algorithm on average
+will be linear. Pretty amazing if you
+think about it because that's barely more
+what the time it takes just to read the
+input. And in particular this linear time
+algorithm is even faster than sorting.
+So this shows that selection is a
+fundamentally easier problem than sorting.
+You don't need to reduce to sorting. You
+can solve it directly in O(n) time.
+I want to reiterate the same
+points I made about quick sort. The
+guarantee is the same. It is a general
+purpose subroutine. We make no assumptions
+about data. This theorem holds no matter
+what the input array is. The expectation,
+the average that's in the theorem
+statement is only over the coin flips made
+by the algorithm made inside it's code of our
+own devising. Before we plunge into the
+analysis, let me just make sure you
+remember what the algorithm is. So it's
+like quick sort. We partition around a
+pivot except we only recurse once, not
+twice. So we're given an array with some
+length n. We're looking for the ith order
+statistic, the ith smallest element. The
+base case is obvious. You're not in the
+base case; you choose a pivot p, uniformly
+at random from the input array just like
+we did in quick sort. We partition around
+the pivot just like we did in pic, in
+quick sort. That splits the array into a
+first part of those elements less than the
+pivot and the second part of those
+elements which are bigger than the pivot.
+Now, we have a couple of cases. The case
+which is very unlikely so we don't really
+worry about, if we're lucky enough to
+guess the pivot as the ith order
+statistic what we're looking for. That's
+when the new position j. Of the pivot
+element happens to equal I. What we're
+looking for. Then, of course, we just
+return it. That was exactly what we
+wanted. In the general case, the pivot is
+going to be in the position J, which is
+either bigger than what we're looking for
+I, that's when the pivot is too big or J.
+It's position will be less than the ith order statistic
+we're looking for. That's when the pivot
+is too small. So if the pivot's too big,
+if J is bigger than i  that when
+we're looking for is on the left hand
+side amongst the elements less than the
+pivot. So that's where we recurse. We've
+thrown out both the pivot and everything
+to the right of it. That leaves us with an
+array of J minus I elements and we're
+still looking for the ith smallest among
+these J minus1 smallest elements. And then
+the final case, this is what we went
+through in the quiz and last video, is if
+we choose a pivot who's smaller than what
+we're looking for, that's when J is less
+than I, then it means we're safe to throw
+out the pivot and everything less than it.
+We're safe recursing on the second part of
+those elements bigger than the pivot.
+Having thrown out the J's smallest
+elements, we're recursing on an element of
+length of N-J and we're looking for the i-j
+smallest element in those that
+remain, having already thrown out the J
+smallest from the input array. So that's
+randomized selection. Let's discuss why
+it's linear time on average. The first
+thought that you might have, and this
+would be a good thought, would be that we
+should proceed exactly the same way that
+we did in Quick Sort. You recall that when
+we analyzed Quick Sort, we set up these
+indicator random variables, x, i ,j
+determining whether or not a given, pair
+of elements got compared at any point in
+the algorithm. And then we just realized
+the sum of the comparisons is just the
+sum, overall, of these x,i, js. We applied
+linearity of expectation and it boiled
+down to just figuring out the probability
+that a given pair of elements gets
+compared. You can analyze this randomized
+selection algorithm in exactly the same
+way. And it does give you a linear time
+bound on average. But it's a little messy.
+It winds up being not quite as clean as in the
+quick sort analysis. Moreover, because of
+the special structure of the selection
+problem, we can proceed in an even more
+slick way here than the way we did with
+quick sort. So, again we'll have some
+constituent random variables. We'll again
+apply linearity of expectation but the
+definition of those random variables is
+going to be a little bit different than it
+was in quick sort. So, first a preliminary
+observation. Which is that the workhorse
+for this randomized selection procedure is
+exactly the same as it was in quick sort.
+Namely it's the partition subroutine.
+Essentially all of the work that gets done
+outside of the recursive call just
+partitions the input array around some pivot
+element as we discussed in detail in a
+separate video that takes linear time. So
+usually when we say something's linear
+time we just use big O notation. I'm gonna
+go ahead and explicitly use a constant c
+here for the operations outside the
+recursive call. That'll make it clear that
+I'm not hiding anything up my sleeves when
+we do the rest of the analysis. Now what I
+wanna do on this slide is introduce some
+vocabulary, some notation which will allow
+us to cleanly track the progress of this
+recursive selection algorithm. And by
+progress I mean. The length of the
+array on which is currently operating.
+Remember we're hoping for a big win over
+quick sort, cuz here we only do one
+recursive call, not two. We don't have to
+recurse on both sides of the pivot just on
+one of them. So it stands to reason, that
+we can think about the argument making
+more and more progress as a single
+recursive calls operating on arrays of
+smaller and smaller length. So the notion
+that will be important for this proof is
+that of a phase. This quantifies how much
+progress we've made so far, with higher
+numbered phases corresponding to more and
+more progress. We'll say that the
+r select algorithm at some midpoint of
+its execution is in the middle of phase J.
+If the array size that the current
+recursive call is working on has length between
+3/4th raised to the J times N and the
+smaller number 3/4th J+1 times N. For example
+think about the case where J equals zero.
+That says phase zero recursive calls,
+operate on arrays with size of N and 75
+percent of N. So, certainly, the outermost
+recursive call is going to be in phase
+zero. Because the input array has size N.
+And then, depending on the choice of the
+pivot, you may or may not get out of phase
+zero in the next recursive call. If you
+choose a good pivot, and you wind up
+recursing on something, that has, at most,
+75 percent of the original elements, you
+will no longer be in phase zero. If you
+recurse on something that has more than 75
+percent of what you started with, of the.
+Input array, then you're still gonna be in
+phase zero even in the second recursive
+call. So overall the phase number J,
+quantifies the number of times we've made
+75 percent progress, relative to the
+original input array. And the other piece
+of notation that's going to be important
+is what I'm going to call Xj. So for a
+phase J, Xj simply counts the number of
+recursive calls in which a randomized
+selection algorithm is in phase J. So this
+is gonna be some integer. It could be as
+small as zero, if you think about it, for
+some of the phases. Or it could be larger.
+So why am I doing this? Why am I making
+these definitions of phases and of these
+XJs? What's the point? We're gonna
+remember the point was we wanna be able to
+cleanly talk about the progress that the
+randomized selection algorithm makes
+through its recursion, and what I wanna
+now show you is that in terms of these
+XJs, counting the number of iterations in
+each phase, we can derive a relatively
+simple upper bound on the number of
+operations that our algorithm requires.
+Specifically the running time of our
+algorithm, can be bounded above by the
+running time in a given phase, and then
+summing those quantities over all of the
+possible phases. So we're gonna start with
+a big sum, over all the phases J. We want
+to look at the number of recursive calls
+that we have to endure in phase J, so
+that's XJ by definition. And then we look
+at the work that we do outside of the
+recursive calls in each recursive call
+during phase J. Now, in a given recursive
+call, outside of its recursive call, we do
+C times M operations where M is the length
+of the input array and during phase J we
+have an upper bound on the link of the
+input array. By definition it's at most
+three quarters raised to the J times N. So
+that is, we multiply the running time
+times this constant C this, we inherit
+from the partition subroutine and then we
+can, for the input length, we can put an
+upper bound of three quarters raised to
+the J times N. So just to review where all
+of these terms come from, there's three
+quarters J times N is an upper bound on
+the array size. During phase J, this by
+the definition of the phase. Then, if we
+multiply that times c, that's the amount
+of work that we do on each phase J
+sub-problem. How much work do we do in
+phase J overall or we just take the work per
+sub problem that's what's circled in
+yellow and we multiply it times the number
+of such sub problems we have. And, of
+course, we don't wanna forget any of our
+sub problems so we just make sure we sum
+all of our phases, j, to insure that at
+every point we count the work done in each
+of the sub problems. Okay? So, that's the
+upshot of this slide. We can upper bound
+the running time of our randomized
+algorithm very simply in terms of phases
+and the XJ's, the number of sub problems
+that we have to endure during phase j. So,
+this upper bound on our running time is
+important enough to give it notation, we'll
+call this star, this will be the starting
+point of our final derivation when we
+complete the proof of this theorem. Now
+don't forget, we're analyzing a randomized
+algorithm so therefore the left hand side
+of this inequality the running time of r select,
+that's a random variable. So
+that's a different number depending on the
+outcome of the random coin flips of the
+algorithm. Depending on the random pick it
+has chosen, you will get different random
+running times. Similarly the right hand
+side of this inequality. Is also a random
+variable. That's because the X J's are
+random variables. The number of sub
+problems in phase j depends on which
+pivots get chosen. So. To analyze, what we
+care about is the expectations of these
+quantities, their average values. So we're
+gonna start modestly and as usual, this
+will extend our modest accomplishments to
+much more impressive ones using linearity
+of expectation, but our first modest
+goal is just to, to understand the
+average value. Of an XJ, the expected
+value of XJ. We're gonna do that in two
+steps. On the next slide, I'm going to
+argue that to analyze the expectation of
+XJ, it's sufficient to understand the
+expectation of a very simple coin flipping
+experiment. Then, we'll analyze that coin
+flipping experiment. Then we'll have the
+dominos all set up in a row. And on the
+final slide, we'll knock'em down and
+finish the proof. So let's try to
+understand the average number of recursive
+calls we expect to see in a given phase.
+So, again, just so we don't forget. Xj is
+defined as the number of recursive calls
+during phase J. Where a recursive call is
+in phase J, if and only if the current sub
+array length lies between three-fourths
+raised to the J+1 times N. And then, the
+larger number of three-fourths raised to
+the J times N. So again, for example,
+phase zero is just the recursive calls
+under which the array length is between 75
+percent of the original element and 100
+percent of the original elements. So what
+I wanna do next is point out that a very
+simple sufficient condition guarantees
+that we'll proceed from a given phase onto
+the next phase. So it's a condition
+guaranteeing termination of the current
+phase. And it's an event that we've
+discussed in previous videos. Mainly that
+the pivot that we choose gives a
+reasonably balanced split. 25-75 or
+better. So recall how partitioning works,
+we choose a pivot P. It winds up wherever
+it winds up. And the stuff to the left of
+it's less than P. The stuff to the right
+of it is bigger than P. So 25 to 75 split
+or better, what I mean is that each of
+these, each, the first part and the second
+part has, at most, 75 percent of the
+elements in the input array. Both have
+twen-, both have at least 25%, and, at
+most, 65%. And the key point is, that if
+we wind up choosing a pivot that gives us
+a split that's at least as good the
+current phase must end. Why must the
+current phase end? Well, to get a 25, 75
+split or better than no matter which case
+we wind up in, in the algorithm we're
+guaranteed to recurse on a sub problem that
+has at most 75 percent of what we started
+with. That guarantees that whatever phase
+we're in now, we're going to be in an even
+bigger phase when we recursed. Now, I want
+you to remember something that we talked
+about before, which is that you've got a
+decent chance when you pick a random pivot
+of getting something that gives you a 25,
+75 split or better. In fact, the
+probability is 50 percent. Right? If you
+have an array that has the integers from
+one to 100 inclusive, anything from 76 to
+s, 26 to 75 will do the trick. That'll
+insure that at least the first 25 elements
+are excluded from the rightmost call and
+at least rightmost 25 elements are
+excluded from the left recursive call. So
+this is why we can reduce our analysis of
+the number of recursive calls during a
+given phase, to a simple experiment
+involving flipping coins. Specifically,
+the expected number of recursive calls.
+Now we are gonna see in a given phase J,
+is no more than the expected number of
+coin flips in the following experiment.
+Okay, so you've got a fair coin, 50
+percent heads, 50 percent tails. You
+commit to flipping it until you see the
+head and the question is, how many coin
+flips does it take up to and including the
+first head that you see? So the minimum
+it's gonna be one coin flip if you hit a
+head the first time it's one. If you get a
+tails and then a head, then it's two. If
+it's tails, tails, head it's three and so
+on, and you always stop when you hit that
+first head. So what's the correspondence?
+Well, think of heads as being you're in
+Phase J, and if you get a good pivot, it
+gives you a 25/75 split. Call that heads.
+And it guarantees that you exit this Phase
+J. Just like it guarantees that you get to
+terminate the coin flipping experience,
+experiment. Now, if you get a pivot which
+doesn't give you a 25/75 split, you may or
+may not pass to a higher Phase J, but in
+the worst case, you don't. You stick to
+phase J is you get a bad split, and that's
+like getting a tails in the coin flipping
+experiment, and you have to try again.
+This correspondence give us a very
+elementary way to think about the progress
+that, that our randomized selection
+algorithm is making. So, there's one
+recursive call in every step in our
+algorithm, and each time we either choose
+a good pivot or a bad pivot, both could
+happen, 50-50 probability. A good pivot
+means we get a 75-25 split or better. A
+bad pivot means, by definition, we get a
+split worse than 25-75. So what have we
+accomplished? We've reduced the task of
+upper bounding the expected number of
+recursive calls in a phase J to
+understanding the expected number of times
+you have to flip a fair coin before you
+get one hit. So on the next slide we'll
+give you the classical and precise answer
+to this coin flipping experiment. So, let
+me use capital N to denote the random
+variable, which we were just talking
+about, the number of coin flips you need
+to do before you see the first heads. And,
+it's not very important, but you should
+know that these random variables have
+their own name. This would be a geometric
+random variable with parameter one-half.
+So you can use a few different methods to
+compute the expected value of a geometric
+random variable such as this, and brute
+force using the definition of expectation
+works fine as long as you know how to
+manipulate infinite sums. But for the sake
+of variety, let me give you a very sneaky
+proof of what it's expectation is. So the
+sneaky approach is to write to the
+expected value of this random variable in
+terms of itself and then solve for the
+unknown, solve for the expectation. So
+let's think about it. So how many coins
+flips do you need? Well for sure you're
+gonna need one. That's the best case
+scenario. And now two things can happen,
+either you get heads and that has 50
+percent probability you stop or you get
+tails that happens with 50 percent
+probability and now you start all over
+again. Again you just put points until you
+get first heads. On average how many times
+does that take. Well by the definition of
+capital N you expect. The expectation of N
+coin flips, in the case where you get
+tails, and you have to start all over. So
+this one represents the first coin flip,
+the one-half is the probability that you
+can't stop, that you have to start all
+over probability of tails, and then
+because it's a memory less process,
+because when you start anew on the second
+coin flip having gotten the tails, it's as
+if you're back at time one all over again.
+So now we have a trivial equation, in
+terms of the unknown expected value of N
+and the unique solution, the unique value,
+that the expected value of capital N could
+have, in light of this equation, is two.
+So, on average if you flip a fair coin and
+stop when you get heads, you're going to
+see two coin flips on average. To make
+sure you haven't sort of lost the forest
+for the trees, let me remind you why we
+were talking about this coin flipping
+analysis in the first place. So recall in
+the previous slide we showed that XJ, and
+remember XJ is the number of recursive
+calls you'd expect to see in a given phase
+J, and we argued that the number of
+recursive calls you're gonna see is bounded
+above. By the expected number of coin
+flips until the heads. So this exact
+calculation of two for the coin flips
+gives us an upper bound of two for the
+number of recursive calls on average in
+any given phase J. So now that we've got
+all our ducks lined up in a row, let's
+wrap up the proof on this final slide. So,
+inherited from part one of the proof, we
+have an upper bound. On the expected
+running time. Of the R select algorithm.
+This is what we were calling star on the
+first brief slide In star, it looked a
+little messy, but we had the sum over the
+phases J. But we had two things that were
+independent of j: the constant c and the
+original input length n, so let me just
+yank the c and the n out front. And then
+we have this residual sum over the phases
+J. Of three quarters raised to the J
+remember that comes from our upper bound
+on the sub problem size during phase J and
+then of course we have to keep track of
+how many phase J sub problems we have
+solved that by definition is XJ. Now star
+was written as a rand in accordance terms
+to the random variables. Now we're gonna
+go ahead and take the expectations and
+again I have said this over and over but
+don't forget where's the expectation come
+from. This is over the random pivot
+choices that our code makes. So the
+expected running time of the algorithm
+is most the expectation of this start
+quantity. So like I said earlier, pretty
+much every time we're gonna do any
+analysis of [inaudible] process, we're
+gonna wind up using linearity of
+expectation at some point. Here is where
+we do it. Linear expectation says the
+expectation of a sum is just the sum of
+the expectations. So we yank the c and the
+n outside of the expectation. We yank this
+sum over phases. Outside of the
+expectation. We yank this three-fourths
+raised to the J outside of the expectation
+and then we just have the expected value
+of XJ, the average number of recursive
+calls we expect to see in HJ. Now on the
+previous two slides, we figured out an
+upper bound on how many recursive calls we
+expect to see in each phase. So first by
+the coin flip analysis, by the reduction
+of the coin flip analysis, this is the
+most expected number of coin flips N,
+which on the previous slide, we argued was
+exactly two. So bringing that two out in
+front of the sum, that no longer depends
+on J. So we get a most 2CN. Times the sum
+over phases J, of three quarters raised to
+the J. Now this kind of sum we have seen
+previously in the course. It came up when
+we were analyzing the master method and we
+summed up our running time upper bounds
+over the levels of our recursin tree.
+And if we're not in case one if we're in
+case two or three we had geometric sums
+that were nontrivial. They require a
+certain formula to calculate, so let me
+remind you of that formula here, when the
+three quarters are being powered up to the
+J. So this has value at most, one over one
+minus, the number that's getting powered,
+so in this case it's three quarters, one
+minus three quarters is a quarter check
+reciprocal, you got four. And the upshot
+is that the expected number of operations
+that this randomized selection algorithm
+uses to find the [inaudible] ordered
+statistic in a given input array, is eight
+times C times N. Where C is the, hidden
+constant in the linear running time of
+partition. And so that completes the
+proof. The input array was arbitrary. We
+showed the expected running time over the
+random choices of the algorithm is linear
+in N. That is, only a constant factor
+larger than what is required to read the
+input. Pretty amazing.

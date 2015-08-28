@@ -1,0 +1,272 @@
+
+As an application of change of basis, 
+we'll see how to render an image with 
+perspective. 
+So we're going to use the same Math in 
+the next lab, where instead of adding 
+perspective, we'll take some away. 
+So, we start with the points making up a 
+wire a wire frame cube. 
+Now, and we're going to move them, we're 
+going to translate them for reasons that 
+will become apparent later, so we'll move 
+them over. 
+Now, how does a camera, or an eye see 
+these points? 
+So, we have to start talking about 
+cameras. 
+So, here is a simplified model of a 
+camera, called a, a pinhole model. 
+There is a box with a, a hole here and 
+the light from the scene goes into the 
+camera through the hole and hits the back 
+of the box. 
+Now, all, a photon, only gets into the 
+box, if it goes through the hole. 
+So, the only photons that hit the back, 
+are those that go straight through the 
+hole. 
+The hole is called the camera center and 
+in the back of the box, there is an image 
+sensor array. 
+That's what detects the photons. 
+Okay. 
+So when the photons bounce off the scene 
+and pass through the pin hole strike the 
+image sensor, the camera registers them. 
+And as you can see, the image ends up 
+being inverted. 
+So, there's an even simpler model in 
+which we get rid of the inversion. 
+This simpler model is used to avoid the 
+inversion of the image. 
+In this model the image sensor array is 
+placed between the camera's center and 
+the scene. 
+And the plane containing the image sensor 
+array is called the image plane. 
+And a photon is detected, only when it 
+goes right to the camera setter. 
+So, it has to bounce off something in the 
+scene and head through the image plane, 
+to the camera center, to be detected by 
+the sensor array. 
+And which sensor array element detects 
+that photon? 
+It's whichever sensor array is 
+intersected by the line that the photon 
+travels along from the scene to the 
+camera center. 
+So, we need a way to map between points 
+in the world p, and the corresponding 
+points q in the image plane. 
+And we're going to do that using a 
+specially design basis which I'll call 
+the camera-oriented basis. 
+The origin is defined to be the camera 
+center. 
+That's why we had to translate that 
+wire-frame cube. 
+To get it somewhat away from the camera 
+center, the origin. 
+The first vector in the basis goes 
+horizontally. 
+And I'm just going to make it the length 
+of, of a pixel. 
+The length of a, of a sensor element in 
+the sensor array. 
+The second vector in the basis goes 
+vertically. 
+The length of a, of a, of a sensor 
+element, and the third vector goes from 
+the origin to, say, the top left corner 
+of the sensor array. 
+Now, we'll see why the camera basis makes 
+it easy to perform this transformation. 
+So, here is a side view where we we don't 
+see a1 because it's pointed directly at 
+us. 
+But we do see a3 and a2. 
+And here's the scene. 
+And there's a point p in the world. 
+But first let's express that point in 
+terms of A1, A2, and A3, the camera 
+basis. 
+So, we get the coordinates of that point. 
+Let's call them x1, x2, x3. 
+And notice that the point is then the 
+linear combination of a1, a2, and a3 
+given with these coefficients. 
+x1 times a1 plus x2 times a2 plus x3 
+times a3. 
+And we only show x2 times a2 plus x3 
+times a3 because x1 times a1 is pointed 
+directly towards us because we have the 
+side view. 
+Now, and how do we go from the point p to 
+the point q? 
+We use similar triangles. 
+So, here's some big triangle. 
+and this is a little triangle. 
+The point p corresponds to point q. 
+The coordinates of point p are x1, x2, 
+and x3. 
+What are the coordinates of point q? 
+We know that the third coordinate, x3, is 
+
+1, 58
+00:05:08,400 --> 00:05:13,340
+ because this point lies in the image 
+plane. 
+To get from x3 a3 to a3, we divide by x3. 
+But by similar triangles, we have to 
+divide all the coordinates. 
+So, the coordinates of this point are 
+obtained by dividing all the coordinates 
+of this point by x3. 
+So, its coordinates are x1 over x3, x2 
+over x3, and x3 over x3, which, of 
+course, is 1. 
+So, to summarize what we've discovered, 
+given the coordinates x1, x2, x3 in terms 
+of the camera basis, a1, a2, a3 of a 
+point in the scene. 
+We find the coordinate representation of 
+the corresponding point in the image 
+plane by just dividing all these 
+coordinates by x3. 
+We got x1 over x3, x2 over x3 and x3 over 
+x3. 
+Which is always 1. 
+Now, I'll call this scaling down. 
+Now, once we have a point in the image 
+plane, it's pretty easy to find out which 
+sensor element it corresponds to. 
+Let's say the point has coordinates x1, 
+x2, x3, with respect to the camera basis. 
+Then, all we have to do is drop that 
+third coordinate, after all, it's always 
+equal to 1. 
+And because of the way we've constructed 
+this camera basis, that tells us the 
+coordinates within the sensor array of 
+the particular sensor element. 
+that,that q lies in. 
+To go from the coordinates of the points 
+making up the wire frame cube to the 
+pixel coordinates, we go through the 
+following process. 
+First, we write the basis vectors of the 
+camera coordinate system using the world 
+coordinates. 
+The coordinates with which we've written 
+the points of the wire frame cube. 
+Now, for each point p in the wire frame 
+cube, we find its representation in terms 
+of the camera basis. 
+We scale down that is divide by the third 
+coordinate to get the corresponding point 
+in the image plane. 
+And then, we convert to pixel coordinates 
+by dropping the third entry. 
+Here's the camera arrangement I'm 
+going to use. 
+The camera center is at the origin. 
+This square is the image sensor array, 
+and here's the wire frame cube we're 
+going to view. 
+When light goes from the wire frame cube 
+directly in a straight line to the camera 
+sensor. 
+If it intersects the sensor array, then 
+the sensor element at the intersection 
+point picks up that light. 
+The camera will have a view that's closer 
+to this. 
+Once again, here's the camera 
+arrangement. 
+The first thing we're going to do is 
+construct the camera basis. 
+Here's a diagram showing the vectors of 
+the camera basis. 
+The image sensor array is 1 by 1. 
+Here's a view with the z axis going 
+straight into the screen. 
+Well, the first vector a1 has a length 
+that's, that of a single pixel, 1 over 100. 
+ And it goes in the direction of the x 
+axis. 
+The second factor has the same length, 
+goes in the direction of the y axis. 
+Now, the third vector goes from the 
+origin to the top left corner of the 
+sensor array. 
+Which looks like, it should be at minus 1 
+half, minus 1 half, 1. 
+Let's look at the result. 
+And this is the coordinate representation 
+for this point way out of the scene. 
+What we want to do is find a 
+corresponding point in the image plane. 
+And we do that by dividing by the third 
+coordinate, eight in this case. 
+And this gives us the location in the 
+sensor array. 
+So, the pixel coordinates are 62.5, 62.5. 
+Now, we can plot this. 
+Now we're ready to try the same thing 
+with the whole wire frame. 
+We use a procedure that gives us line 
+segments. 
+And now, we take the co, corners of the 
+wire frame cube, suitably translated. 
+And construct the line segments with the 
+given corners. 
+And now, we put together all those lists 
+to get the set of points, that we want to 
+render. 
+Now, the first step in rendering these 
+points is to find their coordinate 
+representations in the camera coordinate 
+system. 
+Next, we have to find the corresponding 
+points in the image plane. 
+We'll use that. 
+We do that by scaling down by the third 
+coordinate. 
+And here we'll derive those points. 
+Now, from these, we want to find the 
+pixel coordinates. 
+I'll define a procedure to do that. 
+Just takes the first and second entry. 
+And now, we derive all those pixel 
+coordinates and we can plot the points. 
+I want to draw your attention to one step 
+in this process, finding the coordinate 
+representation of the cube points with 
+respect to the camera basis. 
+We used vector rep, but we could have 
+done it using matrix multiplication. 
+Here's the matrix whose columns are the 
+vectors of the camera basis. 
+If we were to multiply this matrix by the 
+coordinate representation of a point in 
+terms of the camera basis, we would get 
+back the point represented in world 
+coordinates. 
+To go the other way, from world 
+coordinates to camera coordinates, we use 
+the matrix inverse. 
+First, I'll import a procedure for 
+finding the matrix inverse. 
+You'll write this procedure later. 
+Although, you could've found this inverse 
+just by hand. 
+Now, we can get the coordinate 
+representations with respect to the 
+camera coordinates of all the points 
+making up the cube by multiplying them by 
+this matrix inverse. 
+For example, here are the coordinates of 
+the first point on the list. 
+

@@ -1,0 +1,134 @@
+In recent [inaudible] these days there's
+always a lot of talk of probabilistic
+models and machine mining. But if you
+actually look at large systems under the
+hood what you'll almost always find is
+that they also make quite a bit of use of
+regular expressions in various places. And
+for many tasks it turns out that regular
+expressions are just a very practical and
+capable way of specifying various kinds of
+natural language patterns. I'm gonna show
+you one example of this now by showing how
+we use regular expressions for the English
+tokenizer inside. Stanford and OP tools
+such as the passiron part of speech tagger
+or for the coranal P suite overall. Okay
+here we are with the code for the Stanford
+English [inaudible]. So what it is, is
+it's a large determinate stick. Regular
+expression. So what is written in is with
+a tool called J-Flex. So J-Flex belongs to
+a family of what are commonly called in
+computer science, lexors, which is just
+another word for tokenizers, which take a
+sequence of characters and cut pieces one
+token at a time off the front of it. So
+that was the original lexor part of the
+unix, and then flex. And then this is
+J-Flex, which is a java compatable
+version. Let's scroll down to where some
+of the regular expressions are used to
+define character classes. Often what you
+find is that many of the regular
+expressions aren't actually very
+complicated, that they're really nothing
+more than lists that are being put into
+regular expressions by putting verticle
+bars in between for alternation. And so,
+for example, we see that in several places
+here. So here we have one for abbreviated
+months and here we have one for
+abbreviated days of the week, and that
+continues on for some of these other ones,
+like American states and various other
+kinds of person, name, title, acronym.
+[inaudible] Down here. But lets go on a
+little bit further to one that's a bit
+more interesting than that. Okay. So,
+here's one of phone numbers. This is the
+kind of ill-documented regular expression
+that's a little bit hard to actually get
+your head around, but are much used in
+practice. So, at the very top level of
+this regular expression, things are
+divided up by this alternation right here,
+and. The right hand side of the
+ordination, there's a [inaudible], where
+the separator is being used as dots. And
+so that one's separated out as consistent
+use of dots, cuz otherwise it's easy for
+the regular expression to go wrong and
+also recognize various kinds of
+[inaudible] numbers and other patterns.
+And so that part of it is actually the
+easier part. So we can have at the
+beginning, optionally, the use of plus
+signs, which are used in Europe and most
+of the rest of the world as an
+International prefix by county codes. And
+then we. Have the country code here which
+is just numbers of the range two to four.
+And then all of that is optional. And then
+after that. We've got a first set of
+numbers, which can be the area code, the
+dot then the second set of numbers, which
+I guess historically is the exchange and
+then finally the third set of numbers and
+so these sets of numbers are then being
+given a length. So this has to be between
+three and four numbers, this has to be
+three and five numbers and the area code
+has to be two and four numbers and so
+those ranges are chosen so that they'll
+work with the phone numbers of a bunch of
+the countries around the world. But if you
+know well your international phone. You'll
+realize there actually are some cases that
+won't still be recognized by those. So
+what then if we go. To the left-hand side
+of the regular expression. It's
+effectively doing the same thing but just
+more complex. So that the first part of it
+is again going to recognize. Things like
+optional country codes, so you can see the
+same piece over here. [sound].
+[inaudible]. Country code. But it's
+allowing in some other possibilities. So
+here we've escaped [inaudible] so you can
+actually sort of have some numbers that
+are put inside of parentheses and further
+on we have got this character class. We're
+allowing a variety of separators apart
+from period. So we can have dash which
+again needs to be escaped. There can just
+be a space or there can be a non breaking
+space [inaudible] for a non braking space.
+So overall this. Will allow it to
+recognize a bunch of formats for phone
+numbers. So it'll recognize almost all
+American phone numbers, and generally does
+pretty well with things like UK and
+Australian phone numbers. If you want an
+example of where it doesn't work, the
+normal phone number format in France is
+you just have pairs of digits with spaces
+in between them. And that's not included
+here. And the difficulty. Isn't sort of
+writing a regular expression that matches
+that. It's in this context of [inaudible].
+Make their expression match her of
+managing to write one, which wanted to alo
+wrongly match various other things, such
+as numbers that just appearing as a
+sequence of numbers for some other reason.
+Well I hope that's given you some idea of
+the use of regular expressions and NLP
+systems. If you polk around another NLP
+system, I'm sure you'll find lots of other
+examples. Commonly when people want to
+match particular patterns, whether they be
+patterns at the level of words or patterns
+at the level of parts of speech, they can
+just be very convenient and practical
+methods to solve many practical tasks.

@@ -1,0 +1,126 @@
+In this segment, we're gonna keep on
+looking at the inverted index, and see how
+it's an efficient data structure for doing
+query operations in an IR system. And in
+particular, we'll step through in detail
+how you can perform a common kind of
+query, an AND query for two terms. So,
+starting off now, we'll look at the
+details of query processing. And then
+we'll have a later segment where we'll
+talk in even more detail about the kind of
+queries we can process. So suppose we want
+to process a query. So suppose our query
+is Brutus and Caesar. Well, let me even do
+a simpler example than that. Suppose the
+very first kind of query we want to look
+at is just a query for Brutus. Well, how
+to do that is totally straightforward,
+what we do is locate Brutus in the
+dictionary and then we return its postings
+list that we look up and say okay this is
+the set of documents where Brutus occurs
+and we don't need to do anything else. But
+now let's go to that fraction
+more complicated case. Well then we're
+going to locate, for Brutus and Caesar,
+we're going to locate both the words in
+the dictionary, look up their postings
+lists, and what we'd like to do is then
+work out what are the documents that
+contain both Brutus and Caesar. And doing
+the putting them together is standardly
+referred to as merging the two postings
+lists. Now that term can actually be
+misleading because what we're doing for an
+AND query is we're actually intersecting
+the two sets of documents to find the
+documents that, in which both words occur.
+Whereas merging suggests doing some kind
+of putting them together in a union
+operation. But the term merge is used
+actually in both cases. So the merge
+algorithm family refers to a family of
+algorithms where you can step through a
+pair of sorted lists and do various
+Boolean operations on that. Let's look in
+concrete detail how that happens. Okay, so
+the way we do a merge operation to do
+Brutus and Caesar is like this. We start
+with a pointer which points at the head of
+both lists, And what we're going to be
+wanting to do is then work out what's in
+the intersection. So the way we do that is
+we ask are these two pointers pointing at
+the same, an equal doc ID. And the answer
+is no. And so what we do is then advance
+the pointer that has the smaller doc ID.
+So now I have two pointers like this and
+we say does, is, are the two pointers
+pointing at the same document ID? And here
+the answer is yes. So we put that into our
+result list and then if we've done that,
+we can then advance both pointers. We now
+say, are these pointers both pointing at
+the same doc ID? No. Is the first list
+greater, first, the thing pointed to by
+the first list pointer greater than the
+thing pointed to by the second list
+pointer? No, so we advance the bottom
+pointer one. Then we say, is the doc ID
+pointed at by the two pointers equal? No,
+and so again, we advance the smaller one.
+Equal, no, advance the smaller one. At
+this point, they're again both pointing at the
+same doc ID. So we add that to our result
+set, and we advance both pointers. Are
+they the same? No, What we do is advance
+the smaller one. Are they the same? No, we
+advance the smaller one. Same, no, advance
+the smaller one. Same, no, advance the smaller
+one. Same, no. And at this point, when we
+try and advance the smaller one, one of our
+lists are, is exhausted. And so then there
+can be no other items in the intersection
+and so we can stop. And so this is our
+return document set. Documents two and
+eight contained both Brutus and Caesar. So
+I hope we went through that carefully
+enough that you can see if the lists
+lengths are X and Y then this merge
+algorithm takes big O X plus Y time. That
+it's linear in the sum of the lengths of
+the two postings lists. And you should
+also have seen what's crucial to make this
+operation linear and what's crucial to
+making it linear is the fact that these
+postings lists were sorted in order of
+document ID. Precisely because of that, we
+could do a linear scan through the two
+postings lists, where if that hadn't been
+the case, then it would have turned into
+an N squared algorithm. Okay. Here's the
+postings list intersection algorithm one
+more time, as a real algorithm, but
+hopefully you can see it's doing exactly
+the same as what I was by hand. So we
+start here with the answer set as zero.
+And then we're going to be doing this
+while loop while the postings lists are
+both not equal to nil, cause as soon as
+one's nil, we can stop. So that's the and
+operation. Okay, so then at each step,
+what we do is ask whether the two, the
+document ID of the two pointers is the
+same. If so we add it to our answer. If
+not and sorry, and if they are the same
+we can advance both pointers and if not,
+we work out which doc ID is smaller and
+then we advance that pointer, so either this one
+or this one. And that was exactly what I
+was doing and then as soon as one of the
+document lists runs out, we can return
+our answer set. Okay, I hope that made sense
+and you now feel like you can write your
+own code to do the intersection of
+postings lists using the merge algorithm.

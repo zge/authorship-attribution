@@ -1,0 +1,185 @@
+So our goal now is to define a function 
+f. 
+That takes a sentence. 
+For example, the dog barks, in 
+conjunction with a tag sequence. 
+For example, DNV and return some future 
+venture. 
+And so to do this we're actually going to 
+use a lot of the machinery that we 
+developed for log linear taggers a little 
+earlier in this course. 
+When we use directly the concepts we saw 
+there So the first critical concept was 
+the idea of a history. 
+Which basically captures all of the 
+context. 
+Which is in play when we're, when we're 
+making a tagging decision. 
+So as we saw a few lectures ago, in lock 
+linear models a history is a 4-tuple. 
+Consisting of pair of tags, t minus 2 and 
+t minus 1. 
+For example, if we're tagging the word 
+base, in this case we would have t minus 
+2 t minus 1 is equal to determinant 
+followed by a, an adjective, these two 
+tags. 
+we have the entire sentence. 
+So, in this case, we have this entire 
+sentence here. 
+It's the second element to this tuple. 
+And then we have to be slightly careful 
+to specify the position in the sentence 
+that's being tagged. 
+In this case, we have the 1, 2, 3, 4, 5, 
+6th word being tagged. 
+This is word number 6. 
+And so that's the fourth element of this 
+history. 
+So when we consider what possible tag we 
+should choose in this particular 
+location, we're basically going to use 
+the history to encapsulate all of the 
+information which goes into that 
+decision. 
+Now, recall that we've made the 
+assumption that the history only looks at 
+the previous two tags. 
+In the case of lock linear models, that 
+was motivated by concerns about 
+efficiency. 
+That allowed us to use the Viterbi 
+algorithm. 
+In the decoding problem for multimedia 
+taggers. 
+And we're going to use this assumption 
+again and we'll see how again, global 
+linear models it also allows us to apply 
+dynamic programming algorithms. 
+So now to go further with this, again 
+this is just actually Reusing completely 
+the technology we saw from log linear 
+taggers. 
+We will define what I'll call local 
+features. 
+So remember a global feature vector, 
+looks at an entire x, y pair, where x is 
+for example a sentence say the dog barks. 
+And y is some tag sequence. 
+So these feature of x is a global and 
+they look at an entire tax sequence. 
+Now I'm going to define local features, 
+which just look at a history tag pair. 
+And so they'r going to look at a very 
+small window, in fact they're going to 
+look at a sequence of three tags, three 
+consecutive tags because history contains 
+two previous tags. 
+And then we look at this third tag. 
+So, I'll use the notation little g for 
+these local features. 
+So, g sub s, is a function that takes a 
+history tag pair as input and returns 
+some value as its output. 
+Very often in natural language, these 
+local features are binary features or 
+indicator functions. 
+Which ask particular questions about the 
+history in conjunction with the tag being 
+proposed. 
+So here are some examples we saw actually 
+in the log linear tagging lecture. 
+G 100 for example, might be a feature 
+which is one if the current word w i 
+being tagged is the word base. 
+And the tag being proposed is v b. 
+G 101 might be a function which is 1 if 
+the current word ends in ing and the tag 
+being proposed in VBG. 
+We can also have contextual features, 
+which look at the tag being proposed and 
+these previous two tags in the history. 
+So here's a feature which is one if the 
+trigram of tags, the previous 2 and the 
+tag being proposed, are the sequence 
+determiner, adjective, verb and so on. 
+And as we saw in the lecture on local 
+linear models one great thing about. 
+These, kind of feature vector 
+definitions. 
+Is that you can essentially ask any 
+question about the history in conjunction 
+with the tag being proposed, that might 
+be useful in, in disambiguating the tag 
+at the current position. 
+So now, if we think about an entire xy 
+pair. 
+Okay? 
+So I'm just again, emphasizing that our 
+goal. 
+Is to define a feature vector 
+representation of an entire input x with 
+an entire output y. 
+So I sort of have x together with y here. 
+I have a sentence with a particular tag 
+sequence. 
+If there are, there are n words in that 
+sentence, then there are n history tag 
+pairs between that x, y pair. 
+So this particular sentence has one, two, 
+three, four, five, six words. 
+For convenience, I'll just number them. 
+And we have six history tag pairs for 
+this particular example. 
+So the first history tag pair has the 
+tagging decision NNP, because that's the 
+tag for the very first word. 
+And the history has the previous two tags 
+as the start symbols, the star symbols. 
+We have the entire sentence, and we have 
+position one. 
+The second history/tag pair has RB, 
+because that's the tag of the second 
+word, the entire sentence, position two. 
+And the previous two tags, a star and 
+then an NP. 
+The third tagging decision is VB, because 
+that's the, the identity of this third 
+tag here. 
+And the previous two tags are NNP and RB. 
+And so on and so on. 
+You see, we determiner at the fourth 
+position, adjective at the fifth 
+position, base at the sixth position. 
+And each of these cases we have a history 
+where the sentence, of course, is staying 
+constant. 
+But we have the position being indicated 
+of the particular tag and we also have 
+the previous 2 tags at each of these 
+positions, which obviously has changed as 
+we modify this index, this position of 
+the sentence. 
+Now each of these decisions, each of 
+these positions. 
+Is going to have a local feature vector 
+G. 
+So I'm going to have a feature vector 
+this first decision, which consists of 
+the history in conjunction with the tag 
+NNP. 
+Where the history is is this particular 
+history here. 
+This feature vector has g of the second 
+history in conjunction with RB and so on. 
+And so there are going to be six local 
+feature vectors corresponding to the six 
+different history tag pairs in this 
+particular syntax sentence. 
+So, let me now show how we can leverage 
+these local feature vectors in defining a 
+global feature vector that maps an entire 
+tag sequence in conjunction with a 
+sentence to a feature vector. 
+

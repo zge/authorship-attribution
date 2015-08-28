@@ -1,0 +1,258 @@
+Okay.
+So next, we will describe hidden Markov
+models.
+Which, as we will see, are an instance of
+the generative modeling approach that I, I
+just described.
+So, in hidden Markov models, the basic
+idea is the following.
+I have some input sentence x, which is
+consists of n words.
+So each of these is a word, you know this
+could be the dog, and so on and so on.
+And I have some tag sequence, y1 through
+yn, so this might be determine a noun and
+so on.
+And an HMM is going to define a joint
+distribution of tags sorry, over word
+sequences paired with tag sequences.
+So, this is precisely an instance of the
+generative models I just showed you in
+that, if we think of a word sequence as an
+input and a tag sequence as a, quote,
+label.
+We now have a joint distribution over
+these things.
+And this is a distribution over all
+possible word sequences x1 through xn and
+all possible tag sequences, y1 through yn.
+Where these two sequences have the same
+length.
+Once we have defined a model of this form.
+And learned the parameters of this model
+from a set of training examples.
+The output from the model is going to be
+the.
+So here I have an input x.
+Which, again, is a sequence of words.
+The output for this sequence, is going to
+be, the sequence of tags y 1 through y n,
+which maximizes this joint probability.
+So here, I'm basically going to have a
+search over all possible tag sequences for
+the input sentence.
+I'm going to find the tag sequence that
+maximizes this probability.
+Now, this in itself is an interesting
+problem because the number of possible tag
+sequences grows very quickly with n, it's
+exponential with, with n.
+And so brute force search over all
+possible tag sequences is, in general, not
+going to be possible.
+But we'll see it as a very nice way around
+that problem for the class of hidden
+markup models.
+Okay.
+So, on this slide I have given a formal
+definition of Trigram HMMs.
+So here I have the formal definition and
+on the next slide we'll see an example
+which will probably help to clarify
+things.
+But let's go over this definition.
+I'm going to assume two sets.
+So v is going to be the set of possible
+words in the language.
+So it might contain for example there,
+dog, cat, a, box, and so on and so on.
+And I'll use s to refer to the set of
+possible tags.
+So for example we might have determiner,
+noun, verb preposition, adverb and so on.
+Typically by the way, we, we might have, I
+don't know on the order of a few tens of
+tags.
+The, the Wall Street Journal part of
+speech tagging corpus/g I referred earlier
+had approximately 50 tags.
+In theory quite bit by corpus/g in
+language.
+But that's not a bad estimate.
+Okay.
+So we have these two sets.
+And then a sentence is a sequence of
+words, x1 through xn, where each xi is in
+v.
+And a tag sequence is going to be a
+sequence of tags.
+Y1 through yn plus 1.
+Sort add to yn plus 1 where yi is in s for
+i equals 1 to n and yn plus 1 is STOP.
+Okay so I'm again going to make use of the
+STOP symbol which we saw in the previous
+lectures on language modelling.
+It's going to play very similar role to
+what we saw in, in language modelling.
+So I've just extended.
+Our definition here so our joint
+distribution is now the sequences S1
+through SN.
+Together with text sequences Y1 plus YN
+plus 1.
+So this for example might be the dog
+barks.
+And this might be determiner nn, vb, stop.
+So notice I have this extra symbol at the
+end of the, the tag sequence.
+So, how do we define this joint
+probability?
+So I have a, a product of two terms here.
+Here I have a product from i equals 1 to n
+plus 1 of qyi given yi2 minus yi1.
+Notice that this is very, very similar to
+what we saw in trigram language models.
+In fact this, as we'll see very soon, is
+nothing more then a trigram model Applied
+to tag sequences.
+So that's the first term and the second
+term is as follows.
+I have a product from I equals 1 to N.
+Of e xi, given yi.
+So the e parameters, for example, are the
+following.
+We might have e of the, given dt.
+And that, basically, corresponds to the
+probability.
+Given that I have the tag dt, that I see
+the word the.
+So in some sense of the probability of the
+tag dt emitting, or generating the word
+the.
+Okay and I have one term for each word in
+the sequence.
+So the parameters in the model are as
+follows.
+I have a trigram parameter.
+For every trigram of tags, u, v, s.
+Where u and v can be in the set s.
+And I'm, again, going to use the start
+symbol star.
+This is, again, is very similar to what we
+saw in language models.
+And s can be any member of s.
+Or it could be the stop symbol.
+So that's the first set of parameters.
+These are basically.
+The trigram parameters.
+And secondly, for any word in the
+vocabulary and for any tag s, I have the
+conditional probability, or rather,
+parameter.
+Corresponding to the conditional
+probability of x given s.
+These are often referred to as emission
+parameters.
+So, two parameter types in the model.
+Given these parameters I can then
+calculate the joint probability of a word
+sequence x1 through xn and a tag sequence
+y1 through yn plus 1 as this product of
+two terms.
+So that's a little, a little abstract.
+Let's go through a concrete example to
+illustrate these definitions.
+And here I've assumed that the sentence is
+the three words the dog laughs.
+And the tag sequence is DNV STOP.
+So D for determine, N for noun, V for
+verb.
+How do I calculate the probability of this
+word sequence pairedd with this tag
+sequence.
+So by the definitions on the previous
+slide is works as follows.
+So first we/g have a product of q terms.
+And notice for each tag here DNV STOP, I
+have an associated q term: qD times qN
+times qV times qSTOP.
+And at these point, I'm conditioning on
+the previous two text.
+So these star symbols are a very similar
+way to what we saw with language modeling,
+they are sort of initial sequences, sorry,
+initial symbols the star of the tag
+sequence, so if D given star, star and if
+N given star D I have V given DN and then
+finally I have stop given NV.
+So, those are the Q parameters and then in
+the second part of this expression I have
+a product of E parameters one for each
+word.
+In the input sentence.
+So if e of the given D, for this word
+here, e of dog given N, so this word here.
+Then finally e of laughs given V for this
+word here.
+And intuitively, these parameters
+correspond to the probabilities of first
+generating the word there from there, D.
+Then generating the word, dog.
+Given the underlying tag as N .
+And finally, generating the word, laughs.
+Giving the underlying tag as V.
+.
+So, remember, the name of these.
+These models is, hidden markup models.
+Let's just think a little bit about why
+they actually get this name, and it'll
+also help us develop a little bit more
+intuition for these models.
+So This product, of q terms, is
+essentially a prior probability, over tag
+sequences.
+So this is the probability of y1, through
+y n plus 1.
+Remember in the noisy channel model, we
+usually had p xy.
+Is equal to P of Y, times P of X given Y.
+So these cue terms correspond precisely to
+P of Y, where Y is now an entire text
+sequence.
+And this is a second order Markov chain.
+So we've, basically, just applied the idea
+of Markov Models to this problem of
+defining P of Y.
+This is exactly the same as the form we
+saw for triagram language models in the
+previous part of the course.
+Okay.
+So if we look at this expression, this is
+actually the probability of X1 through Xn
+conditioned on Y1 through Y n plus 1.
+Where we're basically assuming that each
+word XJ is chosen depending only on the
+value for YJ.
+So we've made some fairly strong
+independence assumptions here, that each
+word only depends on its underlying public
+speech tag.
+So this leads to the name hidden Markov
+Models.
+In some sense this is a Markov Chain that
+is hidden in the sense that you can think
+of a generative process where we first
+choose a sequence of tags under this
+model.
+And then for each tag we generate an
+associated word x1 up to xn.
+These xjs are observed.
+In these, tag sequences, the Ys are
+unobserved.
+And the problem on a test example is the
+following, I received a sequence of words,
+X1 through XN and I have to find the most
+likely sequence of tags underlying those
+words, Y1 through Y and plus 1.
+So, I have to uncover the most likely
+settings for that hidden sequence.

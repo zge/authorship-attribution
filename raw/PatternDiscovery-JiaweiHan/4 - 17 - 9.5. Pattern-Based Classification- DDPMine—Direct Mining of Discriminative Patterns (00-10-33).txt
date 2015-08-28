@@ -1,0 +1,243 @@
+[MUSIC]
+Now I'm going to introduce you
+the very last session of this lecture
+called DDP Mine,
+Direct Mining of Discriminative Patterns.
+We see the previous mining eh, frequent
+discriminative patterns look like this.
+You take the data,
+you first do frequent pattern mining.
+You get a pretty large frequent patterns.
+Then you do filtering process,
+that means you use certain good criteria
+to select the discriminative frequent
+patterns, then you get a set.
+You can use them for classification or
+feed into other good classifiers,
+'kay, then one interesting
+observation is the,
+this middle sect, frequent patterns,
+you mine, it could be really big,
+whether we can have
+a method which we just a,
+transform data into some kind of form
+like FP-tree, then we do, directly mine,
+directly mining, not a frequent pattern
+but a discriminative frequent pattern.
+That means we jump over this big
+pattern we short circuit this,
+this process, okay,
+then likely we will get
+more efficient mining in mining
+frequent discriminative patterns.
+This is the idea of DDPMine.
+It was developed by a home trends
+group in published in ICDE 2008.
+And let's look at the general philosophy.
+We still take a set of training instances
+D and a set of features F, 'kay.
+Then we will iteratively perform
+feature selection process
+based on the philosophy
+of sequential coverage.
+Look like this, 'kay.
+That means, iterative,
+it means every time we select the,
+the best features, the highest
+discriminative power features, f sub i,
+then take this feature, we will remove
+the instances from the datasets.
+Those instances are covered by these,
+by this selected features f sub i.
+Then, in the,
+another iteration from the remaining
+datasets you find the highest
+discriminative power feature.
+Another one, then you remove those
+datasets to cover the other features.
+You do this iteratively, okay?
+So how to implement this,
+we can use branch-and-bound search.
+But in particular to make it efficient,
+we can integrate this
+branch-and-bound search with
+FP-growth mining together.
+Then also we can iteratively eliminate
+those training instances and
+progressively shrink those at the FP-tree.
+Let's look at how this one is performed.
+First, we already know
+the discriminative power or we say,
+information gain of a low frequency
+pattern is upper bounded by a small value,
+because we are right know the upper
+bound of the information gain
+is, you know, monotonically
+associated with the high frequency.
+That means, you get more frequent pattern,
+likely you get a more chance to
+get higher information, 'kay?
+'Kay.
+Then if you get a very
+low frequency pattern,
+unlikely those information
+gained will be higher.
+So it's upper bonded by a small value.
+Then in the FPGrowth mining [COUGH]
+we know while we try to mine more and
+more the prone the conditional
+database becomes smaller and smaller.
+When smaller to certain cases
+the information gained of
+this remaining part is upper
+bounded by smaller value.
+If it's not available,
+you can prune it, okay?
+So that's the philosophy, let's see.
+During this FPGrowth mining process,
+we will record the most
+discriminative itemset discovered so
+far and its information gain,
+value g best.
+That means, when you first see so far,
+what's the best information gain,
+we already discovered.
+And, what is the associated discriminative
+item set, discriminative pattern?
+Then, we are going to keep
+mining before we construct
+the FP-tree to, to mine this one,
+we first check the condition or database.
+That means under the chronic
+condition of this database,
+we just look at this database
+to see what is the pop,
+best possible information gain,
+that means we can estimate
+the upper bound of information gain
+based on the formula we derived before.
+If this upper bound value
+is smaller than g sub best
+it simply says this upper bound,
+the best thing you possibly can get
+is still smaller than kind
+of one you already got.
+Then you better skip this
+conditional FP-tree because, oh,
+you know,
+there's no point to construct it.
+It, it's not available,
+but its subsequent trees,
+if you further doing mining
+on these FP-tree, the data,
+condition of database will become
+even smaller, so their frequents,
+their support is smaller, frequency
+smaller, their gain will be lower, okay.
+It's upper bounded.
+To that extent, we find a knife,
+we actually can cut this tree and
+its subsequent conditional database, okay.
+So, based on this philosophy,
+we can prune, for
+example in this pattern
+gross because this FP-tree
+is upper bounded once you get
+a certain part of condition or
+database like B's conditional database,
+okay?
+If you find these B's conditional
+database is even lower, that means B's
+upper bounded information gain is
+lower than the information gain of A,
+of its parent,
+then there is no point to further mine B.
+You can prune the B.
+All these conditional database out.
+That's the reason you can remove
+part of the mining process.
+You don't have to mine the whole
+conditional FP-tree, okay.
+So, with DDPMine, it is also,
+it is a feature-based approach.
+That means you will mine only the most di,
+discriminative patterns.
+After this general principle,
+we work out the DPPMine algorithm.
+Now the major thing we claimed is
+efficiency, we want to compare
+the run time efficiency with
+other comparative algorithms.
+Essentially, we are going to compare
+three algorithms altogether.
+One is discriminative pattern-based
+classification by Hong Cheng
+we just introduced.
+That time we did not give a concrete name,
+and
+in the later paper DDPMine we give
+the previous algorithm as PatClass.
+Another algorithm of Jianyong Wang and
+George Karypis they published
+in 2005 called Harmony.
+And this DDPMine is directly
+discriminative pattern mining, 'kay.
+All these three methods mine
+discriminative frequent patterns for
+effective classification, but
+the way they mine it are different, 'kay?
+Let's look at the efficiency.
+You probably can see DDPMine.
+The running time is much much lower,
+even you reduce
+the support threshold,
+comparing to harmony, and a PatCLass,
+just because DDPMine will not mine
+frequent patterns, but directly get
+frequented discriminative patterns,
+so it is very efficient algorithm.
+Not only it is very efficient,
+but it's also very effective.
+It has high classification accuracy.
+We took a bunch of datasets
+in machinery repository.
+We check the,
+their respective classification accuracy.
+We found that DDPMine
+almost all the cases,
+is the best accuracy holder comparing
+to PatClass and Harmony, 'kay.
+To that extent,
+we really like this DDPMine because
+it's efficient, and it's effective.
+The further extension of this
+method actually has been
+developed by David Lo and
+Hong Cheng as well.
+They used it for software bug analysis.
+The paper was published in KDD 2009.
+You may like to read it
+to get more details.
+So now we summarize the whole lecture.
+In this lecture we introduced
+the concepts of classification and
+pattern-based classification.
+We introduced two associative
+classification methods, CBA and CMAR.
+We introduced concepts of discriminative
+pattern-based classification and DDPMine.
+Especially, DDPMine is directly
+mining of discriminative patterns.
+It shows both efficiency and
+accuracy in mining and in classification.
+So in summary, I'm going to list a bunch
+of papers, which we take in this lecture,
+re, reference them, and
+lecture quite a few of them.
+But, we did not get into very details,
+if you want to learn more,
+you should spend time to read and
+study those papers.
+Thank you.
+[MUSIC]
+

@@ -1,0 +1,231 @@
+Okay, so here's a road map for what's 
+coming next in the class. 
+We'll first describe how to learn 
+phrases, for what is often called a 
+phrase based lexicon, from translation 
+examples, with the alignments we covered 
+using the IBM models I showed you the 
+last time. 
+We'll then describe a basic phrase-based 
+model. 
+And then finally, we'll spend some time 
+talking about the decoding problem in 
+phrase-based models and describe the 
+decoding algorithm for phrase-based 
+models. 
+So the critical idea in phrase-based 
+models is to automatically learn a very 
+large lexicon from data where the lexicon 
+consists of phrases in one language. 
+Paired with phrases in another language. 
+So here are some example phrases. 
+On the left hand side, I have German, and 
+on the right hand side I have English. 
+And each of these entries in the lexicon. 
+Pairs some sequence of German words with 
+some sequence of English words. 
+For example, this first entry says that 
+these two words in German can be 
+translated it as these two words in 
+English. 
+And notice in general. 
+I can have one or more words on the 
+German side and I can have one or more 
+words on the English side. 
+And the number of words can differ. 
+So, for example, I have two words here in 
+German corresponding to three words here 
+in English. 
+So these lexical entries are going to 
+form the basis of the translation system. 
+And, most importantly, they go beyond the 
+simple word to word translations we saw 
+in the IBM models. 
+So remember in the IBM models we had 
+parameters such as the probability of 
+this word in French being a translation 
+of this word in English. 
+Now were going to have probabilities for 
+example, of this entire phrase. 
+of being a translation of this English 
+phrase. 
+So now were going to have translation 
+entries or lexicon entries with 
+multi-word phrases on either side. 
+And they will have associated parameters, 
+which we'll also learn from data. 
+So, what we're first going to describe is 
+how we actually learn these lexicons from 
+a set of translation examples. 
+So, as in the IBM model I'm going to 
+assume that there is some very large set 
+of training examples. 
+For example, we might have German versus 
+English training data. 
+Where each example in the training data 
+consists of a German sentence paired with 
+an English sentence. 
+We might have several tens of thousands 
+or several hundreds of thousands of 
+example translations like this. 
+And given this corpus, this what we call 
+a parallel corpus, or what is sometimes 
+called, in literature, a bitext. 
+Given this input, we're going to describe 
+methods for learning a lexicon. 
+These lexicons can often be very, very 
+large. 
+They could often have many hundreds of 
+thousands or even millions of entries in 
+this form. 
+So here's an example which illustrates 
+the basic idea of how phrases are 
+extracted from translation examples. 
+This is taken from a tut, tutorial by 
+Philip Koehn and Kevin Knight. 
+So our training sample in this instance 
+is this Spanish sentence. 
+Aligned with this English sentence. 
+So these two sentences in translations of 
+each other. 
+And we can run the IBM models and get 
+some kind of alignment. 
+So we might have for example maybe 
+something like this. 
+Okay we'll talk a lot in a moment about 
+how we use these alignments in driving 
+phrases, but once we've derived the 
+alignment, we can start extracting phrase 
+pairs from this example. 
+And so, here are some examples. 
+So Maria is identified as a translation 
+of Mary. 
+We have this correspondence. 
+We have this word corresponding to the 
+word witch, this word corresponding to 
+green. 
+So these are just single word phrases. 
+We might for example, line the Spanish 
+phrase no to the English sequence did 
+not. 
+And then we might have longer phrases. 
+So, for example, we might have, the, the 
+fact that this sequence of words, which 
+is seen here, and the Spanish, is aligned 
+to this sequence of words, did not slap, 
+in the English. 
+And here's another example. 
+So each phrase phrasal entry, each 
+lexical entry, is going to pair some 
+sub-sequence of Spanish words. 
+With some subsequent sequence of English 
+words, we might have everything, anything 
+from word-to-word correspondences, just a 
+single word on each side, to much longer 
+phrases, where we have multiple words in 
+one language aligned with multiple words 
+in the other language. 
+And we're basically going to run some 
+algorithm over each of our training 
+examples in turn, and from each of these 
+extract a set of lexical entries of this 
+form. 
+So you can imagine if we have a few 
+hundred thousand training examples, each 
+training example consists of a pair of 
+sentences, we might end up with a quite 
+large set of possible phrases. 
+So here's a quick recap of how we can use 
+the IBM translation models to derive 
+alignments in our training examples 
+specifically how IBM Model 2 can be used 
+in this way. 
+So remember that IBM Model 2 defines a 
+distribution so m is the length of the 
+French sentence. 
+E is an English sentence, so it's e 1, e 
+2 up to e L where L is the length of the 
+English sentence. 
+For example we might have this English 
+sentence here. 
+F is a French sentence, consisting of 
+words f 1, f 2, up to f m. 
+And a is a set of alignment variables. 
+So a 1, a 2, up to a m. 
+So conditioned on an English sentence and 
+a French sentence length we have a 
+distribution of all possible choices of 
+alignment variables and choices of French 
+translations. 
+Now a very useful by-product is that once 
+we've trained the model. 
+Right, once we have these q and t 
+parameters I showed you last time, we can 
+calculate the most likely alignment for 
+any training example. 
+So given a English sentence, a French or 
+other foreign sentence, in this case a 
+Spanish sentence. 
+and the length of the foreign sentence, 
+m. 
+We can search over all possible 
+alignments and find the alignment that is 
+most likely under the model. 
+And what will, this will actually do is, 
+for each foreign word we will find the 
+most likely alignment, where the 
+alignment just specifies each foreign 
+word which word in the English aligns to. 
+So in this particular example we may in 
+this example recover in the alignment 
+I'll show you here as a reasonable 
+alignment of these two sentences. 
+Okay? 
+And so we can do this to every one of our 
+training examples. 
+Once we've learned these q and t 
+parameters using the EM algorithm, so we 
+derive q and t using EM, we can go 
+through our training sentences one by one 
+and recover these alignments. 
+Notice that under these IBM models these 
+alignments have the following property. 
+They are, for each foreign word, we have 
+an alignment to a single English word, so 
+for each foreign word, we pick out a 
+single English word to which we're 
+aligned. 
+It's going to be useful to represent 
+these alignments as what are called 
+Alignment Matrices, and so here's an 
+example, again, for this English Spanish 
+pair that I just showed you. 
+And so I have the English words down the 
+column, of this first column, and I have 
+the Spanish words across the top of this 
+table, and then I show a dot if there's 
+an alignment,oOkay? 
+So this dot means that Mary and Marie are 
+aligned. 
+This dot means that no and not are 
+aligned. 
+This dot means that slap and daba are 
+aligned, and similarly, okay, una is 
+aligned to slap, bof is aligned to slap 
+and so on. 
+So we place an alignment, one of these 
+dots in a cell in this matrix if these 
+two words are aligned. 
+Notice once again that for each Spanish 
+word we have an alignment to a single 
+English word. 
+So for each Spanish word, you see exactly 
+one symbol, one dot in this column. 
+So we have one dot here, one dot here, 
+and no dots in any other position. 
+One dot here, one dot here, one dot here, 
+and so on. 
+Okay so again, we're obeying this 
+constraint that foreign word is aligned 
+to a single English word. 
+

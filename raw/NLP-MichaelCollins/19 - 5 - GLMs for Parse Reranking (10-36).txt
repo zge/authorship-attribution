@@ -1,0 +1,236 @@
+So let me now talk about a first 
+application of these models in some 
+detail. 
+Now that is to the parsing problem, but 
+in particular to an approach called 
+reranking. 
+We'll talk about how to rerank the parses 
+or rather the end best parses from an 
+existing history-based or probalistic 
+parsing. 
+So, in reranking approaches, we're 
+basically going to do the following. 
+We'll use some baseline parser. 
+In particular, this might be a 
+lexicalized PCFG, for example, which we 
+know is quite a good model for parsing. 
+We're going to use a baseline parser to 
+produce its top N parses for each 
+sentence in training or test data. 
+So N for example might be 25 or 50 or 100 
+and I'm assuming that I have some way of 
+finding the top 25 or top 50 or top 100 
+most probable parses under the 
+lexicalized PCFG model. 
+In fact they're a variance of the kind of 
+dynamic programming algorithms we saw 
+earlier in the class, which will do 
+precisely this, they will return the top 
+N most likely parses. 
+Now if you think about that, we can 
+visualize this as following, we have a 
+sentence and we generate a bunch of 
+parses, say the top 50 most probable 
+parses onto the lexicalized PCFG . 
+Even if the first or the most likely 
+parse under the PCFG isn't the correct 
+one, there's a good chance that one of 
+these hundred parses will be correct and 
+there's an even better chance that one of 
+those 100 parses will actually be much, 
+much better than this single best parse. 
+So in the particular experiments I'll 
+describe a little later, we actually 
+generated about 25 parses on average for 
+our 40,000 training sentences. 
+This gave us about a million, training 
+parses if you consider all possible 
+members of GEN for all possible sentences 
+seen in the training data. 
+So our supervised data is going to look 
+like sentence tree pairs, and we can do a 
+couple of things there. 
+We can either take yi to be the true tree 
+bank parse for that sentence, or we could 
+take yi to be the member of this function 
+GEN, which is closest to the tree bank 
+parse under, for example, precision and 
+recall. 
+That's a minor detail. 
+Just assume that we have some way from 
+our tree bank, of choosing one of these 
+members of GENx as being the label, the 
+correct parse for this particular input. 
+Now, let's talk about the representation 
+f, the feature vector mapping we used. 
+So, the critical idea is, in these 
+reranking approaches we have a function f 
+that takes an entire tree as input and 
+returns some feature vector, so maybe 
+some sequence of features. 
+And each of these features is going to be 
+a function mapping a tree to a real 
+value. 
+And critically we're really in a position 
+where we can define any features we could 
+think of. 
+So, if we think back to those examples of 
+parallelism and coordination. 
+Things like, bars in New York and pubs in 
+London. 
+Then we could, for example, have a 
+feature that identifies the fact that 
+this particular structure is a parallel 
+coordination structure. 
+We could for example have a feature which 
+counts the number of parallel coordinator 
+structures we have within a parse tree or 
+a feature which counts the number of non 
+parallel features structures we have 
+within a parse tree. 
+By introducing features which track this 
+kind of all the frequencies of these 
+parallel verses non parallel structures a 
+model can learn to prefer a parallel 
+versus non parallel structures. 
+Here are some other features, actually 
+some features used. 
+Another very useful feature is actually 
+the log probability of xy under our 
+baseline model, remember this is 
+lexicalized PCFG. 
+And so we can take the probability, it's 
+often slightly better to take the log of 
+that probability, and that might be our 
+first feature. 
+This basically gives us a default 
+ranking, so at the very least our 
+reranking model should do as well as the 
+lexicalized PCFG because it has this 
+information under the probabilities from 
+the PCFG. 
+Here's another potential feature, this is 
+a zero one feature, an indicator 
+function. 
+Very similar to the indicator functions 
+we've seen on log linear models earlier. 
+This is one if the x y pair contained a 
+particular context free rule, for example 
+this entire context free rule here. 
+Let me describe some features used in a 
+paper I wrote with Terri Koo back in 
+2005. 
+And throughout this I'll use this quite 
+complicated rule, VP goes to 
+prepositional phrase, VBD, NP, NP, SBAR, 
+as the example rule. 
+And the features as we'll see are 
+generally oriented in some sense around 
+context free rules like this one. 
+So the first set of features we included 
+in the reranking model, were features 
+which considered Individual entire rules. 
+So, for example, we might have one 
+feature which counts the number of times 
+I've seen this particular rule within the 
+tree. 
+Now, interestingly, the lexicalized PCFG 
+we were using, broke these, larger rules 
+down into smaller ones. 
+Roughly speaking through binarization, 
+through this process where we take this 
+rule and we might somehow binarize it by 
+introducing some intermediate 
+non-terminals. 
+OK. 
+So, the underline less close PCFG was in 
+something close to Chomsky novel form. 
+And so it didn't really have parameters 
+corresponding to entire large rules, like 
+this one. 
+In the reranking model, we actually added 
+in features corresponding to the entire 
+rules. 
+The motivation for that is that some of 
+these rules are very important. 
+And while this Chomsky normal form 
+grammar is very useful in reducing the 
+number of parameters in the model, it 
+does make some assumptions which miss 
+some important properties considering the 
+frequencies of entire entire context-free 
+rules. 
+So, we added features like this and 
+they're quite useful. 
+Here's another feature centered around 
+this particular rule example which 
+captures something with which the 
+lexicalized PCFG was missing. 
+And these are sort of bigram features 
+within rules. 
+And these are adjacent pairs of non 
+terminals to the left and right of the 
+head. 
+So in this particular rule, we're going 
+to see the following, bigrams. 
+We're going to see one, two, three to the 
+right. 
+So in each case we have the non-terminal, 
+this is a VP up here. 
+And we have a pair of consecutive 
+non-terminals, NP NP. 
+So that's where this particular feature 
+comes from. 
+Another feature would look at the fact we 
+again have something to the right of the 
+head of this rule. 
+So the VBD by the way is the head of this 
+rule and this would look at the fact I 
+have a VP, an NP and a SBAR to the right. 
+Finally I have again a right words 
+feature with VP SBAR, stop acknowledging 
+that stop is the final component to this 
+rule. 
+And I have left word bigram here, which 
+is left word, VP, prepositional phrase, 
+stop. 
+So these features are going to be 
+capturing bigrams within rules and again 
+the lexicalized PCFGs we were looking at 
+really missed these features, and so 
+introducing new features which again can 
+be useful in disambiguating good from bad 
+parse trees. 
+Here's another example of the type of 
+feature you might include. 
+So we call these grandparent rules. 
+And so these features are not going to be 
+sensitive to just the rule, For example 
+what I've shown here, but also to the non 
+terminal directly above. 
+An S in this case. 
+So we've essentially introduced a feature 
+corresponding to a larger fragment of 
+this tree. 
+And again these features are not 
+concluded within the last class PCFG. 
+And they can be useful in some cases. 
+A minor variant of idea is to actually 
+include two levels of context free rules 
+so the fact we have an S goes to NP VP 
+here followed by VP being rewritten as 
+this entire rule here and we could 
+introduce similar features to this for 
+many other two level rules seen in our 
+training set. 
+[BLANK_AUDIO] . 
+So that gives you the basic idea. 
+That's some examples of a few of the 
+features we used in this model. 
+And you can see that the basic idea is to 
+start to introduce features. 
+Which look at larger fragments of these 
+syntactic structures and we should go 
+beyond the kind of features we saw in a 
+simple lexcalized PCFG. 
+

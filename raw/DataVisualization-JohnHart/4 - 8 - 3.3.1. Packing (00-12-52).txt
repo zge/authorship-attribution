@@ -1,0 +1,257 @@
+[MUSIC]
+So in our previous discussions,
+we've been focusing on the relationship
+between data points, where we're
+plotting the data points as points.
+In some cases, you want to display more
+than just points, you want to display
+shapes to represent the data, and in that
+case you want to pack the shapes together.
+So here's an example called a word cloud,
+and this is basically the overview
+text from our data visualization
+course from the Coursera page.
+And I've just passed this through
+a web page called Wordle.net and
+it created this word cloud which
+basically displays the most common words,
+the words that are distinctive that
+aren't everyday words like the, and and.
+And words that are used multiple
+times get displayed larger than
+the words that are smaller.
+And then there's a process that
+packs these words into a collection,
+so instead of just displaying
+the words in order horizontally
+that you might see in a tag cloud,
+this word cloud is packed together.
+And there is a spiral
+algorithm that it uses
+to basically find a first open
+space to pack a new word in it.
+Tries to start with the largest words
+first and then packs in the small ones
+later based on that same spiral trial and
+error techniques spiraling out from
+the middle to try to pack the words into
+the location that they'll fit into first.
+And so these techniques tend
+to use area as a measure, and
+we've looked at area as a measure before.
+It's a pretty good quantitative measure,
+but ordinal, it's not very good.
+Being able to tell whether two different
+shapes have the same area can be quite
+difficult.
+So if you have consistent shapes.
+It's hard to tell if I have the same
+amount of area in the blue circle as in
+this orange square.
+But if you have consistent shapes,
+if I have two circles,
+then I can tell that the areas
+are the same based on the length.
+And then if the shapes are aligned,
+if they share the same base,
+then I can just look at the height
+at the position, at the top and
+tell if the orange circle is less
+than the blue circle in area.
+And so area is very difficult
+to determine, especially
+when you have inconsistent shapes, but
+becomes useful if you have consistent and
+aligned shapes, because then you're
+using actual length and position.
+Also area, as the area increases or
+decreases,
+the length is going to increase or
+decrease as the square root of the area,
+and so that also complicates figuring out
+a quantitative difference between shapes.
+And so, if we want to plot a bunch of data
+without any coordinates attached to it,
+you could just pack the data
+together using, for example,
+area to display the data.
+So this is a Tableau plot
+of the population from our
+WDI database, and
+you can see some of the larger
+items are labeled if the label
+will fit in the region, but
+here the area is basically indicating
+population, total number of people.
+The area is proportional
+to the number of people.
+And because these are all the same
+shape we can do a pretty good job of
+finding an ordinal.
+I can tell that China has
+more people than India.
+India has more people than United States.
+United States has more people than Brazi,
+and so on.
+And so we get a good indication,
+at least an ordinal indication,
+of the differences in population,
+and we don't need to use any other
+coordinates because we're we're just
+comparing the areas to each other.
+We're not plotting anything
+horizontally or vertically,
+we're just using the horizontal and
+vertical axis to keep our shapes disjoint.
+So another way of plotting
+things horizontally or
+vertically is to display them on a map,
+and in this case,
+we've distorted the map into a cartogram.
+Here's an ordinary atlas of the world,
+and here's that same atlas
+distorted based on population, so
+that the amount of distortion,
+the area of the region is
+proportional to its population.
+And you can see that certain regions have
+grown larger than they were before, and
+certain regions have
+grown to be much smaller.
+There's not very many people in Siberia,
+and so that's very small given it's area.
+India and China have a lot of population,
+high population density, and so
+their regions have grown much larger.
+In Africa you can see that Nigeria
+has grown to be quite large.
+And so
+this is a a way of indicating with area,
+certain data that you
+would want to visualize.
+Again, it's relative.
+It would be difficult to tell ordinally
+if the there's more people in for
+example, France or Germany, based on this
+display because the shapes are different,
+and it's difficult to judge area
+relationships between different shapes,
+but we can certainly tell that
+Germany is is roughly the same
+shape it's just grown larger with a little
+bit of distortion than it was before.
+And so that's the distinction we're
+trying to make with the cartogram.
+So how do you create those cartograms?
+Well you start, in this case,
+with a grid of density data.
+And this is an old algorithm for
+doing this.
+There's better techniques that
+are more sophisticated but
+also much more complicated.
+This is a nice way to do it.
+If you just fill a grid in with
+density data such as your local
+population density so within some unit
+area, what is the population density?
+And so it could be heavily
+populated in this area and
+lightly populated in these areas.
+And so you create a grid like
+that of rectangular cells and
+then you just scale each
+cell by that density value.
+So the squares that have
+a population density
+of one-half get shrunk
+by one-half in area.
+So that's about 70% horizontally and
+vertically.
+The areas that have population
+density one stay the same size, and
+the areas that have larger population
+densities would grow proportionally, so
+these squares would become twice as big,
+these squares become three times as big.
+And then you can see that what we had as
+a grid before now becomes disconnected.
+And so to reconnect it, we want to
+reconnect these corners to their average
+of the four corners that
+shared that corner.
+So we want to find a new point for
+this corner equal to the average of
+these four previous corner points.
+So we create a new set
+of grid vertices equal
+to the average of the four grid
+vertices that shared them before.
+Or three or two depending on, or
+one, if you're on the perimeter.
+And so we create this new grid and
+this new grid is deformed.
+And so based on this deformed grid
+We keep iterating that over and
+over until we get a final deformed grid,
+and
+then we look at the differences
+between the original grid points and
+their new positions in the deformed
+grid that sets up a deformation.
+It basically tells us what direction
+we should move data points.
+Then, we take our shape vertices of
+the outline data of our original map and
+deform them based on these arrows,
+and we can smoothly interpolate
+these arrows if we need in between
+values in order to create the cartogram.
+Its basically,
+we take a vector graphics representation
+of our data of our map and then deform
+the vertices based on this type of
+deformation to create the cartogram.
+So another technique that might be
+better than a cartogram is the ordinary
+choropleth, and
+we see choropleths all the time.
+It's basically data that's
+plotted over regions of a map.
+This is that same population data but
+plotted inside the original
+outlines of our regions.
+In here, population is Is just given
+by the saturation of the color,
+and when we're looking at ordinal values,
+basically we can see that China has
+more population than India does,
+has more population than the U.S., which
+has more population than Brazil and so on.
+So you get a better indication of the
+order of these things from a chloropleth
+than you might with a cardogram because
+area is such a poor indicator order,
+whereas density saturation hue,
+density being intensity of a color or
+saturation in hue,
+are much better indicators of order.
+So there's several techniques now for
+plotting data without using coordinate
+data associated with the data for
+it's layout.
+We're deriving coordinate data.
+In these most recent examples we are using
+geographical data, where we have maybe
+a region name, or a country name, and then
+we're deriving the actual coordinates of
+that, perhaps an outline to fill in,
+or a location on a map to generate.
+Or we're using some other packing or
+layout algorithm to distribute the data.
+Those are all useful techniques in In the
+case where you've got data that you don't
+want to use the explicit coordinates in
+the data as coordinates for their display.
+[MUSIC]
+

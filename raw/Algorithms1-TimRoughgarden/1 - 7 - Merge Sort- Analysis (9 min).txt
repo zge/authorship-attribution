@@ -1,0 +1,239 @@
+In this video, we'll be giving a running
+time analysis of the merge sort algorithm.
+In particular, we'll be substantiating the
+claim that the recursive divide and
+conquer merge sort algorithm is better,
+has better performance than simpler
+sorting algorithms that you might know,
+like insertion sort, selection sort, and
+bubble sort. So, in particular, the goal
+of this lecture will be to mathematically
+argue the following claim from an earlier
+video, that, in order to sort an
+array in numbers, the merge sort algorithm
+needs no more than a constant times N log
+N operations. That's the maximum number of
+lines of executable code that will ever
+execute specifically six times n log n
+plus six n operations. So, how are we
+going to prove this claim? We're going to
+use what is called a recursion tree
+method. The idea of the recursion tree
+method is to write out all of the work
+done by the recursive merge sort
+algorithm in a tree structure, with the
+children of a given node corresponding to the recursive calls made
+by that node. The point of this
+tree structure is it will facilitate,
+interesting way to count up the overall
+work done by the algorithm, and will
+greatly facilitate, the analysis. So
+specifically, what is this tree? So at
+level zero, we have a root. And this
+corresponds to the outer call of Merge
+Sort, okay? So I'm gonna call this level
+zero. Now this tree is going to be binary
+in recognition of the fact that each
+indication of Merge Sort makes two
+recursive calls. So the two children
+will correspond to the two recursive calls
+of Merge Sort. So at the route, we
+operate on the entire input array,
+so let me draw a big array indicating
+that. And at level one, we have one sub
+problem for the left half, and another sub
+problem for the right half of the input
+array. And I'll call these first two
+recursive calls, level one. Now of
+course each of these two level one
+recursive calls will themselves make two
+recursive calls. Each operating on then a
+quarter of the original input array. So
+those are the level two recursive calls,
+of which there are four, and this process
+will continue until eventually the
+recursion bottoms out, in base cases when
+they're only an array size zero or one. So
+now I have a question for you which I'll,
+I'll give you in the form of a quiz which
+is, at the bottom of this recursion tree
+corresponding to the base cases, what is
+the level number at the bottom? So, at
+what level do the leaves in this tree
+reside? Okay, so hopefully you guess,
+correctly guess, that the answer is the
+second one, so namely that the number of
+levels of the recursion tree is
+essentially logarithmic in the size of the
+input array. The reason is basically that
+the input size is being decreased by a
+factor two with each level of the
+recursion. If you have an input size of N
+at the outer level, then each of the first
+set of recursive calls operates on array
+of size n over two, at level two,
+each array has size n over four, and so on.
+Where does the recursion bottom out? Well, down
+at the base cases where there's no more
+recursion, which is where the input array
+has size one or less. So in other words,
+the number of levels of recursion is
+exactly the number of times you need to
+divide N by two, until you get down to a
+number that's most one. Recall that's
+exactly the definition of a logarithm base
+two of n. So since the first level is
+level zero and last level is level log
+base two of n. The total number of levels
+is actually log base two of n plus one.
+And when I write down this expression, I'm
+here assuming that N is a, is a power of
+two. Which is not a big deal. I mean the
+analysis is easily extended to the case
+where N is not a power of two. And this
+way, we don't have to think about
+fractions. Log base two of N then is an
+integer. Okay so let's return to the
+recursion tree. Let me just redraw it
+really quick. So again, down here at the
+bottom of the tree we have the leaves,
+i.e. The base cases where there's no more
+recursion. Which when N is the power of
+two correspond exactly to single element
+arrays. So that's the recursion tree
+corresponding to an indication of Merge
+Sort. And the motivation for writing
+down, for organizing the work performed by
+Merge Sort in this way, is it allows us
+to count up the work, level by level. And
+we'll see that that's a particularly
+convenient way to account for all of the
+different lines of code that get executed.
+Now, to see that in more detail, I need to
+ask you to identify a particular pattern.
+So, first of all, the first question is,
+at a given level, j, of this recursion,
+exactly how many distinct sub-problems are
+there, as a function of the level j?
+That's the first question. The second
+question is, for each of those distinct
+sub-problems at level j, what is the input
+size? So, what is the size of the a-, of
+the array, which is passed to a
+sub-problem residing at level j of this
+recursion tree. So, the correct answer is
+the third one. So, first of all, at a
+given level, j, there's precisely two to
+the j distinct sub-problems. There's one
+outermost sub-problem at level zero, it
+has two recursive calls, those are the
+two, sub-problems at level one, and so on.
+In general, since merge short calls itself
+twice, the number of sub-problems is
+doubling at each level, so that gives us
+the expression, two to the j, for the
+number of sub-problems at level j. On the
+other hand, by a similar argument, the
+input size is halving each time. With each
+recursive call you pass it half of the
+input. That you were given. So at each
+level of the recursion tree we're seeing
+half of the input size of the previous
+level. So after J levels, since we started
+with an input size of N, after J levels,
+each sub-problem will be operating on an
+array of length N over two to the J. Okay,
+so now let's put this pattern to use, and
+actually count up all of the lines of code
+that Merge Sort executes. And as I said
+before, the key, the key idea is to count
+up the work level by level. Now, to be
+clear, when I talk about the amount of
+work done at level J, what I'm talking
+about is the work done by those 2 to
+the J invocations of Merge Sort, not
+counting their respective recursive calls.
+Not counting work which is gonna get done
+in the recursion, lower in the tree. Now,
+recall, Merge Sort is a very simple
+algorithm. It just has three lines of
+code. First there is a recursive call so
+we're not counting that, second there is
+another recursive call again we're not
+counting that a little j and then third we
+just invoke the merge subroutine. So really
+outside of the recursive calls all that
+merge sort does is a single invocation of
+merge. Further recall we already have a
+good understanding of the number of lines
+of code that merge needs. On an input of
+size m, it's gonna use, at most, 6m lines
+of code. That's an analysis that we did in
+the previous video. So, let's fix a level
+j. We know how many sub-problems there
+are, two to the j. We know the size of
+each sub-problem, n over two to the j, and
+we know how much work merge needs on such
+an input, we just multiply it by six, and
+then we just multiply it out, and we get
+the amount of work done at a level j.
+'Kay? And all of the little adjacent
+problems. So here it is in more detail.
+Alright. So. We start with just the number
+of different sub-problems at level J and
+we just notice that, that was at most two
+to the J. We also observe that each level
+J sub-problem is passed an, an array as
+input which has length N over two to the
+J. And we know that the merge subroutine,
+when given an input, given an array of
+size, N over two to the J, will execute
+almost six times that many number of lines
+of code. So to compute the total amount of
+work done at level J, we just multiply the
+number of problems times the work done
+ sub-problem, per sub problem. And
+then something sort of remarkable happens,
+where you get this cancellation of the
+two, two to the Js. And we get an upper
+bound 6N. Which is independent of the
+level J. So we do at most six end
+operations at the root, we do at most six
+end operations at level one, at level two,
+and so on, okay? It's independent of the
+level. Morally, the reason this is
+happening is because of a perfect
+equilibrium between two competing forces.
+First of all, the number of subproblems is
+doubling with each. Level of the recursion
+tree but 2ndly the amount of work that we
+do per sub-problem is halving with each level
+of the recursion tree's, once those two
+cancel out. We get an upper bound 6N,
+which is independent of the level J. Now,
+here's why that's so cool, right? We don't
+really care about the amount of work just
+at a given level. We care about the amount
+of work that Merge Sort does ever, at any
+level. But, if we have a bound on the
+amount of work at a level which is
+independent of the level, then our overall
+bound is really easy. What do we do? We
+just take the number of levels, and we
+know what that is. It's exactly log based
+two of N plus one. Remember the levels are
+zero through log based two of N inclusive.
+And then we have an upper bound 6N for
+each of those log n plus one levels. So if
+we expand out this quantity, we get
+exactly the upper bound that was claimed
+earlier namely the number of operations
+merge sort executes is at most 6n times
+log base 2 of n plus 6n. So that my friends,
+is a running time analysis of the merge
+sort algorithm. That's why it's running
+time is bounded by a constant times N log
+N which, especially as N grows large, it
+is far superior to the more simple
+iterative algorithms like insertion or
+selection sort.

@@ -1,0 +1,306 @@
+So now we come to one of my favorite
+sequence of lectures, where we going to
+discuss the famous QuickSort algorithm.
+If you ask professional computer
+scientists and professional programmers to
+draw up a list of their top five, top ten
+favorite algorithms, I'll bet you'd see
+QuickSort on many of those, those peoples'
+lists. So, why is that? After all, we've
+already discussed sorting. We already have
+a quite good and practical sorting
+algorithm, mainly the Merge Sort
+algorithm. Well, QuickSort, in addition to
+being very practical, it's competitive
+with, and often superior to, Merge Sort.
+So, in addition to being very practical,
+and used all the time in the real world,
+and in programming libraries, it's just a
+extremely elegant algorithm. When you see
+the code, it's just so succinct. It's so
+elegant, you just sorta wish you had come
+up with it yourself. Moreover, the
+mathematical analysis which explains why
+QuickSort runs so fast, and that
+mathematical analysis, we'll cover in
+detail, is very slick. So it's something
+I can cover in just about half an hour or
+so. So more precisely what we'll prove
+about the QuickSort algorithm is that a
+suitable randomized implementation runs in
+time N log N on average. And I'll tell
+you exactly what I mean by on average,
+later on in this sequence of lectures.
+And, moreover, the constants hidden in the
+Big-Oh notation are extremely small. And,
+that'll be evident from the analysis that
+we do. Finally, and this is one thing that
+differentiates QuickSort from the merge
+sort algorithm, is it operates in place.
+That is, it needs very little additional
+storage, beyond what's given in the input
+array, in order to accomplish the goal of
+sorting. Essentially, what QuickSort does
+is just repeated swaps within the space of
+the input array, until it finally
+concludes with a sorted version of the
+given array. The final thing I want to
+mention on this first slide is that,
+unlike most of the videos, this set of the
+videos will actually have an
+accompanying set of lecture notes, which
+I've posted on, in PDF, from the course
+website. Those are largely, redundant.
+They're optional, but if you want another
+treatment of what I'm gonna discuss, a
+written treatment, I encourage you to look
+at the lecture notes, on the course
+website. So, for the rest of this video,
+I'm gonna give you an overview of the
+ingredients of QuickSort, and what we have
+to discuss in more detail, and the rest of
+the lectures will give details of the
+implementation, as well as the
+mathematical analysis. So let's begin by
+recalling the sorting problem. This is
+exactly the same problem we discussed back
+when we covered Merge Sort. So we're given
+as input an array of n numbers in
+arbitrary order. So, for example, perhaps
+the input looks like this array here. And
+then what do we gotta do? We just gotta
+output a version of these same numbers but
+in increasing order. Like when we
+discussed Merge Sort, I'm gonna make a
+simplifying assumption just to keep the
+lectures as simple as possible. Namely I'm
+going to assume the input array has no
+duplicates. That is, all of the entries
+are distinct. And like with the merge
+sort, I encourage you to think about how
+you would alter the implementation of
+QuickSort so that it deals correctly with
+ties, with duplicate entries. To discuss
+how QuickSort works at a high-level, I need
+to introduce you to the key subroutine, and
+this is really the, key great idea in
+QuickSort, which is to use a subroutine
+which partitions the array around a pivot
+element. So what does this mean? Well,
+the first thing you gotta do is, you gotta
+pick one element in your array to act as a
+pivot element. Now eventually we'll worry
+quite a bit about exactly how we choose
+this magical pivot element. But for now
+you can just think of it that we pluck out
+the very first element in the array to act
+as the pivot. So, for example, in the
+input array that I mentioned on the
+previous slide, we could just use "3" as
+the pivot element. After you've chosen a
+pivot element, you then re-arrange the
+array, and re-arrange it so that every, all
+the elements which come to the left of the
+pivot element are less than the pivot, and
+all the elements which come after the
+pivot element are greater than the pivot.
+So for example, given this input array,
+one legitimate way to rearrange it, so that
+this holds, is the following. Perhaps in
+the first two entries, we have the 2 and
+the 1. Then comes the pivot element. And
+then comes the elements 4 through 8
+in some perhaps jingled order. So
+notice that the elements to the left of
+the pivot, the 2 and the 1, are indeed
+less than the pivot, which is 3.
+And the five elements to the right of the
+pivot, to the right of the 3, are
+indeed all greater than 3. Notice in
+the Partition subroutine, we do not
+insist that we get the relative order
+correct amongst those elements less than
+the pivot, or amongst those elements
+bigger than the pivot. So, in some sense,
+we're doing some kind of partial sorting.
+We're just bucketing the elements of the
+array into one bucket, those less than
+the pivot, and then a second bucket, those
+bigger than the pivot. And we don't care
+about, getting right the order amongst
+each, within each of those two buckets.
+So, partitioning is certainly a more
+modest goal than sorting, but it does make
+progress toward sorting. In particular,
+the pivot element itself winds up in its
+rightful position. That is, the pivot
+element winds up where it should be in the
+final sorted version of the array. You'll
+notice in the example, we chose as the
+pivot the third largest element, and it
+does, indeed, wind up in the third
+position of the array. So, more generally,
+where should the pivot be in the final
+sorted version? Well, it should be to the
+right of everything less than it. It
+should be to the left of everything bigger
+than it. And that's exactly what
+partitioning does, by definition. So, why
+is it such a good idea to have a
+partitioning subroutine? After all, we
+don't really care about partitioning. What
+we want to do is sort. Well, the point is
+that partitioning can be done quickly. It
+can be done in linear time. And it's a way
+of making progress toward having a sorted
+version of an array. And it's gonna enable
+a divide-and-conquer approach toward
+sorting the input array. So, in a little
+bit more detail, let me tell you about two
+cool facts about the Partition
+subroutine. I'm not gonna give you the
+code for partitioning here. I'm gonna give
+it to you on the next video. But, here are
+the two salient properties of the
+Partition subroutine, discussed in detail
+in the next video. So the first cool
+fact is that it can be implemented in
+linear, that, is O(N) time, where N
+is the size of the input array, and moreover,
+not just linear time but linear time
+with essentially no extra overhead. So
+we're gonna get a linear time of mutation,
+where all you do is repeated swaps. You do
+not allocate any additional memory. And
+that's key to the practical performance of
+the QuickSort algorithm. [sound] Secondly,
+it cuts down the problem size, so it
+enables the divide-and-conquer approach.
+Namely, after we've partitioned an array
+around some pivot elements, all we have to
+do is recursively sort the elements that
+lie on the left of the pivot. And
+recursively sort the elements that lie on
+the right of the pivot. And then, we'll be
+done. So, that leads us to the high-level
+description of the QuickSort algorithm.
+Before I give the high-level description,
+I should mention that this, algorithm was
+discovered by, Tony Hoare, roughly, 1961
+or so. This was at the very beginning of
+Hoare's career. He was just about 26, 27
+years old. He went on to do a lot of other
+contributions, and, eventually wound up
+winning the highest honor in computer
+science, the ACM Turing Award, in 1980.
+And when you see this code, I'll bet you
+feel like you wish you had come up with
+this yourself. It's hard not to be envious
+of the inventor of this very elegant QuickSort
+algorithm. So, just like in Merge Sort,
+this is gonna be a divide-and-conquer
+algorithm. So it takes an array of some
+length N, and if it's an array of length
+N, it's already sorted, and that's the
+base case and we can return. Otherwise
+we're gonna have two recursive calls. The
+big difference from Merge Sort is that,
+whereas in Merge Sort, we first split the
+array into pieces, recourse, and then
+combine the results, here, the recursive
+calls come last. So, the first thing we're
+going to do is choose a pivot element,
+then partition the array around that pivot
+element, and then do two recursive calls.
+And then, we'll be done. There will be no
+combined step, no merge step. So in the
+general case, the first thing you do is
+choose a pivot element. For the moment I'm
+going to be loose, leave the ChoosePivot
+subroutine unimplemented. There's going to
+be an interesting discussion about exactly
+how you should do this. For now, you just
+do it in some way, that for somehow you
+come up with one pivot element. For
+example, a naive way would be to just
+choose the first element. Then you invoke
+the Partition subroutine that we'll discuss
+in the last couple slides. [sound]. So
+recall that the results in a version of
+the array in which the pivot element p is
+in its rightful position, everything to
+the left of p is less than p, everything
+to the right of the pivot is bigger than
+the pivot, and then all you have to do to
+finish up is recurse on both sides. So
+let's call the elements less than p the
+first part of the partitioned array, and
+the elements greater than p the second
+part of the recursive array.  And now
+we just call QuickSort again to
+recursively sort the first part, and then
+the, recursively sort the second part. And
+that is it. That is the entire QuickSort
+algorithm at the high-level. This is one
+of the relatively rare recursive, divide-
+and-conquer algorithms that you're going
+to see, where you literally do no work
+after solving the sub-problems. There is
+no combine step, no merge step. Once
+you've partitioned, you just sort the two
+sides and you're done. So that's the high-
+level description of the QuickSort
+algorithm. Let me give you a quick tour of
+what the rest of the video's going to be
+about. So first of all I owe you details
+on this Partition subroutine. I promise
+you it can be implemented in linear time
+with no additional memory. So I'll show
+you an implementation of that on the next
+video. We'll have a short video that
+formally proves correctness of the
+QuickSort algorithm. I think most of you
+will kinda see intuitively why it's
+correct. So, that's a video you can skip
+if you'd want. But if you do want to see
+what a formal proof of correctness for a
+divide-and-conquer algorithm looks like,
+you might want to check out that video.
+Then, we'll be discussing exactly how the
+pivot is chosen. It turns out the running
+time of QuickSort depends on what pivot
+you choose. So, we're gonna have to think
+carefully about that. Then, we'll
+introduce randomized QuickSort, which is
+where you choose a pivot element uniformly
+at random from the given array, hoping
+that a random pivot is going to be pretty
+good, sufficiently often. And then we'll
+give the mathematical analysis in three parts.
+We'll prove that the QuickSort algorithm runs in
+N log N time, with small constants, on
+average, for a randomly chosen pivot. In
+the first analysis video, I'll introduce a
+general decomposition principle of how you
+take a complicated random variable, break
+it into indicator random variables, and
+use linearity of expectation to get a
+relatively simple analysis. That's
+something we'll use a couple more times in
+the course. For example, when we study
+hashing. Then, we'll discuss sort of the
+key insight behind the QuickSort analysis,
+which is about understanding the
+probability that a given pair of elements
+gets compared at some point in the
+algorithm. That'll be the second part. And
+then there's going to be some mathematical
+computations just to sort of tie
+everything together and that will give us
+the bound the QuickSort running time.
+Another video that's available is a review
+of some basic probability concepts for
+those of you that are rusty, and they will be
+using in the analysis of QuickSort. Okay?
+So that's it for the overview, let's move
+on to the details.

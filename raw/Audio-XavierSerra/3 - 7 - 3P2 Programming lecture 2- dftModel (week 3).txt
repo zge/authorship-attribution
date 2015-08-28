@@ -1,0 +1,301 @@
+Hello, welcome back to the course on
+audio signal processing for music applications.
+In this programming class of
+the third week of of the course
+I want to introduce the actual code
+that is within the sms-tool's package
+that implements analysis and
+synthesis using the DFT.
+In particular, what we going to show,
+is the DFT modelfunction that,
+from a fragment of a sound, x of n,
+performs the FFT algorithm.
+And then generates a magnitude and
+phase spectrum.
+And then that can go into the inverse FFT,
+and it returns another
+fragment of a sound
+that hopefully it should be
+identical to the input sound.
+Okay so let's go to the editor,
+and let's show the dftModel.py
+file that is within the model's
+subdirectory of the sms-tools package.
+Okay?
+In this file
+you will find three functions,
+three function definitions.
+The first one is called the dftModel, and
+this is one that implements the whole
+analysis and synthesis, so
+the input is the input sound,
+x, 
+the window, that we are going to
+multiply by and the FFT size, capital N.
+and it will return the output sound, y.
+Okay, and then many times we just need
+the analysis part or the synthesis part.
+So in this file we also
+find just the analysis.
+So from the same input x,
+the window,w, and capital N,
+it returns the magnitude and
+phase spectrum.
+And the DFT synthesis, the function
+that implements the synthesis part
+has as input the magnitude and
+phase spectrum
+and the size of the sound to be
+generated, of the windowed sound, and
+it will return y,
+which is our output signal.
+Okay, and
+within that basically it has the code
+that we talked about in in
+the previous programming class,
+in which we just have to
+window the signal and put 
+the signal in a way that
+is centered around zero,
+What we call zero phase windowing.
+So for example let's look it at
+the dftAnal function, which is very
+much like we showed in last class.
+So this beginning is the declaration and
+creation of some variables,
+then we have the window
+that we put and we normalize it.
+Then we window the actual signal,
+then we have this buffer and
+we are centering the windowed
+signal in the buffer at zero.
+Then we compute FFT.
+And then we will
+generate the magnitude and
+phase values by taking the log for
+the magnitude and 
+wrapping the phases so that we get
+a nice looking, resulting spectra.
+And in the synthesis it
+basically does the inverse.
+So again, we have to declare
+all these variables, and
+then well we have to
+initialize the output sound.
+And a major difference is that the input,
+the magnitude and
+phase spectra, are only half of the values.
+Since the spectra are symmetric,
+the dftAnal function on
+the returns the positive frequencies.
+Therefore, in the synthesis,
+we have to recompute the negative
+frequencies from the positive ones.
+And of course,
+since our symmetric is very simple.
+The positive frequencies are just direct,
+so getting the magnitude and
+phases we just convert from rectangular
+to a complex numbers.
+So by using this kind of euler’s formula and
+then for the negative frequencies
+we just get those but doing it,
+reading it, in a reverse way so that we
+get, the symmetry aspect of it, and
+of course the phase we negate it so
+that we get negation of the phases.
+That's it.
+And then we obtain 
+the inverse fourier transform by calling
+the IFFT function that gives as
+input a complex spectrum.
+Then we just get the real part, because
+we just want the real signal out of that
+and then we have to undo this zero phase,
+this centering around zero so
+that we get back
+the signal as we had it originally.
+Okay so you can look at these with
+more details, both the synthesis and
+the analysis of functions.
+I think they're quite well
+explained here, so
+you can have a grasp of them.
+But in order to
+test them I created a small program
+in which I get all these packages.
+I specify the directory
+where these models are
+both the utility functions that I'm
+going to use and the dftModel.
+Okay, so from the current directory,
+I have to specify this relative
+path to the model's
+directory so that it finds this
+two packages, the utilFunctions and
+the dftMmodel package.
+Okay?
+Now we are going to start reading a file.
+So I read a piano sound file.
+Also relative to this current
+directory to where the sounds are.
+And I use this function that I
+already had been using to
+return an array of floating point values.
+Then I use a function that
+generates the windows.
+Okay, get window allows us to
+generate a smoothing windows and
+we will talk more about it next week.
+In this particular case
+the hamming window of a given size, 511 and
+and
+it returns an array of these values.
+Okay, then we need to get the fragment
+within the input array that I
+am going to analyze.
+So we start at second .2 and then
+I have to convert to samples, so
+I multiply with the sampling rate, and
+I get the samples of x that start at
+second .2 and that lasts for M samples.
+And now we are ready to
+compute the DFT of that.
+So I call the dftAnal function from
+that module that we just saw.
+The package we named it DFT,
+so we call the DFT and
+I pass it the fragment of the sound,
+the window that I want to use and
+the size of the FFT, which
+I gave the number 1,024.
+And then.
+I can send the output
+values to the dftSynth and
+get back the synthesized sound,
+it has to be normalized by the window.
+There is a whole bunch of normalization
+factors that have to be use and
+sometimes are not so intuitive.
+You can check it
+and you can make sure that you need
+this normalization  factor.
+Okay, so now from the terminal,
+I am in the workspace,
+and I have this file, the test4 there.
+So I can start iPython, with the
+Pylap command so
+that I get the matplotlib package into that.
+And I can run the test4.
+Okay that executes that, so let's
+check that we did the things right, so
+for example let's plot the x, which
+is going to be our input signal.
+Okay that's the whole piano signal,
+a little bit long,
+more than close to 17,000 samples.
+No, 170,000 samples.
+Okay, we can plot just
+the fragment that we chose, x1.
+Okay, this is just a fragment
+starting at .2, We can also
+plot the window that we applied.
+So, we can plot w, this is our window
+that we are going multiply by the signal.
+Okay, and then out of the dftAnal and
+now, of course we can plot
+mX, which is going to be the spectrum.
+So this is the positive
+side of the spectrum.
+Going from zero to half
+of the sampling rate,
+or half of the FFT size,
+so in this case it's 512.
+Okay, and of course we can also plot
+the phase spectrum.
+pX, and that's the phase,
+unwrapped phase spectrum that we have.
+Okay so that's basically the whole
+thing that we want to show.
+And then there is another file
+in the model's interface directory.
+That is the one that basically
+integrates the analysis, synthesis and
+makes nice plots.
+And in fact is the one that is
+being called by the interface,
+that we are showing in the demo classes.
+So this is the DFT model function file.
+That again, it imports all these
+packages the same way that we did.
+And then it has one single function,
+a main, that has
+predefined variables that
+of course they can be changed.
+And that we can compute.
+And then it does the computing
+as we have done now, and
+then it plots several figures with correct
+plotting axis and labels, etc etc.
+So, I copied this file into the
+the workspace.
+So I have it as dftModel function.
+So if I run this, it will execute
+the default parameters and
+it will compute and plot this.
+Okay, so
+this is the result of this analysis,
+synthesis of a fragment of the piano and
+here now, it shows in a nice way,
+well with the labels the time in
+seconds the frequency in hertz.
+And the amplitude explained in decibels,
+the phase again and
+then the output signal, which is the
+window version of the input signal, and
+of course as we showed in another class
+we can zoom in into fragments of this
+to visualize certain aspect of that,
+so we can understand,
+some particular harmonic, how it behaves.
+Okay, and that's basically
+what I wanted to show.
+So let's go back.
+So we have shown the analysis and
+synthesis of a sound and
+the code that implements that
+in different versions.
+And so
+all of this is available in the github
+directory that you can
+find here, in the sms-tools.
+You download, you can look at,
+there is quite a bit of information
+about that, and well explained.
+And of course the sounds that we were
+using come from freesound, but
+of course they are also
+within the sms-tools directory so
+it's easie to have access to.
+And, that's all.
+So we did we have seen
+how to program the DFT.
+And how to use
+the actual existing code of the sms-tools
+to perform the analysis and synthesis.
+And hopefully this has allowed
+you to understand better the DFT.
+And this will be fundamental for
+understanding the next step, which will
+be next week which is going to be
+the short time Fourier transform.
+We are going to put together this
+DFT analysis into an analysis
+synthesis framework that really works for
+any sound, and that allows us to
+analyze and synthesize larger
+sounds not just small fragments.
+So, this is all for today, and
+I hope to see you, next time.
+Bye bye.
+

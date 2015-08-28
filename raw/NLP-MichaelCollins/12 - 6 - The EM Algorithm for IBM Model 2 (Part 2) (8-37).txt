@@ -1,0 +1,199 @@
+Okay, so here, I'm going to give the
+algorithm which explicitly calculates
+those counts I was just referring to.
+And again, the main motivation for this is
+going to be that the EM algorithm is
+essentially going to be a variant of this
+algorithm.
+So, as input we have, a training corpus.
+And again, I'm assuming this idealized
+scenario where I do have the alignment on
+each training sample.
+So, each training sample consists of an f,
+e, a triple.
+So, fk is a sentence in French.
+And I'm going to assume m sub k is the
+length of the French sentence.
+Ek is an English sentence.
+I'll assume l sub k is the length of that
+sentence.
+And then, finally, we have alignment
+variables a1 through amk.
+So, as one example we might have, e100 is
+equal to the dog, f100 is equal to this.
+And then, our alignment a100 is equal to
+say 1, 2.
+Which basically corresponds to this
+alignment here, okay.
+So, the algorithm is going to iterate over
+the corpus or run over the corpus and
+calculate these counts.
+And then, finally the maximum likelihood
+estimates are just going to be simple
+count ratios.
+So tMLl of f given e, is this ratio
+counts, and similarly, the distortion
+parameters are ratios of counts.
+Okay, so let's talk about this inner loop
+where the counts are actually calculated.
+And so, I'm going to pass over each
+training sentence in turn and for each
+training sentence, I'm going to consider
+every possible French position, right, 1
+through mk.
+And every possible English position 0
+through lk.
+I'm, assuming that the null word is also
+possibility as usual.
+And I'm going to increment some counts.
+Critical definition is these delta
+variables.
+So, k is the example number.
+I is a French position.
+And j is an English position.
+We're going to see these delta variables
+appear in a, in a very central way in the
+EM algorithm which we'll introduce next.
+But for now, these deltas are just
+defined, basically, as indicator functions
+indicating which alignments are present.
+So, delta k, i, j is 1 if the ith French
+word is aligned to the jth English word on
+this kth example.
+So let's, let me illustrate this with this
+particular example.
+For this, we have delta 100, 1, 1 is equal
+to 1 because French word 1 is aligned to
+French word 1 in English.
+Similarly, I have delta, 100, 2, 2 is
+equal to 1.
+And then, finally, delta 100 i, j is equal
+to 0 for all other i, j.
+Okay.
+So these deltas are actually quite simple.
+They just indicate which alignments are
+actually present, present.
+So, this inner loop is basically going to
+iterate over all possible i, j positions
+and it's going to increment some counts.
+So, let me actually, if you trace it
+through, you can trace through which
+counts are actually in incremented on this
+particular example.
+So, if you go through things, you'll find
+that c of the le is equal to c of the le
+plus 1, that's 1 increment.
+And similar from this line, we're going to
+get c of the is equal to c of the plus 1.
+Down here, we're going to get c of 1 given
+1, 2, 2.
+So, that's a length of two sentences.
+It's going to be c 1, given 1, 2, 2, plus
+1.
+And finally, c 1, 2, 2 equals C 1, 2, 2
+plus 1.
+Those are all the counts which are
+incremented based on delta, 100, 1, 1
+being equal to 1.
+And then, we have a second set of counts.
+You're going to find that c of dog, chien
+equals c of dog, chien plus 1, c of dog
+equals c of dog plus 1.
+And there's a couple of more counts here.
+So, actually, eight counts in total will
+be incremented for this particular
+training example.
+And you can see that all this is basically
+doing is in a rather laborious way, making
+sure the counts for the correct items, for
+example, for the align to le are
+incremented on this particular example.
+Because the is a line to le.
+Okay.
+So, just to recap, this is meant to be
+sort of a very explicit description of the
+maximum likelihood estimate parameter
+estimation method and the maximum
+likelihood parameter estimates under this
+very strong assumption that we know the
+alignments on each of the training
+samples.
+So, the EM algorithm is actually going to
+be closely related to what I've just shown
+you, but recall that we are now going to
+assume that the training examples do not
+have alignments.
+So, each training example is an English
+sentence, paired with a French sentence.
+We gain of n training samples.
+And critically, the alignments are
+omitted.
+So, the EM algorithm is going to take this
+input, and again, output t and q
+parameters as its final output.
+But it's going to proceed in a slightly
+different way.
+So, the first major difference from the
+algorithm that I just showed you is that
+the algorithm is going to be iterative.
+We're going to start off with some q and t
+parameters.
+For example, the first iteration, they
+might just be random parameters.
+Okay, so we start off with some random
+initialization.
+And then, at each step we're going to use
+these q and t parameters to calculate
+counts.
+In a moment, I'll describe how we do that.
+And so, we're going to calculate counts.
+Actually, based on, we have the data.
+This is the rk, fk pairs.
+And that, together, which our current
+guess at the parameters will give us some
+counts.
+And from those counts, we'll reestimate
+the q and t parameters.
+So, we're going to have an iterative
+method where at each, at each iteration,
+we start with some values for q and t and
+calculate some new values for q and t.
+So, the next step again, we're going to
+take these new q, t parameters and take
+our data.
+And from those calculate counts.
+And from these, we calculate our q and t
+variables.
+So, we'll keep iterating like this until,
+in some sense, we've reached convergence.
+It's typical with these kind of models to
+run for maybe, I don't know, 10 to 20
+iterations.
+It's fairly common for these IBM models.
+Okay.
+So that's the basic idea.
+We're going to have this iterative
+algorithm, random, random initialization,
+and then, we recalculate the q and t
+parameters at each step going through this
+process.
+And the only thing that's really going to
+change in how these counts are calculated
+is that, remember, our data doesn't
+include alignment variables.
+So, instead, we're going to use our q and
+t parameters to actually calculate these
+deltas.
+Remember, we had delta k, i, j is equal to
+1 if a, k, i is equal to J.
+Okay, so we, these were indicator
+functions making use of the alignment
+variables we had.
+Now, we're going to replace these deltas
+with values that are actually calculated
+based on our current parameters on the
+data.
+And I'll in, in a moment, talk much more
+about this way of calculating the delta,
+how it's actually done, what intuition
+behind it is.

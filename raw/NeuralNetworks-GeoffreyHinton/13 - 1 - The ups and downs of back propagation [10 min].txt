@@ -1,0 +1,263 @@
+In this video, I'm going to talk about the
+history of backpropagation.
+I'll start with where it came from in the
+70s' and 80s,' and then I'll talk a bit
+about why it failed in the 90s.' That is,
+why serious machine learning research has
+abandoned it.
+There was a popular view of why this
+happened, and we can now see that, that
+popular view was largely wrong.
+The real reasons it was abandoned were
+because computers were too slow and data
+sets were too small.
+I'll conclude by showing you a historical
+document.
+There was a bet made between two machine
+learning researchers in 1995.
+It's interesting to see what people back
+then believed and how wrong they were.
+Backpropagation was invented independently
+several times in the 70s' and 80s'.
+It started in the late 60s' with control
+theories called Bryson and Ho who invented
+a linear version of backpropagation.
+Paul Werbos went to their lectures and
+realized it could be made non-linear.
+And in his thesis in 1974, he published
+what's probably the first proper version
+of backpropogation.
+Rumelhart and Williams and I invented it
+in 1981 without knowing about Paul
+Werbos's work.
+But we tried it out, and it didn't work
+very well for the first thing we tried it
+for,
+And so we abandoned it.
+David Parker invented it in 1985, and so
+did Yann LeCun.
+Also in 1985, I went back and tried again
+the thing that Rumelhart, Williams and I
+had abandoned and discovered it worked
+pretty well.
+In 1986, we produced a paper with a really
+convincing example of what it could do.
+It was clear the backpropagation had a lot
+of promise for learning multiple layers of
+non-linear future detectors.
+But it didn't really live up to its
+promise.
+And by the late 1990s, most of the serious
+researchers in machine learning had given
+up on backpropagation.
+For example, in David Mukai's textbook,
+there's very little mention of it.
+It was still widely used by psychologists
+for making psychological models.
+And it was also quite widely used in
+practical applications, such as credit
+card fraud detection.
+But in machine learning, people thought it
+had been supplanted by support vector
+machines.
+The popular explanation of what happened
+to backpropagation in the late 90s' was
+that it couldn't make use of multiple
+layers and non-linear features.
+This wasn't true in convolutional nets,
+which were the exception.
+But in general, people couldn't get feed
+forward neural networks trained with
+backpropagation to do impressive things if
+they had multiple hidden layers,
+Except for some toy examples.
+It also did not work well in recurrent
+networks or in deep auto-encoders,
+Which we'll cover in our later lecture.
+And recurrent networks were perhaps the
+place where its most exciting, and so it
+was there that it was most disappointing
+that people couldn't make it work well.
+Support vector machines by contrast,
+worked well. They didn't require as much
+expertise to make them work, they produced
+repeatable results, and they had a much
+better theory.
+And they had much fancy of theory.
+So, that was the popular explanation of
+what went wrong with backpropagation.
+With a more historical prospective, we can
+see why really failed.
+The computers were thousands of times too
+slow,
+And the label data's sets hundreds of
+times too small for the regime in which
+backpropagation would really shine.
+Also, the deep networks, as well as being
+too small, were not sensibly initialized.
+And so, backpropagating through deep
+networks didn't work well because the
+gradients tended to die, because the
+initial weights were typically too small.
+These issues prevented backpropagation
+from being successful.
+For tasks like vision and speech,
+They would eventually be a big win.
+So, we need to distinguish between
+different kinds of machine learning task.
+There's ones that are more typical of the
+kinds of things people study in
+statistics,
+And ones that are more typical of the
+kinds of things people study in artificial
+intelligence.
+So, at the statistics end of the spectrum,
+you typically have low dimensional data.
+A statistician thinks of a 100 dimensions
+as high dimensional data.
+At the artificial intelligence end of the
+spectrum, things like images or
+coefficients representing speech typically
+have many more than a 100 dimensions.
+At the statistics end of the spectrum,
+There's usually a lot of noise in the
+data.
+Whereas, in the AI end of the spectrum,
+noise isn't the real problem.
+For statistics, there's often not that
+much structure in the data, and what
+structure there is can be captured by a
+fairly simple model.
+At the AI end of the spectrum, there's
+typically a huge amount of structure in
+the data.
+So if you take a set of images, its highly
+structured data.
+But the structure is too complicated to be
+captured by a simple model.
+So in statistics, the main problem is
+separating true structure from noise, not
+thinking that noise is really structure.
+This can be done by a Bayesian neural net
+pretty well.
+But for typical non-Bayesian neural nets,
+it's not the kind of problem they're good
+at.
+And so, for problems like that, it makes
+sense to try a support vector machine or a
+method called a Gaussian process if you're
+doing regression, which I'll talk about
+briefly later.
+At the artificial intelligence end of the
+spectrum, the main problem is to find a
+way of representing all this complicated
+structure so that it can be learned.
+The obvious thing to do is to try to hand
+design appropriate representations.
+But actually, it's easier to let back
+propagation figure out what
+representations to use by giving it
+multiple layers and using a lot of
+computation power to let it decide what
+the representation should be.
+I now want to talk very briefly about
+support vector machines.
+I'm not going to explain how they work,
+But I am going to say what I think their
+limitations are.
+So, there's several ways in which you can
+view a support vector machine, and I'm
+going to give you two different views of
+them.
+According to the first view, support
+vector machines are just the reincarnation
+of perceptions with a clever trick called
+the kernel trick.
+So, the idea is that you take the inputs,
+You expand the raw input into a very large
+lair of non-linear, but also non adaptive
+features.
+So, that's just like perceptrons where you
+have this big layer of features it doesn't
+learn.
+And then, you only have to learn one layer
+of adaptive weights, the weights from the
+features to the decision unit.
+And support vector machines have a very
+clever way of avoiding overfitting when
+they learn those weights.
+They look for what's called a maximum
+margin hyperplane in a high dimensional
+space,
+And they can do that much more efficiently
+than you might have thought possible.
+And, that's why they work well.
+The second view also views support vector
+machines as a clever reincarnation of
+perceptrons.
+But, it has a completely different notion
+of what kinds of features they're using.
+So, according to the second view,
+Each input vector in the training set is
+used to define one feature.
+I'll spell it differently to indicate it's
+a completely different kind of feature
+from the first kind.
+Each of these features gives a scale of
+value which involves doing a global match
+between a test input and that particular
+training input.
+So, roughly speaking, it's how similar the
+test input is to a particular training
+case.
+Then, there's a clever way of
+simultaneously finding how to weight those
+features, so as to make the right
+decision,
+And also during feature selection.
+That is, deciding which of those features
+not to use.
+So, although these views sound extremely
+different from one another, they're just
+two alternatives ways of looking at the
+same thing,
+A support vector machine.
+And, in both cases,
+It's using non-adaptive features and then
+one layer of adaptive weights.
+And that limits to what you can do that
+way.
+You can't learn multiple layers of
+representation with a support vector
+machine.
+This is a historical document from 1995.
+It was given to me by [unknown] and it's a
+bet between Larry Jackel, who headed the
+adaptive systems research group at Bell
+Labs,
+And Vladamir Vapnik, who is the leading
+proponent of support vector machines.
+Larry Jackel bet that by 2000, people
+would understand why big neural nets
+trained with backpropagation worked well
+on large data sets.
+That is, they would understand it
+theoretically in terms of conditions and
+bands.
+Vapnik bet that they wouldn't,
+But he made a side bet.
+That if he was the one to figure it out,
+he would win anyway.
+Vapnik in turn,
+Bet that by 2005, nobody will be using big
+neural nets like that train
+backpropagation.
+It turns out that they were both wrong.
+The limitation to using big neural nets
+with backpropagation was not that we
+didn't have a good theory and not that
+they were essentially helpless, but that
+we didn't have big enough computers or big
+enough data sets.
+It was a practical limitation not a
+theoretical one.

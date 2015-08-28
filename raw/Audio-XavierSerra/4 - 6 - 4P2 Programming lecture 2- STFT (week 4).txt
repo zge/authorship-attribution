@@ -1,0 +1,314 @@
+Welcome to the course on Audio Signal
+Processing for music applications.
+This week is the week of
+the Short Time Fourier Transform.
+And in the previous programming class,
+we talked about windows.
+We talked about how to
+get a window, how to display it,
+how to compute its spectrum and
+how to visualize the kind of
+things that we talked about in
+the theory class related to windows.
+And now in this second
+programming lecture I
+want to build the whole
+Short Time Fourier Transform system and
+talk about the implementation we
+have in the sms-tools package.
+So we'll basically implementing
+the whole STFT equation shown here.
+So basically we'll be
+iterating over a sound, x, and
+we'll be computing at every frame,
+so the frame number is l.
+So we'll be computing
+frames of the sound at each
+frame location, we'll be multiplying
+the fragment of sound with the window, w,
+and therefore at the end we'll
+have a sequence of spectra,
+a sequence of, in this
+case, complex spectra.
+And we see it as a block diagram so
+we start from the signal x of n,
+we multiply one fragment with our window,
+so we get a windowed signal.
+That's what we compute the FFT of and
+then of course we compute the magnitude
+and phase representation of
+the spectrum and then we can undo
+the whole process by calling the inverse
+FFT, therefore obtaining the windowed
+synthesized sound and
+with what we call overlap-add strategy
+we will be adding together these
+fragments into a whole signal.
+And hopefully if we have
+done the things correctly,
+especially if we have chosen
+the window of the hop size correctly,
+this output signal will be
+identical to the original.
+So let's look at the code of the STFT
+that we have in the sms-tools package.
+Okay, so this is the file called stft.py,
+and in it we have three functions.
+One, there is the stft, that does
+the whole analysis and synthesis.
+And then we just have the analysis and
+synthesis separate, so
+sometimes it's useful.
+So we have the stftAnal function, and the
+stftSynth function for the inverse part.
+But let’s talk about
+the complete analysis synthesis.
+So let's talk about the stft function.
+As input parameters, it has the x,
+our array with the complete sound.
+The, we need to know
+the sampling rate of that sound.
+Then, we need to pass it
+the window we going to be using, w.
+Then the size of the FFT, capital N,
+and the hop-size,
+how are we going to hop through the sound.
+And basically,
+the core of the function is a loop.
+In this case a while loop that keeps
+advancing through the sound by a pointer,
+this pin.
+Pin is a pointer that keeps advancing
+by H, by capital H, by the hop size.
+So pin gets advanced at
+every iteration by capital H
+until it reaches the end, which
+is the end of the sound.
+And within that we basically choose
+the fragment of the sound that
+we want to analyze and
+then we call the dftAnal function.
+So this is the function that
+already discussed last week,
+which is the DFT model.
+It comes from the package dftModel, okay.
+So we don't have to worry now here
+about the zero phase windowing,
+about the zero padding etc, everything
+is done within this dftAnal function.
+And it receives the fragment of the sound,
+the window, and the FFT size and
+it returns the positive side of
+the magnitude and phase spectra, okay.
+After that we can do the inverse DFT,
+also calling the dftSynth function.
+And therefore that will return
+a windowed fragment of the sound and
+then we can put it all
+together overlap and
+adding the sound and
+creating the overall output array, okay.
+And apart from that the rest
+are basically initializations and
+ways to better analyze the sound and the
+to make sure that the pointer 
+starts at the very beginning of the sound,
+and can end at the very end of the sound.
+So I am not going to go
+into detail of that,
+but please, feel free to go over that and
+understand this code.
+So now we have this function,
+that returns a sound.
+And let's use it, let's write
+some code to use this function.
+So this is a little script that I wrote to
+call the stftAnal in which I first have
+to get all the packages required including
+the actual STFT function.
+So this comes from the models directory.
+And then, I can get a file,
+define the window, and
+then define the size of the window,
+the FFT size and the hop size.
+And now we can read the file with wavread,
+get the window and
+call the STFT function and
+this will fill up two variables,
+mX and pX which will be including
+the sequence
+of magnitude and phase spectra.
+Okay, so let's let's run it.
+Let's, run test3.
+Okay, that's quite quick so
+it analyze the sound and
+it obtain all these variables,
+so let's go through them, so
+maybe the first thing we can do is to
+listen to the sound so we can just do
+the exclamation mark, play, and
+the name of the sound,
+which is this flute sound.
+And we can listen to that, [SOUND].
+Okay, so this is the sound of the flute.
+And now we can go through the different
+variables that we have computed.
+So, for example, the first one is
+the sound that we read, the x array,
+so this is the whole sound,
+the array of the whole sound, so
+it's more than 80,000 samples.
+Okay, then of course we
+can plot the window we
+computed, which is a Hamming window.
+And then we have the output array,
+of magnitudes and phases, but
+those are very big variables,
+very big matrices of values.
+So in fact if we put mX.shape,
+it will tell me 
+the dimensions of the array,
+basically the number of frames and
+the number of
+samples in the spectrum that we have.
+So in fact, this tells me that we have 238
+frames, and each frame has 512 samples.
+These 512 samples are the samples of
+the magnitude spectrum, of half of
+the magnitude spectrum.
+So now we can access individual
+frames of that, so if we put for
+example mX, and we access for
+example the frame number 50,
+and we plot the whole
+spectrum of that 50th frame.
+These are the values of the magnitude and
+of course, we can,
+if we call the function plot
+with that variable, we will plot
+the magnitude spectrum of that particular
+location, okay so this is the flute sound.
+We see the harmonics and
+we see how the higher values are much
+softer and it's quite noisy.
+Of course we can also plot the phase
+spectrum of that same location.
+And this is the phase, unwrapped phase, so
+we can see all these nice
+looking phase shape.
+Okay of course we want to
+visualize the whole spectrum so
+in order to visualize the whole spectrum
+the, the plotting command that can do that
+is what is the function is
+called pcolormesh, pcolormesh.
+It plots a matrix as a kind of
+three dimensional shape so
+you if give it mX.
+It will basically plot all the frames.
+But it maybe plotted in
+in a different way than we are accustomed
+to because the vertical axis is the time.
+So in fact we see time,
+going from bottom to top, and
+the frequency is on the horizontal axis.
+In fact, a better way to plot this with
+with pcolormesh is to transpose it first,
+so we can call the transpose function, so
+this will transpose
+the mX in a different way, so that we
+can see it in a more meaningful way.
+So now we see time going from left
+to right, and frequency going, or
+the frame, frequency
+going from the bottom to top.
+Okay, so that's basically how we
+compute the magnitude and
+the phase spectrum using the STFT and
+how we can plot it.
+And there is a function file
+that implements all that and
+makes plots in a nice way and
+that is the stft underscore function and
+this is the one that is called from
+the graphical interface that we also use.
+And here it has one function called
+main and it goes through the kinds of
+things we did and
+it does both the analysis and synthesis.
+Okay, so the main has as input
+values the input parameters and
+then it reads the sound file,
+it gets the window.
+It performs the analysis,
+this is exactly what we did now.
+But then it does the synthesis, and
+it outputs the synthesis file 
+into a location, with a given name and
+then it writes it, okay?
+By the way, here this file I
+just copied it into the workspace,
+but I had to change the relative
+path of a number of this name.
+So for example, I had to change
+the path of the software models or
+I had to change the output file name because
+in here it was using a particular
+directory to store the sound files, here
+I just write it directly on this directory.
+Okay, so let's execute this.
+I have it in this directory.
+So it's stft_function so
+I can just run stft_function.
+Okay, and it plots, well, the input sound,
+the magnitude, the derivative of
+the phase, and the output sound.
+And this has created
+a file which is called,
+what is it called?, is
+called piano_stft.wav and
+of course from here
+again I can play it so
+I can say play stft,
+no piano, piano_stft.wav.
+[MUSIC]
+Okay, and it's basically
+the same than the original sound.
+Of course now from this file
+I can really change and make
+the things differently if I want, so feel
+free to change how the plots are shown.
+But this is a quite nice way to plot
+the things with the correct axis,
+with the correct labels, and
+with the correct scaling, so
+that we can better visualize the analysis 
+and synthesis using STFT.
+And that's all I wanted to say.
+So basically we have gone through
+the Short Time Fourier transform,
+the implementation of
+the Short Time Fourier transform.
+So make sure that you understand
+the actual equation and what 
+the signal processing considerations
+that are involved in that.
+And then, of course, we use a number of
+packages from Python,
+together with the sms-tools,
+that we have already developed and
+implemented the DFT and STFT so
+we have been calling those functions.
+And that's all, so with this
+programming class, hopefully, you have
+gotten an idea of how to
+implement the STFT and how can we
+use the functions of the
+sms-tools to actually,
+adapt it to our own particular needs.
+So please feel free to
+play around with that and
+make sure that you understand the STFT
+also from this programming perspective.
+And that's all, thank you very much.
+

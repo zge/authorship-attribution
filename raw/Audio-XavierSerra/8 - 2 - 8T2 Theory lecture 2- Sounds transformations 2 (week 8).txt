@@ -1,0 +1,386 @@
+Welcome back to the course on audio signal
+processing for music application.
+In the previous theory lecture we started
+talking about sound transformations,
+in particular about how to use
+the short time Fourier transform and
+the sinusoidal model
+to manipulate sounds.
+In this second theory lecture
+I want to continue that and talk about
+the harmonic plus residual model and
+how it can be used for transforming
+the frequencies of the harmonics, and
+then the harmonic plus stochastic model,
+and how it can be used for
+time stretching and morphing operations.
+This morphing, by the way, is
+quite different from the one
+that was possible with
+the short time Fourier transform.
+And of course these are just some example
+operations, example transformations, but
+the number of possible usages
+of these models is much larger.
+Let's start with the harmonic
+plus residual model.
+This is the block diagram that
+we have seen before,
+in which, from the input sound
+we analyze the spectrum, find the peaks,
+and then find the fundamental frequency,
+find the harmonics,
+and we subtract
+those harmonics from the original signal.
+We need to compute
+the spectrum of the original signal
+again in order to develop a spectrum from
+which we can subtract these harmonics and
+subtract these harmonics in a proper way.
+Okay, and then where we do the
+transformation is in the frequencies and
+amplitudes of the harmonics, we don't
+apply any transformations to the residual.
+In order 
+to apply transformation to the residual
+it makes sense to have a model for it.
+And that's what we're going
+to be introducing in the next
+model; the harmonic plus stochastic model.
+And here the transformations
+on the harmonics, again like in
+the sinusoidal model, it's applied
+only on the frequencies and amplitudes.
+The phases are forgotten, we don't use them,
+we will be resynthesizing them
+again after transformation.
+And the main issue of that is
+because the phases are very
+sensitive to transformations.
+And it's very difficult to handle them,
+so it's better to just regenerate them,
+after transformation and
+it doesn't sound that bad.
+Anyway, so
+after the transformations we can
+sum these new harmonics
+to the residual signal.
+And this residual signal, since it
+does not include any deterministic,
+any harmonic information,
+it will merge quite nicely.
+And then it will create a sound
+that has the same residual
+than the original
+And the harmonics will be modified.
+In terms of types of transformations
+that can be done to these harmonics,
+the frequency of these harmonics,
+there are many.
+And here I explain three common ones.
+The most traditional one is to just
+transpose all the frequencies by
+a given factor.
+So, we multiply all the harmonics
+by a scaling frequency factor, so
+that would correspond to a transposition,
+so if we've multiplied by two
+it would correspond to converting
+the sound to an octave higher.
+If we multiplied by 0.5,
+it would be an octave lower.
+Okay, then we can, instead of multiplying,
+we can just shift all the frequencies.
+For example, we can sum a factor
+to all the frequencies.
+So, we'll be shifting all the harmonics
+by an additive component.
+And finally,
+the last one I want to mention is what is
+called frequency stretching.
+In which we are applaying frequency change
+that is dependent on the harmonic.
+So, here what we are doing is basically
+dividing every harmonic by it's
+harmonic number.
+So we basically get a frequency
+around the fundamental, and
+then we multiple by the harmonic number
+to the power of a scaling factor.
+Therefore,
+the higher harmonics will be modified very
+differently from the lower harmonics.
+It's very much harmonic dependent
+and that can create some nice
+effects that we will see.
+So this is
+a plot of these three transformations that
+exemplify these operations quite nicely.
+So on the top left we have
+the original harmonics, all located at
+at the harmony number location,
+one, two, three, four, and five.
+Then if we transpose by two, on the right,
+it just simply multiply every one by two so
+harmonic one will be in position two,
+harmonic two in position four, etcetera.
+We are maintaining a harmonic spectrum.
+We are just transposing by a factor of two.
+If we shift instead by an even value,
+in this case since we are 
+having the frequencies
+normalized to integer values,
+gere by 0.5 will be basically shifting by
+half of the frequency of the first
+fundamental, of the first harmonic.
+And in here we see that we're shifting
+everything by a constant value.
+So, from now, after this transformation,
+we do not have any more a harmonic series.
+Because the first harmonic is not just
+the fundamental frequency anymore.
+Okay?
+So we have now a series of values
+that are equally spaced but
+they are multiples of another frequency,
+so
+the sound may be quite a bit different,
+and quite interesting in some cases.
+And finally,
+the frequency stretching operation.
+It's a quite different operation.
+Now, it changes
+the distance between the harmonics and
+it's like an accordion.
+You know?
+So, if it's here 1.3 it
+means that well the first value,
+the fundamental, will not be touched.
+The first one will be stretched
+by a factor of 1.3 and
+these are going to be powers of this.
+So as we go higher up,
+it's going to go sort, the distance
+will increase kind of exponentially.
+And this creates again quite
+very interesting effects.
+So let's listen to a sound in which
+we have applied some stretch and
+transpose kind of transformation.
+So let's listen.
+it's a flute sound that we can listen to.
+[SOUND] Okay.
+It's an A4 and below that we
+see the harmonics that I have
+identified on top of the residual
+spectrum of the original signal.
+And then what we are doing
+is leaving the residual as it is,
+the background spectrogram is
+exactly the same than the top one.
+And we're just modifying the harmonics.
+So, if you look here the harmonics
+have been heavily modified and
+if you see there have been a stretched and
+at the same time transposed a little bit.
+So let's listen to
+that modified sound.
+[SOUND] Okay,
+of course, quite different.
+And if you pay attention, the residual is
+there and since the residual is basically
+this breath noise, it merges also quite
+well with these transposed harmonics.
+Okay, let's go to the other model,
+the harmonic plus stochastic model.
+It's very similar to the previous one.
+And now the transformation is applied both
+in the modeling of the residual signal,
+and of course in the harmonic components.
+So we have an stochastic approximation,
+and therefore we
+can transform that quite easily,
+because it's a model that has simplified
+the residual quite a bit and it's
+quite flexible in terms of manipulations.
+And then of course after transformation
+we obtain the stochastic component and
+we obtain the frequency,
+amplitudes, and phases of the
+harmonics sinusoids and we can synthesize
+the two, and summing together.
+So in terms of what is actually done is
+very similar to what we presented for
+the sinusoidal model.
+Now what we're introducing
+is the transformation on
+the stochastic component in a similar way.
+So the frequencies of the harmonics
+can be scaled by a factor.
+And the time of the reading
+of this frequency values
+can also be changed in order to
+obtain this time scaling operation.
+So we have this scaling function.
+The amplitudes is the same way and
+the stochastic component
+is handled in the same way.
+Okay, and
+of course the phases are generated.
+And they are generated by starting from
+an initial phase and then adding 
+the frequency of every harmonic that
+we want to generate to that phase,
+So we can generate instantaneous
+phase that way.
+Okay, let's show an example of that.
+This is the sax phrase that 
+we have heard before, let's
+listen to that again.
+[SOUND] Okay, and then we have the analysis of it,
+where we have analyze the harmonics and
+the stochastic component,
+and then we can change that.
+In this particular case we have done time
+scaling, so we have changed the timing and
+now with the residual
+approximated with stochastic
+it's very easy to do time
+scaling of the stochastic and
+the harmonics, and and that's it.
+We have just focused on the time scaling
+transformation in this particular example.
+Let's listen to that very
+simple time scaling operation.
+[MUSIC]
+So basically the only thing we have done is we
+have compressed the first part
+of the signal by quite a bit.
+And in fact it's like
+half of the duration, and
+the second half has been
+extended by twice as much.
+So in fact the overall
+duration of the sound
+remains the same.
+Of course, as you can imagine,
+this is very flexible and
+we can do a lot of kind of envelopes
+that we can play around with.
+Okay, now, let's talk about the morphing
+using this harmonic plus stochastic model.
+Okay here we have simplified
+the block diagram.
+We have two sounds x1 and x2.
+Now they are basically at the same level,
+and
+basically what we're going to do is
+interpolate the two representations.
+So from x1 we obtain the frequencies and
+amplitudes of
+the harmonics and the stochastic
+approximation of the residual.
+On of sound 2 we do the same thing.
+And then what we're doing is
+interpolating these 2 sets of functions.
+We're interpolating the frequencies,
+the magnitudes, of the harmonics.
+And we're interpolating the stochastic
+envelopes of the residual.
+And then of course we can synthesize
+back the output sound
+by generating the stochastic component and
+the sinusoidal component.
+Let's look at a particular
+frame of a sound in
+which we have applied
+like a 50% interpolation.
+So on top left is x1,
+one particular frame, the
+harmonics visualized as
+the location in the frequency and
+height is the amplitude, okay?
+And then the blue one is sound 1.
+x2 the red one is a sound too.
+Okay and then we can interpolate this too,
+basically harmonic by
+harmonic we can interpolate.
+And as you see the x2
+it's a different frequency,
+it's a sound that has a higher pitch.
+So the interpolated result has a pitch,
+which is in between the two and has a shape,
+again, that is in between the two, okay?
+So, it's basically a 50% interpolation
+between the two sets of values, and
+the stochastic component below is,
+that's the same idea,
+So, on x1, this shape is
+the approximation of the residual,
+is very clear that the crosses is
+actually where we have values,
+as an envelope, and
+x2 is another envelope for x2.
+And the output is
+the interpolated envelope.
+So, it's a shape that's in
+between these two shapes.
+Okay, let's use that in a particular
+example in which we start from a violin
+sound and we're going to interpolate it
+progressively towards a soprano sound.
+So here we see, on the top, the violin
+sound and you can listen to.
+[SOUND] Okay, and it's analyzed, so we see the
+harmonics, well we see, I think here, is
+the first forty harmonics, and
+then the stochastic component of that.
+And then we see below the analysis of
+the soprano sound, listen to this.
+[SOUND] Okay where we see again
+the harmonics, it's a higher pitch.
+And the stochastic component
+in the background.
+And now we can choose
+the interpolation values to
+go from one set of values to the other.
+So it will progressively go
+from one sound to the other.
+Let's listen to the result.
+[SOUND] Of course, since one,
+the soprano sound, is higher than
+the violin, we hear this glissandi.
+But at the same time,
+we hear the evolution of the timbre.
+And every single parameter is slowly
+changing from one to another.
+Again, the possible type of functions
+to control these interpolations is
+enormous so we can play around
+quite a bit with these ideas.
+And that's all, so again in wikipedia
+there is not much and there's not much
+that we can refer to in terms of
+trying to understand some of
+these transformation aspects.
+And in fact a lot of these
+things is just by trying.
+So I would encourage you
+to try these things and
+develop your own intuition of what
+it works and what it doesn't.
+And that's all.
+So this has been the second theory
+lecture on sound transformations.
+Of course in this week, what is
+important is the programming and
+the demonstration classes even
+more than the theory lectures.
+Because after all it's a very applied
+topic, and it has to be grasped
+from a application and from
+an an intuition and musical prospective.
+So thank you very much for your attention.
+I'll see you in the next lecture.
+Buh bye.
+

@@ -1,0 +1,275 @@
+
+Now I'm going to give you some other 
+definitions for matrix vector and vector 
+matrix multiplication. 
+The dot product definition of matrix 
+vector multiplication is this. 
+The product M times U is the R vector V 
+such that entry R of v is the dot product 
+of row r of M with the vector u. 
+So to calculate the matrix vector product 
+using this rule, we would take the dot 
+product of the row 1,2 with this vector. 
+The dot product of Row 34, with it's 
+vector, and the dot-product of row 10 
+zero with it's vector. 
+And those dot-products are the values of 
+the entries of the resulting vector. 
+Here's a simple example, downsampling. 
+So, perhaps I have a large, high 
+resolution image. 
+And, in order to put it on a website, I 
+want to downsample. 
+I want to get a lower resolution image. 
+Here's how I do that. 
+Each pixel of the low-res image 
+corresponds to a little grid of pixels of 
+the high-res image. 
+And it's the intesity value of the pixel 
+in the low res image, is computed as the 
+average of all those little pixels in 
+that grid. 
+Now averaging can be expressed as a 
+dot-product. 
+We want to compute a dot-product For each 
+of the low-res images' pixels. 
+It's a lot of dot-products. 
+But we can express all these dot-products 
+as a single matrix vector multiplication. 
+Here's another example, blurring. 
+To blur a face, we replace each pixel in 
+the region we want to blur With an 
+average of pixels in the neighborhood. 
+Again, average can be expressed as dot 
+product. 
+So, using the dot product definition of 
+matrix vector multiplication, we can express this image transformation 
+as a matrix vector product. 
+Gaussian blur works the same way your 
+computing a sort of weighted average but 
+that can also be expressed as a dot 
+product. 
+Here's another application. 
+Earlier we talked about searching for a 
+short audio clip within a longer audio 
+segment. 
+These, these audio clips were recorded 
+digitally, so they really consist of 
+numbers arranged in a sequence. 
+And we saw that the way to seek a a short 
+clip in a longer audio segment is to 
+carry out a whole bunch of dot products. 
+One for each of the possible positions of 
+the short clip within the longer audio 
+segment. 
+Lots of dot products. 
+But we can represent all those dot 
+products as a single matrix vector 
+product. 
+Recall the sensor node problem. 
+We wanted to know how much current is 
+consumed by each hardware device called a 
+center node. 
+So we used test periods, a series of test 
+periods, 
+in each one we measure the, the total 
+power consumed during that period. 
+And for each test period, we have a 
+vector that represents how long each 
+hardware component is on during that test 
+period. 
+So, we have a bunch of those vectors. 
+And now we want to use all these 
+measurements to calculate 
+the energy consumed per second, that is 
+the current draw, for each hardware 
+component. 
+We can formulate this as a system of 
+linear equations. 
+Then we solve for X to find out for each 
+hardware component how much current it 
+draws. 
+So here's a a linear, a system of linear 
+equations. 
+Each equation specifies the value of a 
+dot product of a known vector with our 
+unknown vector x. 
+We take those vectors a one through a m 
+and put them in a matrix. 
+And now we can express all these dot 
+products. 
+As a single matrix vector equation. 
+So again the problem of computing the 
+solution to a matrix vector equation is a 
+fundamental computational problem. 
+Lets see how to formulate the sensory 
+node problem as a matrix vector problem. 
+Remember our goal is to compute the 
+current draw for each of the hardware 
+components in our sensory node. 
+We find the domain to be radio sensor 
+memory in CPU. 
+Those are the hardware components. 
+And our goal is to compute a vector U that maps each hardware component to the 
+current draw. 
+To do that we establish four test 
+periods. 
+For each of those test periods we'll 
+measure the total power used during 
+that test period. 
+And we'll put those measurements in a 
+vector b. 
+In addition, for each test period, we 
+have a vector duration that specifies for 
+each hardware component, how long that 
+hardware component is on during that test 
+period. To find this vector u we solve the matrix vector equation, a 
+times x equals b. 
+Where a is the matrix whose rows are 
+these duration vectors. 
+Let's solve this matrix vector equation 
+using the solve procedure. 
+First, we have to construct these 
+vectors. 
+They all have the same domain. 
+Now we construct them using that domain. 
+Next we construct this matrix whose rows 
+are the vectors. 
+We use row dict to map for that. 
+Let's see how that matrix looks. 
+Next I'll construct this vector b that 
+gives for each test period the total 
+milliampere-seconds consumed in that test 
+period. 
+However we're ready to use the solve 
+ procedure to solve this matrix vector 
+equation. 
+We'll assign the result to the variable 
+rate. 
+Now let's look at the entries of rate. 
+To check that we've really gotten a 
+solution to the equation, we'll compute 
+the residual. And compute its dot-product 
+with itself. 
+That number is plenty small, convincing 
+us that we do have an accurate solution 
+to the matrix-vector equation. 
+Keep in mind two things though, one it's 
+not necessarily the only solution. 
+We haven't shown that there's a unique 
+solution. 
+And two. 
+Even the values in the vector rate are 
+only represented approximately, due to 
+the limitations of floats. 
+You'll recall, we studied triangular 
+linear systems that look like this. 
+Where the zero is down here. 
+And these correspond in a natural way to 
+triangular matrix vector equations. 
+And so we call a matrix of this form a 
+triangular matrix. 
+Here's the formal definition. 
+We can use backward substitution to solve 
+a matrix-vector equation like this one. 
+Triangular matrices will be very 
+important later on. 
+You'll be writing code to do 
+matrix vector multiplication and vector matrix 
+multiplication. 
+Now, you could use either of the 
+definitions I've given, the dot product 
+definition or the linear combinations 
+definition and you'll do that in 
+homework. 
+But, using those definitions, it's not 
+easy to exploit sparsity in the matrix. 
+So, we'll look at another definition. 
+One I call the ordinary definition of 
+Matrix Vector Multiplication. 
+Entry r of the resulting vector, v is the 
+sum over all the column labels of mrc 
+times entry c of u. 
+This formulation makes it easier to write 
+code to compute the matrix vector 
+product. 
+So here's the obvious way you'd write it. 
+You'd iterate over all the entries in big 
+R, the row labels, and compute the value 
+of the corresponding entry of the product 
+as the sum. 
+This still doesn't exploit sparsity in 
+the matrix. 
+So we can use another idea. 
+We initialize the output vector V to the 
+zero vector. 
+And then we iterate over all the non zero 
+entries of the matrix, and adding terms 
+as according to the definition. 
+So here's pseudo code for that process. 
+Now I'll present some very fundamental 
+algebraic properties of matrix-vector 
+multiplication. 
+For any vector v and any scalar alpha, 
+the matrix A times alpha times v is the 
+same as alpha times the matrix A times v. 
+And, for any vectors u and v, a times the 
+sum of u and v is the sum of a times u 
+and a times v. 
+Let's go through the proof. 
+To prove a times alpha v equals alpha 
+times a v. 
+We just have to show that corresponding 
+entries of the left and right hand sides 
+are equal. 
+That is that entry I, of a times alpha V, 
+equals entry I of alpha times A times V. 
+Well let's write A in terms of it's rows 
+A one through A M. 
+Now by the dot product definition of 
+matrix vector multiplication, entry I of 
+A times alpha V is the dot product of row 
+I, AI, with alpha V. 
+And that's equal to alpha times the 
+dot-product of ai with v by the 
+homogeneity of dot-product. 
+On the other hand, by the definition of 
+scalar-vector multiplication, entry i of 
+alpha times the vector A times v is 
+Alpha times entry I, A times V. 
+And by the dot product definition of 
+matrix vector multiplication, entry I of 
+A times V is row I, AI dotted with V. 
+So we've shown that corresponding entries 
+are equal. 
+Similarly we can show that a times the 
+sum of u and v equals the sum of A times 
+u and A times v. 
+We show that corresponding entries are 
+equal. 
+So we need to show that entry i of A 
+times u plus v equals entry i of A times 
+u. 
+Plus a times v. 
+So, again, we use the representation of a 
+in terms of its rows. 
+By the dot-product definition, of 
+matrix-vector multiplication, entry i of 
+A(u+v) is the dot-product of row i, 
+namely Ai, with u+v. 
+And this is equal to AI times U plus AI 
+times V, by the distributive property of 
+dot product. 
+On the other hand, by the dot product 
+definition of matrix vector 
+multiplication, entry I of A times U is 
+the dot product of row I, AI with U. 
+Entry I of A times V is the dot product 
+of row I, AI, with V. 
+And putting these together, entry I, the 
+sum, A times U plus A times V, is AI 
+dotted with U plus AI dotted with V. 
+So we've shown that corresponding entries 
+are equal. 
+And that completes the proof. 
+

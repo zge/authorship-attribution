@@ -1,0 +1,257 @@
+In this video we'll cover a second 
+problem to whet your appetite for things 
+to come, namely the problem of sequence 
+alignment. 
+So, this is a fundamental problem in 
+computational genomics. 
+If you take a class in the subject, it's 
+very likely to occupy the very first 
+couple of lectures So in this problem 
+you're given two strings over an 
+alphabet, and no prizes for guessing 
+which is the alphabet we're most likely 
+to care about. 
+Typically these strings represent 
+portions of one or more genomes. 
+And just as a toy-running example, you 
+can imagine that the two strings we're 
+given are AGGGCT and AGGCA. 
+Note that the 2 input strings do not 
+necessarily need to be of the same 
+length. 
+Informally speaking the goal of the 
+sequence 1 at problem is to figure out 
+how similar the 2 input strings are. 
+Obviously I haven't told you what I mean 
+by 2 strings being similar. 
+That's something would develop. 
+Over the next couple of slides. 
+Why might you want to solve this problem? 
+Well there's actually a lot of reasons, 
+let me just give you two of many 
+examples. 
+One would be to conjecture the function 
+of the regions of a genome that you don't 
+understand like say the human genome, 
+from similar regions that exist in 
+genome's that you do understand or at 
+least understand better say the mouse 
+genome. 
+If you see a string that has a known 
+function in the well understood genome 
+and you see something similar in the 
+poorly understood genome you might 
+conjecture it has the same or similar 
+function. 
+A totally different reason you might want 
+to compare the genomes of two different 
+species is to figure out whether one 
+evolved directly from the other. 
+And when. 
+A second totally different reason you 
+might want to compare the genomes of two 
+different species is to understand there 
+evolutionary relationship. 
+So for example maybe you have three 
+species A,B, and C and you're wondering, 
+whether if B evolved from A, and if C 
+evolved from B, or whether B and C 
+evolved independently from a common 
+ancestor A. 
+And then you might take genome seril-, 
+similarity as a measure of proximity in 
+the evolutionary tree. 
+So having motivated the informal version 
+of the problem, let's work toward making 
+it more formal. 
+In particular, I owe you a discussion of 
+what I mean by two strings being similar. 
+[INAUDIBLE] So to develop intuition for 
+this, let's revisit the two strings that 
+we introduced on the previous slide 
+AGGGCT and AGGCA. 
+Now, if we just sort of eyeball these two 
+strings, I mean clearly they're not the 
+same string, but, we somehow feel like 
+they're more similar than they are 
+different. 
+Different. 
+So where does that intuition come from? 
+Well one way to make it more precise is 
+to notice that these two strings can be 
+nicely aligned in the following sense. 
+Let's write down the longer string, 
+AGGGCT. 
+And I'm going to write the shorter string 
+under it and I'll insert a gap, a space 
+to make the two strings have the same 
+length. 
+I'm going to put the space where there 
+seems to be a quote unquote missing g. 
+And in what sense is this a nice 
+alignment? Well it's clearly not perfect. 
+We don't get a character by character 
+match of the two strings but there's only 
+two minor flaws. 
+So on the one hand we did have to insert 
+Big gap. 
+And we do have to suffer one mismatch in 
+the final column. 
+So this intuition motivates defining 
+similarity between two strings, with 
+respect to their highest quality 
+alignment, their nicest alignment. 
+So we are getting closer to a formal 
+problem statement, but it's still 
+somewhat under-determined. 
+Specifically we need to make precise why 
+we might compare, why we might prefer one 
+alignment over another. 
+For example, is it better to have three 
+gaps and no mix-matches Was it better to 
+have one gap and one mismatch? So for 
+this video, we're effectively going to 
+punt on this question. 
+We're going to assume this problem's 
+already been solved experimentally, that 
+it's known and provided as part of the 
+input, which is more costly gaps and 
+various types of mismatches. 
+So here then, is the formal problem 
+statement. 
+So in addition to the two strings over A, 
+C, G, T we are provided as part of the 
+input a non negative number indicating 
+the cost we incur in alignment for each 
+gap that we insert. 
+Similarly for each possible mismatch of 
+two characters like for example 
+mismatching an A and T we're given as 
+part of the input a corresponding 
+penalty. 
+Given this input, the responsibility of a 
+sequence alignment algorithm is to output 
+the alignment that minimizes the sum of 
+the penalties. 
+Another way to think of this output, the 
+minimum penalty alignment is we're trying 
+to find in effect the minimum cost 
+explanation for how one of these strings 
+would have turned into the other. 
+So we can think of a gap as undoing a 
+deletion that occurred in the past and we 
+can think of a misbatch as representing a 
+mutation. 
+So this minimum possible total penalty. 
+That is, the value of this optimal 
+alignment is famous and fundamental 
+enough to have its own name, namely the 
+Needleman-Wunsch score. 
+So, this quantity is named after the two 
+authors that proposed efficient algorithm 
+for computing the optimal alignment. 
+That appeared way back in 1970, in the 
+Journal of Molecular Biology. 
+And now, at last, we have a formal 
+definition for what it means for two 
+strings to be similar. 
+It means they have a small NW score, a 
+score close to zero. 
+So, for example, if you had, have a data 
+base with a whole bunch of genome 
+fragments, according to this you're going 
+to define the most similar fragment to be 
+those with the smallest NW score. 
+So to bring the discussion back squarely 
+into the land of algorithms, let me point 
+out that this definition of genome 
+similarity is intrinsically algorithmic. 
+This definition would be totally useless, 
+unless There existed an efficient 
+algorithm that, given two strings in 
+these penalties, computes the best 
+alignment between those two strings. 
+If you couldn't compute this score you 
+would never use it as a measure of 
+similarity. 
+So this observation puts us under a lot 
+of pressure to devise an efficient 
+algorithm for finding the best alignment. 
+So how are we going to do that? Well we 
+could always fall back to brute-force 
+search, where we iterate over all of the 
+conceivable alignments of the two 
+strings. 
+Compute the total penalty of each of 
+those alignments, and remember the best 
+one. 
+Clearly correctness is not going to be an 
+issue for group brute-force search, it's 
+correct essentially by definition. 
+The issue is how long does it take. 
+So let's ask a simpler question, let's 
+just thing about how many different 
+alignments there are, how many 
+possibilities do we have to try? So if 
+you're going to create lengths imagine if 
+I gave you two strings of length 500, 
+which is a not unreasonable length. 
+Which of the following English phrases 
+best describes the number of 
+possibilities, the number of alignments 
+given to strings of 500 characters each? 
+So I realize this is sort of a cheeky 
+question but I hope you can gather that 
+what I was looking for was part D. 
+So you know, so how big are each of these 
+quantities anyways. 
+Well in a typical version of this class 
+you might have about 50,000 students 
+enrolled or so. 
+So its somewhere between 10^4 and 10^5. 
+The number of people on earth is roughly 
+7 billion, so that's somewhere between 
+10^9 and 10^10. 
+The most common estimate I see for known 
+atoms in the universe is 10^8. 
+80. 
+And believe it or not, the number of 
+possible alignments of two strings of 
+length 500 is even bigger than that. 
+So I'll leave it for you to convince 
+yourself that the number of possibilities 
+is at least 2^500. 
+the real number is actually, noticeably 
+bigger than that. 
+and because 10 is at most 2^4, we can 
+lower bound this number by 10^125. 
+quite a bit bigger than the number of 
+atoms in the universe. 
+And, the point, of course, is just that. 
+It's utterly absurd to envision 
+implementing brute-force search, even at 
+a scale of a few hundred characters. 
+And you know, forgetting about these sort 
+of astronomical if you will comparisons 
+even if you had string lengths much 
+smaller say in the. 
+The, you know, a dozen or two you'd never 
+ever run brute-force it's just not going 
+to work, and a course notice this is not 
+the kind of problem this [UNKNOWN] 
+explosion, this doesn't go away if you 
+wait a little while for Moore's law to 
+help you. 
+This is a fundemental limitation that 
+say; you are never going to compute 
+alignments of the strings that you care 
+about. 
+Unless you have a fast, clever algorithm. 
+I'm happy to report that you will indeed 
+learn such a fast and clever algorithm 
+later on in this course. 
+Even better, it's just going to be a 
+straightforward instantiation of a much 
+more general algorithm design paradigm 
+that of dynamic programming. 
+

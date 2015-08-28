@@ -1,0 +1,1181 @@
+Welcome to week 11.
+This and one more week to go.
+We'll address here the important topic of
+image and video segmentation.
+For many applications you're going to be
+able to
+group pixels together based on some of
+their characteristics.
+Intensity and color come to mind right
+away, as such characteristics, but also
+maybe motion.
+So for example, bright regions in an image
+can
+be grouped together, or regions which have
+a certain color,
+or regions which have similar
+characteristics in a medical image,
+or regions which move the same way in a
+video.
+This is the problem of image and video
+segmentation.
+It's an important problem, with a large
+number of publications in the literature.
+One of the difficulties actually with this
+problem, is
+that there is no established ground truth
+in an image.
+In other words.
+If an image is presented to two dif-, two,
+let's say ten different people.
+And they're instructed of how to perform
+manual segmentation.
+Most probably they'll end up with ten
+different segmentations.
+We describe segmentation techniques, which
+are
+based on intensity discontinuities, that
+is edges.
+On intensity similarities and on
+morphological features of the image.
+We also present, present techniques
+performing
+Motion-based Segmentation and finally some
+techniques which
+in, we can call them advanced techniques,
+such as Mean Shift and Graph Cut.
+So, let us proceed with this exciting
+material.
+As the saying goes, the whole is greater
+than the sum of its parts.
+Human beings perceive an image as a whole,
+extract meanings behind the image, and the
+segmentation of the image is a natural and
+intuitive task, an easy one we would say.
+Machines on the other hand, perceive an
+image as a matrix filled with numbers.
+Don't have a clue what the big picture is.
+And therefore, segmentation of the image
+is an extremely difficult task.
+The objective of image and video
+segmentation is to
+break the image of the video into
+constituent meaningful regions.
+And this division can be based on a number
+of attributes.
+Such as color, texture, and, or motion.
+As already mentioned, segmentation is a
+difficult task for the computer
+and some of the challenges are the
+ambiguity in the data.
+The ever present noise, the need to
+integrate high level information
+into the segmentation process and the lack
+of ground truth.
+If for example the, an image is given to
+ten different
+people with specific instructions of how
+to go about segmenting this image.
+Most probably, we'll, we will end up with
+ten different segmentations.
+Based on that, the current thinking in
+evaluating
+the performance of a segmentation system
+or the
+quality of the resulting segmentation is
+to do
+so by considering the end to end system.
+So in other words, how will this
+segmentation be used?
+Will it be input to a restoration system,
+a
+classification one, compression one,
+tracking one and so on.
+We will present some basic techniques in
+this
+class which are based on intensity
+discontinuity.
+Intensity similarity and and morphology.
+As we will see with some of the
+techniques, the
+output of the system will be the boundary
+of a region.
+and clearly if this boundary is closed as
+shown here, then this
+boundary defines a region, The pixels that
+are inside this boundary.
+Other techniques.
+Will provide the pixels belonging to a
+region.
+So, if all these pixels belong to a
+specific region then clearly one
+can define the boundary that separates
+this region from neighboring regions.
+During this week, we will look at
+methods towards segmentation based on the
+intensity discontinuity.
+And more specifically, we will look at
+edge-based segmentation.
+We'll also look at methods that are based
+on intensity similarity.
+More specifically, thresholding, region
+growing and region splitting and merging.
+We will then study the watersheds and
+K-means algorithms.
+And finally we will look at some advanced
+methods,
+such as Motion-based Segmentation, Mean
+shift and Graph cut.
+On group of algorithms we will study
+toward
+segmentation, are based on the detection
+of the discontinuities.
+In the image intensity.
+And these discontinuities represent the
+special edges in the image.
+So, given an image like this, this is a
+picture actually
+of a statue of Hercules holding the two
+pillars, Europe and Africa.
+It is the statue that can be found at
+the entrance of the harbour in Ceuta, in
+Spanish Morocco.
+So we want to find the pixels at which the
+intensity transitions
+from high values to low values or from low
+values to high values.
+And such pixels will give rise to these
+edges here.
+If we have a sensitive enough algorithm it
+might also detect the.
+Change in intensities at these locations.
+This is a mountain range in the distance,
+if you pay close attention
+you should be able to see it or maybe pull
+out these intensity changes.
+The result with one of the algorithms we
+will discuss is the one shown here.
+So this result.
+This algorithm did a good job in pulling
+out the
+major edges, however it missed the not so
+strong ones.
+The ones in, in the distance, I already
+mentioned.
+So what are some of the ways to detect the
+edges?
+A group of algorithms are based on taking
+the first
+derivative of the intensity, the so called
+gradient of the image.
+We will see some specific kernels to allow
+us
+to take the gradient due to Sobel, Prewitt
+and Roberts.
+We will also look at algorithms that
+utilize the second derivative of the
+intensities or
+the so called Laplacian and more
+specifically, we'll
+discuss an algorithm due to Marr and
+Hildreth.
+And finally we'll also look at an
+algorithm due
+to Canny, that also detects the edges in
+an image.
+We talked actually about gradients and the
+Laplacian when we covered recovery.
+And when we covered also, enhancement.
+Let us see what information the 1st and
+2nd order derivatives provide us with.
+Let's consider and one dimensional
+continuous function
+f1 of x that looks like this.
+If this were to represent the intensity of
+an image then this is
+a good representation of a transition in
+intensities where an edge is located.
+So it transitions from a low value here to
+a large value up there.
+This is actually a more realistic
+representation of a.
+Transition in intensity in images of
+natural scenes versus these
+sharp transitions you might see very often
+as representing edges.
+So let's take the first derivative of f1
+of x.
+We know that the derivative is zero down
+here and it's also zero up there, so
+it increases the derivative and after a
+point
+it starts decreasing so that it reaches
+zero again.
+So indeed the first derivative looks like
+this, so the maximum of the
+first derivative is a good candidate to
+tell us where an edge is located.
+In this smooth transitions.
+It's probably hard to tell which specific
+pixel represents the edge, but
+the maximum again of the 1st derivative is
+a definitely good candidate for that.
+Let us look at, another image or one
+dimensional
+continuous function f2 of x that looks as
+shown here.
+So it starts at the large value and.
+Decades to a smaller value.
+So this could also be an edge going from a
+high intensity to a low intensity value.
+Taking the 1st derivative of this we know
+that
+the derivative is zero here and it's zero
+here
+as well, so it should decrease and after a
+point start increasing and until it
+reaches zero again.
+So indeed this is the 1st derivative of f2
+of x.
+In this case is the minimum of the 1st
+derivative that indicates the location of
+an edge, or if
+I take the absolute value is again the
+maximum value
+of the 1st derivative indicating the
+location of the edge.
+Let us now consider the 2nd derivative of
+f1 of x.
+Clearly, this is the 1st derivative of its
+1st derivative, f1 prime of x.
+If we look at f1 prime of x then this.
+Is really an f1 of x followed by an f2 of
+x.
+So, we think this is up to a point and
+then starts.
+Decreasing.
+And therefore, the derivative, the 1st
+derivative
+of a function like this should be this.
+So if I take the 1st derivative, it should
+be an
+f1 prime of x, followed by an f2 prime of
+x.
+So indeed, the secondary value of f1 of x
+looks like this.
+So in this case, it's the zero crossing
+that indicates the location of an edge.
+If you consider the 2nd derivative of f2
+of x, which is
+the 1st derivative of f2 prime of x, then
+we see that f2
+prime of x consists of an f2 of x,
+followed by an f1 of x.
+And therefore, if I take the derivative of
+this, it should be the
+derivative of f2 of x followed by the
+derivative of f1 of x.
+So indeed the 2nd derivative of f2 of x,
+looks like this.
+So again, in this case, it's the zero
+crossing that indicates the location of an
+edge.
+So in summary, taking the 1st derivative
+of the function, that
+maximum of its absolute value will
+indicate the location of an edge,
+while when you consider the 2nd derivative
+is the zero crossing, the
+location of the zero crossing that
+indicates the location of an edge.
+Let us now look at the gradient operator.
+We introduced the gradient during week 6
+when we talked about image recovery.
+Given an image, x, n1, n2, is gradient,
+you noticed
+by this upside down Delta, or [UNKNOWN] is
+a vector.
+X is a scalar, its gradient is a vector.
+The first component is a partial of x with
+respect to n1.
+While the second component is a partial
+with respect to n2.
+So here is our image coordinate system.
+And let's consider a pixel location n1,
+n2.
+So at this pixel, the partial with respect
+to n1.
+Is denoted here, so this is, the partial
+with respect to n1, which
+we also call g1, n1 n2 While, let's assume
+this is the partial.
+[SOUND]
+With respect to n2.
+So, this is the length, or the value of
+the partial in the n1 direction.
+So the gradient is the vector that has.
+These partials as its components, its
+projection,
+so this here, the gradient at location
+n1 n2 and clearly points to the direction
+of the greatest change in intensities.
+Very often we're interested in the
+magnitude of the gradient.
+So it's a magnitude of this vector and
+using the
+Pythagorean theo, theorem, is a square
+root of this component, squared.
+Plus, these components squared.
+We can also find the angle of this vector,
+alpha, which
+is simply the inverse tangent of the
+vertical component which you call g of 2.
+N1 n2 divided by the horizontal component,
+g1 of n1 n2.
+The next step towards edge detection, is
+the calculation of the gradient.
+One of the standard questions in
+numerical analysis is how to approximate
+derivatives.
+1st order, 2nd order derivatives, in one
+or higher dimensions.
+So the gradient consists of this partial.
+Derivatives of all the one and in
+approximating
+this variable use, we're going to use
+neighborhood differences.
+There are clearly multiple ways to do so
+and what we'll be doing, we will find
+filters.
+With impulse response, lets say, h1.
+So, this is the filter that will give rise
+to the estimation of the partial in the n1
+direction.
+So this is what we call g1.
+So, this is the partial of x with respect
+to n1.
+So it's a linear, especially in variant
+filter, with impulse response h1.
+Similarly, we will define filters with
+impulse response h2, which
+will give rise to the partial of the image
+in the vertical direction.
+As already mentioned.
+Towards the detection, we will be, be
+making using of the magnitude of the
+gradient, which is written again as the
+previous slide in terms of g1 now, and g2.
+So, clearly the next question is, what are
+some examples of this impulse response
+of these filters that will again
+approximate
+the horizontal and the vertical partial
+derivatives.
+We show now some examples of the impulse
+responses, h1
+and h2, as we called them in the previous
+slide.
+For finding respectively the horizontal
+and vertical
+first order differences, I call them here
+Kernels.
+At Lyon, people would associate their name
+with
+some of this ways to approximate first
+order derivatives.
+So, the ones due to Roberts are shown
+here.
+So this is the impulse responsible to find
+the horizontal difference, h1.
+Actually, what's shown here is minus n1
+and minus n2.
+So this is a flipped around he points the
+spots in both
+directions, it's a step we need to take
+when we go for convolution.
+So this particular mask is moved around on
+the image and directly multiplies the
+pixel values.
+So we see here that according to Roberts
+to find the horizontal partial derivative
+we find the difference along the forty
+five degree direction, so the pixel value
+at.
+Xn1+1, N2+1 will be used and from that we
+will
+subtract the value of the pixel at N1 and
+2.
+So similarly this is a way to find the
+vertical first order difference.
+These kernels according to Sobel look like
+this.
+So, in this case, six pixels are used
+in finding the horizontal and the vertical
+differences.
+And the masks, kernels, impulse responses
+according to Prewitt look like this.
+Again, they're all reasonable ways to find
+this first order derivatives.
+Actually, if we compare this and this,
+they look quite similar.
+The only difference is that the values
+here, at this
+particular locations, are different, while
+everything else is the same.
+They do have actually Sobel and Prewitt
+also filters, to detect diagonal.
+Changes, so for example, according to
+Sobel, this is also - [SOUND] - an impulse
+response to find, differences in the 45
+de-, degree direction.
+So 1, 1, 2.
+Minus 1, minus 1, minus 2.
+So when you see examples in what we'll be
+doing or in the literature that the Sobel
+or
+Roberts, agitator was used, you know,
+exactly now, that
+these are again ample responses that were
+used to approximate.
+Restore the derivatives and therefore, the
+gradient.
+We showed here the block diagram
+of a representative gradient-based, edge
+detection system.
+X1 and 2 is the input image for which you
+want to find the edges.
+The gradient for this image is what you
+want to find first so at this point we
+have available a two dimensional array and
+each entry of the array is a vector.
+So here's example of it.
+After this step the magnitude of the
+gradient is found so at this point we have
+thrown a way the directionality of the
+edges
+and we just kept its strength so that.
+Length of the vector, so we now have a 2D
+array where each entry is a scalar.
+So, for example, this is 1, 1, 1,
+2, 0, 1.5, .5 and 0.
+So these numbers are compared against the
+threshold.
+If the number at location m1m2 is smaller
+than
+the threshold, than no edge exists at that
+point.
+If, however, the value's greater than the
+threshold, then.
+That m1, m2 pixel belongs to an edge.
+Since we identify edge pixels based on
+this
+thresholding operation, very often we end
+up with thick.
+Edges, multiple pixels belonging to an
+edge
+and therefore typically an edge thinning
+algorithm.
+As the name implies, the [INAUDIBLE] of
+such edges
+is thinned, becomes smaller, maybe a
+couple of pixels.
+And after that.
+We have available the edge map of the
+original image X, N1, N2.
+We
+will demonstrate the effect of the
+application
+of the [UNKNOWN] operator with this image.
+This is an image that I showed back
+in week five when we talked about
+enhancement.
+It's a picture actually of the
+Technological Institute
+here at Northwestern that was taken back
+in 1942.
+The building looks very different today.
+My office is around here.
+Plus here where like Michigan used to be
+there and now about.
+Half a dozen buildings, due to a landfill
+that was made since 1942.
+We can [UNKNOWN]
+this
+image with H1, N1, N2.
+Due to Sobel.
+[SOUND] But we did see the exact form of
+this function a couple of slides ago.
+So with this filter, with a simple
+response, we approximate
+the partial derivatives of the image in
+the horizontal direction.
+Therefore, in the resulting image.
+We detect the vertical edges in the
+original image.
+We also detect the boundaries in the
+original photograph.
+We also convolve this image with h2 (N1
+and 2).
+Also due to Sobel and as you recall, this
+h2 approximates
+the calculation of the parcel derivatives
+in the vertical direction of the image.
+Therefore, the resulting image will
+exhibit the horizontal edges.
+So, this is what we see in this picture
+and we also see again the.
+Horizontal boundaries in the original
+photograph, what we observe is that edges
+that are neither perfectly vertical nor
+horizontal like, an edge like this.
+They appear in both images.
+This one as well as this one.
+The reason for this is that these slanted
+edges can
+be approximated by [UNKNOWN] linear either
+vertical or horizontal edges.
+So, you see similarly activity in these
+regions where the edges
+are not perfectly horizontal or perfectly
+vertical.
+Let us look now at the use of the
+Laplacian in detecting edges.
+Here is the definition of the Laplacian.
+Is the gradient of the gradient or this
+number square of the image X N1 and 2.
+It's equal to the second partial
+derivative in the N1 direction.
+Plus the second partial derivative in the
+N2 direction.
+The obvious next question is how to
+go about evaluating this second order
+derivatives?
+As we saw there are various ways to
+approximate the horizontal and the
+vertical first order derivatives.
+So if H1 is the impulse response of a
+filter that will
+calculate the horizontal first order
+derivative it's applied to the image so
+this is a first order derivative and then
+we apply general,
+another filter to find the first order
+derivative of the first order derivative.
+Then in finding the vertical second of the
+derivative we apply h2 to find the first
+derivative and h2 prime to find the first
+of the derivative of the first of the
+derivative.
+So clearly even the fact that we have
+multiple ways
+to represent h1 and h2, we saw for example
+the [UNKNOWN].
+As examples, and since, in addition, we
+can use different h1
+prime and h2 prime to find the second
+order derivative so the
+first order derivative of the first order
+derivative, there are very many
+combinations here and therefore, very many
+ways to calculate the, Laplacian.
+If I combine the two terms here, I have
+the image of the outside which is
+[UNKNOWN] with
+the composites filter here, which consists
+of the convolution
+of the h1s plus a convolution of the h2s.
+And they can call whatever I have here.
+The second site their parentheses and h,
+n1, n2.
+So at the end clearly we want to find this
+[UNKNOWN] filter that will approximate the
+calculation of the Laplacian.
+So when converted with the image, will
+give us the Laplacian.
+We'll show in a simple example what h1 and
+h1 prime and h2 and h2 prime we can use,
+so that we end up with the impulsive
+response of
+the filtered calculation of the Laplacian
+that looks like this.
+That's minus 4 in the middle and 1, 1, 1
+in the other two directions.
+Let us see now what choices we need to
+make for the impulse responses
+h1, h1 Prime, h2, and h2 prime so as to
+obtain the two dimensional
+impulse response of the [UNKNOWN] that I
+showed you in the previous slide.
+So in obtaining the horizontal
+derivatives,.
+We use this expression to obtain the 1st
+partial horizontal derivative.
+So this means that - [SOUND] - the impulse
+response
+h1 minus n1 minus n2 looks like this.
+Minus 1 here and 1 here.
+So this is what this expression is telling
+us.
+In finding the second derivative which is
+the first
+derivative of the first derivative, we use
+this expression.
+So, according to this.
+>> The impulse response of the field
+there which we called h1 prime minus
+n1 minus n2 looks like this.
+And if I now substitute here for g1, the
+g1 I have already
+derived above then we obtain this
+expression.
+So this tells us that the filter for
+finding the second derivative in the
+horizontal direction has inverse response.
+So this is h1, m1, m2 coevolved with h2,
+n1, n2.
+A response
+that looks like this.
+Minus 3 in the middle, one.
+One.
+Similarly in computing the vertical second
+derivative, we
+use this expression for the first order
+derivative.
+This means that.
+H2 minus n1 minus
+n2 has this form.
+Minus 1 here and one here.
+Then in computing the second of the
+derivative, which is again the
+first of the derivative of the first of
+the derivative, we use.
+Expression, which simply means that the
+impulse response of the 2nd filter
+which we call h2 prime, minus n1, minus
+n2, looks like this.
+It's 1 here and minus 1 here.
+Substituting g2 from the expression above
+in here, we
+obtain the expression for the secondary
+[UNKNOWN] shown here.
+So, therefore.
+The filter which computes the 2nd
+partial derivative, 2nd order partial
+derivative of the vertical direction that
+is the result of convolution of h2, n1 and
+2 with h2 prime and 1 and 2.
+Here's this form it's minus 2 in the
+middle.
+1 and 1.
+And if you recall, at the end, the
+Laplacian
+is the sum of this impulse response shown
+here.
+Plus the impulse response I showed in the
+previous slide and therefore the, the sum
+will give rise to the [UNKNOWN]
+theater with impulse response.
+This on minus 4 in the middle because it
+will be a minus 2 from this.
+[UNKNOWN] minus 2 from the horizontal
+second of
+the derivative and then 1 at this four
+locations.
+We show here the blog diagram of a system
+which can
+be used to find the edges in an image
+using the Laplacian.
+As you'll see precautions are taken so as
+not to generate false edges.
+So XN1 and 2 is the image of which you
+want to find the edges it's input to the
+system.
+According to this block here the Laplacian
+is found.
+The Laplacian can be found using any of
+the approximations we discussed in the
+previous slides.
+Then, we check if each and every pixel is
+a 0 crossing pixel.
+Which means that neighbouring pixels
+change values from
+negative to positive or from positive to
+negative.
+If this is not the case, then this is not
+an edge pixel.
+If it is the case, we don't declare this
+yet in edge pixel because,
+for example, it can be located in a flat
+region, so there's no edge there.
+But due to noise, when you take the
+Laplacian it gives rise to 0.
+So, to avoid the situation we also
+evaluate the local variance of the image
+and we compare it with the pixel location
+at which a 0 crossing was detected.
+The local variance is greater than a
+threshold.
+If this is not the case, this means that
+this pixel again
+is in a flat region and the 0 crossing was
+due to noise.
+And therefore this point is declared as a
+non edge point.
+And don't leave this local variance as
+greater than
+the threshold we declare the pixel as an
+edge point.
+The result of applying the Laplacian to
+the cameraman
+image and finding the 0 crossings is shown
+here.
+As is clear, we find a lot of additional 0
+crossings than the ones belonging
+to the edges of the image and this can be
+due to the existence of the noise.
+If we apply the system that was shown in
+the previous slide, according to which.
+At though 0 crossings we also utilise the
+local variance to
+determine whether that 0 crossing belongs
+to an edge or not.
+We obtain this result.
+It's a much cleaner obviously result and.
+What we see is white pixels here belong
+really
+to edges and not to noise in the image.
+[BLANK_AUDIO]
+Intensity changes occur at different
+scales.
+For example, there are blurry regions in
+an image which represent
+low frequencies, and also finely focused
+regions which represent high frequencies.
+It will therefore be desirable to band
+limit
+the image first, and then perform edge
+detection.
+So we are going to have edges
+corresponding to different scales.
+Maren Hildreth argued that edge maps of
+different
+scales contained important information
+about physically significant parameters.
+In battling within the image, a Gaussian
+filter can be used,
+where the variants of the Gaussian
+controls the Cato frequency.
+Did you note that variants here by sigma
+square?
+So, for this smooth image, edges are
+detected and towards the
+task any HD detection approach that we
+covered can be utilized.
+If the Laplacian is used, then we can
+either take the Laplacian of the image,
+then
+convolve it with Gaussian or convolve the
+image
+with the Laplacian of the Gaussian, as
+shown here.
+So this is where the approach derives it's
+name.
+It's the LOG approach because again, this
+is here the Laplacian of the Gaussian.
+The Laplacian of the Gaussian can be
+computed analytically.
+It's expression is shown here.
+We've been showing all this functions
+here.
+There's a continuous x, y variables.
+A plot of this LOG is shown here.
+What is more informative actually is to
+look at the LOG in the frequency domain.
+So the full transform of the LOG is,
+shown here, we can again find the
+analytical expression.
+If we plot it, here it's how it looks.
+In this example, sigma is equal to 1.
+We see clearly that the LOG performs band
+pass filtering and the width of the.
+Pass band is controlled by the variance of
+the Gaussian sigma.
+We show here an example of the application
+of the LOG
+approach to this particular image, it's
+the segment of the cameraman image.
+We blend this image with a Gaussian with
+standard deviation equal to 2.
+If you recall, taking the Laplacian of the
+image after it is convolved with a
+Gaussian, is equivalent to convolving the
+image with the Laplacian of the Gaussian.
+So, taking now the Laplacian of this
+image, we obtain this edge image shown
+here.
+So, these are the 0 crossings.
+If we blur the original image with a
+Gaussian with standard deviation
+equal to 4 and then obtain the Laplacian
+we find this result.
+And finally blurred with the Gaussian with
+standard deviation equal
+to 6 and finding the Laplacian here
+resulting in 0 crossings.
+So, we obtain an edge map at different
+scales.
+The density clearly of the edges is
+controlled by the parameter sigma.
+One can therefore choose the scale that
+provides
+the more suitable edges for the
+application at hand.
+Or one could potential combine the edges
+from the value scales.
+Another advantage of the use of the
+Gaussian is clearly, the
+suppression of noise, that might be
+present in the original image.
+Image.
+A popular and effective technique towards
+edge detection is due to
+Canny and carries his name, so it's a
+Canny edge detector.
+It also uses the gradient towards edge
+detection.
+But as you'll see, it uses both the
+magnitude and the angle of the gradient
+fill.
+It consists of four steps.
+The first step is to smooth the image with
+a Gaussian filter.
+And this is done towards noise
+suppression.
+So the variants of this Gaussian filter is
+input to the system.
+The second step is to compute the
+gradient, both the magnitude and the
+angle.
+This is a step, we covered in detail
+earlier and we know now that there are
+different
+ways to compute the gradient and we also
+know
+how to obtain both the magnitude and the
+angle.
+The third step, is to apply
+non-maximal suppression to the gradient
+magnitude image.
+This is a step I'll explain in detail
+next, but according to this step.
+We find the local maximum of the magnitude
+of the gradient along the direction of the
+edge.
+So therefore the angle information is
+used.
+And the final step is to create connected
+edges with the use of two thresholds.
+There'll be a high threshold and a low
+threshold.
+And these are also inputs to the
+algorithm.
+So we'll look at the details of the last
+two steps next.
+Seems there is nothing that we need really
+to add with respect to the first two
+steps.
+The idea of the non-maximal suppression
+step
+is to find the locally maximum value of
+the gradient by only considering the
+pixels in
+the neighborhood that belong to the same
+edge.
+This is determined by the value of the
+angle of the gradient, so
+we utilize with this approach all the
+information of the gradient field that
+is both components of the gradient vector,
+the magnitude and its angle, and
+not just the magnitude, as we did in the
+previous cases that we studied.
+Now, as we saw, the gradient vector
+is perpendicular to the direction of the
+edge.
+So, a vertical edge has a horizontal
+gradient vector.
+We do not want to be stringent in
+determining which pixels belong
+to the same edge, so we quantize the edge
+directions into four groups.
+Horizontal,
+minus 45 degrees, plus 45 degrees and
+vertical edge directions.
+By doing so in essence we divide there 360
+degree celkon into four regions.
+So, an edge is a vertical edge, as long as
+its direction is
+in the shaded ranges between 67.5 and
+112.5 degrees.
+This is a 45 degree here arc.
+And, in this region, so this is 67.5 plus
+180 and this point
+here is 112.5 plus 180.
+After we established
+this, we examine each and every point in
+the angle image.
+And for the particular angle value, we
+find one
+of the four directions that is closest to
+it.
+So, we classify this particular pixel as
+having
+horizontal minus 45, plus 45, or vertical
+edge direction.
+[BLANK_AUDIO]
+Then we look at the magnitude of the
+gradient of that pixel, and we consider
+the neighbours based on this
+classification that you already did.
+So if this magnitude is less than at least
+one of its neighbours, we ignore it.
+We suppress it.
+Otherwise, we keep it.
+We obtain a thin edge from the previous
+step, but not necessarily a connected
+edge, This is actually a common problem
+with this gradient based edge detection
+algorithms.
+So, the objective of this step is to link
+edge pixels.
+Two thresholds are input into the
+algorithm.
+A high one, T of H and a low one, T of L.
+Then based on this thresholds, pixels with
+values greater than TH are classified as
+strong
+edge pixels, while pixels with values
+smaller
+than TL are classified as weak edge
+pixels.
+So the procedure for linking the edge
+pixels is to locate a
+pixel p that is classified as a strong
+pixel and then
+we look for weak pixels that are connected
+to
+this strong pixel and if we find such
+pixels then they are appended.
+To the strong pixel p.
+Clearly, the values of T of Hand T of L
+are critical for the quality of the
+resulting edge image.
+We compare here experimentally three of
+the algorithms we started so far.
+We utilize this image that I showed
+earlier, the Pillars of Hercules.
+And we apply to it, the Sobel edge
+detector and obtain this result, the LOG
+algorithm and we obtain this result and
+Canny's edge detector with this result.
+As mentioned earlier, there is typically
+no ground truth
+in comparing the results of the various
+edge detection algorithms.
+And so, it's not possible to come up with
+an objective
+metric that will again compare the
+performance of the, these three
+algorithms.
+Now, the result shown here were obtained
+clearly with
+specific values of the various parameters
+that are needed.
+So, a threshold is needed for obtaining
+the Sobel result.
+The variance of the Gaussian is to defined
+with LOG and we
+saw that their three parameters needed to
+obtain the result by Canny's algorithm.
+So clearly changing this parameters that
+results with look differently.
+By looking at the results we can comment
+at various attributes I guess of which, of
+those.
+So we can comment that, that.
+Thickness of the line here obtained by
+Sobel, not a very
+desirable necessarily quality, or we can
+point to the
+disconnected edges here by the LOG or we
+can also point
+at the incomplete edges here by Canny's
+algorithm.
+One could argue, again looking
+subjectively at this images
+and qualitatively that Canny's edge
+detector is definitely doing a,
+a very good job in just pulling out these
+thin and straight edges along this
+direction, along this direction.
+Still, however, even this album has this
+problem I mentioned, of the incomplete
+edges.
+And that's why we need a Hough transform
+that we will be discussing in the next
+slides.
+The Hough transform addresses the
+incompleteness of
+straight edges, resulting from various
+algorithms, as was
+pointed out, for example, in the result
+by the Canny,s detector in the previous
+slide.
+The basic idea is explained here.
+Let us consider a set of points that
+belong to a line
+or a line has been fit through the, this
+set of points.
+So here is the equation of the line.
+A prime is the slope.
+And b prime is the y-intercept of this
+line.
+We can rewrite the equation of this line
+in terms of and b.
+So in this ab domain, mine was.
+1 over x is now the slope,
+and y over x is the a intercept.
+So, this is now a line in the ab space,
+the so-called parameter space.
+For each xiyi, if I fix the value of x and
+y here, I obtain a line in the ab space.
+So, for one value of x and y, I obtain
+this line.
+For an another one, this line, this line.
+This line and so on.
+What
+is the main characteristic of all these
+lines?
+It is that they go through the same point
+and this is
+the point, a prime, b prime, the
+parameters of my initial line.
+Therefore, by looking at this parameter
+space, the ab space, the parameters of
+the initial line that I started with, my a
+prime and b prime, can be pulled out.
+So this is the main idea that if I have a
+set of points that belong on a line then
+looking at the parameter space I can find
+a slope
+and the y intercept and therefore I can
+find an equation.
+For the line that goes through all these
+points.
+A difficulty with this representation is
+that
+a vertical line that has an infinite slope
+cannot be represented into this ab
+parameter
+space and therefore we need to find
+another.
+Representation for this case.
+In addressing the difficulty of
+representing a
+line with infinite slope in the ab
+parameter
+space that we showed in the previous slide
+the polar representation of a line is
+considered.
+So we see here again a line and Hough is
+the distance.
+Of the line from the origin, so this is
+perpendicular to the line and theta is the
+angle.
+So, all the points of this line satisfy
+this equation.
+We can now use a, a row feta parameter
+space to represent the various points on
+this line.
+So if we consider a particular point xi,
+yi then it satisfies this
+equation and by plotting this equation we
+get a sinusoidal type of curve.
+So the reasoning is exactly the same as
+before if I consider multiple points on
+this line.
+They will give rise to multiple sinusoidal
+curves
+like this and all these curves will go
+through the same rho theta point that
+describes
+my initial line that I want to
+characterize.
+We show here an experimental results of
+the
+application of the Hough Transform
+utilizing the rho theta.
+But on the space, which is a space
+of choice when the Hough transform is
+implemented.
+So we see here in the xy plane, points
+that belong
+to a line, but all the points are not
+connected.
+For each and every point, we find its
+representation in the Hough Theta domain.
+And we get this sinusoidal curve that we
+showed in the previous slide.
+So what we observe is that all these
+curves go through one specific point and
+this specific point has coordinates rho
+equals 0 and theta is minus 45 degrees.
+So, the dominant line that describe all
+these points passes through
+the origin and forms a minus 45 degrees
+angle with the x axis.
+We summarize here the procedural steps of
+the Hough Transform.
+We start by finding the edges in an image,
+using any
+of the available techniques, like the ones
+we have already discussed.
+We then map each and every point of an
+edge onto the rho theta plane.
+We take the raw theta plane and we break
+it into cells.
+And for its cell, we count how many
+intersects we observe.
+If this number is a substantial, then
+there is a
+line in the original image plane,
+otherwise there is no line.
+And with this procedure, we bridge the gap
+based on continuity.
+And we can declare that the gap is bridged
+if
+the length of the gap is smaller than the
+threshold.
+We show here result of the application of
+the Hough transform.
+We utilize again this image.
+Canny's edge detector is applied to this
+image.
+We obtained the edge map, the one I showed
+a few slides ago and then we
+take each and every edge point and we map
+it on to the raw theta plane.
+So, that's how it looks and we see here
+that there are
+three intersect points here, three at this
+location and three at this location.
+So, therefore there are nine lines, the
+dominant lines that have been identified.
+And these lines are superimposed on the
+original image.
+We can use these lines to complete some of
+the edges.
+That we found by this particular exotype.
+So that as we pointed out earlier, they
+were not, completed.
+

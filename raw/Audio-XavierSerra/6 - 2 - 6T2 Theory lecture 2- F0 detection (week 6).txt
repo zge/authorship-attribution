@@ -1,0 +1,500 @@
+Welcome again, to the course on audio signal
+processing for music applications.
+In the last lecture we introduced
+the harmonic model, and
+mentioned that in order for
+it to work we need to be able to detect
+the fundamental frequency of a sound.
+What we call the pitch of a sound.
+We will use the terms Fundamental
+frequency and pitch interchangeably.
+But strictly speaking,
+they are refered to different concepts.
+f0, is a signal processing concept,
+pitch is a perceptual concept.
+For our course f0 is 
+a more appropriate term to use.
+Many methods have been proposed
+to identify the fundamental
+frequency of a sound.
+These methods can be grouped to the ones
+that work directly on the time domain
+signal and the ones that work on the
+frequency domain representation,
+on the spectrum.
+The time domain approaches
+work well on monophonic signals and
+the frequency domain approaches can be
+made to work on monophonic signals but
+also on polyphonic signals.
+And that's going to be a very important
+advantage of this type of approaches.
+So to understand the concept
+of F0 detection,
+let's look at some sounds
+and to their spectrum.
+This is a fragment of an oboe sound,
+we can listen.
+[SOUND] The time signal clearly
+shows a periodicity, and
+we can identify a period,
+a cycle that keeps repeating.
+And this length,
+the period, its inverse, is what we
+actually call the fundamental frequency.
+In the frequency domain in the magnitude
+spectrum, we also see a periodicity.
+And basically the distance
+between two consecutive peaks,
+is the fundamental frequency.
+So we can also think of algorithms
+that could measure that.
+So we could measure it in the time domain,
+or in the frequency domain.
+And maybe not too hard.
+The phase might be useful
+in certain situations.
+But let's not talk much about that now.
+A single note of a piano
+has a clear pitch.
+thus, it should be able to detect
+its f0.
+Let's listen to
+a phrase, a piano phrase.
+[MUSIC]
+Clearly we listen to the pitch of this sound.
+But, if you look in the time
+domain, well, it's not that trivial.
+It doesn't seem to be easy to
+identify the period of this sound.
+In the spectrum, it's a little bit easier.
+We see some of these peaks that
+clearly have a periodicity.
+So we can envision some algorithms
+that could take advantage of that.
+And then if we deal with
+polyphonic signals, for
+example this is a fragment
+of these carnatic piece.
+Let's listen to that again.
+[MUSIC]
+There are several sound sources, but
+the voice is the most prominent one.
+And to detect the fundamental frequency
+of the voice in the time domain,
+is basically close to impossible.
+In the spectrum, well, it's not easy either.
+but, we'll see that there are some
+algorithms that attempt to identify this
+prominent voice,
+this harmonic component, in the
+in the frequency domain, and
+they do a pretty decent job.
+So to detect the fundamental
+frequency in the time domain,
+we basically have to identify the length
+of its repeating periodic cycle.
+And the auto correlation function,
+is a mathematical tool for
+finding repeating patterns.
+It is the cross-correlation
+of a signal with itself.
+And informally we could say 
+that is the similarity between samples
+as a function of a time lag between them.
+So in this equation
+we see a version of the auto correlation
+function that has some tapering.
+And what we do is we compute this
+function for every lag time,
+so we try different lag times,
+where it's an integer value,
+the sample values, and
+we start with l equals 0.
+And then we sum over all, for
+a particular period of time,
+a fragment of a sound, multiplied by
+the sound delayed by that lag time.
+Of course if we delay by 0,
+is the same signal and if
+delay for different lags is
+going to be, the multiplication
+will be different, so
+we will get a function of l, so
+therefore we will be measuring how
+correlated is a fragment of sound
+with the samples delayed
+by a certain a certain l.
+Okay.
+So let's look at a particular example.
+So this is the oboe sound again,
+and below is the auto correlation
+function, in which we clearly see
+of course, at 0, lag 0, is 1,
+is completely correlated.
+And then as the lag increases, and here
+we have expressed the lag time in seconds
+instead of samples, to make it
+easier to correspond to the top signal.
+And clearly we see that a lag
+corresponding to one period,
+which is this .002,
+there is a local maximum.
+And clearly is the biggest local maxima,
+so
+that would be a good indication
+that this the period, or
+that the inverse of that
+would be the fundamental frequency.
+And then the lag of two
+periods is also a local maxima,
+smaller, and
+there is a tapering, also this
+keeps decaying with the lag time.
+But let's let's say that
+the autocorrelation function for
+such a clear periodic sound
+is quite a good measure
+of the period, or
+therefore, of the fundamental frequency.
+For the case of the piano sound the time
+domain waveform is not so well behaved.
+So for this fragment of a piano sound,
+where we hear in fact
+the pitch quite clearly,
+if we plot the auto correlation function for
+these different lag times, well
+Is not that clear,
+there are several peaks.
+Well the highest peak is in
+fact the fundamental frequency,
+but, very difficult to have a threshold
+that would make it a clear decision on
+which is the best peak to
+identify the fundamental frequency.
+A method similar to the auto correlation
+is the one proposed by Cheveigne and
+Kawahara, named YIN.
+And it's based on the difference equation.
+So, it is equation similar
+to auto correlation.
+We just take the difference between
+samples with a given lag, and
+then take the square and then sum.
+And this function is 0 when 
+the lag is equal to the cycle length.
+So we have to find
+the minima of the function.
+And the YIN algorithm
+does some extra processing here to
+get a good measure of of this period.
+And it does a pretty good job,
+for monophonic signals.
+So in fact it has become a very
+common algorithm for speech or for
+measuring the fundamental frequency
+on monophonic musical instruments.
+Let's look at how it does for
+a particular sound.
+So in this, this is the spectrogram of
+this Vignesh sound that we have heard.
+And here we have plot the function,
+the black line is
+the fundamental frequency that
+the YIN algorithm has detected,
+of course it has detected it on the time
+domain, not on this spectrogram.
+So let's listen to 
+the fundamental frequency.
+[SOUND] So this is pretty good.
+is basically, it tracks 
+the fundamental frequency very well.
+But, this type of method does not work for
+many sounds.
+Especially it does not work for
+polyphonic signals.
+So we have to go to
+the frequency domain.
+So what is the fundamental
+frequency in a spectrum?
+We have seen how to identify the sinusoids
+and the partials of a sound.
+For example on the oboe sound
+these crosses are the peaks and
+many of them correspond to partials or
+harmonics of this sound.
+But which of these peaks, or
+maybe some other part of this spectrum,
+which is the fundamental frequency?
+How can we identify
+the partials that are harmonic.
+And then maybe from this information
+we can identify which of them or
+which other frequency is the fundamental
+frequency of these partials.
+So the F0,
+the fundamental frequency, in
+the spectrum of a sound, can be defined as
+the common divisor of the harmonic series
+that best explains the spectral peaks.
+Then this is a very nice and
+compact definition that in fact we can
+develop algorithms for developing it.
+So, here we see a plot of that oboe sound.
+And the peaks and
+the vertical green lines
+correspond to one harmonic series.
+In fact they correspond
+to the harmonic series,
+that best explains these spectral peaks.
+So if we would just by visual inspection,
+we see clearly that the green lines, which
+are all multiples of the first green line.
+Are really the closest possible
+to the harmonic series.
+Even though some of them
+they are definitely not right on top.
+And there are some peaks that
+are not taken into account.
+The F0 detection problem
+in the frequency domain,
+can be formulated as
+a pattern matching problem.
+In which we have to find the pattern
+of the harmonic series that
+best fits the spectrum.
+And the two way mismatch
+algorithm proposed by Maher and
+Beauchamp does exactly that.
+The concept of this algorithm is
+that it finds the difference between
+the measured peaks and
+the ideal harmonic series.
+The predicted peaks.
+And vice versa.
+So if we start looking at the plot, we see
+the measured peaks on the very far right.
+These are the peaks that we have obtained,
+the frequency of the peaks.
+And then we want to check a given
+predicted, a given harmonic series,
+a given F0 and its multiples.
+How close is to this measured peaks, or
+how well it explains those measured peaks.
+So, what we are going to do
+is measure the distance
+between these pair of values, okay.
+So, we will be measuring the distance
+between the predicted to the measured, and
+also from the measured to predicted,
+that's why the term two-way mismatch.
+Because in fact,
+this distance will not be the same.
+So this first equation is
+the predicted to measure.
+So we take every predicted peak,
+or every predicted value, and
+we look at the closest measured peak,
+and find the frequency distance.
+And then we scale it
+according to the amplitude.
+We also have a value that sort of
+promotes the lowest frequencies
+compared with the higher frequency.
+So we have some weighting
+coefficients here
+that allow us to tune this equation to
+the kinds of sounds we want to work with.
+We are not going to go into detail but
+feel free to look at the article or
+this equation and understand it better.
+And then we do the other way around.
+We measure the measure to predicted error.
+So, we start by looking at all the
+measured peaks and look at the closest
+ideal peaks, or the ideal harmonics, and
+again we look at the distance, and
+we apply some weighting factors.
+And then we have a total error which is
+the sum of these two errors, and again
+we have some weighting
+coefficients so that
+we can set it to work for
+our particular situation.
+Maher and Beauchamp propose some values for
+these coefficients and variables, and
+these are the ones that we'll be using.
+So let's put an example to explain
+this algorithm a bit better.
+So, for example, let's consider a series
+of peaks that we have measured.
+In particular, let's consider that we have
+measured a peak at 200 hertz, 300, 500,
+and 600, 700, and 800, and let's check for
+different fundamental frequencies.
+Let's check for a
+harmonic series on top of 50.
+another on top of 100,
+another on top of 200.
+And so in these metrics we see
+the different errors predicted to measure,
+and measure to predicted for
+these different candidate
+fundamental frequencies.
+And clearly the best result is for
+100 hertz.
+At 100 hertz is the harmonic series
+that best explains the peaks there.
+Even though
+the frequency 100 is in fact not there.
+And that's a very interesting
+consequence of this algorithm.
+The fundamental frequency doesn't
+have to be a peak, a measured peak,
+for the algorithm to give a value
+at that particular point.
+And let's put an example of these
+error functions for a particular sound.
+On this sound that we
+already had been looking at.
+The oboe sound.
+So here we have, on the bottom, we
+have the three error functions.
+The blue is the predicted measure,
+the green is the measure to predicted, and
+the black is the total one
+for possible fundamental frequencies,
+ranging from 0 to 1500 hertz.
+So basically we have swept all 
+all this frequency range.
+And have tried the algorithm for
+all possible frequencies
+at increments of one hertz.
+And clearly we see that there is
+one point that there is a minimum.
+There is a local minima, and
+of course is at 440 hertz,
+which is the fundamental
+frequency of this oboe sound.
+This is an easy case, and so here we
+see that there is not much doubt for
+the algorithm that the fundamental
+frequency is 440 hertz.
+But let's look
+at a sound that is more complicated,
+the piano sound that we mentioned before,
+and this is the result of the best
+fundamental frequency identified
+by the two-way mismatch of this phrase. 
+So the black line is
+the minima of that error function,
+at the different notes,
+as they vary in time.
+And let's listen to first
+to the piano sound.
+[MUSIC]
+And then let's listen to this
+fundamental frequency as a sinusoid.
+[MUSIC]
+there is some glitches, especially in
+some areas where we see some gaps, but
+it does a pretty decent job in
+following this fundamental frequency.
+In polyphonic signals this is not so easy.
+It's much harder.
+So polyphonic signal can
+have many sound sources,
+both harmonic and inharmonic components.
+And the idea in F0 detection in polyphonic
+signals is to identify the fundamental
+frequencies of all the harmonic
+instruments that are playing together.
+Thus to find all the harmonic series
+that are present at every frame.
+So, for example, in this plot
+we are showing the harmonic component that
+we heard, the signal that we talked
+about before, that we can listen to.
+[MUSIC]
+And we are plotting
+according to some algorithm.
+Possible harmonic series present.
+So there is a harmonic summation formula
+that allows us to
+measure the strength of different harmonic
+series, in a similar way to the two-way mismatch.
+And these are the best, so
+the loudest harmonic series, let's say.
+Or at least the candidate harmonic series,
+so
+these are possible fundamental
+frequencies of those harmonic series.
+Clearly I don't think
+this is completely right,
+but, it's a first estimation of that.
+Salamon and Gomez they
+presented an algorithm.
+That on this type of
+harmonic summation contours
+is able to identify which is the lead
+instrument, or the lead voice.
+And therefore
+the prominent harmonic instrument,
+in this case that is singing,
+the voice.
+And it does a pretty good job.
+Like in this sound example let’s, I will
+play the prominent pitch it has found for
+this sound.
+[SOUND] So that's pretty good.
+Again, there might be some glitches,
+especially I see one glitch.
+But, is able to identify the prominent
+pitch over this whole sound.
+So the best references for the algorithms
+that I mentioned in this class are
+the original articles in
+which they were proposed.
+So, I would encourage you to, for
+the YIN algorithm
+look at the article by Cheveigne and
+Kawahara.
+For the two-way mismatch read
+the article by Maher and
+Beauchamp and for the melodia algorithm
+by Salamon and Gomez look at this
+IEEE Transactions Article which
+describes it quite in detail.
+Again you can find other information's and
+there is a lot of algorithms that
+have been proposed to do fundamental
+frequency and pitch detection.
+So I encourage you to study a little
+more into these, and
+get a grasp of the techniques
+that are behind these ideas.
+And in this lecture, so,
+we have presented different approaches to
+the fundamental frequency detection, and
+this is a research problem that has not
+been completely solved yet,
+especially for complex signals.
+In order to not make
+things too complicated,
+we will focus on monophonic signals.
+But, the concepts that we'll explain
+from now on should also be applicable to
+any type of signal.
+By combining the harmonic model,
+that we presented in
+the previous lecture, with the F0 detection
+that we just presented, we can analyze and
+synthesize harmonic signals.
+But things are not finished yet.
+So, see you in the next lecture,
+where we will take this even further
+and try to see what happens when
+we have, ofcouse, sounds that
+the harmonic model does not work so well.
+So, see you in next lecture.
+

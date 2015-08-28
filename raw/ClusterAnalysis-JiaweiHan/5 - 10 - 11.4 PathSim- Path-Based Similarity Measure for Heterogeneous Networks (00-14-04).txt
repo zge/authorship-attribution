@@ -1,0 +1,320 @@
+[SOUND] In this session,
+I'm going to introduce you
+PathSim: Path-Based Similarity Measure for
+Heterogeneous Networks.
+Similarity search is very important in,
+cluster analysis.
+In the heterogeneous network, like DBLP,
+people may want you to do nice cluster,
+or answering some similarity queries.
+For example, who are the most
+similar to Christos Faloutsos,
+who is a professor in
+Carnegie Melon University.
+Then if we take these DBLP schema,
+we may say
+it depends on what do you mean who is
+more similar to Christos Faloutsos.
+We can take a part of schema to,
+to express such a similarity.
+For example, we can say what we mean,
+similarity means author, paper, author,
+means the shares on common papers,
+then these two authors are most similar,
+that means me essentially indicate
+a meta-path A-P-A, suthor, paper, author.
+What is Meta-path?
+Meta-path is a meta-level descrip,
+description of a path
+between two objects, the path,
+actually, is along the natural schema.
+It denotes an existing, or
+concatenated relationship
+between two object types then
+different meta-paths may
+generate different semantics.
+Okay, for example, if we follow meta-pass
+author, paper, author we may work out
+the results look like this Christos
+Faloutsos is most similar to himself.
+Then the next one is Spiro Papadimitriou,
+then Jimeng Sun, or
+Jure Leskovec, those people,
+actually are mostly
+Christos' fellow students or
+close collaborators.
+So that's the similarity
+based on author-paper-author.
+What about if you ask,
+you say this is not what I meant.
+What I mean actually is they may have,
+they may be in the similar fields,
+they publish similar number of papers.
+So, then what you want to do, actually you
+look at Author-Paper-Venue-Paper-Author.
+That means these two authors,
+if you want to say they are similar,
+because they work on papers,
+those papers publish in similar venues.
+If you want to do that, you will,
+probably can see, this is a set of authors
+who actually published a similar
+number of papers in similar venues,
+therefore, they share this APVPA.
+This similarity then is
+different meta-paths may
+lead to different semantics of similarity.
+So, we see the meta-path is very useful.
+Then, besides meta-paths
+we also want to see
+what should be good Measures
+to judge such similarity.
+Then we can review one popular use
+of that measure is random walk.
+The random walk basically
+says you start from node x.
+You randomly walk to node y.
+What's the probability
+you will go through this?
+Meta paths, then if we mathematical we say
+xy similarity actually is
+defined by the summation of
+the probability of p
+following those meta paths.
+That means there could be many concrete
+paths with following the same meta paths,
+we want to see what's
+the probability x for to go one.
+This way is used in random walk and
+also used in personalized page rank
+proposed by Jeh and the Widom in 2003.
+Such random walk actually favors
+highly visible objects,means
+the objects with larger degrees so
+you have higher chance to go down there
+then we look at a pairwise random walk.
+The pairwise random walk it
+defines if we start from x and y,
+ending at a common object z,
+following a meta-path p1 and p2
+so, in that sense we define similarities
+let's say the similarity of x and
+y actually defined by the summation
+of such probabilities.
+The probability means you go from x
+goes to z and from y goes to, to z.
+Actually, if you think about
+from x goes to y this y is
+this p2 actually is kind of reverse path.
+But anyway, you, if you think p1 p2
+These small P1 P2 is in the meta-path
+of P1 P2 they follow these
+probability of triverser they're probably
+to sum up together you get xy similarity.
+This similarity also been used in
+SimRank definition we introduced before.
+This kind of similarity
+favors pure objects.
+That means, the objects with highly
+skewed distribution in their in-links or
+out-links.
+If, if you check the SimRank definition,
+you'll get the same conclusion, okay.
+However, these original
+definition of person PageRank and
+SimRank do not distinguish object
+types and the relationship types.
+They originally define in
+the homogenous network or graphs.
+However, they can be Used in
+heterogeneous networks but
+we want to see whether these
+are very good measures.
+Then we look at another measure
+defined by us called PathSim measure.
+The PathSim measure actually favors peers.
+The peers means those object
+with strong connectivity And
+a similar visibility with
+a given meta-paths, okay.
+So, suppose we get a meta-paths is p,
+okay.
+Then the similarity of x and y is
+defined by you, look at how many paths,
+how many concrete paths following
+this meta-paths from x goes to y.
+Okay?
+Then, it was normalized or
+is divided by the average
+of these two meta-paths.
+What's these two met the number
+of these two meta-paths?
+They are average, okay?
+Then, how to define this meta-pass.
+This meta-pass is x goes back to x.
+This is y goes back to y, okay?
+Following this meta-pass, okay?
+So, if we define this way,
+whether it's a good measure.
+We look at a simple example, you.
+Suppose we follow these APCPA.
+Always a APBPA.
+This C means conference, V means venue.
+If you look at this one,
+then we probably can see
+Mike actually published two papers
+in SIGMOD, one paper in VLDB, but
+zero papers in ICDM,
+zero paper in, in KDD.
+In this table, you probably will say
+Bob is more similar to Mike because Bob
+also published two papers in SIGMOD and
+one paper in VLDB but
+zero paper in the other two venues.
+Now who's the second most similar
+Y probably we'll say Mary
+because you know they're
+difference is minor.
+Okay, but what about Jim?
+Your peers say no.
+Jim, he could publish 50 papers
+in SIGMOD and 20 papers in VLDB.
+How Jim and Mike could be very similar?
+However, if you use
+Personalized Page Rank, SimRank,
+Random Walk, and Pairwise Random Walk,
+you [INAUDIBLE] them.
+You previously the oral conclude MIke,
+the most similar to Mike is Jim.
+You probably would not quite agree because
+Jim likely to be a full professor,
+and Mike may be just a PhD student.
+Okay.
+So, if you look at passing using APCPA,
+you probably will find the most
+mineral which is exact similar,
+actually Then the second
+most similar could be Mary.
+You probably would agree.
+Okay.
+That simply says this passing similarity,
+using this formula really captures
+the semantics of peer similarity,
+this is in many cases, is these are,
+if you want to find nice clusters,
+you want to find these other peers.
+They are very similar.
+You want to group them
+into the same cluster.
+Then, we probably give
+you a concrete example.
+Just pick one researcher,
+Anhai Doan, who is a professor.
+In university of Wisconsin, in computer
+science department in the database area,
+he received his PHd from the university
+of Washington in year 2002.
+Okay.
+Then you say,
+who is most similar to Anhai Doan?
+If you use personalize page rank,
+your program will find Philip Yu,
+Jiawei Han, Hector Garcin-Molina,
+and Gerhard Okay.
+You probably not quite agree because
+Anhai was not as senior as these people.
+If you used SimRank,
+you'll probably find even those authors.
+They may not be in the same
+field as David's systems, but
+if you use PastSim,
+you find the most Jignesh.
+Then you can have more, Deshpande You
+get Jun Yan and Renee Miller.
+You probably would agree if you
+look at their, publications.
+At least you look at their general CV,
+you probably say, Oh Jignesh is really,
+really very similar because
+they are in the same field.
+They are even in the same department.
+Okay, snd they got a PhD in similar years.
+So, you'll probably see around
+five hundred thousand authors.
+This PathSim really captures
+something quite subtle and
+sensitive so it's not a bad measure.
+It's pretty nice one.
+Then, there's a price to
+compute path based similarity
+it can be costly just because the path
+could be long, and the over, overall cost,
+it could be high just because If you
+think about these the paths are formed by
+joints you follow a long pass you actually
+will join many relations if you do it down
+in the rear time unlock actually
+could be rather costly.
+How can we calculate
+the similarity in a efficient way?
+Of course,
+one interesting way is pre-computation.
+That means the overall cost can be
+reduced by storing commuting matrices for
+short path schemas, and
+computing top-k queries online.
+The general philosophy is nobody want
+to linearly rank 500,000 authors if you
+just say who is most similar
+to because you know people
+will not want to see 500,000 authors
+you know give a linear ranking.
+Well they want to see just top-k,
+maybe top five, top ten,
+top fifty, so
+what you really want to do is
+you can generate some coclusters
+Why you generate co-clusters?
+Just because if you want,
+only want find top-k,
+unlikely people working in, say,
+eh, algorithm and theories, or
+computer architecture, eh, eh,
+could be very similar to a height one.
+So they, the co-cluster
+essentially cluster is similar.
+Authors, you know there are similar
+things along the same paths together.
+So, it's much easier to find clusters and
+also similar authors.
+So, generate co-clusters
+then we can materialize
+commuting matrices for
+feature objects and target objects.
+Then if we want to do this,
+another interesting thing is using short
+path schema, because a very long one
+is still could be quite big, but
+a shorter one you could store small, you
+now, much smaller material as a relation.
+Since we have co-clusters computed,
+the size actually would be
+somewhat Smaller and a cluster.
+We can derive upper bound for
+similarity between object and
+targeted cluster, and
+between object and object, okay.
+Then we can safely prone
+targeted clusters objects
+if the upper bound similarities seem
+lower than the current threshold.
+In the meantime, we can dynamic
+update top-k threshold simply says
+we can have some upper bound it for those
+you know cannot reach such upper bond
+we can prune them safely just because
+we only want to find top-k results.
+This is a efficient framework for
+implementing pass-in in a large data set.
+[MUSIC]
+

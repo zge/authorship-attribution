@@ -1,0 +1,665 @@
+Now, we'll look at red black BSTs which is
+a simple data structure that allows us to
+implement 2-3 tree with very little extra
+code beyond the basic binary search tree
+code. So this is, and actually the version
+that we're going to, looking at is called
+left-leaning red-black BSTs. On a personal
+note, I wrote a research paper on this
+topic in 1979 with Leo Givas and we
+thought we pretty well understood these
+data structures at that time and people
+around the world use them in implementing
+various different systems. But just a few
+years ago for this course I found a much
+simpler implementation of red-black trees
+and this is just the a case study showing
+that there are simple algorithms still out
+there waiting to be discovered and this is
+one of them that we're going to talk
+about. So, the idea is that we are, are
+going to represent every two, three tree
+as a binary search tree. And in order to
+get that done, we just need a simple
+representation for three notes. So, what
+we are going to do is use internal
+left-leaning links to glue the three nodes
+together. So, the larger of the two nodes
+in the tree node will always be the root
+of a little binary search tree of size two
+for the three node and the link between
+the two nodes, the left link that links
+the larger key to the smaller one we'll
+color red. And that's to distinguish those
+links from the other links in the binary
+tree so that we can tell when we're
+inserting things which nodes belong to
+tree nodes and which ones don't. And you
+can see from this transformation that it's
+easy to perform this, see this
+correspondence the middle link between A
+and B, those are the keys that are less
+than B and larger than A. So, that takes
+two comparisons to get to them the ones
+that are less than A, less than, less than
+A, that's two comparisons for that and the
+ones that are greater than B are the right
+link of B. So, just following those three
+cases, I see t hat this correspondence is
+going to work. So, any 2-3 tree
+corresponds to a left leaning red-black
+BST in this way. Just take the three nodes
+and split them into little binary search
+tree of size two held together by a red
+link. And correspondingly given a
+red-black BST then you can get the 2-3
+tree if you wanted it. But just look at
+the properties of looking at the
+properties over a left leaning red-black
+BST. You know, with reference to what we
+know about 2-3 trees. First of all no node
+has two red links connected to it cuz the
+only red links are internal to three
+nodes. And those have to have ex, external
+links or tree links connecting them to
+some other node. Every path from the root
+down to a null link has the same number of
+black links that just follows directly
+from the corresponding property for 2-3
+trees. A left-leaning red-black BST has
+perfect black balance. And all the red
+links lean left. So, given a BST with some
+of the links colored red that has those
+properties that's going to correspond to a
+2-3 tree. And that's a key property is
+this one-to-one correspondence between 2-3
+trees and left-leaning red-black trees.
+Given a 2-3 tree, we saw how to do it.
+Given a, a, given a red-black tree, we
+just make the red links horizontal, and
+merge the nodes together to be three
+nodes. So, all of the operations that
+we're going to look at for red-black trees
+can be understood in terms of the
+corresponding operations on 2-3 trees. Now
+the first, and really one of the most
+critical observations, is that search in a
+red-black BST is exactly the same as for
+an elementary BST, we just ignore the
+color. Now, it's going to be much faster
+because of better balance in the tree, but
+in terms of the code, we don't have to
+change the code at all. Our regular search
+code doesn't examine the color of a link
+and so we can just use it exactly as is.
+And in fact, most of the other operations
+that we implemented on BSTs are also
+identical. They d on't need the colors,
+but they can all benefit from the fact
+that the trees are much better balanced.
+So this aspect of red-black BSTs is an
+extremely nice one because of the
+operations that we implemented for regular
+BSTs that involves some complicated code
+for floor and ceiling and rank and so
+forth, and we don't have to change that
+code at all. We just during the insertion,
+make sure that we, we [cough] maintain the
+properties the balance properties and by
+doing that, we wind up with balance trees
+and we make all the operations quick and
+we don't have to re-implement, we don't
+have to change it at all. So first before
+we get to the code for insertion, we have
+to look at the representation. We don't
+actually have explicit representation of
+links or links in trees or just references
+to nodes. You could implement this by
+building explicit links but the an easier
+thing to do is to know that every node is
+referenced by just one link in a tree the
+one from it's parent. So, you can put the
+color of a link in the node that it
+references. So, in this case we have a red
+link connecting E and C. What we do is put
+a bit, a color bit in each in the node
+class. And then, if the link coming into a
+node is red we set that to true. So this
+simple thing just tests is a node red. We
+consider all null nodes to be black null
+links to be black, we don't have red links
+dangling off, that would be incomplete
+pre-nodes. And [cough] otherwise if the
+color's red, we return true otherwise
+return false to test whether a node is
+red. So in this tree, the color of h.left
+is red, the color of h.right is black and
+so forth. So, that's the way we represent
+colors by putting the, a color bit in the
+node for the color of the length that
+points to it. [cough] Alright, so now,
+there's a couple of elementary operations
+that we have to perform on red-black
+trees, called rotations. And the idea is
+that during the construction of a tree, or
+during an insertion operation, sometimes
+we wind up with red links that are leaning
+in the wrong direction. And so we'll need
+what's called a left rotation, and the job
+of that operation is to take a, a right
+leaning red link that is there for
+whatever reason and reorient it to lean to
+the left. [cough] so, in this case, we
+have the right link of E points to S and S
+is red so that's a right-leaning red link
+and so now that's the before and what we
+want to do is reorient things so that it
+leans to the left. And again, that has to
+be a local operation that only changes a
+few links and just from the diagram it's
+not difficult to see that this little bit
+of code will do the job. If we start with
+a right-leaning red link. So, first thing
+we do is take the reference of h.right,
+and save that in x. So, that's the node
+that's going to be the new root of the
+three nodes so to speak. And, and then,
+x.left after the rotation is going to be
+h. And also whatever color h was, well, it
+looks like it should be black. But
+actually this situation is where it could
+be red. Then x is going to have that color
+cuz the link coming into h is going to be
+the link coming into x. And then h's color
+is going to be black afterwards. And then,
+we return x to link further up the tree
+which happens during our standard
+recursive insert. So, that's a rotate left
+operation. Now, the property of this
+operation that's very important is it
+maintains a symmetric order. The keys
+between E and S are still there. We just
+changed the way we get to them. And the
+keys less than E and so forth. And also we
+maintain perfect black balance because we
+didn't change the black height, height of
+anything by doing this transformation. All
+those subtrees, those three subtrees are
+exactly the same relative to the top and
+bottom of the tree, as they were before
+the rotation. Now paradoxically and you'll
+see why very soon it also turns out that
+to get the insertion done properly we
+sometimes need to take a left-leaning red
+link and temporarily make it lean right.
+And later on, we'll get it back to the
+left again. But anyway, that's a basic
+operation that we sometimes need. And so
+that's just the symmetric code to the code
+that we just did. Now again, now x is
+h.left. And h.left is going to be x.right
+after the rotation. X's color is still
+going to be h's color. And h's color is
+going to be red. And the right rotation
+implements this and again that's going to
+maintain a, a symmetric order in perfect
+black balance we change the way the red
+goes but we didn't change anything about
+the black. Okay, that's a right rotation.
+Now, here's the third elementary operation
+that we're going to perform. It's called a
+color flip. Sometimes during the
+insertion, we might wind up with a node
+that's got two red links coming out of it.
+That's corresponds precisely to our
+temporary four node when we're doing 2-3
+trees. And what we wanted to do with the
+temporary four node was to split it and
+pass the center node up to the root. Well,
+you can see from this structure that we're
+all set to do that all we need to do
+actually is not change any links, just
+change all the colors. And so, that is, we
+change the link from E to A and from E to
+S to be black. That essentially splits the
+four node. And then, we want to insert the
+E into its parent. And we just do that by
+changing its link to be red. So, that's
+flipping the colors. And that's the way we
+split a temporary four node in a
+left-linear red-black tree. And again,
+that's just flipping colors. It doesn't
+change any links so it still, of course,
+maintains symmetric order and perfect
+black balance. So, those are the three
+basic operations we're going to use.
+Rotate left, rotate right and flip colors.
+So, the basic s trategy is, with those
+operations, maintain one-to-one
+correspondence with 2-3 trees when we do
+insertions. So, here's an example. If we
+want to insert C into this red black tree
+which is a representation of this 2-3
+tree, then C is going to be less than E
+greater than A. So, it will get added to,
+as the right link of A and every time we
+add a node we just create a red link to
+its parents and so, that's changing the
+two node into a three node. In this case
+it's three nodes that's oriented the wrong
+way so we need to do a left rotate. After
+we do the left rotate, we have a legal
+left-leaning red-black tree, and it
+exactly corresponds to that 2-3 tree, so
+the insertion of C gives us exactly what
+we would want, that correspondence with
+the 2-3 tree. We have to work through
+other cases that can arise but there's not
+too many so we'll work through and we have
+the basic operations, left rotate, right
+rotate, and flip colors. Alright, so
+first, warm up, insert into a tree with
+exactly one node. Well, if it goes on the
+left, then we just make a red link and add
+it on then we're done. If it goes on the
+right, then we attach a new node with the
+red link on the right but we have to
+rotate it to the left to make a legal
+three node. So, that's inserting to a tree
+with the one node and make it a tree with
+two nodes. And that one generalizes to
+help us insert into a two node at the
+bottom. So, we do the standard BST insert
+color the new link red and then if that
+[cough] new three node happens to lean
+right, rotated to the left. That's the
+case that we just did. So now, let's look
+at the second warm-up. So, say, we have
+just two nodes in the tree, so it's we
+have two nodes and that means it's a
+single three node. Then there's three
+cases. So, one is that the new one is
+larger than both of the keys. If that's
+true, then we attach the new node with the
+red link as always. And that gives us a
+temporary four node. And what we want to
+do is split that four node and in this
+case, since we are at the root that's all
+so that just flips the colors. Now, the
+color of the root in our code will
+temporarily turn red and then we turn it
+black again. So, that's inserting into a
+tree that's a single three node a node
+that's larger than both of them, a key
+that is larger than both of them and we
+get wind up with a four node. Well, let's
+look at the other two cases and these
+understanding needs is crucial to
+understanding the whole algorithm. Let's
+say, the new key is smaller than both of
+the keys in our three node. Now, we attach
+a new link at the left of the smaller
+node. And now, we've gotta find BST. But
+it has two red links in a row. And that's
+something that's not allowed. So, what
+we're going to do is we're going to rotate
+the top link to the right. So that puts B
+at the root. And now, it's got two red
+children. It reduces to this case. And we
+flip the colors and we have a single four
+node. Sorry a, a red black. A tree that's
+got three two-nodes and no red links so
+same situation as before. So, we had a
+single temporary four note and we split it
+up into a two, two note not connected to a
+four note. And then, so that's the case
+when it's smaller. Now, we have to look at
+the third case, which is, when it's, the
+new node inserted this in between and
+comes out of this link here. Again, we
+just had a red link and now we have a BST
+with two red links along the path
+connected to A and that's not allowed. In
+this case it's a bit trickier to affix the
+situation, what we do is we rotate the
+bottom link left. So, and that gives us
+this and reduce it to the other situation
+that we had before. And then we rotate the
+top link right and then, we flip the
+colors. So, this one we used all three of
+our operations, rotate left rotate right
+and flip the colors. And that gets us an
+insertion into a tree that has from a tree
+that i s a single three node to a tree
+that is three two nodes that is containing
+three keys. So that sort of operation is
+going to work in a big tree when we insert
+into a new three node at the bottom. We do
+the standard BST insert, color the new
+link red, and we do the rotations that we
+need, either one or two rotations to
+balance the temporary four node, and then
+we flip colors to pass the red link up one
+level and then remind me to rotate to that
+to make that one lean left. So, for
+example if we insert h in to this tree
+here, it comes off as the left link of R
+so that gives us a temporary four node
+that's not balanced so we need to rotate
+the link from S to the right and that
+gives us now temporary four node that is
+balanced and again, these are all local
+transformation it's not changing the rest
+of the tree. Now, we flip colors and that
+gives us a, a good red-black tree, except
+that, that one red link that we just is
+leaning the wrong way. So, now we need to
+rotate left and then once we've done that,
+now we have a legal left-leaning red-black
+tree. So [cough] that's a insertion into a
+three node at the bottom. So, here's
+another one that involves, remember, we
+passed that red link up. There might, if
+that gets passed up to a three node, then
+we have to continue moving up the tree and
+just treat it in the same way as we just
+treated inserting at the bottom. We have a
+new red link appearing into some three
+node. There's the three cases that could
+happen and here's an, an a, an example.
+So, say, we're inserting P into this
+left-leaning red black tree it goes to the
+right event so we get a temporary four
+node that's got two red links both
+children are red in that thing so we want
+to flip the colors. We flipped the colors
+and now our temporary 4-node is up higher
+in the tree but it's not balanced so we
+are going to have to do two rotations to
+make that balanced. First one is to make
+the bottom link left-leaning and then the
+second one is to make the top link
+right-leaning so that we can have the
+temporary four node balance. And then the
+last thing we do is flip the colors and
+now that's the result of that insertion.
+It's a bunch of transformations but
+they're all simple using our flip colors
+or left or right rotation. And [cough]
+that one happened to be at the root. If
+that red link were, were way down in the
+tree and there were another three node
+about it, we might have to do it again.
+Again, exactly as what would happen in a
+2-3 tree. So, let's do a demo of
+constructing the red-black BST from our
+standard set of keys. So, we start with a
+single key. Now, if we want to insert E,
+if it goes to the left, that's fine.
+That's a legal left-leaning red-black
+tree. A would go to the left of E two
+lefts in a row so we have to rotate that
+to right. And then we have to flip the
+colors. And that's a legal red-black BST.
+So now, if we insert R into this one then
+it goes on a red link to the left of X, S
+and that's fine, it's a red-black BST. And
+now, if we insert C into this one, it goes
+less than E, greater than A it's a red
+link connecting A and C but it's leaning
+the wrong way. So, we have to do a left
+rotation, legal-red black BST. And you
+want to insert h that goes to the left of
+R, two reds in a row, rotate the top.
+Rotate the top, our temporary four node is
+balanced, flip colors. Now, we have a
+three node, but the red link is leaning
+right so we have to rotate. And now, we
+have a legal red-block BST. Insert x into
+that one that goes to the right of S, it's
+leaning the wrong way, rotate left. Insert
+M into this one, goes to the right of h,
+leaning the wrong way, rotate left. Most
+of the operations are simple ones like
+this happening at the bottom. Insert P,
+that goes to the right of M that makes M a
+temporary four node that happens to be
+balanced, so flip the colors. Flip the
+colors, now we h ave a temporary four node
+that's out of balance so we need a double
+rotation. First rotate E to make that link
+point lean to the left, then rotate R to
+make the, bring the temporary four node
+into balance. And then, flip the colors
+and that's a legal red-black BST. Insert L
+into that one. It goes to the right of H,
+leading the wrong way rotate left. [cough]
+And that's an example of building a
+red-black BST from our standard set of
+keys. Now, we're ready to look at the
+implementation for, of the code for
+inserting into a left-leaning red-black
+tree. And the key to understanding this
+code is to realize that the same code,
+code handles all of the cases. And the way
+that it works is we are always reducing
+one case to another. We get this most
+complicated case we did a left rotate on
+the bottom node and that, that transformed
+it to this case where they're both leaning
+left. And then we did a right rotate on
+the top node, and that transformed to the
+case where our temporary four node is
+balanced. And then we flipped colors on
+that. So, for a particular insertion, we
+can take advantage of this reduce one case
+to another by, in, in the way that we're
+moving in the tree, not to get everything
+happen with just a, a few extra lines of
+code in our standard binary search tree.
+So, in gray is our, standard insertion
+code for binary search trees. And remember
+we took some pains to think about the
+recursive implementation where when we go
+down a link we replace that link by
+whatever the recursive routine gives us
+back and that strategy is going to pay off
+in giving us a really simple code. [cough]
+and because in this implementation for
+left-leaning red-black trees we're going
+to return the link whenever we're done,
+and then that will get that link installed
+up in the node above whether it be left or
+right. Typical implementations of
+red-black trees that do not use this
+recursive strategy wind u p having lots of
+cases depending on whether left or right
+or double rotate to the left or double
+rotate to the right can be critical of
+this code because my own was this way for
+the first three editions of the book. And
+it's only in this edition that we figured
+out how to make the code this simple.
+Okay. So what are the things left to be
+done? Let's just check. When we insert a
+new node all we want to do is create a new
+node with the, I've given, associating the
+given value with a given key, as before
+but now we just make that node red. So,
+that's adding a new node with a red link
+at the bottom inserting that into whatever
+the two or three node it's attached to.
+And then we do the comparisons as, as
+before and that, and that's all fine. Now,
+when it's returned then that's the point
+at which we're going to check whether the
+left, the links are leaning to the left as
+they are suppose to and whether or not
+there are any double links or not. So the
+first thing is if, if is red h.right and
+not is red h.left? So, that means H is
+h.right is red so that means the right
+link of H is leaning the wrong way. So, H
+is a three node leaning the wrong way. So
+we just rotate left H. So, whenever we
+find a right link, we're sitting on a
+right red link we just rotate it left and
+return that. So, that would be in this
+case here, we'd rotate it left and reduce
+it to that one. [cough] or in, in you
+know, in the case when we're just
+inserting a new node and it's turns out to
+be the right red link attached to a black
+one, if that handles that case. Now, if
+h.left is red and h.left is also red
+that's this case here where we have two
+left-leaning red links. And then in that
+case, we just rotate the top one right and
+that brings us to this one. So, notice,
+we're in this case we do this rotation
+first, we're on this node and then , that
+returns and we come up to deal with the
+situation on this node after the return,
+and then we do that rotation. And then
+after that rotation, or if there were no
+rotations at all, if the insertion
+happened over here then we'd test and flip
+the colors. It's a little mind bending at
+first because of the recursive structure
+but it won't take you long to convince
+yourself that this little bit of extra
+code completes the implementation of
+left-leaning red-black trees. It's quite
+remarkable, actually. So, let's look at a
+visualization. Watching the [unknown],
+this is a balanced tree getting
+constructed in the worst case where
+everything that comes in is in ascending
+order. A regular binary search tree will
+just be all strung out in a single line
+and wouldn't have quadratic time for this
+input but a left-leaning red-black tree
+actually when, whenever it becomes a power
+of two is completely balanced as you can
+see from this example. Even though they
+came in, in ascending order, the tree
+winds up being perfectly balanced. And
+what about descending order. Well, it's
+left leaning and the process is a little
+bit different and sometimes the left path
+can get long but not that long. The worse
+that can happen is that it alternates red
+and black. And then after it gets to that
+worse case it also winds up being
+completely balanced when we have a power
+of two. Interesting to think just, just
+about this case and to prove to yourself
+that it's always going to be perfectly
+balanced when it's descending. And this is
+just for random insertions. The tree stays
+very balanced. It's guaranteed that the
+longest path which is alternating red and
+black can be no more than twice as long as
+the shortest path which is all blacks. And
+so in this case the longest path is ten
+and the average path is seven for 255.
+Very close to log based two of N. So easy
+to prove by correspondence with 2-3 trees
+that t he height is guaranteed to be less
+than two log base two N. Every search in
+left-leaning red black three is guaranteed
+to take less than two log base two of N
+cuz every path gets the same number of
+black links so you never have two red
+links in a row. [cough] And actually, in
+typical applications with any kind of
+randomness or even if there is a lot of
+order its difficult to find situations
+orders of keys that build the trace of
+height is bigger than actually one log N
+in, in a real application, its very close
+to fully balanced all the time. So, that
+completes our summary for a symbol table
+implementations with red-black BSTs. We
+have full code it's the regular BST code
+with the couple of lines adding the calls
+and the basic operations. She rotate
+right, rotate left. In color flip, we
+could guarantee logarithmic performance
+not just research, insert, in delete code.
+Delete code is a bit more complicated but
+it's on the book side and in the book. But
+also, since it's the compare-to interface,
+and since it's a binary tree
+representation all the other comparable
+operations extended operations for ordered
+symbol tables are going to be implemented
+and take time proportional to the log N. A
+lot of people ask why use the name
+red-black. Well we invented this data
+structure this way of looking at balance
+trees at, at Xerox PARC which was the home
+of the personal computer and many other
+innovations that we live with today
+entering graphic user interface and
+internet and object oriented programmings
+and many other things. But one of the
+things that was invented there, was the
+laser printing and we were very excited to
+have nearby color laser printer that could
+print things out in color and out of the
+colors, the red looked the best. So,
+that's why we picked the color red to
+distinguish red links the types of links
+in three nodes. So, that's an answer to
+the question for people t hat have been
+asking. Now, here's another war story
+about red-black BSTs. As I mentioned
+they're widely used. And there was an
+example not that long ago, where a
+telephone company contracted with a
+database provider to build a database that
+could store customer information and the
+provider implemented the database using
+red-black BSTs for search and insert. Now,
+our, our original paper on red black trees
+was the way the paper was laid out, it
+turned out that the delete implementation
+happened to be placed after all the
+references. So, a lot of people didn't see
+the delete implementation. And also we
+didn't have the simple left-leaning
+representation. So it was more complicated
+and involved a lot more cases and so
+usually not all the cases were put in the
+text books. So, people found deletion more
+difficult. In fact, that's what lead to
+[unknown] analyze the situation then come
+up with a left-leaning variant. So, what
+they did in this implementation was they
+just put in regular Hibbard deletion in
+the binary search in the red-black BST.
+Not the deletion algorithm that's
+guaranteed to keep the constant black
+height all the time. And so but, but they
+still thought that it should be balanced
+and it shouldn't matter much. And they had
+a complex error recovery process that,
+that got triggered if the height limit got
+too big. And they rebuild the whole tree
+and, and then because of the way they did
+this deletion, well, the end of the story
+was that they had extended the client had
+extended outage because the implementer
+didn't use the full algorithm. And there
+was a lawsuit and some legal testimony and
+I am happy to report that, that it was
+clear that Hibbard deletion was the
+problem once the expert analyzed it and
+the expert witness, who's a colleague of
+mine, said if implemented properly, the
+height of a red-black BST with N keys is
+at most two log N. And so that's the st
+ory of red-black BST's guaranteed
+logarithmic performance for all symbol
+table operations.

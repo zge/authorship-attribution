@@ -1,0 +1,275 @@
+We've previously defined the cost function
+J. In this video I want to tell you about
+an algorithm called gradient descent for
+minimizing the cost function J. It turns
+out gradient descent is a more general
+algorithm and is used not only in linear
+regression. It's actually used all over
+the place in machine learning. And later
+in the class we'll use gradient descent to
+minimize other functions as well, not just
+the cost function J, for linear regression.
+So in this video, I'm going to
+talk about gradient descent for minimizing
+some arbitrary function J. And then in
+later videos, we'll take those algorithm
+and apply it specifically to the cost
+function J that we had to find for linear
+regression. So here's the problem
+setup. We're going to see that we have
+some function J of (theta0, theta1).
+Maybe it's a cost function from linear
+regression. Maybe it's some other function
+we want to minimize. And we want
+to come up with an algorithm for
+minimizing that as a function of J of
+(theta0, theta1). Just as an aside,
+it turns out that gradient descent
+actually applies to more general
+functions. So imagine if you have
+a function that's a function of
+J of (theta0, theta1, theta2, up to
+some theta n). And you want to
+minimize over (theta0 up to theta n)
+of this J of (theta0 up to theta n).
+It turns out gradient descent
+is an algorithm for solving
+this more general problem, but for the
+sake of brevity, for the sake of
+your succinctness of notation, I'm just
+going to present only two parameters
+throughout the rest of this video. Here's
+the idea for gradient descent. What we're
+going to do is we're going to start off
+with some initial guesses for theta0 and
+theta1. Doesn't really matter what they
+are, but a common choice would be if we
+set theta0 to 0, and
+set theta1 to 0. Just initialize
+them to 0. What we're going to do in
+gradient descent is we'll keep changing
+theta0 and theta1 a little bit to
+try to reduce J of (theta0, theta1)
+until hopefully we wind up at a minimum or
+maybe a local minimum. So, let's see
+see pictures of what gradient descent
+does. Let's say I try to minimize this
+function. So notice the axes. This is,
+(theta0, theta1) on the horizontal
+axes, and J is a vertical axis. And so the
+height of the surface shows J, and we
+want to minimize this function. So, we're
+going to start off with (theta0, theta1)
+at some point. So imagine picking some
+value for (theta0, theta1), and that
+corresponds to starting at some point on
+the surface of this function. Okay? So
+whatever value of (theta0, theta1)
+gives you some point here. I did
+initialize them to 0, but
+sometimes you initialize it to other
+values as well. Now. I want us to imagine
+that this figure shows a hill. Imagine
+this is like a landscape of some grassy
+park with two hills like so.
+And I want you to imagine that you are
+physically standing at that point on the
+hill on this little red hill in your park.
+In gradient descent, what we're
+going to do is spin 360 degrees around and
+just look all around us and ask, "If I were
+to take a little baby step in some
+direction, and I want to go downhill as
+quickly as possible, what direction do I
+take that little baby step in if I want to
+go down, if I sort of want to physically
+walk down this hill as rapidly as
+possible?" Turns out that if we're standing
+at that point on the hill, you look all
+around, you find that the best direction
+to take a little step downhill
+is roughly that direction. Okay. And now
+you're at this new point on your hill.
+You're going to, again, look all around, and then
+say, "What direction should I step in order
+to take a little baby step downhill?" And
+if you do that and take another step, you
+take a step in that direction, and then
+you keep going. You know, from this new
+point, you look around, decide what
+direction will take you downhill most
+quickly, take another step, another step,
+and so on, until you converge to this,
+local minimum down here. Further descent
+has an interesting property. This first
+time we ran gradient descent, we were
+starting at this point over here, right?
+Started at that point over here. Now
+imagine, we initialize gradient
+descent just a couple steps to the right.
+Imagine we initialized gradient descent with
+that point on the upper right. If you were
+to repeat this process, and stop at the
+point, and look all around. Take a little
+step in the direction of steepest descent.
+You would do that. Then look around, take
+another step, and so on. And if you start
+it just a couple steps to the right, the
+gradient descent will have taken you to
+this second local optimum over on the
+right. So if you had started at this first
+point, you would have wound up at this
+local optimum. But if you started just a
+little bit, a slightly different location,
+you would have wound up at a very
+different local optimum. And this is a
+property of gradient descent that we'll
+say a little bit more about later. So,
+that's the intuition in pictures. Let's
+look at the map. This is the definition of
+the gradient descent algorithm. We're
+going to just repeatedly do this. On to
+convergence. We're going to update my
+parameter theta j by, you know, taking
+theta j and subtracting from it alpha
+times this term over here. So, let's
+see. There are a lot of details in this
+equation, so let me unpack some of it.
+First, this notation here, colon equals.
+We're going to use := to denote
+assignment, so it's the assignment
+operator. So concretely, if I
+write A: =B, what this means in
+a computer, this means take the
+value in B and use it to overwrite
+whatever the value of A. So this means we
+will set A to be equal to the value of B.
+Okay, it's assignment. I can
+also do A:=A+1. This means
+take A and increase its value by one.
+Whereas in contrast, if I use the equals
+sign and I write A=B, then this is a
+truth assertion. So if I write A=B,
+then I'm asserting that the value of A
+equals to the value of B. So the left hand
+side, that's a computer operation, where
+you set the value of A to be a value. The
+right hand side, this is asserting, I'm
+just making a claim that the values of A
+and B are the same. And so, whereas I can
+write A: =A+1, that means increment A by
+1. Hopefully, I won't ever write A=A+1.
+Because that's just wrong.
+A and A+1 can never be equal to
+the same values. So that's the first
+part of the definition. This alpha
+here is a number that is called the
+learning rate. And what alpha does is, it
+basically controls how big a step we take
+downhill with gradient descent. So if
+alpha is very large, then that corresponds
+to a very aggressive gradient descent
+procedure, where we're trying to take huge
+steps downhill. And if alpha is very
+small, then we're taking little, little
+baby steps downhill. And, I'll come
+back and say more about this later.
+About how to set alpha and so on.
+And finally, this term here. That's the
+derivative term, I don't want to talk
+about it right now, but I will derive this
+derivative term and tell you exactly what
+this is based on. And some of you
+will be more familiar with calculus than
+others, but even if you aren't familiar
+with calculus don't worry about it, I'll
+tell you what you need to know about this
+term here. Now there's one more subtlety
+about gradient descent which is, in
+gradient descent, we're going to
+update theta0 and theta1. So
+this update takes place where j=0, and
+j=1. So you're going to update j, theta0,
+and update theta1. And the subtlety of
+how you implement gradient descent is,
+for this expression, for this
+update equation, you want to
+simultaneously update theta0 and
+theta1. What I mean by that is
+that in this equation,
+we're going to update
+theta0:=theta0 - something, and update
+theta1:=theta1 - something.
+And the way to implement this is,
+you should compute the right hand
+side. Compute that thing for both theta0
+and theta1, and then simultaneously at
+the same time update theta0 and
+theta1. So let me say what I mean
+by that. This is a correct implementation
+of gradient descent meaning simultaneous
+updates. I'm going to set temp0 equals
+that, set temp1 equals that. So basically
+compute the right hand sides. And then having
+computed the right hand sides and stored
+them together in temp0 and temp1,
+I'm going to update theta0 and theta1
+simultaneously, because that's the
+correct implementation. In contrast,
+here's an incorrect implementation that
+does not do a simultaneous update. So in
+this incorrect implementation, we compute
+temp0, and then we update theta0
+and then we compute temp1. Then we
+update temp1. And the difference between
+the right hand side and the left hand side
+implementations is that if we look down
+here, you look at this step, if by this
+time you've already updated theta0
+then you would be using the new
+value of theta0 to compute this
+derivative term and so this gives you a
+different value of temp1 than the left
+hand side, because you've now
+plugged in the new value of theta0
+into this equation. And so this on right
+hand side is not a correct implementation
+of gradient descent. So I don't
+want to say why you need to do the
+simultaneous updates, it turns
+out that the way gradient descent
+is usually implemented, we'll say more
+about it later, it actually turns out to
+be more natural to implement the
+simultaneous update. And when people talk
+about gradient descent, they always mean
+simultaneous update. If you implement the
+non-simultaneous update, it turns out
+it will probably work anyway, but this
+algorithm on the right is not what people
+people refer to as gradient descent and
+this is some other algorithm with
+different properties. And for various
+reasons, this can behave in
+slightly stranger ways. And
+what you should do is to really
+implement the simultaneous update of
+gradient descent. So, that's the outline of the
+gradient descent algorithm. In the next video,
+we're going to go into the details of the
+derivative term, which I wrote out but
+didn't really define. And if you've taken
+a calculus class before and if you're
+familiar with partial derivatives and
+derivatives, it turns out that's exactly
+what that derivative term is. But in case
+you aren't familiar with calculus, don't
+worry about it. The next video will give
+you all the intuitions and will tell you
+everything you need to know to compute
+that derivative term, even if you haven't
+seen calculus, or even if you haven't seen
+partial derivatives before. And with
+that, with the next video, hopefully,
+we'll be able to give all the intuitions
+you need to apply gradient descent.

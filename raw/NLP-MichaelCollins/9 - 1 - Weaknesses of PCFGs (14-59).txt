@@ -1,0 +1,349 @@
+Okay, so in the last segment of the course
+we saw probabilistic context-free
+grammars, PCFGs.
+We gave basic def, basic definitions of
+PCFGs, we saw how to estimate a PCFG from
+a treebank, and we saw how to apply a PCFG
+to a new test sentence using the dynamic
+programming algorithm, the CKY algorithm
+to recover the most likely parse tree for
+a given sentence.
+So, let me just give some historical
+background.
+The first treebanks were created in the
+early 1990s.
+So, the early 1990s was the first time we
+had data of this form from which we could
+learn, for example, the PCFG.
+And when these resources become available,
+it was very natural for people to consider
+PCFGs.
+Pcfgs have actually been around for a long
+time, they've been known since at least
+the 1960s.
+And so, people immediately, immediately
+apply PCFGs basically in the way I showed
+you in the last lecture, but the
+performance was really quite poor.
+Roughly 72% accuracy, at least on the Wall
+Street Journal treebank I was talking
+about, where this accuracy is the accuracy
+in recovering basic subparts of parse
+trees, basic, basic constituents within
+parse trees.
+So, if you look at parse trees with this
+kind of accuracy, they are really, really
+quite poor.
+Pcfgs were quite a disappointment.
+Modern parsers perform considerably
+better.
+Round again, for the Wall Street Journal
+dataset, I was talking about low 90s in
+terms of accuracy, on English at least.
+So, what I'm going to do in this next
+segment of the course is describe some
+properties of PCFGs which really explain
+this low number.
+Two critical weaknesses.
+One is lack of sensitivity to lexical
+information.
+And two is lack of sensitivity to
+structural frequencies.
+But we'll then go on to formalize them as
+such as lexicalized, PCFGs, which build
+very directly on ideas from PCFGs and yet
+have much more essentially have
+state-of-the-art performance.
+So, we'll see that while raw vanilla PCFGs
+perform very poorly, it's possible with
+some refinements to PCFGs to build a
+modern parser with state-of-the-art
+performance.
+Okay, so let's start talking about these
+weaknesses, taking each of these two
+things in turn.
+So, let's first talk about this problem of
+lack of sensitivity to lexical information
+and we'll first look at the independence
+assumptions made in a PCFG and see how
+they lead to real issues in this, in this
+respect.
+So, here's a very, very simple tree.
+And as we saw, the probability of this
+tree is going to be a product of terms,
+one q parameter for each rule that we see
+within the tree.
+And what is striking about PCFGs is that
+they make very, very strong independence
+assumptions.
+In particular, if we look at the choice of
+any particular word in the tree, then once
+we condition on the non-terminal above
+that word, i.e., the part of speech, the
+assumption in the PCFG is that the choice
+of this word is conditionally independent
+on everything else in the tree once I
+condition on the part of speech.
+So, we're basically making the assumption
+that the part of speech carries all the
+information you could probably, possibly
+need about the identity of this word under
+that part of speech.
+So, that is an extremely strong
+independence assumption to make the
+assumption that this word is independent
+of everything else in the tree once I
+condition on this non-terminal.
+And in particular, this word is
+independent of the other words in the
+sentence.
+And this is an extremely strong
+assumption, and it's a very bad
+assumption, for natural languages.
+So, let's look at a couple of examples
+where this independence assumption, leads
+to real problems.
+And we're going to first start with a case
+of prepositional phrase attachment
+ambiguity.
+And so, the sentence here is, workers
+dumped sacks into a bin.
+And there's a prepositional phrase here,
+into have been and there are two possible
+attachments, hence two possible parse
+trees.
+In this first parse tree, which is
+actually correct, the prepositional phrase
+attaches to the verb phase, dumped sacks.
+In the second parse tree here, the
+prepositional phrase attaches to this noun
+phrase, sacks.
+Okay.
+So now, if we look at this example more
+closely, we can list the context-free
+rules which is seen in the two trees that
+I just showed you on the previous side.
+So, this is the list the list of rules
+seen in the first parse tree and this is
+the list of rules seen in the second parse
+tree.
+And the first thing to note is that many
+of these rules are actually identical.
+In fact, the only way in which these two
+parse trees differ, is in the choice of a
+rule here, VP goes to PP prepositional
+phase, this was actually the VP attachment
+of the prepositional phrase.
+And, here we have NP goes to NP
+prepositional phase.
+So, if you think about the way we
+calculate the probability of each of these
+trees, we simply multiply together the
+probabilities of the individual rules.
+And so, the decision as to which of these
+two trees is more probable is going to
+come down to just these single parameters
+corresponding to these two rules which are
+different.
+So essentially, if the q parameter for NP
+goes to NP prepositional phrase is greater
+than q of VP goes to VP prepositional
+phrase, then this tree will win,
+otherwise, this tree will win.
+So, the entire decision between these two
+trees comes down to these two parameters,
+and the attachment, attachment decision is
+basically made completely independent of
+the words in this particular strain.
+So, if we look at prepositional phrase
+attachment, this is a spectacularly bad
+thing to do.
+And let me give you a, a bit of context
+here.
+So, let's look at the 4 main words in this
+attachment decision.
+So dumped sacks into bin, so this is a
+verb, this is the first noun, so we called
+this N1, this is the preposition and this
+is N2.
+So, statistically speaking, if you make a
+decision without any knowledge of the
+words you always go for a noun phrase
+attachment or you always go for a verb
+phrase attachment.
+You might get around 55% accuracy in this
+attachment probability problem.
+So, you might get around 55% of the
+attachments correct.
+That reflects the fact that, in fact,
+there are pretty much the same frequency
+of noun phrase attachments versus verb
+phrase attachments.
+May, maybe a very, very slight bias
+towards one or the other.
+If however, you look at the four words
+involved in the attachment decision, you
+can get up to around 84% accuracy, which
+is still not perfect which is, but it's
+considerably better.
+It's not perfect because prepositional
+phrase attachment ambiguity is still a
+very, very difficult problem.
+But we can, nevertheless, do much, much
+better than the accuracy here.
+This goes back to work in the early days
+of statistical parsing, where people
+considered just this isolated problem.
+Given four words, can I predict whether we
+attach to the noun or the verb and they
+used various machine learning methods for
+this, and they used supervised data.
+So, examples like this, with a label.
+So, a label, in this case, would be the
+verb label because this is a verb
+attachment.
+You would come collect a few thousands
+examples like this and then see if you
+could use machine learning to make the
+prediction.
+If you, in other words completely, do
+really rather badly if you build a
+classifier that actually looks at the
+words, you can do much, much better.
+Anyway, bottom line PCFGs make this
+decision without any reference to
+lexicalized information, it's completely
+independent of the words, and we know that
+this is a, a very sub-optimal decision in
+this case.
+Here's the second example, this is a case
+of coordination ambiguity.
+So here, I have a phrase, dogs in houses
+and cats, and there's an ambiguity as to
+what this noun phrase cats is coordinated
+with.
+So, in this first example, it's
+coordinated with dogs and houses.
+And in the second example, it is
+coordinated with just houses.
+So, another classical example of
+ambiguity, these kind of coordination
+ambiguities come up everywhere.
+Again, we can play this game, where we
+simply list the rules in the two analyses
+that I've just shown you.
+And in this case, we see the following.
+So, here is the set of rules in the first
+analysis.
+Here is the set of rules in the second
+analysis.
+And the rules are actually identical, we
+have exactly the same set of rules in the
+two parse trees that I just showed you.
+And so, because of this, they have to have
+identical probability under any PCFG.
+So, there is simply a tie, in this case,
+between the two different parse trees.
+So, even though the parse trees apply the
+rules in different orders, that's how we
+get different analysis, the set of rules
+in two parse trees is the same and so the
+probabilities in the two parse trees has
+to be the same.
+And the PCFG completely fails to display a
+preference from one parse tree or the
+other, and in particular, it completely
+ignores the lexical information.
+So, that's a couple of examples where
+ignoring lexical information leads to real
+problems.
+There are many, many others.
+But let me go on to the second cause of
+problems with PCFGs, and this is a failure
+to model structural preferences.
+This is a phenomenon called close
+attachment that I'm going to show you on
+this slide.
+So let's assume we have some sequence of
+words noun, preposition, noun,
+preposition, noun.
+For example, we might have president of a
+company in Africa.
+And again, we have a prepositional phrase
+attachment ambiguity here because this
+prepositional phrase, in Africa, could
+attach to the most recent noun, company,
+or it could attach to this more distant
+noun, president.
+So, we either have a company in Africa or,
+or we have a president of Africa, that's
+the ambiguity.
+And here, we have these two structures,
+this is the close attachment, so I should
+have said, this attachment where the
+prepositional phrase attaches to the
+closest possible attachment point, is
+called close attachment.
+And in this second example, we have
+attachment to the [unknown].
+You can verify the both of these parse
+trees have exactly the same set of
+context-free rules and therefore again,
+receive identical probability under a
+PCFG.
+And so the PCFG fails to distinguish
+between these two things.
+But if you look at the statistics, this
+first structure, close attachment, is
+significantly more frequent than the
+second structure.
+It actually occurs about twice as often as
+the second kind of structure.
+So, even before you look at the words,
+there's a fairly significant structural
+bias for these kind of close attachments
+as opposed to these further attachments.
+This close attachment preference becomes
+even more pronounced if we look at
+examples involving attachments to verbs.
+And this is actually an example sentence
+which I'd shown you earlier in the class.
+So, the ambiguity here is that the
+preposition phrase by Bill can either
+attach to shot, this is the close
+attachment or it can attach to believed.
+So, in the shot interpretation Bill was
+doing the shooting.
+In the believed interpretation Bill
+believes that John has been shot.
+Okay, so there's two possible analyses.
+Humans, I think, would have a very strong
+preference for the shooting analysis.
+They might a, might not even see the
+believing analysis in this case.
+If you look at a PCFG, you will see that
+these two analyses again have identical
+sets of rules.
+And so the PCFG again is going to assign
+the same probability to both of these
+analyses.
+However, if you look at this kind of case
+where a prepositional phrase has two
+different verbs which it can attach to,
+the close attachment is, at least in the
+Wall Street Journal data, we, we have,
+about 20 times more, more likely.
+So, there is a very, very significant
+statistical preference for the close
+attachment here, which the PCFG completely
+fails to capture.
+Okay, so I've outlined some weaknesses of
+PCFGs.
+Lack of sensitivities, lexical information
+failure to model these kinds of structural
+preferences.
+In the next segment of this course, we're
+going to look at refinements to PCFGs,
+which fix many of these problems and lead
+to much, much more accurate parsing
+models.

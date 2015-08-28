@@ -1,0 +1,173 @@
+So, here's a quick recap of how 
+Log-Linear Models were applied to the 
+tagging problem. 
+So, remember we use this notation w1 
+colon n, to refer to an input sentence w1 
+through wn. 
+And similarly t1 colon n is a tag 
+sequence. 
+The cri-, first critical idea was to 
+define the conditional probability of any 
+tag sequence t1 to n conditioned on a 
+word sequence w1 through wn by first 
+using the chain rule, and secondly, using 
+independence assumptions. 
+And as a result, we end up as this 
+conditional probability, having a product 
+of terms we have product here from j 
+equals 1 to n. 
+At each point, we have the j'th tag, in a 
+sequence t sub j. 
+And that's conditioned on the entire 
+input sentence and the previous two tags 
+in the sequence. 
+So, again, we have a mock off style 
+assumption where the j tag depends just 
+on the previous two tags. 
+But in addition, we condition on the 
+entire sentence at every point. 
+We're left with the problem of estimating 
+these p terms and that's a complex 
+problem because we're conditioning on a 
+large amount of information. 
+There are a large number of possible 
+features you might want to incorporate in 
+a model which predicts this conditional 
+distribution. 
+So, we use log-linear models for this 
+task, which as we argued, are quite 
+flexible in terms of the types of 
+features that can be included. 
+Finally, we use the Viterbi algorithm, 
+once again, to compute the highest 
+probability tag sequence for any input 
+sentence. 
+So, given an test sentence, an input 
+sentence, w1 through to wn, we can search 
+for the tag sequence that has the highest 
+value for this conditional probability. 
+And that can be achieved using the 
+Veterbi algorithm. 
+So now, we're going to consider how to 
+generalize this approach to a much wider 
+class of problems. 
+We'll focus on the pausing problem. 
+But as you'll see, we'll see some general 
+principles emerge in how we can apply 
+log-linear models to more complex 
+problems. 
+And, the class of models we'll describe 
+are often called history-based models. 
+They're actually conditional history 
+-based models because we'll be modeling 
+conditional distributions, such as p of t 
+and w. 
+So, the critical question is the 
+following. 
+here I'm using the notation capital S 
+equal to the input sentence. 
+I'll use this throughout these slides. 
+How do we define the conditional 
+probability of big T given big S if T is 
+not a tag sequence, but rather its some 
+other structure for example a parse 
+structure? 
+so how can we generalize the ideas that I 
+showed you for log-linear taggers to the 
+case where this structure T might be a 
+parse tree, or some other objects, maybe 
+even a translation, for example, of the 
+sentence. 
+[SOUND]. 
+So, here's a very high level outline of 
+the approach we'll use. 
+And throughout the rest of this segment 
+of the class, we'll instantiate the 
+various choices shown in this outline. 
+So, there are essentially three steps, 
+rather four steps, in these conditional 
+history-based models. 
+The first one is going to be to take our 
+structure, for example, a parse tree and 
+represent it as a sequence of decisions, 
+d1 through dm. 
+So, we'll see very soon that this 
+sequence of decisions, basically 
+corresponds to us building the tree in 
+some kind of bottom up left to right 
+order, over the input. 
+Notice that this value m, the number of 
+decisions, is not necessarily the same as 
+the length of the sentence. 
+In the tagging models we saw, the 
+sequence of decisions were essentially 
+the n tagging decision, corresponding to 
+the n word in the sentence. 
+But as we go to more complex structures, 
+we're going to see that the number of 
+decisions can actually be different from 
+the length of the sentence. 
+The second step is to use the chain rule 
+to decompose the probability as follows. 
+It's the conditional probability to tree 
+t, given a sentence s. 
+It's going to be a product terms, where 
+at each point I have the conditional 
+probability of the ith decision in my 
+sequence. 
+And i condition on the i minus one 
+previous decisions. 
+And in addition, the sentence which is 
+input to the model. 
+Now, notice here we haven't actually made 
+any markup assumptions, and the tagging 
+case, we we're to replace this with the 
+di minus 2di minus 1, reflecting the fact 
+that we make a kind of mark off 
+assumption that we just condition on the 
+previous two decisions. 
+In fact, in the history-based parsing 
+models that we see, we're not going to 
+make this assumption. 
+Okay? 
+So, we could potentially condition on any 
+information in the context, any 
+information in the sentence being paused 
+and any information in the previous 
+sequence of decisions. 
+The third step is going to be to use a 
+log-linear model to estimate this cost of 
+conditional probability of the decision 
+given the previous i minus 1 decisions 
+and the input sentence. 
+And we'll make use of the flexibility of 
+log-linear models in terms of the 
+features that they can include. 
+And they'll be, this will be another 
+setting where we really see the power of 
+log-linear models in terms of the 
+representations they can use. 
+The final question is search. 
+So, in general we're going to take some 
+sentence S as input. 
+And we're going to try to find the parse 
+tree T that maximizes this conditional 
+probability T given S. 
+Where this, of course, is defined through 
+this expression here. 
+Now, crucially, we're not going to make a 
+markup assumption in this case. 
+And that means, in the general case, that 
+dynamic programming algorithms won't be 
+available. 
+We won't be able to make use of the 
+tricks that we saw in dynamic programming 
+to give us the exact but efficient 
+algorithm search in these models. 
+But we'll see that we can use something 
+very similar to the kind of beam search 
+algorithms we saw for phrased-based 
+decoding. 
+We can use a very similar kind of 
+algorithm in this particular context. 
+

@@ -1,0 +1,444 @@
+We have seen that there are predictive
+approaches to
+directly capitalize on the correlations in
+the spacial domain,
+and we will also talk about
+transformations which decorrelate
+the data first and the encode the
+important coefficients.
+In this segment we cover fractal encoding
+which is yet
+another way to capture the self
+similarities in an image.
+It's actually a mathematically intriguing
+concept.
+We captured the self similarities through
+contractive or non expansive operators.
+Then, all we have to send to the
+decoder are these transformations
+capturing this self similarity.
+Decoding consists of an iterative
+reconstruction algorithm, which
+is not the most desirable form of
+decoding.
+We will also compare fractioning coding to
+vector quantization, we'll would see that
+with fractioning
+coding eventual code book is used which is
+not needed to be sent to the decoder.
+So lets proceed again with this exciting
+topic.
+We will discuss in this segment the basic
+ideas
+behind Fractal Image Compression they
+represent indeed intriguing ideas
+considerably
+different from predictive encoding that we
+already covered and
+transfer based encoding and subbanned that
+we will cover next.
+[BLANK_AUDIO].
+They're related to the fractal computer
+graphic algorithms.
+However, whenever we talk about computer
+graphics we have this abstract
+image in our head that we try to create
+through graphics algorithms.
+While when we talk about compression we
+have
+the actual data the actual images based on
+the.
+Each we want to pull out the
+transformations
+as we will see that describe this fractal
+compression.
+The basic idea is that there are
+self-similarities
+inside the image that if exploited
+appropriately, and the
+similarities will be expressed throught
+transformations as we
+will see these transformations will
+represent the encoded image.
+Fractal image compression relates to
+vector quantization, but
+unlike VQ where, a codebook needs to be
+transmitted to
+the decoder with fractal encoding this
+codebook is a virtual one.
+This is the advantage you might say of
+fractal over VQ, however, the disadvantage
+is that.
+With fractal decoding, an iterative
+algorithm this would be
+implemented, while for VQ, its just a look
+up table.
+And iterative algorithms by and large are
+computationally expensive.
+So let us look now at the specific details
+of fractal encoding.
+We see here the encoder and decoder of a
+fractal codec encoder decoder structure.
+X is the image we want to encode, the
+objective during the encoding is to
+uncover this transformation team.
+[UNKNOWN] he has x as its fixed point and
+x is
+the whole image or is typically a patch of
+the image.
+So, if this patch is processed by T, is
+going to give us back the same patch.
+So if this transformation is contractive,
+it means that he has
+a unique fixed point and this fixed point
+is the image.
+So, the transformation, actual
+transformation supplied to
+each patch of the image and cover this.
+Self similarity, and it is these
+transformations that represent the
+coding of the image and then send over to
+the decoder.
+The decoder, after receiving this
+transformation, performs this iterative
+reconstruction.
+It starts from an arbitrary initial
+condition,
+and then generates the first estimate of
+the
+image as T applied to X zero, the second
+estimate, the second iteration that these.
+T applied to x1, which is T applied to T
+x0, so it's T squared, x0.
+So again, this being a contractive
+operator, in the limit of the
+infinitely many iterations, a large number
+of iterations.
+It's converge to the original image that
+we had encoded.
+So it's really an intriguing idea but
+the image can be represented by this
+transformations.
+But again capture the self similarity of
+the image
+and this transformation being contractive
+allow then for the.
+Iterative reconstruction of the image at
+the decoder.
+So, it's a different concept again, then
+predictive or transfer based compression.
+At some point it was thought that this
+would be the approach that would replace
+all other.
+Compression approaches it's been very
+successful because it has
+not led however to any specific image
+corporation standards.
+So, as already mentioned fractal importing
+or fractal mapping is based
+on the assumption that the redundancy in
+the image can be.
+Be efficiently exploited through these
+self-transformations.
+These tran, self-transformations are
+performed, by
+the way, on a block-wide basis.
+And then this gives rise to this iterative
+construction of image.
+So given an image.
+We will look at each and every block in
+this image, block D of I the
+domain block, and then out of a set of
+possible transformations
+we'll find the most appropriate T of I
+transformation for this particular block.
+D of I that will make D of I as close
+as possible, as similar as possible to
+another block R of I.
+So I see that this transformation, which
+going to be a concatenation of
+transformations
+will also shift the D of i to another
+location where R of i is.
+And this also going to sub-sample,
+decimate D of i to obtain R of i.
+So the general idea is given.
+The block D of i, we're allowed to apply
+four different types of
+transformations, and finding the most
+appropriate one from these four classes.
+We're going to result in an R of I as
+close as possible to D of I.
+And the concatenation of this four classes
+of operators will give rise to T of I.
+The overall transformation applied to D of
+I.
+Now these transformations, X of I is a
+contractive operator.
+And to see examples of such consa,
+contractive operators.
+I of i is isometry operator.
+D of i is the decimation operator I just
+mention.
+And P of i is the put operator that would
+perform the
+shifting of D of i to the location of R of
+i.
+So, we see examples of contractive
+operators.
+We have a set of them to select from.
+Isometry, these are known expansive
+operators.
+We'll see examples of those.
+And again the idea is out of the set of X
+of I's and I of I's.
+Pick the most appropriate ones.
+And then fi, find P of I, assuming we have
+fixed D of I here, that
+will allow us to find an R of I which is
+as similar as possible to D of I.
+So this is the whole idea and therefore
+the image is
+just encoded through these T of I
+operators on the block basis.
+[BLANK_AUDIO].
+Let us look at some examples of
+contractive operators.
+Before we do so actually let's define a
+contractive operator.
+So T is contractive if Tx 1 minus Tx 2 the
+distance of the norm.
+Is less equal than alpha that distance
+between X1 and X2.
+Where alpha is strictly less than 1.So
+what this tells us is that if we have two
+points, X1 and X2, two images, two
+patches, and these are transformed.
+By the same operator T.
+So this is Tx1 and this is Tx2.
+The distance now of the transformed images
+has contracted.
+So Tx1 minus Tx2.
+So this distance here is smaller than the
+distance of the original points.
+So with this definition it's straight
+forward to confirm
+that the examples I've described here
+indeed represent Contractive Operators.
+So, the first example is the absorption of
+a certain gray level.
+So given a pixel x i j is set equal to c.
+A specific gray level.
+It's absorbed by this gray level.
+Similarly, the luminance shift is the
+pixel intensity x i j is shifted by c.
+Contrast scaling, so x i j is multiplied
+by c.
+And
+color reversal.
+We encountered this when we talked about
+enhancement.
+It's
+input, output relation, shape of such
+transformation
+is described by a [UNKNOWN] like this.
+So if you recall, it's the negative of, of
+an image where black becomes white and
+white becomes black.
+So we have a set of such transformations
+to select from.
+And these are combined with the other, the
+isometries, and the
+shifting and the s, downsampling, and
+selecting the appropriate
+ones we try to map a domain block D of i
+into a [UNKNOWN] R or i so that the.
+Difference is as small as possible.
+Now instead of trying all possible
+available transformations for each and
+every block, we can classify the blocks
+into, for example, three
+classes here, shade blocks, midrange, and
+edge blocks, and then for each class.
+Only make available the most appropriate
+operators out of possible operators.
+Let us look at examples of isometries now.
+First of all a, a mapping T is an isometry
+when the distance between Tx1 and Tx2.
+Is less equal than the distance between x
+1 minus x 2.
+So the distance could decrease after the
+mapping.
+However, it could remain the same.
+We're not guaranteed to contract it by a
+certain
+factor alpha as in the case of contractive
+mappings.
+I should mention here that both the
+contractive.
+And isometry properties depend on the
+specific norm we are using.
+So, what are some example of isometries.
+The first one is the identity.
+T's identity, it's doing absolutely
+nothing on the specific patches.
+Reflection about the mid vertical axis.
+So given a patch like this, here is the
+med, mid vertical
+axis and therefore this pixel switches
+places with
+this one, this pixel switches places with
+this one.
+Reflection about the mid horizontal axis.
+It's easy to see.
+Reflection about the 1st diagonal.
+So if this is the patch, or the block,
+here is the first
+diagonal, and therefore this pixel
+switches places with this one.
+This switches places with this one.
+This remains the same.
+This remains the same.
+Reflection about the 2nd diagonal in a
+similar manner.
+Rotation around center of block through 90
+degrees.
+So here's the block again and.
+Here's the center.
+So here's 90 degrees.
+So, we rotate the whole block by 90
+degrees.
+Rotation around center through 180 and
+through minus 90.
+Since, the rotations here are.
+Integer multiples of 90, we do not need to
+perform an interpolation
+where I just keep the same pixels as
+before they simply change location.
+So here the available, an example of
+available isometries and again the idea
+is.
+To combine isometries with contractive
+mappings out of
+the list we have available and find the
+appropriate
+ones so d of i will be mapped and r of i
+with the smallest possible error.
+[BLANK_AUDIO].
+Let's now look at similarities and
+differences between VQ
+and Fractal encoding that we have already
+alluded to.
+With VQ a specific codebook is
+utilize while refractally this codebook is
+virtual.
+In designing the codebook in VQ, we need
+to use a set of training images.
+While under the fractal coding it just
+the original image you're encoding that is
+utilized.
+and as I already mentioned, with VQ the
+codebook needs to be transmitted.
+The decoder needs to have the identical
+codebook in order to be
+able to decode the image, while under
+fractal encoding this is not necessary.
+So based on this consideration, fractal
+encoding
+has an advantage you might say over VQ.
+However, when it comes to decoding,
+decoding under VQ is quite
+straightforward.
+You just use a lookup table.
+However, under fractal decoding, an
+iterative
+algorithm needs to be utilized and.
+Such algorithms are computationally
+demanding and by and large a,
+a convergence criteria needs to be
+satisfied before it is terminated.
+As far as the code book itself goes, under
+VQ, we sent
+the least of addresses or indices as we
+explained that tells us.
+Which particular code vector was utilized
+for a particular block.
+While on the fractal coding, we send this
+list
+of transformation that would apply to each
+domain block.
+I should mention here that the
+concatenation of a contractive,
+nonexpansive mapping results in a
+contractive mapping, which is what.
+We are after there to guarantee that
+there's a
+unique fixed point when we do a iterative
+reconstruction.
+We show here an example of fractal
+encoding using this demo again.
+Actually the program gives you choice of
+the
+mean and max sizes of the range blocks.
+And then also, a choice of the threshold
+based
+on which the range block is split into
+additional blocks.
+Then, a fixed number of beads is used for
+the shift.
+Three beads are used for the isometries.
+And as far as the contractive mappings go,
+the number of bits can be selected, but
+only, a scale, and offset, I utilize as,
+contractive mappings.
+And finally, the number of iterations can
+be set.
+So, we have quite a few choices here and
+you are encouraged
+again to use the software package and see
+these results on your own.
+So, the result after the first iteration
+is shown here.
+We also see the PSMR, 17.8 dB.
+What you observe here is that the flat
+regions are reconstructed first.
+And the edge information is that will
+appear at later iterations,
+After two iterations, here is how the
+decoded image looks like.
+So you start seeing some of the edge
+information also come alive.
+And the [UNKNOWN] increases.
+After three iterations, this is the
+decoded image, and after four iterations,
+we see a rather high [INAUDIBLE] signal to
+noise ratio, almost 30 dB.
+And the image looks very similar to the
+original one.
+We do not show here the original one, but
+you've seen it multiple times already.
+It is indeed quite intriguing to think
+about the fact
+that we have started with a random image,
+[INAUDIBLE] maybe a
+constant black image or a constant white
+image it does not
+really matter what is the initial estimate
+of the decoded image.
+It's simply that all the information about
+the original image
+is encoded into this transformations and
+again since this transformations.
+The concatenation of them forms a
+contractive mapping with a unique fixed
+point.
+And the fixed point is the original image.
+Then, we are guaranteed to a [UNKNOWN]
+construction.
+Of course the point of the construction is
+a function of the parameters I already
+mentioned.
+And of course of the number of beats that
+we are allowed to allocate to the values
+transformations.
+

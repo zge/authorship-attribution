@@ -1,0 +1,332 @@
+Welcome back to the course on audio
+signal processing for music applications.
+This week we are talking
+about the harmonic model.
+And in these demonstration classes,
+we are trying to understand this model by
+actually using it, by analyzing
+some sounds and synthesizing them.
+In this lecture I want to go
+a little bit beyond what we did and
+analyze a fragment of a sound
+and see if we can take it to the limit and
+see what is its potential and
+its limitations.
+So in particular, we will be analyzing the
+little few notes of a cello that I played.
+The cello is of course
+a great instrument,
+it's a very traditional instrument that
+you can do a lot of things with it.
+So a good way
+to get a grasp of the types of
+sounds that the cello does is to look in freesound,
+and just search for violoncello,
+okay, and
+that will give you a few samples of
+different types of cello sounds, so
+in fact, for example the first one
+as a kind of an extended technique.
+So let's listen to that.
+[SOUND] Okay that's what is called
+a seagull effect, and it is kind
+of an interesting sound. Of course you can also
+get some more tradition notes playing
+what is called tenuto
+[SOUND]
+Or also with the cello you can
+play pizzicato notes and this is a pizzicato note.
+[SOUND].
+But of course you can find many
+types of sounds and little fragments.
+The sound I will be using is a small,
+short cello phrase
+from a very traditional catalan song,
+the song of the birds.
+And in fact it's the one that I used in
+the teaser of the course.
+In fact let's listen to that one.
+[SOUND] Okay so let's
+analyze this sound.
+And let's open the sms-tools GUI and
+we'll first start from
+the short-time Fourier transform.
+This is a time varying sound so
+we need the short time Fourier
+transform to get a grasp of it.
+Let’s open the sound, 
+cello-phrase right here.
+Okay and
+okay we have to choose the parameters.
+Instead of a hamming window
+let's choose the blackman
+window, the blackman window
+the main lobe is wider than the
+the hamming, but the side lobes are lower.
+And that may be good for this sound.
+So let's choose a blackman window.
+And then okay, window size, we don't
+have much to decide from.
+But let's just, for
+example, let's use 1001 samples.
+Just leave that fft size at 1024.
+And the fft size, the hop size has to be
+at least one fourth of the window size.
+So let's use 250.
+Okay, and now we compute that.
+This is a longer fragment so
+it's going to take a little bit longer.
+and, we will be able to, okay,
+visualize the magnitude spectrum and
+the phase spectrum.
+Now what we are interested is in
+deciding what parameters are needed
+in order to be able to distinguish
+the harmonics of these phrases.
+So in fact, an important thing is
+to identify what is the lowest
+fundamental that is being played.
+The lowest fundamental will be the one
+that will determine the minimum
+distance between two harmonics.
+So let's zoom into the very
+bottom of this spectrogram.
+Okay.
+Okay, so this is the first and
+a little bit of the second harmonic,
+so it's a very clear harmonic sound.
+And we can see that it starts a little
+bit low and it goes up and then it goes down.
+So, clearly the lowest frequencies
+are going to be the first and the last.
+But here we see that the resolution is not
+so good, in fact we see these boxes, kind
+of this quantization, in the horizontal
+axis. In the vertical axis is
+pretty good, you have 250 samples,
+so there is quite a lot of frames.
+But there is not that many in terms of
+frequency samples in order
+to be able to visualize.
+And then further on
+analyze the peak of this harmonic.
+So let's increase, maybe the window
+size can not be increased,
+because then you would
+lose the time solution.
+But let's increase the fft size so
+we get a smoother spectral more samples.
+For example let's say
+4096, so quite a bit more,
+of the fft size.
+So this will give us quite
+a bit of zero padding, and
+therefore will give us many more
+samples in the frequency range,
+even though the actual data
+points will be the same.
+So well again this takes
+a little bit to compute.
+Okay so this is the spectrum.
+Clearly there is a more fine
+resolution than before.
+Let let's do the same thing.
+Let's zoom into the very
+bottom of the spectrum.
+Okay and yeah.
+Now we definitely have many
+more frequency samples.
+And though of course it looks similar, but
+we now would be able to see
+the center of the window much better.
+So if we look, like in the last note but
+at the center of this, looking at the
+y axis, it's around 348 hertz, okay?
+So that would be the lowest note.
+And the highest note is around 456 hertz,
+okay?
+So this is good information for
+deciding now 
+the window size that we should use.
+So in fact okay,
+let's do the sinusoidal model.
+And let's look at this information.
+So in order to decide what is the period
+length so we have to take 44,100, and
+divide it by that frequency which was
+around 300, let's say and 40 hertz.
+It's okay to make it a little bit lower,
+so
+this is 129 samples and
+then if we use, for example,
+the blackman window
+well we would need six times that.
+So if we take six times this.
+Okay.
+That would give us 778 samples, okay,
+so let's put in the window size,
+778 samples.
+That should be enough to discriminate the
+the harmonics.
+And the fft size, I think it was good
+to have this big fft size, so
+4,096 was a good choice.
+And that gave us a good a
+resolution, that means a visually.
+And now of course in the sinusoidal
+model we can choose the thresold,
+the minimum duration of the sinusoids, and
+how many sinusoids we want to track,
+the maximum frequency deviation, here
+we should think have it a little bit bigger
+because there is
+quite a bit of deviation.
+Okay.
+And now, let's of course,
+choose the cello sound,
+the cello phrase.
+And we will compute it.
+Okay, so this is the sinusoidal analysis.
+And yeah, we see the harmonics
+following kind of the melody.
+We also see
+short sinusoids, in fact if with zoom in
+into one region of that.
+For example, let's
+show this region here.
+Okay, we see, well definitely
+the harmonics, but also we some lines
+in between them.
+Then we see some trajectories
+stopping and continuing, anyway,
+So this is the sinusoidal model,
+if we listen to the result
+[SOUND].
+Well, it's pretty good.
+Maybe, we're losing a little bit of
+of the attacks of the notes.
+But it's pretty good so let's go
+directly now to the harmonic model.
+And let’s, okay we use
+the same cello phrase and
+let's use the blackman window, let's use the same
+700 we should have an
+odd sized window so
+let's use 779, in terms of the fft
+size again, I think it was a good
+choice 4096, a lot of zero padding.
+The magnitude threshold minus 90,
+That's okay.
+The duration of the tracks,
+Okay, so
+this will will require to be 0.1 seconds.
+I think we can even make it bigger.
+So let's say 0.2 seconds.
+And the number maximum of harmonics
+there is clearly no need for 100.
+In fact a way to check how many
+harmonics are needed, is
+if we divide 44,100 by
+the frequency, the lowest
+frequency, okay now
+we have to divide half of the sampling rate so
+22050 divided by the lowest
+frequency, so 64, that would be
+the maximum number of harmonic that
+we would have if we really would have all
+the harmonics in the lowest note.
+So no need for 100, let's say,
+let's put 60 would be plenty.
+And here, now is where we have to choose
+a range that includes all of this melody.
+So we said that
+the lowest frequency was around 340.
+Let's make it safer, so let's make
+300 and the highest was about 450 or
+something,
+so let's make it quite a bit higher
+just in case, let's make it 500, okay?
+And this is a an error threshold
+that will be quite relevant now, for
+identifying the fundamental frequency.
+But let's just leave it as it is now.
+And see if we'll have to change it later.
+Okay so now we'll compute it.
+Oh, again this will take a little bit of time.
+Okay, so this is
+the harmonics that it has obtained.
+And that looks pretty good.
+It found quite a bit of harmonics.
+Of course, in the transitions that where
+the problems, or at least the deviations, you
+know the deviations occurs if we
+just zoom into just one transition.
+Let's say, so this is where
+the harmonics of course get lost.
+And then they are picked up again.
+If we listen, well let's plot that again.
+That, to the original, and
+if we listen to the synthesized
+[MUSIC]
+Okay, that's pretty good, now in terms
+of this error threshold
+of the algorithm, if we make it more
+restrictive, so that means that
+unless it's below a certain error
+it will not be accepted,
+we might see then that some of these
+areas it does not find a fundamental. 
+So instead of seven, let's put for example,
+two, and let's see what it finds.
+Okay, so now we see the result.
+And we clearly see that in the transitions
+there are gaps, and this is because in
+the transitions, the fundamental is not very clear,
+we are in kind of an attack,
+a noise attack.
+So it has lost a little bit of the
+transitions, and if you listen to that,
+in fact,
+we're going to listen to these gaps.
+[SOUND] Okay, so
+there are gaps in the transitions,
+because that's where
+the area were we didn’t find the
+the fundamental and
+therefore it didn't find any harmonics,
+and that's basically all I wanted to say.
+So let's go back to the slides, and
+well we have used the sms
+tools GUI in order to analyze
+this cello fragment,
+then we have used the short time Fourier
+transform, the sinusoidal model,
+and then the harmonic model,
+to see this phrase and
+to analyze the harmonics, and we can see
+that by tweaking the parameters we can get
+quite a bit of difference in the way
+that these harmonics are analyzed.
+So that's all, and this is all for the
+demo classes of this harmonic model week.
+So hopefully this has given you
+a view of how the harmonic model can
+actually be used in practice.
+And still it's not ideal and
+there is some parts of the sound,
+especially like in this sound
+that we just heard, in the
+attacks, that we lose a little
+bit of the sound that is present there.
+So the next week we will extend
+the idea of this sinusoidal and
+harmonic model, to include that aspect,
+to include what we will call
+the residual or the stochastic component.
+Hopefully that will allow us
+to generalize our models and
+to be able to handle
+many more types of sound.
+So we'll see you in next class.
+Thank you very much.
+

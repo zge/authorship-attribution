@@ -1,0 +1,287 @@
+Hello.
+Welcome back to the course Audacity
+processing for music applications.
+This week,
+we're talking about sound transformations.
+And for example,
+in the previous, demonstration class,
+we talked about morphing.
+And, in particular,
+about how to use the short
+transform to morph the qualities
+of two different sounds.
+Now in this second class I want
+to talk about time scaling.
+Therefore about how to change
+the duration of a sound and
+basically then modify the, the length
+of the particular sound fragment.
+So let's, start by, using,
+the possibilities of Audacity,
+for this type of transformation.
+Let's start from, this sound,
+this is orchestral sound that we have in,
+SMS Tools, directory.
+[MUSIC]
+And now, in, in the effects,
+menu of Audacity.
+There is, quite a few of
+transformation possibilities.
+And, even, there is, the possibility for
+extending, these transformations
+by external plugins.
+And, you can find many, available online.
+But let's focus on very few of
+these transformations that relate with
+changing the duration of a, of a sound.
+And the simplest one is for
+example this one.
+It says, Change Speed.
+This is a very simple algorithm that
+the only thing it does is change,
+the reproduction speed, basically.
+So it change how the samples are read,
+and therefore reproduce.
+And of course the effect of these is
+that it modifies not just the time, but
+it modifies the frequencies
+of of the sound.
+So let's listen to that same,
+orchestral, sound.
+But changed by, for
+example well, if we put it at zero,
+it, there would not be any change.
+And, for example, let's change it by 30%.
+So these will speed up the,
+the reproduction of the sound by 30%.
+And clearly,
+we see that the sound is now shorter.
+And now we can play it.
+[MUSIC]
+Okay, so this is the standard
+effect of reading in a d score I,
+I'm changing the speed of of reproduction
+of an analog d score of a, a tape.
+And that can be done in in digital media.
+But clearly this is, is okay but it's not,
+that interesting in the sense that
+we are manipulating not just the duration
+but whole quality of the sound.
+So more interestingly when
+we talk about time and
+scaling, what we normally are referring is
+to be able to change the duration of the,
+of the sound without changing
+the quality of the sound.
+Without changing the frequencies
+that are present in the sound.
+And within, the Audacity there is a few,
+algorithms that do that.
+The most, sophisticated one that I
+know of, is, this one that says a,
+Sliding Time Scale and Peak Shift.
+Okay, and this algorithm
+performs both tempo change or
+time change and pitch change and
+uses a sinusoidal model.
+In fact it uses sinusoidal sort of
+model very similar to the one we have
+been presenting in class.
+And you can of course look the code
+of this algorithm, on the,
+on the Audacity website.
+You, you have access to
+the source code of that.
+The, the major difference,
+which is an important one,
+is that this sinusoidal model is based
+on a subband type of processing.
+So it does a sinusoidal modeling by
+splitting the whole sound, in octaves, and
+modeling every octave, with a different
+analysis synthesis approach.
+So the quality is a little
+bit better than what we
+can do in the algorithm that we
+have been developing in class.
+So, let's listen to that.
+And, it easily can be controlled in time.
+So here, for example, the control of this,
+algorithm can be done in a way that we
+have an initial tempo change as
+a percentage, and a final tempo change.
+So, for example,
+what we can do is start slower, so
+let's say okay, let's start,
+let's, at let's say, 20%, or
+22% slower and
+let's finish by speeding up.
+So let's for
+example end up with 30% speed increase.
+But remember, these we're not
+changing reading of the samples,
+the time to make samples.
+This is done using the sinosora model.
+So therefore receive
+the sizing the sinusoids but
+a different speed while maintaining
+the pitch of the sinusoids.
+So let's analyze these.
+This quite fast, in fact is a very
+efficient algorithm implementing in C.
+So now we are done and
+we have changed the, the duration.
+Well it's a time varying duration so
+let's listen to that.
+[MUSIC]
+Okay, so we have a time duration and
+clearly the pitch, or
+the frequencies have not changed.
+The sound has changed in duration,
+has sped up, the tempo has increased, but
+not the frequencies, and
+that's a pretty good algorithm.
+There's some more sophisticated ones but
+this is a pretty decent one that can
+perform good time scaling algorithms.
+So now let's go to the,
+our own implementation.
+So let's go to the GUI of
+transformations that we have and
+let's go to the sine model.
+Okay, and let's go to the,
+for example, a sound.
+Let's use the piano sound, okay.
+Of course, now this algorithm will
+have to decide the parameters.
+so, in the Audacity implementation
+everything kind of it's a black box, so
+and it does pretty good.
+It chooses the best parameters for
+this type of transformation.
+Here we have to choose the parameters.
+So, we first have to choose the analysis
+parameters of the sinusoidal model.
+It's a piano sound, it's a, well,
+it's a harmonic, sound, but
+this, in the sinusoidal model,
+this is not an issue.
+Let's we have to make sure
+that we distinguish the, the,
+the peaks of the spectrum enough so
+that we can build sinusoids out of that.
+So let's start maybe
+with a Hamming window.
+800, maybe,
+let's increase this a little bit,
+let's put 1000 samples of the window size.
+The threshold minus 90,
+maybe let's do even more, minus 100.
+The minimum sinusoidal duration,
+well, let's leave it like that.
+Maximum number of sine,
+we can put as many for example 200 so
+we, we really do a lot of sinusoids.
+And well, let's leave, maybe,
+this a little bit higher, the offset, so
+we allow frequencies to
+change a little more.
+And let's first do the analysis
+of our synthesis, of the piano.
+Okay here is the,
+the analysis, the sinusoidal analysis
+that it has performed, and our synthesis.
+Let's listen to our synthesis.
+Well, let's first listen to the,
+the original sound.
+[MUSIC]
+And then the resynthesized one.
+[MUSIC]
+Okay, it does a pretty good job,
+so that's a good starting point.
+Now we can apply the transformations, and
+in this interface we can do scaling and,
+of the frequencies and of the times.
+So let's not do any frequency scaling.
+So if we're not doing any frequency
+scaling, let's say that at time zero,
+we just put the value of one, and
+at time one, we put the value of one.
+So there is no frequency change.
+And in the time we have we can
+put the time scaling operation.
+So, for example, we can say at time zero,
+just start at zero.
+And, for example, at the end,
+we could just normalize to, say, one.
+Let's, slow down by a factor of two,
+for example.
+So this will slow down quite a bit
+more than we were doing before, so
+this will stretch
+the sound to twice as long.
+So let's see what it does.
+Okay, so this is the stretch sound.
+So this is, much longer.
+The original sound was
+around four seconds.
+Now it's eight seconds.
+And here we see the sinusoids
+that of course since they have
+been stretched we see a little
+bit more of a mess here.
+Because we see twice as long and therefore
+more compact type of representation.
+Let's listen to this stretch sound.
+[MUSIC]
+Okay, that's pretty good.
+And of course, we can do,
+with this interface we can make changes
+that vary not just from beginning to end.
+But, for example, we can say, okay at
+the beginning, let's start at zero.
+Let's put that in the middle.
+Let's speed up, by, by 50%.
+So it's going to be at, 0.25.
+And at the end, let's for example
+leave it well we can just leave it so
+that it's a little bit longer,
+so it's 1.3.
+Okay so
+now we can apply the transformation.
+Okay so this has done a time
+varying time is stretching, and
+the beginning has sped up.
+And the ending has slowed down.
+So let's listen to that.
+[MUSIC]
+Okay so that's pretty good, and that's
+a quite interesting transformation and
+there is quite a lot of opportunities
+to do interesting things here.
+Again this is different from
+the algorithm that Audacity includes, but
+the basic concept sinusoidal
+model is the same.
+The only thing does it
+a little more complicated, and
+of course the implementation is in c and
+is maybe more efficient.
+So that's all I wanted to say, we have
+talked about time scaling and
+used two algorithms.
+Both the Audacity and
+the one available in the sms tools.
+So hopefully that has given you a view of
+the potential of the sinusoidal model for
+time scaling alterations.
+And that's a very interesting
+transformation that is very much used for
+many types of applications.
+So next class we're going to be talking
+about changing the pitch of the sound.
+So that's a very complimentary
+operation to changing the time.
+So I hope to see you all next class,
+bye bye.
+

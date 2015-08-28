@@ -1,0 +1,299 @@
+Hello, welcome back to the course on audio
+signal processing for music applications.
+In the previous demo classes of this week,
+we have analyzed some sounds,
+we analyzed some electronic periodic
+signals, and we analyzed some real sounds.
+And we used audacity and SonicVisualizer,
+specially to look at
+the spectrum of these sounds.
+And now in this lecture I want
+to continue that and try to use
+the tools that we have developed for
+this particular class, so the sms-tools and
+do the DFT analysis to see if
+we can understand some sound.
+So let's first open with
+Audacity a file, so
+we can see the overall view of the sound.
+Okay, so let's take the violin sound.
+So this is a note of a violin,
+it's quite stable, so we can see
+that it's a length of two seconds.
+But
+instead of using Audacity let's analyze
+it with with the interface of sms-tools.
+So let's go to the models_interface
+directory and just type python and
+the models_GUI and
+this will open up the interface.
+Okay, this is the interface
+of of the sms-tools,
+where it has all the different models
+that we are going to be talking about.
+And now let's go to open
+up the violin sound.
+And using the DFT module,
+so we can hear the violin.
+[SOUND] Okay, so we hear
+this note of the violin.
+And in the parameters, well let's choose
+a size, a portion of a sound to analyze.
+And for example let’s use 512.
+We have to use a power of two for
+the FFT size,
+because the FFT algorithm requires that
+and we don't have to use the window
+size of the same length but
+for now let's do that.
+And now we have to choose where
+we take these 512 samples.
+Let's say we choose the middle of
+the sound, so let's take in second 1,
+and we compute it.
+Okay, so this is the analysis results.
+So, these are the 512 samples,
+starting at second 1.
+And then we have computed the DFT
+of that using the FFT algorithm.
+And we are displaying
+half of the spectrum.
+We are displaying the positive
+side, because its symmetric.
+So therefore, the negative side
+is not required because it
+has the same information, so
+we're just plotting the positive side.
+Both for the magnitude and
+the phase spectrum.
+In the x-axis we are plotting
+frequency in hertz, and
+so we are plotting from zero
+to half the sampling rate.
+Okay so the sampling rate was 44,100.
+so here we're applying up to 22,050.
+Okay and the amplitude in
+the magnitude spectrum is in decibels,
+as we explained, so
+we are showing it in dB
+and the maximum amplitude is minus 20.
+So here we don't have a complete,
+the signal only reach .4,
+so that corresponds to minus 20 decibels.
+And it goes down to minus 120.
+And the phase, we are plotting it
+using the unwrapping function.
+So instead of limiting the phase
+from 0 to 2 pi,
+we are leting it unwrap so
+that we see a much smoother shape.
+And that's going to be quite good.
+Quite useful.
+And then finally, out of this
+we compute the inverse
+and we compute another time domain signal.
+It's not the same as
+the input signal because we
+have applied a window in the input signal
+and this is what we are seeing here.
+This is the windowed version
+that is the one that is
+basically captured in the spectrum.
+Okay, now let's try to see if we can
+understand something on the sound.
+And typically the magnitude
+spectrum is the most useful one.
+Here, well we see things, but maybe we
+don't see what we would like to see.
+Which is to visualize
+the harmonics of that.
+So this might be because
+these are not enough samples.
+We do not have enough
+information to visualize and
+separate all these frequencies.
+We need a bigger frequency analysis.
+So instead of having 512
+let's take the next power of two,
+so the next FFT size 1,024.
+Okay and
+now it's a little bit better, okay?
+So we can see, compared
+with the previous one,
+that, of course we have
+taken more samples, and
+the magnitude spectrum gives
+us some more information.
+For example here,
+we see clearly these peaks and
+this corresponds to
+the harmonics of the sound.
+So, that's a quite useful
+information.
+Okay, now maybe in order to see
+what can we understand about the sound,
+let's look at another
+portion of the sound.
+Of course, as we saw,
+the sound is quite stable.
+But if we go into the beginning,
+if we zoom into the very beginning of
+the sound, there is a region of the attack
+that's a little bit different, so
+let's see if we can
+capture that difference.
+So let's go back to our interface,
+and let's do the same analysis,
+but instead of doing the analysis at
+time one, let's do it at time zero.
+So we compute from time zero.
+And now
+well we see clearly that the sound is
+maybe not as smooth we had it
+during the middle of the sound.
+And what we also see is that
+the spectrum is a little bit different.
+Okay, we see during the attack that
+maybe the harmonics are not so
+clear, because at the beginning of
+the sound there is more the attack of
+the bow, of the noise, so
+the harmonic are not so well identified
+Whether in the middle of the sound,
+clearly the harmonic got stronger.
+Instead, at the beginning
+there is more noise.
+So these irregularities that we
+see in the time domain waveform
+are captured in the spectrum by seeing
+all these more, kind of random, and
+sort of irregular shapes
+that we see in the spectrum.
+Okay, so this is the kind of things
+that the spectrum analysis allows us to
+visualize and therefore to understand.
+Now let's go back to the
+the window of the control parameters.
+Let's go back to the middle of the sound.
+And let's talk about the difference
+between how many samples we take and the
+FTT size we compute.
+We do not have to take the same
+number of samples of the FFT.
+For example, we can take 801 samples and
+then zero-pad to the FTT size and
+compute the result.
+So if we do that, okay.
+This is similar to
+the previous analysis we did
+before in which
+we took more samples,
+we took 1024, so
+this now there is less samples.
+And the spectrum well,
+they look okay both.
+Of course in the one that we took
+more samples of the input signal,
+we see the harmonics a little bit better,
+than the one that we have
+computed now with 800 samples.
+But, it's as smooth as the previous
+one, so both are equally smooth.
+This is because the FFT size,
+in both cases is 1,024.
+Okay, now let's maybe get rid
+of the one we just computed
+and let's compute again the 1,024
+samples, which may be the
+the most useful one.
+And, now let's try to understand
+a little bit more about the sound.
+By zooming into the beginning
+where it seems that
+most activity and
+the most interesting information is.
+So with this figure interface of
+Python we can choose a rectangle,
+so for example, in the magnitude spectrum
+we can just choose the first 5,000 hertz.
+Okay.
+and we can see these harmonics, 
+the peaks of the first 5,000
+hertz quite more clearly.
+And we can do the same thing
+with the phase spectrum.
+Okay, so
+we'll take the first 5,000 hertz and this
+is the phase of what correspond to
+these frequencies, the same frequencies.
+Okay, now we can start seeing other
+things of the sound, for example
+we can see that these peaks
+are equally spaced and
+we can look at the frequency of them,
+here in the lower right corner
+it tells us where, what is the location
+of the x, of the cursor, of the x axis.
+And we see that this
+is around 240 hertz.
+Okay?
+Because
+the dimension is in hertz.
+And if we look at the next one,
+it's around 480 hertz.
+So in fact,
+these are the harmonics of the sound.
+The first is the fundamental.
+So the fundamental is around 240 hertz.
+And this twice the fundamental, and
+this will be all the multiples,
+the harmonic multiples of the fundamental.
+Okay so that's good, so
+that's a way to identify
+the fundamental frequency of the sound.
+And in the phase spectrum
+it's pretty nice.
+Basically what we are seeing,
+in the corresponding frequency of
+the harmonics, we are seeing the phase of
+these harmonics, the phase at time zero,
+where we have centered the analysis.
+So if we look here, for
+example, the corresponding
+location of the first harmonic
+it says that is around minus 2.8 radians,
+because the vertical axis is in radians.
+And this is in fact the phase at time
+zero of this particular harmonic.
+And we can go to the next harmonic and
+measure the phase, or to the next harmonic.
+So visually we can
+identify the magnitude and
+phase of the components of this sound.
+So that's going to be
+very important and very useful.
+And clearly with this interface, with
+the sms-tools, we can zoom into the sound
+in ways that the SonicVisualizer or
+Audacity was not so easy to do.
+So anyway, so that's all I wanted to say.
+So basically we have gone through
+the sms-tools,
+this interface of the DFT in particular.
+And we have analyzed a violin sound
+which is available in freesound.
+And we have played around a little bit
+with the different parameters of the DFT.
+Okay, and that's all for
+today, with these three
+demonstration classes we have tried to
+see the different tools that we can use.
+For analyzing the sound, visualizing
+the time domain, visualizing the spectrum.
+But of course there is much more to do.
+So next week we will continue,
+and we will go into a little
+bit more complicated things.
+So I hope to see you then.
+Bye-bye.
+

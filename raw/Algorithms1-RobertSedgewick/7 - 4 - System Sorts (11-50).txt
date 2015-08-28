@@ -1,0 +1,236 @@
+Now, we'll take a look at how the sorting
+algorithms that we talked about or
+expressed in the systems that we use
+everyday. Now, the key point is that
+sorting algorithms rhythms are essential
+in a very broad variety of applications
+and, and all of us use sorting algorithms
+pretty much every day. Many obvious out
+applications like or, organizing your
+music library or displaying your search
+results or listening feeds in your in your
+web browsers. There's some other
+applications that are not so obvious where
+we use sorting as a to make a problem easy
+once you know that they're sorted. And so,
+for example, finding the median and if
+it's already sorted, it's much easy to
+find the median. And now, the statistical
+problems are like that or finding
+duplicates. Probably finding duplicates by
+itself is not quite obvious what to do but
+the easy way to solve it is to just go
+ahead and sort. And then there are plenty
+of applications that we'll see later in
+this course like data compression or
+computer graphics like finding the convex
+hull, applications in science such as
+computational biology or, or in systems
+development. We're having a efficient sort
+as absolutely crucial. So, because there's
+all these applications most programming
+systems have a fast sort as an important
+part of their infrastructure and Java is
+no exemption. So, Java has a method called
+arrays.sort and it's intended to be a
+general purpose sorting method for use by
+Java programmers. And now, that you have
+some understanding of the classic methods
+you can have a better idea of why
+arrays.sort is the way that it is. So it
+has the infrastructure that allows us to
+be used for all types of data types and
+all types of ordering so it's got a method
+that implements comparable then its got
+methods easy compare order. So that you
+can use the natural order or you can
+provide a compare order and provide your
+own order for any type of data. It uses
+actually both quicksort and mergesort. It
+uses two quick sort for primitive types of
+data and a two mergesort for objects. Why
+two different well it's just the
+designer's assessment of the idea that if
+a programmer is using object maybe spaces,
+not a, a critically important
+consideration. And so, the extra space
+used by merge sort maybe is not a problem.
+And if the program is using primitive
+types, maybe performance is the most
+important thing. And so, then we'll use
+the quicksort. To invoke arrays that sort,
+you have to import the name space from
+java.util.Arrays and then all you need to
+do is invoke Arrays.sort. So I just
+answered this question, why do we use
+different algorithms for the two types?
+And this is, is maybe arguable. Now are
+referred to this idea of a good system
+sort, there was a good system sort that a
+lot of people used for many years. And in
+1991, there were some scientists that,
+that Bell Labs that were using qsort for a
+scientific problem and they were used to
+taking just a few minutes and then they
+realized that it was taking hours of CPU
+time. And the fact was that all the qsort
+implementations at that time in Unix had
+this flaw well, there are two flaws and
+one of them is a little complicated about
+the way they are raised order and the
+other one was for a raise that had lots of
+equal keys and this is Wilks and Becker
+problem and have lot of equal keys, it was
+quadratic time. So, the system designer,
+Jon Bentley was one of the designers to
+take a look at these problems and that
+lead ultimately to the development of the
+3-way quick sort that were used today. He
+worked with Doug McIlroy and they wrote a,
+a, a paper that outline this problem and
+talk about some of these things and they
+had a three-way partitioning method that
+was somewhat like the Dijkstra method that
+we showed but a bit more complicated.
+Anoth er thing they did was rather than
+shuffling the array. They [cough] used
+what's called a method for choosing
+partitioning element called Tukey's
+ninther. Tukey is a statistician and he
+had this particular method for order
+statistics that has some interesting
+properties and use that for the
+partitioning element. This paper was very
+influential and, and that basic method is
+widely used. And Tukey's ninther is just
+pick nine items out of the array and take
+the median of the mediums and that's the
+ninther. So very inexpensive and they had
+macros to do this so and use not too much
+cost to find a partitioning element that's
+much closer to the middle than, and if you
+use a, a random one. So the, the reason
+they used that is they thought they got
+them closer to the middle and they also
+don't like the, some system designers
+don't like the idea of using random
+choices in a system method because of way
+that it changes the state of the system.
+So they felt that they got better
+partitioning than a random shuffling and
+it was also less costly and then
+generating random numbers including this
+change of state problem. But there's a
+problem so you would think that the system
+sort would be completely solid with all
+this resource with all these research and
+all of the development that's going into
+it. In fact there's a file out there in
+your book site and get it that will
+actually break the Java system sort. There
+was a killer input that will make the
+thing run in quadratic time. Actually it
+usually crashes because it's recursive and
+it crashes the system stack. And it can
+cause all sorts of problems. There's a
+killer input for the system sort and, and
+it can be disastrous in various systems
+and the reason is, they didn't do the
+random shuffling. Mcilroy, himself,
+actually found this problem that you could
+while the sort is running figuring out an
+inp ut that would make it crash. And so,
+you can just run that program and if the
+sort doesn't use randomness then it's
+vulnerable to this attack. So which
+algorithm should we use to sort that's,
+that's really a key question. We've looked
+at lot of sorting algorithms and actually,
+there's hundreds of sorting algorithms out
+there and we have chosen the most
+important and the most interesting for you
+but you could literally spend a year
+reading all the papers on sorting and then
+you still continue to be invented new
+algorithms are developed and that are
+found to have good characteristics all the
+time. And really, the key idea is really
+important to think about cuz it applies to
+all sorts of algorithmic problems. On our
+way, we've been talking about rules of the
+game. What is it that we care about in a
+sort? It's a little bit more complicated
+than just put stuff in order. There's a
+lot of attributes, the different
+applications have. Like stability, that's
+a fairly sophisticated attribute that you
+really have to think about, you maybe not
+be aware of. Maybe your computer is
+parallel and the sort has to be parallel
+and we found that equal keys make a huge
+difference. And I didn't really think
+about that at the beginning but it can
+make a huge difference. Maybe the way your
+computer's memory is organized make a
+difference. Maybe the keys are small and
+the items are large or maybe the keys are
+really huge. Do we need guaranteed
+performance? Are we happy with random
+performance? Do we know, is the array
+randomly ordered? You can think of a
+matrix shown in the right here where we
+list out all the possible attributes and
+then there's algorithms that worked well
+for different combinations of attributes.
+But the thing is, there is way more
+possible combinations of attributes than
+there are algorithms. So there is going to
+be situations that are going to require an
+understanding of what it takes to engineer
+a, a sort method that's appropriate for
+your application. There can't be a system
+sort out there that's going to cover all
+possible combinations of attributes. Now,
+usually it's going to be good enough but
+it's definitely worth while to understand
+what's going on with different sorting
+algorithms in order to even find improved
+performance over the system sort. So,
+here's the summary of some of the things
+that we've talked about. We've talked
+about six different sorting algorithms.
+Then, we've talked about a bunch of
+attributes. For example, the top line,
+selection sort is in place it always takes
+about N^2 / two comparisons. And one of
+the things to remark about it is that it
+only uses N exchanges and so forth.
+Insertion sort best case linear,
+quadratic, and place unstable. And it'll
+work well if the file is small or
+partially ordered. Shellsort, we don't
+know it's a running time, it's not stable
+but it's a fast method for intermediate
+size files and not much code. Mergesort
+and log N guarantee unstable but not in
+place, need that auxiliary array.
+Quicksort not stable. Quadratic time worst
+case but that's unlikely to occur if you
+do the random shuffling. And its the
+fastest and most useful in practice
+particularly if you make improvements to
+deal with duplicate keys. And it's
+interesting to note we've looked at
+important and classic algorithms that are
+widely deployed but we don't have a, a
+useful, practical algorithms that are
+widely used that's got all of these
+characteristics that's in place and stable
+worst case N log N. There's versions of
+merge sort that come close but they are
+too complex for practitioners to have
+adopted them. Those are some of the
+situations that we encounter when
+developing a system sort. And, quicksort
+certainly plays a role in most system
+sorts.

@@ -1,0 +1,280 @@
+In this video, I'll describe the first way
+we discovered for getting Sigmoid Belief
+Nets to learn efficiently.
+It's called the wake-sleep algorithm and
+it should not be confused with Boltzmann
+machines.
+They have two phases, a positive and a
+negative phase, that could plausibly be
+related to wake and sleep.
+But the wake-sleep algorithm is a very
+different kind of learning, mainly because
+it's for directed graphical models like
+Sigmoid Belief Nets, rather than for
+undirected graphical models
+like Boltzmann machines.
+The ideas behind the wake-sleep algorithm
+led to a whole new area of machine
+learning called variational learning,
+which didn't take off until the late
+1990s,
+despite early examples like the wake-sleep
+algorithm, and is now one of the main ways
+of learning complicated graphical models
+in machine learning.
+The basic idea behind these variational
+methods sounds crazy.
+The idea is that since it's hard to
+compute the correct posterior distribution,
+we'll compute some cheap
+approximation to it.
+And then, we'll do maximum likelihood
+learning anyway.
+That is, we'll apply the learning rule
+that would be correct,
+if we'd got a sample from the true posterior,
+and hope that it works, even though we haven't.
+Now, you could reasonably expect this to
+be a disaster,
+but actually the learning comes to your rescue.
+So, if you look at what's driving the weights during the learning,
+when you use an approximate posterior,
+there are actually two terms driving the
+weights.
+One term is driving them to get a better
+model of the data.
+That is, to make the Sigmoid Belief Net
+more likely to generate the observed data
+in the training center.
+But there's another term that's added to that,
+that's actually driving the weights
+towards sets of weights for which the
+approximate posterior it's using is a good fit
+to the real posterior.
+It does this by manipulating the real
+posterior to try to make it fit the
+approximate posterior.
+It's because of this effect, the
+variational learning of these models works
+quite nicely.
+Back in the mid 90s,' when we first came
+up with it, we thought this was an
+interesting new theory of how the brain
+might learn.
+That idea has been taken up since by Karl
+Friston, who strongly believes this is
+what's going on in real neural learning.
+So, we're now going to look in more detail
+at how we can use an approximation to the
+posterior distribution for learning.
+To summarize, it's hard to learn
+complicated models like Sigmoid Belief
+Nets because it's hard to get samples from
+the true posterior distribution over
+hidden configurations, when given a data vector.
+And it's hard even to get a sample from that posterior.
+That is, it's hard to get an unbiased sample.
+So, the crazy idea is that we're going to
+use samples from some other distribution
+and hope that the learning will still work.
+And as we'll see, that turns out to be true for Sigmoid Belief Nets.
+So, the distribution that we're going to
+use is a distribution that ignores
+explaining away.
+We're going to assume (wrongly) that the
+posterior over hidden configurations
+factorizes into a product of
+distributions for each separate hidden unit.
+In other words, we're going to assume that
+given the data, the units in each hidden
+layer are independent of one another,
+as they are in a Restricted Boltzmann
+machine.
+But in a Restricted Boltzmann machine,
+this is correct.
+Whereas, in a Sigmoid Belief Net, it's
+wrong.
+So, let's quickly look at what a factorial
+distribution is.
+In a factorial distribution, the
+probability of a whole vector is just the
+product of the probabilities of its
+individual terms.
+So, suppose we have three hidden units in
+the layer and they have probabilities of
+being wrong of 0.3, 0.6, and 0.8. If we
+want to compute the probability of the
+hidden layer having the state (1, 0, 1),
+We compute that by multiplying 0.3
+by (1 - 0.6), by 0.8.
+So, the probability of a configuration of
+the hidden layer is just the product of
+the individual probabilities.
+That's why it's called factorial.
+In general, the distribution of binary
+vectors of length n will have two to the n
+degrees of freedom.
+Actually, it's only two to the n minus one
+because the probabilities must add to one.
+A factorial distribution, by contrast,
+only has n degrees of freedom.
+It's a much simpler beast.
+So now, I'm going to describe the
+wake-sleep algorithm that makes use of the
+idea of using the wrong distribution.
+And in this algorithm, we have a neural
+net that has two different sets of weights.
+It's really a generative model and so, the
+weights shown in green for generative are
+the weights of the model.
+Those are the weights that define the
+probability distribution over data vectors.
+We've got some extra weights.
+The weights shown in red, for recognition weights,
+and these are weights that are used for
+approximately getting the posterior
+distribution.
+That is, we're going to use these weights
+to get a factorial distribution at each
+hidden layer that approximates the
+posterior, but not very well.
+So, in this algorithm, there's a wake
+phase.
+In the wake phase, you put data in at the
+visible layer, the bottom, and you do a
+forward pass through the network using the
+recognition weights.
+And in each hidden layer, you make a
+stochastic binary decision for each hidden
+unit independently, about whether it
+should be on or off.
+So, the forward pass gets us stochastic
+binary states for all of the hidden units.
+Then, once we have those stochastic binary
+states, we treat that as though it was a
+sample from the true posterior
+distribution given the data and we do
+maximum likelihood learning.
+But what we're doing maximum likelihood
+learning for is not the recognition
+weights that we just used to get the
+approximate sample.
+It's the generative weights that define our models.
+So, you drive the system in the forward
+pass with the recognition weights, but you
+learn the generative weights.
+In the sleep phase, you do the opposite.
+You drive the system with the generative weights.
+That is, you start with a random vector of
+the top hidden layer.
+You generate the binary states of those
+hidden units from their prior in which
+they're independent.
+And then, you go down through the system,
+generating state for each layer at a time.
+And here you're using the generative model
+correctly.
+That's how the generative model says you
+want to generate data.
+And so, you can generate an unbiased
+sample from the model.
+Having used the generative weights to
+generate an unbiased sample, you then say,
+let's see if we can recover the hidden
+states from the data.
+Well, let's see if we can recover the
+hidden states that layer h2 from the
+hidden states at layer h1.
+So, you train recognition weights, to try
+and recover the hidden states that
+actually generated the states in the layer below.
+So, it's just the opposite of the weight phase.
+We're now using the generative weights to
+drive the system and we're learning the
+recognition weights.
+It turns out that if you start with random
+weights and you alternate between wake
+phases and sleep phases it learns a pretty
+good model.
+There are flaws in this algorithm.
+The first flaw is a rather minor one
+which is, the recognition weights are
+learning to invert the generative model.
+But at the beginning of learning, they're
+learning to invert the generative model in
+parts of the space where there isn't any
+data.
+Because when you generate from the model,
+you're generating stuff that looks very
+different from the real data,
+because the weights aren't any good.
+That's a waste, but it's not a big
+problem.
+The serious problem with this algorithm is
+that the recognition weights not only
+don't follow the gradient of the log
+probability of the data,
+They don't even follow the gradient of the
+variational bound on this probability.
+And because they're not following the
+right gradient, we get incorrect mode averaging,
+which I'll explain in the next slide.
+A final problem is that we know that the
+true posterior over the top hidden layer
+is bound to be far from independent
+because of explaining away effects.
+And yet, we're forced to approximate it
+with a distribution that assumes
+independence.
+This independence approximation might not
+be so bad for intermediate hidden layers,
+because if we're lucky, the explaining
+away effects that come from below will be
+partially canceled out by prior effects
+that come from above.
+You'll see that in much more detail later.
+Despite all these problems, Karl Friston
+thinks this is how the brain works.
+When we initially came up with the
+algorithm, we thought it was an
+interesting new theory of the brain.
+I currently believe that it's got too many
+problems to be how the brain works and
+that we'll find better algorithms.
+So now let me explain mode averaging, using the little model
+with the earthquake and the truck that we saw before.
+Suppose we run the sleep phase, and we generate data from this model.
+Most of the time, those top two units would be off
+because they are very unlikely to turn on under their prior,
+and, because they are off, the visible unit will be firmly off, because its bias is -20.
+Just occassionally, one time in about e to the -10, one of the two top units will turn on
+and it will be equally often the left one or the right one.
+When that unit turns on, there's a probability of a half
+that the visible unit will turn on.
+So, if you think about the occassions on which the visible unit turns on,
+half those occassions have the left-hand hidden unit on,
+the other half of those occassions have the right-hand hidden unit on
+and almost none of those occassions have neither or both units on.
+So now think what the learning would do for the recognition weights.
+Half the time we'll have a 1 on the visible layer,
+the leftmost unit will be on at the top,
+so we'll actually learn to predict that that's on with a probability of 0.5, and the same for the right unit.
+So the recognition units will learn to produce a factorial distribution
+over the hidden layer, of (0.5, 0.5)
+and that factorial distribution puts a quarter of its mass on the configuration (1,1)
+and another quarter of its mass on the configuration (0,0)
+and both of those are extremely unlikely configurations given that the visible unit was on.
+It would have been better just to pick one mode,
+that is, it would have been better for the visible unit just to go for truck, or just to go for earthquake.
+That's the best recognition model you can have,
+that's the best recognition model you can have if you're forced to have a factorial model.
+So even though the hidden configurations we're dealing with
+are best represented as the corners of a square
+actually show it as if it's a one-dimensional continuous value,
+and the true posterior is bimodal. It's focused on (1,0) or (0,1), that's shown in black.
+The approximation window, if you use the sleep phase of the wake-sleep algorithm,
+is the red curve, which gives all four states of the hidden units equal probability
+and the best solution would be to pick one of these states, and give it all the probability mass.
+That's the best solution, because in variational learning we're manipulating the true posterior
+to make it fit the approximation we're using.
+Normally, in learning we'll manipulate an approximation to fit the true thing, but here it's backwards.

@@ -1,0 +1,580 @@
+Hello.
+Another way to segment an image is by
+looking at it
+as a 3D surface and exploiting the
+morphological shape of the surface.
+Then the interesting idea of the watershed
+method can be used.
+If we look again at an image as of 3D
+surface it consists of mountain picks and
+valleys, or catchment basins.
+If we were to assume that water starts
+pouring
+in from the bottom of the lowest valley,
+then when
+this water reaches the peak of a mountain,
+it
+will start pouring into the catchment
+basin next to it.
+It is that point, the so called the
+watershed line.
+In that we want to detect, because it
+will separate the two objects represented
+by the vallies.
+Since the watershed method typically
+results in over
+segmentation, we also describe means to
+control it.
+We further described the 3 dimensional
+K-mean clustering approach.
+And how it applies to the segmentation of
+medical MRI brain images.
+So, let's look at the details of this
+visually also interesting approaches.
+In geography, a watershed is a ridge
+that divides areas drained by different
+river systems.
+A catchment basin is the geographical area
+draining into a river or a reservoir.
+The watershed transform applies this ideas
+to gray scale images, in a
+way that can be used to solve a variety of
+image segmentation problems.
+Watershed segmentation requires that we
+think of
+a grayscale image as a topological
+surface.
+In other words, the values fxy of an image
+are interpreted as heights.
+Let's look for example at this si, simple
+image.
+It shown here as a grayscale image.
+And here, as a 3 dimensional surface.
+If we imagine that rain falls on this
+surface, the water will collect
+in these four areas, shown here, which are
+called catchment basics.
+Rain falling exactly on this line, on this
+watershed line.
+Will collect into this two catchment
+basins,
+this and this one, with equal probability.
+So the watershed transform finds the
+catchment
+basins and the ridge or this watershed
+lines.
+In a gray scale image, that will result in
+the segmentation of the image.
+As described in the previous slide,
+according to the watershed
+transform, there are three types of points
+in an image.
+Points that belong to a regional minimum.
+Points that belong to a catchment basin of
+a regional minimum.
+So these are the points at which if a drop
+of water falls will certainly fall to a
+single minimum.
+And then points that belong to ridge lines
+or watershed lines.
+And if a drop of water falls onto points
+belonging on a watershed line, then.
+Equally likely will fall to more than one
+minimum.
+So the objective of the algorithm is to
+detect this watershed
+lines which will result in the
+segmentation of the image.
+We're going to address the concept behind
+the watershed
+transform without getting into any of the
+fine details.
+So according to it, given to this
+topography
+shown here, if we punch a hole here at
+this local minimum and flat the region
+with
+water from below, then water would be
+rising here.
+Until we reach this point.
+And this point, an additional drop of
+water,
+if it's to fall down, it will equally
+likely go into this catchment basin or
+this
+catchment basin, or this valley or the
+other valley.
+So in order to prevent this from
+happening, we build here, a dam.
+And after this is build we keep, going.
+We keep flooding the area with water until
+we reach this point, where again
+an additional drop of water will equally
+likely go between this valley and this
+valley.
+In order to prevent this happening, we
+build a second dam here
+and we keep going until there are no more
+dams to be built.
+And this dam here is a watershed line and
+this is what we are after with the
+watershed transforms.
+If we determine this watershed lines, then
+we have separated.
+One object from the next from the next
+one.
+So again this is hopefully the concept
+that is clear to you treating a gray
+scale image as a topographical surface and
+being able to determine this dividers this
+ridges.
+These watershed lines between different
+objects that, that
+will result in the overall segmentation of
+the image.
+We show here the result of applying the
+watershed algorithm to
+this image that I showed earlier and here
+is the result.
+We see that the algorithm did a, a great
+job in identifying four different regions.
+And the background, the region, the fifth
+one and this here are the watershed lines.
+It's easier to segment this object.
+It's more challenging to find this
+watershed line.
+But, by and large, this is a very
+satisfactory result.
+We show here the result of the application
+of the watershed algorithm to this image.
+It is a magnified microscope image of a
+slice of
+the eye of the fruit fly or the so called
+Drosophila.
+This is a project we are currently
+involved in.
+If one is able to segment successfully the
+cells shown in this image.
+One is able to study how cells transition
+from a stem to a differentiated state.
+The development of the fly eye serves
+as a useful model in understanding this
+transition.
+If we apply the watershed algorithm to
+this image, we obtain this result.
+Clearly, the image is over-segmented.
+Because there are a large number of
+potential
+minima, many of which may not be relevant.
+So we need to find ways to control this
+over
+segmentation that results, and this is
+what we will discuss next.
+A solution to the over segmentation
+problem that
+was demonstrated in the previous example
+is to use.
+Markers.
+A marker is a connected component
+belonging to an image.
+We would like to have both internal
+markers which are inside each object
+of interest as well as external markers
+which are contained in the background.
+In fact the internal markers, some of the
+properties are that each one corresponds
+to an object.
+They're surrounded by points of higher
+altitude, the
+points in the region form a connected
+component.
+And all [INAUDIBLE] points in connected
+components have the same intensity.
+As far as the property of the external
+markers goes is that they
+should partition the image into regions
+where
+the regional minima are allowed to locate.
+These markers bring prior knowledge into
+the
+segmentation process and therefore they
+constrain it.
+Various methods have been suggested in the
+image
+processing literature for computing both
+internal and external markers.
+They involve linear and nonlinear
+filtering, as well as morphological
+processing.
+Which method one chooses depends on the
+specific nature of the
+images one deals with, as well as with the
+application at hand.
+We revisit here the example of applying
+watershed algorithms towards the
+segmentation of the
+image of the eye of the fruit fly, those
+microscopy images that are magnified.
+We are going to utilize now.
+Markers.
+We see here the original image with
+internal markers overlaid on it.
+These are the white parts here.
+So, these internal markers were obtained
+by thresholding the intensity values of
+the original image, so they represent the
+bright spots in the image.
+Obtaining external markers is even harder.
+Here the external markers we will be using
+in this case.
+They were obtained by applying the
+watershed algorithm of
+the original image intensities, not on the
+gradient image.
+So these external markers constrain the
+regions
+to which the watershed algorithm will be
+applied.
+So it will be applied for example inside
+this region.
+So making use of both internal and
+external markers, we obtain this
+segmentation result.
+It's certainly an improved result.
+It does not suffer from over segmentation
+and it does a
+good representative job in delineating the
+cells in the original image.
+Another way to perform segmentation is
+through
+the use of the K-means clustering
+algorithm.
+Clustering means grouping similar data
+together.
+So, given alphanumeric observations, we
+attempt to
+classify the data points into K different
+clusters.
+And these clusters may represent segments.
+In an image.
+K stands for the number of clusters and
+this is
+a parameter that is input to the algorithm
+by the user.
+This algorithm is iterative in nature as
+you'll
+see and is not confined to image
+segmentation.
+It is a general algorithm for machine
+learning application.
+It's actually the same algorithm we
+encountered in week
+nine when we designed the code book for
+vector quantization.
+We provide an explanation of the
+steps that are followed towards K-means
+clustering.
+These are intuitive steps as we'll see.
+And more than that, the step should look
+familiar
+to you since or sound and look familiar
+since
+we followed exactly the same steps back in
+week
+nine when we designed a code book for
+vector quantization.
+So, the first problem is how to assign a
+class or a cluster to a given pixel.
+We see here two clusters, the red one and
+the blue one and
+these are the representative pixels of the
+red class and of the blue class.
+These are the centroids actually of the
+clusters.
+So, given a new pixel, the question is,
+where should this be classified to belong
+to?
+The red cluster or the blue cluster?
+In answer to this, this question.
+We are going to find the distance of this
+pixel to both centers.
+And we are going to compare the distances,
+this distance here to this distance.
+As shown graphically here, this is smaller
+than this distance and
+therefore, this is going to be classified
+as a red pixel.
+The second sub-problem we need to address
+is
+how to find new centers from known
+clustering.
+We show here two clusters, a red one and
+the blue one.
+And the problem at hand is to find
+the representative pixel for each of the
+clusters.
+The answer is that the representative
+pixel let's say the red
+pixel here is the center of mass of the
+red pixels.
+In finding the center of mass I need to
+know
+the probability distribution, the
+probability
+density function of the red pixels.
+We typically don't have that information
+and
+we typically assume that the points are
+uniformly distributed in which case the
+centroid
+is simply the average of the red vectors.
+So this is what we do.
+We find a new center by taking the average
+of the red pixels here
+and the average of the blue pixels here
+will give us the new blue center.
+So the k-means clustering algorithm
+alternates between the solution of the two
+sub-problems we just described as we'll
+see also next in form of an example.
+[BLANK_AUDIO]
+Let us look at the simple example
+of the application of the K-means
+clustering algorithm.
+We're giving an image, with these, white
+pixels here.
+And you want to cluster them into two
+classes, so k equals 2.
+We initialize at random with these two
+centroids of a clusters.
+We assign the data to the, to
+clusters based on their proximity from the
+centroids.
+So, these pixels here are closer to this
+centroid.
+And these are all red pixels, while these
+pixels are
+closer to the centroid and are given the
+label blue.
+We recalculate the location of the
+centroid.
+So, now this blue centroid.
+Is the average of this blue pixels while
+this centroid is the average of these red
+pixels.
+We re-assign data based on the new
+location of the centroids.
+We then re-compute the location of the
+centroids.
+Re-assign data.
+And re-compute the new location of the
+centroids, until
+there is no more change and we have
+converged.
+So in summary, K mean clustering algorithm
+consist
+of choosing the number of centroids K and
+then.
+Until convergence, we alternate between
+assigning each training point
+to it's closest centroid and re-computing
+the centroid location.
+So the output of the algorithm is the K
+centroids and of
+course the label of the pixels to which
+centroid they belong to.
+As already mentioned, there are numerous
+application of K means clustering in
+machine learning applications and design
+of
+code books in vector quantization alike.
+When it comes to image segmentation, they
+have found applications to processing
+medical images.
+We see here an MRI image.
+We see here the frontal view, the so
+called
+sagital view and the horizontal view of
+this.
+Of the brain of this person.
+There are three groups typically with
+these images.
+White matter.
+Grey matter and this cerebral spinal
+fluid, or CSF.
+So we're going to cluster voxel's, these
+are three
+dimensional pixels, into one of these
+three categories.
+Some of the prior knowledge you want to
+use is that.
+Voxels with the same intensity should
+belong to the same
+group and those are voxels that are next
+to each other.
+So we want to use intensity as one feature
+but also special proximity.
+So we.
+Uses a feature vector here, a four
+dimensional vector.
+It has the intensity of the voxel, it's a
+function
+of three special coordinates, as well as
+the three special coordinates.
+In defining distance between two vectors,
+we use the Euclidian distance.
+As mentioned in the previous slide, this
+is the feature factor that can be used in
+clustering the voxels in an MRI imagined
+into
+this three categories, grey matter, white
+matter and CSF.
+So, K equals 3, for our purposes.
+We can use waves here, alpha and beta.
+Based on which the relative importance of
+the intensity and
+intensity, similarity or proximity of
+voxels is controlled.
+As far as the distance metric, we could
+use either the L1 or the L2 node.
+We will see actually during the last week
+of classes.
+The impact or the effectiveness or the
+reason why we
+should use L1 or LP in general norms
+versus L2 norms.
+So, I will not say many more things here
+about
+it but nevertheless, it's, it's an
+interesting topic of analysis.
+Typically, what's done in segmenting MRI
+images.
+Is to start with a large value for K.
+So we segment the volume as shown here
+into possibly
+a hundred classes and then utilize merging
+algorithms that will merge similar
+classes.
+And, and up at the end with a three
+desirable classes.
+We show here a recent result we obtained
+in our lab.
+Which is a three dimensional K-means
+clustering application.
+So, we see the human brain, and we see the
+three different tissue's.
+Grey matter, white matter and CSF.
+So.
+We see here one slice at a time.
+However, the clustering is a K-means based
+clustering, but in three dimensions.
+[BLANK AUDIO]
+[SOUND].
+We show here some of the recent results
+that were obtained by 3 dimensional K-mean
+segmentation.
+In our lab.
+We compare our results with the results
+obtained by
+SPM8, which is a public toolbox supported
+by Matlab.
+Slice 60 was utilized and were segmented
+into three regions.
+Grey matter, white matter and CSF.
+As mentioned multiple times there is no
+objective criterion
+in comparing segmentation results and the
+comparison becomes even
+harder when we deal with medical images
+simply because
+it's the diagnostic quality that we are
+interested in.
+Experts actually have looked at these
+segmentations.
+And carried out their own comparisons.
+It seems like K-means provides somehow
+more delicate segmentations than SPM8.
+Brain image segmentation is a very
+difficult problem.
+What's even harder actually is the
+identification of lesions in these brain
+images.
+If we are able to identify stroke lesions
+and
+also peri lesional regions, the regions
+around the lesion.
+Will assist the medical profession in
+predicting the recovery of the stroke
+patient.
+But also the response of the patient to
+therapy.
+We see here an MRI of a healthy brain and
+the MRI of
+a brain with damage and these are the
+lesion regions or plaque regions.
+So segmentation is currently typically
+drawn by hand.
+By the expert.
+And this is a time consuming process but
+also
+a subjective process and therefore not a
+repeatable process.
+Therefore, there is a great need to
+overcome the noise present in the images.
+The existence of weak edges and the
+inhomegeneity in the data and,
+and dab with the automatic procedure in
+identifying the lesions and
+the peri lesions, regions for all the
+purposes that we described.
+As already mentioned, segmentation
+techniques can be applied
+to brain MRI images and potentially save
+lives.
+The segmentation techniques can be used
+proactively so that the brain
+of a healthy individual can be screened to
+detect the abnom, abnormalities.
+But also after a disease, the same
+technique
+can assess the patient's response to
+therapy and also
+can be used to predict the response to,
+to drugs and therefore, the recovery of a
+patients.
+So, we see the brain images for two
+patients here, one and two.
+And this way, we see the very slices of
+the brain.
+We see detected in green, the legions in
+this brain images.
+We also see a number there which is the
+value of the Dice Similarity Index.
+For cases for which the ground truth
+exists, obtained maybe manually.
+X represents the ground truth segmentation
+and why the segmentation
+provided by al-, algorithms, or any
+algorithm for that matter.
+Then we see that in, in this index we have
+in
+the numerator the cardinality of the
+intersection of the two segmentations.
+Divided by the sum of the [UNKNOWN] of the
+individual segmentations.
+Clearly if X is identical to Y.
+The value of the index is equal to one.
+So the range of the values is between zero
+to one.
+And the higher the value varies, the
+closer
+to one, the better the segmentation with
+respect to.
+The provided ground truth.
+So the numbers are relatively high and our
+technology has been compared to
+other competing techniques and the
+objective values,
+they compare very favorably to the
+competition.
+

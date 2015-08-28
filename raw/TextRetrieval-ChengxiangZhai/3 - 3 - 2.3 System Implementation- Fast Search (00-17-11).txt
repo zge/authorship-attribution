@@ -1,0 +1,403 @@
+[SOUND].
+This lecture is about how to do fast
+research by using inverted index.
+In this lecture,
+we are going to continue the discussion
+of the system implementation.
+In particular, we're going to talk about,
+to how to support a faster
+search by using inverted index.
+So, let's think about what a general
+scoring function might look like.
+Now, of curse the vector space
+model is a special case of this.
+But we can imagine many other
+retrieval functions of the same form.
+So, the form of this
+function is as follows.
+We see this scoring
+function of document d, and
+query q is defined as first, a function
+of f a that's adjustment in the function.
+That what consider two
+factors that are shown
+here at the end, f sub d of d,
+and f sub q of q.
+These are adjustment factors
+of a document and query, so
+they're at the level of document,
+and query.
+So, and
+then inside of this function we also see
+there's a another function called edge.
+So, this is the main part of
+the scoring function,
+and these as I just said
+of the scoring factors at the level
+of the whole document, and the query.
+For example, document and
+this aggregate function would
+then combine all these.
+Now, inside this h function,
+there are functions that would compute
+the weights of the contribution
+of a matched query term t i.
+So, this this g, the function g gives us
+the weight of a matched query
+term t i in document d.
+And this h function with that
+aggregate all these weights, so
+it were, for example, take a sum, but
+it of all the matched query in that terms.
+But it can also be a product, or
+could be another way of aggregate them.
+And then finally, this adjustment
+function would then consider
+the document level, or query level
+factors through further adjuster score,
+for example, document lens [INAUDIBLE].
+So, this general form would cover
+many state of original functions.
+Let's look at how we can score such
+score documents with such
+a function using inverted index.
+So here's the general algorithm
+that works as follows.
+First these these Query level and
+document level factors can be
+pre-computed in the indexing term.
+Of course, for the query,
+we have to compute it as a query term.
+But for document, for example,
+document can be pre-computed.
+And then we maintain a score accumulator
+for each document d to compute the h.
+And h is aggregation function
+of all the matching query terms.
+So how do we do that?
+Well, for each query term,
+we going to do fetch inverted list,
+from the inverted index.
+This will give us all the documents
+that match this query term,
+and that includes d1,
+f1, and so, d and fn.
+So each pair is document id and
+the frequency of the term in the document.
+Then for each entry d sub j and f sub j,
+a particular match of the term in
+this particular document d sub j,
+we're going to computer the function g.
+That would give us something like
+a t of i, ef weights of this term.
+So, we're computing the weight
+contribution of matching this query term
+in this document.
+And then we're going to update the score
+accumulator for this document.
+And this would allow us to
+add this to our accumulator,
+that would incrementally
+compute function h.
+So this is basically a general
+way to allow sort of computer
+all functions of this form,
+by using inverted index.
+Note that we don't have to
+attach any document that that
+didn't match any query term,
+but this is why it's fast.
+We only need to process the documents that
+tap, that match at least one query term.
+In the end, then we're going to
+adjust the score to compute a,
+this function f of a and then we can sort.
+So let's take a look at
+the specific example.
+In this, case let's assume the scoring
+function's a very simple one.
+It just takes us sum of tf, the rule of
+tf, the count of, of term in the document.
+Now this simple equation with the help
+showing the algorithm clearly.
+It's very easy to extend the,
+the computation to include other weights
+like the transformation of TF or
+document or IDF weighting.
+So let's take a look at specific example
+with the query's information security,
+and shows some entries of
+the inverted index on the right side.
+Information occurring before documents and
+the frequencies is also there,
+security is coding three documents.
+So, let's see how the algorithm works,
+all right?
+So, first we iterate all the query terms,
+and we fetch the first query then.
+What is that?
+That's information.
+Right?
+So, and imagine we have all these score
+accumulators to score, score the,
+score the scores for these documents.
+We can imagine there will be allocated,
+but
+then they will only be
+allocated as needed.
+So before we do any weighting of terms
+we don't even need a score accumulators.
+But conceptual we have these score
+accumulators eventually allocated, right?
+So let's fetch the,
+the entries from the inverted list for
+information first, that's the first one.
+So these score accumulators obviously
+would be initialized as zeros.
+So the first entry is d1 and 3,
+3 is occurrences of
+information in this document.
+Since our scoring function assume that the
+score is just a sum of these raw counts.
+We just need to add a 3 to the score
+accumulator to account for
+the increase of score, due to matching
+this term information, a document d1.
+And now we go to the next entry.
+That's d2 and 4 and then we'll add
+a 4 to the score accumulator of d2.
+Of course, at this point we will allocate
+the score accumulator as needed.
+And so, at this point, we have located
+d1 and d2, and the next one is d3.
+And we add 1, or we locate another score
+coming in the spot d3 and add 1 to it.
+And finally,
+the d4 gets a 5 because the information
+the term information occurred ti
+in five times in this document.
+Okay, so this completes the processing
+of all the entries in the,
+inverted index for information.
+It's processed all the contributions
+of matching information in this
+four documents.
+So now our arrows will go to the next
+query term, that's security.
+So, we're going to factor all
+the inverted index entries for security.
+So in this case, there were three entries.
+And we're going to go
+through each of them.
+The first is d2 and 3.
+And that means security occurred
+three times in d2, and what do we do?
+Well, we do exactly the same as
+what we did for information.
+So this time we're going
+to do change the score,
+accumulating d2 sees
+it's already allocate.
+And what we do is we'll add 3 to
+the existing value which is a 4,
+so we now get the 7 for d2.
+D2 sc, score is increased because of the
+match both information and the security.
+Go to the next step entry, that's d4 and
+1, so we've updated the score for
+d4,and again we add 1 to d4,
+so d4 goes from 5 to 6.
+Finally we process d5 and 3.
+SInce we have not yet
+equated a score accumulator d4 to d5,
+at this point, we allocate one,
+45 and we're going to add 3 to it.
+So, those scores on the last row
+are the final scores for these documents.
+If our scoring function is just a,
+a simple sum of tf values.
+Now what if we actually would like to,
+to do lands normalization.
+Well we can do the normalization
+at this point for each document.
+So to summarize this,
+all right so you can see we first
+processed the information determine
+query term information, and
+we process all the entries in
+the inverted index for this term.
+Then we process the security,
+all right, let's think about
+the what should be the order of processing
+here when we consider query terms?
+It might make difference,
+especially if we don't want to keep
+to keep all the score accumulators.
+Let's say we only want to keep
+the most promising score accumulators.
+What do you think it would be
+a good order to go through?
+Would you go would you process
+a common term first or
+would you process a rare term first?
+The answer is we should go through we
+should process the rare term first.
+A rare term will match fewer documents and
+then the score confusion will be higher,
+because the IDF value will be higher and,
+and
+then it allows us to attach
+the most diplomacy documents first.
+So it helps pruning some non
+promising ones, if we don't need so
+many documents to be returned to the user.
+And so those are heuristics for
+further improving the accuracy.
+Here can also see how we can
+incorporate the idea of weighting.
+All right.
+So they can [INAUDIBLE] when we
+incorporated a one way process each
+query term.
+When we fetch in word index we
+can fetch the document frequency,
+and then we can compute the IDF.
+Or maybe perhapsIDF value has already been
+pre-computed when we index the document.
+At that time we already computed the IDF
+value that we can just fetch it.
+So all these can be down at this time.
+So that will mean one will process
+all the entries for information these
+these weights would be adjusted by the
+same IDF, which is IDF for information.
+So this is the basic idea of using
+inverted index for faster search, and
+works well for all kinds of formulas that
+are of the general form and this generally
+cov, the general form covers actually most
+state of the art retrieval functions.
+So there are some tricks to further
+improve the efficiency ,some general mac
+tech, techniques include caching.
+This is just a to store some
+results of popular query's, so
+that next time when you see the same query
+you simply return the stored results.
+Similarly, you can also score the missed
+of inverted index in the memory for
+popular term.
+And if the query comes
+popular you will assume
+it will fetch the inverted index for
+the same term again.
+So keeping that in the memory would help.
+And these are general techniques for
+improving efficiency.
+We can also only keep the most promising
+accumulators because a user generally
+doesn't want to examine so many documents.
+We only want to return high quality
+subset of documents that likely ranked
+on the top, in,in for that purpose
+we can then prune the accumulators.
+We don't have to store
+all the accumulators.
+At some point we just keep
+the highest value accumulators.
+Another technique is to do parallel
+processing, and that's needed for
+really processing such a large data set,
+like the web data set.
+And to scale up to the Web-scale
+we need to special
+to have the special techniques
+to do parallel processing and
+to distribute the storage of
+files on multiple machines.
+So here as a, here is a list of
+some text retrieval toolkits.
+It's, it's not a complete list.
+You can find the more information
+at this URL on the bottom.
+Here I listed four here,
+lucene is one of the most popular toolkit
+that can support a lot of applications.
+And it has very nice support for
+applications.
+You can use it to build
+a search engine very quickly,
+the downside is that it's not
+that easy to extend it, and
+the algorithms incremented there
+are not the most advanced algorithms.
+Lemur or Indri is another toolkit that
+that does not have such a nice
+support application as Lucene.
+But it has many advanced
+search algorithms.
+And it's also easy to extend.
+Terrier is yet another toolkit
+that also has good support for
+quotation capability and
+some advanced algorithms.
+So that's maybe in between Lemur,
+or Lucene or
+maybe rather combining the strands of
+both, so that's also useful toolkit.
+MeTA is the toolkit that we'll use for
+the programming assignment,
+and this is a new toolkit
+that has a combination
+of both text retrieval algorithms and
+text mining algorithms.
+And so, toolkit models are implement, they
+are, there are a number of text analysis
+algorithms, implemented in the toolkit,
+as well as basic research algorithms.
+So, to summarize all the discussion
+about the system implementation,
+here are the major take away points.
+Inverted index is the primary data
+structure for supporting a search engine.
+That's the key to enable faster
+response to a user's query.
+And the basic idea is process that,
+pre-process the data as much as we can,
+and we want to do compression
+when appropriate.
+So that we can save disk space and
+can speed up IO and
+processing of the inverted
+index in general.
+We'll talk about how we will construct
+the inverted index when the data
+can fit into the memory.
+And then we talk about faster search using
+inverted index, basically to exploit
+the inverted index to accumulate scores
+for documents matching a query term.
+And we exploit Zipf's law
+avoid touching many documents
+that don't match any query term.
+And this algorithm can, can support
+a wide range of ranking algorithms.
+So these basic techniques have mm,
+have great potential for further scanning
+output using distribution to withstand
+parallel processing and the caching.
+Here are two additional readings that
+you can take a look at if you have time,
+and are interested in
+learning more about this.
+The first one is a classic textbook on the
+scare the efficiency of inverted index and
+the compression techniques,
+and how to in general,
+build a efficient search engine in
+terms of the space overhead and speed.
+The second one is a newer textbook that
+has a nice discussion of implementing and
+evaluating search engines.
+[MUSIC]
+

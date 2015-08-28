@@ -1,0 +1,384 @@
+This optional video will be, more or less,
+the last word that we have on sorting for
+the purposes of this course. And it'll
+answer the question, can we do better?
+Remember, that's the mantra of any good
+algorithm designer. I've shown you N log N
+algorithms for sorting, Merge Short in the
+worst case, Quick Sort, on average. Can we
+do better than N log N? Indeed, for the
+selection problem, we saw we could do
+better than N log N. We could linear time.
+Maybe we can do linear time for sorting as
+well. The purpose of this video is to
+explain to you why we cannot, do sorting,
+in linear time. So this is a rare problem
+where we understand quite precisely how
+well it can be solved at least for a
+particular class of [inaudible] called
+comparison based sorts which I'll explain
+in a moment. So here's the form of the
+theorem, I want to give you the gist of in
+this video. So in addition to restricting
+to comparison based sorts which is
+necessary as we'll see in a second, I'm
+going to make a second assumption which is
+not necessary but is convenient for the
+lecture which is that I'm only going to
+think about deterministic algorithms for
+the moment. I encourage you to think about
+why the same style of arguments gives an N
+log and lower bound on the expected
+running time of any randomized algorithm.
+Maybe I'll put that on the course site as
+an optional theory problem. So, in
+particular, a quick sort is optimal in the
+randomized sense. It have average and long
+end time and then again claims that no
+comparison based sort can be better than
+that, even on average. So, I need to tell
+you what I mean by a comparison based
+sorting algorithm. What it means, it's a
+sorting algorithm that accesses the
+elements of the input array. Only via
+comparisons, it does not do any kind of
+direct manipulation on a single array
+element. All it does, is it picks pairs of
+elements and asks the question is the left
+one bigger or is the right one bigger. I
+like to think of comparison based sorts as
+general purpose sorting routines. They
+make no assumptions about what the data is
+other than that it's from some totally
+ordered set. I like to think of it really
+as a function that takes as an argument a
+function pointer that allows it to do
+comparisons between abstract data types.
+There's no way to access the guts of the
+elements. All you can do is go through
+this API, which allows you to make
+comparisons. And indeed if you look at the
+sorting routine and say the unit's
+operating system, that's exactly how it's
+set up. You just patch in a function
+pointer to a comparison operator. I know
+this sounds super abstract so, I think it
+becomes clear once we talk about some
+examples. There's famous examples of
+comparison based sort including everything
+we've discussed in the class so far.
+There's also famous examples of non
+comparison based sort which we're not
+gonna cover, but perhaps some of you have
+heard of or at the very least they're very
+easy to look up on Wikipedia or wherever.
+So examples include the two sorting
+algorithms we discussed so far, mergesort.
+The only way that mergesort interacts with
+the elements in the input array is by
+comparing them and by copying them.
+Similarly, the only think Quick Sort does
+with the input array elements is compare
+them and swap them in place. For those of
+you that know about the heap data
+structure which we'll be reviewing later
+in the class. Heap sort. Where you just,
+heapify a bunch of elements, and then
+extract the minimum N times. That also
+uses only comparisons. So what are some
+famous non examples? I think this will
+make it even more clear what we're talking
+about. So bucket sort is one very useful
+one. So, bucket sort's used most
+frequently when you have some kind of
+distributional assumption on the data that
+you're sorting. Remember that's exactly
+what I'm focusing on avoiding in this
+class. I'm focusing on general purpose
+subroutines where you don't know anything
+about the data. If you do know stuff about
+the data, bucket sorting can sometimes be
+a really useful method. For example,
+suppose you can model your data as I-I-D
+samples from the uniform distribution on
+zero one. So they're all rational numbers,
+bigger than zero, less than one, and you
+expect them to be evenly spread through
+that interval. Then what you can do in
+bucket sort is you can just. Preallocate
+end buckets where you're gonna collect
+these elements. Each one is gonna have the
+same width, width one over n. The first
+bucket you just do linear pass with the
+input array. Everything that's between
+zero and one over n you stick in the first
+bucket. Everything in between one over n
+and two over n you stick in the second
+bucket. Two over end and three over n you
+sick in the third bucket and so on. So
+with the single pass. You've classified
+the input elements according to which
+bucket they belong in, now because the
+data is assumed to be uniform at random,
+that means you expect each of the buckets
+to have a very small population, just a
+few elements in it. So remember if it.
+Elements are drawing uniform from the
+interval zero one, then it's equally
+likely to be in each of the N available
+buckets. And since there's N elements that
+means you only expect one element per
+bucket. So that each one is gonna have a
+very small population. Having bucketed the
+data, you can now just use, say, insertion
+sort on each bucket independently. You're
+gonna be doing insertion sort on a tiny
+number of elements, so that'll run in
+constant time, and then there's gonna be
+linear number of buckets, so it's linear
+time overall. So the upshot is. If you're
+willing to make really strong assumptions
+about your data like it's drawn uniformly
+at random from the interval zero one then
+there's not an N log in lower bound in
+fact you can allude the lower bound and
+sort them in your time. So, just to be
+clear. In what sense is bucket sort not
+comparison based? In what sense does it
+look at the guts of its elements and do
+something other than access them by pairs
+of comparisons? Well, it actually looks at
+an element at input array and it says what
+is its value, and it checks if its value
+is.17 versus.27 versus.77, and according
+to what value it sees inside this element,
+it makes the decision of which bucket to
+allocate it to. So, it actually stares at
+the guts of an element to decide how, what
+to do next. Another non-example, which eh,
+can be quite useful is count and sort. So
+this sorting algorithm is good when your
+data again we're gonna make an assumption
+on the data, when their integers, and
+their small integers, so they're between
+zero and K where K is say ideally at most
+linear in N. So then what you do, is you
+do a single pass through the input array.
+Again, you just bucket the elements
+according to what their value is. It's
+somewhere between zero and K, and it's an
+integer by assumption. So you need K
+buckets. And then you do a pass, and you
+sort of depopulate the buckets and copy
+them into an output array. And that gives
+you a, a sorting algorithm which runs in
+time, O of N Plus K. Where K is the size
+of the biggest integer. So the upshot with
+counting sort is that, if you're willing
+to assume that datas are integers bounded
+above by some factor linear in N,
+proportional to N, then you can sort them
+in linear time. Again county sort does not
+access the rail and it's merely through
+comparisons. It actually stares at an
+element, figures out what it's value is,
+and uses that value to determine what
+bucket to put the element in. So in that
+sense it's not a comparison case sort and
+it can under compare it's assumptions to
+beat the end log and lower it down. So a
+final example is the one that would
+[inaudible] them rated sort. I think that
+this is sort of an extension of counting
+sort, although you don't have to use
+counting sort as the interloop you can use
+other so called stable sorts as well. It's
+the stuff you can read about in many
+programming books or on the web. And up
+shot at rated sort. [inaudible]. You, you
+again you assume that the date are
+integers. You think of them in digit
+representation, say binary representation.
+And now you just sort one bit at time,
+starting from the least significant bits
+and going all the way out to the most
+significant bits. And so the upside of
+rating sort, it's an extension of counting
+sort is the sense that if your data is
+integers that are not too big,
+polynomially bounded in N. Then it lets
+you sort in linear time. So, summarizing,
+a comparison based sort is one that can
+only access the input array through this
+API, that lets you do comparisons between
+two elements. You cannot access the value
+of an element, so in particular you cannot
+do any kind of bucketing technique. Bucket
+sort, counting sort, and rating sort all
+fundamentally are doing some kind of
+bucketing and that's why when you're
+willing to make assumptions about what the
+data is and how you are permitted to
+access that data, that's when you can
+bypass in all of those cases, this analog
+and lower value. But if you're stuck with
+a comparison based sort, if you wanna have
+something. General purpose. You're gonna
+be doing n log n comparisons in the worst
+case. Let's see why. So we have to prove a
+lower band for every single comparison
+based sorting method, so a fixed one. And
+let's focus on a particular input length.
+Call it N. Okay, so now, let's simplify
+our lives. Now that we're focused on a
+comparison based sorting method, one that
+doesn't look at the values of the array
+elements just in the relative order. We
+may as well think of the array as just
+containing the elements... One, two,
+three, all the way up to N, in some
+jumbled order. Now, some other algorithm
+could make use of the fact that everything
+is small integers. But a comparison based
+sorting method cannot. So there's no loss
+in just thinking about an unsorted array
+containing the integers [inaudible] N
+inclusive. Now, depsite seemingly
+restricting the space of inputs that we're
+thinking about, even here, there's kind of
+a lot of different inputs we've gotta
+worry about, right? So N elements can, can
+show up, and N factorial different
+orderings, right? There's N choices for
+who the first element is, then N-1 choices
+for the second element, M minus two
+choices for the third element, and so on.
+So, there's N factorial for how these
+elements are, are arranged in the input
+array. So I don't wanna prove this super
+formally, but I wanna give you, the gist,
+I think, the good intuition. Now, we're
+interested in lower bounding the number of
+comparisons that, this method makes in the
+worst case. So let's introduce a parameter
+K, which is its worst case number of
+comparisons. That is, for every input,
+each of these end factorial inputs, by
+assumption, this method makes no more than
+K comparisons. The idea behind the proof
+is that, because we have N factorial
+fundamentally different inputs, the
+sorting method has to execute in a
+fundamentally different way on each of
+those inputs. But since the only thing
+that causes a branch in the execution of
+the sorting method is the resolution of
+the comparison, and we have only
+[inaudible] comparisons, it can only have
+two to the K different execution paths. So
+that forces two to the K to be at least N
+factorial. And a calculation then shows
+that, that forces K to be at least Omega N
+log N. So let me just quickly fill in the
+details. So cross all in-factorial
+possible inputs just as a thought
+experiment. We can imagine running this
+method in factorial times just looking at
+the pattern of how the comparison is
+resolved. Right? For each of these
+in-factorial inputs, we run it through
+this sorting method, it makes comparison
+number one, then comparison number two,
+then comparison number three, then
+comparison number four, then comparison
+number five, and you know it gets back a
+zero, then a one, then a one, then a zero.
+Give in some other input and it gets back
+a one, then a one, then a zero, then a
+zero and so on. The point is, for each of
+these in-factorial inputs, it makes at
+most K comparisons, we can associate that
+with a K bit string, and because it. Is
+there's only K bits we're only going to
+see two to the K different K-bit strings
+two to the K different ways that a
+sequence of comparisons results. Now to
+finish the proof we are gonna apply
+something which I don't get to use as much
+as I'd like in an evident class but it's
+always fun when it comes up, which is the
+pigeon-hole principle. The [inaudible]
+principle you recall is the essentially
+obvious fact that if you try to stuff K
+plus one pigeons into just K cubby holes,
+one of those K cubby holes has got to get
+two of the pigeons. Okay at least one of
+the cubby holes gets at least two pigeons.
+So for us what are the pigeons and what
+are the holes? So our pigeons are these in
+factorial different inputs. The different
+ways you can scramble the images one
+through. And, what are our holes? Those
+are the two indicate different executions
+that the sorting method can possibly take
+on. Now if. The number of comparisons K
+used is so small, that two to the K, the
+number of distinct execution, number of
+distinct ways comparisons can resolve
+themselves, is less than the number of
+different inputs that have to be correctly
+sorted. Then by the pivotal principal. One
+Color [inaudible] gets two holes. That is,
+two different inputs get treated in
+exactly the same way, by the sorting
+method. They are asked, exactly the same k
+comparisons and the comparisons resolve
+identically. [inaudible] one. Jumbling of
+one through N, then you get a 01101 then
+it's a totally different jumbling of N and
+then again you get a 01101 and if this
+happens the algorithm is toast, in the
+sense that it's definitely not correct,
+right, cuz we've fed it two different
+inputs. And it is unable to resolve which
+of the two it is. Right? So, it may be one
+premutation of one through N, or this
+totally different premutation of one
+through N. The algorithm has tried to
+learn about what the input is through
+these K comparisons, but it has exactly
+the same data about the input in two, the
+two cases. So, if it outputs the correct
+sorted version in one case, it's gonna get
+the other one wrong. So, you can't have a
+common execution of a sorting algorithm
+unscramble totally different premutations.
+It can't be done. So what have we learned?
+We've learned that by correctness, two to
+the K is in fact at least in the
+factorial. So how does that help us? Well,
+we wanna lower bound K. K is the number of
+comparisons this arbitrary storing method
+is using. They wanna show that's at least
+N log N. So we, to lower bound K, we
+better lower bound N factorial. So, you
+know, you could use Stirling's
+Approximation or something fancy. But we
+don't need anything fancy here. We'll just
+do something super crude. We'll just say,
+well, look. This is the product of N
+things, right? N times N minus one time N
+minus two, blah, blah, blah, blah. And the
+largest of those, the N over two largest
+of those N terms are all at least N over
+two. The rest we'll just ignore. Pretty
+sloppy, but it gives us a lower bound of N
+divided by two raised to the N divided by
+two. Now we'll just take log base two of
+both sides, and we get the K is at least N
+over two, log base two of N over two, also
+known as omega of N log N. And that my
+friends is why a heretics deterministic
+sorting algorithm that's comparison based
+has gotta use N log N comparisons in the
+worst case.

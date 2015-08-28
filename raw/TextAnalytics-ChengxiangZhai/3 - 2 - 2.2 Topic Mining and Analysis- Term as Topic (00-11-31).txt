@@ -1,0 +1,284 @@
+[MUSIC]
+This lecture is about topic mining and
+analysis.
+We're going to talk about
+using a term as topic.
+This is a slide that you have
+seen in a earlier lecture
+where we define the task of
+topic mining and analysis.
+We also raised the question, how do
+we exactly define the topic of theta?
+So in this lecture, we're going to
+offer one way to define it, and
+that's our initial idea.
+Our idea here is defining
+a topic simply as a term.
+A term can be a word or a phrase.
+And in general,
+we can use these terms to describe topics.
+So our first thought is just
+to define a topic as one term.
+For example, we might have terms
+like sports, travel, or science,
+as you see here.
+Now if we define a topic in this way,
+we can then analyze the coverage
+of such topics in each document.
+Here for example,
+we might want to discover to what
+extent document one covers sports.
+And we found that 30% of the content
+of document one is about sports.
+And 12% is about the travel, etc.
+We might also discover document
+two does not cover sports at all.
+So the coverage is zero, etc.
+So now, of course,
+as we discussed in the task definition for
+topic mining and analysis,
+we have two tasks.
+One is to discover the topics.
+And the second is to analyze coverage.
+So let's first think
+about how we can discover
+topics if we represent
+each topic by a term.
+So that means we need to mine k
+topical terms from a collection.
+Now there are, of course,
+many different ways of doing that.
+And we're going to talk about
+a natural way of doing that,
+which is also likely effective.
+So first of all,
+we're going to parse the text data in
+the collection to obtain candidate terms.
+Here candidate terms can be words or
+phrases.
+Let's say the simplest solution is
+to just take each word as a term.
+These words then become candidate topics.
+Then we're going to design a scoring
+function to match how good each term
+is as a topic.
+So how can we design such a function?
+Well there are many things
+that we can consider.
+For example, we can use pure statistics
+to design such a scoring function.
+Intuitively, we would like to
+favor representative terms,
+meaning terms that can represent
+a lot of content in the collection.
+So that would mean we want
+to favor a frequent term.
+However, if we simply use the frequency
+to design the scoring function,
+then the highest scored terms
+would be general terms or
+functional terms like the, etc.
+Those terms occur very frequently English.
+So we also want to avoid having
+such words on the top so
+we want to penalize such words.
+But in general, we would like to favor
+terms that are fairly frequent but
+not so frequent.
+So a particular approach could be based
+on TF-IDF weighting from retrieval.
+And TF stands for term frequency.
+IDF stands for inverse document frequency.
+We talked about some of these
+ideas in the lectures about
+the discovery of word associations.
+So these are statistical methods,
+meaning that the function is
+defined mostly based on statistics.
+So the scoring function
+would be very general.
+It can be applied to any language,
+any text.
+But when we apply such a approach
+to a particular problem,
+we might also be able to leverage
+some domain-specific heuristics.
+For example, in news we might favor
+title words actually general.
+We might want to favor title
+words because the authors tend to
+use the title to describe
+the topic of an article.
+If we're dealing with tweets,
+we could also favor hashtags,
+which are invented to denote topics.
+So naturally, hashtags can be good
+candidates for representing topics.
+Anyway, after we have this design
+scoring function, then we can discover
+the k topical terms by simply picking
+k terms with the highest scores.
+Now, of course,
+we might encounter situation where the
+highest scored terms are all very similar.
+They're semantically similar, or
+closely related, or even synonyms.
+So that's not desirable.
+So we also want to have coverage over
+all the content in the collection.
+So we would like to remove redundancy.
+And one way to do that is
+to do a greedy algorithm,
+which is sometimes called a maximal
+marginal relevance ranking.
+Basically, the idea is to go down
+the list based on our scoring
+function and gradually take terms
+to collect the k topical terms.
+The first term, of course, will be picked.
+When we pick the next term, we're
+going to look at what terms have already
+been picked and try to avoid
+picking a term that's too similar.
+So while we are considering
+the ranking of a term in the list,
+we are also considering
+the redundancy of the candidate term
+with respect to the terms
+that we already picked.
+And with some thresholding,
+then we can get a balance of
+the redundancy removal and
+also high score of a term.
+Okay, so
+after this that will get k topical terms.
+And those can be regarded as the topics
+that we discovered from the connection.
+Next, let's think about how we're going
+to compute the topic coverage pi sub ij.
+So looking at this picture,
+we have sports, travel and science and
+these topics.
+And now suppose you are give a document.
+How should we pick out coverage
+of each topic in the document?
+Well, one approach can be to simply
+count occurrences of these terms.
+So for example, sports might have occurred
+four times in this this document and
+travel occurred twice, etc.
+And then we can just normalize these
+counts as our estimate of the coverage
+probability for each topic.
+So in general, the formula would
+be to collect the counts of
+all the terms that represent the topics.
+And then simply normalize them so
+that the coverage of each
+topic in the document would add to one.
+This forms a distribution of the topics
+for the document to characterize coverage
+of different topics in the document.
+Now, as always,
+when we think about idea for
+solving problem, we have to ask
+the question, how good is this one?
+Or is this the best way
+of solving problem?
+So now let's examine this approach.
+In general,
+we have to do some empirical evaluation
+by using actual data sets and
+to see how well it works.
+Well, in this case let's take
+a look at a simple example here.
+And we have a text document that's
+about a NBA basketball game.
+So in terms of the content,
+it's about sports.
+But if we simply count these
+words that represent our topics,
+we will find that the word sports
+actually did not occur in the article,
+even though the content
+is about the sports.
+So the count of sports is zero.
+That means the coverage of sports
+would be estimated as zero.
+Now of course,
+the term science also did not occur in
+the document and
+it's estimate is also zero.
+And that's okay.
+But sports certainly is not okay because
+we know the content is about sports.
+So this estimate has problem.
+What's worse, the term travel
+actually occurred in the document.
+So when we estimate the coverage
+of the topic travel,
+we have got a non-zero count.
+So its estimated coverage
+will be non-zero.
+So this obviously is also not desirable.
+So this simple example illustrates
+some problems of this approach.
+First, when we count what
+words belong to to the topic,
+we also need to consider related words.
+We can't simply just count
+the topic word sports.
+In this case, it did not occur at all.
+But there are many related words
+like basketball, game, etc.
+So we need to count
+the related words also.
+The second problem is that a word
+like star can be actually ambiguous.
+So here it probably means
+a basketball star, but
+we can imagine it might also
+mean a star on the sky.
+So in that case, the star might actually
+suggest, perhaps, a topic of science.
+So we need to deal with that as well.
+Finally, a main restriction of this
+approach is that we have only one
+term to describe the topic, so it cannot
+really describe complicated topics.
+For example, a very specialized
+topic in sports would be harder to
+describe by using just a word or
+one phrase.
+We need to use more words.
+So this example illustrates
+some general problems with
+this approach of treating a term as topic.
+First, it lacks expressive power.
+Meaning that it can only represent
+the simple general topics, but
+it cannot represent the complicated topics
+that might require more words to describe.
+Second, it's incomplete
+in vocabulary coverage,
+meaning that the topic itself
+is only represented as one term.
+It does not suggest what other
+terms are related to the topic.
+Even if we're talking about sports,
+there are many terms that are related.
+So it does not allow us to easily
+count related terms to order,
+conversion to coverage of this topic.
+Finally, there is this problem
+of word sense disintegration.
+A topical term or
+related term can be ambiguous.
+For example,
+basketball star versus star in the sky.
+So in the next lecture,
+we're going to talk
+about how to solve
+the problem with of a topic.
+[MUSIC]
+

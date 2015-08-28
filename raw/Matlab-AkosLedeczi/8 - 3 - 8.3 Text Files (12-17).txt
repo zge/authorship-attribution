@@ -1,0 +1,311 @@
+[MUSIC]
+[SOUND] Not surprisingly
+a text file contains text.
+That text is a stream of characters, and
+those characters can be encoded in one
+of many possible encoding schemes.
+We talked about the ASCII
+encoding schemes last week.
+But there are other schemes that
+can represent far more characters.
+The good news is we don't have
+to worry about the encoding, or
+decoding of any of them.
+MATLAB takes care of all of that for us.
+One difference relative to
+the files we've used, so
+far, that is Excel files, and MAT files
+is before we can use a text file,
+we have to ask the operating system for
+permission.
+Making this request is
+called opening the file, and
+MATLAB did it behind the scenes for
+us for Excel, and MAT files.
+And one, once we're done with
+the file we have to release it,
+which is called closing the file.
+So, how do we do this opening,
+and closing?
+Well, we use built-in functions.
+Starting with fopen.
+As you can see, fopen takes two input
+arguments, a filename, and a permission.
+And returns one output, a unique
+number called the file identifier,
+that we'll need in order to read
+from the file, or write to it.
+When it's time to close the file, we use
+another built-in function called fclose.
+It takes one argument, which is the same
+file identifier that we got from fopen.
+For fopen the first input argument
+is exactly, what you'd expect,
+a string containing the name of the file.
+The second argument is also a string, and
+it specifies what we're asking
+permission to do with the file.
+Do we want to read?
+Or write?
+Or both?
+If we want to write, do we want to
+discard the current content, or
+append text to the end of the file?
+Well, here are our options.
+As you can see,
+they all include the character t.
+This t tells MATLAB, that the file
+we want to use is a text file.
+R stands for reading, w stands for
+writing after discarding the current
+content, and a stands for appending.
+The plus sign means we plan
+to do both read, and write.
+[SOUND] And you can see all
+the combinations in this table,
+and you can get the same list
+with the command hel, help fopen.
+Now, let's do some work with text files.
+Here's a function that we prepared for
+you called write_temp_precip_txt.
+It writes data into a text file.
+It's not too big,
+scroll down here just a little bit,
+see there's just a few lines are missing.
+In fact, if we close the ribbon up here,
+by clicking right here.
+We can see all of it.
+Let's try it.
+I'm going to hit Tab, at this point.
+There, it gives me the options.
+I double click that one,
+it completes it for me.
+For lazy people like me, it's very handy.
+Well, I'm going to use this function
+to write precipitation data,
+that's stored in the function,
+into a file called climate.txt.
+Here it goes.
+If we look over here,
+we see the file up here, climate.txt.
+And if we click right on it here,
+open it outside MATLAB,
+we see it in this text
+reader that Mac provides us.
+You see Climate Data for Nashville,
+Tennessee, which came from here.
+And average highs and,
+and lows, and so on.
+All these nice labels, all laid out here.
+All the numbers [INAUDIBLE] show
+up over here, looks really nice.
+Let's look at this function, to see what
+it takes to write a text file like this.
+First few lines provide just
+a bunch of string variables,
+that contain the various labels.
+And of these, the two most interesting
+ones are the last two, right here.
+Mo_1 and Mo_2,
+because they're cell variables.
+You see these braces that were on
+the right, which means that the strings,
+each one of these strings is stored in
+the memory, and the address of each
+one of them shows up as
+elements in this array, Mo_1.
+And we learned the reason for
+using cell arrays, back in Lesson 7.
+When you have a bunch of strings, in
+their different lengths, and you want to
+store them in a single array, really the
+best way to do that is with a cell array.
+The next two variables we create in the
+function are for the actual climate data.
+Data_1, and Data_2.
+We create two matrices.
+Here, and here, for storing the
+temperature, and precipitation data for
+the various months.
+The reason we have two matrices,
+and two cell arrays, is simple.
+They're two separate sections for
+the first, and second halves of the year.
+Here, and here.
+So, it's easier to have the corresponding
+data in separate variables.
+Once we have the variables
+set up out of the way,
+we can start dealing with
+the text file we want to create.
+The fopen function tries to open the file
+using the name that was passed to it
+by the caller of the function,
+that's called filename.
+The w plus t argument,
+as we've seen before it tells fopen
+that we want to write this file, and
+if it doesn't exist we want to create it,
+if it does exist we want to
+discard its current contents.
+This t here says that it's a text file.
+The function returns a number.
+If it successfully opens the file
+according to our request,
+then the number is positive.
+And we call it the file ID, or
+file handle, and it's stored in fid here.
+However, if it failed to open the file for
+any reason, for example, if we don't have
+right permission in the current folder,
+it'll return a negative number.
+In that case, we print an error message,
+and immediately return from the function.
+This guarantees that the code
+after the if statement,
+will execute only if we
+have a valid file open.
+And it's ready to be written.
+Then, it comes a sequence
+of fprintf functions.
+This is the familiar fprintf function
+that we've gotten used to before, but
+this time, the first argument
+is a number instead of a string.
+In that case,
+MATLAB will write the output from fprintf
+into the file that has that file number,
+that file ID,
+that handle, instead of writing it
+to the command window, over here.
+Its that easy to write text into a file.
+The first few printf, write the title
+in the column header's into the file.
+And it's time to write
+the data into the file.
+That's done in this for
+loop, and this for loop.
+The good news is that,
+we know all this stuff already.
+The format string for
+fprintf works the same way as before,
+when we were printing
+to the command window.
+Cell arrays are accessed using these
+braces, just as we learned before.
+All the things that we're doing here are
+things that we've learned to do earlier.
+Once we're done with the writing,
+we need to remember to close the file, and
+that's done right here, with fclose.
+That's it, we're done.
+And now, you know, how to write
+text files from a MATLAB program.
+The text file is usually broken into
+lines, so humans can read it easily.
+And they read it one line, at a time.
+Well, that's also the best way to read it,
+with a computer.
+We'll illustrate that, by writing our own
+version of the built-in function type.
+Type reads and prints, in each line
+of a text file to the command window.
+Let's re-implement that function by
+reading a text file, one line at a time,
+and printing each la, line to the command
+window immediately, after we read it.
+Our view_text_file function,
+takes the file name as input, and
+returns a no outputs.
+It just simply reads, and prints, the
+contents of the file, one line at a time.
+First we need to open the file, and
+we open it for reading, with the fopen
+function, using a permission rt,
+which means, read text file.
+We should always check that the file
+open request was successful, and
+we do that by checking whether the file
+identifier returned by fopen is negative.
+If it is,
+then there was a problem opening the file.
+The file may not exist, or
+some other program may be using it.
+Or we don't have read access
+to the current folder.
+In that case, we call the error function,
+and our function will be closed.
+But if it's not a negative,
+we have a valid file identifier, and
+we're in business.
+So, we're ready to read
+the contents of the file.
+To read the first line from the file,
+we use the built-in function fgets.
+We give it the file identifier, and
+it reads one line, and
+returns that single line in a string.
+Here we catch that string in
+a variable named, oneline.
+We use a while loop to
+print the current line, and
+then read the next line repeatedly,
+until we reach the end of the file.
+And how do we know we've reached the end?
+Well, that's a little tricky but
+fgets helps us out.
+When fgets reaches the end of the file,
+there's nothing left to read.
+So, there's no string to return,
+instead it returns a minus one.
+So we use the ischar function,
+in the condition of the while loop.
+Ischar returns true,
+only if its argument is a string.
+If it returns false, then we've
+reached the end of the file, and
+the file in the while loop, will quit.
+Inside the loop, we use fprintf with
+the percent s format specifier,
+to print the current line,
+which is stored in oneline.
+Then we use fgets,
+to get the next line, and so on.
+Pretty simple, really.
+Finally, we put an extra new line
+character, to make sure that after
+the printing is done, the command
+prompt will appear on a new line.
+Then we close the file, that's it.
+Not too bad, was it?
+Yeah, reading strings
+from a text file is easy.
+But converting those strings into
+numerical data is much harder.
+For example,
+if our climate data spreadsheet were
+a text file, instead of an Excel file.
+It'd be a painful process to write the
+code necessary to recognize the digits,
+and decimal points that represent
+temperatures, and precipitation data.
+And convert them into numerical
+values inside variables.
+The textbook describes how to do
+it in detail, but it's cumbersome.
+And while text files are nice for
+humans to read,
+they're a poor way to
+store a numerical data.
+Furthermore, converting text to numbers
+is not a fundamental issue in learning
+the program.
+So, for all of these reasons,
+we're not going to cover it in the course.
+[MUSIC]
+Instead, we'll show you how to read, and
+write numbers with binary files, which are
+much more suitable for this sort of thing.
+[MUSIC]
+[SOUND] [APPLAUSE]
+

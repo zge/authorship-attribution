@@ -1,0 +1,140 @@
+All right so QuickFind is too slow for
+huge problems. So, how are we going to do
+better? Our first attempt is an
+alternative called, Quick-union. This is
+so called lazy approach to algorithm
+design where we try to avoid doing work
+until we have to. It uses the same data
+structure or array ID with size M but now
+it has a different interpretation. We are
+going to think of that array as
+representing a set of trees that's called
+a forest as depicted at right. So, each
+entry in the array is going to contain a
+reference to its parent in the tree. So,
+for example, 3's parent is four, 4's
+parent is nine. So 3's entry is four and
+4's entry is nine in the array. Now each
+entry in the array has associated with it
+a root. That's the root of its tree.
+Elements that are all by themselves in
+just, in their own connected component,
+point to themselves, so one points to
+itself but also nine points to itself.
+It's the root of the tree, containing two,
+four and three. So, from this data
+structure we can associate with each item
+a root, which is representative, say, of
+it's connected component. So that's the
+root of three is nine, going up that root.
+Now, once we can calculate these roots,
+then we can implement the find operation
+just by checking whether the two items
+that we're supposed to check with are
+connective where they have the same root.
+That's equivalent to saying, are they in
+the same connective component? So that's
+some work, going to find the roots of each
+item but the union operation is very easy.
+To merge components containing two
+different items. Two items that are in
+different components. All we do is set the
+ID of P's route to the ID of Q's route.
+Let's make P's tree point to Q. So in this
+case, we would change the entry of nine to
+be six to merge three and five. The
+components containing three and five. And
+with just changing one value in the array
+we get the two large components emerged
+together. That's the Quick-union
+algorithm. Because a union operation only
+involves changing one entry in the array.
+Find operation requires a little more
+work. So let's look at the Implementation,
+a demo of that one in operation first. So
+again we, we start out the same way but
+now the idea array entry really means that
+every one of these things is a little tree
+where the one node each everyone pointing
+to itself. It's the root of it's own tree
+so now if we have to put four and three in
+the same component, then all we do is we
+take the root, of the component containing
+the first item and make that a child of
+the root of the component, component
+containing the second item. In this case
+we just make four as parent three. So now
+three and eight. So again, we take the
+first item and make it a child of the root
+of the tree containing the second item. So
+now three, four, and eight are in the same
+component. Six and five six goes below
+five. Nine and four, So now four is the
+root of the tree containing four is eight.
+And the root of tree containing nine is
+nine. And so we make nine a child of
+eight. Two and one, that's an easy one.
+Now if we get our, our eight and nine
+connected, we just checked that they have
+the same root and they both have the same
+root eight and so they're connected. Five
+and four 4's root is eight. 5's root is
+five. They're different. They're not
+connected. Five and zero. Five goes to be
+a child of zero. Seven and two seven goes
+to be a child of 2's root which is one.
+Six and one. 6's route is zero 1's its own
+route, so zero becomes a child of one.
+Each one of these union operations just
+involves changing one entry in the array.
+And finally, seven and three. So seven's
+root is one, three's root is eight, one
+becomes a child of eight. Okay and now we
+have one connected component with all the
+items together. Alright, so now let's look
+at the code for implementing Quick-union.
+The constructor is the same as the other
+one. We create the array and then set each
+element to be it's own root. Now we have a
+private method that implements this
+process of finding the root by chasing
+parent pointers until we get to the point
+where I is equal to ID of I, and if it's
+not equal, we just move I up one level in
+the tree, set I equals ID of I and return
+it. So starting at any node, you just
+follow ID equals ID of I until they're
+equal and then you're at a root and that's
+a private method that we can use to
+implement the find operation or the
+connected operation. You just find the
+root of P and the root of Q and if you
+check if they're equal. And then the union
+operation is simply find the two roots I
+and then set the idea the first one could
+be the second one. Actually less code than
+for Quick Find, no fore loops. There's
+this one wild loop that we have to worry
+about a little bit. But that's a quick and
+elegant implementation of code to solve
+the dynamic connectivity problem called
+Quick-union. So now we're going to have to
+look at can this code be effective for
+large problems? Well unfortunately
+Quick-union is faster but it's also too
+slow. And it's a little different kind of
+too slow then for Quick Find, there's
+times when it could be fast, but there's
+also times when it could be too slow. And
+the defect for Quick-union is that the
+trees can get too tall. Which would mean
+that the find operation would be too
+expensive. You could wind up with a long
+skinny tree. Of each object just pointing
+to next and then to do a find operation
+for object at the bottom would involve
+going all the way through the tree.
+Costing involving in the ray axises just
+to do the find operation and that's going
+to be too slow if you have a lot of
+operations.

@@ -1,0 +1,385 @@
+Welcome back to the course on Audio
+Signal Processing for Music Applications.
+This is the transformations week, the week
+that we talk about the potential of
+the spectral modeling approach we have
+been discussing in the past few weeks for
+the application of manipulating sound of
+transforming different aspects of sound.
+And in this programming lectures I want to
+go over some of the code of the SMS tools,
+package that implement this information.
+So in this lecture, I want to
+explain the STFT transformation, so
+the file that implements some very,
+basic transformations using the STFT.
+So we'll be, basically implementing these,
+block diagram in which
+after the analysis of
+a sound in a particular frame where we
+have the magnet and the phase of, sound,
+we can apply some transformation,
+to this, spectral data before we actually
+do the inverse Fourier transform and
+re-synthesize basically, a new sound.
+So let's go to a script that
+I wrote that makes a very
+simple operation on one single
+DFT of a sound on one frame,
+so we'll be doing some filtering
+to one particular frame.
+Okay, so
+we'll be using this sound over sound and
+so after importing all the models,
+and the packages that we need,
+we read, sound file,
+the oval sound file into the array x.
+Then we well, with the, the, we get window
+hamming window with the given size,
+here we have the same size for the window
+and the one that we're using for the FFTN.
+Okay and then we just take one fragment of
+of the oval sound, 512 samples so
+the size that we want to find.
+Okay, and then we also define a filter.
+Okay and the concept of defining a filter
+in the frequency domain is basically;
+defining a shape, in, in DB scale because
+we're going to be apply in in the DB
+scale, that will be added to
+the spectrum of the original signal.
+So it has to be a smooth shape.
+We don't want to have very jack our
+strongest continuities that we
+create distortion so in fact what
+we are defining here is a filter that is
+in fact the shape of a hamming window.
+So we're going to be designing
+a hamming window as filter in
+the frequency response.
+And in order to apply it in DD we multiply
+it by minus 60 so that we have a shape.
+In fact this is an invert hamming window.
+So this will be used,
+to do basically a ban stop filter.
+So we're going to a attenuate
+a certain frequencies using the shape.
+We going to see that by
+plotting these curves.
+Then we take the magnitude and
+phase spectrum of the signal that
+we chose and in order to apply
+the filter we basically decide where
+we're going to apply the filter.
+The filter is a 30 samples long.
+So, we're going to affect 30
+samples of the spectrum and
+we decide that it's going to be,
+the center is going to be the sample 40.
+And then now,
+we copy the input spectrum to this my and
+we're going to manipulate or
+we're going to change,
+the 15 samples around this 40th sample.
+So the filter will be applied to
+the 30 samples that are around the,
+this 40th position and
+then we do the inverse DFT.
+Okay so lets run this code first.
+We are in these directory in the work
+space so we can just run test.
+Okay, so we have executed this script, now
+we can keep plotting the different things,
+so we can first plot the waveform that we
+are going to be computing the DFT off.
+So this is the windowed fragment, okay?
+We can plot the filter.
+So if we plot the filter, okay?
+This is the shape that we
+going to be apply, applying.
+So in fact it already attenuates
+because it's a hamming window so
+that it is a step here,
+if it doesn't start at zero.
+And since we have subtracted 63 it goes
+down to 60 and then goes up again.
+Okay, so this is going to be the shape
+the 30 samples that are going to be
+applied into a magnitude spectrum.
+Then the magnitude spectrum that we're
+going to be using is these, okay,
+this is the overall spectrum of
+well 256 samples, the magnitude spectrum,
+the positive values.
+And now the multiplied version,
+well let's maybe
+we can even plot here on top
+of this the modified one.
+So we can plot that my spectrum here.
+Okay, so these green spectrum is a
+modified version in which everything is e,
+the same, except these middle part.
+This is the part where we apply
+the window and it clearly
+was affected very little of the, of the
+boundaries and very much at the center.
+So we apply a smooth shape, and
+therefore, we did a band stop filter.
+We kind of reduce, attenuate it,
+the frequencies that are around this area.
+And of course then, we obtain the output
+sound, which is the y signal.
+Okay, this is the modified input signal,
+so in fact if we plot on top of this,
+the original signal, okay,
+that green one is the original signal, and
+of course, the blue one has been
+attenuated, and is, the shape is
+quite different because we have attenuated
+certain frequencies much more than others.
+Okay, so this is a filtering
+operation that can be easily done.
+And then, in the STFT
+transformations file that is within
+the transformations directory,
+we can find this code,
+the STFT filtering at it's implemented
+to be applied for a whole sound.
+In fact, this is the same idea,
+this is the definition of the function,
+in which the input is the input sound,
+sampling rate, a window of 55's and
+hop size and then we pass in this
+filter which is an array that is going
+to be applied to the magnitude spectrum.
+And then basically the core is
+this y loop that does exactly what
+we have been showing for one particular
+frame performed the DFT that applies
+the filter and
+then it applies the inverse DFT.
+Okay, now let's talk about another
+operation that I believe is
+a little bit more interesting, which
+is the morphing that we talked about.
+So in this script, we're going to be
+morphing two sounds, the sound of a rain
+with a soprano sound, but again one frame.
+Okay, in order to do this
+morphing what we're going to
+do is apply the manual spectrum
+of one into the other, or
+basically interpolating
+the two magnitude spectrum.
+How do we do that?
+Well we do exactly the same thing
+that we did for one single sound.
+We going to find the window,
+we chose this two fragments.
+The, they have to be in this case
+the same size because we're going to be
+applying the,
+the same operation on both sounds.
+We're going to be interpolating the two
+magnitude spectrum, so these we have to
+start from the same window size for this
+and then they have to be of the same size.
+Then we take the two spectra, the, of the
+two sounds of of sub sum one and sum two.
+And the, the core part of the,
+of the morphing is in this next section.
+So what we're going to do is have
+one smooth version of one sound so
+that we only apply a, the general
+shape of one sound into the other.
+And so that's going to be
+the second sound is going to be the one to
+be smooth by one given factor, point two.
+So we use the re-sampling, kind of the
+down sampling aspect to obtain a smoother
+version of the x2 spectrum and
+then we up sample it again
+with interpolation to get the complete
+spectrum with a smoother representation.
+Of course, we can just have no
+smoothing by putting a value of one.
+And then, we're going to basically combine
+the two, a linear combination of the two.
+We, we are in a dB scale, so
+we can just add them,
+otherwise we would multiply them.
+In which there is this balance factor that
+defines how much of each is in the mix,
+basically and this 0.7, it means
+0.7 is applied to the second sound,
+and the rest,
+0.3 is applied to the first sound.
+And then, of course, we take the inverse,
+DFT, from the resulting magnitude spectrum
+with the phase of the first, signal, okay?
+So the phase will be on the first signal,
+and
+the magnitude spectrum is
+a combination of the two.
+Okay, let's run these again.
+Let's run this one, okay, and
+now let's keep showing the different
+sort of variables that we have.
+Let's start with the magnitude spectrum,
+so
+let's plot the magnitude
+spectrum of sound one and x1.
+Okay, and well, we had it open so we have
+to close it here and let's open it again.
+Okay, so this is the magnitude
+spectrum of the rain sound, so
+it's quite noisy it of course it
+indicates in the high frequencies So
+the low frequencies are stronger, but
+it, the case as the frequencies go up.
+And, the, we can plot, on top of that,
+the second spectrum which is this,
+soprano voice, which is clearly
+different the soprano voice, as,
+these, very, clear shapes,
+which relate to the foreman.
+We are not so
+interested in this type of morphing to get
+a good resolution on the harmonics,
+we are interested in the general shape.
+Okay, and now we can plot on top of this
+the smooth version of the second so
+we apply a smooth factor of 0.2, so
+mx2smooth2, is the interpolated so
+version of that,
+so if you put mx2smooth2
+that's going to be,
+the smooth version of these
+speech of these voice sound.
+Okay so now this is the,
+the red line is the one that will be
+interpolated with the blue line, okay?
+And now with the balance 0.7
+the resulting spectrum is my that
+also can be plot on top of these.
+So my, okay, will be, now is this blue
+line and its clearly
+an interpolation between the two.
+So since it's 0.7 is closer
+to the red line, to the,
+than to the blue line and we had instead
+of 0.7, we had, let's say, 0.2 or
+0.1, let's, and let's say that,
+and let's, run the test one again.
+And now, if we plot on the same,
+plot, the my,
+okay, now is this purple curve and
+it clearly is much closer to the rain
+sound, because we have specified 0.1.
+Okay, so hopefully that gives you an idea
+of this idea of interpolating between two
+magnitude spectrum, and of course,
+then when we plot y, the output.
+This will be the resulting fragment of
+the sound that captures this
+interpolation of this morphing aspect.
+And if we go to the STFT
+transformations and
+there is another function that performs
+that for a whole sound, the STFT morph.
+Okay, so
+STFT more receives two sounds: x1 and
+x2, and here we have the procedure of
+controlling windowing differently and
+then there is the smooth and
+the balance and
+it does exactly what I showed in in
+the case of two individual frames.
+Okay, and now we can show the,
+the file that basically is the one that
+is called from the the interface,
+the transformation interface.
+It has one function name, and that it
+it receives the sound and plots the,
+the spectrum and
+it plots the resulting morphing.
+So, it, it has some default parameters and
+it does all the things that we have been,
+doing.
+So basically, for the whole sound.
+So it reads the sound,
+it gets the windows, and
+then it performs, STFT,
+analysis for the whole sound, and
+then it does the morphing
+between the two sounds.
+In this case the STFT is done so that you
+can visualize the spectrum of the signal.
+Okay, and then we do the morphing and we
+do again the analysis of the output sound,
+so we can visualize the spectrum of
+the input and the output sound, in,
+in the plot and
+it writes the resulting sound files.
+Okay, so we can import this this file.
+So the STFT morph function oh
+we can import it as a name,
+which for example, st, and now,
+we can, call this main and
+of course, we change the parameters.
+So, the default parameters
+where ocean sound with
+a speech male with this particular window.
+So for example let's change the balance.
+Now it was 0.2 so it was closer to
+the ocean, than to the speech male.
+Let's make it so that the balance of F
+is very much close to the speech,
+let's take it back.
+Balance, oh come one, balance,
+okay, F and let's put for example,
+0.9, okay, and let's run this.
+Okay, so now we have the input sound.
+The spectrogram of the input sound.
+And this is the spectrum
+of the output sound, okay?
+And then the actual output sound.
+So really here,
+the output sound has captured quite
+a bit of the shape of the speech.
+So, if we can play it,
+it has save file into the directories so
+we can just type play and ocean STFT more.
+>> Do you hear me?
+They don't lie at all.
+>> Okay, so clearly has taken
+the duration of the, of the ocean sound,
+because that's the, the basic sound from
+which we're taking the analysis from.
+And then the magnitude
+spectrum has been modified by
+these smooth spectra of
+this speech male sound.
+Okay and that's all I wanted to say,
+So we have seen how
+within the SMS tool there is always code
+for being able to do morphing between
+two sounds using the short time Fourier
+transform and the code is quite simple but
+is the maybe the simplest type of
+transformation that we can do.
+It is the total and
+it can be quite, useful and
+interesting for
+quite a few types of applications.
+So that was all.
+This first programming lecture, so
+in the next one, we will talk about
+the sinusoidal model to implement
+transformations in the sinusoidal model
+using this same SMS tools and
+particular code that implements them.
+So I'll see you next class.
+Bye-bye.
+[SOUND]
+

@@ -1,0 +1,253 @@
+Following on from the work in accurate
+unlexicalized parsing, there was then an
+extension which led to latent variable
+PCFGs, which I'm not gonna go through in
+detail. But I just want to briefly
+introduce the idea of and show you how it
+works. So in the model that we were looking
+at previously for accurate unlexicalized PCFGs,
+everything was hand done. Someone was
+staring at sentences and how they parsed,
+and deciding how better to split the
+categories to build a parser that would
+work better. So if you're interested in
+machine learning, you should be thinking,
+gee, maybe we could do that automatically
+rather than doing it all manually. And so
+that's the idea of latent variable PCFGs.
+So the starting point is, we still have a
+tree bank to train on. So the bracketing
+of the sentences in the training data are
+known, and the base categories are known.
+So that we have a noun phrase node that's
+in some context and we already know that.
+But what we're saying is, well maybe
+there's some way that we'd like to
+annotate it with more information to say
+what kind of a noun phrase it is so we can
+parse more accurately. And so concretely,
+the way that's being done is by splitting
+the noun phrase category into a certain
+number of subcategories where each one is
+just being given a number. So this is an
+NP17. And so then the learning task is to
+choose both a number of sub-categories and
+then how to group all of the noun phrases
+into the tra, in the training data into
+particular sub-categories, so that you can
+have something in common in all the
+NP17's. So that you can then have good
+predictions as to how they expand and
+which words they contain. And I'm not
+going to go through that algorithm in
+detail. If you've seen things in other
+classes like machine learning or
+probabilistic graphical models, it's a form
+of the EM algorithm like the Forward-Backward
+algorithm used for HMMs, constrained
+by the preexisting tree structure. So what
+you're doing is you have the preexisting
+tree structure in black, and you're
+wanting to have a probability distribution
+over different latent sub-states of each
+category. And the simplest way of doing
+this would just be to say okay, each
+category has ten subcategories and then
+learn a probability distribution over the
+choice of different subcategories for the
+S state. That had been tried
+previously and been found to not work very
+well. So far, Slav Petrov introduced was a
+cleverer split merge algorithm where for
+each category you started with just the
+single category of an S. And you said,
+okay let's try and split that into two S
+categories. Is there a good way to split
+it, to capture more conditioning
+information? Yes. Let's keep that split.
+Okay. Well, try again. Let's take each of
+those and split them into two, and so we
+have four S subcategories. And then at,
+maybe at that point you discover that one
+of those splits was useful and the other
+one wasn't. So, you just get rid of the
+other one again and go back to three S
+subcategories, and you'd repeat that over
+a number of times. And so, you'd
+progressively split and merge the
+subcategories and come out with a good
+number of sets of different categories.
+Yeah. Again, I'm not gonna go through the
+algorithm in detail. Let's just look at
+how it turns out. So, this shows some of
+the subcategories that are learned for
+part of speech tags, cause they're the
+easiest ones to interpret. So this is for
+proper nouns. And so what we find is that
+the proper nouns have been divided into
+groups. And the way they're divided isn't
+just purely syntactic like a feature
+based grammar anymore. They're kind of
+syntactico-semantic class based models. So
+we have a subcategory of proper nouns,
+which is abbreviations for months. We have
+another one that's first names. Another
+one that's initials. Another one that's
+last names of people. And then we have two
+corresponding states here, for what are
+location names, which are multi-word, and
+again we have a first word here and a last
+word here. So we have these kind of
+interesting semantic sub-classes of nouns.
+And something similar to that is happening
+also with the personal pronouns. So we're
+having the ones that are the nominative
+subject pronouns and we're having the ones
+that are the accusative object pronouns,
+and then we're also then distinguishing
+between the subject ones as to whether
+they're capitalized or not, which is maybe
+capturing something that we're there at
+the beginning of the sentence. And a word
+isn't restricted to only appear in one
+category. It can be in the rewrite of
+multiple categories. So it appears in both
+these places, because it's used as both a
+nominative and accusative pattern. Looking
+overall at the pattern of state splits for
+phrases this actually works interestingly
+and linguistically very effectively. So
+for the common categories like noun
+phrase, verb phrase, prepositional phrase,
+but equally the ones where the basic
+categories of the Penn tree bank were too
+crude. That's what we found out previously
+with our hand states splits. We found
+that we wanted to distinguish possessive
+noun phrases, and we wanted to distinguish
+verb phrases depending on whether they're
+infinitive two-verb phrases, whether
+they're ing verb phrases, or whether
+they're finite verb phrases. Well, in
+those places the split merge algorithm
+learns a lot of subcategories. It's
+learning 25, 35 or so subcategories. On
+the other hand, for the rare weird
+categories, the unlike constituent phrase,
+the right recursive clauses, the fragments,
+it's learning very few subcategories. In
+fact, for these ones over here, it's
+making no splits at all and it's just
+having the single tree bank category. Okay
+so we're then building a grammar that is
+making split which aren't purely
+syntactic, it's also got semantically
+flavored splits, but it's still much
+coarser than actually doing head word
+lexicalization. So in the models that I'm
+showing you here, the maximum possible
+number of splits that could happen to a
+category was 64. And in practice, only a,
+at most a reasonable number of
+them survived, so in practice you're
+always getting less than 40 as you can see
+in this example. So with just that level
+of state splitting how well can you make
+a parser work? And the answer turned out
+to be, you could make a parser that
+worked amazingly well. So, this slide
+shows you current parsing results for the
+parsers that are around when I'm saying
+this around 2012. So we start off again
+with our basic PCFG at around 72.7 percent
+F1. And we're working up from there. And
+I'm showing two columns of results. A lot
+of early parser results were shown on
+sentences up to at most 40 words. Whereas
+more recently it's been more common to
+show results on all sentences of any
+length. Okay, so our baseline now is this
+unlexicalized parser of Klein and Manning. And so,
+at sentences of all lengths, it's getting a
+little bit under 86 percent here.
+Matsuzaki et al tried the simple idea of
+splitting each category with latent states
+but just assuming the same number of latent
+states for each category. And that didn't
+really work any better. In particular,
+both of these parsers are still
+noticeably below what you could get by
+doing lexicalized PCFGs with head words.
+So the best of the Charniak Collins family
+of lexicalized PCFGs was this more recent
+model of Eugene Charniak's from 2000. And
+it was getting 89 and a half percent. And
+so it seemed like maybe this three and a
+half percent gap was the value that you
+were getting from lexicalization, beyond
+what you got from this basic state
+splitting. But what the latent variable
+PCFG showed is, well, actually, you could
+get all that value without actually
+modeling particular head words, but just
+using these fairly coarse semantic classes
+of words. So the latent variable PCFG is
+actually a little bit better, and it's
+getting this extra half a percent here.
+You kind of can't explain in absolute
+versions, why it's better because really
+it's using less conditioning information
+than Charniak's parser. So the reason it's
+better is because the probability
+estimation is better. And it's better
+because it's actually a lot easier to do
+here because you have a much smaller
+number of categories in the grammar and
+you're not having to do complicated
+smoothing with head words. Now people have
+gone on and done further work with lexicalized
+PCFGs and so in particular Eugene
+Charniak and Mark Johnson
+worked together to add a discriminative
+reranker on top of the Charniak parser.
+So this discriminative reranker is essentially
+using a maxent model of the kind
+that we saw in week 4, but applying it now
+to choose between different parses
+for a sentence where the candidate parses
+are being generated by Charniak's generative
+parser. So this is feeding into that.
+And well, the maxent model was, again,
+able to do this kind of better forward
+probabilistic conditioning, which
+definitely helped. So that was then adding
+about two percent in performance to the
+Charniak parser and in particular adding a
+little bit still above the level of the
+Petrov and Klein parser but still
+noticeably knowing that individual
+particular head words is still now only
+giving you about 1.3 percent in
+performance. And finally, as always, in
+machine learning contexts, if you have a
+bunch of systems, a bunch of classifiers
+for doing things, you can always get even
+better results by combining them all
+together. And people have shown that. So
+Fossum and Knight combined various constituent
+parsers and their performance into an
+aggregate model, and that was able to get
+an extra percent of performance. So this
+is the state of the art at the moment for
+performance in probabilistic parsing,
+which is actually an extremely high level
+of accuracy. Probabilistic parsers actually
+can give you the right parses for most
+parts of most sentences quite reliably.
+Okay, so that shows the idea of having
+these latent states, when you allow them
+to be defined to maximize parse
+performance. You get these syntactico-
+semantic states, which really allow you to
+parse rather well, still with a quite
+compact grammar.

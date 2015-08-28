@@ -1,0 +1,222 @@
+
+Now we tune into another field, Galois 
+Field 2. 
+Which has just two elements, 0 and 1. 
+It's named after Galois, who was a 
+remarkable mathematician, who laid the 
+foundation for group theory but died in a 
+duel at the age of 21. 
+Addition of 0 and 1 in the Galois Field 2 
+is just like exclusive-or. 
+That is, adding 1 and 1 gives you 0. 
+Multiplication is just like ordinary 
+multiplication of 0 and 1. 
+And the usual algebraic laws hold for 
+example, multiplication distributes over 
+addition. 
+Then we'll provide a simple module called 
+GF2 that defines a value, one. 
+This value acts like the 1 in GF2. 
+So, and we'll use 1 when we're, when we 
+write programs that operate on GF2 
+values. 
+Here's an application of GF2 to 
+cryptography. 
+Now, suppose Alice wants to communicate 
+with Bob. 
+She only wants to communicate one bit 
+let's say. It's called p, the plaintext. 
+So, they use a, a cryptosystem to ensure 
+privacy. 
+Now here's the table describing the 
+cryptosystem. 
+Alice and Bob agree beforehand on a 
+secret key, k and Alice will encrypt her 
+plaintext, p by using this table to 
+figure out the cyphertext c, that she 
+should transmit to Bob. 
+ >> By studying that encryption table, 
+you might notice that it's really just 
+the addition table for GF2. 
+We can therefore implement encryption 
+like this. 
+And here's how we would use it. 
+Import the one from GF2. 
+Let's say the key is one, and the plain 
+text is one. 
+We compute the cyphertext using 
+encryption and that's what we get. 
+ >> Now once Bob receives that 
+cyphertext, can he figure out what the 
+plain text is? 
+Well, he knows k the key, he receives 0 
+and 1 as the cyphertext. 
+Now for any particular value of k and any 
+particular value of c, there's only one 
+value of plain text  that's 
+consistent with those. 
+So, Bob can determine what plain text was 
+intended by Alice. 
+Now, suppose an eavesdropper Eve, 
+observes the value of c. 
+She doesn't know the secret key, can she 
+learn anything about the plaintext? 
+And here's the simple answer, no and 
+here's why. 
+Suppose that the cyphertext is 0, 
+remember Eve doesn't know the key. 
+She can look at this table and say oh, 
+the cyphertext is 0, so maybe the plain 
+text is 0. 
+That's the case if the key is 0 or maybe 
+the plain text is 1 if the key is 1. 
+Since she doesn't know whether the key is 
+0 or 1, she can't figure out whether the 
+plain text is 0 or 1. 
+And here's a somewhat more sophisticated 
+answer. 
+It depends on how the secret key is 
+chosen. 
+So, let's suppose the secret key is 
+chosen by flipping a coin. 
+So, the probability is one half that the 
+key is 0 and one half that the key is 1. 
+Let's look at it from Eve's perspective. 
+Before she even goes out to eavesdrop, 
+she reasons as follows: 
+suppose the plain text turns out to be 0. 
+ Well the key is chosen randomly. 
+So, looking at the first two rows of the 
+table, the probability that the 
+corresponding cyphertext is 0 is one 
+half. 
+And the probability that the cyphertext 
+is 1, is one half. 
+Now suppose that the plain text was 
+actually 1. 
+Looking at the last two rows in the 
+table, the key is chosen randomly. 
+So, the probability that the cyphertext 
+is 1 is one half. 
+And the probability of the cyphertext is 0 
+is one half. 
+So, the choice of the value p, the plain 
+text is not the reflected in the 
+probability distribution of the 
+cyphertext. 
+Eve doesn't learn anything from observing 
+c, she might as well just stay home and 
+flip a coin 
+because the cyphertext is just 0 with 
+probability one half, and 1 with 
+probability one half. 
+What is it about this cryptosystem that 
+leads to perfect secrecy? 
+Why does Eve learn nothing from 
+eavesdropping? 
+Well, let's define the function f0 as 
+follows. 
+F0 takes as input the key, k and outputs 
+the encryption of the plaintext 0 with 
+that key. 
+So, according to the first two rows of 
+this table, f0 of 0 equals 0 and f0 of 1 
+equals 1. 
+This function is one-to-one and onto. 
+Now, when the key k is chosen randomly 
+according to the uniform distribution, 
+that is when, when k is 0 with 
+probability of one half, and 1 with 
+probability of one half. 
+Then, the probability distribution of the 
+output is also uniform. That is, the 
+probability that the cyphertext is 0 is 
+one half and the probability that the cyphertext 
+is 1 is also one half. 
+Now let's turn to the function f1. 
+F1 is the encryption of the plain text 1 
+with a key k. 
+Now, according to the last two rows of 
+this table, f1 of 0 equals 1 and f1 of 1 
+equals 0. 
+So, this function is also one-to-one and 
+onto. 
+And so, when the key is chosen uniformly 
+at random, the probability distribution 
+of the output is also uniform. 
+That is, the probability that the 
+cyphertext is 1 is one half and the 
+probability that the cyphertext is 0 is 
+also one half. 
+So, it seems regardless of what the 
+plaintext is, the probability 
+distribution of the cyphertext is 
+uniform. 
+One half probability of 0 and one half 
+probability of 1. 
+So, the probability distribution of the 
+cyphertext doesn't depend on the 
+plaintext, when the key is chosen 
+randomly. 
+From Eve's perspective, there's no point 
+in observing the cyphertext. 
+She knows it's just going to be a 
+bit, either 0 or 1, it shows in according 
+to the uniform distribution. 
+She might as well stay home and flip a 
+coin. 
+This is the idea, for the cryptosystem 
+called, the one-time pad. 
+If each bit is encrypted according to 
+this table with its own one-bit key, this 
+cryptosystem is unbreakable. 
+No eavesdropper can learn anything. 
+Now, in the 1940s, the Soviets seemed to 
+have run out of key, and they started 
+reusing bits that they'd used from 
+previous messages. 
+And this was discovered by the US Army's 
+Signal Intelligence Corps Service. 
+They started slowly finding places where 
+they could decrypt little bits of the 
+message. 
+This led to some very important 
+intelligence including information about 
+the Soviet espionage on nuclear weapons. 
+And we only learned about this in 1995, 
+when when information on this project, 
+the, the VENONA project was declassified. 
+Here's another application of GF2. 
+Imagine you need to stream video through 
+a network, starting at this point. 
+Now, if there's only one recipient of 
+the, of the video stream, since there are 
+two paths that share no edges, the video 
+can be pumped at two bits per unit time, 
+from this point to this point. 
+One bit through each of these paths. 
+But now suppose that there are two 
+recipients of the video stream. 
+Well, one bit is being sent this way, one 
+bit is being sent this way but there's 
+contention on this link. 
+So, you can't directly stream two bits 
+per unit time, through this network to 
+both receivers. 
+Instead, we require the network itself to 
+do a tiny bit of computation. 
+So, at this point in the network, the two 
+bits of the stream are added together 
+using the addition rule for GF2. 
+Now, at this point, this recipient gets 
+the bit b1 and the bit b1 plus b2. 
+This recipient can obtain b2 by 
+subtracting b1 from the sum. 
+This recipient gets the bit b2 and the 
+bit b1 plus b2. 
+So, can obtain the bit b1 by subtracting. 
+So, you can see in this case, you could 
+effectively double the throughput from 
+this source to these two recipients using 
+GF2 addition. 
+

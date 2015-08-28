@@ -1,0 +1,815 @@
+Welcome back.
+We covered in this segment the most
+celebrated, and
+the most intuitive motion estimation
+technique, block or region matching.
+It is used widely, if not exclusively, for
+video
+compression, but also for a large number
+of other applications.
+We describe the approach and then also
+look into
+variations of it which trade accuracy for
+speed of implementation.
+The actual humble implementation technique
+has also been investigated extensively.
+Since motion estimation is one of the
+most computationally expensive subsystems
+in any video encoder.
+It is indeed interesting that although the
+approach is so intuitive, block
+matching actually still continues to be an
+active research and development topic.
+If one opens for example any general video
+processing, most
+probably there will be some papers on this
+topic in it.
+We'll also show some experimental results,
+demonstrating the various approaches
+towards block matching.
+So, let us proceed with this very
+important segment.
+Let us discuss now the block matching
+motion estimation method.
+This is probably the most intuitive method
+out
+of all the methods we are going to
+discuss.
+The steps are indeed conceptually very
+simple.
+We see here two different frames from a
+video sequence, the form of the video
+sequence.
+So this is a frame x of t minus1, and
+frame x of t.
+The two frames can be consecutive or can
+be further apart in time.
+We then consider a block in the current
+frame.
+The one shown here in Siam.
+I overwrite it in red.
+We move this block to all possible
+positions in the previous frame.
+We move it for example here, or here,
+and we try to find the best match of the
+block
+in the current frame with the block in the
+previous frame.
+But let us assume that the best module,
+the cyan block in the current frame.
+Was with a yellow block in the previous
+frame, based on
+some matching criteria of, that we will
+discuss a bit later.
+After the two blocks are found that
+provided the best match, a block from
+frame t and the yellow block from frame t
+minus 1.
+I utilize a vector here to denote
+that relative displacement between these
+two blocks.
+And this is the motion vector associated
+with this block.
+Now this vector can point block at time T
+to block at time T minus one as shown
+here.
+And in that case it's in fact as a motion
+and
+compensation vector and that's how it's
+handled typically in a video compression
+scenario Or it can point from time t-1 to
+time t and
+that's what I get if I reverse the
+direction of the vector.
+So this might look like a trivial
+operation, reversing the direction of the
+vector but
+it has implications since now I'm not
+looking
+for a global motion between the two
+frames.
+But instead I'm looking for a local motion
+based
+on these blocks and because of that if I
+consider
+all the pixels in one frame there's not
+one
+to one mapping between the pixels in the
+two frames.
+Also the way it's depicted here for frame
+X of T I divided into
+blocks and then I associated one vector
+for all the pixels inside the blog.
+However, I could associate the motion
+vector I found just to only
+one pixel in the blog, let's say the pixel
+in the center.
+In that case, if I shift the blog by one
+pixel, find another vector and keep going
+that way I
+am going to end up with a dense field,
+motion
+field that corresponds to each and every
+pixel in the frame.
+Let's look at what some of the
+underlying assumptions in making this
+approach work out.
+The first one is that there's no Change
+in the ambient light, which is, of course,
+the
+assumption in all of these methods, so
+that, the
+optical flow corresponds to the motion in
+the scene.
+We also assume that the objects are rigid.
+They don't undergo transformations, like,
+for example, the lips here of foreman that
+are elastic, objects, so that a match can
+be found between the two blocks.
+We also assume that the objects have
+translated, they don't undergo any
+more complicated motions, and then more
+than that, this translation in the
+three-dimensional
+world Is on a plane that is parallel to
+the image plane so
+therefore the objects do not change sizes
+from one frame to the next.
+And finally we assume that no objects
+appear or disappear from the scene in
+going from one frame to the next and
+therefore a good match can be found.
+The discussions so far about block
+matching
+methods we have not addressed the matching
+criteria one can use and this is what we
+would like to do now.
+We have been using blocks as the unit
+we've
+tried to match, but it should be clear I
+can
+use other Regularly shaped regions, such
+as diamonds, for matching,
+or in general any arbitrarily shaped
+regions for matching.
+And in this case, generally speaking these
+block matching
+methods are also referred to as region
+matching methods.
+Now any similarity or dissimilarity
+measured between these
+regions can be used as the matching
+criterion.
+So what we see here is a function phi,
+it's a function of
+the block at time t And the block at time
+T minus one.
+The block is anchored and N one and two.
+And then I look at pixels around N one and
+two indicated by M one and M two.
+Which belong to this origin indicated by
+calligraphic N.
+So, xt minus 1 is at the same location,
+but I'm looking at the displacements,
+d1 d2, that will make these two blocks at
+t
+and t minus 1 either similar, in which
+case I try to maximize
+this function, or dissimilar, in which
+case I try to minimize this function.
+So this function again we map the
+intensity values into an arrow
+here which is a function of the
+displacements D one D two.
+What are some examples of this function
+fie.
+I can use a correlation function as
+a measure of similarity between block or
+regents.
+And then again in that case I try to max
+the correlation,
+or I can use an error function, such as
+the min squared error.
+Or the min absolute error, or, or min
+absolute difference.
+In the latter case, the function looks
+like this, right?
+So I have again the error function of d1,
+d2.
+And I'm just looking at the difference
+between the blocks.
+And I just take the absolute value of this
+difference.
+Clearly if I use the M A E or M A D
+criterion it's simpler from a
+computational point of view since I don't
+need to perform the squaring of the arrow.
+The required accuracy of the estimated
+motion
+depends on the application For example,
+for
+most of the applications, we mentioned
+they'll
+give tracking, filtering, interpolations,
+human computer interaction.
+The accuracy of the estimated motions
+should be as high as possible.
+If, however, the motion is used for
+compression, then we
+can trade accuracy of the motion for
+computation of time.
+We'll see all these aspects in detail when
+we talk about video compression.
+Motion estimation is actually
+computationally
+intensive part of any video encoder.
+So the first step towards trading accuracy
+for computations
+Is to restrict the cell's region in the
+reference frame.
+As you recall, block matching consists of
+taking a block in the current
+frame, and trying to match it to a block
+in the reference frame.
+We show the location of this block.
+So here is the block in the current frame
+and let's assume
+that the center of this block is at
+location n1 and 2.
+And we show the location of the block in
+the The
+reference frame so the center of this is
+n1 and 2.
+So if I consider possible locations of the
+blue block
+in the current frame in the reference
+frame shown here in
+yellow, then we refer to this as
+exhausting search.
+So if the frame says M by n
+pixels, then I need to perform
+m times n matching comparisons
+[BLANK_AUDIO]
+and finding the best match of the blue
+block
+in the current frame to any of the
+locations.
+Shown in yellow in the reference frame.
+It is reasonable to assume that the motion
+of the objects in this scene as
+compared to the frame rate is such that
+the object can travel only so far.
+Or in other words the motion vectors can
+be arbitrarily so long.
+So it the video is at 30 frames per second
+then within one thirtieth of a second the
+distance between two frames, the object
+can travel, so many pixels in the scene.
+We therefore constrain the search within a
+search region as shown here.
+[BLANK_AUDIO]
+The search region is clearly a function of
+the resolution of the frame.
+So, if the search region is K by L
+pixels, then the number
+of matching comparisons is now K by L and
+again
+depending on the size of the search it can
+result in major computational savings.
+Even after we restricted the search within
+the
+search region, we would like to further
+reduce
+the number of computations by not
+performing comparisons
+at all possible positions on the the
+search region.
+So, one way to do so is shown here and
+will
+show additional ways, examples of
+additional ways in the slides that follow.
+So show here the search region, which is
+of course in the reference frame.
+And with one we show the center of the
+block in the current frame, and this is
+the point n one and two as indicated in
+the previous Slide.
+So if we were to consider all locations of
+the search region, we would need to bring
+the center of the block of the current
+frame
+that we tried to match at all these
+vertices
+and find a matching crit, based on a
+matching criteria, find a matching
+metric and We can assume for the time
+being that we use another criteria.
+Instead of doing this, we first consider
+the grid
+location numbered one here, so the center
+of the
+block again, of the current frame will be
+brought
+here at one and this error will be
+evaluated.
+After that I would consider the eight
+neighbors of
+one, also numbered one and shown here in
+blue.
+And I would evaluate the error at these
+eight additional locations.
+And let us assume that the minimum of the
+error was found at the location here,
+indicated in red.
+After that, I'll consider the eight
+neighbors of the
+pixel number one where the meaning was
+found, so
+I'll consider the eight neighbors numbered
+two and let
+us assume that the meaning was found at
+this location.
+At which point I'll repeat this step, I'll
+consider the eight neighbors of
+two, which are number 3 I'll look for the
+minimum, assume the minimum was
+at this location and therefore the motion
+vector associated with the blocks
+centered at N one and two in the current
+frame is the one shown here.
+Let us hit now why this search is called
+logarithmic search.
+So Let's denote here the axes like this,
+and let's assume that the size of the
+search
+region is from this point here minus b
+zero.
+To p 0, and from 0
+minus p to 0 p.
+So the cell's region has size Two p plus
+one by two p plus one
+[BLANK_AUDIO]
+and then let's denote by k the
+log of p, log base two, and let's take the
+ceiling here.
+So for this specific example I show here,
+p equal
+7, therefore this is a 15 by 15 pixel
+search region.
+And also k equals 3.
+So if we follow here the steps that were
+shown The first
+pixels we consider were at this distance
+d1, and d1 is equal to 2k minus 1.
+So, it's k equals 3 so this is four pixels
+d one right?
+So, following the steps that I described
+the
+distance, here after the first one was
+found.
+Let's say this is d 2.
+D 2 is D one over two is therefore is two
+K minus two.
+This distance here is D three and D three
+is
+D two over two therefore is two K minus
+one.
+And we stop at the point where the
+distance is equal to one pixel.
+So, therefore we take k steps in this
+process, and
+since k is the logarith of P, where P
+again is
+half the dimension of the search region,
+this is called the logarithmic search.
+The 2D logarithmic search we just
+described
+is meaningful, since at each step We are
+looking at the direction of reducing the
+error,
+so we are descending on the error
+function.
+The steps we take in this descending
+directions are half at each step.
+So it's indeed a smart way to visit the
+pixel locations in the search region.
+And if the error function were convex Then
+we
+would obtain the global minimum within the
+search region.
+So we show here the matching arrow
+as an on dimensional function of the
+displacement.
+And with a big here convex function It has
+a global minimum at this
+point, and again this
+tubular logarithmic search would attain
+this point shown here.
+In practice of course we have no no idea
+of how this matching area function would
+look like and
+most probably it's a non convex function
+And here's
+an example of a noncomplex error function,
+matching error function.
+And if that case, clearly, we may get
+stuck in one of the local minima.
+And therefore we won't get the best
+possible
+solution, the smallest Margin error within
+the search region.
+Another way to reduce computations is
+instead of using all
+the pixels inside the block to find the
+error, be it
+the mean squared error or the mean
+absolute error, we
+only use one fourth, 25% of the pixels at
+each place.
+So here for example you see an eight by
+eight block we tried to match.
+And in one location the red pixels
+numbered one are used and
+the next location the blue pixels number
+two are used and so on.
+Again this method intuitively makes sense.
+But one can always come up with examples
+for
+which this method will fail to obtain the
+global minimum.
+And this method can be used with a search
+region, or without a search region.
+So in other words, when a global search is
+performed.
+[BLANK_AUDIO]
+And yet as a final example of a method for
+reducing computations Is
+shown here, again for an 8 by 8 block we
+would like to match.
+Instead of using all 64 pixel values in
+the evaluation of the
+matching error, the projections of the
+rows, as shown here, so the sum
+of the invested values in each row, as
+well as the projection
+of the columns, the sum of the values
+along the column I used.
+So, in this particular example instead of
+comparing sixty four numbers for finding
+the error.
+We compare only sixty numbers, and clearly
+there's some major reduction computations.
+So we saw with the previous techniques
+that one can use fewer
+search locations and all of your pixels in
+computing the matching error.
+A scheme that combines these two features
+is referred to as the hierarchical search
+method.
+So, we make several lower resolution
+versions
+of both the current and reference frames.
+As shown here.
+The frame is first low pass filtered.
+Then down sampled by a factor of 2.
+We continue with another low pass
+filtering, another down sampling by 2.
+And we can keep going this way.
+So here we see a three level
+representation of estimation.
+So, we start performing motion estimation
+at this lower level
+using any of the techniques that we have
+covered so far.
+Since the resolution at this level is
+considerably reduced we could
+perform global search, for example in
+order to obtain an accurate estimation.
+The estimated vector is here multiplied by
+2
+in each direction, in the x and y
+direction.
+And it is defined at this higher level.
+The estimated vector is multiplied by 2
+again, and serves as initial condition For
+the
+estimation of the highest level here, of
+this
+three level, again the presentation of the
+frame.
+And then from this highest level, the
+motion
+vector, the overall, the final motion
+vector is, produced.
+This approach is being used quite often.
+Since it provides improve motion
+estimation results.
+It might suffer from the illumination of
+small objects, due to the down something.
+On the other hand, the Lopus field ring
+provides some immunity to noise.
+Conceptually, also the Lopus field ring
+Filters not only
+the intensities, but the DFD, the
+displaced frame difference
+or the error, based on the compensation so
+that
+the error function is forcibly convexified
+at the lower levels.
+And therefore, a global minimum can be
+found at
+this lower level, even, With one of the
+first methods.
+It should be clear by now that the block
+matching method we
+described in the previous slides provide
+pixel or pel accurate motion vectors.
+So here's an example of such a vector and
+this means that both the tail Of
+the vector and the head of the vector
+are located on the locations of the view
+points.
+Very often we are interested in motion
+vectors with sub pixel accuracy.
+For example in compression sub panel
+motion estimation is
+providing sizable compression improvement
+over full panel motion Estimation.
+So a way to obtain halfway accurate motion
+vectors is shown here.
+After the best vector at full resolution
+is found as shown again here by this
+example ,this vector, we consider the 8
+neighbors
+of this pixel here at half pel resolution.
+So these x's here are locations for which
+the intensity value of the image is not
+known.
+The intensity value is known only at these
+square locations.
+And therefore in performing now block
+matching at this
+Half the locations the intense dividers of
+the image, of
+the two images both of the reference and
+the current frame need to be interpolated.
+And one can use bi linear interpretation
+or
+any interpolating kernel to find this non
+existent values.
+So With half-pel interpolation, if the
+minimum is found at this
+point, then this is now the half-pel
+accurate motion vector.
+Clearly want to continue with this process
+to
+obtain quarter pel accurate motion
+vectors, one eight pel.
+I could motion vectors and so on.
+It's also mentioned here that the optical
+flow techniques that
+would be presented next provide real
+estimates of the mushroom vectors.
+So real accuracy not integers, not integer
+values since
+the result of solving a set of linear
+equations.
+We show here an experimental comparison of
+some
+of the block matching techniques we've
+discussed so far.
+After some current frames are shown first,
+both
+of which are seven twenty by four eighty
+pixels.
+We then show that the displaced frame
+difference
+Which is, can be thought of as the motion
+compensation error when the motion vectors
+are equal to zero.
+It's noted here that in the frame
+difference,
+the dynamic range of the image doubles, so
+the
+intensity in the original frames ranges
+from 0
+to 255, since eight bits for pixels are
+used.
+And the intensities and the frame
+difference
+range from minus 255 to plus 255.
+And what is shown here, they have been
+mapped linearly into the 0 to 255 range.
+So minus 255 is represented by black,
+like, for example, here.
+Zero is represented by gray value, and
+plus 255 by white.
+It is clear from this image that there is
+energy, there are non-zero values, where
+the objects are moving.
+These are temporal edges, so the ball is
+moving, for example, the arms and hands of
+the player are moving There is however
+non-zero energy, non-zero
+values also where it comes to stationary
+objects, such as the table here.
+You see that the edge of the table here is
+non-gray,
+is non-zero values as well as the calendar
+on the wall.
+And this is because there is a panning
+motion
+Motion of the camera with respect to the
+scene.
+So there's global as well as local motion
+in this particular scene.
+Using a block matching algorithm with 16
+by 16
+blocks and full search we obtain the
+results shown here.
+We see that most values are equal to zero
+grade values as expected.
+This is, by the way, the best result we
+can obtain under the specific motion model
+we are using.
+We see, however, that not all values are
+zero.
+Especially around the moving arms and
+hands of the player.
+So full search should have given us a zero
+compensation or prediction error.
+However, the results are as good as the
+motion model we are using.
+A main component in this, motion model is
+that all
+the pixels in the block Un, un, undergoing
+the same motion.
+And this modeling assumption is clearly
+violated at motion
+boundaries, maybe for example here, where
+part of the
+block Belongs to a moving object while the
+other
+part of the blog belongs to this
+stationary background.
+We see the result next.
+The display frame difference when
+logarithmic search is used.
+The display frame difference is now
+greater as expected.
+Since we have traded computational speed
+for accuracy.
+Finally we show the result of the three
+level hierarchical search,
+the display frame difference is.
+Now as almost as good as full search
+and better than result we obtained with
+logarithmic search.
+Apparently the lobis filtering that is
+performed
+has been official effects as already
+mentioned.
+If the motion estimation is performed
+for tracking applications or filtering
+applications then
+Full search under this model should be the
+search of the approach of choice.
+If however, we are performing motion
+estimation compensation for video
+compression applications,
+then we can afford trading accuracy of the
+motion for speed of implementation.
+And in that case, because in that case we
+have to send
+the, the displaced frame difference shown
+here, as will become clear when we
+cover video compression, so the other
+approaches, such as the logarithmic
+search, or
+the three-level hierarchical search, are
+Definitely,
+some of the choices on my exercise.
+In different parts of the course, we will
+be making use of the software package
+named VcDemo.
+With this, we'll be able to explore the
+possibilities of compression for both
+still images and videos.
+The package can be downloaded at this URL
+here and it is the result of the
+work of the information of the
+communication theory
+group at Delft University of Psychology in
+the Netherlands.
+You see here a snapshot of the user
+interface.
+This demo is completely manual driven so
+no programming experience is necessary.
+Through the user interface, the user can
+control the various parameters
+that will control the various compression
+schemes that we will be studying.
+So again we making use throughout the
+course of this package and right now we
+would like to use it to demonstrate
+the results of block based matching motion
+estimation.
+There
+is no used VC demo to demonstrate block
+matching based motion estimation.
+So after we start the software we can go
+here to open an image sequence.
+We see quite a few YUB sequences.
+Let's say we pick this one.
+So here we see the freeze frame of the
+sequence.
+Here we have a video player module so if I
+press
+play we'll see all twenty one frames of
+this video sequence.
+Each frame has resolution, 288 by 352.
+And again, there are 21 frames in the
+sequence.
+So going here we can invoke the motion
+estimation module.
+And then this interface comes up.
+We have quite a few choices.
+The first is whether we're going to use
+hierarchical motion estimation or not.
+Not so.
+Either we pick original solution only or a
+two level or three level hierarchical.
+When then have a choice of the search
+method.
+We can do full search or one time or N
+step logarithmic search.
+We have a choice of the block size, it can
+be Two by two all the way to 16 by 16.
+Let's say we pick eight by eight.
+Then we choose the size of the search
+region, so it's
+15 by 15 that's the maximum displacement
+that we will allow
+And finally we can step through the motion
+estimation frame by
+frame or we can let the system run on it's
+own.
+So if we press apply,
+we see here four in total windows so the
+upper right one shows
+us the frame difference The bottom left
+shows us the vector field
+on it's 8 by 8 block and the bottom right
+shows us the displaced frame difference.
+Again gray represents zero, black minus to
+55 white plus to 55, clearly the
+motion compensated frame difference bottom
+right is
+Is closer to zero than the frame
+difference.
+And actually, this also can be seen here
+by the statistics on the right.
+You see the frame number, and then the
+variance of the
+original frame, the frame difference and
+the motion compensated frame difference.
+So by and large the, there lies the
+variance Decreases when I look at the
+frame difference, and it further decreases
+when
+I look at the motion compensated frame
+difference.
+This is the prediction error, of this, the
+whole idea behind prediction error that
+the variance decreases.
+The last column shows the entropy of the
+vector field.
+We'll spend quite some time talking about
+these
+these, these issues and by and large the
+entropy is proportional to the number of
+beats
+I would need to represent the vector
+field.
+So I can press here Show Again.
+And see this short video repeating and
+demonstrating the effect.
+By the way, it should be clear here that I
+have both
+global as well as local motion to do the
+motion of the car.
+And this is reflected by the motion
+vectors.
+Ideally, it should be A very smooth motion
+field but due to the reasons that
+the model breaks down we see that it is
+probably not as smooth as can be desired.
+So this hopefully demonstrates to all of
+you these ideas we've just been explaining
+here in different words and different ways
+And of course you are encouraged
+to just download this package and
+experiment at your own time, at your own
+leisure and just pay attention to all the
+values aspects we detailed here.
+

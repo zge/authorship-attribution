@@ -1,0 +1,106 @@
+Now, let's look at a dictionary client,
+another very useful and common application
+of symbol tables. So, in this case, we are
+going to write a client called Lookup CSV
+that [cough] is going to take three
+arguments. The first will be a file name,
+a so-called common separated value file
+and the next two arguments are integers
+which will tell us what to treat as keys
+and values in the file. In this example or
+CSV file relates URLs to IP addresses. So,
+each line has a URL and IP address and are
+separated by commas. And in general, a CSV
+file might have many fields separated by
+comma, comma. So, we number them zero,
+one, and so forth starting from the left.
+So, what we are going to do with this
+client is specify with integers which
+field is the key, and which is the value.
+So, if we call this client with second
+argument zero and third argument one, that
+means we want to use the URL field zero on
+the CSV file as the key, no one use the IP
+address that's field one in the CSV as the
+value, you want to associate keys with
+values. So the client will build a symbol
+table that makes us associations for every
+line in the file and this could be huge
+file. And then, if we want to look up the
+IP address associated with a given URL we
+can just type in URLs and the client will
+return the IP address, it'll do the look
+up. So, Adobe.com has got this IP address
+that's shown if this line here in the
+table, and so forth. Princeton.edu has
+this IP and ebay.edu is not in the file.
+Now, on the other hand, we could, from
+this same file, we could build a symbol
+table where we treat the IP address as
+the, as the key and the URL as the value.
+So, in that case, it'll build a symbol
+table with IP addresses as keys and we can
+type in an IP address and get the
+associated URL. So, with one client we can
+handle lookups of all kinds in CSV files.
+For example, here's another CSV file that
+from biology that deals with, amino acids
+and codons and names. So, in this case,
+the first field is three letters from the
+DNA sequence which, represents a codon.
+And certain codons have names, that's the
+amino acids. So, TCC is called serine, and
+so forth. And that's an association that's
+well known to biologist and then you can
+use this lookup CSV client to quickly get
+the name associated with any given codon.
+That's just another simple example. This
+is a very general tool. Any CSV file, you
+can pick any field as the key, any other
+field as the value. So here's still
+another example where we might use for a
+class list, which has the person's year of
+graduation, last name, first name precept
+name and login name. And so in the first
+call over here, we might use the login
+name as the key and the first name as the
+value. So, we type in somebody's login
+name we get their first name. And again,
+with the same client login is key and get
+the section as a value. So, all kinds of
+information processing that we might need
+to do for large amounts of data,
+represented in comma, comma separated
+value files this one client which is based
+on a symbol table will provide useful
+functionality. And here's the
+implementation there's very little to it
+given the symbol table API that we've
+articulated and the implementations that
+we have. So what do we do to get lookup
+CSV implemented? Well, first thing is to
+set up the input stream from the first
+argument, so that's our input file. And
+then, get the numbers of the fields, so
+the key and the value. And now build a
+simple table that associates strings with
+strings. Then there there's a while loop
+where we just read a new line in that read
+line, read line and then split according
+to comma into tokens in an array. And
+then, the index in the array is going to
+build the fields that we're going to use.
+So, the key is the string in the key field
+entry of the array, and the value is the
+string in the value field entry in the
+array, and we simpl y put that into symbol
+table. So, this value loop just builds the
+symbol table from the file. Then from
+standard input we take queries, just read
+a string, check if the symbol table
+contains the string. It, it doesn't, print
+not found. And if it does, print the value
+associated with the key. So, a very small
+amount of code based on a symbol table
+implementation that gives us the
+dictionary functionality.

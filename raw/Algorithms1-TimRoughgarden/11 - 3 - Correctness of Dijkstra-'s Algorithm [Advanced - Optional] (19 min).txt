@@ -1,0 +1,469 @@
+In this video I'll prove to you that
+Dijkstra's algorithm does indeed compute
+correct shortest paths in any directed
+graph where all edge lengths are
+nonnegative. Let me remind you about what
+is Dijkstra's algorithm. It's very much in
+the spirit of our graph search primitives,
+in particular, breadth first search. So
+there's going to be a subset X of
+vertices, which are the ones that have
+been processed so far. Initially, X
+contains only the source vertex. Of
+course, the distance from the source
+vertex to itself is zero, and the shortest
+path from S to itself is the empty path.
+So then we'll have a main [inaudible]
+loop. There's gonna be N minus one
+iterations. In each iteration, we'll bring
+one vertex which is not currently in X
+into capital X. And the variant we're
+going to maintain is that all the vertices
+in X we would have computed estimates of
+the shortest path distance from s to that
+vertex, and also will have computed the
+shortest path itself from s to that
+vertex. Remember our standing assumption
+stated in the previous video, we're always
+gonna assume there's at least one path
+from the source vertex s to every other
+destination v. Our job is just going to
+compute the shortest one, and also we have
+to assume that the edge lengths are
+non-negative, as we've seen otherwise
+Dijkstra's algorithm Might fail. Now, the
+key idea in Dijkstra's algorithm is a very
+careful choice of which vertex to bring
+from outside of X into capital X. So what
+we do is, we scan the edges crossing the
+frontier. Meaning, given the current edges
+vertices that we've already processed, we
+look at all of the edges whose tail has
+been processed, and whose head has not
+been processed. So the tail is in capital
+X, the head is outside of X. That is, they
+cross. The cut from left to right in the
+diagrams that we usually draw. Now, there
+may be many such edges. How do we decide
+amongst them? Well, we compute the
+Dijkstra greedy score for each. The
+Dijkstra greedy score is defined as the
+shortest path distance we computed for the
+tail. And tha t's been previously computed
+cuz the tails in capital X. And then we
+add to that the length contributed by this
+edge itself, by the edge (v, w), which is
+crossing the cut from Left to right. So
+amongst all edges crossing from left to
+right, we compute all those Dijkstra
+greedy scores, we pick the edge with the
+smallest greedy score, calling that edge
+just V star W star for the purposes of
+notation. W star is the one that gets
+added to X, so it's the head of the arc
+with the smallest greedy score, and we
+compute the shortest path distance of that
+new vertex W star to the be the shortest
+path distance to V star plus the length
+contributed by this edge V star W star and
+what is the shortest path. It's just the
+shortest path previously computed to V
+star, plus, this extra edge V star, W
+star, tacked on to the end, Is the formal
+statement we are going to prove. For this
+video we're not going to worry at all
+about running time. That will be the
+discussion of the next video. We'll
+discuss both the running time of the basic
+algorithm and a super fast implementation
+that uses the heat data structure. For now
+we're gonna just focus on correctness. So
+the claim is that for every directed
+graph, not just the 4-node, 5-arc example
+we studied, as long as there's no negative
+edge lengths, Dijkstra's algorithm works
+perfectly, computes all of the correct
+shortest path distances. So just to remind
+you about the notation, what does it mean
+to correct all shortest path distances
+correctly? It means that what the
+algorithm actually computes, which is A of
+v. Is exactly the correct shortest path
+distance, which we were denoting by
+capital L and V in the previous video. So
+both the algorithm and the proof of
+correctness was established by Edsger
+Dijkstra, this is back in the late 1950s.
+Edsger Dijkstra was a Dutch computer
+scientists and certainly you know, one of
+the forefathers of the field as a, as a,
+as really as a science, as an intellectual
+discipline. He was awarded the ACM Turing
+award, that is the Nobel prize in computer
+sci ence, effectively, I believe it was
+1972 and he worked for a long time in the
+Netherlands but also spend a lot of his
+later career at UT Austin. So the way this
+proof is gonna go is by induction. And
+basically what we're going to do is we're
+going to say every iteration when we have
+to commit to a shortest path distance to
+some new vertex, we do it correctly. And
+so then the form of the induction will be,
+well that given that we've made all of our
+previous decisions correctly, we computed
+all our earlier shortest paths in the
+correct way, that remains true for the
+current iteration. So formally it's
+induction on the number of iterations of
+Dijkstra's algorithm. And as is more often
+than not the case in proofs by induction,
+the base case is completely trivial. So
+that just says before we start the while
+loop, what do we do? Well, we commit to
+the shortest path distance from s to
+itself. We set it to zero. We set the
+shortest path to be the empty path. That
+is of course true. Of course even here,
+we're using the fact that there are no
+edges with negative edge length. That
+makes it obvious that sort of having a
+nonempty path can't get you negative edge
+length better than zero. So the first
+shortest path computation we do from S to
+S is trivially correct. The hard part, of
+course, is the inductive step justifying
+all of the future decisions [inaudible]
+done by the algorithm. And of course,
+mindful of that example, that non example
+we had at the end of the previous video.
+In the proof by induction, we'd better
+make use of the hypothesis that every edge
+has non-negative length, okay? Otherwise,
+the theorem would be false. So we'd
+better, somewhere in the proof, use the
+fact that edges cannot be negative. So
+let's move on to the inductive step.
+Remember the inductive step the first
+thing to do is to state the inductive
+hypothesis. You're assuming you haven't
+made any mistakes up to this point. Let's
+be a little bit more formal about that. So
+that is everything we computed in the past
+okay what did we compute in the past? Well
+for each vertex which is in our set
+capital X for each vertex that we've
+already processed. We want to claim our
+computed shortest path distance matches up
+exactly with the true correct shortest
+path distance. So in our running notation
+for every already processed vertex so for
+all vertices V in our set capitol X. What
+we computed as our estimate of the
+shortest path distance for V is in fact
+the real shortest path distance. And also.
+The computed shortest path. Is in fact a
+true shortest path from STV. So again,
+remember, this is a proof by induction. We
+are assuming this is true, and we're going
+to certainly make use of this assumption
+when we establish the correctness of the
+new iteration, the current iteration. So
+what happens in an iteration? Well, we
+pick an edge, which we've been calling (V
+star, W star). And we add the head of this
+edge W star to the set X So let's get our
+bearings and remember what Dijkstra's
+algorithm computes as the shortest path
+and shortest path distance for this new
+vertex W star. So by the definition of the
+algorithm, we assign as a shortest path.
+Reported shortest path from S to W star.
+The previously computed reportedly
+shortest path from S to V star. And then
+we tack on the ends the direct arc V star
+W star. So pictorially we already had some
+path that started at S and ended up at V
+star and then we tack on the ends this arc
+going to W star in one hop. And this whole
+sha-bang, is what we're going to assign
+as, Paw star. So let's use the inductive
+hypothesis. The hypothesis says that all
+previous iterations are correct. So that
+is, any shortest path we computed in a
+previous iteration is in fact, a bona fide
+shortest path from the source s to that
+vertex. Now, V star, remember, is in X, So
+that was previously computed. So, by the
+inductive hypothesis, this path BV star,
+from S to V star, is in fact a true
+shortest path from s to V star in the
+graph. So therefore. It has length L of E
+star. Remember, L of E star is just, by
+definition, the true shortest path
+distance in the g raph from S to V star.
+And now, given that the path that we've
+exhibited from S to W star is just the
+same one as we inherited the V star, plus
+this extra edge tacked on. It's pretty
+obvious what the length of the left hand
+side is, So it has length. Just the length
+of the old path, which we just argued is
+the shortest path distance from S to V
+star, plus the length of this arc that we
+tacked on. So that's gonna be L of V star,
+W star. So by the definition of the
+algorithm, what we compute for W star is
+just [inaudible] score which is just the
+computed shortest path distance to the
+tail. V star plus the length of the direct
+edge, by the inductive hypothesis we've
+correctly computed all previous shortest
+path distances. V star is something we've
+computed in the past by conductive
+hypothesis is correct so this is equal to
+L of V star. By the inductive hypothesis.
+Alright. So don't worry if you're feeling
+a little lost at this point. We actually
+really done no content in this proof yet.
+We haven't done the interesting part of
+the argument. All we've been doing is
+setting up our dominoes, getting them
+ready to be knocked down. So, what have we
+done in the current iteration? Well first
+of all our estimate of the shortest path
+distance from the source to W star to the
+new vertex that we're including in the
+[inaudible] X is the true shortest path
+distance to V star, plus the length of the
+edge from V star to W star. That's the
+first thing. Secondly, the path that we
+have in the B array. Is a bonified path
+from S. To W. Star with exactly this
+distance. And the point is now it's clear
+what has to be proven for us to complete
+the inductive step, and therefore the
+proof of Dijkstra's algorithm. So what do
+we need to prove? We need to prove that
+this isn't just any old path that we've
+exhibited from s to this vertex W star.
+That it's the shortest path of them all.
+But differently, we need to show that
+every other s W star path in this graph
+has length at least this circled value. So
+let's proceed. Let's show that no matter
+how you get from the source vertex S. To
+this destination W. Star, the total length
+of the path that you travel is going to be
+at least this circled value, At least L Of
+V Star, plus L Of V Star, W Star. Now on
+the one hand, we don't have a lot going
+for us, because this path p could be
+almost anything. It could be a crazy
+looking path. So how do we argue that it
+has to be long? Well, here's the one thing
+we've got going for us for any path p that
+starts in s and goes to W star. Any such
+path must cross the frontier. Remember it
+starts on the left side of the frontier.
+It starts at the source vertex which is
+initially and forever in the set capital
+X. And remember that we only choose edges
+that cross the frontier whose head is
+outside of X. And W starts exactly at the
+head of the edge we chose in this
+iteration, So this is not an X. So any
+path that starts in X and goes outside of
+X, at some point it crosses from one to
+the other. So let's think about the graph
+and its two pieces, that to the left of
+the frontier and to the right, the stuff
+is already processed and the stuff that,
+which has not yet been processed. S, of
+course, is in the left hand side. And at
+the beginning of this iteration of the
+while loop, W star was on the right hand
+side. Any path, no matter how wacky, has
+to at some point cross this frontier.
+Maybe it does it a bunch of times, who
+knows. But it's gotta do it once. Let's
+focus on the first time it crosses the
+frontier, and let's say that. It crosses
+the fronts here with the vertex Y going to
+the vertex z. That is, any path p has the
+form where there's an initial prefix,
+where all the vertices are in X, and then
+there's some first point at which it
+crosses the frontier, and goes to. A
+vertex which is not an X, we're calling
+the first such vertex outside of X, Z, and
+then I can skip back and forth, who knows,
+but certainly it ends up in the vertex W
+star, which is not in X. So we're gonna
+make use of just this minimal information
+about arbitrary path p, and yet this will
+give us enough of a foothold to lower
+bound its length, and this lower bound
+will be strong enough that we can conclude
+that our path, that we computed, is the
+best. Smaller than any possible
+competitor. So let's just summarize where
+we left off on the previous slide. We
+established that every directed path from
+S to W star P [sound]. No matter what it
+is it has to have a prescribed form. Where
+it ambles for awhile inside X. And then
+the portal through which it escapes X. For
+the first time, we're calling Y. And then
+the first vertex it sees outside of X. Is
+Z, and there has to be one. And then it
+perhaps ambles further, and eventually
+reaches W. Star. It could well be that Z
+and W star were exactly the same that's
+totally fine for this argument. So here's
+one of our competitors this path P and it
+shows it's least as long as our path. So
+we need a lower bound on the link of this
+arbitrary path from S to W star. So, it's
+get that lower bound by arguing it by each
+piece separately and then invoking
+Dijkstra's greeting criterion. So remember
+we said we better use the hypothesis that
+edge links are non negative otherwise we
+are toast, otherwise we know that the
+algorithm is not correct. So here's where
+we use it. This final part of the. Path
+from Z to W star. If it's nonempty, then
+it's gotta have nonnegative length. Right?
+Every edge, as part of this subpath, has
+nonnegative edge length. So, total length
+of this part of the path is nonnegative.
+So Y. To Z. By construction is direct arc.
+Remember this is the first arc that path
+P. Uses to go from X To get outside of X.
+Okay? So it's how it escapes, the
+conquered territory X. And this just has
+some length L Of YZ, So that leaves the
+first part of this path the prefix of the
+path that lies entirely in capital X, so
+how do we get a lower bound on the length
+to this path. Well, let's begin with some
+trivial, this is some path from S to Y so
+certainly it's at least as long as a
+shortest path from S to Y. And now we're
+gonna use the inductive hypothesis again.
+So this vertex Y, this is somet hing we
+treated in a previous iteration, right?
+This belongs to the set capital X. We've
+already processed it. We've already
+computed or estimated the shortest path
+length and the inductive hypothesis
+assures us that we did it correctly. So
+whatever value we have hanging out in our
+array capital A, that is indeed the length
+of a true shortest path. So the length of
+the shortest SY path is L of Y by
+definition. And it's a Y by the inductive
+hypothesis. And now we're in busy.
+Alright, so what does this mean we can say
+about the total length of this arbitrary
+path P? Well, we've broken it into three
+pieces and we have a lower bound on the
+link for each of the three pieces. Our
+lower bounds are, our computed shortest
+path distance to Y, the length of the
+direct edge from Y to Z, and zero. So
+adding those up we get that the length of
+path P is at least. Our computed shortest
+path distance to Y plus the length of the
+arch from Y to z. So why is this useful?
+Well, we've got one remaining trick up our
+sleeve. Is a hypothesis which is
+presumably very important, which I have
+not yet invoked. And that is the choice of
+Dijkstra's greedy criterion. At no point
+in the proof, yet, have we used the fact
+that we select which vertex to add next
+according to Dijkstra's greedy score. So
+that is gonna be the final nail in the
+coffin, that is going to complete the
+proof. How do we do that? Well, we've
+taken an arbitrary path p. We've lower
+bounded its length in terms of the
+computed shortest path distance up to the
+last vertex of this prefix y, plus the arc
+length to get from X to outside of X,
+C(y,Z). So, remember this means Y is in
+the left part. Of the frontier and Z is
+not And therefore, in this iteration, the
+edge YZ was totally a candidate for us to
+use to enlarge our frontier. Remember, we
+looked at all of the edges crossing from
+left to right, YZ is one such edge, and
+amongst all of them we chose the one with
+the smallest Dijkstra-greedy score. That
+was the Dijkstra-greedy criterion. So what
+have we shown? We've shown that th e
+length of our path. Is no more then what's
+a lower bound on the length of this
+arbitrary other path p. So this completes
+the proof. So let me just remind you of
+all the ingredients, in case you got lost
+along the way. So what we started out with
+is we realized our algorithm, or
+Dijkstra's algorithm, it does compute some
+path from S to W star, right. It just
+takes the path it computed previously to V
+star and it just appends this final hop at
+the end. So that gives us some end from S
+to W star. Moreover, it was easy to figure
+out exactly what the length of that path
+is, and the length of the path that we
+came up with is exactly the circled
+quantity at the bottom of the slot. It's
+the shortest path distance. Comma
+apostrophe star [inaudible], plus the
+length of the direct arc from V star to W
+star. So that was how well we did. But we
+had to ask the question, is it possible to
+do better? Well, we're trying argue that
+our algorithm does the best possible, that
+no competing path could possibly be
+shorter than ours. So how did we do that?
+Well, we considered an arbitrary competing
+path P. The only thing we know about it is
+that it starts at S and ends at the W star
+and we observe that any path. Can be
+decomposed into three pieces; a prefix, a
+direct edge and a suffix. Then we give a
+lower bound on this path P, right? The
+direct edge, you know the length is just
+whatever it is, the suffix we just use the
+trivial lower bound that will be zero and
+that's where we use the hypothesis that
+every edge has non-negative edge length
+and for the prefix, because that's all in
+the stuff we already computed, we can
+invoke the inductive hypothesis and say,
+well whatever this path is, it goes from S
+to some vertex in Y so at least the
+shortest path distance from S to Y. Which
+is something we computed in a previous
+iteration. We lower bounded the length of
+any other path in terms of the Dijkstra
+greedy score for that path, since we
+choose the path with the best Greedy
+score. That's why we end up, we wind up
+with the shortest path of them all from S
+to W star. This, of course, is embedded in
+a outer proof by induction on the number
+of iterations. But this is the inductive
+step which justifies a single iteration,
+since we can justify every iteration given
+correctness of the previous ones. That
+means, by induction, all of them are
+correct, So all of the shortest paths are
+correct. And that is why Dijkstra's
+algorithm correctly computes shortest
+paths. Any directed graph with
+non-negative edge links.

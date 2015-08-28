@@ -1,0 +1,277 @@
+
+What is a Matrix? 
+The traditional notion of a matrix is the 
+two-dimensional array with numbers in it 
+like this. 
+This has two rows, the first row is 1, 2, 
+3 the second row is 10, 20, 30. 
+It also has columns. 
+So, the first column is 1, 10, second 
+column is 2, 20, third column is 3, 30. 
+We call this a 2 by 3 matrix. 
+For matrix A, the i, j element at A, 
+refers to the element in row i, column j 
+and it's usually written. 
+A subscript ij, will sometimes use the 
+more pythonic notation A brackets i,j. And 
+here's an obvious representation for a 
+matrix. 
+We're going to represent this matrix by a 
+list of lists each element of the top 
+level list is a list consisting of the 
+elements of a, a row. 
+So the first list is 1, 2, 3, the first 
+row, the second list is 10, 20, 30. 
+You could similarly represent this by a 
+list of columns lists, where there's one element at the 
+top level list for each of the columns of 
+the matrix. 
+I'm going to take a slightly different 
+approach to matrices. 
+For finite sets R and C and R by C matrix 
+Cartesian product of R by C to the field 
+F. 
+Now here is an example, we, A and B are 
+row labels and at, sharp and question 
+mark are column labels. 
+And in python we represent this as a, 
+this function as a dictionary. 
+Mapping from the cartesian product the 
+set of pairs of one element from T and 
+one from C to the field. 
+And we can represent this by a 
+dictionary. 
+For this matrix, the row labeled by a is 
+the vector with domain at sharp and 
+question mark. 
+mapping at to one, sharp to two, and so 
+on. 
+And, the column labeled by sharp is the 
+vector with domain A and B, mapping A to 
+2 and B to 20. 
+Here's one representation for matrix. 
+As a dictionary of rows, it maps each of 
+the row labels to a vector that is that 
+row. 
+So, in this dictionary, the row label A 
+maps to the Vector 1, 2, 3, and maps b to 
+the Vector 10 20 30. 
+A similar representation is as a 
+dictionary of columns. 
+Here the dictionary maps the column 
+labels to the Vectors. 
+So at sign is mapped to 1, 10, sharp is 
+mapped to 2, 20, and question mark is 
+mapped to 3, 30. 
+Our primary representation for matrices 
+will be using a Python class mat. 
+This is a class with two fields. 
+This is analogous two, but not exactly 
+like Vec. 
+The two fields are D and f, f just as in 
+Vec, is a dictionary. 
+D is instead of being a set a pair of 
+sets. 
+You would think that D would be the set, 
+that's the cartesian product of the row 
+labels for the column labels, but that gets too big. 
+So, we represent it as a pair, R, C, 
+where R is the set of row labels and C is 
+the set of column labels. 
+F is a dictionary that maps elements of 
+that Cartesian product, pairs, row label, 
+column label, to the corresponding field 
+elements. 
+And of course our sparsity convention is 
+used here so we don't have to represent 
+entries of the matrix whose values are 
+zero. 
+So here's a rudimentary implementation of 
+that class Mat. 
+We'll later add lots of matrix operations 
+to this class to exercise our 
+understanding of the Mat class, we'll 
+look at the identity matrix. 
+For a set D, the D by D identity matrix 
+is the matrix such that the k,k element 
+is 1 for every element k, of D and all 
+the other elements are zero. 
+I'm going to use the numeral 1 to 
+indicate the identity matrix With a 
+subscript of D. 
+But very often, we'll just omit the 
+subscript when it's clear what domain is 
+intended. 
+Very often the letter I is used to 
+represent the identity matrix instead of 
+this numeral one. 
+So for example, here's the identity 
+matrix on the set consisting of A, B and C. 
+The set of row labels is a, b and c. 
+The set of column labels is also a, b, 
+and c. 
+And the dictionary F, maps a, a to one, 
+b, b to one, and c, c to one. 
+We're omitting all the other entries 
+because their values are all zero. 
+We're exploiting the sparsity convention. 
+Now, there's a quiz write the procedure 
+identity of D that returns the instance 
+of mat representing the D by D identity 
+matrix. 
+And here's the solution. We can convert 
+between our different representations of 
+matrices. For example, consider this 
+matrix; 
+Here's the representation as an instance 
+of Mat. 
+And we can convert this to a column 
+dictionary. 
+That is a dictionary whose keys are the 
+column labels, and whose corresponding 
+values are the Vectors that are the 
+columns. 
+Now, let's look at converting an instance 
+of Mat to an, a column dictionary. 
+Here's an example of an instance of Mat, 
+and here's the corresponding column 
+dictionary. 
+Write the procedure mat2coldict. 
+That given an instance of mat returns the 
+column dictionary representation of the 
+same matrix. 
+Here's the solution. 
+We provide a module mat util that defines 
+various conversion routines. 
+Such as mat2coldict, mat2rowdict, 
+coldict2mat, rowdict2mat and listlist2ma. 
+That converts from a list of list of 
+field elements to a matrix such that the 
+inner lists are the rows of that matrix 
+and also the identity procedure that you 
+wrote. 
+I should note that coldict2mat and 
+rowdict2mat can take as arguments a 
+coldict. 
+A column dictionary or a row dictionary 
+or a list of columns or a list of rows. 
+So it's somewhat more flexible. 
+Now we gave the definition for a 
+rudimentary matrix class. 
+But we're going to write a much more 
+elaborate one that incorporates all these 
+different operations. 
+And here's the syntax for each of them. 
+This more elaborate class definition 
+allows us to write much more concised 
+Matrix and Vector code, such as this. 
+This sets the entry corresponding to row 
+label a, and column label uppercase B, to 
+1. 
+This assigns to the variable b the vector 
+obtained by multiplying the matrix M by 
+the Vector v. 
+This assigns to the variable b the matrix 
+obtained by multiplying the matrix M by 
+the matrix A, and this pretty prints the 
+matrix B. 
+You'll learn more about these operations 
+as we go on. 
+So you're going to code this class 
+starting from a template we provide. 
+As in the case of Vec, you're going to 
+write the bodies of, named procedures. 
+But in using that, you're just going to 
+use the operations as we described here. 
+This is a much more concise way of 
+writing than this. 
+So in all code outside the Mat module 
+that uses Mat, you're going to import 
+just the class Mat itself, using this 
+command. 
+So the named procedures are not used. 
+They're not even imported. 
+In short, use the operators. 
+And the method transpose defined in the 
+class when working with mats. 
+For each procedure, just as in Vec, we'll 
+provide the stub. 
+As before, you're going to replace the 
+pass statement with the appropriate lines 
+of code. 
+As before, the first line is a 
+documentation string, the second line is 
+an assertion. 
+In this case, it asserts that the second 
+element of the D field of M has to be a 
+set that's equal to the domain of the 
+vector, v. 
+If this assertion is violated by the 
+arguments, Python will report an error. 
+So this assertion is there to remind us 
+of a rule about, in this case, matrix 
+vector multiplication. 
+So please keep the assertions in your 
+code when writing code for this class. 
+Again, we're going to be using Mat a lot. 
+We have to make sure that your Mat 
+implementation is correct. 
+So we provided a file test mat.py with 
+lots of examples to test against. 
+So you should make sure that your mat 
+implementation works for all of these. 
+As before you can copy in the test in 
+from test.mat or you can run all the 
+tests at once using this command. 
+If it doesn't print anything, all the 
+tests are passed. 
+One simple row for matrices, is as a way 
+of packing together a bunch of rows or a 
+bunch of columns. 
+We define two vector spaces for each 
+matrix M. 
+One is the column space, which is is the 
+span of the columns of that matrix M. 
+The other is and, and it's written Col M. 
+The other is the row space of M which is 
+just the span of the rows of M and that's 
+written rows of M. 
+So for example the column space of this 
+matrix is the span of its columns. 
+The first column is 1, 10, the second 
+column is 2, 20, third column is 3, 30. 
+Now in this case, the span is just equal 
+to the span of the first column, 1, 10, 
+since the other two are, are scalar 
+multiples of that. 
+Similarly, the row space of this matrix 
+is the span of these of the two vectors 
+1, 2, 3, and 10, 20, 30. 
+And again, this is also equal to the span 
+of just the first Vector 1, 2, 3, since 
+the second one is a scalar multiple of 
+that. 
+Transpose swaps rows and columns. 
+So if you start with this matrix Where 
+the row labels are a and b, and the 
+column labels are at, sharp and question 
+mark. 
+You apply transpose, you get this matrix. 
+So for example, the entry in row a and 
+column sharp of the original matrix, is 
+the entry in column a and row sharp of 
+the transpose matrix. 
+Pretty soon we'll explore the operations 
+on matrices, but first let's note that a 
+matrix can be interpreted as a vector. 
+After all, an R by S matrix is just a 
+function from the cartesian coordinate R 
+cross S to the field F. 
+So it can be interpreted as an R cross 
+S-vector. 
+Thus, we can do scalar-vector 
+multiplication. 
+And vector addition, and our 
+implementation of matrices will 
+incorporate, those operations. 
+

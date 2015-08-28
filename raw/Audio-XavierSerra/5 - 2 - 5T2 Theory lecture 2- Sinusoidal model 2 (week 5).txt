@@ -1,0 +1,308 @@
+Welcome again to the course on audio
+signal processing for music applications.
+This week
+we're talking about the sinusoidal model.
+And in the previous theory lecture
+we presented the actual model and
+a little bit about how these sinusoids can
+be, visualized in the spectral domain.
+So, let's continue with that.
+We'll first overview
+a little bit of the model.
+Then focus on the idea of detecting
+peaks in the spectral domain,
+which are going to be our sinusoids.
+And also we're going to be talk
+about how to track them in time.
+So these sinewaves vary in time
+in a particular sound.
+So how can we track
+these time-varying
+sinewaves in spectrogram.
+The sine model is simple, 
+is a sum of time-varying
+sinusoids, and in the previous class
+we made emphasis on this idea that
+we need to detect the sinusoids in the
+frequencies domain, therefore we need to
+choose a window size that is good enough
+to be able to isolate those sinusoids, or
+at least be able to visually have 
+separate peaks for these sinusoids, okay?
+In this particular case,
+these two sinusoids 440 and 490,
+we need a window size of
+5,291 samples in order for
+being able to have these two main lobes
+separate, but how do we measure the values
+of the sinusoids in the spectrum?
+Well, if we choose the window
+size correctly, as we showed,
+we will have a peak for
+every sinusoid in the signal.
+Then to measure the frequency and
+amplitude of each sinusoid
+we have to just find the tip
+of the peak and it's height.
+So we define a peak as the location
+in the magnitude spectrum.
+So p sub r, the peak, is going to be
+the magnitude spectrum at the location
+k sub 0, when the previous location,
+So the location of the spectrum
+when k sub 0 minus 1 is a smaller.
+And the next location so the location
+at the k sub 0 plus 1 is also smaller.
+So that's going to be what
+we call a local maximum.
+So in this plot we see a local maxima for
+the different peaks, okay?
+So the crosses,
+the blue crosses, are local maxima and
+also in the phase spectrum; what
+we basically do is just read
+the location of these local
+maxima in the phase spectrum.
+So we have with this procedure
+we have the location of the
+peak, which is going to be k sub 0.
+Then we have the magnitude,
+it's going to be mX of k sub 0.
+And we have
+the phase, which is
+going to be pX of k sub 0.
+But there's a little problem.
+In fact, you can visually
+identify this problem.
+There is not enough resolution.
+So, one solution to this resolution
+problem is to do zero-padding.
+We use and FFT size
+much larger than the window size and
+we have been talking about that.
+So for example in this particular example,
+we have increased the FFT size
+of the previous example by 2.
+The window size was the same
+but we added zeros to the end,
+up to the next power of 2.
+This result into
+a much smoother spectrum.
+And now the local maximum,
+computed in the same way, so
+these blue crosses, are much better.
+They're located in,
+visually you can see that,
+they're located in a better place.
+They're
+located in a place that looks like
+it's more the center of the peak.
+And therefore the magnitude and
+the phase will be better.
+But, if we want a good enough resolution,
+we will need to increase the
+FFT size a lot.
+And that will be quite
+computationally expensive.
+So is there any other solution?
+Well, yes.
+We can do a cheaper interpolation
+by using, for example,
+parabolic interpolation, The parabola is
+a function with a shape quite similar
+to the tip of lobe of the spectrum of
+the analysis window, in the dB scale.
+So this is the equation of a parabola.
+Where p is the center of the parabola,
+a is the concavity measure and
+b is the offset.
+And this is a sampled version of the
+parabola, so we have different values n.
+And so, this is very similar to what
+we would see as a sampled function.
+Okay?
+So to perform a parabolic
+interpretation on a spectral peak
+we can just use the three highest
+values of the magnitude of the peak.
+For example in this case,
+the k minus one, k, and
+k plus one locations of
+the mX spectrum can be
+considered to be the three
+highest values of a parabola.
+So x minus one, x zero, and x one.
+And then we can apply 
+the equation of the parabola
+in a way to find where would
+be the center of this parabola.
+And the center of the parabola would be
+defined by this equation which k sub p,
+which would be frequency, or
+the location of the center,
+would be equal to this k,
+that was the highest point, plus these
+values, which is
+going to be the previous and
+the next values computed 
+in this way.
+And then it's going to be very easy
+to read what would be the amplitude
+of this value, so
+we can basically plug in the interpolated
+k sub p into the parabolic equation and
+obtain the amplitude,
+the height, of this peak.
+Okay, so with this equation,
+basically, we can
+refine the peak positions, and
+we can combine it with the zero padding.
+So to get a much better result.
+So this example is exactly that.
+There is some
+parabolic interpretation
+together with some zero padding.
+and if you would zoom in to this,
+you would see that this is
+quite a bit better than
+the two previous examples,
+the one without any zero padding or
+the one with just zero padding.
+This will give us quite a good
+measure of frequency, amplitude and
+phase of all the sinusoids
+present in a spectrum.
+And we will get this,
+so we'll get a value of
+the frequency location of peak,
+k sub p, and it will be computed
+with this equation, then we
+can convert this k into
+hertz, into frequency, by multiplying
+by the sampling rate and dividing by N.
+Then we can compute the amplitude,
+by using this parabolic idea.
+And finally the phase will
+be very straight forward.
+We can just read the phase
+of that location, and
+this doesn't even have to have
+any interpolation, by just reading
+the closest that should be enough.
+But these are the values
+of a single frame,
+and the sinusoidal model is
+about time varying sounds.
+So time varying sinusoids.
+So how do we go about that?
+So we have to deal with spectrograms,
+and find time varying sinusoids, and
+we will define a time varying sinusoid as
+a stable peak track in the spectrogram.
+So this variability will be
+constrained, and we will define 
+peaks that evolve in time, that sort
+of move in time, but not so much.
+And this stability
+will be measured by the frequency and
+amplitude of successive frames.
+We could also look at the phase
+derivative in time-frequency, for that.
+In practice we're going to just focus on
+the frequency and amplitude variability.
+But the phase is also a very
+interesting value to look at.
+So, the condition for
+a peak of a frame to be part of
+a track is defined by this equation.
+So a peak, a particular frequency
+of a peak f sub p, of a given
+frame, l, will
+be part of a track if the
+distance between that frequency and
+the frequency of the previous frame,
+so the track is coming from
+the previous frame,
+if the absolute value of this
+difference is smaller than a threshold.
+And also if exists a track for
+a certain amount of time.
+So we will be making a constraint
+in terms of the frequency,
+in terms if it doesn't change that much.
+And at the same time we will
+make it a constraint in
+terms of how long has this track
+been in existence, if it's too short,
+it means it's like a short burst, and
+that's not really a sinusoid.
+So this is an example of tracking
+these sinewaves in a sound.
+In a Bendir.
+Bendir is a drum used in Turkey and
+several other places.
+So it is a non-harmonic sound so
+is a sound that is quite complex but
+it has partials.
+It has sinusoids and we contract them so
+with these algorithm, these
+black lines correspond to the tracking.
+But let's hear the Bendir first.
+[SOUND] Okay, so it's a instrument
+that doesn't have a clear pitch and
+therefore the tracks are a little 
+bit kind of a very
+unstable and they keep changing,
+appearing and disappearing.
+So this is what we will find.
+And also we can look at the same
+track in the phase spectrum.
+So if we take the phase spectrogram,
+which is the derivative of the phase and
+we plot those black lines,
+the frequency tracks on top of that,
+we get this result.
+And it's quite interesting because
+clearly we see that the black tracks
+are in the places where
+the color is clear.
+And these are the locations
+where the phases changes less,
+where there is more phase continuity.
+So these indicate that also
+the phase information would be
+quite relevant in tracking
+these sinusoids because
+the phase information allows us to
+distinguish this variability
+stability aspect of a given partial.
+So sorry there are not that many
+references on these topics, so
+a part from the Wikipedia entry for 
+sinusoidal model, or, of course,
+Julius Smith discussion on
+spectral analysis on his online book.
+And that's basically it.
+So this is all for this lecture.
+We have presented Sinusoidal model,
+a sound representation built on top
+of the short-time Fourier transform
+that reduces the amount of information and
+that gets rid of none-relevant
+spectral components.
+However its use for the analysis of
+sound is not as easy as the use the STFT.
+We have to understand even
+more about spectra and
+about windows in order to
+make good use of this model.
+Hopefully by now you are starting
+to get a grasp on that.
+Now we have to complete the explanation
+of the Sinusoidal model by
+describing the synthesis part.
+And this is what we will be
+doing in the next lecture.
+So, I hope to see you then.
+Bye, bye.
+

@@ -1,0 +1,257 @@
+. 
+In this video I'm going to show how we 
+can first learn a deep belief net by 
+stacking up restricted Boltzmann 
+machines. 
+And then we can treat that as a deep 
+neural net that we fine tune 
+discriminatory. 
+So instead of fine tuning it to be better 
+at generation, as we did in the previous 
+video, we're going to fine tune it to be 
+better at discriminating between classes. 
+This works very well and led to a big 
+renewal of interest in neural networks. 
+In speech recognition, it's had a major 
+influence and many leading groups are now 
+switching to using deep neural nets in 
+order to reduce the error rate, in speech 
+recognition. 
+I now want to talk about fine tuning 
+these deep networks to be better at 
+discrimination. 
+So we first learn one layer of features 
+at a time, by stacking up restricted 
+Boltzmann machines. 
+Then we treat this as pre-training that 
+finds a good initial set of weights in 
+the DPO network and we fine tune those 
+weights using some local search 
+procedure. 
+In the previous video I showed you how to 
+use contrustive weight sleep to fine tune 
+a deep network so that it was better 
+generating its inputs. 
+In this video we're going to use back 
+propagation to fine tune a model to be 
+better at discrimination. 
+If we do this it overcomes many of the 
+standard limitations of back propagation. 
+It makes it much easier to learn deep 
+nets. 
+And it makes those nets generalise 
+better. 
+We need to understand why back 
+propagation when we pre-train the 
+weights. 
+And there's really two effects. 
+There's an effect on optimization and 
+there's an effect on generalization. 
+So the pre-training scales really well if 
+we have big networks, especially if each 
+layer has locality. 
+So if we're doing vision, for example, 
+and we had local receptor fields in each 
+layer, then there's not much interaction 
+between widely separate locations. 
+And so it's very easy to learn a big 
+layer more or less in parallel. 
+When we do pre-training. 
+We don't start back propagation until 
+we've already learned sensible feature 
+detectors. 
+And these feature detectors should be 
+very helpful for discrimination. 
+So the initial gradients are much more 
+sensible than if we use random ones. 
+And back propagation doesn't need to do a 
+global search. 
+It just needs to do a local search from a 
+sensible starting point. 
+In addition to being easier to optimize, 
+pre-trained nets exhibit much less 
+overfitting. 
+That's because most of the information in 
+the final weights comes from modeling the 
+distribution of input vectors. 
+And these input vectors, if you're 
+dealing with something like images, 
+generally contain a lot more information 
+than labels. 
+A label typically only contains a few 
+bits of information to constrain the 
+mapping from input to output. 
+Whereas an image contains a lot of 
+information which will constrain any 
+generative model of a set of images. 
+The information in the labels is only 
+used for the final fine tuning And 
+because by that stage we've already 
+decided on the feature detectors, we're 
+not squandering that precious information 
+designing feature detectors from scratch. 
+The fine tuning only makes slight changes 
+to the feature detectors we learned in 
+the generative pre-training phase. 
+And those are the changes required to get 
+the category boundaries in the right 
+place. 
+The important thing is the back 
+propagation is not being required to 
+discover new features. 
+And so it doesn't need nearly as much 
+label data. 
+In fact, this type of learning works well 
+when most of the data is unlabeled, 
+because the generative pre-training can 
+make use of the light data. 
+The unlabeled data is still very useful 
+for discovering good features. 
+There is an obvious objection to this 
+type of learning, which is that when we 
+do generative pre-training. 
+We'll be learning lots of features that 
+are useless for the particular 
+discriminative task we want the net to 
+do. 
+Consider, for example, that you might 
+want the net to discriminate between 
+shapes or you might want the net to 
+discriminate between different poses of 
+one shape. 
+They need very different features, and if 
+you don't know the task in advance. 
+You'll inevitably learn features that are 
+never used. 
+When computers were much smaller, that 
+was the serious objection. 
+But now that computers are large enough, 
+we can afford to learn features that are 
+never used. 
+And, we can afford it because among all 
+the features we learn, there will be some 
+that are much more useful than their raw 
+inputs. 
+And that more than makes up for the fact 
+that we have learned some features that 
+aren't helpful for the particular task 
+we're interested in. 
+So let's apply this to modeling the 
+m-list digits. 
+We'll now learn three hidden layers of 
+features entirely unsupervised. 
+Once we've done that learning, when we 
+generate from the model, 
+it will generate things that look like 
+real digits. 
+And it'll generate them from all the 
+different classes. 
+And it'll typically take a while before 
+it switches from one class to another. 
+And it will typically take a while before 
+it switches from one class to another 
+because it'll tend to stay in the same 
+ravine for a while before it jumps to 
+another ravine. 
+But the question is, are the features 
+that we've learned that way useful for 
+doing discrimination? 
+So all we need to do is add a final 
+10-way soft max at the top. 
+And fine tune it with back propagation. 
+And see if we do better than purely 
+discriminative training. 
+So here's the results on the permutation 
+invariant M-ness task. 
+And what I mean is permutation invariant 
+is, if we were to apply a fixed random 
+permutation to all the pixels, the same 
+permutation to every test and training 
+case, the results of our algorithm 
+wouldn't change. 
+That's clearly not true for something 
+like a convolutional net. 
+A convolutional net's been told something 
+about the task. 
+By applying this fixed permutation, we 
+destroy all simple ways of telling the 
+net something about the spatial nature of 
+the task. 
+So if you apply standard back 
+propagation. 
+It's hard to do better than 1.6% errors. 
+John Platt and myself have both tried 
+quite hard applying standard back 
+propagation with various different 
+architectures. 
+And we're both quite good at doing it. 
+You can actually beat 1.6%. 
+By using constraints on the incoming 
+weight vectors of the hidden units. 
+If you use an appropriate restriction on 
+the length of an incoming weight vector, 
+you can do a bit better than 1.6%. 
+Support vector machines can get 1.4 
+percent. 
+And this was one of the pieces of 
+evidence that led to support vector 
+machines, supplanting back propagation. 
+If you pretrain a network using a stack 
+of Boltzmann Machines. 
+And then you fine tune it to be better at 
+generating the joint density of digits 
+and image labels. 
+Then you can get down to 1.25%. 
+If you train a stack of Boltzmann 
+machines, and simply put a 10-way 
+[INAUDIBLE] on top, and fine tune it. 
+You can get to 1.15%. 
+And with more fiddling around, you can 
+get that down to about one%. 
+So you can do a lot better than standard 
+back propagation. 
+And also better than support vector 
+machines by using generative pre-training 
+followed by discriminative fine tuning. 
+Mackerie Yerenzato working in Yan 
+LeCanne's group also showed, using a 
+slightly different pre-training method, 
+that pre-training helps for models that 
+have more data and better prions. 
+So they used an additional 60,000 
+distorted digital images. 
+So they had a lot more training data. 
+They also used convolution multilinear 
+network. 
+And Yan's group is the best group, at 
+tuning those. 
+With back propagation, they managed to 
+get down to.49%. 
+When they did the unsupervised layer by 
+layer pre-training, followed by back 
+propagation they got down to.39%. 
+Which at the time was a record. 
+So you may remember this picture from the 
+first lecture. 
+This was one of the examples I gave of 
+the successive neural nets. 
+It's the same picture. 
+Back then, I said we could get down to 
+20.7% by pre-training and then fine 
+tuning with back propagation, and that 
+the previous, and that the previous speak 
+independent record on Timint was 24.4%. 
+Which actually required averaging several 
+models. 
+Lee Ding at Microsoft Research picked up 
+at this result immediately and 
+collaborated on improving it. 
+And this has led to a big change in 
+speech recognition. 
+If you look at this news story, it will 
+refer you to a blog where the chief 
+research officer for Microsoft is talking 
+about the big improvements in speech 
+recognition caused by using deep neural 
+nets. 
+

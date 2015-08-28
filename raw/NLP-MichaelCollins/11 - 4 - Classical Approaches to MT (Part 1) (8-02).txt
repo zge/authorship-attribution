@@ -1,0 +1,198 @@
+Okay, so in this next segment we're going
+to go over classical machine translation.
+So I'm going to give it very high level
+description of various systems that people
+developed in the first few decades of
+machine translation.
+And this'll give us some very useful
+context in thinking about how we might
+design different machine translation
+systems.
+Systems I'm going to describe are all rule
+based methods.
+These are methods where humans would try
+to hand build translation systems.
+For example compiling dictionaries or
+bilingual dictionaries.
+Specifying how words in lang, in one
+language would translate into words in
+another language.
+So early machine translation systems made
+use of a method called Direct Machine
+Translation.
+These methods essentially performed the
+translation process word by word.
+So, if you have a sentence in one
+language, you'd essentially, word by word,
+try to map it to words in the other
+language.
+There was very little analysis of the
+source language text.
+Okay, so you can imagine that it might be
+useful to maybe pause or at least tag the
+source language set text.
+To get some idea of the structure of the
+underlying sentence you're trying to
+translate.
+But these direct machine translation
+systems really did away with any analysis
+of this form.
+They relied on very large bilingual
+dictionaries.
+So I'll give an example in the next slide.
+Where for each word in the source language
+you would specify a set of rules.
+For how to translate that word into the
+target language.
+In terms of reordering.
+And so there's always this problem that if
+we have words or sentence in one language.
+That we may want to reorder things.
+We may want to move things around.
+In direct translation systems, usually a
+simple set of reordering rules was
+applied.
+After the word-for-word translation had
+been performed.
+So, for example, in, English you see the
+adjective like blue before the noun dog,
+Whereas in French, sorry my French is
+terrible but I think this is correct, you
+would see dog translating as this word,
+blue translating as this word, and notice
+the order is reversed.
+And so you would need a set of rules to
+cover these kind of simple reordering
+phenomena.
+Here is an example of a set of direct
+translation rules, this is taken from the
+Jurafsky and Martin textbook and its
+originally from I think a Russian system
+from 1960.
+That's actually I think fascinating to
+look at this.
+So this is a set of rules for translating
+the word much or many in English into
+Russian.
+And so you can imagine that somebody some
+human has looked at a lot of example
+translations or maybe just used their
+intuition about the two languages to
+derive a set of rules of how to form this
+translation based on the surrounding
+context.
+So these rules say that if the proceeding
+word is how.
+So if you have, how much, then you would
+translate one way.
+On the other hand, if the preceding word
+is as, so as much, you might translate a
+different way.
+Otherwise If the word is much rather than
+many, you would go into some other rules,
+and so on and so on.
+So, deriving these kind of rules is a
+pretty painstaking task.
+You can imagine for any reasonable
+translation system, you might have at
+least a few thousand words in the language
+that you need to translate.
+And you would have to compile a set of
+rules for each different word in the
+language.
+So direct machine translation systems are
+rather limited.
+Let me go over some key problems that they
+face.
+One is the following, it's difficult or
+nearly impossible to capture the kind of
+word order differences we saw diff,
+earlier between different languages.
+So here I have this English Japanese
+example again.
+So you could imagine trying to write a set
+of rules that, given the English string,
+predict the word order in the target side,
+in the Japanese side, but that's very hard
+to do when you have no analysis.
+Of this English string you don't know
+which words are verbs, versus, versus
+nouns and you certainly have no syntactic
+structure.
+So that's one challenge.
+The second one is that words are
+translated without any knowledge of the
+role, the syntactic role they play in the
+sentence.
+So if we take the word, that, for example,
+in English, it can take two quite
+different syntactic roles.
+One is the complementizer of a clause.
+So if I say, they said that I like ice
+cream.
+This is one very particular sense of the
+word, that.
+On the other hand if they say they, they
+like that ice cream that is actually a
+determiner.
+So this would be a complementizer and this
+would be a determiner, and in many cases
+where you translate into a different
+language you will end up with different
+translations in these two different
+context.
+Again with no analysis of the English
+source language.
+There's really no way to be able to
+distinguish these two cases and to
+translate correctly.
+So the problems with direct translation
+systems led people to consider what are
+called transfer based approaches.
+So here's a sketch of how these work out.
+We have some sentence say, in English, and
+we're trying to map this to some sentence
+in French, for the sake of example.
+So in transfer based systems, you would
+form this translation in three different
+steps.
+The first thing you would do on the
+English side is do some analysis.
+And, so for example, you might find a
+parse tree of the English or some other
+representation of the syntactic or
+semantic structure of that English.
+So that's the analysis stage.
+In the next stage, we perform what is
+called transfer.
+And here, we transform, so this is an
+English parse tree[SOUND].
+We somehow transform this to a French.
+This is English.
+This is a French parse tree.
+And to perform this transfer step, you use
+a set of rules maybe rather similar to the
+example I showed you for Russian earlier.
+But these rules critically can now refer
+to the syntactic structure of the English
+side, so they have more information, and
+so they can hopefully perform a better job
+of transferring across to the French,
+French side.
+Finally, there is a stage called
+generation.
+Where we take this French parse tree and
+we produce the French strings.
+This is usually at least, if this is just
+a syntactic structure, this is a simple
+step where we just remove the tree and
+produce the string.
+So, these are transfer based approaches.
+We might use various levels of
+representation.
+At this intermediate stage, we might use
+syntactic structures.
+We might use something which is closer to
+a symantic structure.
+Closure to some representation of the
+meaning of the two languages.

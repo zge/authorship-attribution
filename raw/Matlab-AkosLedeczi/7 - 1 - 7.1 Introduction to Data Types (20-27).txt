@@ -1,0 +1,492 @@
+[MUSIC]
+Hi, and welcome to Lesson Seven,
+Data Types.
+MATLAB provides many ways of
+storing numbers and variables,
+operating on them and printing them.
+We've seen lots of examples of numbers
+being stored, operated on and printed.
+And these examples suggest that
+these numbers are equivalent to
+the real numbers of mathematics.
+That's not the case.
+In mathematics,
+real numbers can be infinitely large, and
+they have infinitely fine resolution,
+meaning that the difference between two
+different numbers can be infinitely small.
+On the other hand computers
+have a finite amount of memory.
+So there must be a limit on how large
+a number represented in the memory can be.
+And there is.
+Also there's a limit on how
+small the absolute value of
+a non-zero number can be.
+And if you think about it,
+the finiteness of the memory means that
+a MATLAB variable can't
+store an irrational number.
+So for example, the function pi returns
+not pi, but only approximation of pi.
+And the square root function can return
+only an approximation of the square
+root of two.
+Most important thing to learn
+here is that the number of
+values that can be represented by
+a variable in MATLAB is finite.
+And by the way that is true for
+any computer language.
+This may seem like a pretty
+significant limitation, but for
+the vast majority of problems that we
+want to solve on the computer, the set of
+numbers that can be represented by
+a variable is more than adequate, by far.
+The subject of this lesson is data types.
+And data types can help
+handle this limitation.
+MATLAB supports many different data types.
+And they provide great flexibility
+in dealing with numerical and
+non numerical data.
+A data type is sometimes
+called simply a type.
+It is defined by a Set of values, and
+a Set of operations that can
+be performed on those values.
+As we've seen,
+MATLAB allows a given function to be
+called with different data types.
+There's a strict rule.
+All elements of a given array
+must be of the same type.
+It's the array's elementary data type.
+In fact the type of a MATLAB array is
+given by its number of dimensions,
+it's size in each dimension and
+it's elementary data type.
+Well, let's play with
+data types in MATLAB.
+Let's start by clearing the workspace.
+And let's create a new variable.
+Of course you do that by
+assigning a value to it.
+So we got this variable x,
+let's find out what its data type is.
+We do that with a function called Class.
+And it tells us that x is a type double.
+That's the default data type for
+all numerical data in MATLAB.
+And that's not just for variables.
+It's for values too.
+For example, [SOUND] we just give it a
+value without assigning it to a variable.
+MATLAB will still treat it as a double.
+By the way, why is the function
+called class instead of type,
+since we're checking the types?
+Well, MATLAB reserves the name type for
+a command that prints out the contents
+of a file, as in type the file.
+Let's get a little tricky here.
+Of course, you know that the square root
+of minus one is an imaginary number,
+so you might expect the class to
+say something about that but no,
+it just calls it a double.
+MATLAB supports complex numbers but
+it doesn't distinguish among real,
+imaginary and complex numbers when
+its classifying them into types.
+Let's make some more variables.
+Now let's look at a new function that
+gives us even more information about them.
+It's called whos.
+First of all,
+whos prints out a list of the existing
+variables in the current workspace.
+Simple.
+As you can see, x, y and z all have
+double over here in the class column.
+As you'd expect.
+Over here the size column
+shows the array dimensions.
+X is a one by one.
+Since all scalers are treated
+as one by one arrays in MATLAB.
+Y is one by eight, as any well behaved
+eight element row vector should be.
+And z is a three by four matrix.
+You may find the datatype for
+ands surprising here.
+Char, well how did that happen?
+What's the value of ands anyway,
+let's see.
+Hm.
+Double.
+Well is ands a double?
+No, remember this is the value
+of ands we're seeing here.
+And that value is a string whose
+characters are D-O-U-B-L-E.
+And, how did the value of
+ands get to be a string?
+Well, it happened back here at this
+command class square root of minus one.
+That was the last command we
+issued in which we didn't assign
+the output to a variable.
+The class command returned the data
+type of the output of the square root.
+And that happened to be a double.
+And returned that information as a string.
+Since we didn't assign this string
+produced by the command class
+to a variable, MATLAB assigned it to ands.
+Of course, when we enter a string as,
+for example,
+when we type the format string
+of an fprintf statement,
+we have to put it in quotes to let MATLAB
+know that it's not the name of a variable.
+When MATLAB prints a string,
+it doesn't put it in quotes.
+As we'll see in a minute, a string is just
+a row vector of values whose type is char.
+By the way, I pronounce C-H-A-R char.
+But char is also an equally acceptable
+pronunciation, since it's short for
+character.
+When speaking of putting
+strings in quotes,
+let's look at the type of
+a string that we enter.
+There you go.
+A char again, as expected.
+So how many types have we seen so far?
+We got the double and the char here, but
+we talked a great length
+about one other type.
+That's right, logicals.
+You know the kind of value that
+can only be true or false.
+So we've see the doubles,
+the chars, and logicals.
+Now let's learn more about these types,
+and introduce some new data types too.
+As we've seen, the default data
+type in MATLAB is the double.
+That type uses floating
+point representation.
+And what's that?
+Well you can think of
+floating point representation
+as being like the scientific notation
+that we talked about before.
+For example,
+to represent the number 12.34, we can use
+the fact that 12.34 is equal to 1,234
+times 10 raised to the minus 2 power.
+So we can store two integers,
+1,234 and minus 2,
+to represent the non-integer 12.34.
+In floating point representation,
+the 1,234 part is called the mantissa and
+the minus two part is called the exponent.
+MATLAB uses this floating point
+representation for all doubles and
+it uses eight bytes of memory for
+each one of them.
+Since there are eight bits in each byte,
+we say that the double is a 64 bit number.
+The single is the only other floating
+point type supported by MATLAB.
+The difference between the single and
+the double is the length.
+The single has only 32 bits.
+By the way,
+that's where the name double comes from.
+It occupies double
+the space as the single.
+That extra space allows for
+more digits, and
+so you'll sometimes hear
+it called double precision.
+What if we know that
+we need only integers.
+For example, sensor values that are read
+in the computers are typically integers.
+And in image processing the color
+values of pixels are always integers.
+Well MATLAB supports a number
+of different integer data types.
+In fact, there are eight of them.
+There are four signed,
+and four unsigned types.
+What does that mean, you ask?
+Well, if you don't need negative numbers,
+you should used unsigned data types,
+because they represent only
+non-negative integers, zero and higher.
+But if you do need negative numbers, or
+both negative and non-negative numbers,
+then you need one of the signed types.
+The other important attribute
+of integer data types is length.
+There are 8, 16, 32 and 64 bit variants of
+integer types, both signed and unsigned.
+And they differ in the range
+of numbers they can represent,
+with more bits giving a wider range.
+This table shows all of MATLAB's numerical
+types and the ranges that they span.
+For example int8 which
+is an eight bit integer,
+can cover the range between minus 128 and
+plus 127.
+Well, why not plus 128, you ask?
+Well, the number of different values that
+eight bits can form is 2 to the 8th power,
+which equals 256.
+So, it can only hold 256 values,
+and we need to account for 0, too.
+The unsigned version, on the other hand,
+spans the integers from
+0 all the way to 255.
+The table also shows the ranges
+of the other integer data types.
+As you can see, a 64 bit integer can store
+truly astronomical numbers, so it's very
+rare that any programmer needs integers
+that are larger than int64 provides.
+At the bottom of the table,
+you can see the range for
+the floating point data types, too.
+And the double range
+is unimaginably large.
+But the singles and doubles can each
+hold values outside their ranges, too.
+There are two of these
+out of range values.
+The first is I-N-F, or inf, for infinity.
+Inf most commonly comes up when we
+accidentally divide a nonzero number by
+zero, but it signifies the result
+of any expression that
+gives a number greater than the largest
+value that can fit in a double.
+You can guess what minus inf means.
+The second out of range
+value that a single and
+double can have is in N-A-N or
+NaN, for not a number.
+NaN signifies the result of an expression
+that gives an invalid value, for
+example 0 divided by 0.
+So that's a look at the ranges for
+these types, now let's look at some
+functions that deal with them.
+Here are a couple of useful built-in
+functions for checking datatypes.
+We've seen the class function before,
+it returns the name of its argument type.
+The isa function is new, it returns
+true or false depending on whether
+the first argument has the data type whose
+name is given in the second argument.
+The intmax and
+intmin functions give the maximums and
+the minimums of the integer types.
+And realmax and realmin do the same
+thing for the floating point types.
+We'll try them out in a minute.
+In addition to the functions for
+checking types, there's a set of
+functions that do conversions among them.
+The need to convert a value from one data
+type to another comes up from time to
+time and there are built-in functions
+whose names are the same as the desired
+types to be produced by the conversion.
+We'll see these functions
+in action in just a bit.
+Of course, what we do most often
+with values in MATLAB is arithmetic,
+and there are rules for
+arithmetic that depend on types.
+First, all arithmetic operations
+have no problem accepting two
+operands of the same type, and
+the result is always a value of that type.
+The MATLAB also allows some mixing of
+data types in arithmetic expressions.
+It's called mixed-mode arithmetic,
+and there are many rules and
+restrictions on what's allowed and
+on the type of the result.
+These rules can be a bit complicated and
+somewhat cumbersome, so
+we'll skip them here.
+But if you need to work with
+mixed-mode arithmetic in your programs,
+the textbook explains the rules in detail.
+And finally, some good news.
+Relational operators work with any mixture
+of numerical data types just fine.
+And not surprisingly, the result
+always has the same type, logical.
+Now, let's play with numerical
+types in MATLAB some more.
+First, let's just create a few numerical
+variables with types other than doubles.
+A way to do that is to use
+the built-in functions with
+the name of the given
+data types that we need.
+For example, we just converted
+the double 98.76 into a single and
+put it in x.
+And we just converted the double minus
+16 into an int8 and put that in n.
+And we put a u int16 into m.
+Let's see what we've got here.
+There's our three variables,
+there's their three types,
+and their sizes are all one by
+one because they're all scalers.
+That works smoothly.
+But what if we try to assign a number
+that doesn't fit in the given type.
+Let's look at some examples of that.
+What's happening here as you can probably
+see is that the conversion function is
+producing the number that's closest to
+the input value that can be represented in
+the given data type.
+Here we're dealing with
+the uint8 data type, and
+it can hold the integers from 0 to 255.
+So 500 doesn't fit.
+It's bigger than 255, but
+255 is the biggest number so
+it's as close to 500 as you can get.
+256 is just a hair too big,
+so we get 255 again.
+Here's minus 1, well an unsigned int can't
+hold a negative number, so we get 0.
+So what's happening here exactly is,
+we start with this minus 1,
+which is a double.
+Since any number you just type in
+the MATLAB is a double by default.
+It's passed as input to uint8.
+Uint8 then converts that
+minus 1 to the nearest 8 bit
+integer possible which happens to be 0.
+The function then returned
+that value As a U Int 8 type,
+so we've got a U int 8 zero
+coming out of U int 8.
+Then MatLab assigned that value to K, so
+K now has the U int 8 data type and
+its value is zero.
+So let's look at K.
+It's zero, let's look at its type.
+U Int 8.
+This changing of an out of range
+value to the value at the closest
+end of the range is sometimes called
+clipping, because the operation
+clips off the excess of the value so
+it'll just fit into that range.
+Here 500 was clipped to 255, and
+minus one was clipped to zero.
+Matlab's assumption here is that
+you know what you're doing.
+You explicitly asked it to convert a big
+number to a type that it can't hold or
+a negative number to a type that
+can only hold positive numbers.
+So rather than throwing an ugly
+red error message at you and
+stopping your program in its tracks,
+it silently clips the big number down to
+size or the negative number up to a zero.
+So in this case, now, k is equal to zero,
+and it's type is U Int 8.
+But you have to be careful here.
+Look what happens if we decide to increase
+K to some other value that fits inside
+the range of its type, you know, U Int 8.
+Say two.
+Okay it's now two and
+let's just check its type.
+Well its type is now double.
+The moment we assigned 2 to k,
+its data type changed.
+The number 2 is a double by default,
+so when we assigned it to k,
+k ceased to exist as a U Int 8.
+Became a double.
+It's really quite logical.
+If we now assigned it a string,
+say, you wouldn't expect K to
+remain a double, would you?
+And you'd be right.
+K didn't remain a double.
+It became a char.
+This illustrates a rule in MatLab.
+When a variable is assigned a value and
+new type,
+the variable takes on the new type.
+Many other languages work differently.
+A variable is declared
+to be of a given type.
+And it keeps that type.
+And if you were to assign a value of type
+char to K after it's been declared to be
+a double, then either an error would occur
+or an invisible conversion would take
+place right there on the spot during the
+assignment statement from double to char,
+with the same sort of clipping happening.
+One approach is different from the other.
+Not better, just different.
+They each have their pros and cons, but
+once you know what the rules
+are it's all quite logical.
+Boring, but logical.
+And to keep with this theme,
+you know the boring theme,
+I'll show you how you can check the ranges
+of the types you want to use so
+you'll know when clipping
+is going to happen.
+There are four built-in functions
+that we can use to do that, and
+here's some examples of them in action.
+Let me clear this screen first.
+[SOUND].
+Bet you wish you could type that fast.
+We saw these same values in that
+table a little earlier of course.
+It's pretty straightforward stuff.
+But it can be important when you're
+working with very large arrays of
+numbers whose range is small
+because of the application
+such as image processing for example.
+They don't have room to
+store 64 bit doubles, so
+maybe you'll want to use eight bit or
+16 bit or 32 bit integers.
+[MUSIC]
+Then this stuff won't be boring anymore.
+Wait, who am I kidding?
+This stuff will always be boring,
+but at least it'll be useful.
+[MUSIC]
+[APPLAUSE]
+

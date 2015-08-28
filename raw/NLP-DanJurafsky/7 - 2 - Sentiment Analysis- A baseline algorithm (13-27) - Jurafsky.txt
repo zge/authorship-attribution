@@ -1,0 +1,313 @@
+Let's give a base line algorithm for
+sentiment analysis. The task we're going
+to use is sentiment classification of
+movie reviews and I have drawn the work of
+Pam and Lee and their collaborators in
+this lecture. So, their task was what's
+often called polarity detection, simple,
+positive, or negative. No complicated
+sentiment issues and they're gonna apply
+this to movie reviews from the IMDB
+website. And they've released some data
+that's, that's often used in research
+called Polarity Data 2.0, which is a set
+of IMDB movie reviews that have been text
+normalized, and I have pointed you here at
+the URL for that. [sound] Here are some
+examples of movies from their database.
+Take a look and see if you can decide
+which one's positive and which one's
+negative. Hopefully, you decided that the
+first one is positive and the second one
+is negative. And the way you would decide
+that is words like aggravating and
+unbelievably disappointing for negative,
+and cool for positive. So these are words
+that are going to help us in the
+classification task. In the baseline
+algorithm itself has a number of steps,
+we're gonna start by tokenizing the words,
+in the, review itself, then we're gonna
+extract features and the features we're
+gonna look at mostly are words themselves
+and then we will take these features and
+apply them in a classifier. And we have
+talked about naive Bayes, and so we're
+gonna use naive Bayes in today's lecture
+but in practice, we might, just as often
+or even more often use a maxent
+classifier, which we will talk about in
+the future, or SVM classifier, really any
+classifier, works fine. Sentiment
+tokenization a lot of the same issues come
+up as any kind tokenization we've talked
+about earlier. In sentiment you are likely
+to be dealing with websites, so you're
+going have to deal with html and xml mark
+up. You might be dealing with twitter, so
+you'll have to deal with hash tags and
+twitter user names. Capitalization, which
+in many other kinds of text normalization
+isn't so important. Often it's we get rid
+of capitalization we might in sentiment
+want to preserve at least some of it.
+Perhaps words in all caps people are often
+shouting by using capitalization. We're
+gonna want to normalize phone numbers and
+dates and we, it's very important in
+sentiment tokenization to, to recognize
+emoticons so I'll show you here a set of.
+Regular expressions for detecting
+emoticons from Chris Potts. So here we
+have one long regular expression for
+recognizing an optional half followed by
+an eye, an optional nose, an optional
+mouth and so on so you can see each of
+that either in positive or reverse
+orientation. And this set of regular
+expressions come from a whole sentiment
+tokenizer that I pointed you at here, and
+there's other tokenizers like Brendan
+O'Connors twitter tokenizer you can also
+go look at. So. A number of issues come up
+in extracting features for sentiment
+classification. One is negation. It's very
+important to detect, negation in a word
+like didn't, so we know that I didn't like
+this movie. We should be able to detect
+that it's quite different, than I really
+like this movie. So we're gonna need to
+deal with negation. And we also have to
+deal with the question of which words to
+use. We might wanna use just adjectives.
+We might wanna use all the words in the
+text. It turns out that, at least on this
+imdb data, and maybe in general, that
+looking at all words is better than
+looking at just adjectives. Because, often
+verbs or nouns or other words give us a
+lot of information about sentiment. So how
+do we deal with negation? Here is the
+simplest algorithm first proposed by
+[inaudible] and [inaudible] and used very
+frequently after that. We simply take the
+four letters, n-o-t under bar, and we, we
+prepen them to every words between the
+negation word, and then the following
+punctuation. So we have a, a phrase like
+didn't like this movie comma, but I. And
+we turn that into didn't, not like, not
+this, not movie. So now we've essentially
+doubled our vocabulary size. Every word
+could be itself, or the, the word with not
+under-bar prepended, and we're gonna learn
+that these not under-bar words we've
+created words for negative sentiment, or
+for flipping the sentiment. Let's remind
+ourselves about naive Bayes. The most
+likely class according to [inaudible], is
+that class out of all classes which
+maximizes the product of two
+probabilities, the prior. The probability
+of the class, and, the product over all
+positions in the document of the
+likelihood of the word in that document
+given the class. So how likely are we to
+see a positive movie review times for
+every position in the document, how likely
+is that word to have been expressed by a
+positive movie review and the same for
+negative, and we pick whichever one,
+positive or negative, has highest
+probability. Or if we're doing three,
+we're doing neutral as well, we can have
+three classes. And, in practice for
+sentiment analysis, and lots of other text
+classification tasks, we use, simple
+Laplace or add one smoothing with, naive
+Bayes. So, the way we're computing this
+likelihood, probability of a word, given
+class, it just by adding one to the count,
+and then the vocabulary size to the
+denominator. For sentiment and other text
+classification tasks, we often use a
+slight variant of the [inaudible] base
+algorithm called binarized or bullien
+multinomial [inaudible]. I mean, the
+intuition of this algorithm is that for
+sentiment and for other text
+classification tasks, we care more whether
+a word occurred or not than exactly what
+its frequency is. So, for example, the
+occurrence of the word fantastic tells us
+maybe a lot that, that we have a positive
+review, but fantastic occurring three
+times or five times may not tell us a lot
+more than just occurring once. So with
+[inaudible] multinomial [inaudible], we
+simply click all the word count in each
+document. Had a count of one. So instead
+of using the full term frequency, we'll
+just use a count of one for each document.
+So if we look at our original learning
+algorithm for multinomial naive Bayes.
+Here, remember, we extract our vocabulary.
+And now we're gonna calculate our priors,
+remember the priors? By looking for every,
+how many documents, occur with a
+particular class over the total number of
+documents. So there's our prior. And for
+the likelihood terms, for each word, for
+each class, we roughly counted how many
+times this word. The count of this word
+over the count of all words in a class.
+That gives us the likelihood of a word in
+a class and then we did some add one
+smoothing. Now we're going to do the exact
+same thing. With bullion with one extra
+step. Before we do our concatenating of
+all the documents into one big document,
+and counting all the words in it, we are
+gonna remove duplicates. So for each
+document, for every word type, we're just
+retain a single instance of that word. So
+if a word occurred five times, we'll keep
+only one copy of that word. And then we'll
+concatenate all these documents and then
+we'll doing out counting, and, and our add
+one smoothing as we did before for Naive
+Bayes. So that's our training algorithm
+for naive base in the bullion form. The
+testing when you're doing bullying multi
+Naive Bayes we do the exact same thing. We
+remove, from the test document all the
+duplicate words. So if a word occurs, five
+times we, we keep only one copy of it. And
+then we use the same, Naive Bayse equation
+that we've been using before, on this,
+slightly reduced test document. Let's look
+at an example of bullying, multinomial
+Naive Bayse, and here we put up the little
+document that we saw when we were talking
+about Naive Bayse originally. So we have
+here, four training documents, and one
+test document. And so the word Chinese
+occurs in class C, three documents are in
+class C. So it occurs four times. One,
+two, three, four, oh five, sorry, five
+times. So the count of Chinese is five.
+[sound] And it occurs three times in our
+test document. Chinese equals three. And
+so on, and so in our base equation we're
+going to be using this count to compute
+the likelihood, the probability of
+Chinese. Given document class C. But in
+the [inaudible] format, we're simply gonna
+p reprocess the document to remove all
+multiple copies of a word. Here's our
+[inaudible] version now. So you'll notice
+that there's only one copy of the word
+Chinese in document one, one copy in
+document two, one copy in document three.
+So now our counts in the C class in
+training for Chinese, the count of
+Chinese. Now the count of Chinese is going
+to be three instead of five, and in the
+test set here, the count of Chinese is
+only one. So it turns out that this
+version of naive base binarized bullion
+feature multinomial naive base works
+better than the full word counts And I
+wanna note that, for those of you who know
+about, that's there's an alternative
+version of naive Bayes called multivariate
+[inaudible] naive Bayes. Using binarized
+[inaudible] features in multinomial naive
+Bayes is not the same as multivariate
+[inaudible] naive Bayes. In fact,
+multivariate [inaudible] naive Bayes
+doesn't seem to work as well for sentiment
+or other tasks. So we generally use,
+[inaudible] words, rather than the full
+word counts. Although, some researches
+like Remial have suggested that maybe
+something in between the frequency and
+just one word, like maybe looking at the
+log of the frequency which is smaller than
+the frequency, but maybe different than
+using just one maybe a useful thing to
+try. And if you're interested, you can
+read the literature on this whole question
+of which version of naive base is most
+useful. As we introduced last time, Pang
+and Lee in our baseline classifier. We're
+gonna use, cross validation. So cross
+validation, remember, we break up our data
+into ten folds. I've shown only five folds
+here. And inside each fold, let's say we
+might have the same number. Let's say we
+have fift-, half positive and half
+negative in our data. So we have, let's
+say, four. Positive and four negative in
+our test set. Then we're gonna have, also,
+let's say we have, 500 positive, and 500
+negative in our training. So we're gonna,
+we're gonna make sure that our test set
+has the same distribution of positive and
+negative as our training set. And then
+we're gonna rotate our test set through
+our data. And each time, we're gonna train
+a classifier. So classifier one,
+classifier two will train on this training
+data, test on this test data, and compute
+an accuracy. So we'll have accuracy one,
+accuracy two, accuracy three for each of
+these classifiers and Will, compute these
+performances of these classifiers, so of
+five different or in our example here,
+nine Each time we're training on a, on a
+fold, and computing, our accuracy. We'll
+take the average of all those, and we'll
+import the average of these ten runs, each
+one training on nine folds, and testing on
+one test fold. So, and in general, it's
+nice if we also add a final test, test. It
+turns out that other kinds of classifiers
+max in and s b m often do better than
+naive base it depends a lot on your data
+set and the size of the data. But you'll
+want to take a look at all kinds of
+classifiers when you are doing naive base.
+Now this baseline algorithm has a lot of
+problems. One problem is that cinnamon is
+just a hard task in general. So here's
+some examples from Penn and Lee. Take a
+look at them. If you?re reading this
+because it is your darling fragrance,
+please wear it at home exclusively and
+tape the windows shut. So that's a
+negative review of a perfume, but very
+hard to find just by using positive and
+negative words. Or the famous, [inaudible]
+by Dorothea Parker, on Kathryn Hepburn,
+she runs the gamut of emotions from a to
+b, again quite difficult to detect.
+Another problem that often occurs in
+sentiment is called the thwarted
+expectation problem has to do with
+ordering effects so. Here we read this
+first review, this film should be
+brilliant, sounds like a great plot,
+actors are first grade, lots of positive
+things goings on, but at the end, the
+reviewer says, can't hold up. So, seems
+like a positive review, but it's not.
+Similarly, in this sentence, the very
+talented Lawrence Fishburne, not so good.
+So here we're setting up, I expected the
+movie to be good, and it wasn't good. So
+this kind of ordering effect is something
+that we're gonna have to deal with in any
+kind of more advanced sentiment algorithm.
+So that's the basic baseline algorithm
+that we can see, for sentiment analysis.

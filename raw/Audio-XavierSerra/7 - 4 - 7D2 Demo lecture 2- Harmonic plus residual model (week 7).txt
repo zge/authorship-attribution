@@ -1,0 +1,308 @@
+Hello.
+Welcome to the course on Audio Signal
+Processing For Music Applications.
+This week we're talking about quite
+a few spectral modelling approaches.
+We are combining the sinusoidal and
+harmonic analysis that we
+talked in the last few weeks
+with the idea of residual and stochastic
+approximation of this residual.
+So in this demonstration class I want
+to talk about one particular model,
+the harmonic plus residual model.
+So the idea of analyzing
+the harmonics of a sound,
+subtracting them from the original
+signal and obtaining the residual.
+Which then can be combined of course with
+the harmonics that we have identified.
+So let's use the sms-tools that
+we have been talking about
+and developing in the course.
+So let's start with the DFT and
+let's start with a sound,
+with this organ sound that we
+have in the sms-tools directory.
+Let's listen to that and
+we'll listen with headphones so
+that we can listen more carefully.
+[SOUND] Okay, this is a quite
+very stable tone and
+it's a very traditional,
+a standard sound of an organ.
+so in order to analyze
+we want to be able to
+distinguish the harmonics of this sound.
+So, this is a C3,
+which is around 264 hertz.
+So in order to find what
+is a good window size.
+Well let's use the Blackman Window,
+this is a very stable note so
+we can take advantage
+of a longer window and
+really try to isolate
+the harmonics as much as possible.
+So that's six bins for 
+the Blackman Window and
+then samplig rate 44,100.
+And then we divide by
+the frequency of this note,
+264.
+So that gives me 1002 samples
+that makes sense to analyse.
+Okay, so let's put 1003 to make it an odd window.
+And okay.
+Let's use 2048 FFT size.
+So with quite a bit of
+zero padding, that's good.
+And so let's compute it.
+Okay.
+So
+this is the samples that
+we are analyzing.
+We are analyzing six periods of the sound.
+It clearly looks very sinusoidal and
+from the magnitude spectrum
+we see that there's not
+that many clear harmonics.
+Even thought there is quite a bit of
+energy in the high frequency range.
+but it doesn't have all
+these clear sinusoids.
+So this is an indication that it's
+a sound that has quite a bit of
+kind of noise like or a kind of
+a stochastic component into that.
+Well the phase looks as expected and of
+course the reconstruction is quite good.
+Okay, so
+this looks like a decent approach.
+Of course we could maybe,
+given that it is stable,
+we could take a bigger window size,
+so let's try that.
+Let's try like twice as much.
+Let's try 2,006
+samples and then let's even
+do a bigger FFT, let's use it 4096.
+Okay, so we're doing
+quite a bit of 0 padding.
+And well here
+the time was in 2 second; so
+which is good the,
+the delay sound is quite long.
+So we're kind of in the middle.
+So let's do that.
+Okay, this looks like
+twice as many samples,
+like we are analysing like 12 periods.
+And yes now we are seeing a little
+bit more things in the spectrum,
+if we compare
+the previous one to the current one,
+we are seeing the harmonics maybe more
+defined, and we're seeing quite
+a bit of background things, so
+maybe now we have seen a little bit higher
+harmonics than we were seeing before.
+Because with the higher window,
+we kind of reduce this background,
+because it's not a very
+coherent type of signal.
+So, it emphasizes the coherent part,
+the harmonics, and reduces
+this kind of stochastic component.
+Okay.
+So this seems to be a good choice.
+So let's go to the STFT and
+apply the same parameters.
+So let's apply the Blackman, but let's
+first open the sound, the organ sound.
+Let's use this 2006 samples.
+That we took.
+Okay.
+And let's use the 4096 FFT size.
+here, now we have to choose a hop size.
+well, here I don't think
+it matters that much.
+But let's just use maybe 500, so
+one fourth
+to be able to overlap the window Blackman.
+In fact it should be even more,
+but for efficiency purposes
+let's just leave it like that.
+Okay, let's compute this.
+These will take a little bit longer
+because it's a longer sound and
+it is quite big.
+Okay, so this is what we're getting.
+Of course, the resynthesized,
+we do not need to listen to it because
+it's going to be quite identical.
+And now well we see
+the horizontal line, 
+maybe let's zoom into the lower areas.
+Okay and so that we can see
+a little bit better the harmonics.
+The harmonics look clearly
+very well defined.
+But there is quite a few
+things in between.
+Okay, that seems to be a good choice.
+Now let's do the harmonic analysis.
+Again, using the same parameters.
+So it will go to the organ,
+let's see, the Blackman,
+Let's use the 2006, and
+let's use 4096 as the FFT site.
+And now we have to choose a parameter to
+identify the peaks and the harmonics.
+The magnitude threshold, okay minus 90,
+that looks like a reasonable one.
+The duration of the harmonics
+here, since we're in a long stable note,
+We can even afford to put longer
+type of tracks, these let's say
+that they have to last for
+0.2 seconds, so it could be even more,
+the number of harmonics, the truth is not
+that many, because they kind of disappear.
+So I would say that with 30 or
+40 harmonics should be plenty.
+And we know the fundamental
+frequency, 264,
+the range has to be for that.
+So, 130 and 300, 264 is within that.
+So, maybe we can even make this higher so
+that it makes sure that it fits correctly.
+Okay, that sounds good.
+And this is the error
+for the frequency detection.
+It should be a very clear fundamental.
+There should not be a problem with that.
+And this deviation.
+This is how we will allow the harmonics
+to deviate from perfect harmonicity.
+So, let's leave it like this and
+see what happens.
+Okay.
+Let's compute it.
+Again this will take a little bit longer.
+OK, so we found quite a few harmonics.
+And, of course in the attack
+and decay is very unstable so
+maybe we should have rejected those.
+But what is interesting
+is that some harmonics
+are quite stable, but
+some are very unstable.
+Let's listen to the re-synthesized sound.
+[SOUND]
+Okay.
+It sounds good.
+Let's compare with the original.
+[SOUND]
+Well if you pay attention,
+clearly the original has this more
+air in the background that is not in
+the synthesized, because it's
+mainly the harmonics.
+But the truth is that, also some of these
+higher harmonics are very unstable.
+So, may it's not right to consider
+them as harmonics because they
+are basically maybe
+tracking some noise part.
+So one way to get rid of that is to reduce
+this deviation and restrict it even more.
+For example, let's put 0.001.
+And then let's see what happens.
+Okay.
+Now, it got rid of some of these partials.
+But maybe an even better way to do that is
+to make sure that they are long enough.
+So, instead of having 0.2,
+let's make sure that, okay,
+that the harmonics should be at
+least 1 second to be considered.
+Okay. Now we got
+rid of quite a lot of this higher,
+unstable either harmonics or components.
+Let's listen to this synthesized sound.
+[SOUND] Yeah, that sounds quite clean and
+definitely, of course,
+not as rich as the original sound.
+[SOUND] Okay, now we can go with these
+same parameters to the harmonic plus residual
+so to subtract these harmonics
+from the original signal.
+So let's use the same sound.
+Let's use the, 2006 window size, 4096.
+This threshold was minus 90.
+The minimum duration of track.
+I think we put .4,
+we put, I know, we put 1 second.
+So okay, so 1 second, number of
+harmonics, now definitely we can put less,
+We can even put just 30.
+And here we have to make sure it was
+within that, so let's say 130 to 350,
+so that is within that for sure,
+we'll find it, no problem.
+And the error, I don't think this
+matters to much, but here we put 00,
+I think that's two zeros, okay.
+We'll leave it like that.
+Okay, let's now compute this.
+Okay, this is what we got, and let's see.
+So here we see the harmonics it found,
+the black lines, and the background
+spectrogram is the residual.
+And we can listen to
+the different components.
+So we can listen, well,
+just the sinsusoids, the harmonics.
+We already heard that.
+Let's listen to the residual.
+[SOUND] Yeah, that's a very
+clear and nice sound.
+That is what was missing
+from this harmonic sound.
+[SOUND] So
+clearly if we put these two sounds
+together they will sound
+like the original.
+[SOUND] Compared with
+the original.
+[SOUND] Yeah
+that's an identity, basically.
+So this was a good sound
+to explore the potential of
+the harmonic plus residual.
+Of course if we take time varying
+sounds that may be a little bit more
+tricky and we will have to tune
+the parameters a little bit more, but
+with that, I think you get an idea of
+what the harmonic plus residual model and
+the tool within the sms-tools
+that implements this model, what it can do.
+So I encourage you to play around,
+of course,
+choose other sounds maybe more complex,
+sounds that change in time.
+So we have talked about
+the Harmonic plus residual model,
+and this is one instance
+of the models that
+we are talking about this week. On
+the next demonstration lecture.
+I want to talk about the harmonic plus
+a stochastic model so that we can model
+the residual that we just heard as an
+stochastic signal and see what it can do.
+So, I will see you next lecture.
+Thank you.
+

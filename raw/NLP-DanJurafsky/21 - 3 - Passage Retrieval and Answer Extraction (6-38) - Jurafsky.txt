@@ -1,0 +1,163 @@
+The next step in question answering is
+passage retrieval and answer extraction.
+Looking at our flowchart again, we've now
+processed the question, we've decided what
+queries to send to the IR engine. And our
+job now is to do document retrieval, find
+all documents that have those query words,
+extract some documents and pull passages
+out of those that might have relevant
+answer fragments in them.
+So we'll have three steps: retrieve documents
+from the IR engine, segment the document
+into shorter units, often we just use
+paragraph breaks for that,
+and then passage ranking. So re-ranking the
+passages depending on how well they are
+likely to contain an answer to the question.
+So, it's this third step, passage ranking, 
+that I want to talk about.
+We've seen IR already, and the 
+segmentation is relatively simple.
+We might use paragraphs
+or similar kinds of things. So the hard
+part really is I've got a whole lot of
+passages that came back from breaking up
+these documents into pieces. Which ones
+contain the answer?
+So, the kind of features that get used 
+for passage ranking, and again we might
+use a rule-based classifier, we might use
+supervised machine learning for this,
+we might ask, how many named entities of 
+the answer type occur in this passage?
+If I'm asking about a person or, or about a date,
+how many people or dates are in this passage?
+If none, I've got a bad passage. How many 
+of the query words occur in this passage?
+So, I know that they occurred in the  document 
+but, I wanna know how many of them
+also occurred in this particular passage. 
+Instead of words we might look at
+entire N-grams, we might look at how close 
+these query keywords occur to each other
+in the passage. If I've got two or three 
+keywords right next to each other I'm
+probably on to something. And related to that 
+I can take the longest sequence of question
+words and ask how long that is. That's 
+another feature I can use, and of course
+the document that had the passage, we 
+already ranked that, and the rank of that
+document might, itself, be a useful feature. 
+So we can throw all these things together.
+So once I've done this step.  So now 
+we've, we've got facts about the question
+and we've retrieved and ranked a bunch 
+of answer passages. The last step
+is pulling the answer out of the
+passages. So answer processing.
+So the first thing to do here in answer
+extraction is to run a named entity tagger on
+the passages. So if we have an answer type
+we've gotta have a named entity tagger that
+detects that answer type. So we have a, if
+we know we are looking for a city that's
+no help if we don't have a tagger that can
+find cities in raw text. So this could be
+again a full named entity tagger or some
+simple regular expression or some hybrid.
+And then our job is to return the string with 
+the right type. So for example if we have a
+person question, who is the prime minister 
+of India. We're going to want to be able
+to detect answers in passages, so that 
+if I had this passage, Mannohan Singh,
+prime minister of India, I want to know
+that's a person, likely to be the answer.
+Similarly if I have a length question,
+then a passage that contains this length,
+is likely to be an answer. So I'm gonna
+wanna be able to pull out the, the this
+length and this person. Now the problem
+happens when a passage contains multiple
+candidate answers of the correct named
+entity type. So here's a question, who was
+Queen Victoria's second son? And we know
+we're looking for a person, and here's a
+lovely passage, the Marie biscuit is named
+after Marie and so on. But this passage
+has a whole lot of named entities in it. It
+has a whole lot of people. It has Czar
+Alexander II, and it has Alfred, and it
+has Queen Victoria, and it has Prince
+Albert. So, Alfred is in fact the answer
+to the question. Alfred is the second son
+of Queen Victoria. So, deciding which of
+these named entities is the correct
+answer, now we're, we're in this machine
+learning problem where we need lots of
+features that will tell us which of the
+named entities is the correct, likely to
+be the correct answer to extract. And we
+can use machine learning and lots of rich
+features for ranking these candidate
+answers. So, again, a candidate is a good
+candidate if it has a phrase that has the
+correct answer type. So if, if I'm in a,
+if I'm in a if I've got a good, a name
+that's the right kind of named entity,
+that's a good sign. I can write regular
+expressions. I can measure the number of
+question keywords. I can look at the
+distance again. So all these factors that
+we can use for passages, we can use for
+answers as well. A good answer candidate
+is in apposition to question terms. It
+might be there's an appositive clause.
+It might be followed by some kind of
+punctuation. We might look again for
+the longest sequence of question terms.
+So all these same features can now be used
+for ranking candidate answers. So in IBM
+Watson the answer is actually scored by a
+whole lot of rich knowledge sources, more
+than 50 components. And they use
+unstructured text, they use semi
+structured text. They might use knowledge
+from triple stores, from these relation
+extractions we talked about earlier. And
+each of them might give a score to a, to a
+possible answer from their own knowledge.
+So we might use geospatial knowledge
+that we know, let's say from a geospatial
+database, that California is southwest of
+Montana. That might help us in deciding if
+California is a good answer to a question
+involving southwest of Montana. We can
+extract temporal relationships. We can look
+at how reliable the source passage is. We
+can do full parses and get logical forms and 
+so on. We'll talk a little bit later about
+how all these knowledge sources might be
+used. Once we've picked an answer we need
+to decide how good it is. If we're just
+returning one answer, we can just use
+accuracy. Does the answer match some gold
+labeled correct answer for that question?
+But often we return multiple answers, as
+we do in general in information retrieval.
+And in that case we use a metric called
+mean reciprocal rank. What we do is for
+each query, we're gonna return a ranked
+list of M candidate answers, and the score
+of that query is one over the rank of the
+first right answer. So if there's, M is
+five, and we give five answers, and only
+the third one is the first one that's
+correct, the score of that query is 1/3rd.
+And now we take the mean of those ranks
+all over our N queries, and that's the
+mean reciprocal rank. So that's the final
+step in the standard IR-based algorithm
+for factoid question answering.

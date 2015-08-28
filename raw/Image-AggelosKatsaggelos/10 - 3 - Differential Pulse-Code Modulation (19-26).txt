@@ -1,0 +1,492 @@
+Hello.
+We covered in this segment some of the
+simpler image compression techniques.
+Although, on their own, they do not
+achieve competitive
+results, as compared to the state of the
+antagons
+of standards, such as JPEG, on one hand,
+they
+demonstrate means of achieving
+compression,
+but they're also typically parts.
+Of other compression schemes.
+We will spend a bit more time on
+predictive coding
+and, more specifically, with the so-called
+DPCM, differential pulse code modulation.
+We talked about prediction last week.
+In that case, however, the prediction
+order was encoded, error-free or
+losslessly.
+While now it's best quantified and then
+entropy encoded.
+We will also look at the details of how,
+to obtain the prediction coefficients,
+when linear predictions are formed.
+We will derive the so called normal
+equations, that relate the prediction
+coefficients to values.
+Of the autocorrelation function of the
+image, a
+concept that we introduced when we talked
+about [UNKNOWN].
+So, let's proceed with this material.
+Subsampling can be considered as a
+compression technique.
+By itself it's not competitive.
+For example when compared to transfer
+based techniques such
+as JPEG that we will be covering later
+this week.
+It is however an, intermediate step in
+compression
+standards, also used for achieving special
+scalar building.
+The idea is rather straightforward.
+An image is subsampled by a factor of two
+in each dimension, as shown here.
+Now, we covered subsampling or decimation
+earlier in the course.
+We know that in order to avoid
+aliecy, they image should first below
+[UNKNOWN] filter.
+No low pass filter was applied in this
+particular example.
+So in this case, if the original image is.
+M by N.
+[SOUND] The resulting image is M over 2 by
+N over 2,
+therefore a 4, to 1 compression ratio is
+achieved.
+There are, various ways to perform
+upsampling since we
+want to, visualize the image at the
+original, resolution.
+The simplest possible one is zero order
+hold or pixel duplication.
+Using this, we obtain the, image shown
+here.
+We perform the same experiment, with a
+factor of
+four in it's dimension, [SOUND] and here
+is the result.
+In this case, the compression ratio is 16
+to 1.
+After, zero order hold upsampling, we
+obtain this image.
+Here the, annoying, blotting artefacts,
+are present in this case.
+PCM or Pulse Code Modulation is a method
+to digitally represent sampled, analog
+signals, here it's used in, requantizing
+the intensity values of an image.
+So, for this image, if we apply a 1 bit
+per pixel uniform quantizer, here is the
+result we obtain.
+This is actually a result that they showed
+earlier in, the course, during this week.
+Now, at low rates.
+In order to make the compression artefacts
+less objectionable, uniform
+noise, is added to the data before the,
+uniform quantization.
+And this is referred to, as dithering.
+So this is the result, of this, big
+uniform quantizer, after, noise was added
+to the image.
+Now, since the noise is deterministic that
+this edited by us intentionally and
+therefore
+it's known, it can be subtracted after,
+PCM and here is, the resulting image.
+The resulting image is, multi level not by
+level as this, 1 bit image.
+And therefore give a more pleasing,
+appearance, an
+appearance, closer in some sense to, the
+original image.
+[SOUND] We talked about predictive coding
+last week, when we covered lossless
+compression.
+We, revisit the topic here, under the
+historical name of differential pulse code
+modulation.
+DPCM.
+The guiding principles behind predictive
+coding and, DPCM have as following.
+Most, useful signals are, highly
+predictable, which means we
+can estimate future values of the signal
+from, past values.
+And this past, can be spatial past values
+or, spatial temporal past values.
+This is, possible because the data
+correlated,
+and therefore this predictability, and
+more specifically the
+linear predictability we'll be discussing
+here, has to
+do something with the autocorrelation of
+the signal.
+Something that we covered earlier in, the
+course for example when we covered window
+filtering.
+[BLANK_AUDIO].
+The basic principle of DPCM or predictive
+coding is that,
+anything that can be predicted from past
+values, can be
+done so both at the, encoder and decoder,
+and therefore
+what we need to send to the decoder is
+the, unpredictable
+part of the signal, which is just the
+prediction error.
+[SOUND] As we will see,.
+The prediction coefficients, denoted by a,
+will be the result of the solution
+of this set of, equations, so called
+normal equations, that, relate
+autocorrelation values again to the, the
+near prediction coefficients.
+So, let's see the structure of the
+predictor and, encoder decoder.
+And also, derive these so-called normal
+equations.
+[SOUND].
+We show here the broad diagram of a DPCM,
+Encoder.
+X of n is the signal to be, encoded is
+shown here as a one-dimensional signal.
+X cut of n is the predictive, value of the
+signal at the same, time instance or the
+same spatial occasion.
+The prediction is performed by, the
+predictor here that we'll
+utilize past values of the signal that
+I'll store in memory.
+If we subtract the prediction from the,
+actual value
+of the signal we obtain here, the
+prediction error.
+If this were a, lossless compression.
+Scheme we would send this prediction error
+to the decoder, after entropy encoding.
+Since we are taking care about loss
+compression, this prediction error is
+quantized, using
+a scalar or a vector quantizer, and
+delta x'(n) therefore is the quantized
+prediction error.
+This quantized prediction, error is added
+to the prediction.
+And their sum, forms the, reconstructed,
+value of the signal.
+So these, past reconstructed values would
+be stored in memory, to be
+used by the predictor, to obtain the
+future, predicted value of the signal.
+An interesting question here of course, is
+why.
+Should we use the, reconstructed values of
+the signal in carrying out the prediction,
+and not the, original values of the
+signal, which are clearly available at the
+encoder?
+The reason for doing so, is that we want
+both encoded and decoded
+to, operate on the same data in carrying
+out the prediction.
+The decoder clearly does not have,
+original data available, but does have.
+The reconstructed signal available.
+If this were not the case, like, encoded,
+decoded, getting out prediction,
+operating on different amounts of data,
+different, types of data, originally
+versus reconstructed.
+Then, we would have the so called, error
+drift.
+So, we see here, that, the decoder is part
+of
+the encoder, actually the, decoder is this
+part down here.
+And this is the case, in all, predictive
+encoding schemes.
+So, what we send to the decoder, are the
+[UNKNOWN] coded quantized prediction.
+Values, predictional values.
+And here we can use, any of the variable
+length codes
+that we covered last week, such as half
+one and, arithmetic.
+In addition, the decoder, has to have,
+the,
+predictor information, or, have the,
+linear prediction coefficients available.
+We can send these coefficients once, let's
+say for
+the whole image if a static, prediction is
+performed,
+or update this prediction coefficient as
+we move through
+the different parts of the image we try to
+encode.
+We will [UNKNOWN] this, broad diagram of
+the, predictor
+of the, encoder when we also talked about
+video encoding.
+The prediction there would be done in the
+temporal direction using.
+The motion vectors.
+So, make sure that, the basic concept here
+is, clear
+to you, since it's a very, useful and
+important, concept.
+Here's the, DPCM decoder for completeness.
+We show the decoder is part of the.
+Encoder.
+So the, binary code words arrive to
+the the decoder, their, variable length
+decoded,
+so the code words are, converted to
+symbols, so this is the, prediction error.
+The, decoder has already constructed past
+values that are, stored in memory.
+And they're used, by the predictor.
+We assume here that, the predictor has,
+already
+obtained the prediction, [SOUND]
+coefficient by the, encoder.
+[SOUND].
+So [UNKNOWN] the prediction and this is
+the, predicted signal.
+So, prediction plus correction here will
+give rise
+to the next, reconstructed value of the
+signal.
+[SOUND].
+We derive here the, equation, the so
+called, normal equations, that allow
+us that solve for the prediction
+coefficients of a linear prediction model.
+So let us, x of i denote the original
+signal.
+Our objective is to build a predictor f,
+that
+would utilize all past values of the
+signal to predict
+the value of the signal at, time or
+location n,
+and do it, denote this prediction by P of
+n.
+In, finding such a predictor, we, want
+the, variance of the prediction error to
+minimized.
+So x of n is the actual value, p
+of n to predicted expected value squared,
+denotes the variance.
+The solution to this problem in general,
+is.
+This, conditional expectation of x of n
+given all past values.
+We want to look at the special type of
+predictor,
+we want to look at the linear predictor of
+order N.
+So, the predicted value of N is simply the
+weighted sum.
+Of, N plus values of the signal, and the
+weight here a of i are the, prediction
+coefficients.
+[SOUND].
+So in finding the predictor we have
+to find the values of these prediction
+coefficient.
+And we find this prediction coefficient
+by, minimizing again the,
+variance of the prediction error which
+takes this, specific form here.
+We just substitute P of n by, the,
+expression of this linear predictor.
+[SOUND].
+The necessary conditions for obtaining the
+minimum,
+are that the partials of the variance
+of the prediction error with respect to
+the prediction coefficients are equal to
+0.
+I show here again, the variants of the
+prediction error for this, Nth step linear
+predictor.
+So, in finding the, partial derivative of
+this expression
+here, the derivative comes inside the
+expectation so, the
+derivative of this expression squared is 2
+times, this
+expression, times the derivative of,
+what's inside the parenthesis.
+The term, a i prime x of n minus i prime,
+appears only once.
+In this expressions inside the bracket and
+the derivative of this with respect to a
+i prime is, minus we have a minus here, x
+of n minus i prime.
+So this is what is shown here.
+Now if we, cross multiply the terms, this
+expression takes this form.
+So you have expectation of x of n, times a
+shifted version of x of n, over
+here and, over here and we recognize this
+that
+this is the, expression the definition of
+the autocorrelation.
+Function of the signal x.
+If the field is, stationary, then the
+value of autocorrelation
+is simply the distance of the, signal and
+the shift invention.
+So this one here is the, autocorrelation,
+R of xx, and
+the distance between this and this version
+is i minus, i prime.
+So, setting this expression equal to 0.
+We, obtain, the, expression for the normal
+equations.
+We have, capital N equations, and capital
+N unknowns, the prediction coefficients.
+[SOUND].
+Here's the matrix-vector form, of the
+normal equation.
+This is a n, by n matrix.
+This is, n by 1 vector of the, prediction
+coefficient.
+And, clearly this is also, a n by 1
+vector.
+So, we see that.
+The, diagonals are the same, so along the
+main diagonal is, R of xx at 0.
+This, subdiagonal, this subdiagnonal here
+R of x,x(1), and so on.
+So there's a symmetric matrix.
+And it's a full rum matrix so, I have R of
+a equals p and R is invertible therefore
+I can solve for the, prediction
+coefficients by inverting this matrix R.
+Now, question is how can one find the
+values.
+Of, R of xx at different shifts.
+Clearly, we can use available data and
+calculate these values.
+Alternatively, we can assume that, R of xx
+has a specific, model shape.
+I could use a model for the,
+autocorrelation function.
+That he has set in parameters and I fit
+the model to the data by estimating these
+parameters, and based on this model, I can
+pull
+out the values of, the autocorrelation at
+different shifts.
+[BLANK_AUDIO].
+We show here an example of the application
+of DPCM encoding to, the image shown here.
+This is the form of the, predictor, so the
+intensity value at
+this location is a linear combination
+of intensities values at these neighboring
+locations.
+This particular mask allows for encasive
+compatibility, if a raster scan is
+followed.
+So, during encoding and decoding, the
+current predictive value.
+Is found utilizing the reconstructed
+values of these
+three, neighboring paths, pixels belonging
+to the paths.
+In finding the values of these, three
+prediction
+coefficients, we utilize the, results we
+just presented.
+The normal equations need to be solved,
+the, autocorrelation matrix of the image
+need to.
+Before.
+Here is a normalized, autocorrelation
+matrix slightly different than the
+one I showed earlier, it's normalized by
+the variance of the
+image so here is R of 00, which is equal
+to
+the variance, therefore divided by the
+variance is equal to one.
+The method to, the Eul Walker method
+is used to, obtain the prediction
+coefficient.
+Here are the values, of the resulting
+prediction coefficients.
+So utilizing these, prediction
+coefficients, prediction is carried out,
+and here is how the prediction error,
+looks like.
+The prediction error, has dynamic range
+from, minus 255 to 255.
+The original image.
+Is an 8 bit image, and therefore for
+displaying purposes
+is mapped linearly into the 0 to do
+[UNKNOWN] range.
+So, the grey value of 127, represents
+0, then, white represents, error
+equal to 2 plus 55 and, black pixels.
+As expected, the, predictor is doing the,
+nice job in
+the flat, regions of the image, where the
+error is 0.
+It's a great value.
+However, it fails because a large error at
+the edges of the image.
+This prediction error, is quantized using
+Max
+Lloyd quantizer, assuming Laplacian
+distribution of the error.
+2, bits, per pixel are used to,
+encode the, reconstruction levels of the
+quantizer.
+A fixed length code, of 2 bits is used for
+this reconstruction levels.
+If we find the entropy.
+Of the construction levels, then it's
+equal to 1.7 bits per pixel.
+So in principle, if a variable x code is
+used then,
+the resulting grade could be close to 1.7
+bit per pixel.
+So, using this coefficient to, get a
+prediction, correcting the prediction by,
+this prediction error.
+We obtain, this encoded image.
+So this encoded image at 2 bits per pixel,
+our compression ratio 4 to 1.
+We see that in this particular case, it
+looks, very similar to, the original one.
+It means to, find the quality of the
+encoded
+image is either to find the mean squared
+error.
+The signal to noise ratio or the peak,
+signal to noise ratio.
+Well, in the numerator we have, the
+maximum value of the image 255 squared.
+This is a matrix that is used in most
+cases in
+the, compression, literature to evaluate
+the quality, of the compressed image.
+And by and large a PSNR.
+Around, 30 dB and higher is, considered
+to, represent the, a good quality encoded
+image.
+

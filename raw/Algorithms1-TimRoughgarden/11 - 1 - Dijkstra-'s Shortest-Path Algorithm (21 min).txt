@@ -1,0 +1,551 @@
+We've arrived at another one of computer
+science's greatest hits, namely Dijkstra's
+shortest path algorithm. So let me tell
+you about the problem. It's a problem
+called single source, shortest paths.
+Basically what we wanna do is compute
+something like driving directions. So
+we're given as input a graph, in this
+lecture I'm gonna work with directed
+graphs, although the same algorithm would
+work with undirected graphs with cosmetic
+changes. As usual, we'll use m to denote
+the number of edges and N to denote the
+number of vertices. The input also
+includes two extra ingredients. First of
+all, for each edge E, we're given, as
+input, a non negative length, which I'll
+denote by L sub B. In the context of a
+driving directions application, L sub B
+could denote the, the mileage, how long,
+this particular road is, or it could also
+denote, the expected travel time along the
+edge. The second ingredient is a vertex
+from which we are looking for paths. This
+is exactly the same as we had in breadth
+first search and depth first search. We
+have an originating vertex which we'll
+call here, the source. Our responsibility
+then is to given this input to compute for
+every other vertex V in this network the
+length of a shortest path from the source
+vertex S to that destination vertex V. And
+so, just to be clear, what is the length
+of a path that has, say, three edges in
+it? Well, it's just the sum of the length
+of the first edge in the path, plus the
+length of the second edge in the path,
+plus the length of the third edge in the
+path. So if you had a path like this with
+three edges, and lengths one, two, and
+three, then the length of the path would
+just be six. And then we define the
+shortest SV path in the natural way. So
+amongst all of the paths directed from S
+to V each one has its own respective path
+length. And then the minimum overall SV
+paths is the shortest path distance in the
+graph G. So, I'm going to make two
+assumptions for these lectures. One is
+really just for convenience. The other is
+really important. The other assumption
+without which Dijkstra's algorithm is not
+correct, as we'll see. So, for convenience
+we'll assume that there is a directed path
+between S and every other vertex V in the
+graph. Otherwise the shortest path
+distance is something we'd define to be
+plus infinity. And the reason this is not
+a big assumption is if you think about it,
+you could detect which vertices are not
+reachable from S just in a pre processing
+step using say breadth first or depth first
+search and then you could delete the
+irrelevant part of the graph  and run
+Dijkstra's algorithm as we'll describe it
+on what remains. Alternatively Dijkstra's algorithm
+will quite naturally figure out which
+vertices there are paths to from S and which
+ones there are not. So this won't really come up.
+So, to keep it simple
+just think about, we have an input graph
+where you can get to S to V. For every
+different vertex V and the challenge then
+is amongst all the ways to get from S to V
+what is the shortest way to do it? So the
+second assumption already appears in the
+problem statement, but I want to reiterate
+it just so it's really clear. When we
+analyze Dijkstra's algorithm, we always
+focus on graphs where every length is
+non-negative. No negative edge lengths are
+allowed. And we'll see why a little bit
+later in the, in the video. Now in the
+context of a driving directions
+application it's natural to ask the
+question, why would you ever care about
+negative edge lengths. Until we invent a time
+machine it doesn't seem like negative edge
+lengths are gonna be relevant when you're
+computing literal paths through literal
+networks. But again remember that paths
+can be thought of as more abstractly as a
+just sequence of decisions. And some of
+the most powerful applications of shortest
+paths are coming up with optimal ways such
+sequences. So, for example, maybe you're
+engaging in financial transactions, and
+you have the option of both buying and
+selling assets at different times. But if
+you sell, then you get some kind of
+profit, and that would correspond to a
+negative edge length. So there are quite
+interesting applications in which
+negative edge lengths are relevant. If you
+are dealing with such an application,
+Dijkstra's algorithm is not the algorithm to
+use. There is a different shortest path
+algorithm, a couple other ones, but the
+most well known one is called Bellman
+Ford. That's something based on dynamic
+programming, which we may well cover in a
+sequel course. Okay, So for Dijkstra's
+algorithm we always focus on graphs that
+have only non negative edge lengths. So
+for the next quiz I just wanna make sure
+that you understand the single source
+shortest path problem. Okay let me draw
+for you here a simple four-node network and
+ask you for what are the four shortest
+path lengths. So from the source for text S
+to each of the four vertices in the network.
+Alright, so the answer to this
+quiz is the final option, zero, one,
+three, six. To see why that's true, well
+all of the options had zero as the
+shortest path distance from S to itself so
+that just seemed kinda obvious. So the
+empty path will get you from S to itself
+and have zero length. Now suppose you
+wanted to get from S to V. Well, there's
+actually only one way to do that, you have
+to go along this one hop path. So the only
+path has length one. So, the shortest path
+distance from S to V is one. Now W's more
+interesting. There's a direct one hop
+path, SW, that has length four. But that
+is not the shortest path from S to W. In
+fact, the two hop path, that goes through
+V as an intermediary, has total path length
+three, which is less than the length of
+the direct arc from S to W. So therefore,
+the shortest path distance from S to W is
+going to be three. And finally, for the
+vertex T, there's three different paths
+going from S to T. There's the T, two hop
+path that goes through V. There's the two
+hop path which goes through W. Both of
+those have path length seven. And then
+there's the three hop path which goes
+through both V and W, and that actually
+has a path length of one plus two plus
+three equals six. So despite having the
+largest number of edges, the zigzag path
+is, in fact, t he shortest path from S to
+T, and it has length six. Alright. So
+before I tell you how Dijkstra's algorithm
+works, I feel like I should justify the
+existence of this video a little bit.
+Alright, Because this is not the first
+time we've seen shortest paths. You might
+be thinking, rightfully so. We already
+know how to compute shortest paths. That
+was one of the applications of breadth
+first search. So the answer to this
+question is both yes and no. Breadth first
+search does indeed compute shortest paths.
+We had an entire video about that. But it
+works only in the special case where the
+length of every edge of the graph is one.
+At the moment we're trying to solve a more
+general problem. We're trying to solve
+shortest paths when edges can have
+arbitrary non negative edge lengths. So for
+example, in the graph that we'd explored
+in the previous quiz, if we ran
+breadth-first search, starting from the
+vertex S, it would say that the shortest
+path distance from S to T is two. And
+that's because there's a path with two
+hops going from S to T, put differently, T
+is in the second layer emanating from S.
+But as we saw in the quiz, there is not in
+fact a shortest two hop path from S to T
+if you care about the edge lengths,
+rather, the minimum length path, the
+shortest path, with respect to the edge
+weights, is this three hop path, Which has
+a total length of six. So breadth first
+search is not going to give us what we
+want, when the edge lengths are not all
+the same. And if you think about an
+application like driving directions, then
+needless to say, it's not the case that
+every edge in the network is the same.
+Some roads are much longer than others,
+some roads will have much larger travel
+times than others; so we really do need to
+solve this more general shortest path
+problem. Similarly if you're thinking more
+abstractly about a sequence of decisions
+like financial transactions, in general,
+different transactions will have different
+values; so you really want to solve
+general shortest paths not in the special
+case that breadth first search solves. Now
+if you're feeling particularly sharp
+today, you might have the following
+objection to what I've just said. You
+might say, yeah, big deal. General edge
+weights, unit edge weights. It's basically
+the same. Say you have an edge that has
+length three. How is that fundamentally
+different than having a path with three
+edges, each of which has length one? So
+why not just replace all the edges with a
+path of edges of the appropriate length?
+Now we have a network in which every edge
+has unit length and now we can just run
+breadth first search. So, put succinctly,
+isn't it the case that computing shortest
+paths with general edge weights reduces to
+computing shortest paths with unit edge
+weights? Well the first comment I want to
+make is I think this will be an excellent
+objection to raise. Indeed, as
+programmers, as computer scientists this
+is the way you should be thinking. If you
+see a problem that seems superficially
+harder than another one, you always want
+to ask. Maybe with a clever trick I can
+reduce it to a problem I already know how
+to solve. That's a great attitude in
+general for problem solving. And indeed if
+all of the edge lengths were just small
+numbers like 1,2 and 3 and so on, this trick
+would work fine. The issue is when you
+have a network where the different edges
+can have very different lengths. And that's
+certainly the case in many applications.
+Definitely road networks would be one,
+where you have both, sort of, long
+highways and you have neighborhood
+streets. And potentially, in financial
+transaction based networks, you would also
+have a wide variance between the value of
+different transactions. And the problem
+then is, some of these edge lengths might be
+really big. They might be a 100. They
+might be a 1000. It's very hard to put
+a priori bounds on how large these edge
+weights could be. So if you start.
+wantonly replacing single edges with these
+really long paths of length 1,000, you've
+blown up the size of your graph way too
+much. So you do have a faithful
+representation of your old network, but
+it's too wasteful. So even though breadth
+first search runs in linear time, it's now
+on this much larger graph, and we'd much
+prefer something which is linear time or
+almost linear time that works directly on
+the original graph and that is exactly
+what Dijkstra's shortest path algorithm is
+going to accomplish. Let's now move on to
+the pseudocode for Dijkstra's shortest
+path algorithm. So this is another one of
+those algorithms where no matter how many
+times I explain it, it's super fun to
+teach. And the main reason is because it
+exposes the beauty that pops up in good
+algorithm design. So, the pseudo code, as
+you'll see in a second, is itself very
+elegant. We're just going to have one loop
+and then in each iteration of the loop,
+we will compute the shortest path distance
+to one additional vertex. And by the end
+of the loop we'll have completed shortest
+path distances to everybody. The proof of
+correctness, which we'll do in the next
+video, is a little bit subtle but also
+quite natural, quite pretty. And then
+finally, Dijkstra's algorithm will give
+us our first opportunity to see the
+interplay between good algorithm design
+and good data structure design. So with a
+suitable application of the heap data
+structure, we'll be able to implement
+Dijkstra's algorithm so it runs blazingly
+fast, almost linear time. Namely, M times
+log N. But I'm getting a little ahead of
+myself. Let me actually show you the
+pseudo code. At a high level, you really
+should think of Dijkstra's algorithm as
+being a close cousin of breadth first
+search. And indeed, if all of the edge
+lengths are equal to one, Dijkstra's
+algorithm becomes breadth first search. So
+this is sort of a slick generalization of
+breadth first search when edges can have
+different lengths. So, like our generic
+graph search procedures, we're going to
+start at the source for a text S. And in
+each iteration, we're going to conquer one
+new vertex. And we'll do that once each
+iteration after N minus one iterations,
+we'll be done. And in each iteration,
+we'll correctly comp ute the shortest path
+distance to one new possible destination
+vertex, V. So let me just start by
+initializing some notation. So capital X
+is going to denote the vertices we've
+dealt with so far. And by dealt with I
+mean we've correctly computed shortest
+path distance from the source vertex to
+every vertex in X. We're going to augment
+X by one new vertex in each iteration of
+the main loop. Remember that we're
+responsible for outputting N numbers, one
+for each vertex. Were not just computing
+one thing we're computing the shortest
+path distance from the source vertex S to
+every other vertex. So, I'm going to frame
+the output in terms of this array capital
+A. So for each vertex we're going to have
+an entry in this array A and the goal is
+at the end of the algorithm, A will
+be populated with the correct shortest
+path distances. Now to help you understand
+Dijkstra's algorithm, I'm gonna do some
+additional bookkeeping which you would not
+do in a real implementation of Dijkstra's
+algorithm. Specifically, in addition to
+this array capital A, in which we compute
+shortest path distances from the source
+vertex to very other destination, there's
+gonna be an array capital B in which we'll
+keep track of the actual shortest path
+itself, from the source vertex S to each
+destination V. So the arrays A and B will
+be indexed in the same way. There'll be
+one entry for each possible destination
+vertex V. Capital A will store just a
+number for each destination's shortest path
+distance. The array B in each position
+will store an actual path, so the path,
+the shortest path from S to V. But again,
+you would not include this in an actual
+implementation. I just find in my
+experience it's easier for students to
+understand this algorithm if we think of
+the paths being carried along as
+well. So now that I've told you the
+semantics of these two arrays, I hope it's
+no surprise how we initialize them for the
+source vertex itself S. The shortest path
+distance from S to itself is zero, the
+empty path gets you from S to S with
+length zero, there's no negative edges by
+assumption, so there's no way you can get
+from S back to S with non positive length,
+so this is definitely the shortest path
+distance for S. By the same reasoning, the
+shortest path from S to S is just the
+empty path, the path with no edges in it.
+So now let's proceed to the main while
+loop. So the plan is we wanna grow this
+set capital X like a mold that covers the
+entire graph. So in each iteration it's
+going to grow and cover up one new vertex
+and that vertex will then be processed and
+at the time of processing we're
+responsible for computing the shortest
+path distance from S to this vertex and
+also figuring out what the actual shortest
+path from S to this vertex is. So in each
+iteration we need to grow X by one node to
+ensure that we've made progress. So the
+obvious question is, which node should we
+pick? Which one do we add the X next? So
+there's gonna be two ideas here. The first
+one we've already seen in terms of all of
+these generic graph search procedures,
+which is we're going to look at the edges
+and vertices which are on the frontier. So
+we're going to look at the vertices that
+are just one hop away from the vertices
+we've already put into X. So that
+motivates at a given iteration of the while
+loop to look at the stuff we've already
+processed that's X. And the stuff we
+haven't already processed, that's V minus
+X. S of course starts in X and we never
+taken anything out of X so S is still
+there, you know. And some generic
+iteration of the while loop, we might have
+some other vertices that are in X. And in
+a generic iteration of this while loop,
+there might be multiple vertices which are
+not in X. And now as we've seen in our
+graph search procedures there in general
+are edges crossing this cut, so there are
+edges which have one end point in each
+side, one end point in X and one end point
+outside of X. This is a directed graph so
+they can cross in two directions, they can
+cross from left to right or they can cross
+from right to left. So you might have some
+edges internal to X. Those are things
+we don't care about at this point. You
+might have edges which are internal to V
+minus X. We don't care about those, at
+least not quite yet. And then you have
+edges which can cross from X to V minus X.
+As well as edges that can cross in the
+reverse direction from V minus X back to
+X. And the ones we're gonna be interested
+in, just like when we did graph search
+on directed graphs, are the edges
+crossing from left to right. The edges
+whose tail is amongst the vertices we've
+already seen and whose head is some not
+yet explored vertex. So the first idea is
+that at each iteration of the while loop
+we scan or we examine all of the edges
+with tail in X and head outside of X. One
+of those is gonna lead us to the vertex
+that we pick next. So that's the first
+idea, but now we need a second idea,
+because this is again quite
+under-determined. There could be multiple
+vertices, which meet this criterion. So
+for example in the cartoon in the bottom
+left part of this slide, you'll notice
+that there's one vertex here which is
+the head of an arc that crosses from left
+to right, and there is yet another vertex
+down here in V minus X, which again is the
+head of an arc that crosses from left to
+right. So there are two options, of which
+of those two to suck into our set X. And
+we might want some guidance about which
+one to pick next. So the key idea in
+Dijkstra is to give each vertex a score
+corresponding to how close that vertex
+seems to the source vertex S, and then to
+pick among all candidate vertices the one
+that has the minimum score. Lemme be more
+precise. So among all crossing edges, with
+tail on the left side and head on the
+right side, we pick the edge that minimizes
+the following criterion, the shortest path
+distance, that we previously computed from
+S to the vertex V, plus the length of the
+edge that connects V to W. So this is
+quite an important expression, so I will
+call this Dijkstra's greedy criterion.
+This is a very good idea to use this
+method to choose which vertex to add to the
+set X, as we'll see. I need to give a name
+to this edge which minimizes this quantity
+over all crossing edges. So let's call it
+V star W star. So for example in the cartoon
+in the bottom left maybe of the two edges
+crossing from left to right, maybe the top
+one is the one that has a smaller value,
+of Dijkstra's Greedy Criterion. So in that
+case this would be the vertex V star, and
+the other end of the edge would be the
+vertex W star. So this edge, V star W star
+is going to do wonders for us. It will
+both guide us to the vertex that we should
+add to X next. That's gonna be W star.
+It's going to tell us how we should
+compute the shortest path distance to W
+star as well as what the actual shortest
+path from X to W star is. So specifically
+in this iteration of the while loop, after
+we've chosen this edge V star W star, we
+add W star to X. Remember by definition W
+star was previously not in capital X. So
+we're making progress by adding it to X.
+That's one more vertex in X. Now, X is
+supposed to represent all of the nodes
+we've already processed. So an invariant
+of this algorithm is that we've computed
+shortest path distances for everybody in X
+as well as the actual shortest paths, so
+now that we're putting W star in X, we're
+responsible for all of this information,
+shortest path information. So what we're
+gonna do is we're gonna set the, our estimate
+of W star's shortest path distance from S
+to be equal to the value of this Dijkstra
+greedy criterion for this edge. That is,
+whatever our previously computed shortest-path
+distance from S to V star was, plus the length of
+the direct edge from V star to W star. Now
+a key point is to realize this code does
+make sense, by which I mean, if you think
+about this quantity, AV, this has been
+previously computed. And that's because
+an invariant of this algorithm is we've
+always computed shortest path distances to
+everything that's in X. And of course, the
+same thing holds when we need to assign W
+star its shortest path distance because V star
+was a member of X, we'd already computed
+its shortest path distance so we can
+just look up the V star entry position in
+the array A. So over on our picture on our
+left we would just say, well what did we
+compute the shortest path distance to V
+star previously? Maybe it's something like
+seventeen. And then we'd say you know,
+what is the length of this direct edge
+from V Star to W Star? Maybe that's six.
+Then we would just add seventeen and
+six, and we would put 23 as our estimate
+of the shortest path distance from S To W
+star. So we something analogous with the
+shortest paths itself and the array B. That
+is again we are responsible since we just
+added W star to capital X we're
+responsible for suggesting a path from S
+to W star in the B array. So what we're
+gonna do is we're just going to inherit
+the previously computed path to V star and
+were just gonna tack on the end one extra
+hop, namely the direct edge from V star to W star.
+That'll give us a path from S all the way to W
+star via V star as an intermediate pit
+stop. And that is the entirety of
+Dijkstra's algorithm. I have explained all
+of the ingredients about how it works at a
+conceptual level. So the two things that I
+owe you is, you know, why is it correct,
+why does it actually compute shortest
+paths directly to all the different
+vertices, and secondly, how fast can we
+implement it. The next two videos are
+going to answer both of those questions.
+But before we do that, let's go through an example
+to get a better feel of how this algorithm
+actually works. And I also wanna go
+through a non-example so that you can
+appreciate how it breaks down when there
+are negative edges and that will make it
+clear why we do need a proof of
+correctness. Because it's not correct
+without any assumptions about the edge
+lengths.

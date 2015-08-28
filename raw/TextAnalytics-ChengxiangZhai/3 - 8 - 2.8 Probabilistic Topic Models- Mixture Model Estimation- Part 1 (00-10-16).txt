@@ -1,0 +1,256 @@
+[SOUND]
+This
+lecture is about mixture model estimation.
+In this lecture we're going to continue
+discussing probabilistic topic models.
+In particular,
+we're going to talk about how to estimate
+the parameters of a mixture model.
+So let's first look at our motivation for
+using a mixture model.
+And we hope to factor out
+the background words.
+From the top-words equation.
+The idea is to assume that the text data
+actually contained two kinds of words.
+One kind is from the background here.
+So, the is, we, etc.
+And the other kind is from our pop board
+distribution that we are interested in.
+So in order to solve this problem
+of factoring out background words,
+we can set up our mixture model as false.
+We're going to assume that we
+already know the parameters of
+all the values for
+all the parameters in the mixture model,
+except for the water distribution
+of which is our target.
+So this is a case of customizing
+a probabilist model so
+that we embedded a known variable
+that we are interested in.
+But we're going to simplify other things.
+We're going to assume we
+have knowledge above others.
+And this is a powerful way
+of customizing a model.
+For a particular need.
+Now you can imagine,
+we could have assumed that we also
+don't know the background words.
+But in this case,
+our goal is to factor out precisely
+those high probability background words.
+So we assume the background
+model is already fixed.
+And one problem here is how
+can we adjust theta sub d
+in order to maximize the probability
+of the observed document here and
+we assume all the other
+perimeters are now.
+Now although we designed
+the model holistically.
+To try to factor out
+these background words.
+It's unclear whether,
+if we use maximum write or estimator.
+We will actually end up having
+a whole distribution where the Common
+words like the would indeed have
+smaller probabilities than before.
+Now in this case it turns
+out the answer is yes.
+And when we set up
+the probability in this way,
+when we use maximum likelihood or
+we will end up having a word distribution
+where the use common words
+would be factored out.
+By the use of the background
+rule of distribution.
+So to understand why this is so,
+it's useful to examine
+the behavior of a mixture model.
+So we're going to look at
+a very very simple case.
+In order to understand some interesting
+behaviors of a mixture model.
+The observed pattern here actually are
+generalizable to mixture model in general.
+But it's much easier to
+understand this behavior
+when we use A very simple case
+like what we are seeing here.
+So specifically in this case,
+let's assume that
+the probability choosing each of
+the two models is exactly the same.
+So we're going to flip a fair coin
+to decide which model to use.
+Furthermore, we're going
+to assume there are.
+Precisely two words, the and text.
+Obviously this is a very naive
+oversimplification of the actual text,
+but again, it's useful to examine
+the behavior in such a special case.
+So we further assume that the background
+model gives probability of
+0.9 towards the end text 0.1.
+Now, lets also assume that our data is
+extremely simple the document has just
+two words text and the so now lets right
+down the likeable function in such a case.
+First, what's the probability of text,
+and what's the probably of the.
+I hope by this point you'll
+be able to write it down.
+So the probability of text is
+basically the sum over two cases,
+where each case corresponds with
+to each of the order distribution
+and it accounts for
+the two ways of generating text.
+And inside each case, we have
+the probability of choosing the model,
+which is 0.5 multiplied by the probability
+of observing text from that model.
+Similarly, the,
+would have a probability of the same form,
+just what is different is
+the exact probabilities.
+So naturally our lateral function
+is just a product of the two.
+So It's very easy to see that,
+once you understand what's
+the probability of each word.
+Which is also why it's so
+important to understand what's exactly
+the probability of observing each
+word from such a mixture model.
+Now, the interesting question now is,
+how can we then optimize this likelihood?
+Well, you will note that
+there are only two variables.
+They are precisely the two
+probabilities of the two words.
+Text [INAUDIBLE] given by theta sub d.
+And this is because we have assumed
+that all the other parameters are known.
+So, now the question is a very
+simple algebra question.
+So, we have a simple expression
+with two variables and
+we hope to choose the values of these
+two variables to maximize this function.
+And the exercises that we have
+seen some simple algebra problems.
+Note that the two probabilities must
+sum to one, so there's some constraint.
+If there were no constraint of course,
+we would set both probabilities to
+their maximum value which would be one,
+to maximize, But we can't do that
+because text then the must sum to one.
+We can't give both a probability of one.
+So, now the question is how should
+we allocate the probability and
+the math between the two words.
+What do you think?
+Now, it would be useful to look
+at this formula For a moment, and
+to see what, intuitively,
+what we do in order to
+do set these probabilities to
+maximize the value of this function.
+Okay, if we look into this further,
+then we see some interesting behavior
+of The two component models in that
+they will be collaborating to maximize
+the probability of the observed data.
+Which is dictated by the maximum
+likelihood estimator.
+But they are also competing in some way,
+and in particular,
+they would be competing on the words.
+And they would tend to back high
+probabilities on different words
+to avoid this competition in some sense or
+to gain advantages in this competition.
+So again,
+looking at this objective function and
+we have a constraint on
+the two probabilities.
+Now, if you look at
+the formula intuitively,
+you might feel that you want to set the
+probability of text to be somewhat larger.
+And this inducing can be work supported
+by mathematical fact, which is when
+the sum of two variables is
+a constant then the product of them
+which is maximum when they are equal,
+and this is a fact we know from algebra.
+Now if we plug that [INAUDIBLE] It
+would mean that we have to make the two
+probabilities equal.
+And when we make them equal and
+then if we consider the constraint it
+will be easy to solve this problem, and
+the solution is the probability of tax
+will be .09 and probability is .01.
+The probability of text is now much
+larger than probability of the, and
+this is not the case when
+have just one distribution.
+And this is clearly because of
+the use of the background model,
+which assigned the very high probability
+to the and low probability to text.
+And if you look at the equation
+you will see obviously
+some interaction of the two
+distributions here.
+In particular,
+you will see in order to make them equal.
+And then the probability assigned
+by theta sub d must be higher for
+a word that has a smaller
+probability given by the background.
+This is obvious from
+examining this equation.
+Because the background part is weak for
+text.
+It's small.
+So in order to compensate for that,
+we must make the probability for
+text given by theta sub D somewhat larger,
+so that the two sides can be balanced.
+So this is in fact a very
+general behavior of this model.
+And that is, if one distribution assigns a
+high probability to one word than another,
+then the other distribution
+would tend to do the opposite.
+Basically it would discourage other
+distributions to do the same And
+this is to balance them out so
+we can account for all kinds of words.
+And this also means that by using
+a background model that is fixed into
+assigned high probabilities
+through background words.
+We can indeed encourages the unknown
+topical one of this to assign smaller
+probabilities for such common words.
+Instead put more probability
+than this on the content words,
+that cannot be explained well
+by the background model.
+Meaning that they have a very small
+probability from the background motor like
+text here.
+[MUSIC]
+

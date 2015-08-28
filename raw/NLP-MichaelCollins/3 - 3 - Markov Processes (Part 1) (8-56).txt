@@ -1,0 +1,197 @@
+>> Okay so in the previous segments of
+this lecture we gave the basic definition
+of the language modeling problem..
+And in this segment I want to talk about
+trigram language models.
+Which as I've said before are an extremely
+important and widely used type of language
+model.
+So trigram language models build heavily
+on the idea of Markov Processes which are
+a very important concept in probability
+and statistics.
+So let's first talk about Markov Processes
+and then we'll describe how we can use
+them to construct a trigram.
+Language model.
+So in a markov process we have the
+following scenario.
+We have a sequence of random variables x1,
+x2 up to xn.
+And each random variable can take any
+value in a finite set v.
+For example, V might be the set of words
+in the language which we're interested in.
+And for now, we'll assume that the length
+n is fixed.
+So every sequence has the same length.
+For example, we might have every sequence
+having length 100.
+We'll first cover this case where the
+length is fixed.
+And then we'll go on to generalize this,
+to allowing n to vary.
+Allowing the value for n.
+To itself be a random variable.
+But for now n is fixed.
+Our goal is to build a model, of the joint
+probability, of x 1 taking some value of
+little x 1, x 2 taking some value of
+little x 2, of 2 x n.
+Taking some value little xn and each of
+these values is in the set V, okay?
+So we have a joint probability
+distribution over the values of these n
+variables.
+It's worth noting that there are a huge
+number of possible, values xy makes to up
+to little xn.
+If fact if we have the vocabulary.
+V, whose size is size v, as I've written
+here.
+They're a size v to the power n different
+possible sequences.
+And so we have a distribution over this
+very, very large set of possibilities.
+That's because I have.
+I think that the first position I had V
+possibilities here.
+If I think about the second position I had
+V possibilities here.
+And up to the Nth position I had V
+possibilities there.
+And so I end up with V to the power N.
+Okay.
+So, how do we go about modeling this, this
+joint probability?
+And it's basically going to be 2 steps in
+deriving what's called a first order
+Markov Process.
+And the first step is to use the chain
+rule of probabilities to decompose this
+entire expression as a product of
+expressions.
+Let me explain a little bit about what's
+going on here.
+When I say we're using the chain rule.
+So remember if we have events A and B and
+we want to say what's the joint
+probability of events A and B happening?
+For example we might have the joint
+probability that X 1 Is equal to little
+x1.
+And x2 is equal to little x2.
+Just considering the first random
+variables in the sequence.
+Then the chain rule says the following;
+that I can decompose this into a product
+of 2 terms.
+The first one is p of a.
+And then I multiply that by the
+conditional probability of p of b given a.
+And this follows directly by the
+definition of conditional probabilities
+and if, if we apply this to this very
+simple case where we have a sequence of
+length 2, this means i can decompose this
+as the probablity that X 1 Taken, takes
+the value x 1, multiplied by the
+probability that x 2 takes the value x 2
+given that x 1 is equal to x 1.
+Okay, so that's the chain rule applied to
+just two events and we can apply this to
+longer sequences.
+So if I have the joint probability over 3
+events, a, b, and c.
+Chain rule says I can decompose this as p
+of a times p of e given a.
+Times p of c given a and b.
+And so notice we have first the
+probability of A then the probability of B
+then the probability of C and each point
+we condition on the previous events in
+this particular sequesntial order, and
+again we can apply this to a sequence of
+length three.
+So if I have this expression here This can
+be written as, actually exactly what I've
+written up here, this is the same.
+Times P of X3 equals X3 given X1 equals X1
+and X2 is equal to X2.
+Okay.
+It's important to realize that this kind
+of decomposition using the patr- using the
+chain rule is exact.
+I can always take the joint probability 3
+events and decompose it in the following
+way.
+So, what I've written here.
+Is simply, this chain rule applied to the
+full sequence, of random variables x 1
+through x n is really a, a generalization
+of these two cases I've shown you here,
+for arbitrary n.
+So the first term, is p of x 1 equals x 1.
+And then I have a product of terms, one
+for each position from i equals 2 to n.
+Each term has the probability that Xi
+equals Xi, and I condition on all of the
+previous values for the random variables
+in the sequence.
+And again, it's critical to realize that
+this equality is exact in that I can
+always take a joint probability of this
+form and rewrite it in, in, using the
+chain rule in this form.
+So that's the first step in driving a
+first order Markov Process.
+Now let's go over the second step.
+And here is where we make critically the
+Markov assumption.
+Ok so again, this equality is exact.
+And this, the quality follows by the
+Markov assumption.
+So what is that assumption?
+It is a first order assumption.
+We'll see why we call it first order in a
+second but this is just saying that for
+any position I in the range 2.
+To n.
+For any sequence, x1 through xi.
+The probability that xi is xi, given these
+previous values in the sequence.
+Is equal to the probability that xi equals
+xi.
+Conditioned on just the previous value at
+i minus 1.
+And so we've essentially made the
+assumption that this random variable, the
+position i, basically depends only on the
+value of the random variable at i - 1.
+To be a little more precise, this
+independent assumption is saying that this
+random variable is conditionally
+independent of all the previous random
+variable, random variables once I
+condition on i - 1.
+So everything up to I minus 2 is
+irrelevant.
+And that leaves us with this expression
+here.
+Where we say that the joint probability of
+the sequence is equal to product of terms,
+x of X 1 equals x 1.
+And then I have a product from I equals 2
+to N.
+And at each point I have the probability
+that XI is equal to little xi, given that
+XI minus 1 is equal to XI minus 1.
+Okay.
+So this is clearly a huge assumption.
+I'm just assuming that each random
+variable depends on the previous value.
+But it's going to be very useful, in that
+it considerably simplifies the model.
+And as we'll see it considerably
+simplifies the number of parameters in our
+underlying model.

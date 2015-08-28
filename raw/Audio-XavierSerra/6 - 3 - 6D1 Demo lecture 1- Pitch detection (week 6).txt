@@ -1,0 +1,332 @@
+Hello.
+Welcome back to the course on Audio
+Signal Processing for Music Applications.
+This week we're talking
+about harmonic sounds.
+Sounds that have a very clear pitch, or
+what we also call a fundamental frequency.
+And in this demonstration class, I want to
+show some tools within Sonic Visualizer.
+Some plugins that allow us to
+analyze the pitch of several sounds.
+So let's go to Sonic Visualizer and
+let's open the file of a singing
+female from the sms-tools directory
+from which we use most of sounds.
+And so here it is.
+And we can listen to that.
+[MUSIC]
+So that's a quite clear voiced sound,
+with a very clear tone,
+the timbre quite homogenous throughout.
+So we can hear quite well the pitch of it.
+In fact if we zoom in into the
+the sound, we will be able to see
+the periodicity quite easily.
+So that means that a time domain approach
+could be able to identify this pitch.
+So let's analyze the pitch of this sound
+using a time domain approach.
+But first let's open the pane
+with the spectrogram.
+Okay.
+So this is the spectrogram of
+this sound and
+if we zoom in the lower part, we see this
+horizontal line which are the
+harmonics of the sound and the first one,
+this more red one, is clearly 
+the fundamental, the first harmonic.
+If we make the window size a little bit
+bigger like 2048, this is even more clear.
+Okay, so let's zoom even more.
+Okay.
+And now let's compute the pitch
+using a time domain approach, and
+let's open plugin, that is the Aubio
+pitch detector, which was developed
+by Paul Brossier, and the actual
+implementation was done by Chris Cannam.
+and we will be using the Yin algorithm.
+This plugin has several algorithms and
+we talked about the Yin
+algorithm in the theory lecture.
+That's a quite popular algorithm
+that's basically is similar to
+an auto correlation function.
+And see, let's see what it does.
+Okay?
+So it has some parameters to control like
+the range that we will be accepting.
+The lowest fundamental, the highest
+fundamental, silence threshold.
+The frame size within
+which we're going to
+compute this measure, and
+then the increment in time.
+So let's just take the default
+parameters and let's compute them.
+Okay, so here we see this purple
+line on top of this first harmonic.
+So it very much tracked quite
+well the whole pitch contour.
+Of course except in the attack,
+that we see, where there's some silence.
+And it found some pitches that
+may not be in the right place.
+Okay so now we can zoom into this.
+And we will be able to see
+the actual numbers that it computed.
+Okay.
+So these numbers 372, 371, okay,
+are spaced 512 samples.
+For every 512 samples we
+have one of these values.
+And this tone if we recall it,
+starts a little bit high and
+then it goes down, up and
+then finishes in the same range.
+So we will see these frequencies
+it starts around 409, 414.
+Then it will go down to
+lower frequencies like 371,
+and then it will go up again to 443.
+To end at the kind of 
+the initial frequency range,
+which was around 400 and
+and something hertz.
+Okay.
+So
+with that we can really measure
+quite well these frequencies.
+Let's take another sound that
+is not as easy as this one.
+So for example, let's take
+a speech sound.
+A speech male, which is a lower sound and
+may have some more problems than this one.
+So let's listen to that.
+>> Do you here me?
+They don't lie at all.
+>> Okay and let's,
+let's do the same process.
+Let's first zoom into it.
+Let's get the spectrogram of this sound,
+let's make it a little bigger and
+let's zoom into the lower part of it.
+Well we will need to take
+a bigger window in order to
+visualize the horizontal lines better.
+So let's take 2048.
+Okay, that's better.
+But even in this case we
+can even do more than that.
+So okay, this may be better.
+So here we see these harmonics.
+And clearly there are several utterances so
+we see them with
+silence in between and
+some consonants in between too.
+So now let's use the same algorithm, okay?
+The Aubio pitch detector and
+let's use the same Yin frequency estimator
+and let's just use the same parameters.
+Okay.
+And well, the color is not so
+easy to visualize, so
+let's change the color, maybe let's,
+let's make it like black, okay?
+So now we see the pitch
+track that it found, and
+clearly, well,
+let's zoom in a little bit more.
+Okay.
+And now there is a, it's pretty good,
+but there is some points that are,
+well, are not correct.
+But again they are not correct
+because they're trying to
+identify the fundamental
+frequency of some silent.
+So by controlling 
+the silent threshold and
+some other parameters we might
+be able to get a better pitch track.
+Maybe the one that is not so
+good is the this fragment here.
+In which there is clearly some pitch and
+it got a little bit confused.
+It was jumping, and it will look,
+it will zoom even more.
+We'll see the actual values.
+So it was quite not very clear on
+the frequency that
+the fundamental frequency was.
+Okay?
+Anyway, so that's a pretty good tool to
+analyze the pitch of monophonic sounds.
+So now let's open a polyphonic sound.
+Let's open that fragment
+of carnatic music that
+we have been hearing in some classes.
+Okay, this is it,
+let's listen to that.
+[MUSIC]
+Okay.
+So that's a quite more complex sound.
+we also listen clearly the voice, but
+there is this percussion instrument and
+a little bit of
+the violin and the end and some drone.
+But definitely we need
+a frequency domain approach.
+So first again let's open
+the spectrogram.
+Okay?
+And let's make it bigger so
+we can see better.
+And let's zoom in into the lower parts.
+Okay, let's make the window bigger so that
+we can see some things, maybe even bigger.
+Okay now we start seeing some horizontal
+lines that might be the voice and
+might be 
+the drone that that is underneath and
+the violin here and the end, okay?
+But so now let's use a frequency
+domain approach that will attempt to
+identify the different pitch contours,
+and identify the prominent peak.
+And that’s, I downloaded one
+plugin that is Melodia.
+That was developed by
+Justin Salomon at the MTG,
+the Music Technology Group and
+it has two parts.
+One it has all the intermediate
+steps that are used, and
+then it has the final result, okay?
+So let's start with intermediate steps.
+And first, what it does, it looks at
+what is called a salience function.
+So the salience function well,
+let's just use the default parameters.
+And let's just show it.
+Okay, so this is the salience function.
+This is a computation that is done.
+Now the horizontal scale is in cents,
+is not in Hertz.
+And basically it attempts to identify
+possible fundamental frequencies,
+so possible sinusoidal lines,
+so it does sinusoidal analysis.
+It finds all these sinusoidal tracks,
+and it tries to identify which
+of the sinusoidal tracks might be
+fundamentals of harmonic series.
+and this is what it does.
+And then the next step is to find
+the contours, possible
+contours, that are the most prominent ones
+of these possible fundamental frequencies.
+And these are the pitch contours.
+Okay, now it's computing.
+So these are possible contours that it
+found that might be candidates to be
+the fundamental frequency of
+a given sound search.
+And then it can refine
+it a little bit more by
+identifying the ones that
+are really melodic contours.
+Okay.
+And, okay, so
+these are candidate melodic contours.
+And then the actual algorithm returns,
+Let's now call the actual algorithm,
+the melody extraction.
+Again, it has the parameters of 
+the range that it accepts.
+It has the size of the frame,
+and the window increment here.
+It's 128, and there you find advancement.
+And there is some other parameters that
+you might want to play around with like
+the voicing tolerance, in terms of
+how the voicing characteristics,
+How strongly rely on
+the prominent voice to be have
+a very clear pitch, etcetera.
+So let's compute that.
+Okay and
+let's change the color again to black.
+Okay and this is what it obtains.
+What it believes to be
+the prominent pitch.
+We can zoom in into that and
+again we will see the values and
+now they're very spaced,
+128 samples, so
+they'll have to zoom in a lot to
+visualize the individual values.
+Alternatively let's zoom in maybe
+more vertically and
+maybe not so much horizontally.
+Okay.
+And now let's visualize it again.
+Okay.
+So here we see clearly there is some
+areas that well, it did pretty good.
+So in fact let's listen to this while
+we are watching the actual plot.
+[MUSIC]
+Okay.
+So it makes some sense.
+Of course a good way to check
+if this is a good candidate for
+the fundamental frequency of
+the voice would be to synthesize and
+listen the actual contour
+that we obtained.
+But Sonic Visualizer cannot do that.
+But anyway, we showed that in 
+in the theory lecture, and
+this contour was not that bad.
+It was pretty good.
+Okay, so that's all I wanted to say.
+So basically we have tried
+to do pitch analysis on
+several sounds,
+using Sonic Visualizer and
+several Vamp plugins,
+more specifically we used two plugins,
+one that implements the Yin algorithm.
+Aubio, and
+one of the algorithms is the Yin.
+And then Melodia, which is a plugin
+develop at the MTG by Justin Solomon that
+you can find more documentation in this
+directories, in this website.
+So feel free to go there and get more
+information or to download the plugin.
+And of course the sounds that
+we used come from Freesound.
+So that's all.
+So hopefully this gave you a practical
+view on the issue of pitch.
+Sometimes easier and
+sometimes of course in complex sounds
+this issue can be quite complicated.
+And it's a necessary step to be
+able to handle harmonic sounds, and
+to be able to analyze and
+understand and synthesize these sounds.
+So that's what we're going to be doing
+in the next demonstration class.
+We're going to be actually using
+the harmonic model that we talked about in
+theory to analyze
+the sound using harmonics.
+So thank you very much, and
+I'll see you next class.
+

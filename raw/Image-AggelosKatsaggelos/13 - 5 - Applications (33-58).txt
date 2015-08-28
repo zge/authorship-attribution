@@ -1,0 +1,791 @@
+In this final section, we look at few of
+the applications of sparsity.
+We really just touched the tip of the
+iceberg.
+It's really impressive how many different
+problems have been solved using the
+ideas we have presented this week, both in
+image processing and [UNKNOWN].
+We will discuss for example, the
+noise smoothing, painting, and
+super-resolution problems, which
+are inverse recovery problems that we also
+discussed back in week six and seven.
+The problems are the same, but their
+formulation and solution approaches are
+different now.
+We will also discuss some never problems
+such as
+the foreground background separation
+problem
+through randomization and robust VCA.
+We will finally discuss the compressive
+sensing problem, which has given rise
+to a lot of activity in the area in the
+recent past.
+So let us have a closer look at these
+applications now.
+[BLANK_AUDIO]
+In forming the observation, vector B, we
+typically
+take the image, like the one shown here.
+And break it into blocks or patches.
+So here's a patch, out of an image.
+And then, we stack this patch, this sub
+image, lexicographically into a vector, as
+shown here.
+So if this is, for example, an 8X8 patch,
+this becomes a 64x1 vector.
+In forming the dictionary matrix A we
+first
+look at the case when the dictionary's
+static.
+So if the DCT's used as a dictionary we
+show here the 8x8 basis, of the DCT.
+We look at this image actually multiple
+times.
+Where, for example, we started video and
+image compression in weeks nine and ten.
+We take each of these two dimensional
+basis, turn them into
+a vector, and this becomes a column of the
+dictionary matrix, A.
+These actually are called also atoms of
+the dictionary.
+In this case we have a, a rectangular
+dictionary
+64x64 in this particular example.
+We demonstrate here with a simple
+experiment that
+naturally my ds are sparsely represented
+over the dct.
+These of course something we know ver
+well.
+From weeks nine and ten, when we covered
+image and video compression.
+Given this image, we take it's, this gets
+fully
+transformed and all of the coefficients
+here in decreasing order.
+This is, by the way, long scale.
+Now if we keep only 25% of the largest
+coefficients, that
+we were to throw, everything away, above
+this line, then this is the constructed
+image.
+If we only keep the 10% of the largest
+coefficients, everything above this line
+now is thrown away.
+This is what we obtain and if we only keep
+one person, the [UNKNOWN] coefficients, so
+what's below these blue lines.
+So, this one goes away as well.
+This is the construction.
+These two images look almost
+indistinguishable from the original one.
+So this demonstrates, also, the energy
+compaction of the discreet cosine
+transfer.
+While this one is also of good quality,
+although when examined
+side by side with the original, one can
+see that smoothness has taken place.
+We show here an 8x8 patch of this image.
+Which can be, I correctly represented by
+14 bases
+out of 64 bases of the density based
+dictionary.
+We do the same experiment with an eight by
+eight patch from a noisier image.
+And we see that in this case, we need at
+least 32
+out of 64 bases to obtain a reasonable
+representation of this patch.
+Another way to describe this is to say
+that noise is not compressible.
+Which is something we know since the noise
+signal does
+not have, any correlations in it, or any
+construction in it.
+That we can explore in order to compress
+it.
+This property is useful to us, when we
+deal with a denoising problem.
+Simply because the signal can be sparsely
+represented, utilizing
+a dictionary, such as the dct, while the
+noise component cannot.
+So syncing a sparsal representation of the
+signal, we know that,
+we will not be constructing the noise
+component but just the signal component.
+Here's the formulation of the image
+denoising problem.
+It contains the patches of the input noisy
+image.
+Each patch is a column in this matrix B.
+While A is the dictionary.
+If the dictionary is fixed, if we use for
+example the d-c-t.
+Then, we solve this last type of problem
+by minimizing with respect to X.
+However, we can use a dictionary which we
+learn from the data,
+in which case, we then minimize with
+respect to A as well.
+So, this one is the biconvex dictionary
+learning.
+A problem which we described earlier, and
+we alternate optimization between A and X.
+A is fixed, we are solving a lesser
+problem, we solve a,
+the squares type of problem for which we
+have a close form solution.
+Of course we can use the L0 norm as well,
+in which case we follow the mod approach.
+So given the sparse representation x, then
+ax
+star, the optimal solution, forms the
+recovered image.
+We show here an experimental result.
+This is the original image.
+This is your observed noisy image.
+The pixel [INAUDIBLE] noise ratio is 22 to
+b.
+And utilizing a fixed dictionary, based on
+[UNKNOWN], here is the
+solution we obtained utilizing the method
+we showed in the previous slide.
+So this is the noise-free, or de-noised
+image.
+With PSNR 33 and a half dB.
+We introduce the image inpainting problem
+multiple times already.
+So B is the observed image, and certain
+pixels are missing.
+Which pixels are missing is indicated by
+this.
+R matrix, the degradation, matrix, or the
+degradation mask.
+So, for the, pixels that are not missing,
+that we
+know their value, then we try to minimize
+this error.
+This, again, the [UNKNOWN] is, all here
+[UNKNOWN] in matrix four.
+So we solve this last o.
+Problem with respect to X.
+Finding an optimal X star, then we form
+the recovered image as a X star.
+The formulation is shown when the
+dictionary is fixed.
+We can however design a dictionary
+according to what recovered two slides
+ago.
+So, carry out the minimization with
+respect to A as well.
+So, here is an experimental result.
+This is the original image and this is
+the, the degraded
+image where 50% of the pixels are set to
+black are missing.
+Utilizing the method I just described with
+the fixed
+diction a, it is a t based diction a.
+Here is the resulted inpainting image.
+It is certainly a very satisfactory
+result.
+It should be mentioned here however that
+in carrying the inpainting as was
+described here.
+We assume that the location of the missing
+pixels that matrix r
+that I included in the formulation of the
+previous slide is exactly known.
+In general, however, this may not be the
+case, and one needs to also identify
+which pixels need to be inpainted first
+before the inpainting process is applied.
+We talked about the image resolution
+problem multiple times.
+We first introduced it in week six and
+seven when we talked about image recovery.
+The problem is given a low resolution
+image to
+find an estimate of a high resolution
+version of it.
+We describe here a formulation of the
+problem and a
+solution approach when dictionaries and a
+sparse representation is utilized.
+So according to this approach, there's a
+training and the testing phase.
+During training, we assume that we have
+pairs of images, and each
+pair consists of a low-resolution image
+and its corresponding high-resolution
+version of A.
+So during training, we design both a
+low resolution dictionary and a high
+resolution dictionary.
+And the sparse representation of the
+signal utilizing
+both the low and the high resolution
+dictionaries.
+The important point here is that the
+sparse representation
+is identical no matter which dictionary we
+are using.
+So this is the term, the Forbinius error
+regarding the loaded solution data.
+This is the Forbinian's norm, the error
+regarding the higher resolution data.
+And here is the requirement that this
+representation is sparse.
+I should mention here that we use bilinear
+interpolation of the low resolution image.
+So, the sizes of the low and end high
+resolution
+dictionaries is the same and therefore,
+this vector here is identical.
+Then, during the reconstruction phase, a
+new low resolution image is observed.
+And utilizing the low-resolution
+dictionary, we try to
+find the optimal sparse representation of
+this particular image.
+Then having X star here, we utilize
+the high-resolution dictionary to obtain
+the high-resolution image.
+Here is a low resolution image of which
+you want to find its high resolution
+version.
+Utilizing the method that I just described
+in the previous slide.
+Here is a high resolution version of it.
+The interpolation factor is 2 in each
+dimension.
+If I look at a specific block of the first
+image and the corresponding block of
+the high resolution image and blow up
+these
+two blocks, then this is how they look
+like.
+So, clearly, in, interpolating using zero
+order
+hold the low resolution version obtain
+this image.
+While this what we obtain from the high
+resolution image.
+Clearly, we have all these, jagged edges
+here, which are
+not present in the high resolution version
+of the image.
+The robust face recognition problem, we
+assume for
+that each person, we have multiple
+versions of it.
+Face and its image is under
+different lighting conditions since light
+pose variations.
+So each of these images forms a vector
+which becomes
+a column in the dictionary for the nth
+person here.
+So all these individual face dictionaries
+of the concatenated.
+As shown here to form the face dictionary
+for the whole database.
+Now, we are given a query image and we try
+to find if this person can be found in a
+database.
+Since, this query image has abrasions such
+as scratches.
+Then the model we use that, is that b is
+approximately equal to
+Ax, so this is the presentation important
+to the dictionary plus it noise there.
+So x is sparse.
+Because this face is one of the many faces
+in the database, and also e, the error, is
+sparse.
+It only represents a small part of the
+whole image.
+So the formulation we follow in solving
+this problem is shown here.
+We minimize the L1 norm of X, the sparse
+representation, plus lambda weighed the L1
+norm of the error.
+So the error as well as x are sparse
+signals.
+And the constraint is that Ax plus error
+equals the observation.
+In obtaining a solution to this problem,
+we introduce z, this concatenated vector,
+and if the matrix f is equal to this then
+we can write this problem as shown here.
+Minimize the l1 of z, and the, the
+constraint that f of z equals b.
+And this clear, clearly is a basis pursuit
+problem.
+We looked at this problem earlier this
+week
+and we know certain ways to obtain a
+solution.
+Utilizing the methodology presented in the
+previous slide for
+this query image, here is the
+reconstructed error image.
+And here is the reconstructed face image.
+The sparse representation vector X star
+looks like this.
+So the reconstructed face image is a
+combination
+of a number of images in the database.
+Very often, after the face is
+reconstructed,
+we are interested in identifying the
+person.
+So if you recall the overall dictionary a
+consists of the dictionaries that belong
+to individual persons.
+So we either find the largest values in
+the representation x star, or we find the
+reconstruction arrow per sub dictionary,
+the dictionary belonging to an individual.
+So if for example for this particular
+case, we find
+that the largest value here belongs to the
+dictionary
+AN, this means that, that person that you
+constructed
+here is identified as the Nth person in
+the database.
+As mentioned in the beginning of this
+week's lecture, we
+can use [UNKNOWN] ideas to solve this
+surveillance type of
+problem, which consists of the separation
+of video sequence
+into the background frames and the
+foreground or moving parts frames.
+The basic idea here is that if we look at
+this background image, images.
+If we take actually its frame and form a
+vector, and put its vector as a
+column into a matrix L, is that this
+matrix L that consist again of the
+background images.
+Assuming this background is stationary,
+these columns will be very similar.
+So, therefore, this is a low rank matrix
+and again if
+each frame is absolutely identical, then
+this is a rank one matrix.
+So, the question is how to model this low
+rank matrix.
+And regarding the moving part or the
+foreground, since it only occupies
+a small part of the frame, then this
+matrix E that is formed
+by this frame, that will become the
+columns of E is a sparse matrix.
+Of course we know what to model sparsity
+by utilizing either the l0 or l1 norm.
+So let's see what it takes to solve this
+surveillance problem,
+the separation of video sequence into
+background and moving parts or foreground.
+In proceeding with the original problem,
+the foreground, background separation, the
+first step we have to take is to be able
+to approximate the matrix B
+by another matrix L, so that the rank of L
+is less equal than a given rank, K.
+And the approximation is in terms of this
+verbinuse norm.
+The solution to this problem can be found
+by looking at the singular value
+composition of b.
+Use the left singular vector, the right
+singular
+vector, and s of y is the singular value.
+So B is rank r.
+So here is how the composition of B looks
+like.
+And the singular values are ordered from
+larger to smallest.
+So given the singular value composition of
+B, the best matrix L that
+approximates B in terms, again, of this
+Frobineus norm is found
+by keeping the k largest singular values
+of this, the composition.
+We show here the formulation of the
+background foreground separation problem.
+B are the observed data.
+In L, we represent the background.
+So this is the load on matrix.
+While in E, we represent the foreground
+for the sparse matrix.
+So, we want to minimize the error between
+these terms
+utilizing the Forbinius norm while making
+sure that E is sparse.
+And L is a low rank.
+So, the rank of L is below a given number
+here, k.
+We'll follow two different directions in
+solving this problem.
+Going to the first one, we find the
+singular value decomposition of
+L, so the matrix sigma has the singular
+values in descending order.
+Then the problem is reformulated as shown
+here.
+The objective is the same.
+However the constraint now is in terms of
+the matrix sigma.
+We want the L0 norm of this matrix to be
+below k.
+A different formulation of the problem is
+shown here.
+By utilizing the so called nuclear norm.
+[SOUND] The nuclear norm, is the sum of
+the singular values of the matrix.
+So in other words is the L1 norm of the
+matrix sigma.
+So the l one being a convex norm,
+we can then have this unconstrained
+optimization problem.
+The second direction we can follow is by
+decomposing the L
+matrix, the low rank matrix, into the
+product of A and x.
+The rank of l is determined by the number
+of
+columns in the matrix A, so we make the
+matrix A.
+So let's say L is N by M.
+So A would be N by K, and then X would be
+K by M.
+Where again, K is the
+desired rank of the matrix.
+So then with this the composition, we're
+just minimizing with
+respect to A, X, and T, the difference
+here, with respect to the
+[UNKNOWN] norm plus the L1 of E, so that
+we make sure that E is sparse.
+In other words, the constraint of rank L
+being less than k has been absorbed into
+this decomposition, has been absorbed into
+the number of columns of matrix A.
+So here is a result I showed at the
+beginning of this week's lecture.
+Here is the observed video B.
+[BLANK_AUDIO]
+While here's the low ranked L presenting
+the
+background, it seems like, as if nothing,
+moves.
+It is a stationary background.
+While here is the foreground so this is
+the sparse matrix E.
+Now of course we now how to obtain L
+and E based on the discussion of the
+previous slide.
+We show here the traditional way of
+acquiring a signal or an image.
+We use a sensor, we sample at Nyquist,
+acquire N samples then we exploit
+the redundancy or the structure in the
+data, and compress the data.
+Therefore now case samples are used to
+represent
+the image where K is much smaller than N.
+The compressed image is transmitted or
+stored,
+and then either received or retrieved, and
+from
+the case samples, using decompression, we
+end up
+with a reconstructed image utilizing N
+samples again.
+So sampling here by delta functions is
+dictated by the
+Nyquist Theorem and the idea here is to
+try to do better
+than that in some sense by combining the
+sampling and compression stats.
+The idea of compressive sensing is to
+directly acquire the compressed data.
+So, we combine again, something in
+compression, so we acquire now M
+samples where M is much less than what's
+dictated by Nyquist.
+And greater, typically, than what we can
+obtain by
+compressing the data that are acquired
+according to Nyquist.
+So the pattern is the same, the data is
+either transmitted or stored, received or
+retrieved and then, from the m samples,
+using a reconstruction procedure, we can
+obtain a.
+Representation of the original scene.
+The key question here is how to obtain
+this m samples and
+as you'll see, we do so by using
+generalize or general measurements.
+Let us assume without loss of generality
+that the signal x,
+we are sensing, it's sparse in its
+original or spatial domain.
+So it's K-sparse, means that K elements
+are nonzero.
+And the sparsities with respect to a basis
+or a dictionary, A.
+So with a traditional sampling approach, A
+is an identity.
+I use deltas to sample it, the pixel
+locations.
+So, this value is transferred directly to
+the observed data.
+With compressed acquisitions, we use a
+sampling matrix A here, which is
+non-diagonal.
+It's a long matrix because the number of
+acquired samples,
+M is less than N, the dimension of the
+vector X.
+X is again K sparse, and now each
+acquisition is formed
+by getting out the inner product between
+the corresponding row of A, with X.
+So the compressive acquisition directly
+acquires this condensed representation
+with little or no information lost through
+this dimensionality reduction.
+The important question is what should this
+sampling matrix's.
+Be equal to, and the interesting maybe
+surprising
+results are that these sampling matrices
+are random matrices.
+And in acquiring each and every compressed
+acquisition, we carry
+out the inner product between the original
+image and one of these matrices.
+So the inner, or dot product, will give
+me a scalar which is just one specific
+acquisition.
+In the previous slide, I treated that as
+the row of
+A multiplying X, so that's [INAUDIBLE] the
+product of two
+vectors which is exactly the same if I
+vectorize these images
+then the matrix in a product becomes
+vector, in a product.
+So, this is a powerful result that we can
+use again random matrices,
+as the sampling matrices, to obtain this
+compressed acquisition.
+Suppose we have this one-dimensional
+signal, and here's capital N samples.
+And we are allowed to use only a certain
+percentage,
+let's say 10% of the samples in the
+presenting the signal.
+If we use the traditional, the Nyquist
+delta base.
+Sampling and use impulses to pull out
+elements of this signal.
+Most probably, we are going to meet some
+of
+the important elements in the signal which
+are these impulses.
+I don't know the location of the impulses
+and therefore, at random
+or equally spaced deltas are going to miss
+some of these impulses.
+When we perform compressed acquisition,
+however, we cannot obtain
+a product of the signal with this random
+components.
+And clearly, each now compressed sample is
+going to contain information about all
+these impulses.
+So, the signal is local, but the
+measurements are global.
+And as already mentioned, in each
+compressed acquisition, there is,
+little information about each and every
+component of the signal.
+Therefore, getting out, a number of them,
+we have multiple information about the
+deltas in
+the signal, and therefore we are able to
+deconstruct the original signal from this
+compressor positions.
+We mentioned earlier that we assumed
+without loss of generality,
+that signal to y is sparse in its native
+domain.
+However, this is not, a strict constrain
+because, as we know,
+we can, obtain any image, and through
+dictionary,
+a fixed dictionary or a design dictionary,
+can have a sparse,
+representation of this signal x, with
+respect to the dictionary D.
+And Y is the sparse representation.
+So, this is the model then, the more
+general model that the acquisition B
+is the result of A, the sampling matrix,
+multiplying the dictionary
+D, times the sparse representation of the
+signal, Y.
+And it causes the theoretical results
+random measurements
+can be used in this case as well.
+So the end result here is that we have one
+vector equals
+along matrix, the product of A with D,
+times a sparse long vector y.
+So, this is b.
+This here is
+AD and this is y.
+So, we are given b.
+We are given AD and try to find y.
+So, this is an inverse problem again.
+And there's an under determined system of
+equations.
+And through this week we will be looking
+at different
+ways to reconstruct sparse signals from
+and [UNKNOWN] system of equations.
+We can use the L0 norm or the L1 norm, and
+we can use the
+basis pursuit, or the lasso formulation of
+the problem.
+So there's a plethora of techniques like
+the ones we studied in
+reconstructing the signal from its
+compressed acquisitions.
+We show here some experimental results
+of reconstructed images from compressed
+acquisitions.
+Here is the original image.
+It's actually the image that is
+reconstructed when the
+number of compressed acquisitions equals
+the number of pixels.
+It's very close to the original, but not
+identical.
+Because also noise was added to the
+compressive questions.
+When the number of compressed acquisitions
+is half
+the number of pixels, here is a
+construction.
+25% of the number of pixels, here is a
+construction and
+all the way down to 5% of the number of
+pixels.
+Clearly up to this level, the
+reconstruction are very close to the
+original,
+and the 5% reconstruction is surprisingly
+good, surprisingly code, close to the
+original.
+This, by the way, the so-called
+Shepp-Logan phantom, which is
+utilized for starting and comparing the
+construction for projection algorithms.
+We show here the performance of two
+different algorithms, one is
+using l one for enforcing sparsity, so
+it's a lasso
+problem while the other algorithm is using
+TV as a regularizer.
+TV also promotes piece wise smooth
+solutions.
+And then we have two images that Shepp log
+and fun to be showed in the preview slide.
+And the camera among the, I showed at the
+beginning of this week's lecture.
+We see that the TV with the Shepp Log and
+performed the best.
+But also, the L1 for the Shepp Logan is
+the second best.
+So, the Shepp Logan is an easier image to
+reconstruct from projections
+and here is a performance of TV and LV1
+with respect to the cameraman.
+So, the image I showed in the previous
+slide.
+With 5% here acquisitions utilizing the
+phantom TV was used, so indeed the
+quality, the big SMR is 30 dB, which is
+generally speaking, decent quality image.
+With 100% acquisitions, the peak signal is
+between 55 here, approximately, and 30.
+So, it's high but not extremely high.
+In principle it should go to infinity if
+the reconstructed image was identical to
+the original one.
+But, as I mentioned, noise is added to the
+compressed acquisitions, the signal to
+noise ratio is 40 db and this
+is one reason that perfect reconstruction
+is prevented.
+We were exposed this final week, to some
+recent and hot development.
+In sigma image processing and machine
+learning.
+We saw how the simple notion and
+information about the sparsity
+of a signal can change the way we solve
+certain problems.
+We learned how to solve problems which
+require the signals are sparse.
+We were also exposed to some of
+the interesting applications which
+resulted from such considerations.
+This week's material has close ties to the
+material on recovery we covered during
+week six.
+We talked quite a bit there about
+constraint optimization.
+The ideas and thoughts are very similar.
+But now the functions we optimize are
+convex but not differentiable.
+We also saw great connections with the
+material of weeks nine
+and ten, where we covered compression with
+a use of [UNKNOWN].
+It's great to see all these connections
+made.
+As a final note it's hard to believe that
+it's been 12 weeks we have been together.
+It has been a new experience for me
+interacting with
+so many of you from all corners of the
+globe.
+Teaching this one class resulted in
+interactions with many more students
+than I taught here at Northwestern for the
+last 30 years.
+It's been a rewarding experience for me,
+and I hope you share the same opinion.
+Best of luck, putting to use, the
+information you learned here.
+I hope the material you learned, will
+prove useful, and I am also
+certain that some of you will be the next
+generation pioneers in the field.
+I am sure, I'll see some of you around.
+

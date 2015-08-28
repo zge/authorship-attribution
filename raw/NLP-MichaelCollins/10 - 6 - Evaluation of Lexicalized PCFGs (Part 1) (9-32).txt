@@ -1,0 +1,215 @@
+Okay, to finish up this segment on
+lexicalized PCFGs, I want to talk about
+how we evaluate different pausing models
+and give some insight into how accurate
+these lexicalized PCFGs can be for
+pausing.
+So I'll actually describe two ways of
+evaluating a pauser.
+Here's the first.
+Or here's the basis of the first, and it's
+a very widely method.
+So, the key insight is that if we take
+some parse tree, for example the tree
+here, we can represent this as a set of
+constituents.
+Where each constitutent consists of a
+label, a start point, and an end point.
+So, if I look at this NP for example, if I
+number the words in the sentence one, two,
+three, four, five,, this end piece bands
+words one through two inclusive and so
+this constitutent is one, two.
+Similarly I have an NP 4,5 I have a VP
+spanning words three to five, and I have
+an S spanning words one through five.
+So this particular path tree has four
+different constituents.
+Note that we do not include parts of
+speech, within this definition, so we just
+look at levels higher in the tree, than
+the parts of speech.
+So and the short story is we can take any
+parse tree and map this to a set of
+constituents We can do this both for human
+annotated parse trees, which will, act as
+our gold standard in test data.
+And we can also do it for the output from
+the parser that we've built.
+In which we're trying to, to evaluate.
+So, let's now see how we can use this idea
+to evaluate a parser.
+And this is through basically calculating
+precision and recall.
+On these constituents that I've just
+defined.
+So let's illustrate this with a specific
+example.
+So in general I'll be in the situation
+where I have some gold standard tree for
+some test data sentence.
+Okay, so I have some test sentence and I
+have the human annotated tree, this is
+taken as being correct.
+And then I have some parser output which
+is also a tree.
+Which maybe exactly the same as the gold
+standard tree or maybe partially correct
+and that it may include some substructures
+which you've also seen on the gold
+standard tree.
+So, both of these trees can be matched.
+To the representation I just described, so
+they can be represented as a set of
+constituents.
+Where again, a constituent consists of a
+label, a start point, and an end point.
+Now we can define various numbers.
+So I'll define G To be the number of
+constituents seen in the gold standard
+tree and in this case it's nd I'll define
+P to be the number of constituents in the
+output from the parser, in this case it's
+one, two, three, four , five, six/.
+And finally I'll define c to be the number
+of constituents that are actually correct.
+In this case this is also six.
+What do I mean by correct?
+That means that if I look at This
+constituent S18 for example, I can see
+that that's also in the gold tree so
+that's a correct constituent.
+And assuming if I go through each of these
+in turn, I'll find they're actually a
+correct constituent.
+It's worth noting that this method is
+general enough that it can allow cases
+where The number of constituents in the
+two trees are different.
+And that can be important.
+Because in reality, that often happens.
+Just as an aside.
+If all of our rules were binary branching.
+So if we really had restriction to binary
+branching rules.
+The number of constiutents in both of
+these trees would actually be identical.
+But, in reality in these tree banks, we
+allow rules which are non-bianary
+branching.
+And because of this, we may end up with
+different numbers of constituents in the
+two parse trees.
+Okay, so we've calculated these three
+numbers G, P, and C So now the recall is
+defined as a 100% times C over G, so this
+is basically saying all of the gold
+standard constituents, how many of them do
+I recover correctly, in this case is 100%
+times 6 over 7.
+The precision is a 100% times C over P.
+In this case, 100% times 6 over 6.
+So this is saying, of the constituents you
+recover, what percentage of them are
+correct?
+So in this particular example, 100% of the
+constituents I recover are actually
+correct.
+But, I've only recovered six out of seven.
+I think that's around 86% of these gold
+standard constituents.
+So, this will be eight, you should do the
+calculations, I'm just doing this on the
+top of my head but this is equal to 100%.
+Okay, so we've Have some errors in terms
+of a recall we have 100% in terms of
+precision So let me give you some
+indication of how well different policies
+work under this particular metric.
+And this is using a, dataset that we've
+talked about a lot, the Penn Wall Street
+Journal treebank, using about 40,000
+sentences, that's I think on the order of
+1 million words, or something around that,
+as training data.
+And then we have 2,500 sentences which are
+test data examples.
+And again, to emphasize each of these is
+going to consist of some sentence, some
+sequence of words With a human annotated
+tree and we are going to be able run a
+parser on these two and a half thousand
+sentences and compare the parser outputs
+of these trees, using recall and
+precision, precision, we'll see all of the
+constituents we, propose on to the parser.
+What proportion are correct, that's
+precision.
+And also what proportion of the gold
+standard constituents we recover
+correctly.
+That's the recall.
+Okay so first result for PCFG, is the
+following.
+And you can really see how poorly a PCFG
+performs.
+As I said there were, they were really a
+disappointment when they were first
+applied.
+Low 70s in terms of recall and precision.
+And these parse trees look really quite
+dreadful, actually, if you look at the
+output[INAUDIBLE] PCFG.
+This paper, in 1994, was, I think, the
+first really accurate tree bank parser.
+It was due to David Madigan.
+It was created in collaboration with a
+group at.
+Ibm research who produced a huge amount of
+seminal work in the early '90s on
+statistical and natural language
+processing.
+One of the things they looked at was
+statistical parsing.
+So this is about 84 percent recall and
+precision.
+That was really a breakthrough result.
+Way higher than these low '70s numbers.
+This is a very, very different model.
+From the model I've the models I've
+described so far, these, this is a model
+based on decision trees, and they're sort
+of bottom up pausers.
+So we're not going into the details of
+this, but The main important point is that
+this was really the first serious
+treatment parser and it really worked
+quite well.
+The lexicalized P C F G's have described
+the results from my own work my
+case[UNKNOWN] thesis was on developing
+lexicalized P C F G.
+They Give results that are, again
+signifigantly higher.
+So we're getting up to about 88% real
+conversations.
+So this is really the number you can think
+of in terms of the accuracy of these
+lexicalized PCFGs.
+There are more recent results which have
+pushed performance, further, up into maybe
+the 91, 92% range.
+I've listed a few different cases here.
+These two methods make use of
+discrimitive, discriminative estimation
+methods.
+And we'll see some of these methods later
+in the course, when we see log linear
+models.
+And conditional random fields and so on.
+And petros method makes use of what are
+called latent variable, PCFGs.
+But in both cases there are close,
+connections to lexicalized PCFGs.
+Or certainly to, to pcfg's in this later
+case.

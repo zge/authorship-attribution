@@ -1,0 +1,199 @@
+>> So, in the last section I described the
+tagging problem.
+And described how we essentially have a
+supervised learning problem where we have
+example tag sequences.
+And we want to learn a model, or function,
+from those example tag sequences.
+In this next section of the lecture I want
+to describe a method for deriving
+supervised learning algorithms called
+generative model.
+And as I said before, this is a very
+important kind of supervised learning
+model and we'll see it come up at time and
+time again in the course.
+So in supervised learning problems we have
+the following setting.
+We're going to assume that we have a set
+of training examples which I'll write as
+xi yi for I equals 1 to m.
+And each xi is referred to as an input
+whereas each yi is referred to as a label.
+So let's be specific in the part of speech
+training example.
+We might have the following, x1 might be
+the following sentence.
+The dog laughs.
+And y 1 would be the underlying tag
+sequence for that sentence.
+For example, determiner, noun, verb.
+We might have x2 is equal to the cat
+barks, and y 2 is equal to determine,
+noun, verb again.
+And so on, and so on.
+So, in the part of speech tagging case,
+each training example consists of a
+sentence, as the what's called the input,
+and an entire tag sequence as the
+associated label.
+And we might have a few hundred, or a few
+thousand, or maybe even a few tens of
+thousands of examples like this.
+So, given these training examples, and
+supervised learning problems, the task is
+to learn a function f, that maps inputs x,
+to labels f of x.
+So we want to, for example, in part of
+speech tagging, again, learn a function
+that takes a sentence as input.
+And maps it to a part of speech tag
+sequence as the output.
+So, the first kind of model you might
+consider for supervised learning, is
+what's called a con, conditional model.
+And that goes as follows, in a first step
+in the, the learning step we will actually
+learn a, a distribution, PY given X from
+the training samples.
+So, we'll have a method that takes these
+training samples as input and returns a
+distribution py given x as the output.
+And in general this distribution will have
+various parameters which are estimated
+from these training examples.
+A bit like the, the trigram parameters we
+saw on the first lectures on language
+modeling.
+Okay so that's step one.
+We learn a conditional distribution py
+given x from the training example.
+In a second step, for any test input x, we
+simply define f of x, to be the y that
+maximizes this conditional probability.
+So, in applying this model that we've
+learned, we take an input x as the input
+the model, search through all the
+different labels y, and return the most
+likely y, under this conditional model.
+Okay.
+So that's a conditional model.
+It's a very natural approach.
+It's probably, 1 of the first things you
+would think of for these tasks.
+But as I'll show in a second, there is an
+alternative.
+So called generative models.
+So, in generative models, we, again,
+assume the scenario where we have training
+data.
+Nothing changes here.
+And the task is again to learn a function
+that maps input x, input x to labels f of
+x[SOUND] And in generative models, we
+actually do something slightly different
+from what I showed you before, in that
+we're to learn a joint distribution.
+P x y over inputs x paired with labeled y.
+So remember on the previous slide we had p
+y given x as a conditional model.
+We're not going to do that.
+Instead we're going to learn a joint model
+P x given y.
+Now very often, this model takes the
+following form.
+We use Bayes' rule, or, rather, the rule
+of conditional probability, to factor this
+into two different terms.
+P of y, this is often referred to as a
+prior.
+This can be thought of as a measure of the
+prior likelihood of the label y.
+How likely y is A priori, and this is a
+sort of conditional generative model.
+So this is the conditional probability of
+x given y.
+The probability of generating x given that
+we have y, we'll see soon and we'll see
+many times in this course that its very
+natural often to come up with models of
+this kind of form.
+So, one interesting thing about these
+joint distributions is they're quite
+flexible.
+And they are in, in some sense more
+general than the discriminative model I
+showed you earlier.
+Let me just illustrate this through this
+important relationship.
+So, given I've, I've learned the joint
+model, I can always calculate the
+condition probability of any y given x
+using Bayes rule as follows.
+So we have p(y) times p of x given y.
+That's the form I've shown you here I'm
+assuming that we're using this form.
+And on the denominator I just have p of x.
+Like I said, this is just Bayes rule,
+where p of x is derived as sum over y, p
+of y, times p of x, given y.
+Okay.
+So the important point here, is that,
+given a joint distribution, I can easily
+derive a conditional distribution.
+And in that sense a joint distribution is
+a little bit more general than a, than a
+conditional distribution.
+So there's actually a lot of back and
+forth between these two model types.
+This is often referred to often as a
+discriminative model or rather I should be
+more precise estimating py given x
+directly is often referred to as a
+discriminative model or rather I should be
+more precise.
+And we will actually see a lot of
+discriminative models later in the course.
+P of x given y, sorry p of x and y, is
+often referred to as a generative model.
+And that is what we're going to see in
+this lecture.
+And there are pros and cons of these two
+model types.
+There's a lot of very interesting research
+in both of these areas and a lot of back
+and forth between these two model types.
+Okay, so that's a generative model, we
+learned this joint distribution.
+The important question though is, how do
+we apply that to a new test example?
+And here's where we see something
+interesting.
+So as before, we're going to take some
+input x.
+And we're going to define f of x as simply
+the y that maximizes the probably of y
+given x.
+And I can substitute in here using Bayes'
+Rule, the form I showed you on the
+previous slide, assuming here that I have
+a generative model.
+And an important characteristic of this
+equation is the p of x does not, vary,
+with y.
+So this denominator is actually constant
+with respect to y.
+So notice we're taking arg max over y
+we're searching for the y that maximizes
+this entire term.
+Because this denominator is constant, if
+we're looking for the arg max we can
+simply discard it and look for the y that
+maximizes the product of two terms, p of
+y, and p of x, x given y.
+And that can be very convenient because
+from a computational point of view,
+calculating px can sometimes be rather
+painful.
+And so we don't actually need to do that
+when applying this type of model.

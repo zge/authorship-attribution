@@ -1,0 +1,280 @@
+So, that's the first evaluation method I
+wanted to describe, this idea of looking
+at precision and recall on recovering
+constituents.
+But, I want to look at a second type of
+evaluation which is based on accuracy in
+recovering what are called dependencies.
+And this can actually be a very useful way
+of getting some insight into how accurate
+a parser is, and what constructions it's
+doing well on and what constructions it's
+not doing so well on.
+So let me again take this tree.
+The man saw the dog with the telescope.
+This could be a gold standard tree or it
+could be the output from a localized GPC
+pauser and again we see that the
+non-termials are all lexicalized/ And the
+key idea is going to abe that we can
+convert a tree to a set of dependencies.
+And let's see how we do this, okay.
+So we basically have, we have a, a grammar
+in Chomsky normal form here.
+So for every binary rule we're going to
+have a single dependency.
+Let's skip over this one for now.
+We'll go to the next, second one.
+So the first dependency says, basically I,
+I should have said this column shows the
+head word and this is going to show the
+modifier word.
+Remember our rules in this grammar can
+take the following form X(h) goes to 1
+Y1(h), Y2(w) or X(h) goes to 2 Y2(w),
+let's write Y1(w).
+Y two of h.
+Okay, so I essentially have some rule.
+X 1 goes to y w for example.
+And I have some head word h.
+And I have some word w.
+So here I have h and w, and here I have
+the rule.
+So this first dependency here is saying
+that I have saw as the head.
+I have man as its modifier.
+And I have the rule as go to NP VP and
+that dependency is extracted from this
+rule at the top of the tree.
+So what this is basically saying is I have
+a dependency relationship between saw and
+man, these two words in the sentence, and
+we can think off this rule production as a
+label of the type of the dependency which
+is involved.
+This is basically signifying that we have
+a subject verb dependency.
+This all goes back to what I showed you
+very early on in the parsing slides, which
+is that whenever I see a configuration of
+this kind of form, I have a subject, and I
+have, I'm sorry, I have a verb.
+And I have a subject.
+And so now we're seeing that these
+dependencies reveal exactly these kind of
+grammatical relations.
+I've been slightly careful here to not
+just give the word involved but also it's
+position in the sentence.
+This is one, two, three, four, five, six,
+seven, eight.
+So, this is saw at position three.
+Just in case we have the same word.
+In fact, we do have the same word repeated
+multiple.
+The word, the, is repeated multiple times.
+Okay.
+So we can convert a tree to a set of
+dependencies.
+Which basically represents the critical
+grammatical relations within this
+particular.
+Parse tree.
+And we can again calculate precision and
+recall.
+So we can convert both our gold standard
+trees to these dependency representations.
+And we can also convert our, parser output
+to these dependency relations.
+And then we can see how accurate we are.
+In recovering these kind of dependencies.
+So one thing to note, is the following.
+I should just go back to the slide for a
+second.
+You'll notice.
+That I have one, two, three, four, five,
+six, seven, eight dependency and I have
+one, two, three, four, five, six, seven,
+eight words and that's always going to be
+the case, i'm always going to have the
+same number of dependencies as I do have
+words okay so there none of this business
+of different power structure having
+different number of dependencies, and what
+I should have said is, I had this special
+dependency for the word at the very root
+of the trees.
+This is saw, and I'll just specify the
+rule in this case to be ROOT and the head
+word to be ROOT, okay?
+So to make sure all, that we also take
+account that this, this word at the very
+root of the tree.
+Okay, so, every tree, whether from a gold
+standard tree.
+Or from the parser output is going to have
+a number of dependencies equal to the
+number of words in the sentence.
+And so we can actually just report
+accuracy in terms of how accurate we are
+in recovering these dependencies.
+So to get a dependency correct, you have
+to get the two words in the dependency.
+You also have to get the label, i.e.
+The rule, correct as well.
+If we look back at the results from my PhD
+thesis parser, again around 88% dependency
+accuracy.
+Okay, now one very nice property of these
+dependencies is that we can delve a little
+deeper by looking at the accuracy.
+Or more specifically the precision in
+recall, in recovering different recovery
+types .So for example, I could look at all
+subject verb dependencies.
+More precisely I could look at all
+depedencies with this label.
+So whenever I see this label, I know that
+the dependency is involving subjects and a
+verb, and I can again calculate precision
+and recall in terms of recovering.
+Dependencies with this particular label.
+So the recall for subject verb would be
+the number of subject verb dependencies I
+have correct.
+Divided by the number of subject verb
+dependencies in the gold standard.
+And the precision would be the number of
+subject verb dependencies I get correct,
+out of the number of subject verb
+dependencies I have in the parser's
+output.
+And notice these 2 numbers may not be
+equal, because we may ave different
+numbers of subject/verb dependencies in
+the 2 parsers and so we go back to the
+idea of, of calculating recall and
+precision.
+The nice thing about this measure is that
+we can go dependency type by dependency
+type.
+And we can figure out which dependencies
+recover with high accuraci=y and which
+dependencyies are actually more
+problematic.
+And here are some numbers.
+So, In fact, if we look at subject-verb
+pairs, so this is dependency of the
+following form.
+We do pretty well on these, we get over
+95% recall and precision.
+If we look at object-verb pairs, so these
+are basically Going to be of this type,
+VP1 goes to Vt NP.
+So whenever I see a dependency like this,
+I have a relationship between a verb and
+its object.
+For example if I say, the dog saw the man.
+I'm going to have a dependency between
+soar and man labeled vp1, vt np, because
+man is the object of soar.
+And again these are recovered with pretty
+high accuracy over 92% recall and
+precision.
+If we look at other arguments to verbs, so
+in general you can look at all of the
+other productions involving verbs.
+So rules of this form where we can add y 1
+and y 2.
+Each of these is going to have a
+dependency where The verb is modified in
+some way.
+Again we perform pretty well here, about
+93 percent recall and precision.
+Some problem, problem cases though, if we
+look at prepositional phrase attachments.
+So these are going to be Rules of the
+following form.
+Xh goes to y1h, ppw.
+So, x could be in a noun phrase, or it
+could be a verb phrase.
+Or any case where we have a prepositional
+phrase modifying something else.
+We see that we score low 80s in terms of
+recall and precision.
+So we can see that's a pretty stark drop
+from subject verb accuracies or object
+verb accuracies.
+And it reflects the fact that PP
+attachments are a challenging problem, in
+that, in reality, to get, very high
+accuracy.
+You really need full world knowledge of
+what is more likely, seman-, semantically
+speaking.
+Am I more likely to be using a telescope
+to see or am I more likely to be looking
+at something holding a telescope?
+And those kind of decisions are difficult.
+And that's reflected in, in the drop in
+accuracy here.
+If we look at coordination, so these are
+things like dog dogs in houses.
+And cat, where cats could modify the
+houses, or dogs.
+These were even lower accuracy.
+These are very, very difficult.
+So the take home from this is, I think.
+That the core structure of these policies
+is quite good.
+Basic relations like subject verb, object
+verb.
+Other arguments to verbs are recovered
+with high accuracy.
+It's when we have modifiers by
+prepositional phrase attachments called
+nation ambiguities and so on.
+Those are the cases which are causing
+difficulty.
+These are old results.
+Actually, this parser, in spite of this
+date, was more like 1997.
+Although I think if you looked at multiple
+parsers, you'd still see a similar split
+between hard sorry, easy, of high accuracy
+dependencies, and lower accuracy
+dependencies.
+So, to summarize, We saw that a key
+weakness of PCFGs was the lack of
+sensitivity to lexical information.
+And in this lecture, I've described
+lexicalized PCFGs as 1 way.
+Of getting around this problem.
+Some key steps were, firstly to lexicalize
+a tree bank using head rules, this allowed
+us to go from rules like S goes to NPVP to
+B's lexicalize rules like S sore goes to
+NP dog, VP sore.
+So we use this trick.
+To vastly increase the number of non
+terminals and also the number of rules in
+our grammar.
+The second step was to estimate the
+parameters of a lexicalized PCFG using
+smoothed estimation.
+So we have a very large number of rules of
+this form that poses challenges to
+parameter estimation but we can use smooth
+estimation techniques to come up with a
+robust estimators for these kind of rule
+parameters.
+Finally in terms of accuracy of these
+PCFGs throughout 88% in recovering
+constituents or dependencies.
+And as we saw the cause and
+[UNKNOWN]structure.
+Core grammatical relationships like
+subject verb and verb object are recovered
+with quite high accuracy.
+Cases such as prepositional phrases
+attachment are still fairly challenging.

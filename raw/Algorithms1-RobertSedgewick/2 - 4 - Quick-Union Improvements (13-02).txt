@@ -1,0 +1,236 @@
+Okay. So, we've looked at the quick union
+and quick find algorithms. Both of which
+are easy to implement. But simply can't
+support a huge dynamic connectivity
+problems. So, how are we going to do
+better? That's what we'll look at next. A
+very effective improvement, it's called
+weighting. And it might have occurred to
+you while we are looking at these
+algorithms. The idea is to when
+implementing the quick union algorithm
+take steps to avoid having tall trees. If
+you've got a large tree and a small tree
+to combine together what you want to try
+to do is avoid putting the large tree
+lower, that's going to lead to long tall
+trees. And there's a relatively easy way
+to do that. What we'll do is we'll keep
+track of the number of objects in each
+tree and then, we'll maintain balance by
+always making sure that we link the root
+of the smaller tree to the root of the
+larger tree. So, we, we avoid this first
+situation here where we put the larger
+tree lower. In the weighted algorithm, we
+always put the smaller tree lower. How we,
+let's see how we implement that. Let's see
+a demo first. Okay, so again start out in
+our normal starting position, where
+everybody's in their own tree. And for
+when there's only two items to link it, it
+works, works the same way as before. But
+now, when we have eight to merge with four
+and three, we put the eight as the child,
+no matter which order their arguments
+came, because it's the smaller tree. So,
+six and five doesn't matter, whichever one
+goes down doesn't matter. Nine and four,
+so now, nine is the small one four is the
+big one. So, nine is going to be the one
+that goes down below. Two and one, five
+and zero. So now, five and zero five is in
+the bigger tree so zero goes below. Seven
+and two, two is in the bigger tree so
+seven goes below. Six and one they're in
+equal size trees. And seven and three,
+three is in the smaller tree so it goes
+below. So, the weighted algorithm always
+makes sure that the smaller tree goes
+below. And again, we wind up with a single
+tree representing all the objects. But
+this time, we h ave some guarantee that no
+item is too far from the root and we'll
+talk about that explicitly in a second.
+So, here's an example that shows the
+effect of doing the weighted quick union
+where we always put the smaller tree down
+below for the same set of union commands.
+This is with a hundred sites and 88 union
+operations. You can see in the top the big
+tree has some trees, some nodes, a fair
+distance from the root. In the bottom, for
+the weighted algorithm all the nodes are
+within distance four from the root. The
+average distance to the root is much, much
+lower. Let's look at the Java
+implementation and then we'll look in more
+detail at, at that quantitative
+information. So, we used the same data
+structure except, now we need an extra
+array, that for each item, gives the
+number of objects in the tree routed at
+that item. That will maintain in the union
+operation. Find implementation is
+identical to for quick union, you're just
+checking whether the roots are equal. For
+the union implementation, we're going to
+modify the code to check the sizes. And
+link the root of the smaller tree to the
+root of the larger tree in each case. And
+then after changing the id link, we also
+change the size array. If we make id, i a
+child of j, then we have to increment the
+size of j's tree by the size of i's tree.
+Or if we do the other way around, then we
+have to increment the size of i's tree by
+the size of j's tree. So, that's the full
+code in white for implementing quick
+union. So, not very much code but much,
+much better performance. In fact we can
+analyze the running time mathematically
+and show that defined operation, it takes
+time proportional to how far down the
+trees are in the node in the tree, the
+nodes are in the tree, but we can show
+that it's guaranteed that the depth of any
+node in the tree is at most the logarithm
+to the base two of N. We use the notation
+Lg always for logarithm to the base two.
+And, and, so for, if N is a thousand,
+that's going to be ten, if N is a million
+that's twenty, if N is a billion that's
+30. It's a very small number compared to
+N. So, let's look at the proof of that. We
+do some mathematical proofs in, in this
+course when they're critical such as this
+one. And why is it true that the depth of
+any node x is, at most, log base two of N?
+Well, the key to understanding that is to,
+take a look at exactly when does the depth
+of any node increase? When does it go down
+further in the tree? Well. The x's depth
+will increase by one, when its tree, T1 in
+this diagram, is merged into some other
+tree, T2 in this diagram. Well, at that
+point we said we only do that if the size
+of T2 was bigger than the or equal to size
+of T1. So, when the depth of x increases,
+the size of its tree at least doubles. So,
+that's the key because that means that the
+size of the tree containing x can double
+at most log N times because if you start
+with one and double log N times, you get N
+and there's only N nodes in the tree. So,
+that's a sketch of a proof that the depth
+of any node x is at most log base two of
+N. And that has profound impact on the
+performance of this algorithm. Now instead
+of the initialization always takes time
+proportional to N. But now, both the union
+and the connected or find operation takes
+time proportional to log base two of N.
+And that is an algorithm that scales. If N
+grows from a million to a billion, that
+cost goes from twenty to 30, which is
+quite not acceptable. Now, this was very
+easy to implement and, and we could stop
+but usually, what happens in the design of
+algorithms is now that we understand what
+it is that gains performance, we take a
+look and see, well, could we improve it
+even further. And in this case, it's very
+easy to improve it much, much more. And
+that's the idea of path compression. And
+this idea is that, well, when we're trying
+to find the root of the tree containing a,
+a given node. We're touching all the nodes
+on the path from that node to the root.
+While we're doi ng that we might as well
+make each one of those just point to the
+root. There's no reason not to. So when
+we're looking, we're trying to find the
+root of, of P. After we find it, we might
+as well just go back and make every node
+on that path just point to the root.
+That's going to be a constant extra cost.
+We went up the path once to find the root.
+Now, we'll go up again to just flatten the
+tree out. And the reason would be, no
+reason not to do that. We had one line of
+code to flatten the tree, amazingly.
+Actually to make a one liner code, we use
+a, a simple variant where we make every
+other node in the path point to its
+grandparent on the way up the tree. Now,
+that's not quite as good as totally
+flattening actually in practice that it
+actually is just about as good. So, with
+one line of code, we can keep the trees
+almost completely flat. Now, this
+algorithm people discovered rather early
+on after figuring out the weighting and it
+turns out to be fascinating to analyze
+quite beyond our scope. But we mentioned
+this example to illustrate how even a
+simple algorithmah, can have interesting
+and complex analysis. And what was proved
+by Hopcroft Ulman and Tarjan was that if
+you have N objects, any sequence of M
+union and find operations will touch the
+array at most a c (N + M lg star N) times.
+And now, lg N is kind of a funny function.
+It's the number of times you have to take
+the log of N to get one. And the way to
+think, it's called the iterated log
+function. And in the real world, it's best
+to think of that as a number less than
+five because lg two^ 65536 is five. So,
+that means that the running time of
+weighted quick union with path compression
+is going be linear in the real world and
+actually could be improved to even a more
+interesting function called the Ackermann
+function, which is even more slowly
+growing than lg<i>. And another point
+about this is it< /i> seems that this is</i>
+so close to being linear that is t ime
+proportional to N instead of time
+proportional to N times the slowly growing
+function in N. Is there a simple algorithm
+that is linear? And people, looked for a
+long time for that, and actually it works
+out to be the case that we can prove that
+there is no such algorithm. So, there's a
+lot of theory that goes behind the
+algorithms that we use. And it's important
+for us to know that theory and that will
+help us decide how to choose which
+algorithms we're going to use in practice,
+and where to concentrate our effort in
+trying to find better algorithms. It's
+amazing fact that was eventually proved by
+Friedman and Sachs, that there is no
+linear time algorithm for the union find
+problem. But weighted quick union with
+path compression in practice is, is close
+enough that it's going to enable the
+solution of huge problems. So, that's our
+summary for algorithms for solving the
+dynamic connectivity problem. With using
+weighted quick union and with path
+compression, we can solve problems that
+could not otherwise be addressed. For
+example, if you have a billion operations
+and a billion objects I said before it
+might take thirty years. We can do it in
+six seconds. Now, and what's most
+important to recognize about this is that
+its the algorithm design that enables the
+solution to the problem. A faster computer
+wouldn't help much. You could spend
+millions on a super computer, and maybe
+you could get it done in six years instead
+of 30, or in two months but with a fast
+logarithm, you can do it in seconds, in
+seconds on your own PC.

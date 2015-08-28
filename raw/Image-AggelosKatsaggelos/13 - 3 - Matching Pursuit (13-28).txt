@@ -1,0 +1,336 @@
+Welcome back.
+In this segment, we discuss various
+formulations
+of the optimization problems we are
+interested in.
+The formulations are rather powerful when
+it comes to solving optimization problems.
+We also present a very intuitive greedy
+approach solve
+the L0 minimization problem, by the name
+of matching pursuit.
+As already mentioned, the problem is MP
+hard and therefore MP is a greedy
+algorithm that chooses one column vector
+at
+the time from the dictionary present the
+data.
+So that the residual error occurs the
+largest decrease.
+We'll explain and demonstrate through an
+example how exactly this is done.
+An extension of the algorithm is
+orthogonal matching pursuit.
+When the sparse representation vector
+selected so
+far, are simultaneously recalculated at
+each iteration step.
+MP and OMP as they're typically referred
+to,
+are rather simple to understand, and
+they're widely used.
+It's important therefore to understand
+them since they serve
+as a standard reference for solving L0
+based optimization problems.
+There is extensions of them that exist in
+the literature.
+So let us now look into the algorithmic
+details.
+Reformulations of the optimization
+objective function and finding surrogates
+or functions or norms are two important
+steps in optimization.
+So here's a problem we've been looking at.
+We want to find a sparse solution x that
+satisfies this constraint.
+Very often when there is noise present in
+the data which is actually almost always
+the case.
+Then we cannot guarantee that this
+solution will belong to this hyperplane
+and in this case we, it lacks the
+constraint, so it's relaxes to that
+x now belongs to this ellipsoid here
+defined by this parameter epsilon.
+We followed actually similar formulations
+when we
+talked about recovery in weeks six and
+seven.
+We looked for example at minimizing C of
+x,
+the L2 norm of this subjects to a noise
+constraint.
+C goes a hypos filter therefore C of x
+is the energy of the signal at high
+frequencies.
+We can further swap the constraint and the
+objective and end up with a problem like
+this.
+So now we minimize the noise, subject to a
+constraint on the sparsity of the signal.
+So we follow this formulation, for
+example, when we have a notion of how fast
+the signal should be the solution is
+clearly a function of S in this case.
+We could possibly follow this formulation
+when we
+have knowledge of the noise on the data.
+The solution in this case is a function of
+epsilon.
+And if epsilon and S are chosen
+appropriately, we may end up with
+equivalent solutions.
+Of course the approach is the steps that
+will result in
+solving this problem and this problem are
+not necessarily the same.
+And actually that's part of the reason one
+introduces this reformulation,
+so that one ends up with an easier problem
+to solve.
+Let's look at certain reformulations where
+we deal with the L1 norm.
+This is the problem we have been looking
+at.
+As before, when the data is noisy, we can
+allow x to
+leave this hyper plane, and allow it to
+belong to an ellipsoid.
+And this ellipsoid is defined in terms of
+the parameter epsilon, which
+is a function of, of constraint of the
+noise of the data.
+We can swap objective and constraint and
+end up with this optimization
+problem where S is a major of the sparsity
+of the data.
+Now since the L1 norm is convex, then we
+can turn this constraint optimization
+problem into an unconstrained one.
+We can relax it by bringing the norm up to
+the objective, so weighted by a
+parameter lambda, it's called a regulation
+parameter, or the Lagrange multiplier.
+And lambda chosen so that the solution of
+this optimization problem which is a
+function of
+lambda should satisfy the constraints, so
+the L1
+norm of this should be less equal S.
+We have looked at relaxed problems like
+this, but
+in weeks six and seven, when we talked
+about recovery.
+There, for example, we solved the
+constraint
+list squares problem, the result of this
+minimization.
+[BLANK AUDIO] The difference of course
+being that here
+we use the L2 norm for the stabilizing
+function, while here we use the L1 norm.
+When it comes to considerations about
+lambda however, they are similar.
+For example, when lambda becomes very
+small, goes to zero,
+we are solving a least squares problem,
+just minimizing this norm.
+While, on the other hand, when lambda
+becomes very large,
+we end up with x equals zero as a
+solution.
+As mentioned already, when the L2 norm is
+used,
+then we can end up with a closed form
+solution.
+So the solution to this problem, if you
+recall, it's simply equal to A
+transpose A plus lambda C transpose C
+minus 1 A transpose b.
+This is not the case when we dealt with
+the L1 norm.
+This problem, by the way, is referred to
+as the last problem and
+we're going to look at ways for obtaining
+solutions to the last problem.
+Let us look now at the matching pursuit
+algorithm.
+Its a greedy algorithm for obtaining the
+solution
+to this problem that we have been
+investigating.
+Before we proceed lets look at the Ax
+equals b representation.
+It should be clear that b here can be
+written as the weighted sum of the
+columns of A, which are also called atoms,
+and the weight of the entries of x.
+So, in this particular example, where x is
+a sparse vector.
+It only has these entries, 1 and 2, and
+the rest are 0, it
+means that b is the first vector
+corresponding to 1 and weighted by
+1 plus the seventh vector here which is
+weighted by 2.
+So we have a vector a here and to
+project b onto a, so this is orthogonal
+projection here.
+And since as we know, the arrow b minus Ax
+star which is this vector here
+is orthogonal to a.
+This means that their inner product is 0.
+And solving for x star, we obtain this
+expression here.
+Typically, the columns of A are
+normalized, so A transpose A
+here or the norm of A is equal to 1 and
+therefore
+the projection or the length of the
+projection along the direction of
+A that's what x star is, is equal to a
+transpose b.
+So we see that, [SOUND] the projection
+again, the norm of this equals
+the, amplitude of x star, times the norm
+of a, which is equal
+to 1 and therefore this is equal to, the
+amplitude of x star.
+So if one poses the question that let's
+say we
+have only one column of A available to
+represent b.
+Which column shall we choose from, from A
+to represent
+b the best possible way, or with the
+smallest possible error?
+And the intuitive answer is that we should
+choose the column
+that results in the largest projection of
+b onto that column.
+So, for this particular example, if we
+only have
+one column available of a to represent b
+then we
+should a7 because the projection of b on
+to o7,
+a7 is the largest one and it's equal to 2.
+So, the best column is the one that has
+index i which is the argument
+of the maximization of x of k, this
+projection coefficient with respect to k.
+We illustrate here pictorially the
+matching pursuit algorithm.
+It's an iterative greedy algorithm,
+according to which, at each
+iteration step, we try to reduce the
+residual error the most.
+And we do that by finding the largest
+projection
+of the residual onto the columns of matrix
+A.
+So in this particular example, we assume
+that A
+has three columns, A1, A2, A3, as shown
+here.
+At the first step, the residual is set
+equal to the observation vector b.
+So we take the vector b, we project it
+onto the three
+columns, and we find that the largest
+projection, is along column A1.
+So x1 star, a1 is the projection,
+therefore
+the residual becomes now b minus the
+projection.
+So the residual here is orthogonal to a1.
+The solution vector is updated and the
+projection, x1 star
+becomes the first entry of the vector, of
+the solution vector.
+We move the residual vector to the origin
+as shown here and
+project now the residual on to the
+remaining of the columns of a.
+So, a1 is not included in this
+consideration.
+We find that the largest projection is
+along the vector a3.
+So, x3 star is the projection coefficient
+which is
+updating the solution vector x, and then
+the residual was this
+and now x3 star a3 subtracted from that so
+that's the new value of the residual.
+We move the updated residual vector to the
+origin,
+and keep iterating by projecting now to
+the remaining vectors.
+We've excluded the ones that were already
+utilized.
+We keep iterating that way, and we stop
+when the constraint of the sparsity of x
+is
+met, so if we want the sparse vector with
+sparsity 8, let's say we stop after 8
+iterations.
+Let us describe now the orthogonal
+matching pursuit algorithm as we
+will see, it's a simple variation of the
+matching pursuit algorithm.
+Here is again the problem we are solving.
+The input with the algorithm is a matrix
+A.
+Its columns have been normalized, the norm
+is equal to one.
+The observation b and the sparsity level
+S.
+As explained in the previous slide, we
+initialized
+the residual by setting it equal to
+obeservation b.
+We also utilize the set of mega which
+includes
+all the vectors, column vectors that have
+already been utilized.
+So clearly when we initialize, the set is
+empty.
+So, while the sparsity constraint is not
+met, we find the projection of the
+residual onto all the columns that do not
+belong to omega, cannot be utilized.
+And we pick the projection that is the
+largest.
+So that's the index of that projection.
+We then update the set of omega
+by including the index that was just
+selected.
+So far, I have described the matching
+pursuit algorithm.
+And what differentiates now orthogonal
+from the
+regular matching pursuit is this
+highlighted step.
+So, I look at all the vectors that are
+included in the set omega, that have
+been utilized before, plus the new vector
+that was chosen in this step.
+And I simultaneously update the value of
+the coefficients by getting out of this
+minimization.
+After that, I update the residual based on
+the
+newly found or updated values of the
+coefficient vector.
+I can solve with the same algorithm, the
+reformulated
+problem so, I minimize the norm subject to
+constrained
+on the error, and all it needs to change
+is, I need this input now epsilon instead
+of S.
+And I iterate as long as the norm of the
+residual is above the threshold,
+everything else remains the same.
+

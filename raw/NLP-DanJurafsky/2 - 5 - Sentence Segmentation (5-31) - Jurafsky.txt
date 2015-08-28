@@ -1,0 +1,132 @@
+Our final discussion in basic text
+processing is segmenting out sentences
+from running text. So how are we going to
+segment out sentences? Things that end in
+exclamation points or question marks,
+that's really great because those are
+relatively unambiguous clues that we've
+gotten to the end of a sentence. Periods,
+unfortunately, are quite ambiguous. If you
+think about it, a period can be a sentence
+boundary. But, periods are also used for
+abbreviations like, inc. Or Dr., they're
+used for numbers like, point 02, or four
+point three. So, we can't assume that a
+period is the end of a sentence. So what
+we need to do, to solve the period problem
+is build ourselves a classifier. We're
+going to build ourselves a binary
+classifier. Looks at a period. And simply
+makes that binary yes no decision; am I at
+the end of a sentence, am I not at the end
+of a sentence. And to make this
+classifier, we could use handwritten
+rules, we could use regular expressions,
+we could build machine learning
+classifiers. The simplest kind of
+classifier for this is a decision tree. So
+here's a simple decision tree for
+deciding. Whether a word is at the end of
+a sentence or not. So a decision tree is a
+simple if then procedure that asks a
+question and branches based on the answer
+to the question. So we say, am I in a
+piece of text that has a lot of blank
+lines after me. Well if so, then I'm
+probably at an end of sentence. What if
+there's no blank lines after me? Well, is
+my final punctuation a question mark or an
+exclamation point? If so, well then I'm
+still probably end of sentence. Well if
+not that is my final punctuation a period.
+If it's not, well I'm, I'm not an end of
+sentence. But if I am a period, well then
+it depends. If I'm on some long list of
+abbreviations like the word ETC then I'm
+probably not an end of sentence I'm just a
+period marking an abbreviation like doctor
+or ETC. But if I'm not an abbreviation
+then I'm end of sentence. So here's a
+decision tree. And you could imagine
+arbitrarily sophisticated decision tree
+features that we could use. So one thing
+we could use is the case or, it's called
+the word shape of the word with a period.
+Am I an uppercase word? Am I a lowercase
+word? Am I all caps? So uppercase meaning
+the first letter is uppercase, lower
+meaning it's lowercase, cap meaning it's
+all caps. Am I a number? Any of these kind
+of word shape features can give us
+information. An all caps word is very
+likely to be a. And a abbreviation. We can
+look at the word, with the abbrevi, with
+the Period, we can look at the word after
+the period, if, the next word starts with
+a capital letter then I'm likely to be the
+beginning, a period that ends a sentence
+because the next word starts with a
+capital letter. And we can look at lots of
+numeric features. So we can look at, am I
+a long word? Or a short word? So
+abbreviations tend to be relatively short,
+acronyms tend to be very short. And I can
+use very sophisticated features, so I can
+say lets look at the, the, word I'm
+looking at right now. Take this word and
+ask. In a corpus that I already know where
+the sentence boundaries are, how often is
+this word occur with a period at the end
+of a sentence? Is this the kind of word
+that ends a sentence? Is this the kind of
+word, for example, that tends to start a
+sentence? Is this the word that. This
+phrase for example the word, the, after a
+period they are likely to be a capital
+THE, after a period very likely to start a
+sentence with space in between. So this
+will have a high probability of being a
+start of a sentence and we can use these
+kind of features depending on condition of
+each of the words again to help us in
+deciding what is or isn't a end of
+sentence period. Now a decision tree is
+just an if, then and else statement. So,
+the, the that, that's just a. The
+definition of what a decision tree is. The
+interesting research is choosing the
+features. So we've seen a number of
+features you might pick for this
+particular task. In general, the structure
+of a decision tree is not, is often too
+hard to build by hand. In general, hand
+building of decision trees is possible
+only for very simple features or simple
+domains. You might build a simple decision
+tree with six or seven rules like this for
+some simple tasks. But it's very hard to
+do for numeric features because. You have
+to pick the thresh hold for each of the
+numeric feature. I am picking up
+probability as one of my features. I've
+gotta have a question in the decision
+tree, is this probability greater than
+some thresh hold data or not and I've got
+to set all those datas and so generally we
+use machine learning that learns the
+structure of the tree and learns things
+like the thresh hold for each of the
+questions that we're asking. Nonetheless
+the questions in a decision tree, we can
+think of them as the kind of features that
+could be exploited by any other
+classifier, whether it's linguistic
+regression or SVMs or neural nets, some of
+the classifiers we'll talk about later. So
+this, this intuition that we can build a
+classifier, we can derive features that
+are good predictors of whether a period is
+acting as an end of sentence or not, and
+then we can put these features into any
+kind of classifier, hold for, whatever
+classifier we're going to be using.

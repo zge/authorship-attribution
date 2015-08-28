@@ -1,0 +1,196 @@
+Let's now see how to generate these
+snippets or other summaries from single
+documents. Now here's an example of a
+snippet, This is again coming from Google.
+I've asked a question, was cast metal
+movable type invented in Korea? And
+Google's giving me three little snippets
+with the answer and you can see that it's
+bold faced cases where words in my query
+occurred in the snippet. And you can see
+the use of dot, dot, dots in the
+snippets telling you that it's combining
+pieces from different pages, different,
+excuse me, different places in the page.
+So let's see how these kind of snippets and
+other kind of summaries based on single
+documents are built. You can think of any
+summarization algorithm as having three
+stages. The first stage is content
+selection: extracting the sentences that
+we need from the document. So we have some
+document as input, and we're gonna need to
+extract sentences. So we might segment our
+sentences off. Maybe we use sentences with
+periods, full sentences. Maybe we use some
+kind of moving window. So we've extracted
+some kind of little pieces, little
+sentences, and now, from this segmented
+set of sentences we want to pick the ones
+that are important so I have marked those
+with little, little black dots here. We
+picked some set of extracted sentences and
+our next task information ordering is we
+are gonna decide what order the sentences
+go in. So we have some now ordered set
+of important sentences and finally we
+might do some modifications to the
+sentences; perhaps we're gonna simplify
+them or something else. So that's sentence
+realization and the result of these four
+steps is our summary. Now, the most basic
+summarization algorithm, the one that
+comes up a lot, really only uses one of
+these three steps, the content selection
+step. So in the simplest possible
+algorithm we don't worry about what
+ordering the sentences come in and we
+don't modify the sentences at all. We
+simply segment our document into sentences
+or maybe their windows. We pick the
+important ones and we leave them in the
+same order they came in. So we're gonna
+use what we call document order with the
+original sentences. So this is a very simple
+baseline for summarization and one that
+most web based snippet generation
+algorithms certainly use. The most
+commonly used algorithm for content
+selection dates back to the very earliest
+paper in the field, from 1958, it's pretty
+exciting that these ideas came out so
+early. And the intuition's really very
+simple. Choose sentences that have salient
+or informative words. Well, what's that
+mean? Well, you've seen TFIDF. That's a
+way of picking words that are
+particularly frequent, and then don't
+contain words that occur in all documents. So
+that's one way we might define saliency or
+informativity. Turns out in summarization
+we tend to use another approach. The log
+likelihood ratio or, sometimes called
+topic signature approach. And, that
+differs from TFIDF in two ways. One,
+we use a slightly different statistic for
+picking, for weighting each of the words.
+And second, instead of picking all the
+words, we'll choose only the words whose
+weight is above some threshold, The very
+salient words. Now, log likelihood ratio
+gives us a statistic called lambda. I'm
+not gonna go into details, but, they're in
+some lovely papers. And we're gonna choose
+all words for who the value of two log
+lambda is greater than in this cutoff of
+ten. So that gives us a threshold for
+which we can pick words that are
+particularly salient by this statistic. So
+we're gonna weight every word. And the
+weight of word I is gonna be one, if the
+word is especially associated with that
+document, meaning, occurs more times in
+that document than in the background
+corpus by some threshold. Otherwise, we're
+gonna, we're gonna give it a weight of
+zero. And again, for details about how to
+compute the log likelihood and intuition
+about the statistics, you can see this
+lovely Ted Dunning paper, or the Lin and
+Hovy paper that proposed using it for
+summarization. Now, we want to modify this
+algorithm for dealing with query focused
+summarization. Again, we're not interested
+so much in pure summarization in today's
+lecture, but how to use summarization
+techniques for question answering. So this
+is topic signature based. Topic signature
+meaning, pick the words that are
+particularly associated with a, with a
+document. Content selection, choosing the
+sentences where we've got queries,
+alright? And so we're gonna modify the
+algorithm very slightly. We're gonna
+choose words that are informative, either
+by log likelihood ratio, or words that
+happen to appear in the query. So, we're
+going to weight every word in a document.
+We're going to give it a weight of one if
+it meets the log likelihood threshold,
+it passes the threshold of about ten.
+We're going to give it a weight of one,
+also, if that word happens to appear in
+the query or question, and otherwise we're
+going to give the word a weight of zero.
+And these weights are very simple, one,
+one zero you could imagine learning more
+complex weights and some research has gone
+into coming up with very powerful ways to
+learn detailed weights. But one, one zero
+works pretty well, it turns out. And now
+we're just going to weigh a sentence or
+perhaps it's a window, if we don't have
+actual sentences. We're going to weigh it
+by the weight of the words, so we're just
+going to sum over all the words in our
+sentence of the weight of the words and
+then we're going to take the average. Now
+the content selection algorithm we just
+described is unsupervised. We didn't
+have any labeled training set of which of
+summaries to learn weights from or things
+like that. So that's an alternative
+approach: supervised content selection. So
+now if we had a labeled training set where
+for each document we had a good summary
+and we had an alignment for every sentence
+in the summary we knew what sentence it
+came from in the document, we had the matching
+sentences. Now we could extract all sorts of
+features. We could extract the position of
+the sentence in the document. First
+sentences are very likely to be good
+summary sentences. How long it is. We can
+have all the features we had before, word
+informativeness and things like that. We
+can have other kinds of features based on
+discourse information that we might have.
+And we might associate every sentence with
+some vector of features, and now we can
+just train a binary classifier. Shall I
+put this sentence in summary? Yes or no.
+And it might learn weights for all these
+features and any other features we can
+come up with. And the algorithm, this
+sounds good but in practice it turns out
+to be very hard to get labeled training
+data of this type. When people actually
+write abstracts for sentences they're not
+always, the authors don't always use exact
+words and phrases and certainly don't use
+entire sentences that come from the
+document, so finding perfectly labeled
+abstracts with extracts from the document
+is hard. It's hard to do the alignment
+because they don't pick entire sentences,
+they may be picking words or phrases or
+chunks. It's hard to figure out where those
+words came from, even when they did pick
+them from the document. And it turns out,
+surprisingly perhaps, that the performance
+is simply not much better than
+unsupervised algorithms. So in practice
+unsupervised content selection, just using
+log likelihood ratio, or other simple
+measures of how salient or informative
+a word and hence a sentence is, are
+the most common method for content
+selection. So we've seen how to generate
+summaries from a single document and the
+baseline algorithm we picked is simply
+come up with a simple statistical way to
+find a sentence that is very informative
+by looking for informative words and we
+talked about the log-likelihood ratio as
+an important way of finding these
+sentences.

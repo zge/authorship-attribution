@@ -1,0 +1,394 @@
+In the last video, I talked
+about how when faced with
+a machine learning problem, there are
+often lots of different ideas on how to improve the algorithm.
+In this video let's
+talk about the concepts of error
+analysis which will help
+me give you a way to more
+systematically make some of these decisions.
+If you're starting work on a
+machine learning product or building
+a machine learning application, it is
+often considered very good practice
+to start, not by building
+a very complicated system with
+lots of complex features and so
+on, but to instead start
+by building a very simple
+algorithm, the you can implement quickly.
+And when I start on
+a learning problem, what I usually
+do is spend at most one
+day, literally at most 24
+hours to try to get something really quick and dirty.
+Frankly not at all sophisticated system.
+But get something really quick and
+dirty running and implement
+it and then test it on
+my cross validation data. Once
+you've done that, you can
+then plot learning curves.
+This is what we talked about in the previous set of videos.
+But plot learning curves of the
+training and test errors to
+try to figure out if your
+learning algorithm may be suffering
+from high bias or high
+variance or something else and
+use that to try to
+decide if having more data
+and more features and so on are likely to help.
+And the reason that this
+is a good approach is often
+when you're just starting out on
+a learning problem, there's really no
+way to tell in advance
+whether you need more complex
+features or whether you need
+more data or something else.
+And it's just very hard to tell
+in advance, that is in
+the absence of evidence, in
+the absence of seeing a
+learning curve, it's just incredibly
+difficult to figure out where you should be spending your time.
+And it's often by implementing even
+a very, very quick and dirty
+implementation and by plotting
+learning curves that that helps you make these decisions.
+So if you like, you can think
+of this as a way of
+avoiding what's sometimes called
+premature optimization in computer programming.
+And this is idea that just
+says that we should let
+evidence guide our decisions
+on where to spend our time
+rather than use gut feeling,
+which is often wrong.
+In addition to plotting learning
+curves, one other thing
+that's often very useful to do is what's called error analysis.
+And what I mean by that is
+that when building, say
+a spam classifier, I will
+often look at my
+cross validation set and manually
+look at the emails that my
+algorithm is making errors on.
+So, look at the spam emails
+and non-spam emails that the
+algorithm is misclassifying, and see
+if you can spot any systematic
+patterns in what type of examples it is misclassifying.
+And often by doing that, this
+is the process that would inspire
+you to design new features.
+Or they'll tell you whether the
+current things or current
+shortcomings of the system
+and give you the inspiration you
+need to come up with improvements to it.
+Concretely, here's a specific example.
+Let's say you've built a spam
+classifier and you
+have 500 examples in
+your cross-validation set.
+And let's say in this example, that the
+algorithm has a very high error
+rate, and it misclassifies a
+hundred of these cross-validation examples.
+So what I do is manually
+examine these 100 errors, and
+manually categorize them, based
+on things like what type
+of email it is and
+what cues or what features you
+think might have helped the algorithm classify them incorrectly.
+So, specifically, by what
+type of email it is,
+you know, if I look through these
+hundred errors I may find
+that maybe the most
+common types of spam
+emails in misclassifies are maybe
+emails on pharmacy, so basically
+these are emails trying to
+sell drugs, maybe emails that are
+trying to sell replicas -
+those are those fake watches fake you know, random things.
+Maybe have some emails trying to steal passwords.
+These are also called phishing emails.
+But that's another big category of emails and maybe other categories.
+So, in terms
+of classify what type of email
+it is, I would actually go through
+and count up, you know, of
+my 100 emails, maybe I
+find that twelve of the
+mislabeled emails are pharma emails.
+And maybe four of them
+are emails trying to sell
+replicas, they sell fake watches or something.
+And maybe I find that 53
+of them are these,
+what's called phishing emails, basically emails
+trying to persuade you to
+give them your password, and 31 emails are other types of emails.
+And it's by counting up the
+number of emails in these
+different categories that you might
+discover, for example, that the
+algorithm is doing really particularly
+poorly on emails trying to
+steal passwords, and that
+may suggest that it might
+be worth your effort to look
+more carefully at that type
+of email, and see if
+you can come up with better features
+to categorize them correctly.
+And also, what I might
+do is look at what cues,
+or what features, additional features
+might have helped the algorithm classify the emails.
+So let's say that some of
+our hypotheses about things or
+features that might help us
+classify emails better are trying
+to detect deliberate misspellings versus
+unusual email routing versus unusual, you know,
+spamming punctuation, such as
+people use a lot of exclamation marks.
+And once again, I would manually
+go through and let's say
+I find five cases of
+this, and 16 of
+this, and 32 of this and
+a bunch of other types of emails as well.
+And if this is what
+you get on your cross validation
+set then it really tells
+you that, you know, maybe deliberate spelling
+is a sufficiently rare phenomenon
+that maybe is not really worth
+all your time trying to write
+algorithms to detect that.
+But if you find a lot
+of spammers are using, you
+know, unusual punctuation then
+maybe that's a strong sign
+that it might actually be
+worth your while to spend
+the time to develop more sophisticated
+features based on the punctuation.
+So, this sort of error
+analysis which is really
+the process of manually examining
+the mistakes that the algorithm
+makes, can often help
+guide you to the most fruitful avenues to pursue.
+And this also explains why I
+often recommend implementing a quick
+and dirty implementation of an algorithm.
+What we really want to do
+is figure out what are
+the most difficult examples for an algorithm to classify.
+And very often for different
+algorithms, for different learning algorithms,
+they'll often find, you
+know, similar categories of examples difficult.
+And by having a quick and
+dirty implementation, that's often a
+quick way to let you
+identify some errors and quickly
+identify what are the
+hard examples so that you can focus your efforts on those.
+Lastly, when developing learning algorithms,
+one other useful tip is
+to make sure that you have
+a way, that you have a
+numerical evaluation of your learning algorithm.
+Now what I mean by that is that
+if you're developing a learning algorithm,
+it is often incredibly helpful
+if you have a way of
+evaluating your learning algorithm
+that just gives you back a single real number.
+Maybe accuracy, maybe error.
+But the single real number that tells you how well your learning algorithm is doing.
+I'll talk more about this specific
+concepts in later videos, but here's a specific example.
+Let's say we are trying to
+decide whether or not we
+should treat words like discount,
+discounts, discounter, discounting, as the same word.
+So maybe one way to
+do that is to just
+look at the first few characters in a word.
+Like, you know, if you just look at
+the first few characters of
+a word, then you figure
+out that maybe all of these
+words are roughly -   have similar meanings.
+In natural language processing, the
+way that this is done is
+actually using a type of software called stemming software.
+If you ever want to do
+this yourself, search on a
+web search engine for the
+Porter Stemmer and that
+would be, you know, one reasonable piece of
+software for doing this sort
+of stemming, which will let
+you treat all of these discount,
+discounts, and so on as the same word.
+But using a stemming software
+that basically looks at the
+first few alphabets of the
+word more or less, it can help but it can hurt.
+And it can hurt because, for
+example, this software may
+mistake the words universe and
+university as being the
+same thing because, you know,
+these two words start off
+with very similar characters, with the same alphabets.
+So if you're trying
+to decide whether or not
+to use stemming software for
+a stem classifier, it is not always easy to tell.
+And in particular, error analysis
+may not actually be helpful
+for deciding if this
+sort of stemming idea is a good idea.
+Instead, the best way
+to figure out if using stemming
+software is good to help
+your classifier is if you
+have a way to very quickly
+just try it and see if it works.
+And in order to do this,
+having a way to numerically
+evaluate your algorithm, is going to be very helpful.
+Concretely, maybe the most
+natural thing to do is
+to look at the cross validation
+error of the algorithm's performance with and without stemming.
+So, if you run your
+algorithm without stemming and you
+end up with, let's say,
+five percent classification error, and
+you re-run it and you
+end up with, let's say, three
+percent classification error, then this
+decrease in error very quickly
+allows you to decide that,
+you know, it looks like using stemming is a good idea.
+For this particular problem, there's
+a very natural single real
+number evaluation metric, namely, the cross validation error.
+We'll see later, examples where coming
+up with this, sort of, single
+row number evaluation metric may need a little bit more work.
+But as we'll see in
+the later video, doing so would
+also then let you
+make these decisions much more quickly
+of, say, whether or not to use stemming.
+And just this one more quick example.
+Let's say that you're also trying
+to decide whether or not
+to distinguish between upper versus lower case.
+So, you know, is the red
+mom with uppercase M
+versus lower case m,
+I mean, should that be treated as
+the same word or as different words?
+Should these be treated as the same feature or as different features?
+And so once again,
+because we have a way
+to evaluate our algorithm, if
+you try this out here, if
+I stop distinguishing upper
+and lower case, maybe I
+end up with 3.2%
+error and I find that
+therefore this does worse
+than, you know, if I use only
+stemming, and so this lets
+me very quickly decide to go
+ahead and to distinguish or to
+not distinguish between upper and lower case.
+So when you' re developing
+a learning algorithm, very often
+you'll be trying out lots of
+new ideas and lots of new versions of your learning algorithm.
+If every time you try
+out a new idea if you
+end up manually examining a
+bunch of examples, you begin to
+see better or worse, you
+know, that's going to make it
+really hard to make decisions
+on do you use stemming or not.
+Do you distinguish upper or lowercase or not?
+But by having a single rule
+number evaluation metric, you can
+then just look and see oh, did the error go up or go down?
+And you can use that much
+more rapidly, try out
+new ideas and almost right
+away tell if your new
+idea has improved or worsened
+the performance of the learning algorithm
+and this will let
+you often make much faster progress.
+So the recommended, strongly recommended
+way to do error analysis is
+on the cross validation set rather than the test set.
+But, you know, there are
+people that will do this on
+the test set even though that's
+definitely a less mathematically appropriate
+set of your list, recommended what
+you think to do than to
+do error analysis on your
+cross validation sector.
+So, to wrap up this video, when starting
+on the new machine learning problem, what
+I almost always recommend is
+to implement a quick and
+dirty implementation of your learning algorithm.
+And I've almost never seen
+anyone spend too little time on this quick and dirty implementation.
+I pretty much only ever see
+people spend much too much
+time building their first, you know,
+supposedly quick and dirty implementations.
+So really, don't worry about
+it being too quick, or don't worry about it being too dirty.
+But really implement something as
+quickly as you can, and once
+you have the initial implementation this
+is then a powerful tool for
+deciding where to spend your
+time next, because first we
+can look at the errors it makes,
+and do this sort of error analysis
+to see what mistakes it makes
+and use that to inspire further development.
+And second, assuming your
+quick and dirty implementation incorporated a
+single real number evaluation metric, this
+can then be a vehicle for
+you to try out different ideas
+and quickly see if the
+different ideas you're trying out
+are improving the performance of
+your algorithm and therefore let
+you maybe much more quickly
+make decisions about what things
+to fold, and what things to
+incorporate into your learning algorithm.

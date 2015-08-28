@@ -1,0 +1,183 @@
+
+We'll turn to other ways of representing 
+vectors in Python. 
+I've told you that a vector is just a 
+function from some domain D to a field. 
+And, we know how to represent functions 
+in Python using dictionaries. 
+So we're going to develop a class, a 
+Python class, called Vec 
+with two instance variables, two fields. 
+One is f, which represents the function, 
+using a Python dictionary. 
+The other is d, which represents the 
+domain using a Python set. 
+And here we're going to adopt the 
+convention that entries whose values are 
+zero don't have to be represented in the 
+dictionary. 
+This is our sparcity representation. 
+So here's a kind of bare bones definition 
+of a class that has these two fields. 
+We can use this to create an instance by 
+supplying two arguments, the set, the 
+domain d, and the function f, represented 
+as a dictionary. 
+Now, we can assign, say, assign this 
+vector to a variable and access the 2 
+fields of v using a dot notation. 
+Here's the code for the setter. 
+It takes an instance V of vec, an element 
+of D of the domain of V, and a value, an 
+element of the field. 
+And it simply changes the dictionary, 
+v.f, so that d maps the val. 
+So we can use it in this way. 
+Here's a quiz. 
+Write the corresponding getitem 
+procedure. 
+It takes a vector v, and a domain element 
+D, and it outputs the value of entry d of 
+the vector v. 
+Here's the answer. 
+If the domain element D is one of the 
+keys of the dictionary, v.f, then the 
+procedure returns the corresponding 
+value, and if not, returns 0. 
+Here is an alternative definition, a 
+little less Pythonic. Why is, why is this code 
+insufficient? 
+This code just returns the value that d 
+maps to in the dictionary v.f. 
+Well, this isn't sufficient, because d 
+might not be a key of v.f, because of our 
+sparsity convention. 
+If the 'd' entry of the vector 'v' is 
+zero then 'd' need not be a key of the 
+dictionary. 
+Now, earlier we gave the definition for a 
+rudimentary Python class for vectors. 
+Here it is. 
+But, we're going to code much more 
+elaborate version of the class that 
+allows use of operator overloading for 
+element access, scaler vector 
+multiplication,vector addition, 
+dot-product and so on. 
+Here's a table showing the different 
+operations that this class will allow 
+for. 
+Using this class, we'll be able to write 
+much more concise vector code, such as 
+this. 
+This sets the a entry of v to 1.0. 
+This assigns to the variable b the vector 
+obtained, by subtracting from the current 
+value of b, a vector, a scalar multiple 
+of v. 
+And the scalar is the dot product of the 
+current value of b with the vector v and 
+this prints the vector b in a nice 
+format. 
+You're going to code this class starting 
+from a template that we provide. 
+And the quizzes will help you know how to 
+fill out, the procedures. 
+You're going to write the bodies of named 
+procedures, such as setitem, deaditem, 
+add and scalar multiple. 
+Now, in actually using Vecs, you're not 
+going to use those named procedures, 
+you're just going to use the operators. 
+So, for example, this code instead of 
+this messy code. 
+In fact, in all your coding outside the 
+Vec module itself you're not going to 
+import those named procedures. 
+You're simply going to import the class 
+Vec. 
+And that will come along with all these, 
+operators overloaded. 
+So in short, in code outside of Vec, 
+just use the operators when operating on 
+Vecs. 
+For each procedure, you write, we'll 
+provide the stub of the procedure. 
+So for example, for add, here's the stub 
+we provide. 
+Now this first line is a, a 
+documentation string. 
+It's basically a comment that tells us 
+what the procedure supposed to do. 
+The second line is an assertion. 
+It asserts in this case that to add two 
+vectors, the domains have to be equal 
+sets. 
+Now, if this procedure gets past to two 
+vectors with different domains it will be 
+report an error. The assertion is there to 
+remind us of a rule of vector addition, 
+namely that you can't add vectors whose 
+domains are different. 
+So let's keep the assertion in the code, 
+at least when writing procedures that use 
+it for this class. 
+Now, this Vec class you write has got to 
+be correct. 
+You're going to be using it a lot. 
+So we're providing a lot of test cases in 
+a file test_vec.py. 
+So, you can test your Vec implementation 
+using all these examples by just copying 
+the examples into Python and seeing 
+whether the result matches the results we 
+provide in test.vec. 
+If they don't, something is wrong with 
+your Vec implementation, and you really 
+have to figure it out and fix it. 
+Now, once you think you've got something 
+that works, you can run all the tests at 
+once. 
+From outside Python, in the command line, 
+by executing, by typing this command, to 
+a console. 
+This is the name of whatever Python you 
+are using, -m doctest and test_vec.py. 
+That will import your Vec implementation 
+from vec.py and run all the tests. 
+And it will print messages if some of the 
+tests fail. 
+So if nothing gets printed, you're good. 
+All the tests have passed. 
+The Vec class is useful for representing 
+vectors, but it's not the only useful 
+representation. 
+Well, we'll sometimes represent vectors 
+by lists. 
+A list of length n can be viewed as a 
+function from 0 to n minus 1. 
+It's easy to convert from a list based 
+representation to a dictionary based 
+representation such as that. 
+Write the procedure list to Vec, that 
+takes a list of field elements and 
+outputs an instance of Vec 
+with domain zero to the length of the 
+list minus 1, such that entry i of the 
+vector v equals element v of the list L 
+for each integer i in this domain. 
+Here is the answer. 
+Here's an alternative. 
+This first solution uses this handy 
+enumerate procedure, which allows you to 
+enumerate over the pairs kx where k is an 
+index of into the list, and x is the 
+corresponding element. 
+And this is using a more traditional loop 
+in which we iterate through the indices 
+into the list. 
+The procedures zero.vec and list2vec, 
+which you've written in quizzes are 
+defined for you in the file vecutil, 
+which we've provided for you. 
+

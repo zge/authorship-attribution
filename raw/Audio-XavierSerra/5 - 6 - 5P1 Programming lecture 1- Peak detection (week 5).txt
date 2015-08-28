@@ -1,0 +1,317 @@
+Hello, welcome back to the course on Audio
+Signal Processing for Music Applications.
+This week we're talking
+about the sinusoidal model.
+And we are considering sinusoids in
+the frequency domain, in the spectrum.
+And more particularly, we are considering
+that a sinusoid is a peak,
+a spectral peak, and from which we can
+measure the values of the sinusoid.
+So this is what we want to go
+over in this programming lecture,
+from a programming perspective.
+Therefore developing some
+code that would allow us to
+measure the values of the sinusoid.
+And these are the equations we presented
+in the lecture class, to measure
+the frequency, amplitude, and phase of
+a sinusoid using parabolic interpolation.
+So this first equation is the
+the way to compute a parabola,
+on the tip of a peak, and
+obtaining the refined frequency value.
+as a location
+from 0 to N, which is the FFT size.
+Then we can obtain the frequency value in
+hertz by multiplying by the sampling rate,
+and dividing by capital N, and
+then we can plug
+the location value in
+the in the parabola and
+obtain the tip of it which will be
+the interpolated amplitude value.
+And finally, we can also get
+the phase value by reading 
+the location of the frequency, maybe
+using a linear interpolation of that,
+in the phase spectrum, so that we get
+a refined phase value.
+Okay, so let's go to the Text Editor.
+And in here I wrote some code to actually
+do these, detection of a spectral tip.
+So here
+I first imported some of the packages
+that I need, like the numpy, matplotlib,
+the window from scipy.
+Then I go to append
+the directory from which I have some
+code,
+that I'm going to use, specifically the DFT
+model so our DFT implementation and
+set of utility functions that I
+have in the sms-tools package.
+Okay, after I have all these packages I
+can start reading a sound file.
+So I read a sound file that
+includes a sinewave of 440 hertz.
+So I know exactly what
+frequency I should get.
+And then I declare some variables that are
+going to be useful for computing the DFT.
+So M is our window size,
+how many samples of the sinewave
+I'm going to compute.
+N is the FFT size and
+t is a threshold that I will be using for
+the peak detection.
+Okay?
+So then I can get the window.
+I get a hamming window of size M,
+then I read into 
+the file, well into the
+the middle of the sound file,
+so I can just get M, capital M samples
+of the middle of the sound, and
+then I can compute
+the spectrum using the dftAnal.
+I return the magnitude and phase, and
+then I'm computing the peak, okay?
+So this peak detection, this is a function
+that is declared in the utility functions.
+So let's go there.
+This is the peak detection function
+that has as input magnitude spectrum,
+and t which is a threshold.
+The magnitude spectrum which is the array
+of values, of amplitude values,
+in decibels, and t is the threshold in
+decibels that is going to be used, to
+consider the minimum value below which we're
+not going to consider to have peaks.
+So the computation is quite simple.
+We check for three conditions
+in the whole magnitude spectrum.
+well the whole, we're discarding the
+initial value, value 0 and the last value.
+So between 1 and
+the size minus 1, we are looking for
+the values that are above a threshold.
+Okay?
+Above t.
+The values that are higher than
+the previous and the next values.
+Okay, so
+they're local maxima.
+And then we are considering the peaks,
+as being the values that
+fulfill the three criteria.
+They're above a threshold,
+they are above the next value, and
+they're above the previous value.
+And then, well, we add 1 in order to undo
+this one, the condition that we had.
+And it returns the locations, an array
+of peaks, of the locations of those peaks.
+If we can go back to our code.
+Okay, so we we call the peak
+detection, it returns the locations and
+then to get the magnitudes
+of those locations,
+we just read those values
+from the magnitude spectrum.
+To plot that, well,
+we have these lines for
+plotting, in which we define
+first frequency axis.
+So we're going to be able
+to see the x axis in hertz.
+Then we plot the whole magnitude spectrum.
+So with the frequency axis and
+the magnitude spectrum.
+And we plot the peak
+locations on top of that.
+So we plot the locations and
+the magnitudes
+and we're going to plot an x
+on those locations.
+Okay?
+without any lines,
+So we just see those those locations.
+So let's run that.
+We are in 
+the workspace of sms-tools and
+I have this test.by so
+I can just run test.
+Okay, and
+this is the spectrum of the sinusoid, and
+of course it has a main
+lobe of the Hamming.
+So let's zoom into that location.
+So let's just go into just the peak.
+Okay and this is
+the peak of the sinusoid.
+We can see the cross and
+we can see some of the higher
+samples of the magnitude spectrum.
+Okay.
+So in here we can see that the cross is
+at location 429 hertz more or
+less, or 430 hertz.
+That's clearly quite
+far from the 440 hertz.
+Why is that?
+Well, this is because our size,
+the FFT size, was 512 samples.
+And with 512 samples
+we have quite a bit of distance
+between two consecutive samples.
+In order to compute exactly what is that
+distance, we can just do the sampling rate.
+44,100, divided by the FFT size,
+which was 512.
+And 86, this is the distance
+in hertz between one sample,
+which is here it says
+428.
+and in here is 515 kind of thing.
+So this is the 86 sample
+distance between these two.
+So to improve the resolution,
+we can now increase the FFT size.
+So in here, the N,
+let's make it four times bigger.
+For example,
+let's make it to 2,048 samples.
+So this should give us
+better frequency resolution.
+Let's try that.
+So we save that and
+in here, well, let's remember
+this plot, so we can now,
+if we run again and
+we zoom into the tip of the spectrum.
+Okay.
+Okay, yeah.
+We can see that there is more samples
+now and I think, even if we zoom more,
+Okay, we can see that well, now the tip,
+the peak, has been computed to
+be around 430 hertz, okay?
+And clearly the distance between two
+consecutive samples has reduced.
+So in fact it should
+be four times smaller.
+If we compute that,
+We can just compute 44100 divided by 2048.
+So now, it's 21 hertz, the distance.
+But still it's not the frequency
+we would like to have.
+It's a little bit far.
+In fact this 21 hertz
+resolution is not ideal.
+So what we're going to do,
+is to do this parabolic interpolation.
+So in the utility functions file,
+there is this peakInterp function,
+that performs parabolic interpolation
+on these locations that we have found.
+So from the magnitude spectrum, the phase,
+and the locations that it found,
+these local maxima, this function
+computes the interpolated values.
+So from the three highest peaks
+of each local maxima, the actual
+local maxima, left and right values.
+It performs the parabolic interpolation
+to refine the frequency and
+find the center of the parabola.
+Then it finds the tip of the parabola,
+the magnitude of it.
+And then it uses the location to
+look into the phase spectrum and
+perform some linear interpolation, because
+the phase during 
+these values should be quite flat.
+And it performs a linear interpolation
+to find the actual phase value.
+And it returns these three. Now let's get
+these three output values.
+Let's copy them, and
+put them in our program.
+So we will obtain this by calling
+the peakInterpolation function.
+So, let's copy that too.
+Copy, and we put it here.
+Okay.
+So this is our peak
+interpolation function.
+No need to compute the pmag and
+now it returns the
+interpolated location, interpolated
+magnitude, and interpolated phase,
+by calling the peakInterp, and sending it
+the magnitude, phase and location values.
+So now we can plot the iploc and
+ipmag and okay.
+So let's see if we improve
+this plot.
+So we had the peak at 430 hertz.
+See what we can do with
+this interpolation.
+So let's run again test.
+Okay, it complains about peakInterp,
+because it's part of the package UF, so I
+have to specify that it comes from there.
+And, let's try it again.
+Okay.
+Now let's zoom in to the tip of it,
+so we can see how it does.
+Okay, and we can zoom a little bit more.
+Okay, so
+here we see the values that we had before.
+So the tip before it was this tip,
+so it was like around 430.
+And now it has found, the cross
+is in between these two locations,
+so it has moved the
+the tip, because it considers
+the tip of the parabola and
+now the cross is closer to 440.
+Still, it's not at 440.
+In fact it's around 439 or so.
+So we are still one hertz
+kind of difference, but
+definitely it's much better
+than where we started with.
+Okay, so
+that's basically what I wanted to show.
+With this code we can analyze
+a spectrum of a sound
+and identify the spectral peak locations,
+that are within that spectrum.
+Of course 
+if the sound is more complex than a sinewave, 
+and the threshold is also lower,
+it would not just find one single peak,
+it will find many peaks.
+Okay, let's go back to 
+the slides.
+we have been using the Sinusoidal model, or
+part of it, the concept of peak detection.
+And using some of the packages of Python,
+numpy, scipy, matplotlib and
+some of the functions available
+in the sms-tools package,
+we have been able to measure 
+the spectral peaks of a sound.
+And with that we are now ready to
+go to the next stage, which will
+be talking about in the next programming
+class, actually handling more
+real sounds and both analyzing and
+synthesizing these sinusoids.
+So I hope to see you in the next class.
+Bye bye.
+

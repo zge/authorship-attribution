@@ -1,0 +1,207 @@
+In this video and the next we are going 
+to take you to the next level and here 
+under the hood into implementations of 
+balanced pioneer research trees. 
+Now frankly when any great details of all 
+balance binary research tree 
+implementations get pretty complicated 
+and if you really want to understand them 
+at a fine grain level there is no 
+substitute for reading an advanced 
+logarithms textbook that includes 
+coverage of the topic and/or studying 
+open source Implementations of these data 
+structures. 
+I don't see the point of regurgitating 
+all of those details here. 
+What I do see the point in doing, is 
+giving you the gist of some of the key 
+ideas in these implementations. 
+In this first video I want to focus on a 
+key primitive, that of rotations which is 
+common to All balanced by the [INAUDIBLE] 
+of limitations. 
+Whether is red, black trees, EVL trees, B 
+or B+ trees, whatever all of them use 
+rotations. 
+In the next video we'll talk a little bit 
+more about the details of red, black 
+trees in particular. 
+So, what is the points behind these 
+magically rotation operations? Well the 
+goal is to do just constant work, just 
+re-wire a few pointers, and yet locally 
+re-balance a search tree, without 
+violating the search tree properties/g 
+Property. 
+So there are two flavors of rotations, 
+left rotations and right rotations. 
+In either case, when you invoke a 
+rotation it's on a parent child pair, in 
+a search tree. 
+If it's a right child of the parent, then 
+you use a left rotation. 
+We'll discuss that on this slide. 
+And a right rotation is, in some sense, 
+an inverse operation which you use when 
+you have a left child of the parent. 
+So what's the generic picture look like 
+when you have a node x in a search tree 
+and it has some right child y? Well x, in 
+general, might have some parents. 
+x might also have some left subtree. 
+Let's call that left subtree of x, A. 
+It could, of course, be And then Y has 
+it's 2 subtrees, lets call the left 
+subtree of Y B and the right subtree C. 
+It's going to be very important that 
+rotations preserve the search tree 
+property so to see why that's true lets 
+just be clear on exactly which elements 
+are bigger then which other elements in 
+this picture. 
+So first of all Y being a right child of 
+X, Y's going to be bigger than x. 
+Now all of the keys which line the 
+subtree a because they're to the left of 
+x these keys are going to be even smaller 
+than x. 
+By the same token anything in the subtree 
+capital c, that's to the right of y so 
+all that stuff's going to be even bigger 
+than y. 
+What about sub tree capital B? What about 
+the nodes in there? Well, on the one 
+hand, all of these are in x's right sub 
+tree, right? To get to any node in B, you 
+go through x and then you follow the 
+right child to y. 
+So that means everything is B is bigger 
+than x, yet, at the same time, it's all 
+in the left sub tree of y so these are 
+all Things smaller than y. 
+Summarizing all of the nodes in b have 
+keys strictly in between x and y. 
+So now that we're clear on how all of 
+these search keys in the different parts 
+of this picture relate to each other, I 
+can describe the point of a left 
+rotation. 
+Fundamentally the goal is to invert the 
+relationship. 
+Between the nodes x and y. 
+Currently x is the parent and y is the 
+child. 
+We want to rewire a few pointers so that 
+y is now the parent and x is the child. 
+Now what's cool is given that is our goal 
+is pretty much a unique way to put all 
+these pieces back together to accomplish 
+it. 
+So lets just follow our nose. 
+So remember the goal Y should be the 
+parent and X should be the child. 
+Well, X is less then And why and there's 
+nothing we can do about that. 
+So if x is going to be a child of y, its 
+got to the left child. 
+So your first question might be well what 
+happened that x is parent. 
+So x use to have some parent lets call it 
+p and x's new parent is y. 
+Similarly y used to have parent x and 
+there's a question what should y new 
+parent be? Well y is just going to 
+inherit x's old parent p. 
+SO this change has no bearing for the 
+search tree property. 
+Either of this collection of nodes was 
+P's left sub tree, in that case all these 
+nodes were less than P, or this sub tree 
+was P's right sub tree which in that case 
+all of these are bigger than P, but P can 
+really care less , which of X or Y is 
+it's direct descendant. 
+Now lets move on to thinking about 
+how...what we should do with the 
+sub-trees A, B and C. 
+So, we have 3 sub-trees we need to 
+re-assemble into this picture, and 
+fortunately we have 3 slots available. 
+X has both of its child pointers 
+available and Y has its right child 
+available. 
+So what Can we put where? Well, a, is the 
+sub tree of stuff which is less than both 
+x and y. 
+So, that should sensibly be x's left 
+child. 
+That's exactly as it was before. 
+By the same token, capital C is the stuff 
+bigger than both x and y, so that should 
+be, y, the bigger nodes child, right 
+child just as As before. 
+And what's more interesting is what 
+happens to subtree capital B. 
+So B used to be Y's left child but that 
+can't happen anymore, 'cause now X is Y's 
+left child. 
+So, the only hope is to slot capital B 
+into the only space we have for it, X's 
+right child. 
+Fortunately for us this actually works, 
+sliding B into the only open space we 
+have for it. 
+X's right child does indeed preserve the 
+switch tree property. 
+Recall we notice that every key in 
+capital B is strictly between X and Y, 
+therefore it better be and X's right sub 
+tree and it better be in Y's right sub 
+tree, but it is, that's exactly where we 
+put it. 
+So that's a left rotation, but if you 
+understand a left rotation then you 
+understand a right rotation as well. 
+because a right rotation is just the 
+inverse operation. 
+So that's when you take a parent child 
+pair, where the child is the left child 
+of the parent, and now you again want to 
+invert the relationship. 
+You want to make the old child the new 
+parent and the old parent the new child. 
+And once again given this goal there's 
+really a unique way to reassemble the 
+components of this picture so that the 
+goal's accomplished, so that y is now the 
+parent of x. 
+So what are the laudable properties of 
+rotations? Well first of all I hope it's 
+clear that they can be implemented. 
+In a constant time or you were doing a 
+rewiring a constant number of pointers. 
+Further more as have discussed they 
+preserve the search tree property. 
+So these nice properties are what make 
+rotations the ubiquitous primitive common 
+to all balanced search tree 
+implementations. 
+So this of course, is not the whole 
+story. 
+In a complete specification of a balanced 
+search tree implementation, you have to 
+say exactly when and how you deploy these 
+rotations. 
+You'll get a small taste of that in the 
+next video but if you really want to 
+understand it in more depth, I again 
+encourage you to check out either a 
+comprehensive Data structures textbook. 
+Check out a number of balance search tree 
+demonstrations, which are readily 
+available on the web. 
+Or have a peek at an open source 
+implementation of one of these data 
+structures. 
+

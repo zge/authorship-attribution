@@ -1,0 +1,245 @@
+[SOUND]
+So
+now we'll discuss three dimensional
+graphics for visualization.
+And in order to do three
+dimensional graphics,
+we have to simulate how light
+gets from a light source.
+Off of an object into our eyes so
+that we can perceive it,
+the same way that we would
+perceive a real world scene.
+So what will we learn?
+We'll learn about the real world ways
+that light leaves a light source and
+reaches our eye.
+We'll learn the physics of why is
+the sky blue, why is the sun yellow,
+why is grass green, and in general,
+how does three-dimensional graphics
+simulate these physical processes?
+And so here's a typical scene of the real
+world and how we would perceive that.
+We have a light source, an object
+reflecting light and then a sensor,
+which is our eye.
+And light leaves,
+in this case, the sun, and
+this light is powerful across the
+spectrum, and so it's essentially white.
+But then that light goes to the sky.
+And the sky scatters the light
+differently based on which region of
+the spectrum it's dealing with.
+So, light at the red wavelengths
+will get scattered less and
+light at the blue wavelengths
+will get scattered more.
+So that light gets scattered
+to other locations in the sky,
+which makes the sky blue.
+And which makes the sun
+appear yellow because
+that light is making it
+all the way through.
+That yellow sunlight hits a tree or
+grass or any other biome and
+certain wavelengths of that
+light are getting absorbed
+by chlorophyll molecules and turned
+into photosynthate which feeds the tree.
+And so the chlorophyll is absorbing
+light mostly in the blue regions,
+the blue wavelengths and then the red
+wavelengths and reflecting light.
+Not absorbing the light
+in the green wavelengths.
+So the light reflected off
+of a tree is mostly green.
+And so then it reaches, it hits us in
+the eye, reaches our censor in our eye,
+so that we can perceive it.
+And there it gets sensed
+by essentially cones,
+the colors, the wavelengths of light
+stimulate three different kinds of cones.
+A mostly red cone, a mostly green cone and
+a mostly blue cone.
+And these send three different
+responses to our perceptual system.
+And so, you may have a complex wavelength
+of light indicating it's color,
+but at some point when
+the eye perceives that,
+that gets turned into three numbers
+instead of a bunch of numbers.
+And so we get this tristimulus
+theory of light perception.
+And that's why we display
+things using red, green,
+blue colors in pixels
+on graphics displays,
+to directly stimulate the red cones,
+the green cones and the blue cones.
+So, we can simulate this process, and
+we can look, for example, at a camera.
+And, a modern camera.
+In this case, a pinhole camera
+that has a very small aperture
+is getting light reflected
+off of an object.
+In this case, this blue bunny rabbit.
+That goes through a focal point and
+it gets projected onto an image plane
+that would be sensed in modern
+cameras by a CCD array.
+We can take that image plane and we can
+just bring that in front of the camera and
+we get the exact same image.
+It's not inverted.
+It's just placed in front.
+And you can think of this
+as being a window and
+you're looking through a window out
+into the world and seeing a blue bunny.
+You can imagine where that blue
+bunny would be there in the window
+that you see there and that's
+the exact same image inverted that you
+would get on the film plane, because
+of the geometry of this camera system.
+Well, we can remove the camera system and
+we can put an eye right
+at that focal point.
+And this gives us this image plane.
+And so basically, when we're looking
+out into a three-dimensional scene,
+what we're seeing is the same thing that
+would be projected onto a two-dimensional
+window to the world,
+through those same projectors.
+Just a certain fixed distance away.
+And that's the way we can simulate
+with a two-dimensional image,
+what the eye would see in
+a three-dimensional world.
+And, in computer graphics, as we discussed
+before with two dimensional graphics,
+we're going to simulate
+shapes using primitives.
+In this case, vector primitives,
+except these are now
+three-dimensional vector primitives.
+And so, we have triangles.
+And the triangles are specified
+by three vertices.
+And those three vertices
+have edges between them and
+a region we'll call a polygonal face.
+And you can create a mesh of
+these triangles to define a three
+dimensional object.
+In this case a bunny rabbit.
+And those triangles are then
+projected by what's called a three
+dimensional graphics pipeline onto
+a two-dimensional image plain.
+And then the polygons on that
+two-dimensional image plane are then
+discretized in the pixels.
+This is a rasterization process.
+And in fact, the same rasterization
+process we were discussing.
+In two-dimensional graphics where
+regions and edges are discretized
+into pixels, instead of straight lines and
+continuous regions.
+And so the way 3-D graphics works is for
+each one of these triangles,
+each one of these primitives we're
+going to figure out its' illumination by
+simulating the light coming from
+a light source reflecting off of it.
+And then we're going to
+project that triangle and
+its illumination onto this image plane.
+And then we're going to
+rasterize that triangle
+by filling its region in with pixels.
+And that's what gets displayed
+on the pixel display.
+And so we can speak of these
+processes as vertex processing,
+This is also called transform and
+lighting.
+Where we're taking vertices of triangles,
+and projecting them onto an image plane.
+Rasterization, taking those
+two dimensional triangles, and
+converting them into pixels.
+And then, pixel processing,
+which takes those pixel regions, and
+figures out what colors
+should be on their interior.
+We also will meet the view
+three-dimensional scenes.
+We need to figure out where
+is the eye in the scene.
+And so we'll set up things
+like world coordinate systems.
+And this eye and
+this teapot example, will be
+located at positions in three-dimensional
+coordinates in the same way that
+primitives were located in two-dimensional
+coordinates in the previous example.
+So we use this world coordinate system,
+and its origin is off someplace.
+And we can describe everything
+relative to this coordinate system.
+And we will specify a view.
+Basically, where are we and
+what are we looking at?
+Our eye point will be located at a certain
+set of coordinates and world coordinates.
+And we'll be looking at a point
+also specified as a set of
+coordinates in world coordinates,
+three coordinates, x, y, z.
+And then that view is going to be
+transformed into a new coordinate system
+that looks very similar to our
+canvas coordinate system, so
+that we have an x-axis and a y-axis.
+And in this case we're extending
+from (-1,-1) to (1,1) and
+these coordinates are the coordinates
+of the window we were looking through
+that forms the image plane.
+And another thing we want to do is
+to create a sense of perspective so
+that things farther away appear smaller
+and things closer to us, appear larger.
+In computer graphics, we do that by
+processing the primitives, themselves.
+We actually make the things that
+are farther away smaller and
+the things that are closer to us larger.
+So this may look correct for a perspective
+scene of a tea pot on a table,
+but if I look at it from the side view,
+what I've actually done is made
+the front of the table larger.
+And the back of the table smaller, so that
+when it gets projected on to my 2D image
+plane, I get correct proportions for
+a perspective rendering.
+And from this point,
+we've processed our primitives, and
+we would then rasterized them,
+and fill them in,
+in the same fashions that we did for
+two-dimensional graphics examples.
+[MUSIC]
+

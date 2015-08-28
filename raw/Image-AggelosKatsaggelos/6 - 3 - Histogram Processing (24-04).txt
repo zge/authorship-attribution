@@ -1,0 +1,561 @@
+Welcome back.
+The histogram of an image represents a
+distribution of the intensity values of
+the image.
+A normalized histogram actually can be
+thought of
+as the probability density function of a
+random signal.
+By looking at the histogram of an image,
+we cannot deduce the structure of the
+image, but
+we can infer whether the image is dark or
+light or it has a small dynamic range.
+In many applications the image is designed
+to have a histogram of a certain shape
+so as to, for example, be more easily be
+compared to another image.
+The most frequently encountered shape of
+the histogram is that of a flat
+or equalized histogram, which means that
+all
+intensities in the image are represented
+equally.
+Such an image should also definitely have
+a more pleasing appearance.
+What you will learn in this segment is how
+to derive the point-wise
+operation that we need to perform on the
+intensity values of the image.
+So that the enhanced image has a flat or
+equalized histogram.
+We'll also discuss local histogram
+equalization.
+So, let us proceed with this interesting
+topic.
+We proceed next with histogram
+processing, focusing specifically on
+histogram equalization.
+An important quantity for an image is it's
+histogram.
+Is defined as h of k equals the number of
+pixels with value k.
+So, if I have an eight bit image, the
+values range from from 0 to 255.
+I can go and count how may pixels have the
+value zero, how many pixels have the value
+100, that would be 8 of 100, how many have
+the value 255 and so on.
+So, given an image such as this one, here
+is its histogram.
+The horizontal axis is k.
+The range of the intensity values, this is
+an eight bit image so 0
+to 255 and on the vertical axis a, the
+values of h of k.
+The histogram clearly tells me how the
+intensity values of the original image are
+distributed.
+So, for this particular image, there are
+no small intensity values.
+Then there is a peak, a lot of intensity
+values around, let's say 30.
+There's another smaller peak here, let's
+say at 60.
+And there are no intensity values higher
+than about this point, let's say it's 125.
+And this is no surprise.
+Looking at the image, it's a dark image.
+A lot of small values and very few high
+values.
+So, again, the histogram gives me the
+distribution of the intensity values of
+the image, and as a matter of fact, if I
+take h of k and divided by
+the number of pixels in the image, then
+each value is less than one.
+The sum of all the values or the area
+under this curve here is equal to 1.
+And we can think of, therefore, the
+histogram
+as the probability density function of the
+intensity values.
+So, with respect to enhancement, the idea
+now is not to
+manipulate the intensity values directly,
+but to manipulate the histogram directly.
+I'm bringing this example, this contrast
+stretching example back to
+put things in context, now that we talked
+about the histogram.
+If you recall, we started with this image
+on the left and then we realized that
+this is a dark image and we defined the
+transformation
+shown here.
+We found the minimum and maximum values of
+this
+image on the left and then we map them
+from 0 to 55 in the output image, so the
+transformation,
+we apply the liner transformation is given
+by curve.
+And this, again, is the output image.
+Now, while operating on the intensities
+one at time, independently of the
+neighborhood, we were also clearly
+modifying
+the histogram of the image indirectly.
+So, this is the histogram of the first
+image, again, it's a dark image, so most
+of
+the intensities are concentrate around low
+values, and there
+are almost no intensities here of high
+intensity values.
+And with this transformation, clearly we
+expand the range
+of intensity values, so there are more
+bright values here.
+So with the, we'd expect that the
+resulting
+histogram of the processed image is spread
+out somehow.
+And indeed, if we look at it, it looks
+like this.
+So, while the intensity values were
+stopping around 120 or so here, we see
+that there are now high intensity values
+that were generated in the processed
+image.
+So, with the point wise operations that we
+covered so
+far, one has some evaluation of the image,
+like again, this
+one is dark and then defines the
+transformation to be applied
+on the image, independently of the
+specific values of the image.
+With histogram processing, we are looking
+at the histogram of the
+input image and then we are placing an
+objective on the histogram itself.
+We are saying, for example, that they want
+to transform the histogram
+of the input image to another type of
+histogram, or, as we'll see,
+what is most commonly done, I want to
+equalize the histogram.
+I want to turn the histogram of the input
+image into a flat histogram.
+And then this objective will determine the
+transformation here that I should be
+applying
+on the input image to obtain the output
+image.
+So again, now that transformation is
+defined, indirect in some
+sense, by processing the image through the
+evaluation of his, of its histogram.
+And it's not set kind of a priori by
+[UNKNOWN] okay,
+I want this straight line to be applied to
+the input image.
+So, this is a major difference between
+histogram
+processing and intensity point-wise
+transformation.
+At the end, with histogram processing, I'm
+also going to apply
+a point wise transformation to the input
+image, but for example,
+let's say this transformation is the
+resulting one that I need
+to apply to the input image to get, the
+output one.
+So, with that in mind, let's proceed with
+some examples of, histogram processing.
+Of the histogram processing approaches,
+histogram
+equalization is the most commonly
+encountered one.
+The objective, in this, in this case, is
+to obtain an image with a flat histogram.
+This way, all intensities in the image are
+equally represented.
+Or in probabilistic terms, all intensities
+are equally probable.
+There may be various reasons for requiring
+a, an equalized histogram.
+One is that we expect that an image with
+an
+equalized histogram it will look better,
+it will be more pleasing.
+All intensities, again, will be equally
+represented so there'll be
+low intensities, and middle intensities,
+and high intensities in the image.
+Another reason is that when I want to
+compare
+two images, it makes sense to first
+equalize them.
+Equalize the histogram so that then the,
+the comparison will
+become, will be on an equal footing, will
+be, become meaningful.
+Here are, we are going through steps we
+have to take towards this objective.
+The first step is to normalize the
+histogram, by doing
+so, as already mentioned, the values of
+the histogram become probabilities.
+I change the notation slightly here, so p
+of x of
+i is the probability that the intensity x
+is equal to i.
+And this is equal to the number of pixels
+that have intensity i,
+divided by the total number of pixels in
+the image, M times N.
+So, this number is clearly less than 1.
+And more than that, if I add up all these
+probabilities, their sum is equal to 1.
+I sum up over the range of intensities
+here.
+These intensities range from 0 to L minus
+1.
+So, this is the probability density
+function.
+Then, the algorithmic steps I have to take
+are, the first one is, I
+have to form this capital P of x sub i
+function, which is the
+sum of the probabilities from intensity 0
+to i.
+So the value of P of x at i is this sum
+from 0 to i.
+This is actually a cumulative distribution
+function.
+And this is the function I will use now to
+perform
+this point wise transformation of the
+intensity values of the image.
+So, the transformation is shown here.
+x of n is the input image, so this is one
+intensity value.
+The intensity of the input image at
+location n.
+n1 and n2, this is a vector.
+So, for a given intensity, through this
+again, cumulative distribution function
+transformation, I will
+obtain the value of the output image y
+tilde at the same pixel location n.
+[BLANK_AUDIO]
+And since this mapping will give me values
+between 0 and 1, there is one more step,
+according to which I take the y tilde
+here, there is an extra parenthesis.
+And multiply by L minus 1, so that again y
+of n now, the
+image with equalized histogram, will range
+from 0 to L minus 1.
+Let's try to get some intuition of why
+this transformation will work out.
+So, let's take the first case when the
+histogram of the
+image is indeed flat, so here are the
+intensity values ranging
+from 0 to L minus 1 and this is the
+probability of
+each intensity value i, so all intensities
+are equally probable.
+So, if form the cumulative distribution
+function for
+this P df is going to be a straight line.
+And this is zero, this is L minus one.
+And this is zero and this in one.
+Right?
+And after I multiply the values here, y
+tilde by L minus 1, then the
+values, again, of y of n are going to
+range from 0 to L minus 1.
+And therefore, the overall transformation
+will be the identity transformation.
+So, as expected, if the histogram of the
+image is already equalized,
+I should not change anything, and
+therefore, I should perform a identity
+transformation.
+Now, let's look at an image that has a
+histogram that looks like this.
+Is again, the normalized histogram or the
+pdf.
+So, this means that this is a dark image.
+It has high concentration of low intensity
+values and no high intensity values.
+This is the maximum value.
+And if I form the cumulative distribution
+of this.
+[BLANK_AUDIO]
+It's going to roughly look like this.
+This is one.
+This is L minus 1 up here.
+So, since there is, there are a lot
+of values here, it's going to rise pretty
+fast
+and is going to approach one and stay
+there because there are no values of high
+intensity.
+So, clearly, a transformation like this
+will take small intensity values
+and spread them out over all possible
+intensity values.
+So, if I apply this transformation to the
+input
+image, then the resulting image, based on
+this transformation, is
+going to be obviously, an equalized image
+and it's
+going to be brighter in terms of where I
+started.
+And finally, if I have a, an image
+that has normalized histogram that looks
+like this.
+This is going to be a bright image, it has
+a
+lot of high intensity values and very few
+low intensity values and in
+this case the transformation, the
+cumulative distribution function will
+look, so let's say, L minus 1 is here,
+roughly speaking, it will look like this.
+So, it's zero down here and then rises to
+the value of one.
+So, according to this transformation, high
+intensity
+values here are mapped to low intensity
+values.
+So, if I apply this transformation again
+to
+the input image I'll get, then, equalized
+image.
+[BLANK_AUDIO]
+Since I deal with discreet values, I am
+not guaranteed
+that the resulting histogram is going to
+be perfectly flat.
+This is the result, however, that if we
+were to use continuous intensity values,
+we can prove then, in a rather
+straightforward way, that indeed, using
+the cumulative distribution function as
+the point-wise transformation,
+one ends up with an image that has an
+equalized histogram.
+[BLANK_AUDIO]
+Now that we covered histogram
+equalization, let's
+revisit again contrast stretching and
+histogram equalization.
+So, we started with this image here.
+We realized it's dark, we arbitrarily, in
+a meaningful way
+decide that a transformation like this is
+going to help enhance this image.
+So, in, out, 255 here, x min, x max of
+these images.
+So, we apply this transformation and this
+is the resulting image.
+I see more high density values here
+due to this expansion, due to this
+transformation.
+Now, while this is happening at the
+intensity domain, the
+story at the histogram, let's say, domain
+is that this is the histogram of the image
+you started with, and the histogram of the
+processed image is this one.
+With histogram equalization, we start,
+again, with this dark image.
+We first look at its histogram.
+And then we place an objective that the
+processed image should have a histogram
+that is flat.
+So, we say that the processed image should
+have a histogram that looks like this.
+Based on this requirement, as we already
+explained,
+I'm able to find here the appropriate
+transformation.
+Which is through the cumulative
+distribution function, as we
+saw, so roughly speaking, it will look
+like this.
+So, this is 255 here.
+And
+after we apply this transformation, here
+is the resulting image.
+This is a transformation defined by us in
+an
+intuitive way, and this is a
+transformation that is
+defined by the data, the actual data of
+the
+image through this requirement that the
+histogram is equalized.
+And there's where the dimensions, since we
+deal with discrete data, we cannot
+guarantee
+that the histogram is going to be
+perfectly flat but it's a close
+approximation flat.
+As another example of the application of
+histogram
+equalization, let's consider the following
+images shown here, they could be
+characterized as
+dark, light, low contrast and high
+contrast.
+Here are their corresponding histograms
+which agree
+with the characterization I gave to these
+images.
+So, for the dark image, we see most
+intensity values are low, are concentrated
+at low values.
+For the light one, most intensities are at
+high values.
+The low contrast one has a small dynamic
+range from here to here.
+And the high contrast extends the values
+from all the range of intensity values.
+After histogram equalization, that's how
+the images look like.
+They're almost identical.
+They have, ideally their histogram should
+be perfectly
+flat, as we mentioned they're not
+perfectly flat,
+actually they're shown here and they just
+spread
+the values all over the range of values.
+But again, since we deal with discrete
+intensities, discrete
+signals, we cannot guarantee perfectly
+flat, perfectly flat histograms.
+We see that for the last image, the one
+we characterized as high contrast, the
+histogram was almost flat.
+And therefore, very little change occurred
+to the histogram.
+And very little change occurred for the
+intensities themselves.
+These two images look very, very similar.
+So, if we look now at the
+cumulative distribution function, or the
+transformation that
+was applied in going from these images
+to these images, then here are the
+transformations.
+So, they're numbered.
+One corresponds to this image.
+Two, three and four.
+So, starting with four and in accordance
+to the
+comments they just made, this is almost
+the identity transformation.
+This is 0 to 255 here and 0 to 255, so
+it's the complete transformation, right?
+The histogram, the histogram was almost
+flat.
+Therefore, very little change took place.
+With one is the case I described earlier.
+So, it's, a dark image.
+And this is the transformation that will
+spread the low values to higher values.
+With the light image is what I
+described earlier as well the histogram is
+concentrated
+in, at high intensity values, so is
+this transformation as [UNKNOWN] as the
+second image.
+And the low contrast is pretty much an
+example
+we had done earlier that goes through this
+transformation.
+It increases the dynamic range.
+It maps this range of values over here to
+the full range of the output value 0 to
+255.
+So, these transformations do not look that
+different from what we were applying
+before,
+however again, the main difference here is
+that before we would define this
+transformations directly.
+We would provide some arguments that I
+need one to expand
+or to stretch the values, or to compress
+them, but now this
+transformation resulted from the objective
+of equalizing the, the histogram and
+therefore they're image dependent.
+They cannot, they are not defined
+independently of the intensities of the
+image
+but are function, in essence, of
+distribution
+of the intensity values of the image.
+There are instances in which is desired
+that we enhance
+the details of an image over a small
+neighborhood and
+in that case we can adopt the global
+histogram equalization
+that we described previously to a local
+version of it.
+So, as an example, here's the original
+image.
+And here is its, the image with its
+histogram equalized, the
+global histogram equalization we have been
+describing in there so far.
+In this particular case it's not clear if
+something
+has been gained by equalizing the
+histogram of this image.
+If however now, we, we equalize the
+histogram locally, we obtain an image like
+this.
+So, local histogram equalization entails
+the
+processing of three by three neighborhood.
+So, we take a three by three neighborhood.
+We find the mapping that will equalize the
+histogram in that neighborhood, but
+we only process the pixel in the center of
+this three by three neighborhood.
+Then we move this three by three window
+to the next pixel, and we repeat this
+process.
+So, we see, for this particular case,
+there's quite a lot of information that
+is revealed, that is not visible in
+the original, or the globally histogram
+equalized image.
+So, under each of these kind of
+square rectangular patches, you see that
+there are
+specific structures that are now revealed
+when
+I do this histogram, this logic histogram
+equalization.
+So, this is something to keep in mind,
+this is a
+straight forward extension of the
+histogram equalization we just talked
+about.
+It is, again, adapted to the local
+characteristics of the image.
+

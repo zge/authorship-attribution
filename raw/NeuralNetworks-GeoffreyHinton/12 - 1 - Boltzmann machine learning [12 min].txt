@@ -1,0 +1,306 @@
+In the previous video,
+I showed how a Boltzmann machine can be
+used a probabilistic model of a set of
+binary data vectors.
+In this video we're finally going to get
+around to the Boltzmann machine learning
+algorithm.
+This is a very simple learning model which
+has an elegant theoretical justification,
+but it turned out in practice, it was
+extremely slow and noisy, and just wasn't
+practical.
+And for many years, people thought that
+Boltzmann machines would never be
+practical devices.
+Then we found several different ways of
+greatly speeding up the learning
+algorithm.
+And now the algorithm is much more
+practical, and has, in fact, been used as
+part of the winning entry for a million
+dollar machine learning competition, which
+I'll talk about in a later video.
+The Bolton machine learning algorithm is
+an unsupervised learning algorithm.
+Unlike the typical user back propagation,
+where we have a input vector and we
+provide it with a desired output. In
+Boltzmann machine learning we just give it
+the input vector.
+There are q labels. What the algorithm is
+trying to do is build a model of a set of
+input vectors, though it might be better
+to think of them as output vectors.
+What we want to do is maximize the product
+of the probabilities, that the Boltzmann
+machine assigns to a set of binary
+vectors,
+The ones in the training set.
+This is equivalent to maximizing the sum
+of the log probabilities that the
+Boltzmann machine assigns to the training
+vectors.
+It's also equivalent to maximizing the
+probability that we'd obtain exactly the
+end training cases, if we ran the
+Boltzmann machine in the following way.
+First, we let it settle to its stationary
+distribution, and different times, with no
+external input.
+Then we sample the visible vector once.
+Then we let it settle again, and sample
+the visible vector again.
+And so on.
+Now the main reasons why the learning
+could be difficult.
+This is probably the most important
+reason.
+If you consider a chain of units,
+A chain of hidden units here, with visible
+units attached to the two ends,
+And if we use a training set that consist
+of one, zero and zero, one.
+In other words, we want the two visible
+units to be in opposite states.
+Then the way to achieve that is by making
+sure that the product of all those weights
+is negative.
+So, for example, if all of the weights are
+positive, turning on W1 will tend to turn
+on the first hidden unit.
+And that will tend to turn on the second
+hidden unit, and so on.
+And the fourth hidden unit will tend to
+turn on the other visible unit.
+If one of those weights is negative, then
+we'll get an anti-correlation between the
+two visible units.
+What this means is, that if we're thinking
+about learning weight W1, we need to know
+other weights.
+So there's W1.
+To know how to change that weight, we need
+to know W3.
+We need to have information about W3,
+because if W3 is negative what we want to
+do with W1 is the opposite of what we want
+to do with W1 if W3 is positive.
+So given that one weight needs to know
+about other weights in order to be able to
+change even in the right direction, it's
+very surprising that there's a very simple
+learning algorithm, and that the learning
+algorithm only requires local information.
+So it turns out that everything that one
+weight needs to know about all the other
+weights and about the data is contained in
+the difference of two correlations.
+Another way of saying that is that if you
+take the log probability that the
+Boltzmann machine assigns to a visible
+vector V.
+And ask about the derivative of that log
+probability with respect to a weight, WIJ.
+It's the difference of the expected value
+of the products of the states of I and J.
+When the networks settle to thermal
+equilibrium with v clamped on the visible
+units.
+That is how often are INJ on together when
+V is clamped in visible units and the
+network is at thermal equilibrium, minus
+the same quantity.
+But when V is not clamped on visible
+units, so because the derivative of the
+log probability of a visible vector is
+this simple difference of correlations we
+can make the change in the weight be
+proportional to the expected product of
+the activities average over all visible
+vectors in the training set, that's what
+we call data.
+Minus the product of the same two
+activities when your not clamping anything
+and the network has reached thermal
+equilibrium with no external interference.
+So this is a very interesting learning
+rule.
+The first term in the learning rule says
+raise the weights in proportion to the
+product of the activities the units have
+when you're presenting data.
+That's the simplest form of what's known
+as a Hebbian learning rule.
+Donald Hebb, a long time ago, in the 1940s
+or 1950s, suggested that synapses in the
+brain might use a rule like that.
+But if you just use that rule, the synapse
+strengths will keep getting stronger.
+The weights will all become very positive,
+and the whole system will blow up.
+You have to somehow keep things under
+control, and this learning algorithm is
+keeping things under control by using that
+second term.
+It's reducing the weights in proportion to
+how often those two units are on together,
+when you're sampling from the model's
+distribution.
+You can also think of this as the first
+term is like the storage term for a
+Hopfield Net.
+And the second term is like the term for
+getting rid of spurious minima.
+And in fact this is the correct way to
+think about that.
+This rule tells you exactly how much
+unlearning to do.
+One obvious question is why is the
+derivative so simple.
+Well, the probability of a global
+configuration at thermal equilibrium, that
+is once you've let it settle down, is an
+exponential function of its energy.
+The probability is related to E to the
+minus energy.
+So when we settle to equilibrium we
+achieve a linear relationship between the
+log probability and the energy function.
+Now, the energy function is linear in the
+weights.
+So, we have a linear relationship between
+the weights and the log probability.
+And since we're trying to manipulate log
+probabilities by manipulating weights,
+that's a good thing to have.
+It's a log linear model.
+In fact, the relationship's very simple.
+It's that the derivative of the energy
+with respect to a particular weight WIJ is
+just the product of the two activities
+that, that weight connects.
+So what's happening here?
+Is the process of settling to thermal
+equilibrium is propagating information
+about weights?
+We don't need an explicit back propagation
+stage.
+We do need two stages.
+We need to settle with the data.
+And we need to settle with no data.
+But notice that the networks behaving in
+pretty much the same way in those two
+phases.
+The unit deep within the network is doing
+the same thing, just with different
+boundary conditions.
+With back prop the forward pass and the
+backward pass are really rather different.
+Another question you could ask is what's
+that negative phase for.
+I've already said it's like the unlearning
+we do in a Hopfield net to get rid of
+spurious minima.
+But let's look at it in more detail.
+The equation for the probability of a
+visible vector, is that it's a sum overall
+hidden vectors of E to the minus the
+energy of that visible and hidden vector
+together.
+Normalized by the same quantity, summed
+overall visible vectors.
+So if you look at the top term, what the
+first term in the learning rule is doing
+is decreasing the energy of terms in that
+sum that are already large and it finds
+those terms by settling to thermal
+equilibrium with the vector V clamped so
+that it can find an H that goes nicely
+with V, that is gives a nice low energy
+with V.
+Having sampled those vectors H, it then
+changes the weights to make that energy
+even lower.
+The second phase in the learning, the
+negative phase, is doing the same thing,
+but for the partition function.
+That is, the normalizing term on the
+bottom line.
+It's finding global configurations,
+combinations of visible and hidden states
+that give low energy,
+And therefore, are large contributors to
+the partition function.
+And having find those global
+configurations, it tries to raise their
+energy so that the can contribute less.
+So the first term is making the top line
+big, and the second term is making the
+bottom line small.
+Now in order to run this learning rule,
+you need to collect those statistics.
+You need to collect what we call the
+positive statistics, those are the ones
+when you have data clamped on the visible
+units, and also the negative statistics,
+those are the ones when you don't have
+data clamped and that you're going to use
+for unlearning.
+An inefficient way to track these
+statistics was suggested by me and Terry
+Sejnowski in 1983.
+And the idea is, in the positive phase you
+clamp a data vector on the visible units,
+you set the hidden units to random binary
+states,
+And then you keep updating the hidden
+units in the network, one unit at a time,
+until the network reaches thermal
+equilibrium at a temperature of one.
+We actually did that by starting at a high
+temperature and reducing it, but that's
+not the main point here.
+And then once you reach thermal
+equilibrium, you sample how often two
+units are on together.
+So you're measuring the correlation of INJ
+with that visible vector clamped.
+You then repeat that, over all the visible
+vectors, so that, that correlation you're
+sampling is averaged over all the data.
+Then in the negative phase, you don't
+clamp anything.
+The network is free from external
+interference.
+So, you set all of the units, both visible
+and hidden, to random binary states.
+And then you update the units, one at a
+time, until the network reaches thermal
+equilibrium, at a temperature of one.
+Just like you did in the positive phase.
+And again, you sample the correlation of
+every pair of units INJ,
+And you repeat that many times.
+Now it's very difficult to know how many
+times you need to repeat it, but certainly
+in the negative phase you expect the
+energy landscape to have many different
+minima, but are fairly separated and have
+about the same energy.
+The reason you expect that is we're going
+to be using Boltzmann machines to do
+things like model a set of images.
+And you expect there to be reasonable
+images, all of which have about the same
+energy.
+And then very unreasonable images, which
+have much higher energy.
+And so you expect a small fraction of the
+space to be these low energy states.
+And a very large fraction of the space to
+be these bad high energy states.
+If you have multiple modes, it's very
+unclear how many times you need to repeat
+this process to be able to sample those
+modes.

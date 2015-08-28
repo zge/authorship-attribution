@@ -1,0 +1,405 @@
+[MUSIC]
+This lecture is about,
+how we can evaluate a ranked list?
+In this lecture, we will continue
+the discussion of evaluation.
+In particular,
+we are going to look at, how we can
+evaluate a ranked list of results.
+In the previous lecture,
+we talked about, precision-recall.
+These are the two basic measures for,
+quantitatively measuring
+the performance of a search result.
+But, as we talked about, ranking, before,
+we framed that the text of retrieval
+problem, as a ranking problem.
+So, we also need to evaluate the,
+the quality of a ranked list.
+How can we use precision-recall
+to evaluate, a ranked list?
+Well, naturally, we have to look after the
+precision-recall at different, cut-offs.
+Because in the end, the approximation
+of relevant documents, set,
+given by a ranked list, is determined
+by where the user stops browsing.
+Right?
+If we assume the user, securely browses,
+the list of results, the user would,
+stop at some point, and
+that point would determine the set.
+And then,
+that's the most important, cut-off,
+that we have to consider,
+when we compute the precision-recall.
+Without knowing where
+exactly user would stop,
+then we have to consider, all
+the positions where the user could stop.
+So, let's look at these positions.
+Look at this slide, and
+then, let's look at the,
+what if the user stops at the,
+the first document?
+What's the precision-recall at this point?
+What do you think?
+Well, it's easy to see, that this document
+is So, the precision is one out of one.
+We have, got one document,
+and that's relevent.
+What about the recall?
+Well, note that, we're assuming that,
+there are ten relevant documents, for
+this query in the collection,
+so, it's one out of ten.
+What if the user stops
+at the second position?
+Top two.
+Well, the precision is the same,
+100%, two out of two.
+And, the record is two out of ten.
+What if the user stops
+at the third position?
+Well, this is interesting,
+because in this case, we have not got any,
+additional relevant document,
+so, the record does not change.
+But the precision is lower,
+because we've got number [INAUDIBLE] so,
+what's exactly the precision?
+Well, it's two out of three, right?
+And, recall is the same, two out of ten.
+So, when would see another point,
+where the recall would be different?
+Now, if you look down the list,
+well, it won't happen until,
+we have, seeing another relevant document.
+In this case D5, at that point, the,
+the recall is increased through
+three out of ten, and,
+the precision is three out of five.
+So, you can see, if we keep doing this,
+we can also get to D8.
+And then, we will have
+a precision of four out of eight,
+because there are eight documents,
+and four of them are relevant.
+And, the recall is a four out of ten.
+Now, when can we get,
+a recall of five out of ten?
+Well, in this list, we don't have it,
+so, we have to go down on the list.
+We don't know, where it is?
+But, as convenience, we often assume that,
+the precision is zero,
+at all the, the othe,
+the precision are zero at
+all the other levels of recall,
+that are beyond the search results.
+So, of course,
+this is a pessimistic assumption,
+the actual position would be higher,
+but we make, make this assumption,
+in order to, have an easy way to,
+compute another measure called Average
+Precision, that we will discuss later.
+Now, I should also say, now, here you see,
+we make these assumptions that
+are clearly not, accurate.
+But, this is okay, for
+the purpose of comparing to, text methods.
+And, this is for the relative comparison,
+so, it's okay, if the actual measure,
+or actual, actual number deviates
+a little bit, from the true number.
+As long as the deviation,
+is not biased toward any particular
+retrieval method, we are okay.
+We can still,
+accurately tell which method works better.
+And, this is important point,
+to keep in mind.
+When you compare different algorithms,
+the key's to avoid any
+bias toward each method.
+And, as long as, you can avoid that.
+It's okay, for you to do transformation
+of these measures anyway, so,
+you can preserve the order.
+Okay, so, we'll just talk about,
+we can get a lot of precision-recall
+numbers at different positions.
+So, now, you can imagine,
+we can plot a curve.
+And, this just shows on the,
+x-axis, we show the recalls.
+And, on the y-axis, we show the precision.
+So, the precision line was marked as .1,
+.2, .3, and, 1.0.
+Right?
+So,
+this is, the different, levels of recall.
+And,, the y-axis also has,
+different amounts, that's for precision.
+So, we plot the, these, precision-recall
+numbers, that we have got,
+as points on this picture.
+Now, we can further, and
+link these points to form a curve.
+As you'll see,
+we assumed all the other, precision
+as the high-level recalls, be zero.
+And, that's why, they are down here,
+so, they are all zero.
+And this, the actual curve probably will
+be something like this, but, as we just
+discussed, it, it doesn't matter that
+much, for comparing two methods.
+because this would be,
+underestimated, for all the method.
+Okay, so, now that we,
+have this precision-recall curve,
+how can we compare ranked to back list?
+All right, so, that means,
+we have to compare two PR curves.
+And here, we show, two cases.
+Where system A is showing red,
+system B is showing blue, there's crosses.
+All right, so, which one is better?
+I hope you can see,
+where system A is clearly better.
+Why?
+Because, for the same level of recall,
+see same level of recall here,
+and you can see,
+the precision point by system A is better,
+system B.
+So, there's no question.
+In here, you can imagine, what does the
+code look like, for ideal search system?
+Well, it has to have perfect,
+precision at all the recall points, so,
+it has to be this line.
+That would be the ideal system.
+In general, the higher the curve is,
+the better, right?
+The problem is that,
+we might see a case like this.
+This actually happens often.
+Like, the two curves cross each other.
+Now, in this case, which one is better?
+What do you think?
+Now, this is a real problem,
+that you actually, might have face.
+Suppose, you build a search engine,
+and you have a old algorithm,
+that's shown here in blue, or system B.
+And, you have come up with a new idea.
+And, you test it.
+And, the results are shown in red,
+curve A.
+Now, your question is, is your new
+method better than the old method?
+Or more, practically,
+do you have to replace the algorithm that
+you're already using, your, in your search
+engine, with another, new algorithm?
+So, should we use system,
+method A, to replace method B?
+This is going to be a real decision,
+that you to have to make.
+If you make the replacement, the search
+engine would behave like system A here,
+whereas, if you don't do that,
+it will be like a system B.
+So, what do you do?
+Now, if you want to spend more time
+to think about this, pause the video.
+And, it's actually very
+useful to think about that.
+As I said, it's a real decision that you
+have to make, if you are building your own
+search engine, or if you're working, for
+a company that, cares about the search.
+Now, if you have thought about this for
+a moment, you might realize that,
+well, in this case, it's hard to say.
+Now, some users might like a system A,
+some users might like, like system B.
+So, what's the difference here?
+Well, the difference is just that,
+you know,
+in the, low level of recall,
+in this region, system B is better.
+There's a higher precision.
+But in high recall region,
+system A is better.
+Now, so, that also means,
+it depends on whether the user
+cares about the high recall, or
+low recall, but high precision.
+You can imagine, if someone is just going
+to check out, what's happening today, and
+want to find out something
+relevant in the news.
+Well, which one is better?
+What do you think?
+In this case, clearly, system B is better,
+because the user is unlikely
+examining a lot of results.
+The user doesn't care about high recall.
+On the other hand,
+if you think about a case,
+where a user is doing you are,
+starting a problem.
+You want to find, whether your idea ha,
+has been started before.
+In that case, you emphasize high recall.
+So, you want to see,
+as many relevant documents as possible.
+Therefore, you might, favor, system A.
+So, that means, which one is better?
+That actually depends on users,
+and more precisely, users task.
+So, this means, you may not necessarily
+be able to come up with one number,
+that would accurately
+depict the performance.
+You have to look at the overall picture.
+Yet, as I said, when you have
+a practical decision to make,
+whether you replace ours with another,
+then you may have to actually come up with
+a single number, to quantify each, method.
+Or, when we compare many different
+methods in research, ideally, we have
+one number to compare, them with, so, that
+we can easily make a lot of comparisons.
+So, for all these reasons, it is desirable
+to have one, single number to match it up.
+So, how do we do that?
+And, that,
+needs a number to summarize the range.
+So, here again it's
+the precision-recall curve, right?
+And, one way to summarize
+this whole ranked, list, for
+this whole curve,
+is look at the area underneath the curve.
+Right?
+So, this is one way to measure that.
+There are other ways to measure that,
+but, it just turns out that,,
+this particular way of matching
+it has been very, popular, and
+has been used, since a long time ago for
+text And, this is,
+basically, in this way, and
+it's called the average precision.
+Basically, we're going to take a, a look
+at the, every different, recall point.
+And then, look out for the precision.
+So, we know, you know,
+this is one precision.
+And, this is another,
+with, different recall.
+Now, this, we don't count to this one,
+because the recall level is the same,
+and we're going to, look at the,
+this number, and that's precision at
+a different recall level et cetera.
+So, we have all these, you know, added up.
+These are the precisions
+at the different points,
+corresponding to retrieving the first
+relevant document, the second, and
+then, the third, that follows, et cetera.
+Now, we missed the many relevant
+documents, so, in all of those cases,
+we just, assume,
+that they have zero precisions.
+And then, finally, we take the average.
+So, we divide it by ten, and
+which is the total number of relevant
+documents in the collection.
+Note that here,
+we're not dividing this sum by four.
+Which is a number retrieved
+relevant documents.
+Now, imagine, if I divide by four,
+what would happen?
+Now, think about this, for a moment.
+It's a common mistake that people,
+sometimes, overlook.
+Right, so, if we, we divide this by four,
+it's actually not very good.
+In fact, that you are favoring a system,
+that would retrieve very few random
+documents, as in that case,
+the denominator would be very small.
+So, this would be, not a good matching.
+So, note that this denomina,
+denominator is ten,
+the total number of relevant documents.
+And, this will basically ,compute
+the area, and the needs occur.
+And, this is the standard method,
+used for evaluating a ranked list.
+Note that, it actually combines
+recall and, precision.
+But first, you know, we have
+precision numbers here, but secondly,
+we also consider recall, because if missed
+many, there would be many zeros here.
+All right, so,
+it combines precision and recall.
+And furthermore, you can see this
+measure is sensitive to a small change
+of a position of a relevant document.
+Let's say, if I move this relevant
+document up a little bit, now,
+it would increase this means,
+this average precision.
+Whereas, if I move any relevant document,
+down, let's say, I move this relevant
+document down, then it would decrease,
+uh,the average precision.
+So, this is a very good,
+because it's a very sensitive to
+the ranking of every relevant document.
+It can tell, small differences
+between two ranked lists.
+And, that is what we want,
+sometimes one algorithm only works
+slightly better than another.
+And, we want to see this difference.
+In contrast, if we look at
+the precision at the ten documents.
+If we look at this, this whole set, well,
+what, what's the precision,
+what do you think?
+Well, it's easy to see,
+that's a four out of ten, right?
+So, that precision is very meaningful,
+because it tells us, what user would see?
+So, that's pretty useful, right?
+So, it's a meaningful measure,
+from a users perspective.
+But, if we use this measure to
+compare systems, it wouldn't be good,
+because it wouldn't be sensitive to where
+these four relevant documents are ranked.
+If I move them around the precision
+at ten, still, the same.
+Right.
+So,
+this is not a good measure for
+comparing different algorithms.
+In contrast, the average precision
+is a much better measure.
+It can tell the difference of, different,
+a difference in ranked list in,
+subtle ways.
+[MUSIC]
+

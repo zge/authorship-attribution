@@ -1,0 +1,232 @@
+Hello, welcome to the course of audio
+signal processing for music applications.
+This week we are focusing on
+transformation on describing one
+application of the spectral modelling
+techniques that we are covering in
+this course.
+And in this programming lectures,
+we are actually trying to understand
+the programming aspect of it and
+the code that we have been putting
+together on the SMS tools package.
+So in this lecture,
+I want to talk about the,
+the most sophisticated model
+that we have covered, which is
+the harmonic plus stochastic model, and
+the transformations we can do with that.
+So we have been describing this type of
+block diagram, in which, after all of
+these analysis that we do of understanding
+the harmonics, extracting the,
+the information, and then subtracting
+them from the original signal and
+we obtained,
+this is the stochastic approximation.
+And now,
+we're focusing on these two red blocks.
+In which we are, can apply transformations
+to both stochastic representation and
+harmonic representation.
+And of course,
+then we can synthesize back.
+One of these transformations is little
+bit special, which is the morphing.
+The morphing requires two analysis
+of two sounds, so we have a one
+sound that performs all this analysis and
+another one that does the same.
+And we are basically interpolating
+these two set of functions
+the arrays of frequency amplitudes and the
+envelopes of the stochastic approximation.
+And then we do the synthesis in the,
+in this same way.
+Okay.
+So let's go to first
+the code that performs these
+transformations and the,
+the one for the harmonics is
+harmonic transformation, so we have this
+file called harmonic transformations in
+which we do the transformation just on
+the harmonic component of of this model.
+And the ones that we have implemented
+transformations that we have
+as tools,
+are the idea of scaling the harmonics.
+Then stretching the harmonics
+in a non-harmonic way, and
+then the idea of preserving or not the
+spectral shape or the timbre of the sound.
+Okay.
+So within this function harmonic frequency
+scaling, we can do all
+these at the same time.
+If we pass these three control parameters.
+We're not going to go into
+the detail of this code, but
+basically, we can see there is,
+here at the end the three basic
+transformation lines,
+in which we have the frequencies.
+That these are the input frequencies
+of all the harmonics of a particular
+frame and a, a particular kind of set
+of harmonics, the ones that exist.
+And we apply a scaling factor,
+a multiplicative scaling factor so
+these would be the transposition,
+what we call transposition.
+And then once we can transpose we
+can also do the stretching, okay.
+And this stretching is a factor
+that depends on the harmonic and
+this variable invalid is basically
+the harmonic number if it exists.
+So there's a, so we are el, elevating
+this stretching factor to this value.
+So it's a way to change the,
+the frequency depending on the harmonics,
+there's several ways of implementing
+this idea of stretching.
+We can do it, in fact,
+the other way around by
+having the harmonic number to the power
+of the stretching factor or these.
+You can play around with
+this two implementations.
+And then there is the idea
+of timbre preservation.
+So, in this particular function we
+are not manipulating the magnitudes.
+But we're doing is, if we are preserving
+the timbre, then we are changing
+the magnitudes in a way that
+we give to every harmonic
+the magnitude that is closer to
+the frequency that it originally had.
+So basically, we have a spectral envelope.
+And then,
+we recompute the magnitudes in a way that,
+it preserves the,
+the shape that originally had.
+Then we have the transformations
+that are specific for
+the combination of the harmonic and
+the sarcastic components.
+Which are in this HPS transformation file.
+And there is basically, two functions.
+One that performs time scaling, and
+the time scaling is done on the three
+components at the same time,
+the frequency and amplitude of the
+harmonics, and the stochastic envelope.
+So it's performed in this core loop.
+And basically it interpolate,
+while in, in fact, it just adds or
+deletes frames depending on
+this time scaling parameter.
+And then there is a more complex function,
+which is the morphing.
+That accepts the arrays
+from the two sounds.
+So the analysis of the two sounds.
+And according to these interpolation
+functions, it chooses a part of each.
+So the core function the core of
+the function is just this loop,
+that basically iterate over the whole
+the set of frames of the sound.
+It finds the harmonics that are present
+in both sounds, because of course,
+the interpolation between two sounds can
+only happen if there is content in the,
+in the two.
+One has a zeroth harmonic that becomes
+a very complex thing to handle.
+So in this code, it looks for
+the intersection, so
+the harmonics that are present.
+And then, it just performs
+the interpolation of the frequencies,
+the magnitudes and
+the stochastic envelope.
+When there is some
+information existing in a,
+in a both sounds of
+the frame of both sounds.
+So clearly, the number of frames
+has to be the same and ideally,
+the number of harmonics and the stochastic
+envelope the number of elements or
+break points in the, in the approximation
+function has to be the same.
+And that's that's what it does.
+And basically, then you have this
+function called HPS more function that
+wraps these functions and
+allows us to do our analysis and
+synthesis, and is the,
+the one that is called from the interface.
+So, we have basically, two functions.
+One is analyses that returns
+the results of analysis.
+And then,
+another is the transformation and
+syntheses that perform the transformation
+and synthesis of the sound.
+Okay.
+Now if we run this we
+can just execute that,
+we can just type run and HPS more okay.
+And this will execute both functions.
+Of course, we can also execute one
+on on the other independently,
+by importing the file and
+then just calling the two by separately.
+So this is the result of
+the analysis function that
+performs the analysis of the two.
+And this is the result of
+the transformation and
+the synthesis, that performs
+the synthesized version of that.
+Since we already have
+listened to these sounds so
+there is no need to listen here now.
+But please feel free to play
+around with these functions.
+It's a quite interesting one
+you can do and of course,
+by programming you can
+extend these quite a lot.
+And that's, that's all.
+basically, we have gone through
+the HPS part of the transformations.
+So within SMS tools there is a number of
+transformations that are specific for
+the harmonic, plus a stochastic model.
+And being the most sophisticated ones,
+it can perform some interesting things.
+But, it's a little difficult to to use it.
+So you have to know to
+do proper analysis and
+to control these representations hat
+they're a little bit more sophisticated.
+Anyway, so hopefully with these you
+got an idea of the harmonic plus
+stochastic model in terms of each
+potential for transforming sounds.
+Sounds that of course,
+have to be harmonic and
+they have to have a meaningful
+stochastic representation.
+If those sounds fulfill that model,
+then the number of things we
+can do with it is really great.
+So thank you very much for your
+attention and we'll see you next class.
+Bye-bye.
+

@@ -1,0 +1,393 @@
+Hi again. Let's turn to how to compute
+whether two words are similar or not.
+And we'll start in this section with methods
+that use a thesaurus to compute word similarity.
+So where synonymy was a binary relation, 
+two words are either synonymous
+or they're not, we often want a, a 
+looser definition of similarity or distance,
+that says two words are more similar 
+if they share more features of meaning,
+meaning, without requiring that they be
+absolute synonyms. And similarity, just
+like synonymy, is a relationship between
+senses, not between words. So we don't say
+that the word bank is similar to the word
+slope. We say sense one of bank is similar
+to the word fund, actually sense three of
+fund, but it's actually sense two of bank
+is similar to slope. Remember we had two
+senses of bank. So even though technically
+similarity is a property of senses, we'll
+find ways to compute similarity over words
+as well either by taking the max similarity 
+between senses or summing or various ways.
+Now word similarity plays a role in lots 
+of applications. You might want to know
+if two words are similar to
+grab a set of synonyms or similar words,
+for the query, if someone asks in
+information retrieval, or for the answer
+in question answering. Lots of times the
+translation of a word, you'll have to look
+for similar words to help find a
+translation. Essay grading, where students
+write an essay and you need to know what
+the similar words are to the correct word
+for the concept and so on. This comes up a lot.
+And, in all of our applications for word similarity,
+we'll, we often distinguish, technically, 
+word similarity from word relatedness.
+So a similar word is a near synonym, 
+but a related word can be related
+in any way. So car and bicycle might be 
+similar. Maybe they're not synonyms,
+because car and automobile are synonyms. 
+Car and bicycle are not quite so close,
+close, so there're similar. But car and
+gasoline, clearly related. Gasoline is
+something that goes with cars but it's not
+similar to cars in some way.
+So we're generally here looking for similarity, 
+but occasionally some of the algorithms
+will give you instead words that are related.
+And that might or might not be useful
+depending upon the application.
+There are two classes of similarity algorithms.
+Thesaurus based algorithms, we'll talk
+about in this section, are words nearby in
+the hypernym hierarchy. Or do words have
+similar glosses. We'll use the hierarchy
+or the glosses as ways of defining
+similarity. And distributional algorithms
+that we'll talk about in the next section.
+Do words have similar distributional contexts.
+So the simplest of the thesaurus based 
+similarity algorithms is called path based
+similarity and I'm giving you a
+little picture here of the WordNet hierarchy.
+And here we say two concepts, two senses 
+or synsets, we'll call them concepts
+for now, are similar if they're near 
+each other in this thesaurus hierarchy.
+By near each other we mean have
+a short path between them and we'll define
+path length somewhat unusually. We'll say
+a concept has a path length one to
+themselves and two to their nearest
+neighbor and so on. So the word, the
+concept nickel has a path length one to
+nickel, two to coin and three to dime
+because it goes one for nickel, two to
+coin, three to dime. And the path length
+between nickel and coinage is similarly
+three and to, all the way up to money is
+six to coin to coinage to currency to medium
+of exchange down to money and so on.
+Nickel is even further from Richter
+scale, goes all the way up to
+standard and then down to Richter scale.
+So the path length formally is one plus the
+number of edges in the shortest path
+in the hypernym graph between 
+the sense nodes C1 and C2.
+Now we can use, we can turn a path length 
+which is a distance metric into simpath,
+a similarity metric, simply by taking 
+one over the distance. So, we'll take
+the path length and invert it and we get 
+a similarity metric. And we can turn
+the sense-based metric, simpath is a metric of 
+similarity between two senses or concepts,
+C1 or C2, and turn it into a metric between words
+by taking the maximum similarity among pairs
+of senses. So for all senses of word one
+and all senses of word two,
+I take the similarity between each of those 
+word one senses and each of those
+word two senses and I take the maximum 
+similarity between those pairs.
+And that's the similarity between the words.
+So returning to sense-based similarity, 
+we've got our metric now for path based
+similarity, one over the path length. 
+So between nickel and coin,
+we have a path length of 1/(1+1).
+Remember, we're adding one to the
+number of edges. So it's 1/2, or .5.
+Between fund and budget, similarly, one
+over two or .5. Between nickel and
+currency, we have one, two, three edges.
+So one over 3+1 or four is .25. Between
+nickel and money, now we have 5+1, or
+six, distance one over six. Similarly between
+coinage and Richter scale, a similarity
+of one over six. Or for that matter, between
+nickel and standard, also one over six or .17.
+Now there's a problem with this
+basic path-based similarity, which is that
+we assumed that every link represented a
+uniform distance. Nickel to money somehow
+seems to us that it ought to be closer
+than nickel to standard. And that's
+because nodes that are very high in the
+hierarchy are very abstract.
+And we'd like a metric that says that nodes 
+whose only link is going all the way up
+to the top of the hierarchy, those are 
+probably not very similar words.
+And to do that, we'd like to represent the 
+cost of each edge independently.
+The most common solution to this problem 
+is the use of information content
+similarity metrics, first proposed by Resnik
+in 1995. And these define a concept P of C,
+a probability of a concept C, as the probability 
+that a randomly selected word in a corpus
+is an instance of that concept. And formally, 
+what I mean is, there's a distinct random variable
+that ranges over words associated with
+each concept. So every node in a hierarchy
+has this random variable. And for any, for
+each, for that concept every observed
+noun is either a member of that concept
+with probability P(c), or not a member
+of that concept, with probability one
+minus P(c). So every word is a member
+of the root node, which might be called
+entity or it might be called something
+else, in different versions of WordNet
+or your own hierarchy. So that means that
+the probability of whatever the root node
+is is one. And the probability of
+nodes right below the, the root node are
+going to be very high. And the lower you
+get in the hierarchy the lower the
+probability. Let's see how that works. So
+here's a little piece of a hierarchy, we've
+got entity here. There's actually something
+above this hierarchy in the top, and then
+we have entity, then we have down to
+geological formation and then some leaf
+notes, hill, ridge, grotto, coast, and so on.
+And we're gonna train information content
+similarity, first by training a probability P(c),
+and every instance of a word like hill 
+counts towards the frequency of all
+of its parents, of itself obviously, but also 
+natural elevation, geological formation,
+all the way up to entity. So if we define 
+the concept words of C, words of C
+is the set of all words that are children 
+of node C. I should say plus C itself as well.
+So, the words of natural elevation are 
+hill, ridge, and natural elevation itself.
+The words of geological formation are 
+hill, ridge, grotto, coast, shore, cave,
+natural elevation, and geological formation itself.
+And now we can take for any
+concept we sum over all the words of
+that concept, so itself and all of its
+children, sum the counts of all those
+words and then normalize by the total
+number of words in the corpus.
+And that tells us the probability of the concept.
+So the probability that a random word
+will be an instance of that concept.
+Once we've computed these probabilities,
+we can associate them with a hierarchy.
+So here's probabilities computed by Dekang Lin,
+and so now we can say that the concept coast
+has probability .000216, while the further
+up we go in the hierarchy up to entity, we
+have a probability of .395. And whatever in
+this particular version of WordNet was
+above entity will have a probability of one.
+Now that we have probability, we just need
+two more things. We'll define the
+information content of a concept as the
+negative log probability of that concept.
+So we're just following information
+theoretic definition of information there.
+And we'll define the lowest common
+subsumer of a node, as the lowest node in
+the hierarchy that subsumes both of them.
+Very naturally. So the lowest common
+subsumer of hill and coast, think about
+that. Geological formation. The lowest
+common subsumer of coast and shore. Shore.
+Now, how, how are we going to use this
+information content, as a similarity
+metric? There are a number of methods.
+The Resnik method, we say that the similarity
+between two words is related to how much
+information they have in common. The more
+they have in common, the more similar they are.
+For Resnik, we just say, what's in
+common between two words, is the
+information content of their lowest common
+subsumer. If I have two concepts, what's
+in common between them is the thing that
+they share as their inherited thing in
+common. So if I just measure the amount of
+information in that, that is in fact what
+they have in common. So the negative log
+probability of that least common subsumer,
+that's their similarity. So we'll define
+that metric, the Resnik similarity metric
+this way. An alternative metric for
+dealing with information theoretic
+similarity is the Lin metric. As with
+Resnik, the more two things have in
+common, the more similar they are. But now
+the new intuition, the more differences
+between A and B, the less similar they
+are. And we measure commonality by
+introducing a predicate common, which is
+a proposition stating the commonalities
+between A and B. And IC, the informa-,
+amount of information contained in that
+proposition. And to measure the difference
+between A and B, we say that the total
+description of A and B, the sum of
+everything we know about them, is the sum
+of the commonalities plus the differences.
+So to get the differences we can take the
+description and subtract out the
+commonalities. So roughly speaking, A and
+B are more similar if IC of common is high
+and IC of description is low. So the Lin
+similarity between two concepts A and B is
+higher when they have more in common, less
+when there's a lot of other things about
+them that they don't have in common. And
+Lin modifies Resnik in defining the
+information content of the commonality of
+the two as twice the information of their
+lowest common subsumer. And so, given two
+concepts in a heirarchy, the Lin
+similarity is two times the log
+probability of their least common subsumer
+over the sum of the log probabilities of
+the two concepts, the total of the
+description that we know about the two
+concepts. Let's look at an example in our
+small sample hierarchy. We want to know
+the Lin similarity between the concepts
+hill and coast and we look at their lowest
+common subsumer, geological formation. We
+take twice the log probability of that,
+divided by the sum of the log
+probabilities of the two items, hill and
+coast and that gives us for the Lin
+similarity between hill and coast as .59.
+Now a final thesaurus based similarity
+metric is called the Lesk algorithm after
+Michael Lesk who invented it. It's often
+called Lesk or extended Lesk. And this
+method, instead of using the hierarchy,
+looks at the glosses of the words in the
+dictionary or thesaurus. And the intuition
+is that two concepts are similar if their
+glosses contain similar words. So the two
+WordNet words, drawing paper and decal,
+have lots of similar words. Paper that
+especially prepared for use in drafting,
+transferring designs from especially
+prepared paper, blah, blah, blah. And we
+have here, the words specially prepared
+are in common, and paper in both
+definitions. And so from each N-word
+phrase that's in both glosses, the Lesk
+algorithm adds a score of N squared. So
+paper is in both glosses. That's a length
+one, so we'll add a score of one.
+Specially prepared is of length two, so
+we'll add a score of two squared, or four. So
+this, the total Lesk similarity between
+drawing paper and decal is five. And in
+fact, with most versions of Lesk
+similarity, we don't just look at the
+glosses of the two words, we look at the
+glosses of the words, their hypernyms,
+their hyponyms, and so on, and we add all
+that up. So it's a sum, over all the
+words, or sometimes a max over all the
+words, of their similarity. So, in
+summary, we've seen three classes of
+thesaurus based similarity. Path length
+similarity, where two words are similar
+if there's a short path between them in
+the hierarchy. Information theoretic
+similarity. We've seen two methods, Resnik
+and Lin, and there's a third one called
+Jiang Conrath. So these are the
+information theoretic similarity where
+we're looking at the least common subsumer
+of a node, measuring its probability,
+turning that a, into an information
+measure. And we've seen Lesk similarity,
+where given two concepts we take the
+gloss of them, and compute the overlap in
+words with this kind of weighting that we
+talked about. Or we might just look at the
+glosses not just of the words, but of some
+words in relations to those concepts like
+their hyponyms or hypernyms, and so on.
+And we sum all that up over a specified
+set of relations, and that gives us the
+Lesk similarity, or extended Lesk
+similarity. There are lots of libraries
+for computing these various thesaurus
+based methods, in Python NLTK has methods,
+and there are Python-based tools like
+WordNet::Similarity. And there's even a nice web
+based interface so that you can check out
+the similarity between two words based on
+different meth, methods and you can go
+take a look at all of these. We evaluate
+similarity, like many other NLP
+algorithms, in two different ways. We can
+do intrinsic evaluation where we look at
+the metric itself and say how similar is
+the, the numbers this metric gives to what
+humans would give on some similar task. So
+I get a similarity metric for two words
+and then I get humans to give me a number.
+How similar are these two words? And I
+compare those. So that's intrinsic
+evaluation. More, more functional is
+extrinsic or task based, end-to-end
+evaluations where I have some application,
+I put my similarity metric in the
+application and I see how well it improves
+the application. And that application
+could be words sense disambiguation, or
+spelling error correction or essay
+grading. A common simple extrinsic test
+that's used is taking the test of
+English as a foreign language, or TOEFL,
+multiple choice vocabulary test. So here
+we have questions like: levied is closest
+in meaning to which of these four words?
+And we can simply take our similarity metric,
+compute the similarity between
+levied and imposed, levied and believed,
+levied and requested, levied and
+correlated. And see if our metric returns
+the right answer, the most similar word,
+or the correct answer is imposed.
+So thesaurus based methods for word
+similarity are a useful way of telling if
+two words are similar. They're very
+functional in languages like English,
+where were we have lots of thesauruses,
+either for general text in WordNet, or
+for medical text in Mesh. They work less
+well when we're working in particular
+genres, where we might not have the right
+information in the thesaurus, or in
+languages for which thesaurus, 
+thesauruses are not as available. And so for
+those applications we'll turn to the
+distributional methods that we'll see next.

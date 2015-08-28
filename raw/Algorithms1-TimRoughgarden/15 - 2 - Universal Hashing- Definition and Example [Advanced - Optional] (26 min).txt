@@ -1,0 +1,676 @@
+So now that we understand why we can't
+have a single hash function which always
+does well at every single data set, that
+is every hash function is subject to a
+pathological data sets. We'll discuss the
+randomize solution of how we can have a
+family of hash functions and if you make a
+real time decision about which hash
+function to use, you're guaranteed to do
+well on average, no matter what the data
+is. So let me remind you of the three
+prong plan that I have for this part of
+the material. So in this video, we'll be
+covering the first two. So part one, which
+we'll accomplish in the next slide, will
+be to propose a mathematical definition of
+a good random hash function. So formerly,
+we're going to define a universal family
+of hash functions. Now, what makes this
+definition useful, well, two things. And
+so, part two, we'll show that there are
+examples of simple and easy to compute
+hash functions that meet this definition,
+that are universal in the sense described
+on the next slide. So that's important.
+And in the third part, which we'll do in
+the next video, will be the mathematical
+analysis of the performance of hashing,
+specifically with chaining when you use
+universal hashing. And we'll show that if
+you pick a random function from a
+universal family, then, the expected
+performance of all of the operations are
+constant. Assuming, of course, of the
+number of buckets is comparable to the
+number of objects in the hash table which
+we saw earlier is a necessary condition
+for good performance. So let's go ahead
+and get started and let's say what we mean
+by a good random hash function. So for
+this definition, we'll assume that the
+universe is fixed. So maybe it's IP
+addresses, maybe it's our friends names.
+Maybe it's configurations of a chessboard,
+whatever. But there's some fixed universe
+u and we'll also assume we've decided on
+the number of buckets n. And we call the
+set H universal if and only if it meets
+the following condition. In English, the
+condition says that for each pair of
+distinct elements, the probab ility that
+they collide should be no larger than with
+the gold standard of perfectly uniform
+random hashing. So for all distinct keys
+from the universe, call them x and y, what
+we want is that the probability if we
+choose a random hash function, h, from the
+set script h, the probability that x and y
+collide. And again, just to be clear, what
+that means is that, x and y hash to
+exactly the same bucket under this hash
+function h, this should be no more than
+1/n, and don't forget n is the number of
+buckets. Again, to interpret this, you
+know, 1/n, where does this come from? So,
+we said earlier that an impractical but in
+some sense, gold standard hash function
+would be to just independently for each
+key, assign it bucket uniformly and random
+with different keys being assigned
+independently. Remember the reason this is
+not a practical hash function is because,
+you'd have to remember where everybody
+went. And then that would basically
+require maintaining a list which would
+devolve to the list solution, so you don't
+want that. You want hash functions where
+you have to store almost nothing and we
+can evaluate them in constant time. But,
+if we throw out those requirements of
+small space and small time then, random
+function should spread stuff out pretty
+evenly, right? I mean that's what they are
+doing. They're throwing darts completely
+at random at these n buckets. So what
+would be the collision probability of two
+given keys say, of Alice and of Bob if you
+are doing everything independently and
+uniformly at random. Well, you know, first
+Alice shows up and it goes to some totally
+random bucket, say, bucket number
+seventeen. Now, Bob shows up. So, what's
+the probability that it collides with
+Alice? Well, we have these n buckets that
+Bob could go to, each is equally likely,
+and there's a collision between Alice and
+Bob if and only if Bob goes to bucket
+seventeen. Since, each bucket's equally
+likely, that's only a one in n
+probability. So really what this condition
+is saying, is that, for each pair of
+elements, the collision probability should
+be as small, as good as with the holy
+grail of perfectly random hashing. So this
+is a pretty subtle definition, perhaps the
+most subtle one that we see in this entire
+course. So, to help you get some facility
+with this, and to force you to think about
+it a little deeply, the next quiz which is
+probably harder than a typical in class
+quiz, asks you to compare this definition
+of universal hashing with another
+definition and ask you to figure out to
+what extent they're the same definition.
+So the correct answer to this quiz
+question is the third one that there are
+hash function families h, that satisfy the
+condition on this slide that are not
+universal. On the other hand, there are
+hash function families H, which satisfy
+this property and are universal. So, I'm
+going to give you an example of each. I'd
+encourage you to think carefully about why
+this is an example and a non-example
+offline. So an easy example to show that
+sometimes the answer is yes, you have
+universal hash function families h, which
+also satisfy this property of the slide,
+would be to just take H to be the set of
+all functions from mapping the universe to
+the number of buckets. So that's an awful
+lot of functions, that's a huge set, but
+it's a set nonetheless. And, by symmetry
+of having all of the functions, it both
+satisfies the property of this slide. It
+is indeed true that exactly a one on one
+refraction of all functions, map arbitrary
+key k to arbitrary bucket i. And by the
+same reasoning, by the same symmetry
+properties, this is universal. So really,
+if you think about it choosing a function
+at random function from H, is now just
+choosing a completely random function. So
+it's exactly what we've been calling
+perfect, random hashing. And as we
+discussed in the last slide, that would
+indeed have a collision probability of
+exactly 1/n for each pair of distinct
+keys. So, this shows sometimes you can
+have both this property and be universal.
+An example where you have the property in
+this slide, but you're not universa l,
+would be to take h to be a quite small
+family, a family of exactly n functions,
+each of which is a constant function. So
+it's going to be one function which always
+maps everything to bucket zero, that's a
+totally stupid hash function. There's
+going to be another hash function which
+always maps everything to bucket number
+one, that's a different but also totally
+stupid hash function, and so on. And then
+the end function will be the constant
+function that always maps everything to
+bucket n-1. And if you think about it,
+this very silly set H does indeed satisfy
+this very reasonable looking property on
+this slide. Fix any key, fix any bucket,
+you know say bucket number 31 what's the
+probability that you pick a hash function
+that maps this key to bucket number 31?
+Well, independent of what the key is, it's
+going to be the probability that you pick
+the constant hash function whose output is
+always 31. Since there's n different
+constant functions, there's a one in n
+probability. So, that's an example showing
+that in some sense, this is not as useful
+a property as the property of universal
+hashing. So this is really not what you
+wanted. This is not strong enough.
+Universal hashing, that's what you want
+for strong guarantees. So now that we've
+spent some time trying to assimilate
+probably the subtlest definition we've
+seen so far in this class, let me let you
+in on a little secret about the role of
+definitions in mathematics. So on the one
+hand, I think mathematical definitions
+often get short shrift, especially in, you
+know, the popular discussion of
+mathematical research. That said, you
+know, it's easy to come up with one reason
+why that's true, which is that any schmo
+can come up and write down an mathematical
+definition. Nobody's stopping you. So,
+what you really need to do is you need to
+prove that a mathematical definition is
+useful. So how do you indicate usefulness
+of a definition? Well you gotta do two
+things. First of all, you have to show
+that the definition is satisfied by
+objects of interest. For us right now,
+objects of interest, are hash functions,
+we might imagine implementing. So they
+should be easy to store, easy to evaluate.
+So there better be such hash functions
+meaning, that complicated universal hash
+function definition. The second thing is,
+is something good better happen if you
+meet the definition. And in the context of
+hashing, what good thing do we want to
+have happen? We want to have good
+performance. So those are the two things
+that I owe you in these lectures. First of
+all, a construction of practical hash
+functions that meet that definition,
+that's what we'll start on right now.
+Second of all, why meeting that definition
+is a sufficient condition for good hash
+table performance. That will be the next
+video. So in this example, I'm going to
+focus on IP addresses although the hash
+function construction is general, as I
+hope will be reasonably clear. And as many
+of you know, an IP address is 32 bit
+integer consisting of four different eight
+bit parts. So let's just go ahead and
+think of an IP address as a four two fold,
+the way you often see it. And since each
+of the four parts is eight bits, it's
+going to be a number between zero and 255.
+And the hash function that we're going to
+construct, it's really not going to be so
+different than the quick and dirty
+functions as we talked about in the last
+video although in this case we'll be able
+to prove that the hash function family is
+in fact, universal. And we're again going
+to use the same compression function.
+We're going to take the modulas with
+respect to a prime number of buckets. The
+only difference is we're going to multiply
+these xi's by a random set of
+coefficients. We're going to take a, a
+random linear combination of x1, x2, x3
+and x4. So I'm going to be a little more
+precise. So we're going to choose a number
+of buckets, n, and as we say over and
+over, the number of buckets should be
+chosen so it's in the same ball park of
+the number of objects you are storing. So
+you know, let's say that n should be
+roughly double the number of objects that
+you are storing as initial rule of thumb.
+So, for example, maybe we only want to
+maintain something in the ball park of 500
+IP addresses and we can choose n to be a
+prime like 997. So here's the
+construction. Remember, we want to produce
+not just one hash function, but the
+definition is about a universal family of
+hash functions. So we need a whole set of
+hash functions that we're ultimately going
+to chose one member from, at random. So,
+how do we construct a whole bunch of hash
+functions in a simple way? Here's how we
+do it. So you define one hash function,
+which I'm going to note by h sub a, a here
+is a four tuple. The components of which
+I'm going to call a1, a2, a3 and a4. And,
+all of the components of a are integers
+between zero and n-1. So they're exactly
+in correspondence with the indices of the
+buckets. So if we have 997 buckets, then
+each of these ai's is an integer between
+zero and 996. So it's clear that this
+defines, you know, a whole bunch of
+functions. So in fact, for each of the
+four coefficients, that's four independent
+choices, you have n options. Okay so each
+of the integers between zero and n-1 for
+each of the four coefficients. So that's
+fine, not giving a name to end of the four
+different functions, but what is any given
+function? How do you actually evaluate one
+of these functions? Just remember what a
+hash function is supposed to do. Remember
+you know, how it type checks it takes as
+input something from the universe in this
+case an IP address, and outputs a bucket
+number. And the way we evaluate the hash
+function h sub a, and remember a here is a
+4-tuple. And remember IP address is also a
+4-tuple, okay, so each component of the IP
+address is between zero and 255. Each
+component of a is between zero and n-1, so
+for example, between zero and 996. And
+what we do is just take the dot products
+or the inner products of the vector a and
+the vector x, and then we take the modulus
+with respect the number of buckets. So
+that is we take a1  x1 + a2  x2 + a3 
+x3 +a4  x4. Now of course, remember the
+x's lie be tween zero and 255, the ai's
+lie between the zero and n-1, so say zero
+and 996, you know, so you do these form of
+multiplications now make it a pretty big
+number, you might well over shoot the
+number of buckets n. So to get back in the
+range of what the buckets are actually
+indexed that in the end we take the
+module, modulus the number of buckets. So
+in the end we do output, a number between
+zero and n-1 as desired. So that's a set
+of a whole bunch of hash functions, n to
+the fourth hash functions. And each one
+meets the criteria of being a good hash
+function from an implementation
+perspective, right? So remember, we don't
+want to have to store much to evaluate a
+function. And for a given hash function in
+this family, all we gotta remember are the
+coefficients, a1, a2, a3 and a4. So you
+just gotta remember these four numbers.
+And then to evaluate a hash function on an
+IP address, we clearly do a constant
+amount of work. We just do these four
+multiplications, the three additions, and
+then taking the modulus by the number of
+buckets n. So it's constant time to
+evaluate, constant space to store. And
+what's cool is, using just these very
+simple hash functions which are constant
+time to evaluate and constant space to
+store, this is already enough to meet the
+definition of a universal family of hash
+functions. So this fulfills the first
+promise that I owed you, after subjecting
+you to that definition of universal
+hashing. Remember the first promise was,
+there are simple, there are useful
+examples that meet the definition, and
+then of course, I still owe you why.
+Meaning this definition is useful, why
+does it leave the good performance. But I
+want to conclude, this video of actually
+proving this theorem to you, arguing that
+this is, in fact, a universal family of
+hash functions. Right. So this should be a
+mostly complete proof and certainly will
+have all of the conceptual ingredients of
+why the proof works There will be one spot
+where I'm a little hand-wavy because we
+need a little number theory, and I don't
+want to have a big detour into number
+theory. And if you think about it, you
+shouldn't be surprised that basic number
+theory plays at least some role. Like as I
+said, we should choose the number of
+buckets to be prime. So that means at some
+point in the proof, you should expect us
+to use the assumption that n is prime. And
+pretty much always you're going to use
+that assumption will involve at least
+elementary number theory, okay? But I'll
+be clear about where I'm being hand-wavy.
+So what do we have to prove? Let's just
+quickly review a definition of a universal
+hash function. So we have our set h that
+we, that we know exactly what it is. What
+does it mean that it's universal? It means
+for each pair of distinct keys, so in our
+context it's for each pair of IP
+addresses, the probability that a random
+hash function from our family script h
+causes a collision, maps these two IP
+addresses to the same bucket should be no
+worse than with perfectly random hashing.
+So no worse than 1/n where n is the number
+of buckets, say like 997. So, the
+definition we need to meet is a condition
+for every pair of distinct keys. So let's
+just start by fixing two distinct keys. So
+I'm going to assume for this proof that
+these two IP addresses differ in their
+fourth component. That is that I'm going
+to assume that x4 is different than y4. So
+I hope that it's intuitively clear that,
+you know, it shouldn't matter, you know,
+which, which set of 8-bits I'm looking at.
+So they're different IP addresses. They
+differ somewhere. If I really wanted, I
+could have four cases that were totally
+identical depending on whether they differ
+in the first eight bits, the next 8-bits,
+the next 8-bits, or the last 8-bits. I'm
+going to show you one case, because the
+other three are the same. So let's just
+think of the last 8-bits as being
+different. And now, remember what the
+definition asked us to prove. It asked us
+to prove that the probability that these
+two IP addresses are going to collide is
+at most, 1/n. So we need an upper bound on
+the collision probability w ith respect to
+a random hash function from our set of n
+to the fourth hash functions. So I want to
+be clear on the quantifiers. We're
+thinking about two fixed IP addresses. So
+for example, the IP address for the New
+York Times website and the IP address for
+the CNN website. We're asking for these
+two fixed IP addresses, what fraction of
+our hash functions cause them to collide,
+right? We'll have some hash functions
+which map the New York Times and CNN IP
+addresses to the same bucket, and we'll
+have other hash functions which do not map
+those two IP addresses to the same bucket.
+And we're trying to say, that the
+overwhelming majority, sends them to
+different buckets, only a 1/n fraction at
+most, sends them to the same bucket. So
+we're asking about the probability for the
+choice of a random hash function from our
+set h that the function maps the two IP
+addresses to the same place. So the next
+step is just algebra. I'm just going to
+take this equation which indicates when
+the two IP addresses collide over a hash
+function. I'm going to expand the
+definition of a hash function, remember
+it's just this inner product modulo the
+number of buckets n, and I am going to
+rewrite this condition in a more
+convenient way. Alright, so after the
+algebra, and the dust has settled. We're
+left with this equation being equivalent
+to the two IP addresses colliding. So
+again, we're interested in the fraction of
+choices of a1, a2, a3, and a4, such that
+this condition holds, right? Sometimes
+it'll hold for some choices of the ai's,
+sometimes it won't hold for other choices
+and we're going to show that it almost
+never holds. Okay, so it fails for all but
+a 1/n fraction of the choices of the ai's.
+So next we're going to do something a
+little sneaky. This trick is sometimes
+called the Principle of Deferred
+Decisions. And the idea is when you have a
+bunch of random coin flips, it's sometimes
+convenient to flip some but not all of
+them. So sometimes fixing parts of the
+randomness clarifies the role that the
+remaining randomness is going to play .
+That's what's going to happen here. So
+let's go ahead and flip the coins, which
+tell us the random choice of a1, a2, and
+a3. So again remember, in the definition
+of a universal hash function, you analyze
+collision probability under a random
+choice of a hash function. What does it
+mean to choose a random hash function for
+us? It means a random choice of a1, and
+a2, and a3, and a4. So we're making four
+random choices. And what I'm saying is,
+let's condition on the outcomes of the
+first three. Suppose we knew, that a1
+turns up 173, a2 shows up 122 and a3 shows
+up 723, but we don't know what a4 is. A4
+is still equally likely to be any of zero,
+one, two all the way up to n-1. So
+remember that what we want to prove is
+that at most 1/n fraction of the choices
+of a1, a2, a3, and a4, cause this
+underlined equation to be true, cause a
+collision. So what we're going to show is
+that for each fixed choice of a1, a2, and
+a3, at most a 1/n fraction of the choices
+of a4 cause this equation to hold. And if
+we can show that for every single choice
+of a1, a2, and a3, no matter how those
+random coin flips come out, almost a 1/n
+fraction of the remaining outcomes satisfy
+the equation, then we're done. That means
+that at most of 1/n fraction of the
+overall outcomes can cause the equation to
+be true. So if you haven't seen the
+principle of, for these decisions before,
+you might want to think about this a
+little bit offline, but it's easily
+justified by just say two lines of
+algebra. Okay, so we're done with the
+setup and we're ready for the meat of the
+argument. So we have done is, we've
+identified an equation which is now in
+green, which occurs if and only if we have
+a collision between the two IP addresses.
+And the question we need to ask is, for a
+fixed choices of a1, a2 and a3, how
+frequently will the choice of a4 cause
+this equation to be satisfied? Cause a
+collision? Now, here is why we did this
+trick of the Principle of Deferred
+Decisions. By fixing a1, a2, and a3, the
+right hand side of this equation is now
+just some fixed number b etween zero and
+n-1. So maybe this is 773, right? The xi's
+were fixed upfront, the yi's were fixed
+upfront. We fixed a1, a2, a3 at the
+beginning, at the end of the last slide,
+and those were the only ones involved in
+the right hand side. So this is 773 and
+over on the left hand side, x4 is fixed,
+y4 is fixed but a4 is still random. This
+is an integer equally likely to be any
+value between zero and n-1. Now here's the
+key claim, which is that the left-hand
+side of this green equation is equally
+likely to be any number between zero and
+n-1. And I'll tell you the reasons why
+this key claim is true. Although this is
+the point where we need a little bit of
+number theory, so I'll be kind of
+hand-wavy about it. So there's three
+things we have going for us, the first is
+that x4 and y4 are different. Remember our
+assumption at the beginning of the proof
+was that, you know, the IP addresses
+differ somewhere so why not just assume
+that they differ in the last 8-bits of the
+proof. Again this is not important if you
+really wanted to be pedantic you could
+have three other cases depending on the
+other possible bits in which the IP
+addresses might differ. But anyway, so,
+because x4 and y4 are different, what that
+means is that x4 - y4 is not zero. And in
+fact, now that I write this, it's jogging
+my memory of something that I should have
+told you earlier, and forgot, which is
+that the number of buckets n should be at
+least as large as the maximum coeffcient
+value. So for example, we definitely want
+the number of buckets n in this equation
+to be bigger than x4, and bigger than y4.
+And the reason is, otherwise you could
+have x4 and y4 being different from each
+other, but they still, the difference
+still winds up being zero mod-n. So for
+example, suppose n was four, and x4 was
+six and y4 was ten. Then x4-10 would be
+-four and that's actually zero modulo
+four. So that's getting now what you want.
+You want to make sure that if x4 and y4
+are different, then they're difference is
+non-zero modulo n. And the way you ensure
+that is that you just make sure n is
+bigger than each. So you should choose a
+number of buckets bigger than the maximum
+value of the coefficient. So in our IP
+address example, remember that the
+coefficient don't get bigger than 255. And
+I was suggesting a number of buckets equal
+the same 997. Now, in general, this is
+never a big deal in practice, if you only
+wanted to use say, 100 buckets, you didn't
+want to use 1000, you wanted 100, well,
+then you could just use smaller
+coefficients, right, you could just break
+up the IP address, instead of into 8-bit
+chunks, you could break it into 6-bit
+chunks, or 4-bit chunks, and that would
+keep the coefficient size smaller than the
+number of buckets, okay? So you could
+choose the buckets first, and then you
+choose how many bits to chunk your data
+into, and that's how you make sure this is
+satisfied. So back to the three things we
+have going for us in trying to prove this
+key claim. So x4 and y4 are different, so
+their difference is non-zero modulo n. So
+second of all, n is prime, that was part
+of the definition, part of the
+construction. And then third, a4, this
+final coefficient is equally likely to
+take on any value between zero and n-1.
+So, just as a plausibility argument, let
+me give you a proof by example. Again, I
+don't want to detour into elementary
+number theory, although it's beautiful
+stuff, so you know, I encourage those of
+you who are interested to go learn some
+and figure out exactly how you prove it.
+You really only need the barest elementary
+number theory to give a formal proof of
+this. But just to show you that is true in
+some simple examples, so let's think about
+a very small prime. Let's just say there's
+seven buckets and let's suppose that the
+difference between x4 and y4 is two. Okay,
+so having chosen the parameters of set n =
+seven, I've set the difference equal to
+two. What I want to do is I want to step
+through the seven possible choices of a4,
+and look at what we get in this blue
+circle quantity, on the left hand side of
+the green equation. So, we want to say the
+left hand's equally likely to be any of
+the seven numbers between zero and six, so
+that means that as we try our seven
+different choices for a4, we better get
+the seven different possible numbers as
+output. So, for example, if we set a4 =
+zero, then the blue circled quantity is
+certainly itself zero. If we set it equal
+to one, then it's one  two, so we hit
+two. For two, we get two  two which is
+four. For three, we get three  two which
+is six. Now, when we set a4 = four, we get
+four  two which is eight, modulo seven is
+one. Five  two - seven is three. Six
+two - seven is five. So as we cycle
+through a4, zero through six, we get the
+value zero, two, four, six, one, three,
+five. So indeed we cycle through the seven
+possible outcomes one by one. So if a4 is
+chosen uniformly and random, then indeed
+this blue circled quantity will also be
+uniformly random. So just to give another
+quick example, we could also keep n =
+seven, and think about the difference of
+x4 and y4. Again, we have no idea what it
+is, other than that its non-zero. So, you
+know, maybe instead of three, maybe, maybe
+instead of two, it's three. So now again,
+let's stop through the seven choices of
+a4, and see what we get. So now we're
+going to get zero, then three, then six,
+then two, then five, and then one, and
+then four. So again, stepping through the
+seven choices of a4, we get all of the
+seven different possibilities of this left
+hand side. And it's not an accident that
+these choices are parameters. As long as n
+is prime, x4 and y4 are different, and y
+ranges over all possibilities, so will the
+value on the left-hand side. So by
+choosing a four uniformly random, indeed,
+the left-hand side is equally likely to be
+any of its possible values, zero, one, two
+up to n-1. And so, what does that mean?
+Well, basically it means that we're done
+with our proof cuz remember, the
+right-hand side that circled in pink is
+fixed. We fixed a1, a2, and the a3. The
+x's and y's have been fixed all along so
+this is just some number, like 773. And
+so, we know that there's exactly one
+choice of a4 that will cause the left-hand
+side to also be equal to 773. Now a4 has n
+different possible values and it's equally
+likely to take one on becaus e only a
+one-end chance that we're going to get the
+unlucky choice of a4 that causes the
+left-hand side to be equal to 773 and of
+course, there's nothing special about 773.
+Doesn't matter how the right-hand side
+comes out. We have only one-hand chance of
+being unlucky and having a collision and
+that is exactly the condition we are
+trying to prove and that establishes the
+universality of this function each of n^4,
+very simple, very easy to evaluate hash

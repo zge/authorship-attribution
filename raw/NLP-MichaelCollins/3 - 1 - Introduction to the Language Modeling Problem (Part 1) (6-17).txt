@@ -1,0 +1,158 @@
+>> Okay.
+So, the first topic we're going to cover
+in this course is the problem of language
+modeling.
+Language modeling is one of the oldest
+problems studied in statistical natural
+language processing.
+It's a very basic problem, and it's a very
+useful problem.
+Its language models are used in a very
+wide range of natural language
+applications.
+So, we're going to cover a number of
+things.
+I'm firstly going to define the basic
+problem.
+We'll then talk about a very important
+class of language models.
+These are called the trigram language
+models.
+These are extremely widely used.
+We'll talk about how to evaluate different
+language models, how to measure the
+effectiveness of different language
+models.
+And then finally, we'll talk about a
+couple of estimation techniques for
+language modeling.
+Firstly, something called linear
+interpolation, and secondly, something
+called discounting methods.
+Both of these methods are widely used
+within language modeling and as we will
+see later in the class, they're also
+useful in many other problems in natural
+language processing.
+So, these basic estimation techniques are
+widely used in other areas.
+So, to get us started, here are a couple
+of definitions.
+We're going to assume that we have some
+set V.
+And this is a finite set, and this is
+going to include all of the words in our
+language of interest.
+So, imagine we're constructing a language
+model for English, for example.
+We might have a set of the containing
+words such as the, a, man, telescope, and
+so on and so on.
+And it's not uncommon for this set to be
+really quite large, it might easily
+contain thousands or ten of thousands of
+possible words in, in the language.
+So, given this underlying set V, I'm going
+to use V dagger, this symbol here, to
+refer to the set of all possible sentences
+or strings in this language.
+And a well-formed sentence takes the
+following form.
+It has zero or more words, where each word
+is drawn from the set V.
+Followed by a special symbol, the STOP
+symbol, okay?
+So, the use of this STOP symbol at the end
+of each sentence is initially going to
+look a little peculiar.
+But, we'll see soon why it's very
+convenient to include this symbol when we
+start to develop a probabilistic model for
+the language modeling problem.
+So, just to recap, a sentence could have
+any sequence of words.
+It could be a sentence that makes sense.
+For example, this sentence here, or it
+might be some sentence that, that really,
+really doesn't make sense.
+We get to have sequences like the, the,
+the, STOP.
+So, any sequence of words drawn from this
+vocabulary followed by STOP.
+And we'll also include a sentence where we
+have the STOP symbol alone.
+This is the case where the sentence is
+basically of zero length, there are no
+words before STOP, just to be completely
+precise.
+So, given these definitions, we can now
+define the language modeling problem.
+So, I'm going to assume that we have a
+training sample of example sentences in
+the language we're interested in.
+Let's just assume that's English for now.
+So, for example, you might collect all
+sentences that you've seen in the New York
+Times over the last 10 years.
+Or you might collect a very large set of
+example sentences from the world wide web
+and you can think of many other examples.
+And this training sample can again be
+quite large so to be concrete, in the mid
+90s, for example, it was pretty common to
+make use of, you know, roughly 20 million
+words of data in these training samples.
+And by the end of the 90s, it wasn't
+uncommon to use maybe a billion words.
+Often, again, chosen from newspaper data,
+for example.
+And more recently, over the last several
+years, people have started using web data
+to construct language models.
+We might even get into a scenario where we
+have hundreds of billions of words,
+potential training data.
+And the main point here is just that these
+training samples can get quite large.
+So, given a training sample, our task is
+the following.
+We want to learn a distribution p over
+sentences in a language.
+Okay.
+So, P is, is going to be a function and it
+satisfies 2 conditions.
+So firstly, for any sentence x, remember,
+the dagger is the set of possible
+sentences in the language for any sentence
+x, we have p of x is greater and equal to
+0.
+And secondly, if we sum over all sentences
+in the language, we have something that
+sums to the value 1, okay?
+So, p is a well-formed distribution over
+sentences in the language.
+So, our task is going to be to take a
+training sample.
+The example sentences as input and outputs
+and function p as the output of this
+process.
+So, here are some examples.
+We might, for example, assign the
+probability 10 to the minus 12 to the
+sentence composing just the word, the,
+followed by STOP.
+We might assign 2 times 9 to the minus 8
+to this particular sentence, and so on and
+so on.
+We just assign a probability to every
+sentence in the language.
+Now roughly speaking, we would like a good
+language model to assign high probability
+to sentences which are likely in English
+and low probability to sentences, which
+are unlikely in English.
+So, for example, this sentence here is
+pretty ill-formed.
+You're [unknown] unlikely to see this as a
+sentence and that has relatively low
+probability.

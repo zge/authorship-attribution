@@ -1,0 +1,1020 @@
+
+Hello and welcome to Chapter 11, Regular
+Expressions
+from the book Python for Informatics:
+Exploring Information.
+As always, these slides are copyright
+Creative Commons Attribution, as well as
+the audio and the video that you're
+watching or listening to right now.
+And, so regular expressions are an
+interesting thing.
+You've seen from, in the chapters up till
+now, I've,
+I've had a singular focus on sort of
+pulling information out of data.
+Raw data, this mailbox file that perhaps
+you're getting tired of already.
+But it's a lot of fun, because I can have
+you go look for something and, and
+pick it out.
+And you're doing something that like would
+be really painful to do sort of by hand.
+And while it's not all of computing, I
+mean, there's games
+and there's, you know, things like
+weather computations that do calculations,
+pulling and extracting data out is a big
+part of computing.
+And so there's actually a library that's
+built specifically to do this.
+And, and if you start doing a few finds
+and slicing, it gets kind of
+long after a while and that's like split,
+for example,
+really saved us a lot of time.
+But sometimes the data that you are
+looking for is a little
+more sophisticated than broken into spaces
+or colons or something like that.
+And you just want to like tell something
+to go find
+I see what I want, and I see where it's
+embedded in the string, go get it for me.
+And regular expressions are themselves a
+programming language.
+They're like a really smart wild card for
+searching.
+So we've used wild cards in various
+things in search, but they're, they're a
+really smart version of a wild card.
+And so, regular expressions are quite
+powerful and they're very cryptic.
+And as a matter of fact, you don't even
+need
+to learn them if you don't feel like it,
+right?
+I've got this little guide.
+I need a guide for myself when I do
+regular expressions.
+It sometimes takes me a few minutes to
+write
+a regular expression to do exactly what I
+want.
+So in a way, writing a regular expression
+is like program, writing a program.
+It's highly specialized to searching and
+extracting data from strings.
+But it's like writing a program and it
+takes a while to get
+it right and you kind of like, oh, change
+this, what about a slash there?
+And, so, you, but they actually are kind
+of fun.
+And, and they are a great way to sort of
+exchange little program snippets
+to say, oh yeah, I'm looking for this, oh
+here's a little reg expression you might
+try and then, so they're, they're like
+programs themselves.
+It is this language of marker characters,
+so when we
+look for regular expressions, some
+characters like A, B, C, have meaning
+as A, B, C but some characters like caret or
+dollar sign mean
+at the beginning of the line, or at the
+end of the line.
+And so we encode in this string a, a
+program, basically.
+And so it's a rather old-school language.
+It's from
+long time.
+It predates Python, which is over 20 years
+old, and so
+it's, it also marks you as sort of a
+little cool, right?
+It's a, it's a distinct marking that makes
+it so that you know something other people
+don't.
+Right? So you can know how to program, but
+if you know regular expressions
+it'll be like woah, I tried to look at those
+and they're kind of tough.
+In a way, knowing regular expressions is
+kind of like a tattoo.
+So I, it's casual Friday and that's why
+I'm wearing a T-shirt
+today and so I figured I would come in
+today in a T-shirt,
+but seeing as it's the first time I'm wearing
+a short-sleeved shirt, it's
+also the first time I can show you my,
+show my real tattoo here.
+So, here's my real tattoo and in the
+middle is Sakai,
+the open source learning management system
+always close to my heart.
+And then you have the IMS logo, which
+is IMS Learning Tools Interoperability,
+which a standard,
+it means a lot to me.
+Blackboard, OLAT, Learning Objects, Angel,
+Moodle, Instructure, Jenzabar, and
+Desire2Learn.
+I call this the ring of compliance,
+because these are all
+of the first six or seven learning
+management systems that complied
+with the IMS Learning Tools
+Interoperability standards
+specification, which is
+something that I spent a lot of my life
+making work.
+So
+I figured I'd make a tattoo and just
+kind of
+part of my rough, tough image and,
+and actually
+regular expressions are indeed part of my
+rough, tough image,
+because I'm like, I'm down with
+regular expressions.
+And people are like impressed with my
+regular expression knowledge.
+But as impressive as I am, I still need a
+cheat sheet, so I'll have a cheat
+sheet that you can download hopefully on
+the pythonlearn
+website or whatever, and I just, it
+doesn't have to be much.
+It's really just a kind of a, a crutch,
+and these are the characters that have
+special meaning, like caret or
+dollar sign
+match the beginning or end of line,
+respectively.
+So they're not really matching a dollar
+sign, they match, they,
+they mean something in our little mini
+string-like programming language.
+So, like many things that we do in Python
+going forward, once you want some
+sophisticated capability, it comes with
+Python, but
+it comes in the form of a library.
+And so the regular expression library we
+have to say import r-e
+at the beginning of our programs to import
+the regular expression library.
+Then we call re.search to say I'm
+looking for search from the regular
+expression library.
+There's two basic functions or method,
+two, two basic
+capabilities inside this library that
+we're going to look at.
+One is search, that replaces find, it's
+like a smart find, and then
+findall is a combination of a smart find
+and a automatic extraction.
+So we'll look at both of those in turn.
+And I'll do it by comparing them to
+existing
+Python that you kind of already should
+know at this point.
+So here's some code that's, say, looking
+for lines that
+have the word fr-, have the string From
+colon in them.
+Right, so, we're going to open a file,
+we're going to strip the white space.
+If we find we, hunt within line for
+From.
+If it's greater than or equal to zero then
+we'll print it. And so this
+is just going to give us a number. If it's,
+if it's not found, it's negative one.
+So it's only going to print the lines that
+that have From in them.
+Here is the equivalent using
+regular expressions.
+So these two things are equivalent.
+So we have to import the library, like I
+mentioned before, and all the rest of it's
+the same.
+The if test is re.search. That says within
+the library re, call the search utility
+and then
+pass in the line, the string we're looking
+for
+and the line, the actual text we're
+looking in.
+So this is like look for From inside of
+line and return me a
+True or a False, whichever, depending on
+whether you find it or not.
+Now you might say, I, you just got done
+telling me that it, it was more dense.
+And the answer is, there's a few more
+characters here.
+But we'll see in a second how you
+can quickly add more power to the regular
+expression.
+Find, you have to start adding more
+Python lines to make it more sophisticated
+where in
+the regular expression you start changing,
+you change the search string to give more of
+the direction of what you're looking for,
+and that's what
+we'll be doing, pretty much, is changing
+the search string.
+So now if we wanted to switch to say,
+wait, wait, wait, we don't
+just want the From anywhere in the line,
+we want it to start with From.
+So we would change
+line.startswith('From'),
+and that's either going to be true or false 
+depending on whether or not the
+line starts with From.
+Now, we do the same thing with
+regular expressions by changing the
+search string.
+So now we are in regular expressions.
+So this really just isn't a string, it's a
+string plus
+characters that are interpreted as
+commands by the regular expression
+library.
+So the caret, which is the first one on
+our,
+our little regular expression sheet, matches
+the beginning of the line.
+It's not actually a caret.
+So that says, the first character, this
+two-character sequence, caret F,
+means F but in column one, in the first
+character of the line.
+And so, again, this is going to give us a
+True or a False, if this regular
+expression matches.
+The, the beginning of the line, From: and
+it's the same as
+this, it's, does it start with From.
+So again, these two are equivalent.
+But you see the pattern where we're
+going to do something to this string using
+these characters that have meaning, okay?
+So, the next thing that's
+most commonly done other than caret and
+dollar sign for the end of line, is
+the wildcard characters and so, we've used
+wildcards
+possibly in like DOS, where we can use ?
+or * in like a dir command.  dir .*.* if
+you're familiar with that,
+or even a Unix command like ls, you
+know, star dot whatever.
+This is not how regular expressions
+work. And the problem is is that dot, dot
+is that it matches a single character in
+regular expressions.
+Asterisk means any number of times.
+So if I look at this, if I look at
+this and color-code this to make a
+little more sense, the caret is actually
+kind of part of the
+regular expect, regular expression
+programming language. Says I'm, I'm
+I'm a virtual character matching the
+beginning of line.
+The X is a real character.
+The dot is part of the regular expression
+programming language, any character.
+Star is part of the regular expression
+programming, it says
+the immediate previous character many
+times, zero or more times.
+And then colon matches the colon.
+And so if you look at lines, these are the
+kinds of lines that will give me a True.
+Because they start with an X,
+followed by some number of characters,
+followed by a colon.
+So that's true.
+Start with a X, followed by some number of
+characters, followed by a colon.
+Okay?
+And so that's basically how this works.
+And so this little, this, in this
+five-character string there are, you know,
+some of
+these things are like instructions and
+some of
+them are the actual characters we're
+looking for.
+So the X and the colon
+are the characters we're looking
+for, and the caret, dot, and star are
+programming.
+Right? They are logic that we're adding
+to the string.
+Okay.
+So let's say, for example, you're...  
+Part of any of these things,
+and part of the stuff we have done so far,
+has to assume that the data is some
+level of being clean and
+so the data that I have been giving you,
+mbox.txt, is not inconsistent.
+Right? It doesn't have like too much
+weirdness in it.
+I'm not trying to trick you and
+mislead you, although
+we've had situations where you sort of get
+a traceback because
+you think there's going to be five words
+you, you grab a line,
+you break it, and there's only two
+words and then you get
+a traceback because you're looking at the
+fifth word, or something like that.
+But if your data is less clean, or even
+you just are
+want to be real careful, you can
+fine-tune your matching.
+So, here's that same match.
+Give me a character X, followed by any
+number of
+characters, followed by a colon, and that's
+what I'm looking for.
+Give me lines that match that pattern.
+So this X starts at any number of
+characters,
+colon, great, this, any number of
+characters good, great.
+Oh wait, and there's an email X that says
+X Plane is two weeks behind sch, behind
+schedule, colon, two weeks.
+Well, the regular expression didn't know
+that the dash made sense to you.
+And you just assumed that everything that
+started
+with a capital X had a dash after it.
+So X is what it starts with, any number of
+any character, and then
+a colon. So this becomes True.
+This may not make you happy, right? It may
+not be what you're looking for.
+Because you haven't been specific enough
+in your regular expression.
+So, we can be more specific in our regular
+expression.
+So for example, this is a more specific
+regular expression.
+It still says start with an X as the first
+character, then a dash,
+that's a real character not a, then this
+next thing, instead of being a dot, this
+backslash capital S.
+It's on the sheet.
+Whoa. It's not on the sheet.
+I lost the sheet. Come back, sheet.
+I lost the sheet.
+I can't live without my sheet.
+Backslash capital S means a
+non-whitespace character.
+So that means spaces won't match.
+And then I changed the asterisk, zero or
+more times thing, to a plus.
+And that means one or more times.
+Here is a character, a non-whitespace.
+These two things kind of work together.
+A non-whitespace character at least one
+time, as many as we like.
+And then, a colon.
+So, if we look here, it starts with X dash,
+any number of non-whitespace
+characters, and ends in colon.
+Starts with X dash, any number
+of non-whitespace characters, ends
+in a colon.
+True. True.
+This one starts with an X, but doesn't
+start with an X dash.
+Oh, as a matter of fact, these characters
+are blanks, so this becomes a False.
+It does have an X and it does have a colon
+and match the previous one,
+but this one here is more specific.
+Okay? So it's more specific and so it
+matches what you want.
+Now it depends on what you are looking for.
+Maybe you do want this line,
+and so you're looking for X. I don't
+know. But if you want, you can be
+increasingly sophisticated in what
+you're looking for in a regular
+expression.
+So now, let's talk about extracting data.
+So everything we've done so far is,
+is it there or is it not.
+But it's really common once
+you find something you that want to
+break it into pieces.
+So we can combine the searching and the
+parsing into one statement.
+And instead of using search, which returns
+for us a true/false, we are going to use
+findall.
+So in this example, I'm going to to show
+you a new syntax. The square bracket in
+regular expression language means
+a way to list a set of characters.
+So this says, this is a single character
+that says,
+I want to match anything in the range
+0 through 9.
+Plus means one or more of those.
+So that says, so this is, this whole thing
+says one or more digits.
+That's a regular expression that says one
+or more digits.
+You can put other things inside here.
+You can put like, you know,
+you could make a thing that says a b c d.
+And that would say, I'm
+going to match a single character that's
+a or b or c or d. Or you could say like,
+you know, 1 3 5 7, bracket.
+That's a single character 
+that's either a 1 or a 3 or a 5 or a 7.
+So the bracket is a list of matching
+characters and the dash inside the
+bracket means range.
+We'll see in a second that you can stick a
+not inside the bracket. It's on this.
+So, so again, remember in this little
+mini-language, we are programming, right?
+We are giving instructions to the regular
+expression engine, as it were. Okay?
+So, if we do this, and here is an
+expression that
+says I would like to find, you know, things
+that are one or more digits.
+And so,
+so it's one or more digits and, and so
+it's going to look
+through here and it's going to find it as
+many times as it can.
+So there is one or more digits, there is
+one or more digits,
+and there is one or more digits.
+And so what findall gives us back is a
+list of strings.
+So it found it.
+Where do I match?
+Where do I match?
+It's looking the whole time and then,
+it says, oh, I've got it.
+2, 19, 42.
+So it actually extracts the strings that
+match
+and gives you a Python list of strings.
+Python list of strings.
+Kind of of like split, except it's like a
+super smart split, right?
+It's split, but I've directed it what to
+look for, and if,
+so here's an example of, you know, that's
+the one I just did.
+Find me one or more digits and extract
+them, so 2, 19, 42.
+Here I'm saying, using the same bracket
+syntax, to look for a single
+character A, capital A E I O or U, and one
+or more
+of those. And if you look, there are no
+upper-case vowels in my string.
+So it says I'm going to find all the
+things that match
+A E I O U. So things like AA would match
+and, you know, OU would match.
+And so that's what we, we would get if
+they were in the string.
+But because there are none, we get an
+empty string.
+So even if there are none, you get an
+empty string.
+So it always returns a string.
+It may be a zero-length string, and that's
+what you have
+to check. Okay?
+Okay, now
+matching has this notion of greedy,
+where when you put one of these pluses
+or asterisks it kind of has this outward
+pushing feeling, right?
+And so when you say,
+I'm looking for something that starts with
+an
+F at the beginning of the line, followed
+by one or more characters, followed by a
+colon, you can think of this as pushing
+outward.
+So if we look at a line here that has From
+colon using the colon
+character, it will try to expand, so it
+certainly has
+to match the F and it's looking for a
+colon, any number of characters,
+but it's trying to make the string that
+matches as big as possible.
+So it skips over this colon and goes to
+that
+colon and so the thing that we get is
+here.
+And so, it ignored this and said I will
+make as large a string as I can.
+So, that that's the plus that's doing it.
+Dot plus pushes, it's like, I've got a
+colon, but is there another colon out
+there?
+So you push it, okay?
+So that's greedy matching.
+It can get you in some trouble, like being
+greedy
+in general, and both asterisk and plus sort
+of behave
+in a greedy way because they're zero more
+or one
+or more characters, so they can sort of
+push outward, okay?
+Now you can turn this off.
+It's a programming language, we can tweak
+it, okay?
+And so we add a question mark.
+So this is a three-character sequence now.
+So if you say dot plus question
+mark, that says one or more of any
+characters, push,
+but instead of being greedy and pushing as
+far as you can, this means stop
+at the first. Stop at the first.
+Oops, stop at the first.
+I can never draw on this thing fast
+enough.
+Stop at the first.
+Okay?
+And that's it, just don't be greedy, don't
+try to make the string as large as
+possible.
+Go with the smaller one, the smaller
+possible one.
+We still need to find an F, and we still
+need
+to find a colon, but when you find the
+first colon, stop.
+And so what this does is this changes it
+so that
+what we match is from colon instead of
+going all the way.
+So the greedy match pushes as far as it
+can. The non-greedy match
+is satisfied with the first thing that
+meets the criterion of the string.
+So this is a little three-character
+programming sequence,
+any character one or more times and not
+greedy.
+If, for example, we were trying to solve the
+problem
+of pulling the email address out of a
+string.
+Right?
+We can make good use of this non-blank
+character
+and so the at sign is just a character and
+then we can say, I want at least one
+non-blank
+character before it and at least one
+non-blank character after it.
+So the way regular expressions does it
+says, okay, I  find my at sign and
+I push in a greedy manner outwards, as
+long as there are non-blank characters,
+push, push, push, push,
+push, push, push, oops, stop.
+Push, push, push, push, push, stop.
+Okay?
+So it's some number of non-blank
+characters, an
+at sign, followed by some number of
+non-blank characters.
+So it's, that's using greedy matching. It,
+it's doing that, okay?
+And so this is where we get Stephen
+Marquard, we can, and,
+and we would know if there wasn't there by
+the empty list, right?
+And so we get stephen.marquard@uct.ac.za.
+Now, we can also fine-tune what we
+extract, right?
+In the previous slide, we extracted
+whatever matched.
+Right?
+Whatever this matched, it looked across
+the whole string and found it,
+found the thing, shoved it over, and gave
+us what it matched.
+But it's possible to make the match larger
+than what's extracted,
+to extract a subset of the match, and we'll
+see that on this next slide.
+Okay?
+So here's this same thing, which is an at
+sign followed, and then
+with non-blank characters as far as the
+eye can see in either direction.
+But I'm going to add to it caret From
+space.
+So, so this has to be start with, the
+first character has to be a caret, this,
+it's gotta have the word From,
+it's gotta have one space and then,
+immediately, it's gotta find this, right?
+It's gotta find a series of non-blanks,
+followed by an at sign,
+followed by another series of one or
+more non-blanks. And then
+what we do, so this, if we didn't put
+these parentheses
+in, it would match and we would get all of
+this data.
+It would go to here.
+But what we can do with the parentheses,
+the parentheses are part
+of the regular expression language,
+saying,
+okay, I want to match the whole thing.
+The parentheses aren't part of the care-,
+a string up here.
+I want to match the whole thing, but
+I only want to extract this part in
+parentheses.
+So this whole thing is a regular
+expression that's matched
+and then the parentheses part is what's
+retrieved for you.
+And so this makes it so that the only time
+it's going to
+look for at signs is, are on lines that
+start with From space.
+It is going to want the immediate next
+character to be a non-blank.
+Some number of non-blank characters
+followed by an at sign,
+some number of non-blank characters, it's
+going to stop right there.
+And it's only going to extract from here
+to here,
+and so we get out Stephen Marquard.
+But this is a pretty narrowly scoped thing
+because
+the first four characters have to be From
+space.
+And so that's a way to combine a stricter
+match,
+even though you don't actually want
+all the data.
+So you can add those things all over the
+place.
+Okay? Okay.
+Then, we, we, we can compare the different
+ways of extracting data.
+So if we look at how we extract the host
+name.
+Remember how we did this many chapters ago.
+So we did a data.find, which says oh,
+the first at sign is at 21.
+So the first at sign is at 21.
+Then we say we want to find the space
+after that.
+So that's the at position, that's 31.
+And then we want to extract the data
+that's one beyond the at up to but not
+including the space.
+And that is the variable that we are
+going to print out, host.
+And so we've extracted this bit of
+information and out comes the host.
+Quite nice. Okay?
+We also saw another technique, and by the
+way, all these techniques are okay.
+All these techniques are fine.
+Another technique we saw, once we sort of
+played
+with split and lists, was what we, what I
+called a double split version of this,
+where the
+first thing we do is we split that line.
+The first thing we do is split the line
+and then we know, and blanks,
+that the second thing, which is the
+sub one, words sub one,
+is the entire email address. Then this is
+the double split.
+We take the email address and we split it by
+an at sign and then we get a list of the
+pieces of the email address, the email
+name and the
+email host, and then we grab the, the
+sub one of that,
+and then we have the host.
+So that's a double, the double split way
+of doing this, right?
+Now in this, we still haven't done
+the From yet,
+but it is the double split way to do this.
+So, if we think about how we would do
+this in a regular expression, okay?
+We're going to say, look through the
+string, findall, we're going to,
+use the findall, and the regular
+expression exploded up says
+look through the string for an at.
+Do, do, do, do, do, do, got an at.
+Then, oh, start extracting. End extracting.
+And then this is another form of the
+this is one character, it's a
+single character, match any non-blank
+character, and
+zero or more of them. Okay?
+So find an at sign, start extracting,
+end extracting, match, this is one character.
+That is a set of possible matches, and
+that's some character, this means not.
+Okay? Not a blank, that's a blank
+right there, that's a blank character
+right there.
+Not a blank, as many times as you want.
+You might want to, we might want to turn
+that into a plus to guarantee at least one.
+So that might be better done as a plus
+right there.
+So this is, probably make more sense as a
+plus, to say, I
+want at least, after the at sign, I want
+at least one non-blank character.
+And the parentheses simply say, I don't
+want the at sign.
+So if the at sign, I really want those
+non-blank characters after the at sign.
+Okay? So that's what I want to extract.
+So it's like, go find the at sign.
+Okay, great, found the at sign. Start
+extracting, look for non-blank characters,
+end extracting.
+So pull that part out and put it right
+there.
+Now an even cooler version of this that
+you probably kind of imagined right away is,
+we say, you know what, I would like this
+first character, the first
+part of the line to be From, with a blank,
+followed by any number of characters,
+followed by an at sign, so the at sign is
+real, then start
+extracting, then any number of non-blank
+characters, end extracting.
+So this is a, this is like eight or nine
+lines of Python
+all rolled into one thing, okay?
+So, start at the beginning of the line.
+Look for string From, with a space.
+Then skip a bunch of characters looking
+for an at sign, skip characters until
+you encounter an at sign, then start
+extracting, match any non-blank, a single
+non-blank character.
+This is kind of like one non-blank
+character, one non-blank character, but
+once you
+suffix it with the asterisk that changes it to
+be many non-blank characters.
+And then stop extracting, okay?
+And so, you know, and so it's like find
+From followed by a space, great.
+That's the first part.
+Now throw away characters until you find
+an at sign.
+Then start extracting.
+Keep going with non-blank characters until
+you hit
+the first blank characters and pull that
+part out.
+Now the result is we get the exact same
+data. But with this added to it, we are
+much more narrow in the kind of things
+that we're looking for and if we get
+noisy data that like, something like,
+you know, meet at Joe's, right?
+We don't want that.
+That won't match, right?
+We want that to be like a False.
+And, and it allows us to sort of really
+fine-tune our matching
+and extracting. And this is just the
+beginning, they are very, very powerful.
+So, the last thing that I will show you is
+sort of a program that is kind of like one
+of the programs that we did in a previous
+section,
+except now we're going to use regular
+expressions to do it.
+So if you remember, we had this thing where
+we're doing spam confidence, where we're
+looking for lines and
+you know, and pulling this number out and then
+calculating the average, or the
+maximum, or whatever.
+And so here is a, we import the regular
+expression library, we open the file,
+we're going to do this with the, appending
+to the, a list, we'll put the list.
+We'll put the numbers in a list rather
+than doing the calculation in a loop.
+We strip the data.
+Now, here's the key thing, right?
+We're going to have a regular expression
+that says,
+look for the first character being X,
+followed by
+a dash, followed by all this,
+all this
+exactly has to match literally, followed
+by a colon.
+And then there's a space, and then we
+begin extracting and we are looking for
+the digit 0 through 9 or a dot and
+we are looking for one or
+more, and then we end extracting.
+So that's the, the parentheses are telling
+us what to pull out.
+So that just means that we're going to
+pull out those numbers, all
+the digits and the numbers, until we get
+something other, I mean,
+all the digits and the period, and we'll
+get something other than
+a digit and a period, and we, and then
+we'll be done, okay?
+And so if we, and so this is going to pull
+those numbers out and give us back a list.
+Now the thing about it is, we have
+to realize that sometimes this is not
+going to match, because
+we're sending every line, not just the
+ones that start
+with X, we're sending every line through
+this and so
+we need to know when we didn't get a
+match.
+And that, the way we know we didn't get a
+match is if the list, the
+number of items in the list that we got
+back, is zero, then we're going to continue.
+So this is kind of our if where we're
+searching for the needle in the haystack.
+But then once we find what we are looking
+for, the actual number that we are
+interested in,
+is already sitting here in stuff sub zero.
+Okay?
+And then we convert it to a float, we append it.
+And when the loop is all done, we print
+out the maximum.
+Okay?
+And so this is sort of encoding a number
+of things
+and ending up with a very, a very solid and
+safe matching.
+So we're really, it's hard for this to
+find a line that's wrong and
+you could even improve this a little bit
+to make it even a little tighter
+where we'd go find a number like 0.999.
+You could say, oh, it's
+all the numbers are zero dot, so
+you could make this a little, a little more
+precise.
+So it wouldn't, so it would even skip
+things that
+you can make it, so it looks exactly the
+way you want it to look.
+So, I emphasize that this
+is kind of a weird language and you need
+some kind of thing.
+We talked about all these.
+We have the beginning of the line, we have
+the end
+of the line, matching any character,
+matching space characters, matching
+non-whitespace characters.
+Star is a modifier that says zero or more
+times.
+Star question mark is a modifier that says
+zero or more times non-greedy.
+Plus is one or more times.
+Plus question mark is one or more times
+non-greedy.
+When you have bracket syntax, it's a set,
+it's a single character that's in the
+listed set.
+So that's lower-case vowels.
+You can also have the first, if the first
+character of this is a caret, that flips it.
+So that means everything except capital
+X, capital Y, capital Z.
+So it's everything that's not in the set,
+capital X, capital Y, capital Z, and then
+you can also put dashes in to represent
+ranges.
+Bracket a through z and 0 through 9,
+and lower-case
+letters and digits will match, but again,
+this is a single character.
+Now, you can put a plus or a star after
+these guys to make them happen more than
+one time.
+And you can even put them in twice.
+So if I wanted a two-digit number, I could
+say 0 dash 9, 0 dash 9.
+Oops. This is one character.
+This is one character and this is the
+possible things.
+So that's, you know, 0 0
+would match.
+1 0 would match, 99 would match, etc.
+Okay?
+And then the parentheses are the things
+that if you
+are in the middle of a big long matching
+string and
+you don't want to extract the whole thing,
+you can limit the
+things you're extracting to, to the stuff
+that's just in there.
+With all these characters that have all
+this meaning,
+we have to have a way to match those
+characters.
+So dollar sign is the end of a line.
+But what if we're looking for something that
+actually has a dollar sign in the string?
+And that's what the backslash is for.
+So if you put the backslash in front of
+a otherwise meaningful character, you
+don't, it becomes the actual character.
+So this is saying match a dollar sign.
+Those two characters say match a dollar
+sign.
+And then this says one character that's
+0 through 9 or a, or a dot.
+And then we put the plus modifier to say
+at least one or more times and so that sort
+of is
+a greedy, of course.
+So that will get us this and extract it,
+including the dollar sign.
+So the escape character is the backslash.
+Okay. So there we are.
+Now we're done.
+So this is little bit cryptic.
+It's, it's kind of a puzzle.
+It's kind of fun.
+And it's extremely powerful.
+And you don't have to know it.
+You don't have to learn it.
+But if you do, you'll find that it's very
+useful as we sort
+of dig through data and are trying to
+write things that are pretty quick.
+And, and, and they, the thing I like about
+regular expressions is that they
+tend to be, if you write them well, they
+tend to be less sensitive to bad data.
+They tend to ignore data, they're, you
+can put more detail, I exactly want this.
+Whereas you're,
+if you're writing find and extract, you're
+making a lot of assumptions about the
+data.
+That it's clean and you're not going to,
+you know, mis-hit on something.
+So, okay, well, good luck, and you're
+used to regular expressions, and we'll
+see you later.
+

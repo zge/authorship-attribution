@@ -1,0 +1,414 @@
+[SOUND].
+In this session, we are going to introduce
+an interesting seam in the advanced topics
+on pattern mining, which is spatiotemporal
+and trajectory pattern mining.
+And we have lots of data now associated
+with spatiotemporal trajectories.
+For example, sensors, smartphones eh,
+there are lots of GPS devices.
+Okay?
+So we first want to see how
+to mine spatial patterns and
+their association rules.
+We probably can think about spatial
+pattern and association rule in this form.
+A and B are frequent patterns.
+You may want to see the rule,
+like A implies B with certain support and
+confidence.
+And A and B could be spatial or
+non-spatial predicates.
+For example,
+they could be topological relations like,
+intersects, overlaps, and disjoint.
+They could be,
+spatial orientations like, left,
+right, west, east, or under,
+above, or remote, or something.
+Then you also can have distance
+information like close_to,
+within certain distances,
+you know, those relationships.
+Okay, and support of confidence or
+correlation there, lots of interesting
+measures we can associate them with
+your spatial rules or patterns.
+For example, likely you may
+find certain things like this.
+If x is a large_town, and
+x intersects with highway,
+than likely x is adjacent to water.
+Okay.
+So this you may have certain support and
+certain confidence of this rule.
+Another important thing for
+spatial pattern mining is we shall
+explore spatial autocorrelation.
+What is spatial autocorrelation?
+Basically, we say the spatial data
+tends to be highly self-correlated.
+That means the nearby things are more
+related than the distance ones.
+People often say everything is related.
+But the close by things are more
+related than the far away things.
+Okay, this is like common sense,
+but it's very useful.
+For example,
+you can use neighborhood information
+even when you study temperature.
+Maybe the closer by one will be
+closer in temperature as well, okay?
+So there are lots of properties we
+can explore to increase the power and
+efficiency of mining.
+So we first introduce a general
+principle called progressive
+refinement in mining spatial associations.
+Usually even for spatial predicates or
+relationships, there is
+something more general.
+For example, general close_to that means
+as now they are somewhat close by.
+You will say they are,
+they are geographically close to, okay.
+But you also may study a little more
+detail, whether they are nearby, or
+they really touch, or they intersect,
+or one contains the other.
+Okay.
+But you may say,
+I first mine the very rough ones.
+That means we first search rough patterns.
+Then we find they are patterns.
+Then we may refine to see what
+exactly pattern they are,
+like exactly relationship.
+You may first get a generalized
+geographically close to.
+Then you see whether they are nearby or
+they really touch each other or
+they intersect or one contains the other.
+So that act to refinement
+will save a lot of processing
+power to focus on those
+unrelated things to do very
+expensive spatial relationship
+computation, okay.
+That means we can do two-step
+mining of spatial association.
+One is we may do rough
+spatial computation.
+So as a filter that means there's
+more like close by, general close by.
+You can first do very rough computation.
+How do you to compute it?
+For example, you may use some
+interesting data structure like
+a Minimum Bounding Rectangle or
+R-tree to do rough computation
+to find the rough patterns.
+That assume that you will
+have less computation,
+you know expense because you
+just use some inherent or
+given data structure you can compute it.
+Then after you find those rough patterns,
+you may want to refine it.
+Find a more refined patterns
+like whether they intersect or
+whether one contains the other or
+they touch each other.
+So in that sense, you may apply those
+objects passed the rough pattern.
+Then you, you may,
+you may do more detailed computation.
+For example, for this graph,
+what we can see is we,
+you can assume these rectangles
+are shopping centers.
+And these circular ones are gas stations,
+and those lines are the highways.
+Okay, then you may first to find
+close by maybe you will find pattern
+say gas station in general is very close
+geographic close by shopping centers.
+Okay, then after you find those,
+you may refine it.
+You say how close they are by whether
+they are really, really just nearby or
+they touch each other or
+one contain inside the other.
+So you may, you may give more
+detail refined the rules.
+Okay?
+So
+that's eh, actually we'll save the cost.
+You try to find all kinds of patterns
+in all the different places.
+Those computation could
+be rather expensive.
+Okay?
+Another interesting thing
+we may want to study
+is related to the trajectories we
+call relative movement patterns.
+That means you may find some objects
+during the time of movement,
+they keep close together.
+For example suppose this is a timestamp.
+You get timestamp t1, t2, t3, and t4.
+Okay.
+You may find a group objects in the space
+like these are the, the maps okay.
+So you find that they are geographically
+close by during the moments.
+That means in t1 they are close by,
+you get t2 they may also be close by.
+You may want to find this.
+One definition could be flock.
+The flock is, you find these m
+entities like m objects, okay,
+animals or, you know, people.
+They are within the circular region
+of radius during the movement.
+That means they move in the same
+direction every time you check them,
+you see they are all within
+certain radius like r.
+'Kay.
+You, then you say they are flocks.
+'Kay.
+For example, you may find deer or sheep.
+Those moments you may find
+they really found flocks.
+'Kay.
+And another interesting pattern
+you want to find could be convoy.
+The convoy means they're not
+necessary within a rigorous
+circle like radius, but
+overall they form clusters.
+If you use density-based clustering,
+at every timestamp you are going
+to find they form clusters.
+For example, you may find better shapes.
+You may find those better
+shapes they could be sometimes
+maybe have a pretty big radius.
+You just look at their relative distance.
+But they form clusters so the,
+you find density-based clustering.
+These are the convoys.
+Okay?
+But flocks and
+convoys in their definition,
+they require at least a k
+consecutive time stamps.
+They always be together.
+But in reality, if you look at this case,
+like this particular graph,
+you may see sometimes
+they're getting together,
+like from if you look at time t1 to t4,
+they are getting together.
+But if you look at t2 and t3,
+sometimes they are a little far apart.
+So we may define another interesting
+movement pattern called swarm.
+Swarm is like a bees.
+They, the, the big swarm,
+they may move in the same directions.
+But on the other hand, you,
+if you look at every particular second,
+okay, they may be far apart
+in certain time stamps.
+Actually, even you think about it,
+sheep or
+deer, you may find a certain time
+they graze in a rather wide field.
+But sometimes when they start moving,
+they form flocks, again.
+Okay.
+So, since this swarm,
+has less constraints on consecutive
+time stamps, so there are potential
+pattern try to find swarm and more.
+But the computation is
+also more expensive.
+So there are studies on how to use
+efficient pattern mining algorithms
+to uncover such swarm patterns.
+The detail can read the paper.
+But you can see those different
+definitions leads to different
+processing efficiency in
+the design of the algorithms.
+Another interesting pattern in
+spatiotemporal trajectory pattern
+is periodic patterns.
+Look at,
+let's look at a one interesting example.
+'Kay?
+This one actually is a three-year
+bird migration data.
+But they are very sparse, in the sense.
+When you put a sensor on the bird, okay,
+this sensor will send you very sparse
+signals because if you send dense signals,
+the battery will drain out very quickly.
+You assume for this tiny battery,
+they may last for a year.
+Then the only way you can
+have the battery last for
+a year is you do very sparse sampling and
+sending out very sparse signals.
+For example,
+you may only do 24 hours one sample.
+And every seven days or ten days,
+you may shift to the satellite only once.
+In that sense,
+24 hours of birds can fly very far away so
+you get a very sparse patterns.
+Okay.
+For such sparse pattern,
+how could you find their migration
+pattern every year to year?
+So the interesting thing is you,
+if you try to find their periodicity and
+check their patterns,
+you had to use different methods because
+unlikely you find the two sample
+points they'd really overlay.
+It's impossible almost.
+So, that means if you try to find
+the periodic patterns without, you know,
+further thinking, you just directly use
+Fourier Transform and auto-correlation.
+It's almost impossible you
+can find good patterns.
+But, if you think about it,
+some samples, they form clusters.
+Year after year you may find clusters.
+And for these clusters if you treat,
+you know,
+the big amount of those clusters as
+dense point, as a reference point,
+a single point, then you may see
+when they are going to get in,
+when they are going to
+get out of this cluster.
+And then you look at their time, and
+year after year you will be able to
+clearly identify their periodic patterns.
+Okay?
+That's the reason if you
+change your algorithm finding
+dense clusters and
+treating dense cluster as single points,
+then you study their periodicity using
+a Fourier Transform and auto-correlation.
+You are going to detect,
+nicely detecting those periods.
+After detecting periods,
+based on those periods,
+you can summarize their trajectory
+patterns, you may find it
+nice patterns even
+the data is very sparse.
+For example in this study, you can see you
+were based on different cluster points.
+You may find there pattern every
+time from January to March,
+April to June,
+what is the thing that can be overlaid.
+You'll find nice patterns.
+Okay, this is why interesting study
+how to mine periodic patterns
+with very sparse data.
+Okay?
+Another line of interesting
+study is finding semantic
+trajectories in spatiotemporal domain.
+Okay?
+Actually, there are lots of people,
+for example, you,
+you trace people's you know,
+movement patterns.
+You'll find lots of people,
+they start in the morning from home.
+They go to Starbucks.
+Then they go to office, then they go
+to restaurant, then they go to cafe,
+then go to restaurant for
+dinner, then go to bar.
+Suppose you find these,
+you won't find such patterns.
+The interesting thing is, there are so
+many people that go to different
+Starbucks, they go to different offices,
+they go to different restaurants.
+How could you find such a pattern
+in the spatiotemporal domain?
+Okay.
+The interesting thing is,
+we may try to find the seq, meaningful
+sequential patterns by observe certain
+constraints, like a semantic constr,
+consistency, spatial compactness,
+and temporal continuity.
+We can also adopt two-step approach,
+like a progressive refinement,
+this kind of philosophy.
+That means first, you try to mine coarse
+patterns that satisfy the semantic and
+temporal constraints.
+Remember, this time is
+different from spatial
+where you just find a rough spatial one.
+Actually what you want to find is
+is suppose you first even
+ignore the spatial domain.
+You just look at the semantic and
+temporal domain.
+You may find the people semantic
+try to create like this.
+That means you first mine
+semantically meaningful patterns.
+Then, you try to detect dense and compact
+clusters in the high-dimension space.
+And then you may split the coarse pattern
+into fine-grained ones to meet
+certain spatial constraints.
+For example, you may be able find,
+first find it people
+actually from the office at certain
+points they want to go to a gym.
+That's a frequent pattern.
+Then you may want to
+study which offices or
+which kind of people
+want to go to which gym.
+So these are the you know, first finding
+semantic meaningful trajectories.
+Then refine them,
+using more spatiotemporal information
+finding their sub patterns which
+may get a fine pattern mined.
+This, one such study
+called splitter actually
+work out some efficient
+algorithm to mine such patterns.
+Overall, spatiotemporal and the trajectory
+pattern mining is a pretty rich domain.
+There are lots of studies on it.
+And here we just introduced
+a few interesting algorithms.
+And we also going to just
+introduce some survey papers and
+some books you may like to read,
+to do in-depth study on them as well.
+Thank you.
+[MUSIC]
+

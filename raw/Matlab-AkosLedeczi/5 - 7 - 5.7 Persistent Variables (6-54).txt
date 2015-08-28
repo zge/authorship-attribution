@@ -1,0 +1,155 @@
+[MUSIC]
+So far,
+we've used local variables a lot, and
+we briefly introduced global variables.
+Well, there's a third kind of variable,
+the persistent variable.
+A persistent variable is a local variable,
+so it's only visible inside the function
+which is defined, but
+its value persists across function calls.
+In other words, MATLAB doesn't discard
+the value of a persistent variable
+when the function returns the way it
+does with a regular local variable.
+It keeps that value until the next call.
+This can be useful in a few special cases,
+for
+example, when we need to know how
+many times a function's been called.
+The only other way to do that would
+be to use a global variable, but
+it bears repeating that we're discouraging
+you from using global variables until
+you've gained a lot more experience.
+And even then, many times all you
+need is a persistent variable, and
+they don't cause the mischief that
+those sneaky global variables do.
+So let's see how to use
+persistent variables.
+Here's our first function that
+uses a persistent variable.
+His job is simply to keep adding up the
+value of its single input argument every
+time it's called, and it returns the total
+of the arguments entered so far.
+It's like a bank account
+that you add money to.
+Let's try it.
+Okay, we started by adding three, and
+the total in our bank account is three.
+Let's add five more.
+And let's put in ten, and
+you can do negatives.
+There, we took out $11.
+Oops, we're overdrawn.
+Anyway, the key to this function
+is the persistent variable, summa,
+here, which is declared using
+the persistent keyword right here,
+which shows up in blue,
+since it is a keyword.
+When a function is saved in the Editor,
+any persistent variables in it
+are initialized to the empty matrix.
+So we have yet another use for
+the if statement.
+We can use it to determine whether this
+is the first time the function has been
+called.
+If it is the first call, we set summa
+equal to the input argument n right here.
+We check if it's empty.
+We know it's the first call.
+Then we set summa equal to n.
+It's an error to declare a variable
+persistent that already exists in
+a current workspace.
+That's why we couldn't use the output
+argument total to store the value inside
+accumulate.
+We need to introduce the new variable,
+summa.
+It's clear that we could not accomplish
+what accumulate does with regular local
+variables since they're deleted
+every time a function returns.
+All persistent variables within
+a function can be reinitialized
+to the empty matrix in
+any of these three ways.
+By resaving the function in the Editor,
+by clearing the function with clear,
+we come over here and give the command
+clear accumulate like this or
+by exiting and restarting MATLAB.
+Let's see if that did reset
+summa to the empty matrix.
+If it did, then accumulates
+should start over from zero.
+Yes, it did.
+So now you know how
+persistent variables work.
+But you know what a persistent
+variable would be just perfect for?
+Remember when we were saying that maybe we
+should add an error message to multable
+that says, what part of positive
+integer do you not understand?
+You know, when the user keeps
+doing it wrong over and over?
+Well, we said we wouldn't do it because it
+would be mean, but now that we know how to
+count things with persistent variables,
+it's just too tempting.
+Let's try this version.
+It's called snarky multable,
+and it uses a persistent
+variable right here.
+It's called error count.
+We're going to let you study it
+on your own but let's try it out.
+We'll give a correct input, and
+it looks like it works just fine.
+And now let's give it
+some incorrect input.
+[NOISE] We gave it 3 minus 2 before.
+Well, that's what the non-snarky version
+did when we gave it a negative number.
+Let's try the fractional number.
+That's also the non-snarky response.
+Let's try that vector.
+Okay, now we're in snarky land.
+What part of positive integers
+do you not understand?
+The user has made three mistakes in a row.
+It calmly handles the first two errors and
+then unloads on the user on the third one.
+You can do this sort of thing, and
+it might be kind of satisfying, but
+we know better, don't we?
+We should be nice.
+Go ahead and
+look at this function to see how it works,
+there is a couple of
+interesting things in here.
+Here you see we've put an if statement
+all on one line by using a comma here.
+Here's an inline comment.
+Let's see down here we check if
+we've actually had three errors.
+That means we give this
+nasty error message here.
+We set the count back to zero
+to get started all over again.
+So the next error the user
+gets the non-snarky response.
+So you can do this.
+And you shouldn't though.
+Well, we'll end lesson five now.
+We should probably take a little time to
+wrestle with our consciences before we
+write another function
+[MUSIC]
+

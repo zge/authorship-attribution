@@ -1,0 +1,502 @@
+Alright. So the plan for this video is to
+prove the correctness of the divide and
+conquer closest to pair algorithm that we
+discussed in the previous video. So just
+to refresh your memory, how does the outer
+algorithm work? Well, we're given endpoints
+in the plane. We begin by sorting them,
+first by x-coordinate and then by
+y-coordinate. That takes n log in time.
+Then we enter the main recursive divide
+and conquer part of the algorithm. So what
+do we do? We divide the point set into the
+left half and the right half, Q and
+R, then we conquer. We recursively compute
+the closest pair in the left half of the
+point set Q. We recursively compute the
+closest pair in the right half of the
+point set R. There is a lucky case where
+the closest pair on the entire point set
+lies either all on the left or all on the
+right. In that case, the closest pair is
+handed to us on a silver platter,
+by one of the two recursive calls. But there
+remains the unlucky case where the closest
+pair is actually split with one point on
+the left and one point on the right. So to
+get our N log N running time bound,
+analogous to Merge Short in our inversion
+counting, we need to have a linear time
+implementation of a subroutine which
+computes the best, the closest pair of
+points, which is split, one on the left
+and one on the right. Well, actually, we
+don't need to do quite that. We need to
+do something only a little bit weaker. We need
+a linear time algorithm, which whenever
+the closest pair in the whole point set is
+in fact split, then computes that split
+pair in linear time. So let me now
+remind you of how that subroutine works.
+So it has two basic steps. So first,
+there's a filtering step. So it looks at,
+first of all, a vertical strip, roughly
+down the middle of the point set. And it
+looks at, only at points which fall into
+that vertical strip. That was a subset of
+the points that we called S sub Y, 'cause
+we keep track of them sorted by Y
+coordinate. And then we do essentially a
+linear scan through SY. So we go through
+the points one at a time, and then, for
+each point, we look at only the almost
+adjacent points. So for each index I, we
+look only at J's that are between one and
+seven positions further to the right, than
+I. So among all such points, we
+compare them, we look at their distances.
+We remember the best such pair of points.
+And then that's what we return from the
+count split pair subroutine. So we've
+already argued, in the previous video,
+that the overall running time of the
+algorithm is N log N. And what remains to
+prove correctness. And we also argued, in
+the previous video, that correctness boils
+down to the following correctness claim.
+In the sense that, if we can prove this
+claim, then the entire algorithm is
+correct. So this is what remains. Our
+residual work is to provide a proof of
+the correctness claim. What does it say?
+It says consider any split pair that is
+one point p from the left side Q, capital
+Q, and another point little q drawn from
+the right side of the point set capital R.
+And fur, further suppose that it's an
+interesting split pair meaning that the
+distance between them's at most delta.
+Here delta is recall the parameter pass to
+the count split pair subroutine, which is
+the smallest distance between a pair of
+points all on the left or all on the
+right. And this is the only case we're
+interested in. There's two claims. First
+of all, for p and q, both members of the
+split pair survive the filtering step.
+They make it into the sorted list S sub Y, and
+second of all, they will be considered by
+that double for loop, in the sense that
+the positions of p and q in this array, S
+sub Y, differ by at most seven. So that's
+the story so far. Let's move on to the
+proof. So let's start with part A which is
+the easy part relatively of the claim. So
+remember what we start with, our
+assumptions. We have a point p, let's
+write it out in terms of the X
+coordinates, X1 and Y1, which is from the
+left half of the point set. And we have a
+point q, which we'll call X2Y2, which
+comes from the right half of the point
+set. And furthermore, we're assuming that
+these points are close to each other. And
+we're gonna use that hypothesis over and
+over again. So the Euclidean distance
+between p and q is no more than this
+parameter delta. So, first, something very
+simple, which is that if you have two
+points that are close in Euclidean
+distance, then both of their coordinates
+have to be close to each other, right? If
+you have two points, and they differ by a
+lot in one coordinate, then the Euclidean
+distance is gonna be pretty big as well.
+So, specifically. By our hypothesis, that p
+and q have Euclidean distance less than
+delta, it must be that the difference
+between their coordinates in absolute
+value is no more than delta, and as well,
+the difference between their y-coordinates
+is at most delta. Okay, and this is easy
+to see if you'd just return to the
+definition of Euclidean distance that we
+reviewed at the beginning of the
+discussion of closest points. Okay? So if
+your distance is at most delta, then in
+each coordinate, you differ by at most
+delta as well. Now, what does A say?
+[sound]. So proof of A. So what does part A
+of the claim assert? It asserts that p
+and q are both members of SY, are both
+members of that vertical strip. So another
+way of saying that is that the X
+coordinates of p and q, that is, the
+numbers X1 and X2 both are within delta of
+Xbar. Remember, Xbar was in some sense
+the median X coordinate. So the X
+coordinate of the N over two'th leftmost
+point. So we're gonna do a proof by
+picture, so consider, forget about the Y
+coordinates, that's of irrelevant right
+now, and just focus on the X coordinates
+of all of these points. So on the one hand
+we have X bar. This is the X coordinate of
+the N over two'th point to the left. And then
+there are the X coordinates which define
+the left and the right borders of that
+vertical strip. Namely Xbar-delta and
+Xbar+delta. And then somewhere in here are
+X1 and Y1, the X coordinates of the points
+we care about, p and q. So a simple
+observation, so because p comes from the
+left half of the point set, and Xbar is
+the rightmost X coordinate of the left
+half of the point set, the X coordinate is
+at most Xbar. Right? So all points of Q
+have X coordinate, at most, Xbar, in
+particular, p does. Similarly, since Xbar
+is the rightmost edge of the left half of
+the point set, everything in the right half
+of the point set has X coordinate, at
+least Xbar. So in particular, little q
+does as well. So what does this mean. So
+this means x1, wherever it is, has to be
+at the left of x bar. X2 wherever it is
+has to be to the right of x bar. What
+we're trying to prove is that they're wedged
+in between x bar minus delta and x bar
+plus delta. And the reason why that's
+true is because their x coordinates
+also differ by at most delta. Okay, so what
+you should imagine is. You can imagine x1
+and x2 are sort of people tied by a
+rope at the waist. And this rope has
+length delta. So wherever x1 and x2
+move, they're at most delta apart.
+Furthermore x1, we just observed, can't
+move any farther to the right than Xbar.
+So even if X1 moves as far to the right as
+it can, all the way to Xbar, X2, since
+it's at most delta away, tied by the
+waist, can't extend beyond X bar+ delta. By
+the same reasoning, X2 can't move any
+further to the left than Xbar, X1 being
+tied to the waist to X2, can never drift
+further to the left than Xbar minus delta.
+So that's the proof that X1 and X2 both
+lie within this region, and that defines
+the vertical strip. So that's part A. If you
+have any split pair whose distance between
+them is less than delta, they both have to
+wind up, in this vertical strip. And
+therefore wind up in the filtered set, the
+proof set, S sub Y. So that's part A of
+the claim. Let's now move to Part B.
+Recall what part B asserts. It says that
+the points p and q, this split pair that
+are distance only delta apart. Not only do
+they wind up in this sort of filtered set
+SY, but in fact, they are almost adjacent
+in SY, in the sense that the indices in
+the array differ by, at most, seven
+positions. And this is a part of the claim
+that is a little bit shocking. Really what
+this says is that we're getting away with
+more or less a variant of our one
+dimensional algorithm. Remember when we
+wanted to find the closest pair of points
+on the line, all we had to do was sort
+them by their single coordinate and then
+look at consecutive pairs and return the
+best of those consecutive pairs. Here what
+we're saying is really, once we do a
+suitable filtering focus on points in this
+vertical strip, then we just go through
+the points according to their Y
+coordinate. And okay, we don't just look
+at adjacent pairs. We look at pairs within
+seven positions, but still we basically do
+a linear sweep through the points in SY.
+According to their Y coordinate and that's
+sufficient to identify the closest split
+pair. So why on earth will this be true.
+So our workhorse in this argument will be
+a picture which I am going to draw on
+next. So I'm going to draw eight boxes,
+which have a height and width delta over
+two. So here, delta is the same parameter
+that gets passed to the closest split
+pair subroutine. And it's also the same
+delta which we're assuming p and q are
+closer to each other than, right? So
+that's, remember, that's one of our
+hypotheses in this claim. The distance
+between p and q is strictly less than
+delta. So we're gonna draw eight delta
+over two boxes. And they're gonna be
+centered at x bar. So, this same center of
+the vertical strip that defines S Y. And
+the bottom is going to be the smaller of the
+Y-coordinates of the points p and q.
+So it might be p, it might be q. It
+doesn't really matter. But the bottom
+is going to be the smaller of the two. So
+the picture then looks as follows. So the
+center of these collections of eight
+boxes, X bar, the bottom is the minimum of
+Y1, Y2. We're gonna have two rows and four
+columns. And needless to say, we're
+drawing this picture just for the sake of
+this correctness proof, right? This
+picture is just a thought experiment in
+our head. We're just trying to understand
+why the algorithm works. The algorithm, of
+course, does not draw these boxes. The
+subroutine, the, closest split pair
+subroutine is just that pseudo code we saw
+in the previous video. This is just to
+reason about the behavior of that
+subroutine. Now looking ahead, I'll make
+this precise in two lemmas that are
+about to come up, what's going to be true
+is the following. So, either p or q is on
+this bottom line, right? So we define the
+bottom to be the lower Y coordinate of the
+two. So maybe, for example, q is the one
+that has the smaller Y coordinate, in
+which case, is gonna be, somewhere, say,
+down here. P, you remember, is from the
+left half of the point sets. So p is maybe
+gonna be here or something. And we're
+gonna argue that both p and q have to be
+in these boxes. Moreover, we're gonna
+argue that these boxes are sparsely
+populated. Every one contains either zero
+or one point of the array S sub Y. So,
+what we're gonna see is that there's at
+most eight points in this picture, two of
+which are p and q, and therefore, if you
+look at these points sorted by Y
+coordinate, it has to be that they're
+within seven of each other, the difference
+of indices is no more than seven.
+So, we're gonna make those two statements
+precise one at a time by the following two
+lemmas. Let's start with lemma one. Lemma
+one is the easy one. And it states that
+all of the points of S sub Y, which show up
+in between the Y coordinates of the points
+we care about p and q have to appear in
+this picture, they have to lie in one of
+these eight boxes. So we're going to argue
+this in two steps. First, we're going to
+argue that all such points have to have Y
+coordinates within the relevant range of
+this picture between the minimum of Y1 and
+Y2 and delta more than that, and secondly
+that they have to have X coordinates in
+the range of this picture, namely between X
+bar minus delta and X bar plus delta. So
+let's start with Y coordinates. So again,
+remember this key hypothesis we have,
+okay. We're dealing with a split pair p-q
+that are close to each other. The distance
+between X and Y is strictly less than
+delta. So the very first thing we did at
+the beginning of this proof is we said
+well, if their Euclidean distance is less
+than delta then they have to differ by at
+most delta in both of their coordinates,
+in particular in their Y coordinate.
+Now remember whichever is lower of p and
+q, whichever one has a smaller y
+coordinate is precisely at the bottom of
+this diagram. For example, if q is the one
+with the smaller y coordinate, it might be
+on the black line right here. So that
+means in particular x has y coordinate no
+more than the top part of this diagram. No
+more than delta bigger than q. And of
+course all points with Y coordinates in
+between them are equally well wedged into
+this picture. So that's why all points of
+SY with a Y coordinate between those of p
+and q have to be in the range of this
+picture, between the minimum of the two Y
+coordinates and delta more than that. Now
+what about horizontally? What about the X
+coordinates? Well this just follows from
+the definition of S sub Y. So remember,
+S sub Y are the points that fall into this
+vertical strip. How did we define the
+vertical strip? Well it had center Xbar,
+and then we fattened it by delta on both
+sides. So just by definition, if you're an
+SY, you've gotta have X coordinates in the
+range of this picture. X delta plus minus,
+sorry, xbar plus minus delta. So that
+completes the proof of the lemma. So this is
+not. This is just a lemma. So I'll use a
+lower case qed. Remember this is
+just a step toward proving the overall
+correctness claim. But this is a good
+step. And again, the way you think about
+this is it says we draw this boxes. We
+know that either p or q is at the bottom.
+The other one is going to be on the other
+side of the black line x bar but will be
+in some other box so perhaps maybe p is
+here and the lemma is saying that all the
+relevant points of SY have to be somewhere
+in this picture. Now remember in our
+double for loop we only search seven
+positions away, so the concern is that
+this is a sorta super highly populated
+collection of eight boxes. That's the
+concern, but that's not going to be the
+case and that's exactly what lemma two is
+going to say. Not only do the points
+between p and q in Y coordinates show up
+in this diagram, but there have to be very
+few. In particular, every box has to be
+sparse, with population either zero or one.
+So, let's move on to lemma two. So formally
+the claim is [sound], we have at most one
+point of the point set in each of these
+eight boxes. And this is finally where we
+use, in a real way, the definition of
+delta. This is where we finally get the
+payoff from our realization long ago, that
+when defining the closest split pair
+subroutine, we only really need to be
+correct in the unlucky case. In the case
+we're not handed the right answer by one
+of our recursive calls. We're finally
+gonna use that fact in a fundamental way.
+So we're gonna proceed by contradiction.
+So we're going to think about what happens
+if there are two points in a single box
+and from that we'll be able to derive a
+contradiction. So, call the points that
+wind up in the same box A and B. So, to
+the contrary, suppose A and B lie in the
+same box. So, maybe this is A here, and
+this is B here, at antipodal corners of
+this particular box. So from this
+supposition, we have two consequences.
+First of all. I claim that A and B lie on
+the same side of the point set. They're
+either both in the left side, Q or they're
+both in the right side, R. So why is this
+true? Well it's because every box lies either
+entirely on the left half of the point set
+or on the right half of the point
+set. Recall how we define x bar. X bar is
+the x coordinate of the right most point
+amongst the left half of the point set
+capital Q. So therefore points with x
+coordinate at most x bar have to lie
+inside the left half Q. Points with x
+coordinates at least x bar have to
+lie inside the right half of the point
+set capital R. So that would be like in
+this example. A and b both lie in a box
+which is to the right of x bar. So they
+both have to come in the right half
+of the point set capital R. This is one
+place we are using that there are no ties
+in X coordinate, so if there's a point
+with X, X coordinate or X bar, we can
+count it as part of the left half. So
+every box, by virtue of being either to
+the left of xbar or to the right of xbar,
+can only contain points from a common half
+of the point set. So that's the first
+consequence of assuming that you have two
+points in the same box. The second
+consequence is, because the boxes are
+small, the points gotta be close. So, if A
+and B co-habitate a box, how far could
+they be from each other? Well, the
+farthest they could be is like I've drawn
+in the picture, with the points A and B.
+Where they're at opposite corners of a
+common box. And then you bust out
+Pythagorean's Theorem, and what do you
+get? You get that the distance between
+them is delta over two, the side of the
+box times root two. And what's relevant
+for us is this is strictly less than
+delta. Okay? But, now, here is where we
+use, finally, the definition of delta.
+Consequences one and two in tandem,
+contradict how we define delta. Remember
+what delta is. It's as close as two pair
+of, a pair of points can get if they both
+lie on the left side of the point set, or
+if they both lie on the right side of the
+point set. That is how we defined it. As
+small as a pair of points on a common half
+can get to each other. But what have we
+just done? We've exhibited a pair A and B
+that lie on the same half of the point
+set, and are strictly closer than delta.
+So that contradicts the definition of
+delta. So that completes the proof of lemma
+two. Let me just make sure we're all clear
+on why having proved lemma one and lemma two
+we're done with the proof part B of the
+claim and therefore the entire claim
+because we already proved
+part one, now a long time ago.
+So let's interpret the 2 lemmas in
+the context of our picture that we had all
+throughout. In terms of the eight boxes of
+side length delta over two by
+delta over two. So again, whichever is the
+lower of p and q, and again let's just for
+the sake of concreteness say it's q, is at
+the bottom of the picture. The other point
+is on the other half of the line Xbar, and
+is in one of the other boxes. So, for
+example, maybe p is right here. So lemma
+one says that every relevant point, every
+point that survives the filtering and
+makes it into SY, by virtue of being in
+the vertical strip, has to be in one of
+those boxes, okay? If it has Y coordinate
+in between p and q. Lemma two says that
+you can only have one point in each of these boxes
+from the point set, so that's gonna be at
+most eight total. [sound] So combining
+them. Lemmas one and two imply, that there
+are almost eight points in this picture
+and that includes p and q because they
+also occupy two of eight boxes. So in the
+worst case, if this is as densely
+populated as could possibly be, given
+lemmas one and two, every other box might
+have a point and perhaps every one of
+those points has a Y coordinate between p
+and q. But this is as bad as it gets.
+Any point of the strip with Y
+coordinate between p and q occupies a box.
+So, at most, there are these six wedged in
+between them. What does this mean? This
+means if from q you look seven
+positions ahead in the array, you are
+guaranteed to find this point p. So a
+split pair with distance less than delta
+is guaranteed to be identified by our
+double for loop. Looking seven positions
+ahead in the sorted array SY is sufficient
+to identify, to look at every conceivably
+interesting split pair. So that completes
+the assertion B of the correctness
+claim and we're done. That
+establishes that this supremely clever
+divide and conquer algorithm is indeed
+a correct O(nlog(n)) algorithm that computes the
+closest pair of a set of n points in the
+plane.

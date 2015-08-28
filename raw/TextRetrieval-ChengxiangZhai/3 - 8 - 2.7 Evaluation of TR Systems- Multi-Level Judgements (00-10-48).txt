@@ -1,0 +1,261 @@
+[SOUND] This lecture is about how to
+evaluate the text retrieval system when
+we have multiple levels of judgments.
+In this lecture we will continue
+the discussion of evaluation.
+We're going to look at how to
+evaluate the text retrieval system.
+And we have multiple level of judgements.
+So, so far we have talked
+about binding judgements,
+that means a documents is judged
+as being relevant or not-relevant.
+But earlier we will also talk about,
+relevance as a matter of degree.
+So we often can distinguish it
+very higher relevant options,
+those are very useful options, from you
+know, lower rated relevant options.
+They are okay, they are useful perhaps.
+And further from non-relevant documents.
+Those are not useful.
+Right?
+So imagine you can have ratings for
+these pages.
+Then you would have much
+more levels of ratings.
+For example, here I show an example
+of three levels, three were relevant.
+Sorry, three were very relevant.
+Two for marginally relevant and
+one for non-relevant.
+Now how do we evaluate such a new system
+using these judgements of use of the map
+doesn't work, average of precision
+doesn't work, precision and
+record doesn't work because
+they rely on vinyl judgement.
+So let's look at the sum top regular
+results when using these judgments.
+Right?
+Imagine the user would be mostly
+care about the top ten results here.
+Right.
+And we mark the the rating levels or
+relevance levels for
+these documents as shown here.
+Three, two, one, one, three, et cetera.
+And we call these gain.
+And the reason why we call it a gain,
+is because the measure that
+we are infusing is called, NTCG,
+normalizer discount of accumulative gain.
+So this gain basically can mesh your,
+how much gain of random
+information a user can obtain by
+looking at each document, alright.
+So looking after the first document
+the user can gain three points.
+Looking at the non-relevant document
+the user would only gain one point.
+Right.
+Looking at the multi-level relevant or
+marginally relevant document the user
+would get two points et cetera.
+So this gain usually matches the utility
+of a document from a user's perspective.
+Of course if we assume the user
+stops at the ten documents, and
+we're looking at the cutoff at ten we can
+look after the total gain of the user.
+And what's that,
+well that's simply the sum of these and
+we call it the cumulative gain.
+So if we use a stops at
+the positua that's just a three.
+If the user looks at another
+document that's a 3 plus 2.
+If the user looks at the more documents.
+Then the cumulative gain is more.
+Of course, this is at the cost of
+spending more time to examine the list.
+So cumulative gain gives
+us some idea about
+how much total gain the user would have
+if the user examines all these documents.
+Now, in NDCG, we also have another letter
+here, D, discounted cumulative gain.
+So why do we want to do discounting?
+Well, if you look at this cumulative gain,
+there is one deficiency which is
+it did not consider the rank
+position of these these documents.
+So, for example looking at the,
+this sum here
+and we only know there is only
+one highly relevant document,
+one marginally relevant document,
+two non-relevant documents.
+We don't really care
+where they are ranked.
+Ideally, we want these two
+to be ranked on the top.
+Which is the case here.
+But how can we capture that intuition?
+Well we have to say, well this 3 here
+is not as good as this 3 on the top.
+And that means the contribution of,
+the game from different positions,
+has to be weight by their position.
+And this is the idea of discounting,
+basically.
+So, we're going to say, well, the first
+one, doesn't it need to be discounted
+because the user can be assume that
+you always see this document, but
+the second one,
+this one will be discounted a little bit,
+because there's a small possibility
+that the user wouldn't notice it.
+So, we divide this gain by the weight,
+based on the position.
+So, log of two, two is the rank
+position of this document and,
+when we go to the third position, we,
+discount even more because the numbers
+is log of three, and so on and so forth.
+So when we take a such a sum then a lowly
+ranked document would not contribute
+contribute that much as
+a highly ranked document.
+So that means if you, for example,
+switch the position of this and let's say
+this position and this one, and then
+you would get more discount if you put
+for example, very relevant document
+here as opposed to two here.
+Imagine if you put the three here,
+then it would have to be discounted.
+So it's not as good as if you
+would put the three here.
+So this is the idea of discounting.
+Okay, so n, now at this point that we have
+got this discounted cumulative gain for
+measuring the utility of this ranked
+list with multiple levels of judgments.
+So are we happy with this?
+Well we can use this rank systems.
+Now we still need to do
+a little bit more in order to
+make this measure comfortable
+across different topics.
+And this is the last step.
+And by the way,
+here we just show that DCG at the ten.
+Alright.
+So this is the total sum of DCG
+over all these ten documents.
+So the last step is called N,
+normalization.
+And if we do that then
+we get normalized DCG.
+So how do we do that?
+Well, the idea here is
+within the Normalized DCG
+by the Ideal DCG at the same cutoff.
+What is the Ideal DCG?
+Well this is a DCG of ideal ranking.
+So imagine if we have nine
+documents in the whole collection
+rated a three here and that means in
+total we have nine documents rated three.
+Then, our ideal ranked the Lister
+would have put all these nine
+documents on the very top.
+So all these would have to be three and
+then this would be followed by a two here,
+because that's the best we could do
+after we have run out of threes.
+But all these positions would be threes.
+Right?
+So this would be our ideal ranked list.
+And then we can compute the DCG for
+this ideal rank list.
+So this would be given by this
+formula you see here, and so
+this idea DCG would be used
+as the normalizer DCG.
+Like so here, and this IdealDCG
+would be used as a normalizer.
+So you can imagine now normalization
+essentially is to compare the actual DCG
+with the best decision you can
+possibly get for this topic.
+Now why do we want to do this?
+Well by doing this we'll map the DCG
+values in to a range of zero through one,
+so the best value, or the highest
+value for every query would be one.
+That's when you're relevance
+is in fact the idealist.
+But otherwise in general
+you will be lower than one.
+Now what if we don't do that?
+Well, you can see this transformation or
+this numberization,
+doesn't really affect the relative
+comparison of systems for
+just one topic, because this ideal
+DCG is the same for all the systems.
+So the ranking of systems based on
+only DCG would be exactly the same.
+As if you rank them based
+on the normalized decision.
+The difference however is when
+we have multiple topics because
+if we don't do normalization, different
+topics will have different scales of DCG.
+For a topic like this one we have
+nine highly relevant documents.
+The DCG can get really high.
+But imagine that in another case there
+are only two very relevant documents.
+In total in the whole collection.
+Then the highest DCG that
+any system could achieve for
+such a topic would not be very high.
+So again we face the problem of different
+scales of DCG values and when we
+take an average we don't want the average
+to be dominated by those high values.
+Those are again easy quires.
+So by doing the normalization we have all,
+avoid the problem.
+Making all the purists
+contribute equal to the average.
+So this is the idea of NDCG.
+It's used for measuring relevance based
+on much more level relevance judgments.
+So more in the more general way,
+this is basically a measure
+that can be applied through
+any ranked task with much more level of,
+of judgments.
+And the scale of
+the judgments can be multiple
+can be more than binary, not only more
+than binary, they can be multiple levels,
+like one's or five, or
+even more depending on your application.
+And the main idea of this
+measure just to summarize,
+is to measure the total utility
+of the top k documents.
+So you always choose a cutoff, and
+then you measure the total utility.
+And it would discount the contribution
+from a lowly ranked document,
+and finally, it would do normalization
+to ensure comparability across queries
+[MUSIC]
+

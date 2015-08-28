@@ -1,0 +1,244 @@
+Once we've segmented out words, or
+tokenized them, we need to normalize them,
+and stem them. So normalizing means
+different things. For information
+retrieval, for example, we require that
+the index text and the query terms have to
+have the same form. So we wanna match U.,
+S., A., to USA. If somebody asks a
+question or a query with, with one of
+them. And the answer has the other, we
+want them to match. So it's like
+implicitly defining some kind of
+equivalent class of terms. We might do
+this by always deleting periods, for
+example, it might take to have a rule that
+takes U., S., A. To USA. An alternative is
+some kind of asymmetric expansion. So, for
+example, let's say it's, we're doing
+information retrieval. If I enter the term
+window, I might wanna search for window or
+windows or any, any, any morphological
+variant of the word window. But, if I
+enter capital W windows, I might only
+wanna search for capital W windows, 'cause
+the person's presumably looking for the
+product and not the part of your house. I
+mean this is a potentially more powerful
+algorithm but less efficient and much more
+complicated. So in general, we use
+symmetric and relatively simple
+expansions. So for example, in information
+retrieval, we generally remove, reduce all
+letters to lowercase since users tend to
+use lowercase and with some small
+exceptions. So for example, if we see
+uppercase in the middle of a sentence like
+General Motors, we might want to keep the
+case. And this matters for distinguishing
+the verb Fed from the Federal
+Reserve Bank with a capital F, are more a
+group like SAIL, the Stanford Artificial
+Intelligence Lab from the verb sail. And
+it turns out that for sentiment analysis
+or machine translation or information
+extraction. Case is in fact very helpful.
+So it was a big difference between U S and
+to us. We also often want to do
+lemmatization, so we're reducing our
+inflections or variant forms to their base
+form. So words like am and are and is will
+get lemmatized into be car cars, car,
+car's, and so on, get lemmatized to car. So
+a phrase like the boy's cars are different
+colors should get lemmatized to the boy car
+be different color. So in general the task
+of limatization is finding the correct
+dictionary head word form for a word form
+that you are given and of course this is
+very important for all sorts of
+applications particularly machine
+translations. Where for example if you
+have a Spanish verb like "quiero" (I want)
+or "quieres" (you want). You it's very
+important to know if this is the same
+lemma as "querer", the verb to
+want. So, this general topic of looking at
+parts of words leads us to morphology. And
+morphology is the study of morpheme. And a
+morpheme is the smallest unit that makes
+up a word. We usually distinguish two
+kinds of morphemes. Stems that's the core
+meaning bearing units in a word. And affixes,
+affix is the bits and pieces that
+adhere to the stem, often they have
+grammatical functions. So on this, I-,
+particular slide in fact, stem is a stem,
+and -s is an affix. The word affix, just
+to confuse us, is a stem, and the -es is
+the affix, so there's an affix. There's an
+-s, and there's an -s, and meaning-"ful",
+there's another affix, and so on. So
+stemming is the task of taking off these
+affixes to reduce terms to their stem. And
+it's particularly, historically derived
+from information retrieval, although it's
+used in all sorts of applications. We use
+the word 'stemming' when we specifically
+mean a kind of a crude chopping off of, of
+affixes, and this is of course a
+language-dependent kind of process, so the
+English word, automate, automates,
+automatic, automation, we'd like them all
+to refer to the same stem, automat. So
+stemming is like a, simplified version of
+lemmatization where we pick a prefix of the
+word, use that to represent the word, and
+we, we, chop off all suffixes, that are
+relevant, leading to that stem. So here's
+an example, little text For example,
+compressed and compression are both
+accepted as equivalent to compress, that's
+the text. And if we stemmed that text,
+here's the resulting output so you can see
+that, that we've lost the E on example,
+and compressed and compressing have both
+turned into compress and here we used ar.
+We could have used "be" as our representation
+of  "ar", but this particular example we used
+"ar" and so on. The, the simplest algorithm,
+the most commonly used one for simple
+stemming of English is the Porter
+algorithm. And the Porter's algorithm is a
+series of, an iterated series of simple
+rules, simple, replace rules. So, for
+example, one set of rules, rule step 1A,
+takes strings like. S-s-e-s and replaces
+them with S-S. So in a word like caresses,
+it chops off the E-S at the caresses, or a
+rule that takes I-E-S to I. Chops off the,
+IES in ponies, and levy pony. We're gonna
+use pony with an I, as the representation
+in Porter stemming of pony. And the rules
+operate in order, so that, at this point,
+if there's any ss's left they stay as an
+S. But any other ss's get deleted at this
+point. So the s of cats is deleted, while
+the ss of caress is kept. Similarly
+in step 1B, we might, we remove all of the
+ings and the eds, so we want to cross off
+the ing of walk and the ed of plaster, but
+we specify the rule very carefully, that in the Porter's stemmer only words with a vowel get
+their ings removed, and that's because a
+world like sing, only words where there's
+a vow-, an additional vowel before the
+ing. So a world like sing, which has no
+extra vowels, sing only has one vowel, the
+vowel in ing, stays as sing. But walk-ing,
+which has. A vowel, and in addition a
+vowel before the -ing is allowed to delete
+the suffix. So, if a word has a vowel
+followed by -ing, the -ing is deleted. And
+there's lots of other such rules. So,
+-ational turns into -ate. So, we can cross
+off all of relational and the -tion and
+end up with relate. And -izer to -ize and
+so we cross out the r and so on. And the
+roads get even more complicated so as you
+get to very long stems your going to
+remove the -al from revival and the -able and
+so on. [sound] Let's look again at this
+rule that strips aim and practice using
+the Unix tools that we saw in the last
+section. To look at morphology in a
+corpus. So remember, why are we stripping
+the -ing's only if there's a vowel
+preceding the -ing? Here is the rule. And
+remember we said that in a word like
+walking, we have a vowel before the -ing
+and so it's okay to remove the -ing. In a
+word like sing, there is no vowel before,
+there's no letters at all before that s.
+There's no previous vowels and so sing,
+the rule doesn't apply. [sound] And lets
+do a little. Search four words ending in
+ing, in Shakespeare. So were gonna first
+take all of Shakespeare and turn all the
+non-alphabetic characters. [sound] Oops.
+[sound] Turn [inaudible] characters into
+new lines, so we're gonna get one word per
+line, then we're gonna. Translate all of
+the upper case to lower case. So we're
+dealing with combining all the upper case
+and lower case words. And now let's grep
+out, grep. Is a program for, for, finding
+any line that contains a regular
+expression in a file. Very useful Unix
+program. So we're gonna look for the
+regular expression, ING$. And, so we'll
+find all. Words ending in I-n-g and let's
+sort them. And then we'll just take one
+copy of each and count them and then sort
+them by the counts. And let's see what
+words we find of ending in I-n-g in
+Shakespeare. And what we see is lots of
+these words are not words that in fact we
+would like to, to, To remove the ing from
+so, we have words like king and nothing
+and thing and ring and something and sing
+and anything and spring. So this, this is
+a lot of words, a lot of very frequent
+words, in fact that it would be a bad idea
+to remove the ing. If we remove the ing
+from king we'd get k and so on, remove the
+ing from spring and we get SP. So let's
+modify our rule That we did, instead of
+saying grepping for all words ending in
+ing, let's just go back and change that to
+grep for all words with a vowel, we'll
+just make it be a e I o u, simulate our
+vowels with just the vowel letters and we
+need some way to say there's a vowel and
+that anything can happen in between,
+followed by the ing. Well, how do we say
+anything? Dot means any character, star
+meaning zero more of those, and now let's
+look at, at what words we get back from
+that pattern. And now, since we specified
+that the word has to start with a vowel,
+we've done a much better job of finding
+two syllable words where the ing, in fact,
+is supposed to be stripped off. So there
+are still some problematic words, like
+nothing and something. We don't wanna
+noth-, and someth-, and anything. But
+otherwise. Maybe not cunning but otherwise
+we've done a pretty good job of making the
+rule a little bit better. And so there's a
+little explanation of, how the Porter
+stemmer works and then how we can actually
+use our Unix tools to do a little corpus
+linguistics to, to help write rules of
+this kind. So that's a simple example of
+morphology. It turns out that in some
+languages much more complex morphology is
+necessary, and Turkish is the famous
+example of this. So here's a word in
+Turkish which I am, I won't be able to
+pronounce for you which means behaving as
+if you were among those whom we could not
+civilized. So I see it's the kind of thing
+your mother says to you when, when you've
+been particularly naughty. And in Turkish
+this is one word. So it's a very long word
+with a lot of, Stems. We have the, the,
+the civilized stem, and an affix meaning
+become, and, and affix meaning cause,
+and an affix meaning not able, and so on.
+So in languages like Turkish, and as we
+saw earlier, for, the very long nouns in,
+German, we're gonna have to do, richer and
+more complex morpheme segmentation. So as
+we've seen word tokenization and now we've
+seen that words will have to normalized
+and stems to map them to a normal form.

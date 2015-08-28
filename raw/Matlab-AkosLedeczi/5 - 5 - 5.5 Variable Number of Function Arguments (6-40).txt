@@ -1,0 +1,162 @@
+[MUSIC]
+Back in lesson four,
+we introduced polymorphic functions.
+Remember that polymorphic functions are
+functions that behave differently based on
+the number of input arguments or output
+arguments that they're called with or
+even the type of input or
+output arguments.
+Many built-in functions of polymorphic,
+such as the square root function,
+max, size, plot and on and on.
+It's one of MATLAB's strongest features.
+How we make I functions polymorphic?
+What's actually quite simple, really?
+The reason we waited until now to
+show you is we really couldn't do it
+right without if statements.
+Now we'll combine if statements with
+a couple of built-in functions that we
+haven't mentioned yet.
+First one's nargin or nargin,
+which means number of arguments input.
+It gives the number of actual input
+arguments that the caller passed in.
+The other ones nargout or in nargout.
+It returns the number of actual output
+arguments that the caller requested.
+These two functions can be called
+from inside our functions to make
+our functions polymorphic.
+Here's a function declaration of
+a function called called multable
+with two output arguments and
+two input arguments.
+It returns in n-by-m multiplication table
+in the output argument called table.
+Optionally, it can also return the sum
+of all elements in the output argument
+in the variable summa.
+If it's called with only one input
+argument, it returns and n-by-m matrix.
+So let's see the code.
+First, we check to see whether
+the function was called with one or
+two arguments.
+If nargin is smaller than two, then it
+was called with only a single argument.
+A single argument is always
+put in the first position,
+which in this case is the variable n.
+When m is omitted,
+we're supposed to return an n-by-m matrix,
+so we set m equal to n.
+This is a classic example of setting a
+default value for an input that's omitted.
+Now we're ready to compute
+the multiplication table.
+It's actually pretty simple.
+We create two row vectors, one going from
+one to n and the other from one to m.
+We transpose the first vector
+to be a column vector and
+use matrix multiplication
+to create the table.
+Now, it's time to determine whether
+we need to compute the sum of
+the matrix as well.
+We need to do that only if the user
+requested a second output argument.
+So we check nargout.
+If it's two, we call the sum function.
+Remember that sum computes the sums
+of the columns of a matrix and
+returns them in a vector?
+Well, that's not what we want.
+So here,
+we use the column argument to create a
+vector from all the elements of the table.
+That's done with a colon.
+And then we sum and give that to sum and
+it'll add them all up.
+If nargout is one,
+then we avoid sum entirely.
+But there's no harm in computing summa,
+even if the caller doesn't request it.
+If we calculate it when
+the user doesn't request it,
+MATLAB will simply discard it
+when the function returns.
+So, all we've done is save a few
+microseconds of calculation time here.
+But you will definitely want to use
+nargout to avoid long calculations,
+perhaps many minutes when
+the user doesn't ask for them.
+In any case,
+here's our first polymorphic function.
+Let's see it in action.
+Well, here's our mult table function
+in the Editor all ready to go.
+Let's pitch it a few different
+inputs to see how well it does.
+[SOUND] There we gave it three by four and
+it gives us a three by four array and
+that looks like a multiplication table.
+Let's ask it for a couple of outputs.
+There's a table and there's the sum and
+that's the correct sum.
+Okay.
+This time, we're just asked for
+one output and, but
+we only gave it one input argument and
+you'll remember that, that defaults
+to five by five instead of just five.
+So far so good.
+It's hitting them out of the park.
+Lets see how it handles
+a curve ball.
+Well, we managed to make it fail
+by giving it no argument at all.
+MATLAB tells us the line on
+which the failure occurred and
+we can see what happened
+on that line right here.
+When MATLAB tried to
+look up the value of n,
+it found no value of n,
+because we gave it no value.
+Well, it might seem like cheating,
+more like a spit ball than a curve ball.
+Let's be a little more fair.
+Let's give it some arguments.
+Well let's do this.
+Hm, I've got the empty matrix back.
+Clearly, we didn't plan
+on negative inputs, but
+can you see where
+the empty matrix came from?
+Well, the colon operator here,
+one to n on line seven
+became one to minus 3,
+because we gave a minus 3 for n.
+And the one colon m
+became one colon minus 5.
+And as we saw way back in lesson two when
+the end is less than the beginning and
+we don't get, include a negative increment
+with it, the result's an empty matrix.
+Here we've got two of them.
+And now we see that the product of two
+empty matrices is also an empty matrix.
+So now we can understand why
+we got the empty matrix here.
+[SOUND] And we can also
+understand why we got this error.
+But both of these cases
+represent traps for the user,
+we should do something about them.
+[MUSIC]
+[APPLAUSE]
+

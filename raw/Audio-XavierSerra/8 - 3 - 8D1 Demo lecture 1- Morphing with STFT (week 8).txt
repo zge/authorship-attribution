@@ -1,0 +1,261 @@
+Hello, welcome back to the course,
+Analyzing or
+Processing for Music Applications.
+This week,
+we're talking about sound transformations.
+In the theory lectures,
+we went over some of the models that
+we have been talking about this course.
+In the context of how they can
+be used to manipulate sounds.
+So now, in these, demonstration classes,
+I want to use some tools.
+Mainly the SMS tools.
+To try to understand these transformations
+from a practical point of view.
+In this class, I want to go over the,
+the idea of morphing using
+the Short-Time Fourier Transform.
+So we'll be morphing two sounds.
+We will be morphing the sound of the ocean
+sound we've been listening quite a bit.
+And the sound of male speech that
+we also have been listening to.
+And using the STFT to
+combine them in some way.
+Okay, so lets start first trying
+to understand these sounds.
+We will use the SMS tool's GUI,
+the analysis model one.
+And we will start with
+the Short-Time Fourier Transform and
+we'll first analyze the ocean sound.
+Okay?
+This is going to be the sound
+we're going to be taking as X1,
+as sort of the basic sound.
+On top of which, we will be
+putting kind of the speech sound.
+So this is the basic sound.
+And it's a sound that mainly we
+use all the phase spectrum for.
+And we will be combining the magnitude
+spectrum together with the speech.
+So the detail is not so important.
+Here, we are worrying about
+the general spectral characteristics.
+So the window does not
+have to be that big.
+So for example, 512, it's okay.
+There is no need to really zero padding,
+and there is no need for
+zero face windowing, so
+odd-sized window is no problem.
+On the hamming window it's, it's good.
+Hamming window will be able
+to overlap nicely to 50% or
+it's nice, it's a simple window.
+And the hop size, this is important
+to be quite small hop size, so
+that we preserve the time
+information of this ocean sound.
+So let's use maybe 128, okay?
+So now we will compute.
+well, we're not going to see much because
+basically we're just going to see the,
+the spectrum of this very
+noisy type of signal.
+But clearly,
+we see this wave type of shape.
+And of course,
+these random type phases and of course,
+the record searching will be the same.
+Anyway, so let's, well just start
+with this type of parameters.
+And now,
+we will also analyze this speech sound.
+So, we'll take the speech and male sound.
+And we're going to we don't have
+to use the same parameters.
+The hop size will be the same because we
+will have to be morphing frame by frame.
+The window size can be larger.
+But again, since we're only going to take
+the overall shape there's no need for
+frequency resolution to define the,
+the harmonics of the sound or
+have the detail of frequency resolution.
+That we would need if we wanted
+to detect the harmonics.
+So maybe let's just use these.
+Okay, so clearly this in the,
+the magnitude spectrogram,
+we see very nicely the time information.
+We see very nicely the shape
+of the spectrum, you know?
+So here basically is the,
+the foreman of the sound.
+And different vowels that, we, hear.
+So they're,
+we see this kind of red shapes.
+And of course,
+we don't see the individual harmonics.
+But it's, it's not a problem.
+We don't want to detect them for
+this particular type of transformation.
+Okay.
+Okay, so
+let's start with these twp sounds and
+these parameters.
+And now, we will go to
+the the transformation's interface.
+So we go to the SMS tools software
+transformation interface directory.
+And in here is where all the code for for
+the transformation is and
+the, the control code.
+And there is a main file that is
+an interface which is
+called Transformations GUI.
+So we can execute that.
+And that will open the interface for
+the transformations we have implemented so
+far.
+Okay, so here we have these
+different transformations.
+And we'll focus on this STFT morphing.
+And by default in fact we have the, the
+sounds that we were talking about, okay,
+the ocean sound, and
+the speech male sound.
+So let's set the parameters as we
+talked in the previous analysis.
+So let's use the hamming window,
+let's use 512 as the window size,
+let's use the same FFT size.
+And let's use the half size of 128.
+And now for the speech, again,
+let's use hamming window.
+And let's use the same parameters.
+Okay.
+Now, we'll have to choose the parameters
+for the actual morphing.
+And there is basically two parameters.
+One is the Smooth factor
+of the second sound.
+Okay?
+So we're going to be applying the speech
+sound on top of the ocean sound.
+But before applying it,
+we're going to smooth it,
+so that it just captures
+the general characteristics.
+These values go from zero to one, so
+where zero has to be bigger than zero.
+And one is always moving, so that means
+that we just capture the 512 sample.
+Well, half of that because
+we're only going to do,
+do the positive spectrum, so 256.
+But you can review that, so
+by default here it says 0.5.
+So lets leave it with 0.5.
+And then we have a Balance factor,
+which is a factor which will say how much
+of each spectrum we're going to take.
+If we take zero it means it's
+going to be close to the ocean sound.
+In fact, if we zero it,
+it's just the ocean sound.
+And if it's one, it's going to be
+basically the full magnitude spectrum,
+the smooth magnitude
+spectrum of the speech.
+So let's just take quite
+a bit of the speech.
+Let's put for example,
+0.8, Let's apply it.
+Okay, so here is the result.
+We see the input sound x, the ocean sound.
+Then the magnitude spectrum
+of the ocean sound.
+And this is the morph spectrum.
+So this is already the, the combination
+of the magnitude spectrum of
+the ocean with the smooth
+spectrum of the speech.
+Clearly, we see quite
+a bit of the speech shape.
+But we also see the granularity
+of some of the ocean sounds.
+And, this is the synthesized.
+Let's hear the synthesized sound.
+>> Do you hear me?
+They don't lie at all.
+>> So we definitely understand and
+hear very clearly the speech sound.
+We will hear the pitch of it because the
+pitch we don't, we have not tracked it.
+And the phase, in fact,
+where a lot of the pitch information is in
+the phase spectrum is
+the one of the ocean sound.
+So we hear like a whispering type of sound
+and a kind of a little bit of the ocean.
+In order to hear more of the ocean,
+we can just reduce the balance.
+So for example lets put 0.2.
+These will take lets say 20% of the speech
+sound, and 80% of the ocean sound.
+Definitely now from the spectrogram,
+we can see that it's much
+closer to the ocean sound.
+In fact,
+it's very close to the ocean sound.
+But, if we listen to it.
+[SOUND] Interestingly enough,
+since we already have
+heard the speech sound,
+hearing these sound, we,
+we hear the, the and, and
+understand the speech sound.
+Even though we if I bet that if we would
+have heard these for the first time,
+we would not have understood the,
+this speech utterance at all.
+Anyway, so feel free to play around with
+these things and with the parameters.
+And I think quite a lot of
+different nuances can be obtained.
+Of course, we could extend these
+application to have more sophisticated
+controls of where this kind of
+interpolation or morphing parameters.
+But anyway, with this I believe
+it's a good interface to get
+an understanding of the potential of
+this type of of tools and of techniques.
+Okay, so that's all I wanted to say.
+So basically we have used the SMS tools.
+first, the analysis to understand the,
+the spectrum of these two
+signals that we wanted to morph.
+And then we introduced the,
+the Transformations interface that
+have we have in the SMS tools.
+And we have used the SMS more STFT
+morph interface to morph this two
+sounds that I've for sound this ocean
+sound and and the speech sound.
+So that's all.
+That was the first demonstration class.
+We have seen the,
+the potential of the STFT for morphing.
+Now in the next classes, we will go
+to the, the Sinusoidal model and
+to the Harmonic, Non-Sinusoidal, and
+Stochastic to experiment with
+other types of transformations.
+So I hope to see you next class.
+Bye-bye
+

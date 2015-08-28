@@ -1,0 +1,246 @@
+Hello, and welcome to the transport 
+layer. 
+We are working our way up from the bottom 
+of our four layer architecture up through 
+the top. 
+So we're kind of at the half way point. 
+We have covered the link layer, like 
+ethernet, and then we covered the 
+internetwork layer which is kind of like 
+the postcard layer. 
+So lets, lets review the magic of IP, 
+right. 
+The Magic IP is this postcard layer that 
+bounces these packets with From addresses 
+and To addresses, through you know, 15 or 
+so hops, getting them their, getting 
+packets to their destination network from 
+one network to another network as well as 
+it can. 
+And then when it gets to the destination 
+network it finds the final computer on 
+that network. 
+The magic of this is there is no interim 
+long term storage inside the network. 
+All the long term storage is outside, and 
+now we're going to talk about that. 
+So one of the things that makes IP so 
+fast is that it is not demanded to be 
+perfect, it is not demanded to, to 
+deliver data in order, and it's not 
+demanded to, it, it's, there's no 
+requirement that it doesn't lose data. 
+Its fast and barely ever loses data and 
+when it does there is a layer to recover 
+and that's we are going to talk about 
+next. 
+So the internet protocol is this 
+multi-hop packets can take multiple 
+paths, they can make use of all kinds of 
+crazy links. 
+But now, we're going to move up one, 
+right? 
+We're going to move up to the TCP layer. 
+So the TCP layer is both simple and 
+complex. 
+The purpose of the TCP layer is to 
+compensate for the possible errors in the 
+IP layer as well as make best use of 
+available resources. 
+So if the network, if the overall network 
+from the overall network from here to 
+here is extremely fast we want to send 
+data really fast right. 
+If on the other hand the overall network 
+from here to here is really slow we want 
+to send data slowly and be efficient 
+cause remember part of the goal of the. 
+TCP IP networking is to share effectively 
+and so we need to be aware of whether our 
+network is fast or slow. 
+And those are the kind of problems we 
+solve with a TSP layer. 
+How fast is the underlying network, how 
+reliable is it and if something goes 
+wrong what do we do to deal with that. 
+So the key idea in TCP/IP is that when we 
+send some data, we break it into packets 
+and then we send each one. 
+And then we keep them until they get an 
+acknowledgement from the other side and 
+then and only then do we throw them away. 
+And at some point, if a packet gets lost 
+It can be sent again, and again, and 
+again until it finally is acknowledged in 
+the destination system. 
+And so that's basically what TCP does, is 
+it figures out which packets have or have 
+not made it across the Internet layer. 
+So here's an example scenario. 
+So we got a message that's broken up into 
+five packets. 
+We've got sort of the first hundred 
+characters, the, the, you know, first 
+characters, the second, and third packet. 
+Now, what TCP does, is it speculatively 
+sends a few packets. 
+Says okay, let's get ahead. 
+Cause if you sent one and waited Then you 
+might not make best use of the network, 
+so you kind of guess and dump a few 
+packets out there. 
+And so you send, let's say we send three 
+packets, cue them up for sending. 
+And as fast as we can send them out the 
+back of our network, we start spooling 
+them out the back of their network. 
+And somehow, two of them make it across 
+the internet, to the destination, but 
+somehow that poor second packet, just 
+like every time I'm doing a lecture, the 
+poor second packet never gets it. 
+You don't want to be the second packet in 
+one of my lectures, 'cause you're 
+going to get it. 
+But somehow, the second packet has gotten 
+vaporized. 
+Now, time passes. 
+And[COUGH], the receiver gets this s-, 
+s-, this sensation that maybe, maybe, 
+maybe something's missing. 
+And so it sends and acknowledgement back, 
+and it says, I'm going to send a note 
+back that says, look, I'm ready for 200. 
+I do have 100, and I'm, I'm ready for 
+200. 
+Matter of fact I might even through away 
+300 cause it's been so long. 
+So I want you to start me over at 200. 
+[COUGH] But sender all of a sudden knows 
+that 100 has been sent. 
+And so it knows that is can throw this 
+one away now right it's been 
+acknowledged. 
+So there's an acknowledgement stream 
+going back and forth, so now the sender 
+sends 200 and 300 and then they make it a 
+cost, the receiver says I have got 200. 
+Thus the 300 and then they send 400 
+speculatively. 
+300 makes it, 400 makes it and receiver 
+says. 
+I got 400, which means now it can cross 
+off 300 and 400, right? 
+Check those off and throw them away, and 
+then send 500 cross, and at some point 
+check those off. 
+It's got 500, and now the sender can sort 
+of like empty, check everything off. 
+Everything's been sent, and it's been 
+acknowledged, and we know. 
+And so that's kind of an oversimplified 
+view of the kind of bookkeeping It's 
+going on, on both sides of a TCP 
+connection. 
+And so this, right here is in a sense the 
+genius of the internet. 
+The storage requirements in the middle, 
+the routers, this is the IP basically the 
+network of networks, they, we didn't 
+design these to require a lot of storage. 
+We wanted them to be fast, we wanted them 
+to be agile, we wanted to be dynamic, we 
+wanted to be clever, but we also gave the 
+right to fail. 
+So we didn't demand storage. 
+We didn't say, hey, hold on to packets, 
+you know, all over the place. 
+Just, store up piles of packets, piles of 
+packets and pile up in these, we don't 
+ask that. 
+No router has to keep the packets. 
+As a matter of fact, routers are supposed 
+to throw packets away to communicate back 
+and forth between the system that maybe 
+things aren't working so well and, don't 
+use me to get to California. 
+On the other hand, with hundreds, maybe, 
+you know, hundreds of thousands or 
+millions of routers but billions of 
+computers on the outside. 
+So we need a way to make this reliable. 
+So we need to have memory to store the 
+packets while they're in flight so we can 
+retransmit but we store the packets in 
+the computers that are outside. 
+And there are billions of these 
+computers, there are billions of them. 
+Every computer that you can carry around, 
+every laptop. 
+come here. 
+Every time we add another computer to the 
+network, we add storage for packets that 
+are being sent. 
+So when your computer or, or phone is 
+sending across the network, it is 
+responsible for retaining its own copies. 
+It does not expect the inner part of the 
+network to do so. 
+And that is absolutely brilliant, so it's 
+what really makes this work. 
+And so that's kind of a great 
+oversimplification of what's going on. 
+And it turns out that there is still a 
+lot of engineering to make that happen. 
+So I'd like to introduce you to a, to 
+another of the innovators in the, that we 
+meet in this class his name is Van 
+Jacobson, and I met up with him at Xerox 
+Park he did the work we're going to talk 
+about while he was at Berkley, and[COUGH] 
+In the late 1980's there was this 
+prediction that the internet was going to 
+die. 
+And it seems obvious that it was, it's a 
+good idea now, but back then there was a 
+bunch of folks that felt like academics 
+weren't smart enough to make a network. 
+And 
+And they were like IBM and digital 
+equipment that thought they, the vendors, 
+should make the network, and we should 
+just pay them to use their network. 
+And as the NSF net was coming up, and 
+more and more computers were being 
+connected in the background, the backbone 
+was so slow it started to fail. 
+And it looked like the predictions of all 
+of the computer vendors that said 
+academics couldn't build a robust 
+scaleable network were going to be true. 
+And so Van Jacobson tells the story very 
+differently but the way I saw the story 
+happening and unfolding in 1987 is Van 
+Jacobson saved us. 
+the network was crashing, and we all 
+installed Van Jacobson patches and the 
+network got better. 
+And in my recollection this was the last 
+time it appeared that the entire internet 
+was going to crash. 
+So we named it the Van Jacobson protocol. 
+And he doesn't like to call it the Van 
+Jacobson protocol because he's a shy and 
+unassuming guy. 
+But I, I think he saved us. 
+And so this interview is him describing 
+sort of that moment back in the late 80's 
+where he invented the slow start 
+algorithm that really is part and parcel 
+of every T C P implementation that you 
+have on every computer that you use as a 
+matter of fact it's being used to float 
+control on this lecture right this second 
+as we speak. 
+So here's Van Jacobson. 
+

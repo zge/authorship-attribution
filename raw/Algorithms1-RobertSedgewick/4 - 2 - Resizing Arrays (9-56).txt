@@ -1,0 +1,200 @@
+Okay, our basic array implementation of
+stacks had the defect where we required
+clients to provide us the maximum capacity
+of the stack ahead of time. Now, we're
+going to look at technique for resolving
+that problem. How do we, we do not
+implementing the API. The API says we
+should just be able to create a stack and
+it should be able to grow and shrink to
+any size. So, how do we going to go and
+shrink the array? Well, first thing you
+might think of is when the client pushes a
+new item onto the stack increase the size
+of the array by one and when pops,
+decrease the array by one. That's easy to
+code up but not worth it because it's much
+too expensive to do that. The reason is
+that you have to create a new array, size
+one bigger and copy all the items to that
+new array. So inserting the first N items
+would take time proportional if the text,
+stacks is size N - one, it's going to take
+time N. And when it's two time N - one so
+the first N items will take the sum of the
+first N integers which we know is about
+N^2 / two. Quadratic time to insert N
+items into a stack that kind of
+performance is unacceptable for large
+problems as we've seen, as we will see
+many times. So, the challenge is to do the
+resizing. But somehow ensured that it
+happens and frequently. So, the well end
+technique for doing that called repeated
+doubling is to when the array fills up,
+create a new array of twice the size and
+copy all the items over. Then we don't
+create new arrays all that often so here's
+the implementation of that. We start with
+an array of size one. If we have a full
+stack, which we know by testing N which is
+the number of items in the stack versus
+the rail length, then we just re-size the
+array into one of twice the length before
+inserting the item. And how do we re-size
+to a new capacity? We create a new array
+of that capacity and just go ahead and
+copy our current stack into that, into the
+first half of that and then retu rn it.
+And that will reset our instance variable
+which is our stack to this new bigger
+array. So, the idea and the consequence of
+this is if you insert N items into an
+array, into a stack with this array
+representation, the time will be
+proportional to N not N^2. And the reason
+is that you only create a new array every
+time it doubles but by the time that it
+doubles, you've inserted that many items
+into the stack so on average, it's just
+like adding one operation to cost of one
+to each operation. So, if we just, if we
+just calculate the cost and inserting the
+first N items you're going to have,
+instead of the sum of the integers from
+one end, you're going to have the sum of
+the powers of two from one to end and that
+will give a total cost of about 3N. So,
+that's an array axises. For the copy,
+there's two array axis. So, to insert an
+item, its about three array axises. This
+plot is another way of looking at it which
+is the number of array axis its taken as
+you implement push operations. Every time
+you hit a power of two, you take that many
+array axises but in the sense you've
+already paid for them by putting those
+items on the stack. So that's called
+amortize analysis, where we consider the
+total cost averaged overall operations and
+this is a, a fine example and useful
+example of amortize analysis to get
+efficiency in a stack implementation. Now
+we, we have, what about the pop? We have
+to think about how to shrink the array.
+So, we might think, well, we doubled it
+when it was full, when do we cut it in
+half when it gets to be half full. We
+don't want to get the array to get two
+empty. Well, that one, one doesn't exactly
+work because of a, a phenomenon called
+trashing. If you, if the client happens to
+do push, pop, push, pop alternating when
+the array is full then, it's going to be
+doubling, halving, doubling, halving and
+creating new arrays on every operation to
+take time proportional to N for every
+operation and therefore, quadratic time
+for everything so I don't want to do that.
+The efficient solution is to wait until
+the array gets one quarter full before you
+have it. And that's very easy to
+implement. We'll just test if the arrays
+one quarter full, if it is, we re-size it
+to half full. And so, then at that point,
+it's half full and you can either grow by
+adding stuff or shrink by subtracting
+stuff but there won't be another resizing
+array operation until, I guess totally
+full or half again full. So the invariant
+of that is the arrays always between 25
+percent and a 100 percent full, number one
+and number two that every time you
+re-size, you've already paid for it in the
+amortize sense by inserting pushing or
+popping. So, here's just a what happens to
+the array for our small client example and
+you can see at the beginning, it doubles
+from one to two to four but once it gets
+to four, it stays once it gets to eight,
+it stays to that size for a while even
+though there's some of the operations it
+doesn't shrink back to four until after
+there's only two items in there and then
+it shrinks and so forth. So, array
+resizing doesn't happen that often but
+it's a very effective a way of
+implementing the stack API with an array
+where the client does not have to provide
+this maximum capacity of the stack but
+still were guaranteed that the amount of
+memory that we use is always only a
+constant multiple of the number of items
+actually on the stack. So the analysis now
+says that the average running time per
+operation for whatever the sequence of
+operations is the average running time is
+going to be proportional to a constant.
+Now, there is a worst case that is at the
+point when the stack doubles, it takes
+time proportional to N so it's not quite
+as good performance as we might like but
+it's what we the advantage that we get is
+ve ry fast pushes and pops just access
+array and increment it and very efficient
+for most operations. And for many, many
+clients that's an effective trade off to
+make. So what about memory usage? Well,
+this is the analysis of memory usage for
+stacks and it's actually less memory than
+for strings the amount used is between 8n
+and 32n depending on how full the array is
+and just a quick analysis of the amount of
+space that arrays take in Java. So, again
+this analysis is just for the stack itself
+not for the strings which the client
+wants. So, what are the trade offs between
+using a re-sizing array versus a link
+list. There's a two different
+implementations and the same API and the
+client can use them interchangeably, which
+one is better? In many situations, we're
+going to have multiple implementation of
+APIs and depending on properties of the
+client program you're going to have to
+choose which one is the better one to use.
+So, for link list every operation takes
+constant time in the worst case that's a
+guarantee but we have to use a little
+extra time and space to deal with the
+links. So, it's going to be slower.
+Resizing array implementation we have a
+good amortized time so total average over
+the whole process is good. We have less
+wasted space and probably faster
+implementation of each operation. And so,
+for some clients, maybe that makes a
+difference perhaps, you wouldn't want to
+use a re-sizing array implementation at
+the moment that your plane is coming in
+for a landing and you wouldn't wanted to
+all of the sudden, not implement some
+operations quickly. If you need that kind
+or maybe in an Internet switch where
+packets are coming through at a great
+rate, you wouldn't want to be in the
+situation where you're missing some data
+because something got slow all of the
+sudden. So, that's a trade off that the
+client can make if I want that guaranteed,
+if I want to be sure that eve ry operation
+is going to be fast use a link list and if
+I don't need that guarantee, if I just
+care about the total amount of time I'll
+probably use the resizing array because
+the total will be much less because
+individual operations are fast. So, even
+with these simple data structures, we have
+really important trade offs that actually
+make a difference in lots of practical
+situations.

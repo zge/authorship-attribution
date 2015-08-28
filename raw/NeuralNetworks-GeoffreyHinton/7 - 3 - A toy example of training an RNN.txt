@@ -1,0 +1,146 @@
+In this video, I'm going to describe how a
+recurrent neural network solves a toy
+problem.
+It's a problem that's chosen to
+demonstrate what it is you can do with
+recurrent neural networks that you cannot
+do conveniently with feet forward neural
+networks.
+The problem is adding up two binary
+numbers.
+Off to the recurrent neural network, has
+learned to solve the problem.
+It's interesting to look at its hidden
+states, and see how they relate to the
+hidden states in a finite state automaton
+that's solving the same problem.
+So consider the problem of adding up two
+binary numbers.
+We could train a feed-forward neural
+network to do that.
+And the diagram on the right shows a
+network that gets some inputs and produces
+some outputs.
+But there's problems with using a
+feed-forward neural network.
+We have to decide in advance what the
+maximum number of digits is both for both
+of the input numbers and for the output
+number.
+And more importantly, the processing that
+we apply to the different bits of the
+input numbers, doesn't generalize.
+That is, when we learn how to add up the
+last two digits and deal with the carries,
+that knowledges in some weights.
+And as we go to a different part of a long
+binary number, the knowledge will have to
+be in different weights.
+So we won't get automatic generalization.
+As a result, although you can train a
+neuron feedfoward neural network, and it
+will eventually learn to do binary
+addition on fixed-length numbers, it's not
+an elegant way to solve the problem.
+This is a picture of the algorithm for
+binary addition.
+The states shown here are like the states
+in a hidden Markov model, except they're
+not really hidden.
+The system is in one state at a time.
+When it enters a state it performs an
+action.
+So it either prints a one or prints a zero
+and when it's in a state it gets some
+input, which is the two numbers in the
+next column.
+And that input causes it to go into a new
+state.
+So if you look on the top right,
+It's in the carry station and it's just
+printed a one.
+If it sees a one, one, it goes back in to
+the same stage and print another one.
+If however it sees a one, zero or zero,
+one, It goes into the carry state but
+prints a zero.
+If it sees a zero, zero, it goes into the
+no carry state, and prints a one.
+And so on.
+So a recurring neuro net for binary
+edition needs to have two input units and
+one output unit.
+It's given two input digits at each time
+stamp.
+And it also has to produce an output at
+each time step.
+And the output is the output for the
+column that it took in two time steps ago.
+The reason we need a delay of two time
+steps, is that it takes one time step to
+update the hidden units based on the
+inputs, and another time step to produce
+the output from the hidden state.
+So the net looks like this.
+I only gave it three hidden units.
+That's sufficient to do the job.
+It would learn faster with more hidden
+units, but it can do it with three.
+The three hidden units are fully
+interconnected and they have connections
+in both directions that don't necessarily
+have the same weight.
+In fact in general they don't have the
+same weight.
+The connections between hidden units allow
+the pattern of one time step to insensate
+the pattern of the next time step.
+The input units have feed forward
+connections to the hidden units and that's
+how it sees the two digits in a column.
+And similarly, the hidden units have feed
+forward connections to the output unit and
+that's how it produces its output.
+It's interesting to look at what the
+recurring neural network learns.
+It learns four distinct patterns of
+activity in its three hidden units.
+And these patterns correspond to the nodes
+in the finite state automaton for binary
+addition.
+We must confuse the units in a neural
+network, with the nodes in a final state
+automaton.
+The nodes in the finite state automaton
+correspond to the activity vectors of the
+recurrent neural network.
+The automaton is restricted to being
+exactly one state at each time.
+And similarly, the hidden units are
+restricted to have exactly one activity
+vector at each time in the recurrent
+neural network.
+So a recurrent neural network can emulate
+a finite state automaton but it's
+exponentially more powerful in its
+representation.
+With any hidden neurons, it has 2n to the
+N possible binary activity vectors.
+Of course it only has n squared weights so
+it can't necessarily make full use of all
+that representational power.
+But if the bottleneck is in the
+representation a recurrent neural network
+can do much better than a finite state
+automaton.
+This is important when the input stream
+has two separate things going on at once.
+A finite state automaton needs to square
+its number of states in order to deal with
+the fact that there's two things going on
+at once.
+A recurrent neural network only needs to
+double its number of hidden units.
+By doubling the number of units, it does
+of course square the number of binary
+vector states that it has.

@@ -1,0 +1,235 @@
+So now I get to tell you about the very
+cool randomized contraction algorithm for
+computing the minimum cut of a graph.
+Let's just recall what the minimum cut
+problem is. We're given as input an
+undirected graph. And the parallel edges are
+allowed. In fact, they will arise naturally
+throughout the course of the algorithm.
+That is, we're given pair of vertices, which
+have multiple edges which have that pair
+as endpoints. Now, I do sort of assume
+you've watched the other video on how
+graphs are actually represented, although
+that's not going to play a major role in
+the description of this particular
+algorithm. And, again, the goal is to
+compute the cut. So, a cut is a partition
+of the graph vertices into two groups, A
+and B. The number of edges crossing the
+cut is simply those that have one endpoint
+on each side. And amongst all the
+exponentially possible cuts, we want to
+identify one that has The fewest number of
+crossing edges, or a "min cut". >>So, here's
+the random contraction algorithm. So, this
+algorithm was devised by David Karger back
+when he was an early Ph.D student here at
+Stanford, and this was in the early 90s. So
+like I said, quote unquote only about
+twenty years ago. And the basic idea is to
+use random sampling. Now, we'd known
+forever, right, ever since QuickSort, that
+random sampling could be a good idea in
+certain context, in particular when you're
+sorting and searching. Now one of the
+things that was such a breakthrough about
+Karger's contraction algorithm is, it
+showed that random sampling can be
+extremely effective for fundamental graph
+problems. >>So here's how it works. We're
+just gonna have one main loop. Each
+iteration of this while-Loop is going to
+decrease the number of vertices in the
+graph by 1, and we're gonna terminate
+when we get down to just two vertices
+remaining. Now, in a given iteration,
+here's the random sampling: amongst all of
+the edges that remain in the graph to this
+point, we're going to choose one of those
+edges uniformly at random. Each edge is
+equally likely. Once you've chosen an
+edge, that's when we do the contraction.
+So we take the two endpoints of the edge,
+call them the vertex u and the vertex v,
+and we fuse them into a single vertex that
+represents both of them. This may become
+more clear when I go through a couple
+examples on the next couple of slides.
+This merging may create parallel edges,
+even if you didn't have them before.
+That's okay. We're gonna leave the
+parallel edges. And it may create a
+self-loop edge pointer that both of the endpoints
+is the same. And self-loops are
+stupid, so we're just gonna delete as they
+arise. Each generation decreases the
+number of vertices that remain. We start
+with N vertices. We end up with 2. So
+after N-2 generations, that's when
+we stop and at that point we return the
+cuts represented by those two final
+vertices. You might well be wondering what
+I mean by the cut represented by the final
+two vertices. But I think that will become
+clear in the examples, which I'll proceed
+to now. >>So suppose the input graph
+is the following four node, four edge
+graph. There's a square plus one diagonal.
+So, how would the contraction algorithm
+work on this graph? Well, of course, it's
+a randomized algorithm so it could work in
+different ways. And so, we're gonna look
+at two different trajectories. In the
+first iteration each of these five edges
+is equally likely. Each is chosen for
+contraction with twenty percent
+probability. For concreteness, let's say
+that the algorithm happens to choose this
+edge to contract, to fuse the two
+endpoints. After the fusion these two
+vertices on the left have become one,
+whereas the two vertices on the right are
+still hanging around like they always
+were. So, the edge between the two
+original vertices is unchanged. The
+contracted edge between the two vertices on the left
+has gotten sucked up, so that's gone. And
+so what remains are these two edges here.
+The edge on top, and the diagonal. And
+those are now parallel edges, between the
+fused node and the upper right node. And
+then I also shouldn't forget the bottom
+edge, which is edge from the lower right
+node to the super node. So that's what we
+mean by taking a pair of the vertices and
+contracting them. The edge that was
+previously connected with them vanishes,
+and then all the other edges just get
+pulled into the fusion. >>So that's the
+first iteration of Karger's algorithm of
+one possible execution. So now we proceed
+to the second iteration of the contraction
+algorithm, and the same thing happens all
+over again. We pick an edge, uniformly at
+random. Now there's only four edges that
+remain, each of which is equally likely to
+be chosen, so the 25% probability.
+For concreteness, let's say that in the
+second iteration, we wind up choosing one
+of the two parallel edges, say this one
+here. So what happens? Well, now, instead
+of three vertices, we go down to 2. We
+have the original bottom right vertex that
+hasn't participated in any contractions at
+all, so that's as it was. And then we have
+the second vertex, which actually
+represents diffusion of all of the other
+three vertices. So two of them were fused,
+the leftmost vertices were fused in
+iteration 1. And now the upper right
+vertex got fused into with them to create
+this super node representing three
+original vertices. So, what happens to the
+four edges? Well, the contracted one
+disappears. That just gets sucked into the
+super node, and we never see it again.
+Again, and then the other three go, and
+where there's, go where they're supposed
+to go. So there's the edge that used to be
+the right most edge. That has no hash
+mark. There's the edge with two hash
+marks. That goes between the, the same two
+nodes that it did before. Just the super
+node is now an even bigger node
+representing three nodes. And then the
+edge which was parallel to the one that we
+contracted, the other one with a hash mark
+becomes a self-loop. And remember what
+the, what the algorithm does is, whenever
+self loops like this appear, they get
+deleted automatically. And now that we've
+done our N-2 iterations, we're
+down to just two nodes. We return the
+corresponding cut. By corresponding cut,
+what I mean is, one group of the cut is
+the vertices that got fused into each
+other, and wound up corresponding to the
+super node. In this case, everything but
+the bottom right node, And then the other
+group is the original nodes corresponding
+to the other super node of the contracted
+graphs, which, in this case, in just the
+bottom right node by itself. So this Set A
+is going to be these three nodes here,
+which all got fused into each other,
+contracted into each other. And B is going
+to be this node over here which never
+participated in any contractions at all.
+And what's cool is, you'll notice, this
+does, in fact, define a min cut. There are
+two edges crossing this cut. This one, the
+rightmost one and the bottommost one. And
+I'll leave it for you to check that there
+is no cut in this graph with fewer than
+two crossing edges, so this is in fact a
+min cut. >>Of course, this is a randomized
+algorithm, and randomized algorithms can
+behave differently on different
+executions. So let's look at a second
+possible execution of the contraction
+algorithm on this exact same input. Let's
+even suppose the first iteration goes
+about in exactly the same way. So, in
+particular, this leftmost edge is gonna
+get chosen in the first iteration. Then
+instead of choosing one of the two
+parallel edges, which suppose that we
+choose the rightmost edge to contract in
+the second iteration. Totally possible, 25%
+chance that it's gonna happen. Now
+what happens after the contraction? Well,
+again, we're gonna be left with two nodes,
+no surprise there. The contracted node
+gets sucked into oblivion and vanishes.
+But the other three edges, the ones with
+the hash marks, all stick around, and
+become parallel edges between these two
+final nodes. This, again, corresponds to a
+cut (A, B), where A is the left two
+vertices, and B is the right two vertices.
+Now, this cut you'll notice has three
+crossing edges, and we've already seen that
+there is a cut with two crossing edges.
+Therefore, this is <i>not</i> a min cut. >>So what
+have we learned? We've learned that,
+the contractual algorithm sometimes
+identifies the min cut, and sometimes it
+does not. It depends on the random choices
+that it makes. It depends on which edges
+it chooses to randomly contract. So the
+obvious question is, you know, is this a
+useful algorithm. So in particular, what
+is the probability that it gets the right
+answer? We know it's bigger than 0, and
+we know it's less than 1. Is it close to
+1, or is it close to 0? So we find
+ourselves in a familiar position. We have
+what seems like a quite sweet
+algorithm, this random contraction
+algorithm. And we don't really know if
+it's good or not. We don't really know how
+often it works, and we're going to need to
+do a little bit of math to answer that
+question. So in particular, we'll need
+some conditional probability. So for those
+of you, who need a refresher, go to your
+favorite source, or you can watch the
+Probability Review Part II, to get a
+refresher on conditional probability and
+independence. Once you have that in your
+mathematical toolbox, we'll be able to
+totally nail this question. Get a very
+precise answer to exactly how frequently
+the contraction algorithm successfully
+computes the minimum cut.

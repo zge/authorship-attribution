@@ -1,0 +1,122 @@
+We saw earlier that lots of times
+probabilities or counts of bigrams or
+trigrams would be zero. What do we do in
+these cases? Let's think about this by
+starting with the, what's called the
+Shannon Visualization Method. And this is
+what Shannon proposed to, to visualize the
+actual endgram that you've built, by
+maximized likely estimation. So, here's
+the, the method. We choose a random
+bigram, according to its probability. So,
+here's a bigram. With start as the first
+word an then any other word according to
+it's probability. Roll a die and pick
+whichever [inaudible] comes up. So let's
+say we picked I as very likely first word,
+so we pick star I as our first bio-gram.
+Now which was another random bio-gram that
+starts with that word W we just generated
+and, and whose next word is chosen
+according to it's probability. So now we
+pick want, then we pick I want and now we
+go on until we happen to chose the end of
+sentence. So, I want to, to eat, eat
+Chinese, Chinese food, food [inaudible] is
+how we go. So now we bring these words
+together and we've generated a sentence.
+So the Shannon visualization method can
+show us a lot of things about the
+[inaudible] that we've built. So for
+example. Here's a grammar language model
+trained on Shakespeare and generating
+random sentences. So here's some unigram
+sentences, Every enter now severally so
+let. Hill he late speaks or. Not very good
+sentences, how about our bigrams? Why does
+stand forth thy canopy forsooth? He is
+this [inaudible] hit the King Henry, live
+king, follow. Oh, this is better, it's
+beginning to sound like Shakespeare. How
+about this one? Indeed, the Duke, and had
+a very good friend. Well, that sounds
+pretty good. Sweet Prince Falstaff shall
+die. And now let's look at the quadro
+[inaudible]. It cannot be but so. Will you
+not tell me who I am? That sounds very
+good. Now Shakespeare produced 800,000
+words at, with a vocabulary of 30,000. And
+it turns out that in those 800,000 word he
+produced about 30,000 words, he produced
+about 300,000 different bigram types or
+different word, unique pair of words. But
+that's 300,000 out of 30,000 squared or
+out of 80, 844 million possible bigram. So
+if we multiply that out 99.96 percent of
+the possible bigrams were never seen, they
+also were gonna have zero entries in the
+bigram table. Vast numbers of 0's. So,
+that's just bigrams. Quadrigrams are even
+worse. So the reason why those quadrigrams
+look like Shakespeare is because those
+were actual Shakespeare sentences. Because
+following any particular quadrigram really
+only one possible word could occur with
+such a small corpus as Shakespeare. And we
+can see that if we look at a different
+corpus like the Wall Street Journal, it's
+not Shakespeare. So, for example, here's
+some trigrams sentences from the Wall
+Street Journal. They also point to $99.6
+billion from 200406, three percent of the
+rates of interest stores, as Mexico and
+Brazil and market conditions. Eh, sounds
+like the Wall Street Journal. But here's
+two corpora of English, both rea-, you
+know, both of reasonable size corpora,
+millions of words, or at least, a million
+words. No overlap at all in the
+Shakespeare sentences and the Wall Street
+Journal sentences. So what's' the lesson
+from this? One lesson is the parallels of
+overfitting. N-grams only work well for
+word prediction if the test corpus looks
+like the training corpus. If you test on
+Shakespeare and your, but you trained on
+The Wall Street Journal, you're not going
+to predict words very well. So in real
+life, this just doesn't happen. So we'd
+like to train robust models that do a
+better job of generalizing. And I wanna
+talk about one kind of generalization,
+which is dealing with zeros. So by zeroes,
+I mean, things that never occurred in the
+training set, but do occur in the test
+set. So let's look at some zeros. Imagine
+that in the training set, we had phrases
+like denied the allegations, denied the
+reports, denied the claims, denied the
+request. And we never saw denied the
+offer, so the probability, based on
+maximum likelihood estimation of offer,
+given denied is zero. Now, we go to a test
+set, and we see there is a sentence denied
+the offer, and denied the loan. What's the
+probability of those sequences, denied the
+offer and denied the loan gonna be? Well,
+the probability is gonna be, because our,
+we've trained our probabilities on our
+training set, we're gonna do a very bad
+job. If we're a speech recognizer, we'll
+never recognize this phrase. If we're a
+machine translator, we'll refuse to
+translate into this phrase. We're gonna
+claim this phrase is just not good
+English. So, this is a, this is a big
+problem we need to solve. So bi grams with
+zero probability value. Mean that we're
+gonna assign zero probability to the test
+set. And so we can never compute
+perplexity, we can't divide by zero. So we
+need, we're gonna need to find a way of
+dealing with, biograms with zero

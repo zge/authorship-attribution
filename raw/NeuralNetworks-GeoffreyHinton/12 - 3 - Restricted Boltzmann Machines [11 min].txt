@@ -1,0 +1,260 @@
+In this video, I will introduce Restricted
+Boltzmann Machines.
+These have a much simplified architecture
+in which there are no connections between
+hidden units.
+This makes it very easy to get the
+equilibrium distribution of the hidden
+units if the visible units are given.
+That is, once you've clamped the
+datavector on the visible units,
+The equilibrium distribution of the hidden
+units can be computed exactly in one step
+because they're all independent of one
+another, given the states of the visible
+units.
+The proper Boltzmann machine learning
+algorithm is still slow for a restricted
+Boltzmann machine.
+But in 1998, I discovered a very
+surprising shortcut that leads to the
+first efficient learning algorithm for
+Boltzmann machines.
+Even though this algorithm has theoretical
+problems, it works quite well in practice.
+And it led to a revival of interest in
+Boltzmann machine learning.
+In a restricted Boltzmann machine, we
+restrict the connectivity of the network
+in order to make both inference and
+learning easier.
+So, it only has one layer of hidden units
+and there's no connections between the
+hidden units.
+There's also no connections between the
+visible units.
+So, the architecture looks like that, it's
+what computer scientists call a bipartite
+graph.
+There's two pieces, and within each piece,
+there's no connections.
+The good thing about an RBM is that if you
+clamp a datavector in the visible units,
+you can reach thermal equilibrium in one
+step.
+That means with a datavector clamped, we
+can quickly compute the expected value of
+vihj because we can compute the exact
+probability with each j will turn on, and
+that is independent of all the other units
+in the hidden layer.
+The probability that j will turn on is
+just the logistic function of the input
+that it gets from the visible units and
+quite independent of what other hidden
+units are doing.
+So, we can compute that probability all in
+parallel and that's a tremendous win.
+If you want to make a good model of a set
+of binary vectors, then the right
+algorithm to use for a restricted
+Boltzmann machine is one introduced by
+Tieleman in 2008 that's based on earlier
+work by Neal.
+In the positive phase, you clamp the
+datavector on the visible units.
+You then compute the exact value of the
+expectation vihj for all pairs of
+invisible in the hidden unit.
+And you could do that cuz vi is fixed, and
+you can compute vj exactly.
+And then, for every connected pair of
+units, you average the expected value of
+vihj over all the data vectors in the mini
+batch.
+For the negative phase, you keep a set of
+fantasy particles that is global
+configurations.
+And then, you update each fantasy particle
+a few times by using alternating parallel
+updates.
+So, after each weight update, you update
+the fantasy particles a little bit and
+that should bring them back to close to
+equilibrium.
+And then, for every connected pair of
+units, you average vihj over all the
+fantasy particles, and that gives you your
+negative statistics.
+This algorithm actually works very well,
+and allows RBMs to build good density
+models or sets of binary vectors.
+Now, I am going to go on to our learning
+algorithm that is not as good at building
+density model but is much faster.
+So, I'm going to start with a picture of
+an inefficient learning algorithm for
+restrictive Boltzmann machines.
+We're going to start by clamping a
+datavector on the visible units, and we're
+going to call that time t0.
+So, we're going to use times now, not to
+denote weight updates, but to denote steps
+in a Markov chain.
+Given that visible vector, we now update
+the hidden units.
+So, we choose binary states for the hidden
+units and we measure the expected value,
+vihj, for all pairs of visible and binary
+units that are connected.
+And I'll call that vihj zero to indicate
+that it's measured at time zero,
+With the hidden units being determined by
+the visible units.
+And, of course, we can update all the
+hidden units in parallel.
+We then use the hidden vector to update
+all the visible units in parallel, and
+again we update all the hidden units in
+parallel.
+So, the visible vector t1 = one, we'll
+call a reconstruction, or a one-step
+reconstruction,
+And we can keep going with the alternating
+chain that way,
+Updating visible units, and then hidden
+units,
+Each set being updated in parallel.
+And after we've gone for a long time,
+We'll get to some state of the visible
+units, or I'll call t infinity to indicate
+it needs to be a long time and the system
+will be at thermal equilibrium, and now,
+we can measure the correlation of vi and
+hj after the chains run for a long time
+and I'll call that vihj infinity.
+And the visible state we have after a long
+time, I'll call it fantasy.
+So now, the learning rule is simply, we
+change Wij by the learning rate times the
+difference between vihj at time zero and
+vihj at time infinity.
+And, of course, the problem with this
+algorithm is that we have to run this
+chain for a long time before it reaches
+thermal equilibrium.
+And if we don't run it for long enough,
+the learning may go wrong.
+In fact, that last statement is very
+misleading.
+It turns out that even if we only run the
+chain for a short time, the learning still
+works.
+So, here's the very surprising shortcut.
+You just run the chain up, down, and up
+again.
+So, from the data, you generate a hidden
+state, from that.
+You generate a reconstruction, and from
+that, you generate another hidden state.
+And you may have a statistics once you've
+done that.
+So, instead of using the statistics
+measured at equilibrium, we're using the
+statistics measured after doing one full
+update of the Markov chain.
+The learning rule is, and the same as
+before, except this much quicker to
+compute, and this is clearly is not doing
+maximum likelihood learning because the
+term we are using for negative statistics
+is wrong.
+But the learning, nevertheless, works
+quite well.
+Next week, we'll understand a bit more
+about why it works well.
+But for now, we'll just see that it does.
+So, the obvious question is why does
+actual cut work at all?
+And here's the reasoning.
+If we start the chain at the data, the
+Markov chain will wander away from the
+data and towards its equilibrium
+distribution.
+That is towards things that is initial
+weights like more than the data.
+We can see what direction it's wandering
+in after only a few steps.
+And if we know the initial weights aren't
+very good, it's a waste of time to go all
+the way to equilibrium.
+We know how to change them to stop it
+wandering away from the data without going
+all the way to equilibrium.
+All we need to do is lower the probability
+of the reconstructions of confabulations
+as a psychologist would call them, it
+produces after one full step, and then,
+raise the probability of the data.
+That will stop it wandering away from the
+data.
+Once the data and the places it goes to
+after one full step have the same
+distribution, then the learning will stop.
+So, here's a picture of what's going on.
+Here's the energy surface in the space of
+global configurations.
+Here's a data point on the energy surface,
+and by data point, I mean, both the
+visible vector and the particular hidden
+vector that we got by stochastic updating
+the hidden units.
+So, that hidden vector is a function of
+what the data point is.
+So, starting at that data point, we run
+the Markov chain for one full step to get
+a new visible vector and the hidden vector
+that goes with it.
+So, a reconstruction of the data point
+plus the hidden vector that goes with that
+reconstruction.
+We then change the weights to pull the
+energy down at the data point, and pull to
+the energy up the reconstruction.
+And the effect of that would be to make
+the surface look like this.
+And you'll notice we're beginning to
+construct an energy minimum at the data.
+You'll also notice that far away from the
+data, things have stayed pretty much as
+they were before.
+So, this shortcut of only doing one full
+step to get the reconstruction fails for
+places that are far away from the data.
+We need to worry about regions of the
+data-space that the model likes but which
+are very far from any data point.
+These low energy holes cause the
+normalization term to be big, and we can't
+sense them if we use the shortcut.
+If we use persistent particles, where we
+remembered their states, and after each
+update, we updated them a few more times,
+then they would eventually find these
+holes.
+They'd move into the holes, and the
+learning would cause the holes to fill up.
+A good compromise between speed and
+correctness is to start with small weights
+and to use CD1, that is contrust
+divergence with one full step to get the
+negative data.
+Once the weights have grown a bit, the
+Markov chain is mixing more slowly, and
+now we can use CD3.
+Once the weights have grown more, we can
+use CD5, or nine, or ten.
+So, by increasing the number of steps as
+the weights grow, we can keep the learning
+working reasonably well, even though the
+mixing rate of the Markov chain is going

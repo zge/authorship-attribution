@@ -1,0 +1,215 @@
+Now, we'll look at Shellsort which is a
+bit elementary on the face of it but it's
+not at all elementary as you'll see. The
+idea of Shellsort is that Insertion Sort
+is inefficient because elements really
+move only one position at the time even
+when we're kind of know that they have a
+long way to go. The idea behind Shellsort
+is that we'll move entries several
+positions at a time and the way we're
+going to do it, it's called h-sorting the
+array. So, an h-sorted array is h
+different inter leaves sorted
+sub-sequences so in this case with h=4
+if we start at L and look at every
+fourth element - M, P, T - then it's sorted. If
+we start in the second place at E and look
+at every fourth element, it's sorted. So
+this is 4 interleave sequences, that's
+a 4-sorted array. And what we're going
+to do is implement a sorting method that
+h-sort for decreasing sequences of values
+of h. This is one of the oldest sorting
+methods invented by Shell in 1959. So, in
+this case, it starts out with the input
+example shown and then the 13-sort -
+a few items are moved, 4-sort - a few
+more are moved, and then finally, a 1-sort.
+And the idea is that each of the
+sorts can be implemented with only a few
+exchanges given that the previous ones
+happened. So first thing is how do we get an
+array h-sorted? That's actually pretty
+easy. We just use Insertion Sort but
+instead of going one back every time we
+come with a new item, we go h back. So for
+example when we come to this A in the
+Insertion Sort, then it's, we look at the
+array before that and then there was M and
+E in the positions three back so we
+exchange the A with the larger one to its
+left, that's M and then the other larger
+one to its left, that's E and then put it
+into position. So the code is the same as
+insertion, as for Insertion Sort, except
+that when we go backwards through the
+array we skip by h instead of just by one.
+That's how we h-sort an array. And the
+idea is we're going to use Insertion Sort
+because of two reasons based on our
+understanding of how Insertion Sort works.
+While the first thing is if the increments
+are big then the size of the sub arrays
+that we're sorting are pretty small so any
+sorting method including Insertion Sort is
+going to work well. But the other thing is
+if the increments are small because we've
+done previous h-sorts for bigger
+values of h, the array is partially sorted
+and so Insertions Sort is going to be
+fast. You wouldn't work to use Shellsort
+as the basis for h-sorting because that
+always takes quadratic time no matter what
+order there is in the array. So let's look
+at example of Shellsort with increment
+7, 3, and 1. So, we start with
+this sort example and then 7-sorting
+it - just involves doing insertion
+sort but just reaching back
+7 each time. In this case, the 4
+subfiles stretched out at seven each only
+have two elements in them. And then we
+3-sort. Now, because it's 7-sorted
+and a 3-sort elements are either
+already in placed or on a go back a few
+strides. On this case, it's only the A
+that goes back two. And then we 1-sort
+and again because of the fact that it's
+been 7-sorted and 3-sorted, the
+arrays are almost in order when it comes
+time to do the 1-sort and most of the
+items only go back one or two positions.
+So we have to do a few extra passes to do
+the higher sorts but the each element
+moves only a little bit on each path and
+that's how Shellsort gains its efficiency.
+So actually once you 1-sort, that's
+Insertion Sort so you're going to always
+get a sorted result. The only difference
+is how efficient is that. Now the
+intuition behind Shellsort and actually
+the mathematical fact is that if you've
+got an array that's h-sorted and then you
+k-sort it for another value k different
+from h, it's still h-sorted. This is one
+of those mathematical facts that seems
+obvious but then if you try to prove that
+maybe it's a little more subtle than you
+think. So, if you think of all this is,
+is, is trivial and easy, go ahead and try
+to write down a proof that a g-sorted
+array remains g-sorted even after it's
+h-sorted. But most people will accept that
+and it's a fact and that's how Shellsort
+gains efficiency. Now there's another
+problem is what increment sequence should
+we use for Shellsort. One of the first
+things you might think of is let's try
+powers of two. Actually that one doesn't
+work at all, very well at all because it
+winds up not comparing elements in even
+positions with elements in the odd
+positions until the 1-sort which means
+performance can be bad. Shell's original
+idea is to try powers to two minus one and
+that works okay. Knuth when he wrote his
+books in the 60s proposed the increment
+sequence 3x + 1. We'll start with the
+1, 4, 13, 40, 121, 364 like that
+and that's good because it's
+easy to compute. When we're using in
+Shellsort of course, we find the largest
+increment less than our file size and then
+do the sorts for decreasing values of that
+increment. But finding the best increment
+sequence is a research problem that has
+confounded people for quite a long time.
+Here's an increment sequence that I found
+after maybe a year's work and it works
+well but nobody knows if that's the best
+one. So here's the implementation in Java
+of Shellsort for Knuth's 3x + 1
+increment sequence. We'll just go
+ahead and compute the increments that are
+less than n, n / 3 and then starting
+at that increment whatever it is and say,
+we started 364 then next time we need an
+increment, we'll just divide it by 3,
+364 integer divide by 3, 364 integer /
+3 it gets 121, 40 and so forth. So,
+this h = h / 3 gets us to the next
+increment. And then, the implementation is
+just Insertion Sort. We just go through
+starting at h for i and when we do the
+insertion, the j loop, we decrement j by h
+each time, otherwise the code is exactly
+like Insertion Sort. So, just adding this
+extra loop for h-sorting and this extra
+loop to compute the increments to
+Insertion Sort, we get a slightly more
+complicated piece of code but its much,
+much more efficient. Here's what it looks
+like for a bigger array. We start with the
+randomly ordered input and you can see
+that it gets more and more in order on
+each time that we h-sort for the
+decreasing values of h. Here's an
+animation. This animation does the whole
+h-sort for each subarray. It's a
+little better feeling for what's going on.
+And now to do the high ones pretty quickly
+and now it's doing the 1-sort and again
+it steps through the array pretty quickly.
+If it's partially sorted it doesn't make
+much difference - does the higher sorts a
+little bit faster. But that's simple to
+implement and very efficient sorting
+algorithm. Now, the analysis of Shellsort
+is still open. Now, there's a few things
+that we can say. For example we can say
+that the number of comparison and the
+worst case is O(N3/2) for the 3x + 1
+increments. But actually in practice it's
+much less than that. The problem is nobody
+knows an accurate model for describing
+the number of compares taken by Shellsort
+for any interesting increment sequence.
+This seems to be with a small value,
+multiple of n times the number of increments
+used which is some multiple maybe of n log n
+but nobody is been able to find an
+accurate model that proves that for any
+interesting increment sequence for
+Shellsort. So, why we are interested in
+this algorithm? Well, it's a simple idea
+that leads to substantial performance
+gains. It's very useful in practice
+because it's pretty fast except for very
+huge arrays. It's going to beat even the
+classical sophisticated methods for medium
+sized arrays. And it doesn't take much
+code. It's often used in embedded systems
+or in hardware sort type systems because
+there's so little code involved to
+implement it. And it just leads to a lot
+of interesting questions. This gets to the
+intellectual challenge of developing
+algorithms. If you think what we've been
+studying so far is trivial, go ahead and
+find a better increment sequence. Try some
+technique to discover one and try to say
+something about the average-case
+performance of Shellsort. People have been
+trying to do that for 50 years without a
+whole lot of success. So, the lesson is
+that we can develop good algorithms or
+good implementations without much code but
+there are some out there that are still
+waiting discovery. It could be that there are
+some increment sequence out there that
+make Shellsort more efficient than any
+other method, any of the sorting method
+that we know for pratical file size, no
+one can deny that. That's Shellsort or
+first non-trivial sorting method.

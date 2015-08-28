@@ -1,0 +1,254 @@
+In this video, I'm going to talk about 
+the use of binary codes for image 
+retrieval. 
+For retrieving documents, people like 
+Google have such good methods already, 
+the techniques like semantic hashing may 
+not be of much value. 
+But retrieving images is much more 
+difficult and the methods that convert an 
+image into a fairly large binary code of 
+say, 256 bits, seem to work quite well. 
+However, we don't want to do a very long 
+sequencial search through vectors of 256 
+bits so semantic hashing can be used to 
+first create a short list and then we can 
+get better quality matches by using 
+longer binary codes in a serial search. 
+Now, we get to look at using binary codes 
+for image retrieval. 
+Image retrieval of present is typically 
+done by using the captions. 
+But why not use the images too? 
+They obviously contain a lot more 
+information than the captions. 
+The basic problem is that pixels are not 
+like words. 
+Individual pixels don't tell us much 
+about the content of an image. 
+Obviously if you could recognize the 
+objects in the images, then we'd have 
+things that were much more like words. 
+But recognizing objects is hard. 
+At least it was when we first did this 
+work. 
+Now deep neural nets have got much better 
+at it, and so that may well be the way to 
+go. 
+So if we're not going to recognize the 
+objects, maybe what we should do is 
+extract a vector that has information 
+about the content of the image. 
+And the obvious thing to extract is the 
+real valued vector. 
+But the problem is that matching real 
+value vectors in the real data base is 
+slow and it also requires a lot of 
+storage for the real value vectors. 
+If we can extract a fairly short binary 
+vector that contains a lot of information 
+about the image that's much easier to 
+store and much faster to match, even 
+faster is to use a two stage method. 
+So first, we extract a short binary code 
+of about 30 bids and that short binary 
+code is used with semantic hashing to 
+very rapidly get us a short list of 
+promising images. 
+So we simply take the short binary code, 
+and flip a few bits in it to get 
+candidate images. 
+The candidate images can then be matched 
+using 256 bit binary codes that are 
+stored with each known image. 
+To search for much better matches than 
+can be found with a 28 bit binary code. 
+Even a 256 bit binary code only requires 
+four words of memory per image. 
+And even though we're then going to do a 
+serial on these binary codes. 
+The search can be done very fast, because 
+it only requires a few operations to 
+compare two, 256 binary codes to find out 
+how many bits they have in common. 
+The question is, how good is a binary 
+code of that size at retrieving images?. 
+Are they going to find images that we 
+think of as being similar? 
+So here's a net that trained by Alex 
+Krizhevsky. 
+It's working on small color images so 
+they're only 32 pixels by 32 pixels and 
+he takes his input the red, green, and 
+blue channels from those images so 3,000 
+inputs. 
+He then expands that to a larger number 
+of hidden units because we're going to go 
+from real value inputs to logistic hidden 
+units, 
+which probably have less capacity. 
+We then progressively decrease the number 
+units in each layer until we get down to 
+256 bits. 
+This encoder has about 67 million 
+parameters. 
+It's quite big. 
+It takes a few days to train it on, in 
+video GPU. 
+And I'll exchange it on two million 
+images. 
+There's absolutely no theory to justify 
+the architecture we used. 
+We know we want a fairly deep net. 
+It makes sense to make it get an arrow as 
+we go up. 
+But this particular architecture, where 
+you have the number of units each layer, 
+is just a guess. 
+The interesting thing is, a guess like 
+this already works quite well. 
+And presumably, there are some other 
+architectures that will work better. 
+The first question to ask is how well 
+does an ordering coder like this do at 
+reconstructing the images? 
+So, here is a face image and it's 
+reconstruction and you can see that from 
+the reconstruction you can tell the kind 
+of an image it is. 
+Here's another example, where it's a 
+scene probably at a party, you can't 
+really tell what kind of scene it is from 
+the image but you might guess that there 
+are a number of people involved or you 
+might not. 
+Here's an outdoor scene. 
+And you can see that the reconstruction 
+captures a lot of information about the 
+accuracy. 
+It captures the water in the sky and the 
+hyphens of thin strip land. 
+So lets look at the quality of 
+retrievable we can do within ordering 
+codes that gives those kinds of 
+reconstruction. 
+We'll start with a picture of Michael 
+Jackson in the red square and Alex 
+retrieved the most similar images and 
+above each image you can see how many 
+bits had differed from Michael Jackson 
+body. 
+And you'll notice they're all a fairly 
+similar number of bits. 
+In 256 bits, differing by only 61 bits is 
+extraordinarily unlikely to happen by 
+chance if they were random images. 
+It has to be a pretty similar image to 
+differ by so few bits. 
+One nice thing about what's retrieved is, 
+with one exception, they're all faces. 
+If we look at the retrieval you get by 
+using euclidean distance on the raw 
+pixels, 
+then some of them are faces, but most of 
+them aren't. 
+So obviously the ordering coder has 
+understood something about faces that 
+isn't in the information about Euclidean 
+distance. 
+It's clearly giving much better 
+retrieval. 
+Let's take another example, here we took 
+the image of a party scene and we treat 
+of the images. 
+And you can see that about half of them 
+have images you would think of as fairly 
+similar that other party scenes. 
+The tip of the other party scenes with 
+something bright in the middle, like the 
+oiginal party scene, and you'll also 
+notice that most of the bad matches also 
+have something bright in the middle. 
+So even though we're getting down to 256 
+bit binary codes through a lot of hidden 
+layers, it's still sensitive to quite a 
+lot about the image structure and where 
+the brighter patches are. 
+If you look at what Euclidean distance 
+does, it's much worse. 
+Euclidean distance gets one other scene 
+with a, a group of people. 
+And then everything else is fairly 
+dissimilar. 
+You'll notice with Euclidean distance, it 
+often gets very smooth images. 
+That's because if you can't match the 
+high frequency variation in the image, 
+it's better to match its average then to 
+get other stuff with high frequency 
+variations out of phase. 
+So when you got a complicated image, 
+including in distance will typically find 
+smooth images to match it. 
+And that's because it's minimizing a 
+squared error in pixel space. 
+So obviously we'd like the image 
+retrievable to be more sensitive to the 
+content of the image that is stored kinds 
+of objects in the relationships in image 
+and less sensitive to the pixel 
+intensities. 
+We can do that by first training a big 
+net to recognize lots of different kinds 
+of object in real images and we show you 
+how to do that in lecture five. 
+Then we take the activity vector, in the 
+last hidden layer of the big net, and use 
+that as a representation of the image. 
+This should be much better than the pixel 
+intensities at capturing information 
+about the kinds of objects in the image. 
+So to see if this approach is likely to 
+work, we use the net described in lecture 
+five, the one the image that competition. 
+So far, we've only tried it on Euclidan 
+distance, between the activity of vectors 
+in the last hidden layer. 
+But obviously if it works for that, 
+we could then that those activity vectors 
+and build an ordering code around those 
+to get them down to binary codes. 
+So let's first see if it works with the 
+Euclidean distance. 
+It turns out it works really well. 
+We don't know yet whether it will work 
+with binary codes. 
+So, in the column on the left, you see 
+the query images. 
+And then to the right of them, you see 
+all the things that were retrieved. 
+If you look at the elephant query image, 
+you'll see that what gets retrieved is 
+other elephants but elephants with very 
+different poses. 
+So those images wouldn't have a very good 
+overlap in pixel space, although the 
+overlap wouldn't be that bad. 
+If you look at the Halloween pumpkins, 
+you'll see that all the retrieved things 
+are other Halloween pumpkins. 
+And some of them, would have a pretty bad 
+overlapping pixel space. 
+Similar with the aircraft carriers, we 
+retrieve other images of aircraft carrier 
+that are very different. 
+So we anticipate that if we could reduce 
+the activity vector to short binary code. 
+We would have a fast and effective way of 
+retrieving similar images just by the 
+content of the image. 
+We'll see in lecture sixteen that we 
+could actually combine the content of the 
+image with the caption of the image, to 
+get an even better representation. 
+

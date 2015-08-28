@@ -1,0 +1,315 @@
+Okay.
+So now, let's talk about IBM model one.
+The critical question is how do we define
+a model p of f given e.
+So, we might, for example, have an English
+sentence like the dog barks.
+So, this is e.
+And this is a French sentence say, this
+sentence here which I believe is a
+reasonable translation to French, but my
+French is terrible.
+And so, we want to assign this pair of
+sentences a conditional probability or
+more generally, this is one of many
+possible translations for the English.
+We wanted to find distribution of all
+possible French sentences paired with this
+English sentence.
+I've seen throughout that each English
+sentence we're looking at has l words, and
+the French sentence we're looking at has m
+words.
+So, m and l, the length of two sentences.
+So, you might try to model this
+probability directly with no intermediate
+structure.
+But that turns out to be a very difficult
+thing to do.
+And so, an absolutely critical idea in the
+IBM model was to define the idea of what's
+called an alignment between these 2
+sentences.
+Okay.
+So, in this case I have a number of French
+words, m equals 3 and the number of
+English words l equals 3.
+And an alignment is just going to be a
+sequence of values.
+A1, a2, up to an.
+A is 3 in this case.
+And then, basically, for each French word,
+specifies which English word is aligned
+to?
+So, here's one possible alignment.
+We can say le is aligned to the, this word
+is aligned to this and this line, word is
+aligned to this, okay?
+So, more formally, any of these alignment
+variables can take any values in 0 to l
+where l is the length of the English
+sentences.
+Talk in a second about why we have 0
+included here, but for this particular
+line we have a1 equals 1, a2 equals 1, a3
+equals 1.
+Why do I have 0 as a possible alignment
+point?
+So, if I say, for example, a1 is equal to
+0.
+That means we have to actually assume that
+this word is aligned to what's called a
+null word.
+And so, the IBM researchers found it was
+useful to include this extra word null
+which could be used to generate some
+French words in a sentence.
+Intuitively this corresponds to French
+words which there is no natural word to
+align to it in English.
+Okay.
+So, how many possible alignments are
+there?
+So, if I have m possible words, and sorry,
+l words on the English side.
+E is over here.
+And I have m possible words on the French
+side.
+Each of these French words can be aligned
+to 0, 1, 2 up to l.
+So, there are 1 plus l, l plus 1 possible
+alignments for each word.
+And because I'm choosing an alignment for
+each of the m words, we have l plus 1 is
+m.
+As the number of possible alignments.
+So, the alignment can be any structure
+where each French word is aligned to a
+single English word.
+So, here's an example an example
+English-French sentence.
+In this case, the number of English words
+is 6.
+One, two, three, four, five, six.
+And so, l equals 6.
+Number of French words, one, two, three,
+four, five, six, seven.
+So, m equals seven.
+And one alignment is the following.
+So, let's number of these English words,
+1, 2, 3, 4, 5, 6.
+And the French words, 1, 2, 3, 4, 5, 6, 7.
+And so, basically, an alignment is going
+to be a sequence of numbers, 2, 3, 4, 5,
+6, 6, for example.
+Specifying word by word in French which
+English word were aligned to.
+So, this is saying that word 1 is aligned
+to word 2 in English.
+Word 2 in the French is aligned to word 3.
+Word 3 in the French is aligned to word 4.
+Word 4 in the French is aligned to word 5.
+And then, the next 3 words are all aligned
+to English word 6.
+Okay.
+So, that is one possible setting for these
+alignment variables.
+And that's probably a pretty good setting
+for the alignment variables.
+Okay.
+It does a reasonable job of saying what
+the various words in French correspond to
+on the English side.
+So, that's one possible alignment.
+Let me show you another possible
+alignment.
+So, this one down here is just saying that
+every French word is aligned to English
+word 1.
+So, we can draw like follows.
+Okay?
+So again, each French word is aligned to a
+single English word.
+In this case, they're all aligned to word
+one on the English side.
+This is clearly a very bad explanation of
+the translation in this case.
+So, it's a very bad alignment.
+So, the next idea will be to define a
+model which assigns a conditional
+probability to any alignment a paired with
+a translation f.
+Conditioned on two things, conditioned on
+the English sentence and on the length of
+the French translation.
+So, you can visualize this as follows, we
+might have some English sentence for
+example the dog laughs.
+And let's say, m is equal to 3.
+And so, we know there are three french
+words, f1, f2 and f3, in this case, okay?
+So, each of these words could take any
+value into the [unknown].
+So, we could have all of these different
+words in French.
+And so, that's one choice.
+For each of these positions, we're going
+to choose a French word.
+And in addition, we're going to choose an
+alignment from the space of possible
+alignments.
+So, for example, we might have, as I
+showed you before, this alignment with the
+words le and this, and then this.
+And that would be one particular choice.
+And so, that would have probability of the
+alignments in this case will be 1, 2, 3.
+Sorry, 3.
+And it's be conditioned on their dog
+laughs.
+And on the fact that the French
+translation is also of length 3.
+Okay.
+We're actually going to decompose this
+into a product of two models.
+And we'll describe soon, how we can define
+these two models.
+The first is going to be a distribution of
+a possible alignments.
+So, conditioned on just the English
+sentence and on the length of the French,
+we're going to define a distribution over
+all possible alignments.
+Remember, there are l plus 1 pair m
+possible values for a.
+And then, secondly, we're going to define
+a second model which conditioned on
+alignment, an English sentence and an
+English sentence length.
+Assigns a probability to each possible
+French translation of that English
+sentence.
+Once we've done this, we can recover our,
+sort of end goal, which is to define a
+probability of any French sentence given
+in English sentence.
+And we can do this just by summing out
+over all possible alignments.
+This follows by the usual rules of
+probability.
+So, this entire product here is pf, a
+given e, m.
+And by the usual rules of probability, you
+can marginalize l, this alignment
+variable.
+You can sum it out to get a model of p of
+f given e.
+Okay.
+So, that's the basic trick in introducing
+alignments in this models.
+It's a very important thing to do.
+It allows us to introduce these
+intermediate variables alignments which
+give us an explanation of the, the
+translation process.
+And as we'll see, we end up with very
+natural parameterization of these two
+models.
+And we can then, sum out over the space of
+all possible alignments to get this final
+distribution over f if we need to do so.
+So, the bottom line is, estimating the
+probability of f given e directly is very
+difficult.
+So, instead, we come up with the model of
+p of f, a given e.
+Sorry, this should be conditioned on
+length, I guess.
+And then, we say, p of f given EM is equal
+to the sum over a, p of f, a given e, m.
+Now, a very important byproduct of this
+process is that once we have a model, of
+this form, we can actually, given an
+English sentence and a French sentence, we
+can find the most likely alignment.
+So, we have, if we have some English
+sentence here and we have some French
+sentence here, we can, for every possible
+alignment between these two sentences,
+evaluate their probability and pick the
+most likely alignment.
+And so, we do this by, again, using usual
+rules of probability.
+We can say that p of a given f, e, m is
+this model term on the numerator, and
+then, on the denominator, I have a sum
+over all possible alignments, this is p of
+f given e, m.
+And again, this equation follows by the
+usual rules of probability.
+And then, for a given f, e pair we can
+find the most likely alignment amongst the
+space of all possible alignments.
+I'm not going to go into detail about how
+this is done, it's described in the notes
+that are provided to accompany, accompany
+this class.
+But you can actually, in the IBM models
+one and two, compute this most likely
+alignment very, very efficiently.
+In fact, nowadays the IBM models are
+rarely, if ever, used for an actual
+translation.
+Even though they were originally designed
+for translation, they're rarely used for
+translation.
+But they do play a critical role in
+allowing us to recover alignments between
+sentences.
+So, once we've trained the parameters of
+an IBM model, we can then, sentence by
+sentence pair in our training set, find
+the most likely alignment for those
+sentence pairs.
+So, here's an actual example.
+This is for a French-English translation
+using some of the IBM alignment models or
+translation models.
+So, here is the French, here is the
+English.
+And here, what I've shown, is the most
+likely alignment.
+And so, what we actually have here is, in
+fact, for each English word, we have it's
+alignment to a French word.
+So, in fact, this model has been trained
+in the opposite direction p, e give f and
+we have the sum of the alignments p, e, a
+given f.
+This kind of model.
+So, it's trained in the reverse direction
+and because of this I have a an alignment
+now, where each English word is aligned to
+a single French word.
+So, let's look at this.
+It's saying that the is aligned to le,
+which if you know French and English is
+pretty much correct, council is aligned to
+this word and so on and so on.
+So, these alignments actually are quite
+good and they become very important in the
+phrase based translation systems we'll see
+in the next couple of lectures of the
+class.
+Because they essentially given us an
+anchor on how words in the English are
+aligned to words in the French.
+Okay?
+So, bottom line, once we've trained IBM
+models one or two, we can look at our
+training data sentences, which consists of
+these sentence pairs and actually find
+these most likely alignments.
+And at that point, we have a much better
+handle on how these two sentences
+correspond to each other.

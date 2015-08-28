@@ -1,0 +1,483 @@
+Welcome back.
+In this segment we first discussed
+thresholding techniques.
+They're simple and straight forward to
+understand.
+The main drawback is the determination of
+the value of the appropriate threshold.
+We described one approach.
+By Otsu, which estimates this threshold
+from
+the data, utilizing an estimate of a
+histogram.
+The criteria for choosing the threshold,
+is that the two classes will end
+up with, in a two class segmentation
+problem, should have the largest
+between-class variants.
+Such a result has been generalized to
+multiple classes.
+We also present the region growing and
+region merging and splitting approaches.
+There all intuitive straight forward, but
+their success depends on
+the predicate function used to measure the
+similarity between regions.
+In addition the region growing method
+requires the termination
+of the seed, which might need to be
+determined manually.
+So, let us now look at the details of this
+material.
+Segmentation methods based on thresholding
+are between
+of clear, simple to implement and
+computationally efficient.
+The idea is quite straight forward.
+If we have a two class segmentation
+problem, then
+we look at the values of each and every
+pixel.
+And if this intensity value is great or
+equal then the threshold,
+then the pixel belongs to an object,
+otherwise it belongs to the background.
+In this consideration, we assumed here
+that the brightness of the object is
+higher than that of the background, but
+this is without luck of generality.
+So this is a similarity based segmentation
+approach, since
+all the pixels with values greater than T
+are similar.
+And so are the pixels with values less
+than T.
+Clearly, the approach can be extended to
+the case when multiple thresholds are
+available.
+In which case, there are multiple classes.
+So with two thresholds I have three
+classes, and so on.
+Clearly, with such approaches, the value
+of
+the threshold or the values of multiple of
+those used is quite important and critical
+in determining the quality of the
+segmentation results.
+We consider here an experimental study to
+see the effectiveness of
+this simple thresholding approach that we
+described in the previous slide.
+We will utilize the camera man image and
+the mapping will perform shown here.
+So for those pixels.
+Let's have intensity above the threshold,
+or
+equal to the threshold they would be match
+to value 1 and those that are below the
+threshold would be mapped to 0.
+So the output of the threshold operation
+would be a binary image.
+We first set the threshold to 0.
+Since all the values in the image are
+greater and equal to
+0, what we will obtain, as expected, is
+just a white image.
+We raise the value of the threshold to 10
+and here is the binary segmented image you
+obtain.
+The black pixels here have values between
+0 and 9 in the original image.
+The image of an object starts appearing in
+the segmented image.
+We see here the resulted segmentation
+based on thresholding
+when the value of the threshold is equal
+to 25.
+And in this picture the segmented image
+when the threshold is equal to 50.
+I would, I view that this is a
+surprising satisfactory segmentation,
+given the simplicity of the approach.
+And it could very well serve our purposes.
+Classes in certain applications.
+Of course we can observe here one of the
+main drawbacks of
+such an approach the fact that the regions
+of classes are disconnected.
+For example if we look at the pants of the
+camera man
+they belong to two different classes and
+this is not a desired outcome.
+We show here the segmentation result when
+the value of the threshold is at 150.
+We can see that a lot of more pixels
+now belong to the same class as the camera
+man.
+And here is the result for the threshold
+value equal to 250.
+The tripod is pulled out with this
+particular threshold.
+Overall, with this simple thresholding
+approach, one could experiment with
+different with thresholds, as we did here
+in this experiment.
+And utilize the segmentation that is most
+suitable for the application at hand.
+And the segmentation might be subjected to
+further processing.
+We will see next, what is one way
+to determine the threshold in an automated
+fashion.
+We discuss now a method the Otsu according
+to which the optimal
+value of the threshold is found only
+perform in my segmentation.
+There is a method that has been very
+popular for over 35 years now.
+According to this method, the globally
+optimal threshold is
+found so that the between class variance
+is maximized.
+The largest this variances, the more
+likely
+that the threshold will segment the image
+properly.
+As you will see, in finding this optimal
+value of
+the threshold, only the histogram of the
+image is required.
+We discuss now the algorithmic details of
+Otsu's Method.
+We first compute the normalized histogram
+of the input image.
+So for each intensity, we find the number
+of pixels that occupy that
+intensity and we divide by the total
+number of pixels in the image.
+Therefore each Pi here is a probability
+between 0 and 1,
+and the histogram represents the
+probability density function of the image.
+We assume that we have capital L different
+intensity levels.
+We chose a threshold k from the available
+intensity range values.
+And by doing so, we divide the number of
+pixels in the image into two classes.
+Class one which contains the pixels that
+are below or equal to the threshold.
+They have intensity values between 0 and
+k.
+In class two the set of pixels that have
+in tested values in this range.
+According to Otsu's criteria, the optimal
+threshold is
+obtained so that the between class
+variance is maximized.
+So this is the expression for the between
+class variance, which of
+course is a function of the threshold k,
+that we have selected.
+P1 of k is the probability of set C1
+occuring, while
+P of 2 of k is the probability of C2 of k.
+M1 of k is the mean of the intensities in
+class C1, M2 of l, the mean
+of intensity of class C2 and m of G is the
+global mean of the image.
+So since we deal with the [UNKNOWN] set of
+intensities or [UNKNOWN] set of values k.
+We can evaluate this expression for all
+values of k we can step through it
+and pick the one that will maximize the
+between class variance.
+As we will see however this expression can
+be
+further simplified making this calculation
+even a bit easier.
+The various quantities for finding the
+between class variants are shown here.
+The probability of set C1 or [UNKNOWN] P1
+of k is given by this expression.
+Is the sum of all probabilities up to
+intensity k.
+So it's accumulative distribution
+function.
+And P of 2 of k is a sum of probabilities
+from k plus
+1 to L minus 1, and it's equal to 1 minus
+P1 of k.
+M1 and m2 is already mentioned are
+the mean intensities of C1 and C2,
+respectively.
+The mean intensity up to a level k, it's
+simply given by this expression.
+It's the probabilistic mean.
+While the global mean intensity is given
+by this expression,
+a sum up from overall intensity values in
+the image.
+By substituting the expressions from the
+previous slide into the expression for
+the between class variants I showed a few
+slides ago, we can
+easily show in a straightforward way with
+a human manipulations that the
+between class variants is a function of k,
+is equal to this expression.
+So according to this expression, there are
+only two
+parameters that need to be computed for
+all values of
+k, P1 of k and m of, m of G,
+the global variance of the image is
+computed only once.
+Therefore, it's quite straight forward to
+step through all the
+values of k and there are capital L of
+those.
+So that we find the maximum value of the
+between-class variance
+and this is the optimal threshold k start
+according to Otsu's method.
+We show here the segmented image.
+Which was obtained by applying the optimal
+threshold according to Otsu's
+method to link densities of the camera man
+image shown here.
+So far we have discussed segmentation
+techniques which are based on
+finding the boundaries between regions
+based on discontinuities and intensity
+levels.
+And also on techniques, which perform
+segmentations via thresholding based
+on the distribution of pixel properties
+such as the intensity values.
+We'll discuss next, segmentation
+techniques which
+are based on finding the regions directly.
+So, in general, the region based
+segmentation problem can be formulated as
+follows.
+Assume that R represents the entire image
+region.
+Then, we're want to partition R into
+subregions, R1
+through Rn so that the following
+properties are satisfied.
+The first property indicates that the
+segmentation should be complete.
+So, the union of the regions will give
+back the original image.
+That is, every pixel must be in one
+region.
+The second property requires that points
+in the
+region are connected, either 4 or 8
+connected.
+The third condition indicates that the
+region shall, must be
+disjoined, so the intersection of two
+regions is the null space.
+The next condition deals with the
+properties that must
+be satisfied by the pixels in a segmented
+region.
+So the predicate applied on region R of i
+is true.
+That is all the pixels in R of i have the,
+for example, the same color.
+And finally.
+The last condition indicates that adjacent
+regions R of i and R of
+j are different, in terms of the predicate
+P that needs to be defined.
+As the name applies, region growing is a
+procedure that
+groups pixels into regions based on some
+pre-defined criteria for growth.
+The basic approach is to start with a set
+of seed points and from these seed
+points grow regions by appending to these
+seed points enabling
+pixels that have predefined properties
+based on a similarity criteria.
+There are two important considerations
+with such a method.
+How to select the seed points and how to
+select also the properties and also the
+similarity criterion.
+With respect to the first question, prior
+knowledge can be
+utilized and then the seed points can be
+selected manually.
+If this is not possible,.
+We can perform, for example, clustering of
+the points based on some properties of the
+pixels and then utilize the centroides of
+those class as, as the seed points.
+In growing the regions, you could
+use different features and different
+similarity criteria.
+With respect to the second questions,
+features that
+could potentially be used is color,
+moments and texture.
+Then of course we have to also define the
+similarity criterium.
+We show here a region growing example.
+Given this mandrill image, we manually
+select a seed point
+and we want to grow the region around this
+seed point.
+The feature we use for.
+This, for growing this region is the
+intensity value of
+the pixels and the similarity metric is
+this decaying exponential.
+So, this is the distance between
+intensities squared is part of the
+exponents.
+So, if the distance is 0, the similarity
+is 1 and
+as the distance and intensities grows
+their similarity goes to 0.
+So clearly we need a threshold so that we
+can compare
+the similarity value against this
+threshold and if the similarity value
+is above the threshold then the
+neighboring pixel becomes part of
+the seed otherwise it does not belong to
+the same region.
+So, using this algorithm, here is the
+region we obtained.
+And here this region is superimposed on
+the original image.
+We would say, by and large, quite
+satisfactory job was performed, although.
+When we think of a object, the nose of the
+Madrill, the
+whiskers here would not necessarily be
+included as part of the same region.
+An alternative to region growing we just
+discussed, is to divide [INAUDIBLE] into
+regions and then using splitting and
+merging steps, converge towards the final
+segmentation.
+So let R be the entire image.
+We select the predicate function, an
+example
+was given when we talked about region
+growing.
+Based on this predicate function, we can
+divide the image into smaller quadrants
+if the pixels of region R here do not
+satisfy the predicate function.
+So in this example we see the image is
+divided first into four
+quadrants and the fourth one here is
+further subdivided into four smaller ones.
+Clearly you have to define the minimum
+size
+of this region so that the splitting
+process terminates.
+The splitting approach described here
+gives rise
+to a quadry representation of the process.
+So, R is the original image.
+We first divide it into four quadrants.
+[BLANK_AUDIO]
+And then the 4th quadrant as shown
+here, it's further subdivided into four
+smaller quadrants.
+[BLANK_AUDIO]
+Imerging blocks we also use the predicate.
+So if the pixels of region are of j and
+the j, Jason region are of k.
+Satisfy the predicate then the two regions
+are merged.
+So alternating between splitting and
+merging we've
+converged towards the final segmentation
+of the image.
+We show here a simple example to
+demonstrate
+the effectiveness of the region splitting
+and merging approach.
+We utilize the baboon image that we used
+earlier.
+So we carry a step of splitting operations
+and this is the result we obtain.
+Clearly in carrying out those steps we
+have to define the features
+of the images that will be used us towards
+declaring the similarity.
+We use the intensity values in this
+particular case.
+We then have to define the predicate
+function based on which splitting will
+take place
+and to utilize the decaying exponential of
+the
+distance of intensity functions in this
+particular example.
+We also have to define a threshold based
+on which the.
+Value of the predicate function, it's
+either true or false.
+And finally, you have to decide and define
+the smallest
+size of the block where the splitting
+process will terminate.
+So looking at this result, we can observe
+that there is over-segmentation.
+We see, actually, the blocks defined here.
+We see this blotching artefacts that
+we encountered when we talked about
+compression.
+If we follow the splitting step by
+emerging step, here is the result we
+obtain.
+It looks like a rather satisfactory
+result, although again,
+it's hard to define an objective metric
+based on which.
+The quality of the segmentation should be
+evaluated.
+So splitting and merging is one of those
+valid segmentation approaches.
+And, of course, the effectiveness of the
+overall segmentation, its quality,
+depends on how the various parameters that
+I described here are chosen.
+We show here with this example that in
+some sense
+the regions splitting image approach can
+be used towards as detection.
+So, for the image on the left we show the
+segmentation with this image on the right.
+So there are two regions, the black and
+the white region.
+In obtaining this result, the smallest
+size of the block, the image can
+be split into is a 2 by 2 block, so a tiny
+one.
+And then, for the predicate function, we
+looked at the
+local variants or the local standard
+deviation of the block.
+And if the local standard deviation is
+greater than 35, then.
+It's classified as belonging to one
+region,
+otherwise its belong to the other region.
+So clearly all this boundary blocks here
+have high local variance and therefore
+classify,
+are classified as white blocks pixels
+while
+the rest are classified as black pixels.
+

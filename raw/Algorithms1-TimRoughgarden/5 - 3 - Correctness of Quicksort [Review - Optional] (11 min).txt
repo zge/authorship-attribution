@@ -1,0 +1,241 @@
+I just got the number of divide and
+conquer algorithms and, so far, I've been
+short shrift to proofs of correctness.
+This has been a conscience decision on my
+part. Coming up with the right divide and
+conquer algorithm for a problem can
+definitely be difficult, but once you have
+that eureka moment and you figure out the
+right algorithm you tend to, also, have a
+good understanding of why it's correct,
+why it actually solves the problem on
+every possible input. Similarly when I
+present to you a divide and conquer
+algorithm like, say, merge sort or
+quicksort, I expect that many of you have
+a good and accurate intuition about why
+the algorithm is correct. In contrast the
+running time of these developed
+[inaudible] algorithms is often highly
+non-obvious. So, correctness proofs for
+divide-and-conquer algorithms tend to
+simply formalize the intuition that you
+have via a proof by induction. That's why
+I haven't been spending much time on them.
+But nevertheless, I do feel like I owe you
+at least one rigorous correctness proof
+for a divide-and-conquer algorithm, and we
+may as well do it for quicksort. So in
+this optional video, we'll briefly review
+proofs by induction, and then we'll show
+how such a proof can be used to rigorously
+establish the correctness of quicksort.
+The correctness proofs for most of the
+other divide-and-conquer algorithms that
+we discuss can be formalized in a similar
+way. So let's begin by reviewing the
+format for proofs by induction. So, the
+canonical proofs by induction and the kind
+that we'll be using here, is when you want
+to establish an assertion for all of the
+positive integers in. So now it's some
+assertion which is parameterized by n,
+where n is a positive integer. I know this
+is a little abstract, so let me just be
+concrete about the assertion that we
+actually care about for quicksort. So for
+us, the assertion P(n) is the statement
+that cor, quicksort is always correct on
+inputs of length n, arrays that have n
+elements. So an induction proof has two
+parts. The first part is a base case and
+the second part is an inductive step. For
+the base case you have to get started so
+you show that at the very least your
+assertion is true when n equals one. This
+is often a trivial matter and that'll be
+the case when we establish the correctness
+of quick sort. Just on our rays with only
+one element. So, the non-trivial part of a
+proof by induction is usually the
+inductive step. And in the inductive step,
+you look at a value of n not covered by
+the base case, so a value of n bigger than
+one. And you show that if the assertion
+holds for all smaller values, small
+integers, then it also holds for the
+integer n. That is, you show that for
+every positive integer N that's two or
+greater, you assume that P of K holds for
+all K strictly less than N. And under that
+assumption, which is called the inductive
+hypothesis. Under the assumption that P of
+K holds for all K strictly less than N,
+you then establish that P of N holds as
+well. So if you manage to complete both of
+these steps, if you prove both the base
+case that P(1) holds, you argue that
+directly, and then also you argue that
+assuming the inductive hypothesis, that
+the assertion holds for all smaller
+integers, it also holds for an arbitrary
+integer n. Then you're done. Then in fact
+you have proven that the assertion P then
+holds for every single positive integer N.
+Right? So for any given N that you care
+about, the way you can derive that from
+one and two is you just start from the
+base case, P of one holds. Then you apply
+the inductive step N minus one times. And
+boom, you've got it. So you know that P
+holds for the integer N that you care
+about as well. And that's true for
+arbitrarily large values of N. So those
+are proofs by induction in general. Now
+let's instantiate this proof format, this
+type of proof for establishing the
+correctness of quicksort. So let me write
+again what is the assertion we care about.
+Our definition of P(n) is gonna be that
+quicksort is always correct on arrays of
+length n. And of course what we want to
+prove is that quicksort is correct no
+matter what size array that you give it,
+that is, we want to prove that P(n) holds
+for every single n at least one. So this
+is right in the wheelhouse of proofs by
+induction. ?Kay, so that's how we're going
+to establish it. Now depending on the
+order in which you're watching the videos,
+you may or may not have seen our
+discussion about how you actually choose
+the pivot, recall that the first thing
+Quick Sort does is choose a pivot, then it
+partitions the array around the pivot. So,
+we're going establish the correctness of
+Quick Sort, no matter how the choose pivot
+sub-routine gets implemented. Okay, so now
+matter how you choose pivots, you'll
+always have correctness. As we, as we'll
+see in a different video, the choice of
+pivot definitely has an influence on the
+running of Quick Sort, the correctness of
+Quick Sort, there's no matter how you
+choose the pivot. So it's perceived by a
+proof by induction. So for the base case
+when n equals one, this is a fairly
+trivial statement. Right? So, then we're
+just talking about inputs that have only
+one element. Every such array is already
+sorted. Quicksorts, in the bai, when n
+equals one just returns the input array.
+It doesn't do anything, and that is indeed
+the sort of array that it returns. So, by
+the rather trivial argument we had
+directly proven that p of one holds. We've
+proven the rather unimpressive statement
+that quicksort always correctly sorts one
+element arrays. Okay? No big deal. So,
+let's move on to the inductive step. So in
+the inductive step we have to fix an
+arbitrary value of N that's at least two.
+A value of N not covered by the base case.
+So let's fix some value of N, that leaves
+two. Now what are we trying to prove?
+We're trying to prove that Quick Sort
+always correctly sorts every input array
+of length N. So we also have to fix an
+arbitrary such input. So let's make sure
+we're all clear on what it is we need to
+show, what do you show in an inductive
+step. Assuming that PFK holds. For all
+smaller values, all smaller integers, then
+P of N holds as well. And remember this is
+the inductive hypothesis. So in the
+context of quicksort, we're assuming that
+quicksort never makes a mistake on any
+input array that has length strictly
+smaller than n. And now we just have to
+show it never makes a mistake on array,
+input arrays that have size exactly n. So
+this is the point in the proof where we
+actually delve into how Quick Sort is
+implemented to argue correctness. So
+recall what the first step of Quick Sort
+is, it picks some pivot arbitrarily, we
+don't know how, we don't care how. And
+then it partitions the array around this
+pivot element p. Now as we argued in the
+video where we discussed the partition sub
+routine, at the conclusion of that sub
+routine, the array has been rearranged
+into the following format. The pipit is
+wherever it is, everything to the left of
+the pipit is less than the pipit, and
+everything bigger than the pipit is
+greater than the pipit. Alright, this is
+where how things stand at the conclusion
+of the partitioning sub routine. So let's
+call this stuff less than the pipit the
+first part of the partition array, and the
+stuff bigger than the pipit, the second
+part of the partition array. And recall
+our observation from the overview video
+that the pivot winds up in its correct
+position. Right, where would the pivot be?
+Where is any element suppose to be in the
+final sorted array? What's suppose to be
+to the right of everything less than it,
+and to the left of everything bigger than
+it? And that's exactly where this
+partitioning subroutine deposits the pivot
+element peak. So now to imply the
+inductive hypothesis, which you'll recall
+is a hypothesis about how quick sort
+operates on smaller sub arrays. Let's call
+the length of the first part in the second
+part of the partition [inaudible] K1 and
+K2 respectively. Now, crucially, both k1
+and k2 are strictly less than n. Both of
+these two parts have lengths strictly less
+than that of the given input array a.
+That's because the pivot in particular is
+excluded from both of those two parts. So,
+their gonna have, at most n minus one
+[inaudible]. That means that we can apply
+the inductive hypothesis, which says that
+the quicksort never makes a mistake on an
+array that has size strictly less than n.
+That implies that our two recursive calls
+to quickstart, the one to the first part
+and the one to the second part don't make
+mistakes. They're guaranteed to sort those
+sub arrays correctly by the inductive
+hypothesis. And to be very precise, what
+we're using to argue that the [inaudible]
+are correct, are P of K1 and P of K2. Or P
+is the assertion that [inaudible] is
+always correct on a [inaudible]. K1 and
+K2. And we know that both of these
+statements are true because k1 and k2 are
+less th, are both less than n and because
+of the inductive hypothesis. So what's the
+upshot? The upshot is, quicksort's gonna
+be correct. And so the first recursive
+call puts all of the elements that are
+less than the pivot in the correct
+relative order. Next comes the pivot,
+which is bigger than all of that stuff in
+the first part and less than all the stuff
+in the second part, and then the second
+recursive call correctly orders all of the
+elements in the second part. So with those
+three things pasted together, we have a
+sorted version of the input array and
+since this array was an arbitrary one, of
+link N. That establishes the assertion P
+of N and since n was arbitrary, that
+establishes the inductive and completes
+the proof of correctness of quick sort for
+an arbitrary method of choosing the pivot
+element. [sound]

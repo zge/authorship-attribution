@@ -1,0 +1,324 @@
+[SOUND]
+So let's plug in these model masses
+into the ranking function to
+see what we will get, okay?
+This is a general smoothing.
+So a general ranking function for
+smoothing with subtraction and
+you have seen this before.
+And now we have a very specific smoothing
+method, the JM smoothing method.
+So now let's see what what's a value for
+office of D here.
+And what's the value for p sub c here?
+Right, so we may need to decide this
+in order to figure out the exact
+form of the ranking function.
+And we also need to figure
+out of course alpha.
+So let's see.
+Well this ratio is basically this,
+right, so,
+here, this is the probability
+of c board on the top,
+and this is the probability
+of unseen war or,
+in other words basically 11
+times basically the alpha here,
+this, so it's easy to see that.
+This can be then rewritten as this.
+Very simple.
+So we can plug this into here.
+And then here, what's the value for alpha?
+What do you think?
+So it would be just lambda, right?
+And what would happen if we plug in
+this value here, if this is lambda.
+What can we say about this?
+Does it depend on the document?
+No, so it can be ignored.
+Right?
+So we'll end up having this
+ranking function shown here.
+And in this case you can easy to see,
+this a precisely a vector space
+model because this part is
+a sum over all the matched query terms,
+this is an element of the query map.
+What do you think is a element
+of the document up there?
+Well it's this, right.
+So that's our document left element.
+And let's further examine what's
+inside of this logarithm.
+Well one plus this.
+So it's going to be nonnegative,
+this log of this,
+it's going to be at least 1, right?
+And these, this is a parameter,
+so lambda is parameter.
+And let's look at this.
+Now this is a TF.
+Now we see very clearly
+this TF weighting here.
+And the larger the count is,
+the higher the weighting will be.
+We also see IDF weighting,
+which is given by this.
+And we see docking the lan's
+relationship here.
+So all these heuristics
+are captured in this formula.
+What's interesting that
+we kind of have got this
+weighting function automatically
+by making various assumptions.
+Whereas in the vector space model,
+we had to go through those heuristic
+design in order to get this.
+And in this case note that
+there's a specific form.
+And when you see whether this
+form actually makes sense.
+All right so what do you think
+is the denominator here, hm?
+This is a math of document.
+Total number of words,
+multiplied by the probability of the word
+given by the collection, right?
+So this actually can be interpreted
+as expected account over word.
+If we're going to draw, a word,
+from the connection that we model.
+And, we're going to draw as many as
+the number of words in the document.
+If you do that,
+the expected account of a word, w,
+would be precisely given
+by this denominator.
+So, this ratio basically,
+is comparing the actual count, here.
+The actual count of the word in the
+document with expected count given by this
+product if the word is in fact following
+the distribution in the clutch this.
+And if this counter is larger than
+the expected counter in this part,
+this ratio would be larger than one.
+So that's actually a very
+interesting interpretation, right?
+It's very natural and intuitive,
+it makes a lot of sense.
+And this is one advantage of using
+this kind of probabilistic reasoning
+where we have made explicit assumptions.
+And, we know precisely why
+we have a logarithm here.
+And, why we have these probabilities here.
+And, we also have a formula that
+intuitively makes a lot of sense and
+does TF-IDF weighting and
+documenting and some others.
+Let's look at the,
+the Dirichlet Prior Smoothing.
+It's very similar to
+the case of JM smoothing.
+In this case,
+the smoothing parameter is mu and
+that's different from
+lambda that we saw before.
+But the format looks very similar.
+The form of the function
+looks very similar.
+So we still have linear operation here.
+And when we compute this ratio,
+one will find that is that
+the ratio is equal to this.
+And what's interesting here is that we
+are doing another comparison here now.
+We're comparing the actual count.
+Which is the expected account of the world
+if we sampled meal worlds according to
+the collection world probability.
+So note that it's interesting we don't
+even see docking the lens here and
+lighter in the JMs model.
+All right so this of course
+should be plugged into this part.
+So you might wonder, so
+where is docking lens.
+Interestingly the docking lens
+is here in alpha sub d so
+this would be plugged into this part.
+As a result what we get is
+the following function here and
+this is again a sum over
+all the match query words.
+And we're against the queer,
+the query, time frequency here.
+And you can interpret this as
+the element of a document vector,
+but this is no longer
+a single dot product, right?
+Because we have this part,
+I know that n is the name of the query,
+right?
+So that just means if
+we score this function,
+we have to take a sum over
+all the query words, and
+then do some adjustment of
+the score based on the document.
+But it's still, it's still clear
+that it does documents lens
+modulation because this lens
+is in the denominator so
+a longer document will
+have a lower weight here.
+And we can also see it has tf here and
+now idf.
+Only that this time the form of the
+formula is different from the previous one
+in JMs one.
+But intuitively it still implements TFIDF
+waiting and document lens rendition again,
+the form of the function is dictated
+by the probabilistic reasoning and
+assumptions that we have made.
+Now there are also
+disadvantages of this approach.
+And that is, there's no guarantee
+that there's such a form
+of the formula will actually work well.
+So if we look about at this geo function,
+all those TF-IDF waiting and document lens
+rendition for example it's unclear whether
+we have sub-linear transformation.
+Unfortunately we can see here there
+is a logarithm function here.
+So we do have also the,
+so it's here right?
+So we do have the sublinear
+transformation, but
+we do not intentionally do that.
+That means there's no guarantee that
+we will end up in this, in this way.
+Suppose we don't have logarithm,
+then there's no sub-linear transformation.
+As we discussed before, perhaps
+the formula is not going to work so well.
+So that's an example of the gap
+between a formal model like this and
+the relevance that we have to model,
+which is really a subject
+motion that is tied to users.
+So it doesn't mean we cannot fix this.
+For example, imagine if we did
+not have this logarithm, right?
+So we can take a risk and
+we're going to add one,
+or we can even add double logarithm.
+But then, it would mean that the function
+is no longer a proper risk model.
+So the consequence of
+the modification is no
+longer as predictable as
+what we have been doing now.
+So, that's also why, for example,
+PM45 remains very competitive and
+still, open channel how to use
+public risk models as they arrive,
+better model than the PM25.
+In particular how do we use query
+like how to derive a model and
+that would work consistently
+better than DM 25.
+Currently we still cannot do that.
+Still interesting open question.
+So to summarize this part, we've talked
+about the two smoothing methods.
+Jelinek-Mercer which is doing the fixed
+coefficient linear interpolation.
+Dirichlet Prior this is what add a pseudo
+counts to every word and is doing adaptive
+interpolation in that the coefficient
+would be larger for shorter documents.
+In most cases we can see, by using these
+smoothing methods, we will be able to
+reach a retrieval function where
+the assumptions are clearly articulate.
+So they are less heuristic.
+Explaining the results also show
+that these, retrieval functions.
+Also are very effective and they are
+comparable to BM 25 or pm lens adultation.
+So this is a major advantage
+of probably smaller
+where we don't have to do
+a lot of heuristic design.
+Yet in the end that we naturally
+implemented TF-IDF weighting and
+doc length normalization.
+Each of these functions also has
+precise ones smoothing parameter.
+In this case of course we still need
+to set this smoothing parameter.
+There are also methods that can be
+used to estimate these parameters.
+So overall,
+this shows by using a probabilistic model,
+we follow very different strategies
+then the vector space model.
+Yet, in the end, we end up uh,with
+some retrievable functions that
+look very similar to
+the vector space model.
+With some advantages in having
+assumptions clearly stated.
+And then, the form dictated
+by a probabilistic model.
+Now, this also concludes our discussion of
+the query likelihood probabilistic model.
+And let's recall what
+assumptions we have made
+in order to derive the functions
+that we have seen in this lecture.
+Well we basically have made four
+assumptions that I listed here.
+The first assumption is that the relevance
+can be modeled by the query likelihood.
+And the second assumption with med is, are
+query words are generated independently
+that allows us to decompose
+the probability of the whole query
+into a product of probabilities
+of old words in the query.
+And then,
+the third assumption that we have made is,
+if a word is not seen,
+the document or in the late,
+its probability proportional to
+its probability in the collection.
+That's a smoothing with
+a collection ama model.
+And finally, we made one of these
+two assumptions about the smoothing.
+So we either used JM smoothing or
+Dirichlet prior smoothing.
+If we make these four assumptions
+then we have no choice but
+to take the form of the retrieval
+function that we have seen earlier.
+Fortunately the function has a nice
+property in that it implements TF-IDF
+weighting and document machine and
+these functions also work very well.
+So in that sense,
+these functions are less heuristic
+compared with the vector space model.
+And there are many extensions of this,
+this basic model and
+you can find the discussion of them in
+the reference at the end of this lecture.
+[MUSIC]
+

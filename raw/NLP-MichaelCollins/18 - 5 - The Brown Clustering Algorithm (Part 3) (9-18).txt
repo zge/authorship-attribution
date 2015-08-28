@@ -1,0 +1,230 @@
+So, let's think about how we can maximize 
+this function quality of C, and I'm 
+going to describe a couple of methods to 
+do this. 
+The first one is a useful thought 
+experiment, that's on this slide. 
+It's too inefficient, but we'll see with 
+some modifications, we can actually make 
+it efficient. 
+And it's basically a kind of greedy, 
+bottom up approach. 
+So, I start off with every word in it's 
+own cluster. 
+So I might have the and a, dog and cat, 
+red and blue, and our aim is going to 
+find say k final clusters. 
+Maybe, for example, we might find k is 
+equal to 3. 
+And in that case we do the following. 
+So, we're going to run a series of what 
+are called merge steps. 
+And its really a very simple idea. 
+each time, so we start of its partition 
+here, I can consider all possible pairs 
+of merges. 
+So I could consider merging the and a 
+into single cluster, or the and dog with 
+the cat , the and red, the and blue. 
+Or a and dog, a and cat, a and red, a and 
+blue. 
+So, I can consider all possible pairwise 
+mergers. 
+And so, for example, say I choose to 
+merge the and a. 
+Then I end up with new partition, which 
+is that C of the equals C of a is equal 
+to 1, say. 
+C of dog is equal to 2, C of cat equal to 
+3 and so on, and so on. 
+So, every word is still in some cluster, 
+except for these two words which are now 
+on a single cluster. 
+Now each time I consider a poten, a 
+potential mode step I form a new 
+clustering capital C, and I can calculate 
+the quality for that clustering, I mean 
+the criterion I showed to you on the 
+previous slide. 
+So I'm basically going to consider all 
+possible merge steps like this, and find 
+the merge step which maximizes the 
+quality of the resulting clustering. 
+So say, in this case, maybe I would find 
+that the and there is actually going to 
+be the merge step that maximizes the 
+value of quality of C. 
+So that's the first merge. 
+I now go to a second merge step, having 
+merged these two words into a single 
+cluster. 
+And now I do exactly the same thing as 
+before. 
+I consider all pairwise mergers, but now 
+I treat this cluster as a single unit. 
+So, I could choose to merge these two 
+words with dog. 
+Or this two words with cat. 
+Or these two words with red. 
+Or these two words with blue. 
+Or I could choose to merge dog and cat. 
+Or I could choose to merge dog and red, 
+and so on, and so on. 
+So again we're going to do all pairwise 
+comparisons. 
+Well, we just have one fewer elements 
+now, because these two were too 
+considered as a unit. 
+Say, for the sake of argument, we choose 
+to merge these two. 
+And then, in the third step, I might do 
+something similar. 
+Maybe I find these two words are merged, 
+and I keep doing this until I end up with 
+my target number of clusters. 
+Say, we have k equals 3 clusters in this 
+case. 
+So that's, kind of heuristic, greedy 
+method, were at each step I pick the 
+merge step that maximizes this measure of 
+quality. 
+Naively this is going to be very 
+expensive, it's actually, you can show 
+that it would take order to the cabbage 
+size to the power 5. 
+But the IBM folks, the Brown et al paper 
+gives a slightly more efficient algorithm 
+which is cubic in the vocabulary, that's 
+an improvement for sure. 
+But actually, still too slow for 
+realistic values of V. 
+So again, this first algorithm is a 
+thought experiment, and we'll see that 
+the second algorithm I give you is much 
+more practical. 
+But this thought experiment was useful. 
+And then we'll use this basic, kind of 
+greedy bottom up method as the basis for 
+our, our algorithm. 
+Okay, so this is actually the algorithm 
+that people run in practice. 
+And it has an additional parameter of the 
+approach called m, typical value will be 
+m equals a 1000. 
+Another property of this algorithm is 
+we'll see that rather than producing just 
+a partition or a clustering into k 
+classes, it'll actually produce a 
+hierarchy. 
+So we might have something like red, 
+blue, dog, cat, you know hierarchical 
+clustering exactly the same way I showed 
+you earlier in this lecture. 
+So here's how it works. 
+We initially take the top m, most 
+frequent words, for example, the top 
+thousand most frequent words, and we put 
+each of those words into their own 
+cluster. 
+So, we might initially start off with say 
+the, a, cat, dog and so on listing the 
+top 1000 most frequent words and a 
+corpus, and this is sort of a seed. 
+This is the starting point of the 
+algorithm. 
+And then I iterate over the remaining 
+words, so I go from the 1001th word right 
+the way through to the very last word in 
+my corpus. 
+And I'm going to consider each of those 
+words in turn. 
+So maybe the 1001th word is the word, 
+sheep for example, okay? 
+So, I've added this, you know, I have 
+1,000 words here. 
+And I've added the thousand and first 
+most frequent word here, and now I'm 
+going to again consider all possible 
+merge steps. 
+So I'm going to consider merging the with 
+a, or the with cat, or the with dog, 
+right up to the with sheep. 
+I'm going to consider merging a with cat, 
+a with dog, right the way up to a with 
+sheep. 
+And so on and so on. 
+So again I'm going to do this all 
+pairwise comparison, where I look at all 
+pairs of words, and choose to do a merge. 
+So that would result in two of these 
+words being merged. 
+Let's just say, for the sake of argument, 
+that we choose to merge cat and dog in 
+this case. 
+And so, even though the sheep was 
+choosing as a thousand and first word. 
+It's important to realize that it won't 
+necessarily be part of the merge step, I 
+may choose to merge some other pair of 
+words within this initial 1000. 
+Okay, so that's the first merge step. 
+Now I add word 1002. 
+So maybe it's the word there, I don't 
+know, something like this. 
+And notice again, I have a thousand, I 
+have a thousand examples here, so after 
+this merge step, I have 999, so basically 
+I have a 1001 different clusters here. 
+Where a cluster might be a single word or 
+it might be a pair of words, like cat and 
+dog. 
+And again I consider all pairwise 
+mergers. 
+So maybe for example I would take "sheep" 
+and merge it with "cat" and "dog," in 
+this case. 
+And again, that's going to reduce the 
+number of clusters I have by one. 
+I then go again. 
+I go to the next most frequent word. 
+Maybe this is red. 
+This is the 100 thousandth third most 
+frequent word. 
+And again, I'm going to consider all 
+possible pairs of mergers, all possible 
+ways of merging. 
+Either a single word or an entire cluster 
+with another single word or another 
+entire cluster. 
+All the way through this process, I'm 
+using the quality criterion that I showed 
+you earlier as a kind of oracle, which 
+given a clustering, will evaluate the 
+quality of that clustering. 
+And I'm picking these merges to maximize 
+that measure of, of quality. 
+Once I've added all of the words in the 
+vocabulary, you basically have a 
+clustering into, you can show you have a 
+thousand different separate clusters. 
+And the last thing we do is carry out m 
+minus 1 final merges, for example 999 
+final merge steps, and the result is 
+going to be a full hierarchy over the 
+entire set of words in our vocabulary. 
+And this is exactly the process that the 
+Brown et al researchers used, and exactly 
+the process that resulted in those 
+bit-string representations. 
+I showed you earlier in the slides. 
+The running time is the following. 
+You can show us the vocabulary size times 
+m squared, where m is this value, say 
+1,000 plus a linear term in the size of 
+the corpus. 
+So while still expensive, this is 
+nevertheless feasible for quite large 
+corpora of training examples. 
+And indeed this algorithm has been 
+applied to very large training corpora. 
+

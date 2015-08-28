@@ -1,0 +1,586 @@
+Welcome back, one way to acknowledge that
+there is correlation of
+the data, is to perform a transformation
+which you will decorrelate them.
+The then transfer coefficients are
+uncorrelated, and each
+of them conveys unique information about
+the image.
+Some of them convey significant amount of
+information
+as measured for example, by their variants
+or
+their contribution to the data energy of
+the
+image, while others have contributions
+close to zero.
+The larger ones can therefore be ignored,
+or heavily quantized when compression is
+performed.
+This is the topic of the segment.
+We first discuss that decomposition of any
+image using an orthonormal bases.
+This is a straightforward extension of
+strategic composition, when we deal with
+vectors.
+Now, if we place the requirement that the
+resulting coefficients of this
+decomposition are uncorrelated, then we
+end
+up with the karhunen rev transformation.
+This is the optimal transformation for our
+purposes.
+But it has the major disadvantage that its
+basis are not
+fixed, but they are functions of the auto
+correlation of the image.
+That is the difference for each image
+where
+[UNKNOWN] encoding, these makes the K-L
+transform impractical.
+And instead the transform of choice is the
+cosine transform or DCT.
+Which over the simple experiment, the
+usefulness of the correlating transforms
+such as the DCT, in deciding which part of
+the data to keep, and which, we discard.
+So, let us proceed with this, interesting
+material.
+We covered in this segment, transform
+based
+coding, this is a useful and popular
+approach.
+Which has been adopted by most, if
+not all, image and video compression
+standards.
+We show here the three building blocks of
+any encoder.
+As mentioned multiple times, data are
+compressible because they're correlated.
+With predictive approaches, such as DCPM,
+this correlation is taken into account
+directly.
+For example, we are solving for the linear
+prediction coefficients,
+by utilizing values of the autocorrelation
+function of an image.
+With transform based coding, we take the
+transformation of
+the data, of an image or an image block.
+The objective is, to obtain Transform
+Coefficients which ideally are
+statistically independent.
+So, the contribution of each coefficient
+towards the original
+image isn't dependent from the
+contribution of the remaining
+coefficients.
+We then look at the relative importance or
+contribution of these coefficients towards
+the original image.
+For those coefficients that contribute
+more, we treat
+them gently, we quantize them with a fine
+quantizer.
+And for those coefficients that contribute
+considerably
+less, they are quantized coarsely or
+they're discarded.
+So, this is the purpose of the quantizer
+here,
+we say that the quantizer has a spectral
+shape.
+It's uniform, but the step varies
+depending on the frequency of each
+coefficient.
+The quantized transfer coefficients here,
+are entropy encoded using any of the
+techniques we covered last week such as
+huff man and arithmetic coding.
+It is therefore this bitstream that you
+send to the decoder.
+Now, the decoder is undoing the steps of
+the encoder,
+so the binary bitstream is entropy
+decoded, and here the
+symbols, which are the quantized transfer
+coefficients, are inverse quantized.
+This is actually a misnomer because
+quantization is an irreversible process.
+What it's referring to is to the fact that
+when quantization is performed, we divide
+the number, the value of the coefficient
+by the step of the uniform quantizer.
+And what descent to the decode there is
+the caution of this division.
+Therefore, inverse quantization or
+dequantization, refresh of
+the fact that this quotient is multiplied
+back
+by the step of the uniform quantizer,
+to obtain the actual value of the
+coefficient.
+And then finally, we perform inverse
+transformation to obtain the reconstructed
+image block.
+So, let's look first at the
+characteristics of such transformations.
+So what are some of the important
+characteristics of such transformations?
+They should decorrelate the date, so in
+principle the transfer coefficient should
+be statistically independent.
+At the same time, they should perform
+energy compaction which means the small
+number of such coefficients should
+represent the
+majority of the energy in an image.
+The basis that forms such transformations
+should be
+independent of the image we try to encode.
+Otherwise, this basis should, need to be
+transmitted to the decoder, to perform the
+decoding.
+And finally as always maybe, we would like
+to have fast implementation of
+such transforms, since they are clearly
+part of the coder and the decoder.
+We showed here a comparison of such site
+source formations.
+What is shown here is the log variance of
+each coefficient
+in the vertical axis and the coefficient
+number in the horizontal axis.
+So, the images broken into sub-images, and
+then
+for each sub-image the transformation is
+found.
+So, therefore, we have as a result another
+image with the same number of sub images.
+So, then we'll take the say, 00
+coefficient from each block, and find it's
+variance.
+We'll take next the coefficient next to
+it, the same
+coefficient location or block, find it's
+variance and so on.
+Then, we order the coefficients, from
+largest variance here
+to smallest variance, as is clear from
+this plot.
+The idea is that the coefficients with the
+larger variance
+will contribute more towards the total
+energy of the image.
+So, a transformation that decays faster is
+a more desirable one in
+the sense that fewer coefficients
+represent
+a larger percentage, of the [UNKNOWN]
+image.
+So, we compare here the so-called K-L or
+the Karhunen-Loeve transform, which
+results in statistically independent
+coefficients.
+However, the bases in this case are
+functions of
+the image, more specifically of
+autocorrelation function of the image.
+We also show here the performance of the
+DCT, the
+discrete cosine transform, the fourier
+transform, and the Haddernard transform.
+In comparing the Fourier and the transform
+of the discrete cosine transform,
+a clear distinguishing factor is that
+the Fourier transform coefficients are
+complex numbers.
+While the DCT coefficients are real
+numbers, and we
+much prefer working with real number than
+complex ones.
+So, the DCT has this, this distinct
+advantage
+of the fully transform, but more than that
+the
+DCT is a transformation of choice, is used
+in many of the image and video compression
+standards.
+Summarizing what I already said in the
+previous slide, the KL transform
+results in statistically independent
+transform coefficients.
+However, the main disadvantage is that the
+basis functions, so KLT
+as a function of the image that needs to
+be encoded.
+The DCT is the transformation of choice,
+it's
+close to KLT for typical images and
+actually the
+theoretical results that show that for a
+specific
+model for the image this DCT and KLT
+coincide.
+The basis functions, functions of cosines,
+of independent of the
+image, therefore do not need to be
+transmitted to the decoder.
+Since it's widely used in standards such
+as JPEG, the family of
+H.26 standards with the compression
+standards,
+and the family of MPEG standards.
+They're also efficient implementations of
+the DCT.
+Embedded implementations are even
+dedicated chips
+to perform the discrete cosine transform.
+Before we proceed, let's establish some
+notation.
+Assume we have two n by n matrices, and
+here for the segment
+that denoted it like this, so its the
+matrix phi, and the matrix gamma.
+So, the inner product is formed by
+multiplying the corresponding elements one
+by one.
+So, I'll multiply this times this element,
+and then this
+times this, and then this times this and I
+will add them up.
+So, the Dot or inner product is clearly a
+scalar.
+Since in general I deal with complex
+matrices then, here I take the
+complex conjugate of each and every
+element of this second matrix.
+Then if I have a family of matrices,
+they're parametrized by
+u and v here, these matrices, they're
+orthonormal if when
+I take the inner product, it's equal to 0
+when
+u is different than r, and v is different
+than s.
+And it's equal to 1, when u equals r and v
+equals s.
+So, the inner product of a matrix from
+this family
+of matrices with itself is 1, that where
+the normal, orthonormal
+parts comes from, and the inner product of
+one matrix
+with any other matrix in the family is
+equal to 0.
+Given a family of orthonormal matrices,
+phi u
+v, that we just defined in the previous
+slide.
+Then given any image f, it can be
+decomposed in terms of these basis, these
+orthonormal matrices.
+So I can write f as shown here, so this
+means
+that the image f is a coefficient here f
+of
+00 times fi, 0, 0 which is a matrix.
+Plus f of 01 and then the Fi 01, and so
+on, all the way to f, n minus one, n minus
+one, five, n minus one, n minus one.
+So, it's the weighted sum, where these are
+the weights here,
+the f's Of that bases function, these
+orthonormal matrices.
+How does one find the coefficients here,f
+of u, v?
+We have to perform the projection of the
+image f, onto each and every these bases
+fi.
+And this projection, this inner product we
+define, will give rise to this
+coefficient.
+We have seen this decomposition before,
+with vectors, not matrices.
+So we're all familiar with the fact that
+if I
+have here an orthonormal basis, so this is
+vector e1, e2.
+And given a vector x, then I project x on
+to here
+let's say this is alpha 1, and this is
+alpha 2
+and we simply say that vector x, equals
+alpha 1
+vector e1, I can put bars here to denote
+that these
+are vectors, plus alpha 2 times vector e2.
+So, this is the extension of this
+decomposition that they assume you're
+familiar with when now we have matrices
+and not vectors as bases.
+Here is a [UNKNOWN]
+example we have this image of a smile face
+and as bases we use Hadamard bases.
+I will say a few more things later on, by
+projecting this image of the smiley face
+into each and every of the basis, we have
+obtained this resulting coefficients.
+Only four of those are shown, and
+therefore, again, I can decompose this
+image as the weighted sum of these
+bases, functions and these other
+corresponding weights.
+So, the main idea is that if these bases
+are known, the Hadamard bases to
+both encoder and decoder, all I need to
+send to the decoder are these projection
+coefficients.
+And the decoder utilizing these
+coefficients can reconstruct
+the image, just using these expressions
+shown here.
+I'm going to mention here the KL
+transformation for completeness.
+Our objective is to find the family of
+orthonormal basis, I call them Fi UV,
+so that the resulting coefficients,
+capital FUV, that they're obtained
+by projecting the image on to this
+orthonormal basis, are uncorrelated.
+So according to the KL theorem, if I have
+such an image f of an m
+and R m n p u, p q, is its autocorrelation
+function, then I can
+find this family of orthonormal matrices
+that will results
+in uncorrelated coefficients, by solving
+this equation.
+What this equation tells us is that this
+orthonormal
+bases, are the argent functions of the
+autocorrelation function.
+And this delta-u-v it's simply the
+expected value of the
+magnitude of the coefficient, the
+[UNKNOWN] of the coefficient squared.
+So, we have a specific procedure in
+obtaining these orthonormal matrices
+we are after, however, they depend on the
+other correlation of the image.
+And also I can compute this vice at the
+encoder, the decoder here has no
+way of performing the same computation,
+therefore these
+[UNKNOWN] needs to be sent to the decoder.
+So, it is a mathematically optimal
+transfer
+for our purposes, however it is not a
+practical one, because if I have to send
+the basis, this defeats the purpose of
+compression.
+In the class teach here at Northwestern, I
+prove all these relationships
+however, that clearly beyond the scope of
+this particular class.
+We see here that 64, 8 by 8 bases,
+functions of the discrete
+cosine transform, here is the
+interpretation of the colors.
+So, in this first row, we're having
+one dimensional cosign that increases in
+frequency horizontally.
+So, vertically here it's constant and in
+this
+column, we have a one dimensional cosign
+that increases in frequency vertically.
+For the rest of the basis we have a
+two-dimensional cosine, whose frequency
+increase both horizontally and vertically.
+And down here the basis with the highest
+frequency in two dimensions.
+I showed exactly this same plot back in
+week two, when we talked about complex
+exponential signals.
+And I did make the comment at that point
+that we'll be encountering these
+basis functions when we talk about
+compression, and now is the time to do so.
+So, as I have explained already, given an
+8 by 8
+image block or image patch, we, just find
+it's
+projection to all these 64 bases, and if
+for example,
+if I find the projection or the inner
+product be,
+between this base and the 8 by 8 pouch, a
+number will
+result which will be denoted by FUV, and
+this is the coefficient.
+Clearly, the projection of the patch into
+this here basis, it's black, so
+all it's values are equal to one, will
+give us the sum of the intensities here.
+If I divide by 64 will give us the average
+of the patch.
+So, instead of having 64 intensity values
+here, I have 64 such coefficients,
+this by the way are real, we're going to
+talk about the DCT transform.
+The advantage of working with the FUV's
+instead of the
+Fmn, as we denoted earlier is that now if
+somebody ask us
+to keep, let's say, 15% of the pixel
+values which are
+more important, we have no way of knowing
+which 15% of
+the 64 pixel values are more important
+than others.
+However, when we look at the DCT
+coefficients, is rather straightforward
+to keep the, the si, the 50 per, 15% of
+the 64 that have the largest
+values, these coefficients, again, are, in
+principle, uncorrelated.
+And therefore, keeping the ones with the
+largest value,
+we will do a very good job in representing
+the original patch and
+also in preserving most of the energy in
+the original patch.
+Here we show the 64, 8 by 8 Hadamard basis
+functions, here's that
+in the partition of the colors, only two
+values plus and minus 1.
+So it's a similar description as with DCT,
+I should mention that with both cases this
+base
+is are o for normal or in other words the
+inner product of this with this is zero.
+This with any other.
+Is 0 but with itself is equal to 1 if it's
+normalized appropriately.
+So, the story's the same given an 8 by 8
+image patch
+it can find the projection so do this
+basis and these are
+the Hadamard transferred coefficients,
+which again
+are less correlated than the original
+image and therefore can serve our purposes
+this for compressing the image.
+In
+order to demonstrate experimentally the
+effectiveness, the power, of this
+decorrelating
+property of the transformations, we
+conduct here a very simple experiment.
+Given this image, we are asked to break it
+into
+8 by 8 blocks, and then out of each of
+these
+blocks, we are allowed to keep only eight
+pixels or eight
+coefficients, and we're supposed to throw
+the rest of them away.
+So, trying to decide in the special domain
+here which eight out of 64 coefficients
+are more important is very difficult, I
+have no means of, of doing it.
+However, if we go to the frequency domain,
+we
+can keep per block the eight larger,
+largest coefficients.
+And if we do so, by defining a threshold
+and keeping only
+eight out of the 64 per block that are
+above the threshold.
+Right, we adjust the threshold so only
+eight are above the threshold.
+Here is a reconstructed image, so we keep
+eight and set the rest equal to zero.
+We see here that this is very close the
+original one, we do the same experiment.
+When now the location of the eight
+coefficients are based on this.
+Zonal description, so if this is an 8 by 8
+block in the discrete
+cosine domain, then we keep the 8
+coefficient rather closest to the dc.
+So the eight low frequency coefficients,
+clearly thresholding by and large
+should give better results than the zonal
+approximation simply because there
+might be a large value coefficient down
+here, larger than any
+of the ones that they kept here, that I
+have neglected.
+However, when thresholding is used, I have
+an addition to the coefficient transmit
+their location,.
+So spend [UNKNOWN] for, for the location
+while this location
+information is fixed here, when there's
+another approximation is used.
+So if I look at the difference between the
+original
+and the encoded versions, here is the
+difference scaling appropriately.
+And, what you can see is that the
+difference is really.
+Large at the edges because the edges
+represent high
+frequency information, which was discarded
+in this particular case.
+We conduct the same experiment with now
+only 4 coefficients out of.
+of 64 are kept, and here is the result of
+threshold in, zonal,
+in this case the same comments can be made
+as before, but I believe
+that it's clearer here that the zonal
+approximation results in a larger error if
+we look at the intensity, [INAUDIBLE] the
+error time the method using thresholding.
+And again, it's the same experiment when
+we are now only two out of 64
+coefficients are kept and I believe it's
+quite impressive that.
+Even though two out of 64 coefficients are
+kept still we obtain the
+contractions here that convey quite a lot
+of information about the original image.
+You start seeing these plotting dark
+effects clearly
+but nevertheless these again images are.
+Conveying quite a bit of information about
+the original image and here, I believe,
+the error is much more pronounced with
+a zonal approximation than one using
+thresholding.
+So, this is the basic idea behind
+transform based encoding.
+And as you see, next we're going to
+discuss JPEG.
+These are exactly the steps taken by JPEG
+or any transfer based encoding scheme by
+and large.
+The difference is how to perform
+quantization, how to
+decide which coefficients to keep and
+which to throw away.
+But more specifically, how we decide how
+to encode each and
+every coefficient with a fine or [UNKNOWN]
+here these are simple ideas
+to just demonstrate the effectiveness of
+the correlation but again while
+the innovation of the novelty comes in is
+in the way as.
+It will see, of quantizing these,
+quantizing as well
+as enter pin coding, these resulting this
+is the coefficients.
+

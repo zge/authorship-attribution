@@ -1,0 +1,440 @@
+In the last video, we started
+to talk about the kernels idea
+and how it can be used to
+define new features for the support vector machine.
+In this video, I'd like to throw
+in some of the missing details and,
+also, say a few words about
+how to use these ideas in practice.
+Such as, how they pertain
+to, for example, the bias variance trade-off in support vector machines.
+In the last video, I talked
+about the process of picking a few landmarks.
+You know, l1, l2, l3 and that
+allowed us to define the
+similarity function also called
+the kernel or in this
+example if you have
+this similarity function this is a Gaussian kernel.
+And that allowed us to build
+this form of a hypothesis function.
+But where do we get these landmarks from?
+Where do we get l1, l2, l3 from?
+And it seems, also, that for complex learning
+problems, maybe we want a
+lot more landmarks than just three of them that we might choose by hand.
+So in practice this is
+how the landmarks are chosen
+which is that given the
+machine learning problem. We have some
+data set of some some positive
+and negative examples. So, this is the idea here
+which is that we're gonna take the
+examples and for every
+training example that we have,
+we are just going to call
+it. We're just going
+to put landmarks as exactly
+the same locations as the training examples.
+So if I have one training
+example if that is x1,
+well then I'm going
+to choose this is my first landmark
+to be at xactly the same location
+as my first training example.
+And if I have a different training
+example x2. Well we're
+going to set the second landmark
+to be the location of my second training example.
+On the figure on the right, I
+used red and blue dots
+just as illustration, the color
+of this figure, the color of
+the dots on the figure on the right is not significant.
+But what I'm going to end up
+with using this method is I'm
+going to end up with m
+landmarks of l1, l2
+down to l(m) if I
+have m training examples with
+one landmark per location of
+my per location of each
+of my training examples. And this is
+nice because it is saying that
+my features are basically going
+to measure how close an
+example is to one
+of the things I saw in my training set.
+So, just to write this outline a
+little more concretely, given m
+training examples, I'm going
+to choose the the location
+of my landmarks to be exactly
+near the locations of my m training examples.
+When you are given example x,
+and in this example x can be
+something in the training set,
+it can be something in the cross validation
+set, or it can be something in the test set.
+Given an example x we are
+going to compute, you know,
+these features as so f1,
+f2, and so on.
+Where l1 is actually equal
+to x1 and so on.
+And these then give me a feature vector.
+So let me write f as the feature vector.
+I'm going to take these f1, f2 and
+so on, and just group
+them into feature vector.
+Take those down to fm.
+And, you know, just by convention.
+If we want, we can add an
+extra feature f0, which is always equal to 1.
+So this plays a role similar to what we had previously.
+For x0, which was our interceptor.
+So, for example, if we
+have a training example x(i), y(i),
+the features we would compute for
+this training example will be
+as follows: given x(i), we
+will then map it to, you know, f1(i).
+Which is the similarity. I'm going to
+abbreviate as SIM instead of writing out the whole
+word
+similarity, right?
+And f2(i) equals the similarity
+between x(i) and l2,
+and so on,
+down to fm(i) equals
+the similarity between x(i) and l(m).
+And somewhere in the middle.
+Somewhere in this list, you know, at
+the i-th component, I will
+actually have one feature
+component which is f subscript
+i(i), which is
+going to be the similarity
+between x and l(i).
+Where l(i) is equal to
+x(i), and so you know
+fi(i) is just going to
+be the similarity between x and itself.
+And if you're using the Gaussian kernel this is
+actually e to the minus 0
+over 2 sigma squared and so, this will be equal to 1 and that's okay.
+So one of my features for this
+training example is going to be equal to 1.
+And then similar to what I have above.
+I can take all of these
+m features and group them into a feature vector.
+So instead of representing my example,
+using, you know, x(i) which is this what
+R(n) plus R(n) one dimensional vector.
+Depending on whether you can
+set terms, is either R(n)
+or R(n) plus 1.
+We can now instead represent my
+training example using this feature
+vector f. I am
+going to write this f superscript i.  Which
+is going to be taking all
+of these things and stacking them into a vector.
+So, f1(i) down
+to fm(i) and if you want and
+well, usually we'll also add this
+f0(i), where
+f0(i) is equal to 1.
+And so this vector
+here gives me my
+new feature vector with which
+to represent my training example.
+So given these kernels
+and similarity functions, here's how
+we use a simple vector machine.
+If you already have a learning
+set of parameters theta, then if you given a value of x and you want to make a prediction.
+What we do is we compute the
+features f, which is now
+an R(m) plus 1 dimensional feature vector.
+And we have m here because we have
+m training examples and thus
+m landmarks and what
+we do is we predict
+1 if theta transpose f
+is greater than or equal to 0.
+Right.
+So, if theta transpose f, of course,
+that's just equal to theta 0, f0 plus theta 1,
+f1 plus dot dot
+dot, plus theta m
+f(m). And so my
+parameter vector theta is also now
+going to be an m
+plus 1 dimensional vector.
+And we have m here because where
+the number of landmarks is equal
+to the training set size.
+So m was the training set size and now, the
+parameter vector theta is going to be m plus one dimensional.
+So that's how you make a prediction
+if you already have a setting for the parameter's theta.
+How do you get the parameter's theta?
+Well you do that using the
+SVM learning algorithm, and specifically
+what you do is you would solve this minimization problem.
+You've minimized the parameter's
+theta of C times this cost function which we had before.
+Only now, instead of looking
+there instead of making
+predictions using theta transpose
+x(i) using our original
+features, x(i). Instead we've
+taken the features x(i)
+and replace them with a new features
+so we are using theta transpose
+f(i) to make a
+prediction on the i'f training
+examples and we see that, you know,
+in both places here and
+it's by solving this minimization problem
+that you get the parameters for your Support Vector Machine.
+And one last detail is
+because this optimization
+problem we really have
+n equals m features.
+That is here.
+The number of features we have.
+Really, the effective number of
+features we have is dimension
+of f. So that n
+is actually going to be equal
+to m. So, if you want to, you can
+think of this as a sum,
+this really is a sum
+from j equals 1 through
+m. And then one way to think
+about this, is you can
+think of it as n being
+equal to m, because if
+f isn't a new feature, then
+we have m plus 1
+features, with the plus 1 coming from the interceptor.
+And here, we still do sum
+from j equal 1 through n,
+because similar to our
+earlier videos on regularization,
+we still do not regularize the
+parameter theta zero, which is
+why this is a sum for
+j equals 1 through m
+instead of j equals zero though
+m.  So that's
+the support vector machine learning algorithm.
+That's one sort of, mathematical
+detail aside that I
+should mention, which is
+that in the way the support
+vector machine is implemented, this last
+term is actually done a little bit differently.
+So you don't really need to
+know about this last detail in
+order to use support vector machines,
+and in fact the equations that
+are written down here should give
+you all the intuitions that should need.
+But in the way the support vector machine
+is implemented, you know, that term, the
+sum of j of theta j squared right?
+Another way to write this is this can
+be written as theta transpose
+theta if we ignore
+the parameter theta 0.
+So theta 1 down to
+theta m.  Ignoring theta 0.
+Then this sum of
+j of theta j squared that this
+can also be written theta transpose theta.
+And what most support vector
+machine implementations do is actually
+replace this theta transpose theta,
+will instead, theta transpose times
+some matrix inside, that depends
+on the kernel you use, times theta.
+And so this gives us a slightly different distance metric.
+We'll use a slightly different
+measure instead of minimizing exactly
+the norm of theta squared means
+that minimize something slightly similar to it.
+That's like a rescale version of
+the parameter vector theta that depends on the kernel.
+But this is kind of a mathematical detail.
+That allows the support vector
+machine software to run much more efficiently.
+And the reason the support vector machine
+does this is with this modification.
+It allows it to
+scale to much bigger training sets.
+Because for example, if you have
+a training set with 10,000 training examples.
+Then, you know, the way we define
+landmarks, we end up with 10,000 landmarks.
+And so theta becomes 10,000 dimensional.
+And maybe that works, but when m
+becomes really, really big
+then solving for all
+of these parameters, you know, if m were
+50,000 or a 100,000
+then solving for
+all of these parameters can become
+expensive for the support
+vector machine optimization software, thus
+solving the minimization problem that I drew here.
+So kind of as mathematical
+detail, which again you really don't need to know about.
+It actually modifies that last
+term a little bit to
+optimize something slightly different than
+just minimizing the norm squared of theta squared, of theta.
+But if you want,
+you can feel free to think
+of this as an kind of a n implementational detail
+that does change the objective a
+bit, but is done primarily
+for reasons of computational efficiency,
+so usually you don't really have to worry about this.
+And by the way, in case your
+wondering why we don't apply
+the kernel's idea to other
+algorithms as well like logistic
+regression, it turns out
+that if you want, you
+can actually apply the kernel's
+idea and define the source
+of features using landmarks and so on for logistic regression.
+But the computational tricks that apply
+for support vector machines don't
+generalize well to other algorithms like logistic regression.
+And so, using kernels with
+logistic regression is going too
+very slow, whereas, because of
+computational tricks, like that
+embodied and how it modifies
+this and the details of how
+the support vector machine software is
+implemented, support vector machines and
+kernels tend go particularly well together.
+Whereas, logistic regression and kernels,
+you know, you can do it, but this would run very slowly.
+And it won't be able to
+take advantage of advanced optimization
+techniques that people have figured
+out for the particular case
+of running a support vector machine with a kernel.
+But all this pertains only
+to how you actually implement
+software to minimize the cost function.
+I will say more about that in
+the next video, but you really don't
+need to know about
+how to write software to
+minimize this  cost function because
+you can find very good off the shelf software for doing so.
+And just as, you know, I wouldn't
+recommend writing code to invert
+a matrix or to compute a
+square root, I actually do
+not recommend writing software to
+minimize this cost function yourself,
+but instead to use off
+the shelf software packages that people
+have developed and so
+those software packages already embody
+these numerical optimization tricks,
+so you don't really have to worry about them.
+But one other thing that is
+worth knowing about is when
+you're applying a support vector
+machine, how do you
+choose the parameters of the support vector machine?
+And the last thing I want to
+do in this video is say a
+little word about the bias and
+variance trade offs when using a support vector machine.
+When using an SVM, one of
+the things you need to choose is
+the parameter C which
+was in the optimization objective, and
+you recall that C played a
+role similar to 1 over
+lambda, where lambda was the regularization
+parameter we had for logistic regression.
+So, if you have a
+large value of C, this corresponds
+to what we have back in logistic
+regression, of a small
+value of lambda meaning of not using much regularization.
+And if you do that, you
+tend to have a hypothesis with lower bias and higher variance.
+Whereas if you use a smaller
+value of C then this
+corresponds to when we
+are using logistic regression with a
+large value of lambda and that corresponds
+to a hypothesis with higher
+bias and lower variance.
+And so, hypothesis with large
+C has a higher
+variance, and is more prone
+to overfitting, whereas hypothesis with
+small C has higher bias
+and is thus more prone to underfitting.
+So this parameter C is one of the parameters we need to choose.
+The other one is the parameter
+sigma squared, which appeared in the Gaussian kernel.
+So if the Gaussian kernel
+sigma squared is large, then
+in the similarity function, which
+was this you know E to the
+minus x minus landmark
+varies squared over 2 sigma squared.
+In this one of the example; If I
+have only one feature, x1, if
+I have a landmark there at
+that location, if sigma
+squared is large, then, you know, the
+Gaussian kernel would tend to
+fall off relatively slowly
+and so this would be my feature
+f(i), and so this
+would be smoother function that varies
+more smoothly, and so this will
+give you a hypothesis with higher
+bias and lower variance, because
+the Gaussian kernel that falls off smoothly,
+you tend to get a hypothesis that
+varies slowly, or varies smoothly
+as you change the
+input x. Whereas in contrast,
+if sigma squared was
+small and if that's my
+landmark given my 1
+feature x1, you know, my Gaussian
+kernel, my similarity function, will vary more abruptly.
+And in both cases I'd pick
+out 1, and so if sigma squared
+is small, then my features vary less smoothly.
+So if it's just higher slopes
+or higher derivatives here.
+And using this, you end
+up fitting hypotheses of lower
+bias and you can have higher variance.
+And if you look at this
+week's points exercise, you actually get
+to play around with some
+of these ideas yourself and see these effects yourself.
+So, that was the support vector machine with kernels algorithm.
+And hopefully this discussion of
+bias and variance will give
+you some sense of how you
+can expect this algorithm to behave as well.

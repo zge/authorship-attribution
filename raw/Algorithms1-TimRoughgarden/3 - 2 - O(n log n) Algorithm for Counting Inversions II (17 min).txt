@@ -1,0 +1,471 @@
+So far, we've developed a divide and
+conquer approach
+to counting the number of inversions of an array,
+so we're gonna
+split the array in two parts,
+recursively count inversions on the left and on the
+right.
+We've indentified the key challenge
+as counting the number of split inversions
+quickly.
+Where a split inversion means that
+the earlier indexes in the left half 
+of the array,
+the second indexes in the right half of the array.
+These are
+precisely inversions that are going to be missed
+by both of our recursive calls. And
+the crux of the problem is that there
+might be as many as quadratic split
+versions, if somehow, they get the run
+time we want, we need to do it in a linear
+time. So here's the really nice. This idea
+which is going to let us do that. The idea
+is to piggyback on Merge Short. By which I
+mean, we're actually going to demand a bit
+more of our recursive calls to make the
+job of counting the number of split
+recursions easier. This is analogous to
+when you're doing a proof by induction.
+Sometimes when making the inductive
+hyphothesis stronger, that's what lets you
+push through the inductive proof. So we're
+gonna ask our recursive calls to not only
+count inversions in the array of their
+past. But also along the way, to sort the
+array. And hey. Why not? We know sorting
+is fast. Merge short will do it in N. Log
+in time, which is the run time we're
+shooting for. So why not just throw that
+in? Maybe it will help us in the combined
+step. And as we will see it will. So what
+does this buy us? Why should we demand
+more of our recursive calls? Well, as
+we'll see, in a couple slides, the merge
+subroutine almost seems designed just to
+count the number of split inversions. As
+we'll see as you merge two sorted sub
+arrays, you will naturally uncover all the
+split inversions. So let me just be a
+little bit more clear about how our
+previous high level algorithm is going to
+now be souped up so that the recursive
+call sort as well. So here's the high
+level algorithm we proposed before where
+we just recursively count inversions on
+the left side, on the right side, and then
+we have some currently unimplemented sub
+routine count split in which is
+responsible for counting the number of
+split inversions. So we're just gonna
+augment this as follows. So instead of
+being called count now we're going to call
+it sort and count. That's going to be the
+name of our algorithm the recursive calls
+again just invoke sort and count and so
+now we know each of those will not only
+count the number of inversions in the sub
+array but also return [sound] a sorted
+version so out from the first one we're
+going to get array b back which is the
+sorted version of the array that we passed
+it and we'll get assorted array C back
+from the second recursive call the sorted
+version of array t hat we passed it and
+now the count is split in versions now in
+addition to counting splitted versions
+it's responsible for merging the two
+sorted sub arrays B and C. To [inaudible]
+will be responsible. For outputting an
+array D., which is an assorted version of
+the original input array A. And so I
+should also rename our unimplemented
+subroutine to reflect it now more
+ambitious agenda. So we'll call this,
+merge. And count split in. Now we
+shouldn't be intimidated by asking our
+combining Soviet team to merge. The two
+sorted separate B and C because we've
+already see we now how to do that in
+linear time. So the question is just
+piggybacking on that work, can we also
+count the number of split inversions in an
+additional linear time. We'll see that we
+can, although that's certainly not
+obvious. So you should again at this point
+have the question why aren't we doing this
+why are we just making ourselves do more
+work. And again the hope is that the
+payoff is some how [inaudible] versions
+becomes easier by asking our recursive
+calls to [inaudible] so to develop some
+intuition for why that's true why merging
+naturally uncovers the number of split
+inversions let's recall the definition of
+just the original merge server team from
+merge sort was so here's the same pseudo
+code we went through several videos ago I
+have renamed the letters of the arrays to
+be consistent with the current notation
+so. We're given two sorted sub arrays,
+these come back from recursive calls. I'm
+calling them B and C. They both have
+length N over two and responsible for
+producing the sorted combination of B and
+C. So that's an output array D of length
+N. And again the idea is simple. You're
+just take the two sorted sub arrays B and
+C. And then you take the output array d.
+Which are reasonable for populating and
+using index k you're going to traverse the
+output array d from left to right. That's
+what this outer for loop here does. And
+your gonna maintain pointers I and j. To
+the sorted subarrays, B and C
+respectively. And the only observation is
+that whatever the minimum element that you
+haven't copied over to D yet is, it's
+gotta be either the, the leftmost element
+of B that you haven't seen yet, or the
+leftmost element of C that you haven't
+seen yet. B and C, by virtue of being
+sorted, the minimum [inaudible] remaining
+has to be, the next one available to
+either B or C. So you just proceed in the
+obvious way, you compare the two
+candidates for the next one to copy over.
+You look at B of I, you look at C of J.
+Whichever one is smaller, you copy over.
+So the first part of the if statement is
+for when B contains the smaller one. The
+second part of the. The L statement is for
+when C contains the smaller one. Okay, so
+that's how merge works. You go down B and C
+in parallel populating D in sorted order
+from left to right. Now to get some feel
+for what on earth any of this has to do
+with the split inversions of an array I
+want you to think about an input array A
+that has the following property, that has
+the property that there are no split
+inversions. Whatsoever. So every inversion
+in this array, in this input array A is
+gonna be either a left inversion, so both
+indices are at most N over two or a right
+inversion, so both indices are strictly
+greater than N over two. Now the question
+is, given such an array A, what's, once
+you're merging. At the step what do the
+sorted sub arrays B and C look like for
+input array A that has no split inversions.
+The correct
+answer is the second one. That if you have
+an array with no split inversions, then
+everything in the first half is less than
+everything in the second half. Why? Well
+consider the contrapositive. Suppose you
+had even one element in the first half
+which was bigger than any element in the
+second half. That pair of element alone
+would constitute a split inversion. Okay?
+So if you have no split inversions, then
+everything on the left is smaller than
+everything on the, in the right half of
+the array. Now, more to the point, think
+about the execution of the merge
+subroutine on an array with this property.
+On an input array A where everything in
+the left half is less than everything in
+the right half. What is merge gonna do?
+All right, so remember it's always looking
+for whichever is smaller the first element
+of, remaining in B or the first element
+remaining in C, and that's what it copies
+over. Well if everything in B is less than
+everything in C, everything in B is gonna
+get copied over into the [inaudible] ray D
+before C ever gets touched. Okay? So merge
+had an unusually trivial execution on
+input arrays with no split inversions,
+with zero split inversions. First it just
+goes through B and copies it over. Then it
+just concatonates C. Okay there's no
+interleaving between the two. So no split
+inversions means nothing get copied from C
+until it absolutely has to, until B is
+exhausted. So this suggests that perhaps
+copying elements over from the second
+subarray, C, has something to do with the
+number of split inversions in the original
+array, and that is, in fact, the case. So
+we're gonna see a general pattern about
+copies from the second element C, second
+array C [inaudible] exposing split
+inversions in the original input array A.
+So let's look at a more detailed example,
+to see what that pattern is. Let's return
+to it, the example in the previous video.
+Which is an array with six elements
+ordered one, three, five, two, four, six.
+So we do our recursive call, and in fact,
+the left half of the array is sorted, and
+the right half of the array is already
+sorted. So [inaudible] sorting what's
+gonna be done [inaudible] get to zero
+inversions for both our recursive calls.
+Remember, in this example, it turns out
+all of the inversions are split
+inversions. So, now let's trace through
+the merge sub-routine invoked on these two
+sorted sub-arrays, and try to spot a
+connection with the number of split
+inversions in the original 6-element
+array. So, we initialize indices I and j
+to point to the first element of each of
+these sub-arrays. So, this left one is b,
+and this right one is c and the output is
+d. Now, the first thing we do, is we copy
+the one over from b into the upward array.
+So, one goes there, and we advance this
+index over to the three. And, here nothing
+really interesting happened, there's no.
+Reason to count any split inversions, and
+indeed, the number one is not involved in
+any split inversions, cuz one is smaller
+than all of the other elements, and it's
+also in the first index. Things are much
+more interesting, when we copy over the
+element two from the second array c. And,
+notice at this point, we have diverged
+from the trivial execution that we would
+see with an array with no split
+inversions. Now, we're copying something
+over from c, before we've exhausted
+copying d. So we're hoping this will
+expose some split in versions. So we copy
+over the two. And we advance the second
+pointer J into C. And the thing to notice
+is this exposes two split inversions. The
+two split inversions that involve the
+element two. And those inversions are
+three comma two and five comma two. So why
+did this happen? Well, the reason we
+copied two over is because it's smaller
+than all the elements we haven't yet
+looked at in both B and C. So in
+particular, two is smaller than the
+remaining elements in B, the three and the
+five. But also because B is the left
+array. The indices and the three and five
+have to be less than the index of this
+two, so these are inversions. Two is
+further to the right than the original
+input array, and yet it's smaller than
+these remaining elements in B. So there
+are two elements remaining in B, and those
+are the two split inversions that involve
+the element two. So now, let's go back to
+the emerging subroutine, so what happens
+next? Well, next, we make a copy from the
+first array, and we sort of realize that
+nothing really interesting happens when we
+copy from the first array, at least with
+respect to split inversions. Then we copy
+the four over, and yet again, we discover
+a split inversion, the remaining one which
+is five comma four. Again, the reason is,
+given that four was copied over before,
+what's left in B, it's gotta be smaller
+than it, but by virtue of being in the
+rightmost array, it's also gotta have a
+bigger index. So it's gotta be a split
+inversion. And now the rest of the merge
+subroutine executes. Without any real
+incident. The five gets copied over and we
+know copies from the left array are
+boring. And then we copy the six over and
+copies from the right array are generally
+interesting but not if the left array is
+empty. That doesn't involve any split
+inversions. And you will recall, from the
+earlier video that these were inversions
+in the original array, three:2, five:2,
+and five:4. We discovered them all in
+automated method, by just keeping an eye
+out when we copy from the right array C.
+So this is indeed a general principle, so
+let me state the general claim. So the
+claim is not just in this specific
+example, and this specific execution, but
+no matter what the input array is, no
+matter how many split inversions there
+might be, the split inversions that
+involve an element of the second half of
+the array are precisely. Those elements
+remaining in the first array when that
+element gets copied over to the output
+array. So this is exactly what the pattern
+that we saw in the example. What works on
+the right array. In C, we had the elements
+two, four, and six. Remember, every split
+inversion has to, by definition, involve
+one element from the first half, and one
+element from the second half. So to count
+[inaudible] inversions, we can just group
+them according to which element of the
+second array there, did they involve. So
+out of the two, four, and six, the two is
+involved in the splitter conversions, 3-2,
+and 5-2. The three and the five were
+exactly the elements remaining in B. Bit
+over two. The split inversions involving
+four is exactly the inversion five four
+and five is exactly the element that was
+remaining in B when we copied over the
+four. There's no split inversions
+involving six and indeed the element D was
+empty when we copied the six over into the
+output array D. So what's the general
+argument? What's quite simple. Lets just
+zoom in and fixate on a particular
+element, X that belongs to that first half
+of the array that's among the first half
+of the elements and let's just examine
+which Y's so which elements of the second
+array the second half of the original
+input array involve with split versions of
+X. So there are two cases depending on
+whether X is copies to the output array D
+before or after Y now if X is copied to
+the output before Y well then since the
+[inaudible] in sorted order that means X
+has got to be shorter than Y so there's
+not going to be any split in inversion. On
+the other hand, if y is copied to the
+output d before x, then again because we
+populate d left to right in sort order,
+that's gotta mean that y is less than x.
+Now X. Is still hanging out in the left
+array, so it has a less index than Y. Y
+comes from the right array. So this is
+indeed a split inversion. So putting these
+two together it says that the. Elements X.
+Of the array B. That form split inversions
+with Y. Are precisely those that are going
+to get copied to the output array, after
+what? So, those are exactly the number of
+elements remaining in b, when y gets
+copied over. So, that proves the general
+claim. [sound] So, this slide was really
+the key insight. Now that we understand
+exactly why, counting split inversions is
+easy. As we're merging together two sorted
+sub-arrays, it's a simple matter to just
+translate this into code, and get a linear
+time implementation of a sub-routine that
+both merges and counts the number of split
+inversions. Which, then, in the overall
+recursive algorithm, will have n log n
+running time, just as in merge sort. So,
+let's just spend a quick minute filling in
+those details. So. I'm not gonna write out
+the pseudocode, I'm just going to write
+out what you need to augment the merge
+pseudocode, discussed a few slides ago,
+by, in order to count split inversions as
+you're doing the merging. And this will
+follow immediately from the previous
+claim, which indicated how split
+inversions relate to, the number of
+elements remaining on the left array as
+you're doing the merge. So, the idea is
+the natural one, as you're doing the
+merging, according to the previous
+pseudocode of the two sorted sub-arrays,
+you just keep a running total of the
+number of split inversions that you've
+encountered, all right? So you've got your
+sorted sub-array b, you've got your sorted
+sub-array c. You're merging these into an
+output array D. And as you traverse
+through D and K from one to N you just
+start the count at zero and you increment
+it by something each time you do a copy
+over from either from B or C. So, what's
+the increment, well what did we just see?
+We saw the copies. Involving B don't
+count. We're not gonna look at split
+inversions when we copy over for B. Only
+when we look at them from C, right? Every
+split inversion involves exactly one
+element from each of B and C. So I may as
+well count them, via the elements in C.
+And how many split inversions are involved
+with the given element of C? Well, it's
+exactly how many elements of B remain when
+it gets copied over. So that tell us how
+to increment this running count. And it
+falls immediately from the claim on the
+previous slide that this. Implementation
+of this running total counts precisely the
+number of split inversions that the
+original input array A possesses. And
+you'll recall that the left inversions are
+counted by the first recursive call, the
+right inversions are counted by the second
+recursive call. Every inversion is either
+left or right or split, it's exactly one
+of those three types. So with our three
+different subroutines, the two recursive
+ones and this one here we successfully
+count up all of the inversions of the
+original input array. So that's the
+correctness of the algorithm, what's the
+running time? What we're calling merge
+sort, we begin by just analyzing the
+running time of merge and then we discuss
+the running time of the entire merge sort
+[inaudible]. Let's do the same thing here
+briefly. So what's the running time of the
+[inaudible] team for this merging and
+simultaneously cutting into split
+versions. Work that we do in the merging
+and we already know that that's linear and
+then the only additional work here is.
+Incrementing this running count. And
+that's constant time for each element of
+D, right? Each time we do a copy over, we
+do [inaudible], a single edition to our
+running count. So constant time for
+element D, or linear time overall. So I'm
+being a little sloppy here, sloppy in a
+very conventional way. But it is a little
+sloppy about writing O of N plus O of N is
+equal to O of N. Be careful when you make
+statements like that, right? So if you
+added O of N to itself N times, it would
+not be O of N. But if you add O of N to
+itself a constant number of times, it is
+still O of N. So you might, as an
+exercise, want to write out, a formal
+version of what this means. Basically,
+there's some constant C [inaudible]. The
+merge step takes a C11 in steps. There's a
+constant C2 so that the rest of the work
+is in those C2 times N steps. So when we
+add them we get, get [inaudible] most
+quantity C1 plus C2 times N steps, which
+is still [inaudible] because C1 plus C2 is
+a constant. Okay? So linear work for
+merge, linear work the running count,
+that's linear work in the subroutine
+overall. And no by exactly the same
+argument we used in merge sort because we
+have two recursive calls on half the size
+and we do linear work outside of the
+cursive calls, the overall running time is
+O of N log N. So we really just
+piggybacked on merge sort The constant
+factor a little bit to do the counting
+along the way, but the running time
+remains at the go of [inaudible].

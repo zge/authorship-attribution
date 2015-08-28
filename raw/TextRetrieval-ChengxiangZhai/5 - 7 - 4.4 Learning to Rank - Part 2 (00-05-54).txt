@@ -1,0 +1,234 @@
+[SOUND] So
+now let's take a look at the specific,
+method that's based on regression.
+Now this is one of the many
+different methods in fact,
+it's the one of the simplest methods.
+And I choose this to explain the idea
+because it's it's so simple.
+So in this approach we simply assume
+that the relevance of a document
+with respect to the query, is related to
+a linear combination of all the features.
+Here I used the Xi to emote the feature.
+So Xi of Q and D is a feature.
+And we can have as many features as,
+we would like.
+And we assume that these features
+can be combined in a linear manner.
+And each feature is controlled
+by a parameter here.
+And this beta is a parameter,
+that's a weighting parameter.
+A larger value would mean the feature
+would have a higher weight and
+it would contribute more
+to the scoring function.
+The specific form of the function
+actually also involves
+a transformation of
+the probability of relevance.
+So this is the probability of relevance.
+We know that the probability of relevance
+is within the range from 0 to 1.
+And we could have just assumed
+that the scoring function is
+related to this linear combination.
+Right, so we can do a,
+a linear regression but
+then the value of this linear
+combination could easily go beyond 1.
+So this transformation here would map ze,
+0 to 1 range through the whole
+range of real values.
+You can, you can verify it,
+it by yourself.
+So this allows us then to connect
+to the probability of relevance
+which is between 0 and 1 to a linear
+combination of arbitrary efficients.
+And if we rewrite this into a probability
+function, we will get the next one.
+So on this side on this equation,
+we will have the probability of relevance.
+And on the right hand side,
+we will have this form.
+Now this form is created non-active.
+And it still involves the linear
+combination of features.
+And it's also clear that is,
+if this value is,
+is.
+Of the linear combination
+in the equation above.
+If this this, this value here,
+if this value is large then it
+will mean this value is small.
+And therefore, this probability,
+this whole probability, would be large.
+And that's what we expect.
+Basically, it would be if this
+combination gives us a high value,
+then the document's more likely relevant.
+So this is our hypothesis.
+Again, this is not necessarily
+the best hypothesis.
+That this is a simple way to connect
+these features with
+the probability of relevance.
+So now we have this this
+combination function.
+The next task is to see how we
+need to estimate the parameters so
+that the function can truly be applied.
+Right.
+Without them knowing
+that they have values, it's,
+it's harder to apply this function, okay.
+So let's how we can estimate, beta values.
+All right.
+Let's take a look, at a simple example.
+In this example, we have three features.
+One is BM25 score of
+the document under the query.
+One is the page rank score of
+the document, which might or
+might not depend on the query.
+Hm, we might have a top
+sensitive page rank.
+That would depend on the query.
+Otherwise, the general page rank
+doesn't really depend on the query.
+And then we have BM25 score on
+the Anchor task of the document.
+These are then the feature values for
+a particular doc, document query pair.
+And in this case the document is D1.
+And the,
+the judgment says that it's relevant.
+Here's another training instance,
+and these features values.
+But in this case it's non-relevant, okay?
+This is a overly simplified case,
+where we just have two instances.
+But it,
+it's sufficient to illustrate the point.
+So what we can do is we use the maximum
+likelihood estimator to actually estimate
+the parameters.
+Basically, we're going to do, predict
+the relevance status of the document,
+the, based on the feature values.
+That is given that we observe
+these feature values here.
+Can we predict the relevance?
+Yeah.
+And of course, the prediction will be
+using this function that you see here.
+And we hypothesize this that
+the probability of relevance is related
+features in this way.
+So we're going to see for
+what values of beta we can
+predict that the relevance well.
+What do we mean?
+Well, what, what do we mean by
+predicting the relevance well?
+Well we just mean.
+In the first case for D1,
+this expression here,
+right here, should give higher values.
+In fact, they would hope this
+to give a value close to one.
+Why?
+Because this is a relevant document.
+On the other hand, in the second case for
+D2 we hope this value would be small.
+Right.
+Why?
+It's because it's a non-relevant document.
+So now let's see how this can
+be mathematical expressed.
+And this is similar to,
+expressing the probability of a document.
+Only that we are not talking about
+the probability of words but
+talking about the probability
+of relevance, 1 or 0.
+So what's the probability
+of this document?
+The relevant if it has
+these feature values.
+Well this is.
+Just this expression, right?
+We just need to pluck in the X, the Xis.
+So that's what we'll get.
+It's exactly like, what we have seen that,
+only that we replace these Xis.
+With now specific values.
+And so, for example, this 0.7 goes
+to here and this 0.11 goes to here.
+And these are different feature values and
+we'll combine them in this particular way.
+The beta values are still unknown.
+But this gives us the probability
+that this document is relevant
+if we assume such a model.
+Okay, and
+we want to maximize this probability since
+this is a random document.
+What we do for the second document.
+Well, we want to compute to the
+probability that the predictions is, is n,
+non-relevant.
+So, this would mean, we have to compute
+a 1 minus, right this expression.
+Since this expression.
+Is actually the probability of relevance,
+so to compute the non relevance
+from relevance, we just do 1 minus
+the probability of relevance, okay?
+So this whole expression then.
+Just is our probability of predicting
+these two relevance values.
+One is 1.
+Here, one is a 0.
+And this whole equation
+is our probability.
+Of observing a 1 here and
+observing a 0 here.
+Of course this probability depends
+on the beta values, right?
+So then our goal is to
+adjust the beta values to make this
+whole thing reach its maximum.
+Make that as large as possible.
+So that means we
+are going to compute this.
+The beta is just the, the parameter
+values that would maximize this for
+like holder expression.
+And what it means is if
+look at the function is
+we're going to choose betas to
+make this as large as possible.
+And make this also as large as possible
+which is equivalent to say make
+this the part as small as possible.
+And this is precisely what we want.
+So once we do the training,
+now we will know the beta values.
+So then this function will be well
+defined once their values are known.
+Both this and
+this will become pretty less specified.
+So for any new query and new document we
+can simply compute the features [NOISE]
+For that pair and then we just use this
+formula to generate a ranking score.
+And this scoring function can be used in
+for rank documents for a particular query.
+So that's the basic idea of,
+learning to rank.
+[MUSIC]
+

@@ -1,0 +1,339 @@
+[SOUND] This lecture is about
+how to mine text data with
+social network as context.
+In this lecture we're going to continue
+discussing contextual text mining.
+In particular, we're going to look at
+the social network of others as context.
+So first, what's our motivation for using
+network context for analysis of text?
+The context of a text
+article can form a network.
+For example the authors
+of research articles
+might form collaboration networks.
+But authors of social media content
+might form social networks.
+For example,
+in Twitter people might follow each other.
+Or in Facebook as people might
+claim friends of others, etc.
+So such context connects
+the content of the others.
+Similarly, locations associated with
+text can also be connected to form
+geographical network.
+But in general you can can imagine
+the metadata of the text data
+can form some kind of network
+if they have some relations.
+Now there is some benefit in
+jointly analyzing text and
+its social network context or
+network context in general.
+And that's because we can use network to
+impose some constraints on topics of text.
+So for example it's reasonable
+to assume that authors
+connected in collaboration networks
+tend to write about the similar topics.
+So such heuristics can be used
+to guide us in analyzing topics.
+Text also can help characterize the
+content associated with each subnetwork.
+And this is to say that both
+kinds of data, the network and
+text, can help each other.
+So for example the difference in
+opinions expressed that are in
+two subnetworks can be reviewed by
+doing this type of joint analysis.
+So here briefly you could use a model
+called a network supervised topic model.
+In this slide we're going to
+give some general ideas.
+And then in the next slide we're
+going to give some more details.
+But in general in this part of the course
+we don't have enough time to cover
+these frontier topics in detail.
+But we provide references
+that would allow you to
+read more about the topic
+to know the details.
+But it should still be useful
+to know the general ideas.
+And to know what they can do to know
+when you might be able to use them.
+So the general idea of network
+supervised topic model is the following.
+Let's start with viewing
+the regular topic models.
+Like if you had an LDA as
+sorting optimization problem.
+Of course, in this case,
+the optimization objective
+function is a likelihood function.
+So we often use maximum likelihood
+estimator to obtain the parameters.
+And these parameters will give us
+useful information that we want to
+obtain from text data.
+For example, topics.
+So we want to maximize the probability
+of tests that are given the parameters
+generally denoted by number.
+The main idea of incorporating network is
+to think about the constraints that
+can be imposed based on the network.
+In general,
+the idea is to use the network to
+impose some constraints on
+the model parameters, lambda here.
+For example,
+the text at adjacent nodes of the network
+can be similar to cover similar topics.
+Indeed, in many cases,
+they tend to cover similar topics.
+So we may be able to smooth
+the topic distributions
+on the graph on the network so
+that adjacent nodes will have
+very similar topic distributions.
+So they will share a common
+distribution on the topics.
+Or have just a slight variations of the
+topic of distributions, of the coverage.
+So, technically, what we can do
+is simply to add a network and
+use the regularizers to the likelihood
+of objective function as shown here.
+So instead of just optimize
+the probability of test
+data given parameters lambda, we're
+going to optimize another function F.
+This function combines the likelihood with
+a regularizer function called R here.
+And the regularizer defines
+the the parameters lambda and the Network.
+It tells us basically
+what kind of parameters are preferred
+from a network constraint perspective.
+So you can easily see this is in effect
+implementing the idea of imposing
+some prior on the model parameters.
+Only that we're not necessary
+having a probabilistic model, but
+the idea is the same.
+We're going to combine the two in
+one single objective function.
+So, the advantage of this idea
+is that it's quite general.
+Here the top model can be any
+generative model for text.
+It doesn't have to be PLSA or
+LEA, or the current topic models.
+And similarly,
+the network can be also in a network.
+Any graph that connects
+these text objects.
+This regularizer can
+also be any regularizer.
+We can be flexible in capturing different
+heuristics that we want to capture.
+And finally,
+the function F can also vary, so
+there can be many different
+ways to combine them.
+So, this general idea is actually quite,
+quite powerful.
+It offers a general approach
+to combining these different
+types of data in single
+optimization framework.
+And this general idea can really
+be applied for any problem.
+But here in this paper reference here,
+a particular instantiation
+called a NetPLSA was started.
+In this case, it's just for
+instantiating of PLSA to incorporate this
+simple constraint imposed by network.
+And the prior here is the neighbors on
+the network must have
+similar topic distribution.
+They must cover similar
+topics in similar ways.
+And that's basically
+what it says in English.
+So technically we just have
+a modified objective function here.
+Let's define both the texts you can
+actually see in the network graph G here.
+And if you look at this formula,
+you can actually recognize
+some part fairly familiarly.
+Because they are, they should be
+fairly familiar to you by now.
+So can you recognize which
+part is the likelihood for
+the test given the topic model?
+Well if you look at it, you will see this
+part is precisely the PLSA log-likelihood
+that we want to maximize when we
+estimate parameters for PLSA alone.
+But the second equation shows some
+additional constraints on the parameters.
+And in particular,
+we'll see here it's to measure
+the difference between the topic
+coverage at node u and node v.
+The two adjacent nodes on the network.
+We want their distributions to be similar.
+So here we are computing the square
+of their differences and
+we want to minimize this difference.
+And note that there's a negative sign in
+front of this sum, this whole sum here.
+So this makes it possible to find
+the parameters that are both to
+maximize the PLSA log-likelihood.
+That means the parameters
+will fit the data well and,
+also to respect that this
+constraint from the network.
+And this is the negative
+sign that I just mentioned.
+Because this is an negative sign,
+when we maximize this
+object in function we'll actually
+minimize this statement term here.
+So if we look further in
+this picture we'll see
+the results will weight of
+edge between u and v here.
+And that space from out network.
+If you have a weight that says well,
+these two nodes are strong
+collaborators of researchers.
+These two are strong connections
+between two people in a social network.
+And they would have weight.
+Then that means it would be more important
+that they're topic coverages are similar.
+And that's basically what it says here.
+And finally you see
+a parameter lambda here.
+This is a new parameter to control
+the influence of network constraint.
+We can see easily, if lambda is set to 0,
+we just go back to the standard PLSA.
+But when lambda is set to a larger value,
+then we will let the network
+influence the estimated models more.
+So as you can see, the effect here is
+that we're going to do basically PLSA.
+But we're going to also try
+to make the topic coverages
+on the two nodes that are strongly
+connected to be similar.
+And we ensure their coverages are similar.
+So here are some of the several results,
+from that paper.
+This is slide shows the record
+results of using PLSA.
+And the data here is DBLP data,
+bibliographic data,
+about research articles.
+And the experiments have to do with
+using four communities of applications.
+IR information retrieval.
+DM stands for data mining.
+ML for machinery and web.
+There are four communities of articles,
+and we were hoping
+to see that the topic mining can help
+us uncover these four communities.
+But from these assembled topics that you
+have seen here that are generated by PLSA.
+And PLSA is unable to generate
+the four communities that
+correspond to our intuition.
+The reason was because they
+are all mixed together and
+there are many words that
+are shared by these communities.
+So it's not that easy to use
+four topics to separate them.
+If we use more topics,
+perhaps we will have more coherent topics.
+But what's interesting is that if we
+use the NetPLSA where the network,
+the collaboration network in this case of
+authors is used to impose constraints.
+And in this case we also use four topics.
+But Ned Pierre said we gave
+much more meaningful topics.
+So here we'll see that these topics
+correspond well to the four communities.
+The first is information retrieval.
+The second is data mining.
+Third is machine learning.
+And the fourth is web.
+So that separation was mostly
+because of the influence of network
+where with leverage is
+a collaboration network information.
+Essentially the people that
+form a collaborating network
+would then be kind of assumed
+to write about similar topics.
+And that's why we're going to
+have more coherent topics.
+And if you just listen to text data
+alone based on the occurrences,
+you won't get such coherent topics.
+Even though a topic model, like PLSA or
+LDA also should be able to
+pick up co-occurring words.
+So in general the topics
+that they generate represent
+words that co-occur each other.
+But still they cannot generate such
+a coherent results as NetPLSA,
+showing that the network
+contest is very useful here.
+Now a similar model could have been also
+useful to to characterize the content
+associated with each
+subnetwork of collaborations.
+So a more general view of text
+mining in context of network is you
+treat text as living in a rich
+information network environment.
+And that means we can connect all the
+related data together as a big network.
+And text data can be associated with
+a lot of structures in the network.
+For example, text data can be associated
+with the nodes of the network, and
+that's basically what we just
+discussed in the NetPLSA.
+But text data can be associated with age
+as well, or paths or even subnetworks.
+And such a way to represent texts
+that are in the big environment of
+all the context information
+is very powerful.
+Because it allows to analyze all the data,
+all the information together.
+And so in general, analysis of text
+should be using the entire network
+information that's
+related to the text data.
+So here's one suggested reading.
+And this is the paper about NetPLSA where
+you can find more details about the model
+and how to make such a model.
+[MUSIC]
+

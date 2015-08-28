@@ -1,0 +1,388 @@
+[NOISE].
+>> This lecture is about some practical
+issues that you would have to address in
+evaluation of text retrieval systems.
+In this lecture we will continue
+the discussion of evaluation.
+We will cover some practical
+issues that you will have to solve
+in actual evaluation of
+text retrieval systems.
+So, in order to create a test collection,
+we have to create a set of queries,
+a set of documents and
+a set of relevance judgments.
+It turns out that each is
+actually challenging to create.
+So first, the documents and
+queries must be representative.
+They must rep, represent the real queries
+and real documents that the users handle.
+And we also have to use many queries and
+many documents in order to
+avoid biased conclusions.
+For the matching of relevant
+documents with the queries,
+we also need to ensure that there exists a
+lot of relevant documents for each query.
+If a query has only one that is a relevant
+document in the collection then, you know,
+it's not very informative to
+compare different methods
+using such a query because there is not
+much room for us to see difference.
+So, ideally there should be more
+relevant documents in the collection.
+But yet the queries also should represent
+real queries that we care about.
+In terms of relevance judgements, the
+challenge is to ensure complete judgements
+of all the documents for all the queries,
+yet, minimizing human and fault.
+Because we have to use the human
+labor to label these documents.
+It's very labor intensive.
+And as a result, it's impossible to
+actually label all of the documents for
+all the queries, especially considering
+a joint, data set like the web.
+So, this is actually a major challenge.
+It's a very difficult challenge.
+For measures, it's also challenging
+because what we want with measures is that
+with accuracy reflected
+the perceived utility of users.
+We have to consider carefully
+what the users care about and
+then design measures to measure that.
+If we, your measure is not
+measuring the right thing,
+then your conclusion would,
+would be misled.
+So it's very important.
+So we're going to talk
+about a couple issues here.
+One is the statistical significance test,
+and
+this also is the reason why we
+have to use a lot of queries, and
+the question here is how sure can you
+be that I observed the difference?
+It doesn't simply result from
+the particular queries you choose.
+So here are some sample results of
+average precision for System A and
+System B in two different experiments.
+And you can see in the bottom,
+we have mean average position, all right?
+So the mean,
+if you look at the mean average position
+the mean average positions are exactly
+the same in both experiments.
+All right, so you can see this is 0.2,
+this is 0.4 for
+system B and
+again here its also 0.2 and 0.4.
+So they are identical.
+Yet if you look at the, these exact
+average positions for different queries,
+if you look at these numbers in detail,
+you will realize that in one case
+you would feel that you can trust
+the conclusion here given by the average.
+In another case, in the other case,
+you will feel that, well, I'm not sure.
+So, why don't you take a look at
+all these numbers for a moment.
+Pause the video.
+So, if you at the average,
+the main average position,
+we can easily say that, well,
+System B is better, right?
+So it's, after all, it's 0.4 and
+then this is twice as much as 0.2.
+So that's a better performance.
+But if you look at these two experiments
+and look at the detailed results,
+you will see that we'll be more
+confident to say that in the case one.
+In experiment one.
+In this case because these numbers seem to
+be consistently better than for system B.
+Where as in, experiment two,
+we're not sure.
+because, looking at some results,
+like this, after system A is better.
+And this is another case
+where system A is better.
+But yet, if we look at on the average,
+System B is better.
+So what do you think?
+You know, how reliable is our conclusion
+if we only look at the average?
+Now in this case, intuitively, we feel
+it's better than one, it's more reliable.
+But how can we quantitatively
+answer this question?
+And this is why we need to do
+statistical significance test.
+So the idea of a statistical significance
+test is basically to assess the vary,
+variance across these different queries.
+If there's a, a big variance that means
+that the results could fluctuate
+a lot according to different queries.
+Then we should believe that
+unless you have used a lot of
+queries the results might change
+if we use another set of queries.
+Right?
+So, this is then not so
+if you have seen high variance
+then it's not very reliable.
+So let's look at these results
+again in the second case.
+So here we show two,
+different ways to compare them.
+One is a Sign Test.
+And we'll, we'll just look at the sign.
+If System B is better than System A,
+then we have a plus sign.
+When System A is better
+we have a minus sign etc.
+Using this case if you see this,
+well, there are seven cases.
+We actually have four cases
+where System B is better.
+But three cases System A is better.
+You know intuitively,
+this is almost like random results.
+Right, so if you just take a random
+sample of to, to flip seven coins,
+and if you use plus to denote the head and
+then minus to denote the tail, and
+that could easily be the results of just
+randomly flipping, these seven coins.
+So, the fact that the, the average
+is larger doesn't tell us anything.
+You know, we can't reliably concur that.
+And this can be quantitative
+in the measure by, a p value.
+And that basically, means,
+the probability that this result is
+in fact from random fluctuation.
+In this case, probability is one.
+It means it surely is
+a random fluctuation.
+Now in Wilcoxon, test,
+it's a non parametrical test,
+and we would be not only
+looking at the signs
+we'll be also looking at
+the magnitude of the difference.
+But, we, we, we can draw a similar
+conclusion where you say well it's
+very likely to be from random.
+So to illustrate this let's
+think about such a distribution.
+And this is called a normal distribution.
+We assume that the mean is zero here.
+Let's say, well, we started with
+the assumption that there's no difference
+between the two systems.
+But we assume that because of random
+fluctuations depending on the queries
+we might observe a difference, so
+the actual difference might be
+on the left side here or
+on the right side here, right?
+And, and
+this curve kind of shows the probability
+that we would actually observe values
+that are deviating from zero here.
+Now, so if we, look at this picture then
+we see that if a difference
+is observed here,
+then the chance is very
+high that this is in fact,
+a random observation, right.
+We can define region of you know, likely
+observation because of random fluctuation.
+And this is 95% of all outcomes.
+And in this interval
+then the observed values
+may still be from random fluctuation.
+But if you observe a value in this
+region or a difference on this side,
+then the difference is unlikely
+from random fluctuation.
+Right, so there is a very small
+probability that you will observe
+such a difference just because
+of random fluctuation.
+So in that case, we can then conclude
+the difference must be real.
+So System B is indeed better.
+So, this is the idea of
+the statistical significance test.
+The takeaway message here is that
+you have used many queries to avoid
+jumping into a conclusion as in this
+case to say System B is better.
+There are many different ways of doing
+this statistical significance test.
+So now, let's talk about the other
+problem of making judgements and
+as we said earlier,
+it's very hard to judge all the documents
+completely unless it is a small data set.
+So the question is, if we can't
+afford judging all the documents
+in the collection,
+which subset should we judge?
+And the solution here is pooling.
+And this is a strategy that has been used
+in many cases to solve this problem.
+So the idea of pulling is the following.
+We would first choose a diverse
+set of ranking methods,
+these are types of retrieval systems.
+And we hope these methods
+can help us nominate
+likely relevance in the documents.
+So the goal is to pick out
+the relevant documents..
+It means we are to make judgements
+on relevant documents because those
+are the most useful documents
+from the users perspective.
+So, that way we would have each
+to return top-K documents.
+And the K can vary from systems, right.
+But the point is to ask them to suggest
+the most likely relevant documents.
+And then we simply combine
+all these top-K sets to form
+a pool of documents for
+human assessors to judge.
+So, imagine you have many systems.
+Each will return K documents, you know,
+take the top-K documents, and
+we form the unit.
+Now, of course there are many
+documents that are duplicated,
+because many systems might have
+retrieved the same random documents.
+So there will be some duplicate documents.
+And there are,
+there are also unique documents that are
+only returned by one system, so the idea
+of having diverse set of result ranking
+methods is to ensure the pool is broad.
+And can include as many possible
+random documents as possible.
+And then the users with
+the human assessors would make
+complete the judgements on this data set,
+this pool.
+And the other unjudged documents are
+usually just a assumed to be non-relevant.
+Now if the pool is large enough,
+this assumption is okay.
+But the, if the pool is not very large,
+this actually has to be reconsidered,
+and we might use other
+strategies to deal with them and
+there are indeed other
+methods to handle such cases.
+And such a strategy is generally okay for
+comparing systems that
+contribute to the pool.
+That means if you participate in
+contributing to the pool then it's
+unlikely that it will penalize
+your system because the top
+ranked documents have all been judged.
+However, this is problematic for
+even evaluating a new system that may
+not have contributed to the pool.
+In this case, you know, a new system
+might be penalized because it might have
+nominated some relevant documents
+that have not been judged.
+So those documents might be
+assumed to be non-relevant.
+And that, that's unfair.
+So to summarize the whole part
+of text retrieval evaluation,
+it's extremely important because the
+problem is an empirically defined problem.
+If we don't rely on users, there's no way
+to tell whether one method works better.
+If we have inappropriate
+experiment design,
+we might misguide our research or
+applications.
+And we might just draw wrong conclusions.
+And we have seen this in
+some of our discussion.
+So, make sure to get it right for
+your research or application.
+The main methodology is Cranfield
+evaluation methodology and
+this is near the main paradigm used in
+all kinds of empirical evaluation tasks,
+not just a search engine variation.
+Map and nDCG are the two main measures
+that should definitely know about and
+they are appropriate for
+comparing ranking algorithms.
+You will see them often
+in research papers.
+Perceiving up to ten documents is easier
+to interpret from users perspective.
+So, that's also often useful.
+What's not covered is some other
+evaluation strategy like A-B test
+where the system would mix two of
+the results of two methods randomly.
+And then will show the mix
+of results to users.
+Of course, the users don't see
+which result is from which method.
+The users would judge those results or
+click on those those documents in
+in a search engine application.
+In this case, then, the search engine can
+keep track of the clicked documents, and
+see if one method has contributed
+more to the clicked documents.
+If the user tends to click on
+one the results from one method,
+then it's just that method may,
+may be better.
+So this is what leverages a real users
+of a search engine to do evaluation.
+It's called A-B Test, and
+it's a strategy that's often used by
+the modern search engines,
+the commercial search engines.
+Another way to evaluate IR or
+text retrieval is user studies,
+and we haven't covered that.
+I've put some references here that you can
+look at if you want to
+know more about that.
+So there are three
+additional readings here,
+these are three mini
+books about evaluation.
+And they are all excellent in covering a
+broad review of information retrieval and
+evaluation.
+And this covered some of
+the things that we discussed.
+But they also have a lot
+of others to offer.
+[MUSIC]
+

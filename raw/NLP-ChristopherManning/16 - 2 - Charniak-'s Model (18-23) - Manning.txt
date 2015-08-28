@@ -1,0 +1,379 @@
+Let's now look at a particular model for
+realizing lexicalized PCFGs. And the model
+we're going to look at is the model of
+Eugene Charniak from Charniak 1997. This
+isn't the most recent model, but I'm
+choosing it because it's the simplest and
+most straightforward way of building a
+lexicalized PCFG. And so hopefully, it's
+easy for you guys to get a sense of how it
+works. So just to give a bit of context
+for what I'm explaining. When you're
+actually parsing in Charniak's parsing
+model, the way he's doing the parsing is
+bottom-up in a way somewhat similar to the
+way that we did CKY parsing in an earlier
+segment. But, just as with the plain
+vanilla PCFG, the probabilistic
+conditioning is top-down, so you've got
+the probability of a right-hand side given
+a left-hand side, i.e. the
+probability of stuff below given the stuff
+above. And in this segment I'm basically
+just gonna show you what the probability
+distributions are, rather than actually
+concretely going through the parsing
+algorithm, but for the actual parsing algorithm
+you're using these probabilities and
+applying them working upwards through the tree.
+So this is the idea of how Charniak's
+algorithm works. And for this example,
+what I'm going to assume is that this is
+our starting point, where we're already
+partway through building a tree. So we
+have an S node, and we know the headword
+of the whole sentence is going to be rose.
+And that sentence is rewriting as a noun
+phrase and a verb phrase. Well, since the
+verb phrase is the head of the sentence,
+we just know automatically that its
+headword is also going to be rose. And the
+point at which we are up to is, we haven't
+yet decided how to expand this noun
+phrase. And we don't know what the head of
+this noun phrase is. So, in Charniak's model,
+there are two probability distributions
+that are used to expand out a sentence and
+we'll see each of them in turn. So, the
+first one is, gee, we have to choose some
+headword for this noun phrase. And for
+choosing that headword, we're going to
+condition on several things. We're going to
+condition on the headword of the parent,
+the category, which is noun phrase, and
+the parent category, which here is S.
+And so the probability distribution we're
+going to use is this one. So we're going
+to have a probability over different
+headword choices given these three
+conditioning things: the category, the
+parent category, and the parent head word.
+And so what we are asking for a noun
+phrase, which is in this context of being
+under an S node and having a head of the
+whole S be rose, what are likely nouns to
+choose as the head of the noun phrase. And
+so you might think of something like, the
+balloon rose and say balloon or
+temperature, temperature rose. Or you might
+think tempers or something like this. But
+since actually here we're dealing with the
+financial newspaper, the Wall Street
+Journal, what it's actually likely to be,
+and is in this example, is that profits
+rose. Okay so now we have this noun phrase
+here, which is a noun phrase, headed by
+profits. But we don't actually know how
+it expands and so now we're going to have a
+second probability distribution at work
+and so we are going to want to have a
+rewrite rule that's working out how this
+expands and what we're going to condition
+it on is the headword profits, the
+category noun phrase, and the parent
+category which is S. And so that's then
+going to give us this second probability
+distribution here. What is the probability
+of a rule that expands us down one level
+in the tree, given these three
+conditioning things? The category, the
+parent category, and the headword. Okay so
+we're gonna choose a rule. And so that
+rule could be just NP goes to a noun,
+a plural noun and it would have some
+probability or it could be something else.
+And so for this example here the actual
+rule that's chosen is to generate an
+adjective and a plural noun. And so that's
+given by this probability here. Well, once
+we've generated an adjective and a plural
+noun, we then have the notion of a head of
+a phrase. So we know deterministically
+that if this, if this is a noun phrase
+headed by profits well this plural noun
+must be profits because it is the head of
+the noun phrase. And since actually we're
+down to the level of a part of speech tag
+here, that means actually we have the word
+profits down at the bottom of the tree
+here. Okay, at this point we've
+completed this element of the expansion
+according to these two probability
+distributions. And at that point, we're
+just going to keep on going. So, we're
+going to say, well here is a, is a
+category, it's actually a non-terminal
+category. But we're going to expand that
+by working out what its headword is. So,
+we're going to use this probability
+distribution and we're going to choose a
+word here as the headword corporate. And then
+by that point because we're down to a
+non-terminal, we'll know that that's the
+word in the sentence. And then over here,
+the VP, headed by rose, it's going to have
+to be expanded by making use of this
+probability distribution so we're going to
+expand it, and choose some expansion
+phrase. Maybe it'll go to a past tense
+verb and a prepositional phrase. And then
+we'll start expanding those down by
+choosing headwords and how to expand them.
+We'll get the rose here automatically
+again of course, which will then go to the
+word rose. So, that then we choose a head
+word over here and then start expanding
+it. So, we're pretty much done. So the
+only thing we really need now is a way to
+get started. And so for that we just need
+a slightly varied probability distribution
+at the beginning. So that we're going to
+say that we have a root category at the
+top, and it needs a headword. So at that
+point we're going to have a probability of
+a headword given that the category equals
+root. And then the other things, these
+don't exist. So this is just the chance of
+different words being the head of the
+whole sentence. And so then once we've
+done that, we can then start expanding
+downwards from there. So this will be a, a
+root head, headed by rose, and then we'll
+look for a rule to expand that. So we're
+now looking for some expansion, which will
+here just be to a S under this. So at
+this point we again don't yet have a
+parent category but we've now got a
+category and a head. So you need a couple
+of special probability distributions to
+just get you started at the beginning and
+then you do the basic recursion I've
+talked of here. So what we achieve by
+putting these words into the grammar like
+this. So here are some statistics that
+show this, that go in a bit more detail
+what I talked about previously. So here we
+have different expansions of the verb
+phrase rule, and here we have a choice of
+different verbs for a head. And this just
+illustrates more systematically how the
+chance of different expansions for the
+verb phrase vary enormously depending on
+which verb you're choosing so if you have
+a verb like come, you find out that
+getting a PP after the verb is enormously,
+enormously common. That happens about
+one-third of the time and having just a
+verb in the verb phrase happens about ten
+percent of the time where many other kinds
+of complements like S and NP complements
+are really, really rare with the verb
+come. But that's then exactly-- and also
+tran--, with a noun phrase after it. But
+for other verbs the facts are very
+different. So for the verb take, well, take
+normally takes an object, He took a nap,
+he took a book, he took a ticket,
+anything like that. So about a third of
+the time, you get just the VP goes to V NP,
+though of course you can get other things
+as well. If we then move on to think,
+think is a, sort of sentential complement verb
+that you're saying what you thought, and
+in fact nearly always with think, almost
+three quarters of the time, you're getting
+an SBAR complement, that's something
+like, he thinks that she is dishonest, he
+thinks she is dishonest. Either of those
+is an SBAR complement regardless
+whether there's an overt that or not. And
+in the final example illustrated here is
+the verb want, which also takes
+complements but it takes infinitive S
+complements. I want to go to the store,
+and so about seventy percent of the time,
+you get that. And so, essentially you
+notice that they're just extremely
+different probabilities of different
+expansions to the verb phrase, dependent
+on knowing what the head verb is. And this
+is precisely the kind of information that
+can be captured in the Charniak parse
+lexicalized parsing model. And one other
+final thing to note here, is that these
+are what are sometimes referred to as
+mono-lexical probabilities. So we're
+looking at the expansion of categories in
+terms of the categories and knowing just
+one lexical item, the head verb. That's in
+slight contrast to the other main way in
+which lexicalized PCFGs are useful, and
+that's for predicting dependencies in
+things like prepositional phrases. So
+there we have bilexical probabilities. So
+that was, when we had examples like, go
+into or man with, we're then deciding how
+likely the connection is between the
+preposition and a noun or a verb. So these
+then involve two words at a time. So the
+Charniak model also has bilexical
+probabilities. So here are the chances of
+choosing the head noun of a noun phrase,
+a plural noun phrase given some amount of
+information, which might include
+information about the noun phrase, but
+also information about what its parent
+category is and what the headword of the,
+the sentence, whole sentence is. And so
+what you find in the Wall Street Journal,
+this isn't typical of all English, is that
+if you have a plural noun a bit over one
+percent of the noun it's prices. But if you
+know that it's the subject, it's inside a noun phrase
+under an S node, i.e. it's the subject of the
+sentence, well then the chances of being
+prices become about two and a half
+percent. But what really makes a big
+difference is that if you know that the
+verb is fell. Well. That's information
+that tells you it's the kind of verb that
+could easily go with prices. And so then
+the probability becomes far higher again,
+so now it's up to an almost to fifteen
+percent chance, a one in seven chance,
+that the head of the noun phrase is
+gonna be prices. And again we are
+capturing a lot more of this
+probabilistic information. But you might
+be wondering now, gee, can we really
+estimate these probabilities? And the
+answer is that in general, you can't
+estimate these probabilities. That the
+probabilities that you'd like to estimate
+become far too sparse. And I'll illustrate
+that on the next slide. But the way that
+it's dealt with in Charniak's model, is by
+having a complicated scheme of doing
+linear interpolation between different
+models that are more or less precise. So,
+this should be reminiscent of what you saw
+for language models, in the second
+week of the class. So we want to estimate
+this probability distribution that we've
+seen before, choosing a headword based on
+the parent's headword, your current
+category and the parent's category. And
+the way you were doing that is by taking
+this linear interpolation of a bunch of
+different distributions, that, one of
+which is just the maximum likelihood
+estimation conditioning on everything. And
+then there are further distributions that
+first of all leave out what the parent
+headword is, and then also leave out even
+the parent category. So at this point,
+you're just choosing a headword based on
+the category. So just saying it's a noun
+phrase, what's the chance of it having a
+certain head. And in Charniak's model, these
+different distributions are weighted in a
+deterministic way, depending on how much
+you'd expect to have seen certain kinds of
+evidence. So, making use of these language
+modeling like techniques, are essential to
+build these kind of lexicalized PCFGs,
+because the data just is too sparse. And
+this next slide shows that. So, here
+the different distributions are being combined
+together in the linear interpolation. So
+if we do the one on the right first, what
+we find out is that if you've got a noun
+phrase headed by profits, and inside
+it there's an adjective and you're wanting
+to ask what adjective it is. In the Wall
+Street Journal, about one quarter of the
+time it's corporate profits. Okay. So
+that's a very precise, fully conditioned
+estimate. Whereas when you start erasing
+some of the information, you get.
+coarser, but still non-zero estimates.
+I haven't actually made sure this second
+line here, this was the method that
+Charniak used to get kind of coarse
+semantic classes, to try and keep some
+information about parent head word before
+getting rid of it entirely. But if we just
+look at--, don't really do a lot
+with that one, and look at these two. You
+can see that once you're only,
+conditioning on knowing it's a noun phrase
+under an S or just a noun phrase, the
+chance of it being corporate, is then
+dropping by almost two orders of
+magnitude. So you're down to about half a
+percent. Okay, so this is the good case in
+which you can calculate a probability from
+the rich conditioning, and it helps you a
+lot. But quite commonly, that just doesn't
+work for you. So if you then say, well, the
+verb of the sentence is rose, and I've got
+a subject noun phrase, a noun phrase under
+an S, And what, noun should it be? Well,
+in the particular sentence in the data to
+be parsed, the actual noun, was profits.
+But it turns out that in the training data,
+profits never occurred as the noun heading
+a noun phrase that was the subject of
+rose, despite the fact that that sounds
+perfectly normal. Profits rose last
+quarter. Profits rose throughout the
+economy. Any sentence like that. And so
+this, the maximum likelihood estimate, the
+MLE here is just zero. And so the only way
+we're getting a non-zero probability
+estimate is by using these probabilities
+where we condition by less stuff. And even
+then we're getting these low probabilities
+right. So the probability of a noun being
+profits in a noun phrase it's about sort
+of one 20th of a percent. But that's the best
+kind of estimate that we have. And so although
+you'd like to use rich estimates as
+here most of the time in doing lexicalized
+PCFG parsing, you're actually having to
+fall back on rather coarser estimates
+because you can't get the conditioning
+information you'd like to from the fairly
+small supervised tree banks that we have
+to train on. In particular, for these
+bilexical probabilities when you're
+trying to condition on two lexical items,
+the probabilities tend to have to
+get backed off, just because the amount of
+information to estimate this is extremely,
+extremely sparse. Because, you're in this
+space where even before you consider the
+categories, that you're doing something
+that's kind of like bigram probability
+estimates. And it's hard to estimate word
+bigram probabilities on only about a
+million words of text. And that's all the
+text that we have in the hand-constructed
+tree banks. Okay. There were some details
+about, that needed smoothing at
+the end there. But I hope the main thing
+that you could take away from this segment
+is how there was a fairly straightforward
+system of two probability distributions
+that Charniak was able to use to realize a
+lexicalized PCFG model.

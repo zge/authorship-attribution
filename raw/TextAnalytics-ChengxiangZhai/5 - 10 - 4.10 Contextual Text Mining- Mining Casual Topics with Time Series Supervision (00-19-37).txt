@@ -1,0 +1,505 @@
+[SOUND]
+This lecture is about using a time series
+as context to potentially
+discover causal topics in text.
+In this lecture, we're going to continue
+discussing Contextual Text Mining.
+In particular, we're going to look
+at the time series as a context for
+analyzing text,
+to potentially discover causal topics.
+As usual, it started with the motivation.
+In this case, we hope to use text
+mining to understand a time series.
+Here, what you are seeing is Dow Jones
+Industrial Average stock price curves.
+And you'll see a sudden drop here.
+Right.
+So one would be interested knowing
+what might have caused the stock
+market to crash.
+Well, if you know the background, and
+you might be able to figure it out if you
+look at the time stamp, or there are other
+data that can help us think about.
+But the question here is can
+we get some clues about this
+from the companion news stream?
+And we have a lot of news data
+that generated during that period.
+So if you do that we might
+actually discover the crash.
+After it happened,
+at the time of the September 11 attack.
+And that's the time when there
+is a sudden rise of the topic
+about September 11
+happened in news articles.
+Here's another scenario where we want
+to analyze the Presidential Election.
+And this is the time series that are from
+the Presidential Prediction Market.
+For example, I write a trunk of market
+would have stocks for each candidate.
+And if you believe one candidate that will
+win then you tend to buy the stock for
+that candidate, causing the price
+of that candidate to increase.
+So, that's a nice way to actual do
+survey of people's opinions about
+these candidates.
+Now, suppose you see something
+drop of price for one candidate.
+And you might also want to know what
+might have caused the sudden drop.
+Or in a social science study, you might
+be interested in knowing what method
+in this election,
+what issues really matter to people.
+Now again in this case,
+we can look at the companion news
+stream and ask for the question.
+Are there any clues in the news stream
+that might provide insight about this?
+So for example,
+we might discover the mention of tax cut
+has been increasing since that point.
+So maybe,
+that's related to the drop of the price.
+So all these cases are special
+cases of a general problem of joint
+analysis of text and a time series
+data to discover causal topics.
+The input in this case is time series plus
+text data that are produced in the same
+time period, the companion text stream.
+And this is different from
+the standard topic models,
+where we have just to text collection.
+That's why we see time series here,
+it serves as context.
+Now, the output that we
+want to generate is the topics
+whose coverage in the text stream has
+strong correlations with the time series.
+For example, whenever the topic is
+managing the price tends to go down, etc.
+Now we call these topics Causal Topics.
+Of course, they're not,
+strictly speaking, causal topics.
+We are never going to be able to
+verify whether they are causal, or
+there's a true causal relationship here.
+That's why we put causal
+in quotation marks.
+But at least they are correlating
+topics that might potentially
+explain the cause and
+humans can certainly further analyze such
+topics to understand the issue better.
+And the output would contain topics
+just like in topic modeling.
+But we hope that these topics are not
+just the regular topics with.
+These topics certainly don't have to
+explain the data of the best in text, but
+rather they have to explain
+the data in the text.
+Meaning that they have to reprehend
+the meaningful topics in text.
+Cement but also more importantly,
+they should be correlated with external
+hand series that's given as a context.
+So to understand how we solve this
+problem, let's first adjust to
+solve the problem with reactive
+topic model, for example PRSA.
+And we can apply this to text stream and
+with some extension like a CPRSA or
+Contextual PRSA.
+Then we can discover these
+topics in the correlation and
+also discover their coverage over time.
+So, one simple solution is,
+to choose the topics from
+this set that have the strongest
+correlation with the external time series.
+But this approach is not
+going to be very good.
+Why?
+Because
+awareness pictured to the topics is
+that they will discover by PRSA or LDA.
+And that means the choice of
+topics will be very limited.
+And we know these models try to maximize
+the likelihood of the text data.
+So those topics tend to be the major
+topics that explain the text data well.
+aAnd they are not necessarily
+correlated with time series.
+Even if we get the best one, the most
+correlated topics might still not be so
+interesting from causal perspective.
+So here in this work site here,
+a better approach was proposed.
+And this approach is called
+Iterative Causal Topic Modeling.
+The idea is to do an iterative
+adjustment of topic,
+discovered by topic models using
+time series to induce a product.
+So here's an illustration on
+how this work, how this works.
+Take the text stream as input and
+then apply regular topic modeling
+to generate a number of topics.
+Let's say four topics.
+Shown here.
+And then we're going to use
+external time series to assess
+which topic is more causally related or
+correlated with the external time series.
+So we have something that rank them.
+And we might think that topic one and
+topic four are more correlated and
+topic two and topic three are not.
+Now we could have stopped here and
+that would be just like what the simple
+approached that I talked about earlier
+then we can get to these topics and
+call them causal topics.
+But as I also explained that these
+topics are unlikely very good
+because they are general topics that
+explain the whole text connection.
+They are not necessary.
+The best topics are correlated
+with our time series.
+So what we can do in this approach
+is to first zoom into word level and
+we can look into each word and
+the top ranked word listed for each topic.
+Let's say we take Topic 1
+as the target examined.
+We know Topic 1 is correlated
+with the time series.
+Or is at least the best that we could
+get from this set of topics so far.
+And we're going to look at the words
+in this topic, the top words.
+And if the topic is correlated
+with the Time Series,
+there must be some words that are highly
+correlated with the Time Series.
+So here, for example,
+we might discover W1 and W3 are positively
+correlated with Time Series, but
+W2 and W4 are negatively correlated.
+So, as a topic, and it's not good to mix
+these words with different correlations.
+So we can then for
+the separate of these words.
+We are going to get all the red words
+that indicate positive correlations.
+W1 and W3.
+And
+we're going to also get another sub topic.
+If you want.
+That represents a negatively
+correlated words, W2 and W4.
+Now, these subtopics, or these variations
+of topics, based on the correlation
+analysis, are topics that are still quite
+related to the original topic, Topic 1.
+But they are already deviating,
+because of the use of time series
+information for bias selection of words.
+So then in some sense,
+well we should expect so, some sense
+more correlated with the time
+series than the original Topic 1.
+Because the Topic 1 has mixed words,
+here we separate them.
+So each of these two subtopics
+can be expected to be better
+coherent in this time series.
+However, they may not be so
+coherent as it mention.
+So the idea here is to go back
+to topic model by using these
+each as a prior to further
+guide the topic modeling.
+And that's to say we ask our topic
+models now discover topics that
+are very similar to each
+of these two subtopics.
+And this will cause a bias toward more
+correlate to the topics was a time series.
+Of course then we can apply topic models
+to get another generation of topics.
+And that can be further ran to the base of
+the time series to set after the highly
+correlated topics.
+And then we can further analyze
+the components at work in the topic and
+then try to analyze.word
+level correlation.
+And then get the even more
+correlated subtopics that can be
+further fed into the process as prior
+to drive the topic of model discovery.
+So this whole process is just a heuristic
+way of optimizing causality and
+coherence, and that's our ultimate goal.
+Right?
+So here you see the pure topic
+models will be very good at
+maximizing topic coherence,
+the topics will be all meaningful.
+If we only use causality test,
+or correlation measure,
+then we might get a set words that
+are strongly correlate with time series,
+but they may not
+necessarily mean anything.
+It might not be cementric connected.
+So, that would be at the other extreme,
+on the top.
+Now, the ideal is to get the causal
+topic that's scored high,
+both in topic coherence and
+also causal relation.
+In this approach,
+it can be regarded as an alternate
+way to maximize both sine engines.
+So when we apply the topic models
+we're maximizing the coherence.
+But when we decompose the topic
+model words into sets
+of words that are very strong
+correlated with the time series.
+We select the most strongly correlated
+words with the time series.
+We are pushing the model
+back to the causal
+dimension to make it
+better in causal scoring.
+And then, when we apply
+the selected words as a prior
+to guide a topic modeling, we again
+go back to optimize the coherence.
+Because topic models, we ensure the next
+generation of topics to be coherent and
+we can iterate when they're optimized
+in this way as shown on this picture.
+So the only I think a component that you
+haven't seen such a framework is how
+to measure the causality.
+Because the rest is just talking more on.
+So let's have a little bit
+of discussion of that.
+So here we show that.
+And let's say we have a topic
+about government response here.
+And then we just talking more of we can
+get coverage of the topic over time.
+So, we have a time series, X sub t.
+Now, we also have, are give a time series
+that represents external information.
+It's a non text time series, Y sub t.
+It's the stock prices.
+Now the the question
+here is does Xt cause Yt?
+Well in other words, we want to match
+the causality relation between the two.
+Or maybe just measure
+the correlation of the two.
+There are many measures that
+we can use in this framework.
+For example, pairs in correlation
+is a common use measure.
+And we got to consider time lag here so
+that we can try to
+capture causal relation.
+Using somewhat past data and
+using the data in the past
+to try to correlate with the data on
+points of y that represents the future,
+for example.
+And by introducing such lag, we can
+hopefully capture some causal relation by
+even using correlation measures
+like person correlation.
+But a common use, the measure for
+causality here is Granger Causality Test.
+And the idea of this test
+is actually quite simple.
+Basically you're going to have
+all the regressive model to
+use the history information
+of Y to predict itself.
+And this is the best we could
+without any other information.
+So we're going to build such a model.
+And then we're going to add some history
+information of X into such model.
+To see if we can improve
+the prediction of Y.
+If we can do that with a statistically
+significant difference.
+Then we just say X has some
+causal inference on Y,
+or otherwise it wouldn't have causal
+improvement of prediction of Y.
+If, on the other hand,
+the difference is insignificant and
+that would mean X does not really
+have a cause or relation why.
+So that's the basic idea.
+Now, we don't have time to explain
+this in detail so you could read, but
+you would read at this cited reference
+here to know more about this measure.
+It's a very convenient used measure.
+Has many applications.
+So next, let's look at some simple
+results generated by this approach.
+And here the data is
+the New York Times and
+in the time period of June
+2000 through December of 2011.
+And here the time series we used
+is stock prices of two companies.
+American Airlines and Apple and
+the goal is to see if we inject
+the sum time series contest,
+whether we can actually get topics
+that are wise for the time series.
+Imagine if we don't use any input,
+we don't use any context.
+Then the topics from New York
+times discovered by PRSA would be
+just general topics that
+people talk about in news.
+All right.
+Those major topics in the news event.
+But here you see these topics are indeed
+biased toward each time series.
+And particularly if you look
+at the underlined words here
+in the American Airlines result,
+and you see airlines,
+airport, air, united trade,
+or terrorism, etc.
+So it clearly has topics that are more
+correlated with the external time series.
+On the right side,
+you see that some of the topics
+are clearly related to Apple, right.
+So you can see computer, technology,
+software, internet, com, web, etc.
+So that just means the time series
+has effectively served as a context
+to bias the discovery of topics.
+From another perspective,
+these results help us on what people
+have talked about in each case.
+So not just the people,
+what people have talked about,
+but what are some topics that might be
+correlated with their stock prices.
+And so these topics can serve
+as a starting point for
+people to further look into issues and
+you'll find the true causal relations.
+Here are some other results from analyzing
+Presidential Election time series.
+The time series data here is
+from Iowa Electronic market.
+And that's a prediction market.
+And the data is the same.
+New York Times from May
+2000 to October 2000.
+That's for
+2000 presidential campaign election.
+Now, what you see here
+are the top three words in significant
+topics from New York Times.
+And if you look at these topics, and they
+are indeed quite related to the campaign.
+Actually the issues
+are very much related to
+the important issues of
+this presidential election.
+Now here I should mention that the text
+data has been filtered by using
+only the articles that mention
+these candidate names.
+It's a subset of these news articles.
+Very different from
+the previous experiment.
+But the results here clearly show
+that the approach can uncover some
+important issues in that
+presidential election.
+So tax cut, oil energy, abortion and
+gun control are all known
+to be important issues in
+that presidential election.
+And that was supported by some
+literature in political science.
+And also I was discussing Wikipedia,
+right.
+So basically the results show
+that the approach can effectively
+discover possibly causal topics
+based on the time series data.
+So there are two suggested readings here.
+One is the paper about this iterative
+topic modeling with time series feedback.
+Where you can find more details
+about how this approach works.
+And the second one is reading
+about Granger Casuality text.
+So in the end, let's summarize
+the discussion of Text-based Prediction.
+Now, Text-based prediction
+is generally very useful for
+big data applications that involve text.
+Because they can help us inform
+new knowledge about the world.
+And the knowledge can go beyond
+what's discussed in the text.
+As a result can also support
+optimizing of our decision making.
+And this has a wider spread application.
+Text data is often combined with
+non-text data for prediction.
+because, for this purpose,
+the prediction purpose,
+we generally would like to combine
+non-text data and text data together,
+as much cruel as possible for prediction.
+And so as a result during
+the analysis of text and
+non-text is very necessary and
+it's also very useful.
+Now when we analyze text data
+together with non-text data,
+we can see they can help each other.
+So non-text data, provide a context for
+mining text data, and
+we discussed a number of techniques for
+contextual text mining.
+And on the other hand,
+a text data can also help interpret
+patterns discovered from non-text data,
+and this is called a pattern annotation.
+In general,
+this is a very active research topic, and
+there are new papers being published.
+And there are also many open
+challenges that have to be solved.
+[MUSIC]
+

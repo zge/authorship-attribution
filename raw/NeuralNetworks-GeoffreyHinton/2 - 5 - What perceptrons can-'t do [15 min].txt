@@ -1,0 +1,351 @@
+In this video, we're gonna look at the
+limitations of perceptrons.
+These limitations stem from the kinds of
+features you use.
+If you use the right features, you could
+do almost anything.
+If you use the wrong features, they're
+extremely limited in what the learning
+part purpose that font can do.
+And that's what cause perceptrons to guard
+favor, and it emphasizes that the
+difficult bit of learning is to learn the
+right features.
+There's still a lot you can do with
+learning, even if you do not learn
+features.
+For example, if you want to say whether a
+sentence is a plausible English sentence,
+you could hand define a huge number of
+features, and then learn how to write them
+in order to decide whether particular
+sentence is likely a good English
+sentence.
+But, in the long run you need to learn
+features.
+So the reason that neural network research
+came to a halt in the late 1960s and early
+1970s is that perceptrons were shown to be
+very limited, and we're now gonna
+understand what those limitations are.
+If you'd like to choose the features by
+hand, and if you use enough features, you
+can make the perceptron do almost
+anything.
+Suppose for example we have binary input
+vectors.
+And we create a separate feature unit that
+gets activated by exactly one of those
+binary input vectors.
+We'll need exponentially many feature
+units.
+But now we can make any possible
+discrimination on binary input vectors.
+So for binary input vectors there's no
+limitation if you're willing to make
+enough feature units.
+But of course, that's not a very good
+strategy for solving a practical problem
+because you need an awful lot of feature
+units and it won't generalize.
+You can't look at a subset of all possible
+cases and have any hope of getting the
+remaining cases right because those
+remaining cases require new feature units
+and you don't know what weights to put on
+those feature units.
+Once you've decided the hand coded
+features.
+That is once they've been determined,
+there are very strong limitations on what
+a perceptron can learn to do.
+So here's a classic example.
+What we're interested in is what can you
+learn to do with the binary threshold
+decision unit that is by changing its
+weights.
+And we're going to show that there's very
+simple things that it can learn to do.
+So the simplest example is consider a
+problem in which there's two positive
+cases and two negative cases.
+And the features, just single bit
+features, that have values either one or
+zero.
+So the two positive cases consist of both
+features being on.
+In which case the right answer's one.
+Or both features being off.
+In which case the right answer's one.
+And the two negative cases are when one
+feature's on and the other one's off.
+In which case the right answer is zero.
+So all we're asking the binary threshold
+unit to do is decide whether the two
+features have the same value.
+And they can't even learn to do that.
+We can prove that algebraically.
+Those four input/output pairs that I
+showed you give rise to four inequalities,
+and it's impossible to satisfy them.
+So the first positive case, when the two
+feature values are one the output should
+be one.
+That gives us the inequality that: one
+times W1 plus one times W2 is gonna be
+greater than the threshold.
+So we give an output a one.
+Then the second positive case gives us the
+inequality that zero times W1 plus zero
+times W2, must also be greater than the
+threshold.
+And the negative cases give us the
+inequalites that one times W1 plus zero
+times W2, must be less than the threshold,
+and similarly zero times W1 plus one times
+W2, must be less than the threshold.
+Now if you take those first two
+inequalities and you add them up, you get
+the W1 plus W2 must be greater than twice
+the threshold.
+And if you take the second two
+inequalities and you add them up, you get
+W1 plus W2 must be less than twice the
+threshold.
+So there's clearly no way to satisfy all
+four inequalities.
+Or to put it another way, if you look at
+the binary decision unit where we're going
+to put the threshold as a negative weight
+on an input line that always has value of
+one.
+If you take that binary threshold unit
+shown at the bottom right, there's no way
+to set the threshold in the two weights,
+so it gets all four cases right.
+We can also see this geometrically.
+So we're going to imagine a data space
+now, in which the axis correspond to
+components of an input vector.
+So in this space each point corresponds to
+a data point.
+And, a weight vector is going to find a
+plane in this space.
+So it's just the opposite of what we're
+doing with weight space.
+In weight space we made each point be a
+weight vector, and we used a plane, to
+define an input case.
+Of course that plane was defined by an
+input vector.
+Now what we're going to do is we're going
+to make each point be an input vector and
+we're going to use a wait vector to define
+a plane in the data space.
+The plane defined by the weight vector is
+going to be perpendicular to the weight
+vector and it's going to miss the origin
+by a distance equal to the threshold.
+So here's a picture.
+You see the four data cases there, and for
+the two data cases in red, we need to give
+an output of zero.
+And with the two data cases in green, we
+need to put an output of one.
+That me, means we need the green cases to
+be on the side of the weight plane where
+the output is one and we need the red
+cases to be on the side where the output
+is zero, and we obviously cannot arrange
+the weight plane so that's true.
+We call a set of cases like that, where
+there's no hyperplane that will separate
+the cases where we want the answer to be
+one, from the cases where we want the
+answer to be zero.
+We call that a set of training cases
+that's not linearly separable.
+And even more devastating example for
+perceptrons because it's much more general
+is when we try and discriminate simple
+patterns that have to retain the identity
+when you translate them with wrap-around.
+I'll give you an example of what that
+means in a minute.
+But the idea is that we want to recognize
+a pattern and we want to recognize it even
+when it's translated.
+So suppose we just use pixels as the
+features.
+The question is can a binary threshold
+unit discriminate between two different
+patterns.
+We'll call one positive example and the
+other's negative examples if they've got
+the same number of pixels in them.
+And the answer is no it can't discriminate
+two patterns out of the same number of
+pixels if that discrimination has to work
+when the patterns are translated and if
+the patterns can wrap-around when
+translate.
+So, if you look at these examples of
+pattern A, in a one-dimensional image.
+Pattern A has four pixels that are on.
+Those four black pixels.
+It's like a little bar code.
+And it's the same pattern when we
+translate it a bit to the right.
+And we're going to allow ourselves to
+translate the pattern so it goes off the
+right hand end, and comes back on the left
+hand end.
+So the third example is the same pattern
+that's been translated with some
+wrap-around.
+And pattern B, it also has four patterns,
+but four pixels, but in a different
+arrangement.
+And in the third example of pattern B,
+it's been translated with wrap-around.
+So that's still an example of pattern B.
+And for two sets of patterns like that, a
+binary threshold unit cannot learn to
+discriminate them.
+And here's the proof.
+What we're going to do is we're going to
+consider that for the positive examples we
+have pattern A in all possible
+translations.
+Now since pattern A has four on pixels,
+that means if we look at any pixel on the
+retina, there'll be four different
+positions in which we can put pattern A
+that will activate that pixel.
+So each pixel will be activated by four
+different translations of pattern A.
+That means that the total input received
+by the decision unit, over all those
+various translations of pattern A, would
+be four times the sum of all the weights
+in the perceptron, because each pixel will
+activate the decision unit four different
+times.
+And so summed over all those patterns will
+get four times the sum of the weights.
+Now consider pattern B.
+We're going to make the negative cases be
+pattern B, in all possible translations.
+And again, each pixel will be activated by
+four different translations of pattern B.
+So the total input of the decision unit
+receives and, over all those different
+translations of pattern B, will again be
+four times the sum of all the weights.
+But the perceptron, in order to
+discriminate correctly, has to have
+weights so that every single case of
+pattern A provides more input to the
+decision unit than every single case of
+pattern B.
+And that's clearly impossible if when you
+sum of all these cases, all those
+different versions of pattern A and all of
+those different versions of pattern B,
+provide exactly the same amount of input
+to the decision unit.
+So we've proved that a perceptron cannot
+recognize patterns under translation if we
+allow wrap-around.
+That's a particular case of Minsky and
+Papert's group invariance theorem.
+And that result is devastating for
+perceptrons, it was historically
+devastating.
+Because the whole point of pattern
+recognition is to recognize patterns that
+undergo transformations and see that
+they're still the same pattern, despite
+the transformation.
+Like for example, translation.
+And when Minsky and Papert showed that a
+perceptron couldn't do that if the
+transformations formed a group, that is
+the learning part of a perceptron couldn't
+learn to do that, it became clear that the
+claims that have been made for what
+perceptrons could learn were somewhat
+exaggerated, and that to get them to do
+anything interesting, you had to choose
+just the right features to make it fairly
+easy for the last stage to learn the
+classification.
+So the translations within our prime form
+a group and, Minsky and Papert proved a
+general theorem for transformations that
+form a group, are making it impossible,
+for a perceptron.
+For the learning part of a perceptron to
+do the recognition.
+The perceptron architecture can still do
+the recognition, but you have to organize
+the features so they do the difficult
+part.
+So we have to have multiple feature units
+that recognize informative sub patterns
+that tell you something about what class
+it is, and we have to have separate
+feature units for each position of those
+informative sub patterns, if we're trying
+to recognize under translation.
+So the tricky part of pattern recognition
+has to be solved by the hand-coded feature
+detectors, not the learning procedure.
+The temporary conclusion from this is that
+perceptrons are no good and therefore
+neural networks are no good.
+The longer term conclusion is that neural
+networks are only gonna be really powerful
+if we can learn the feature detectors.
+It's not enough just to learn weight sum
+feature detectors, we have to learn the
+feature detectors themselves.
+And the second generation of neural
+networks, which we'll come to in the next
+lecture, was all about how you learn the
+feature detectors.
+But it took twenty years before people
+figured out how to do that.
+So, networks without hidden units are very
+limited in what they can learn to model.
+If we add more layers of linear units, it
+doesn't help because everything is linear.
+We can make them much more powerful by
+putting in hand coded hidden units but
+they're not really hidden units because we
+hand coded them.
+We told them what to do.
+It's not enough just to have fixed output
+non-linearities.
+What we need is multiple layers of
+adaptive non-linear hidden units.
+And the problem is how can we train such
+nets.
+We need a way to adapt all the weights not
+just the last layer like in a perceptron,
+and that's hard.
+In particular, leaning the weights go in
+to the hidden units, that's equivalent to
+learning features.
+And that's the hard thing to do.
+Because nobody is telling us directly,
+what the hidden unit should be doing, when
+they should be active and, when they
+should not be active.
+And the, real problem is, how do we figure
+out how to learn these weights go into
+hidden units so that the hidden units turn
+into the kinds of feature detectors we
+need for solving a problem, when nobody is
+telling us what the featured detector
+should be.

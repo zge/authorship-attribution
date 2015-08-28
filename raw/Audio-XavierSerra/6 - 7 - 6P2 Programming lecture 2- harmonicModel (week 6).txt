@@ -1,0 +1,333 @@
+Welcome back to the course on Audio
+Signal Procesing for Music Applications.
+In the previous programming class
+we talked about the pitch detection,
+the fundamental frequency
+detection algorithm,
+and how to identify the fundamental
+frequency of a harmonic sound.
+Now we are ready to put together the whole
+harmonic model; analysis and synthesis.
+So this is the block diagram of
+the system that we have and
+we're going to explain,
+in which we start from
+the standard blocks that we already
+have seen in the sinusoidal model.
+So that takes the input sound, it windows,
+then it performs the dft and
+then it finds the peaks.
+And these two blocks are the one's that
+are specific for the harmonic model.
+So the first one is the f0 detection.
+So from the peaks it identifies
+the best fundamental frequency.
+And then it tries to find the harmonics
+based on that fundamental frequency,
+and this is what we will
+be talking about today.
+And then this goes to the synthesis and
+the synthesis is exactly the same
+done in the sinusoidal model.
+So, we generate the sinusoids
+in the spectral domain.
+We do the inverse FFT, and
+then we do the overlap-add to
+reproduce the whole sound.
+So, let's go to 
+the file harmonicmodel.py,
+this is the file that includes most of the
+functions of the harmonic model, the actual
+implementation of the f0
+detection is in the util function's file.
+But here we have the wrapper
+to the fundamental frequency,
+f0 detection, that we already
+mentioned in the last lecture.
+Then we have the harmonic detection
+that we'll be talking about shortly.
+And, then we have
+the complete harmonic model.
+Harmonic model that does both analysis and
+synthesis, but this is
+meant to be run in real time, so it
+doesn't allow for cleaning of the tracks.
+So we will be talking about today
+on the analysis and synthesis separate.
+Because this allows us to
+do cleaning of tracks and
+so handle a little bit of
+memory of past few frames.
+And this will result into better
+analysis and resynthesis.
+So let's talk about this function,
+harmonicModelAnal
+So it
+inputs all the parameters of the analysis.
+The input array of samples,
+sampling rate, the window,
+the FFT size, hop size,
+the threshold, t for the peaks,
+the number of harmonics that are allowed,
+so this is the maximum number.
+Then the range of frequencies for
+the fundamental frequency detection, so
+this, minf0 and maxf0.
+Then there is this error threshold,
+that is also part of the f0 detection
+algorithm, so this
+minimum error that we will be accepting.
+And then for
+the track continuation,
+harmonic continuation,
+we have these two parameters.
+One is the harmonic deviation slope,
+this is a sort of deviation slope from
+the previous series of harmonics and
+from the ideal harmonic series.
+And this is a way to account for
+that higher harmonics,
+should allow for bigger deviation than
+lower harmonics.
+And then finally a parameter to control
+the length of harmonic tracks, so
+that we don't accept shorter tracks than
+the ones specified with this parameter.
+And the actual code is again very
+similar to the sinusoidal model.
+We have a main loop that
+iterates over the whole sound.
+And it keeps analyzing the spectrum,
+finding the peaks, interpolating those
+peaks, and then here is where the specific
+code of the harmonic model starts.
+So we call the fundamental
+frequency algorithm.
+Okay?
+So this is
+the one from the utility functions that
+we we talked about in the last lecture.
+Then we have these few
+lines that make sure that
+this new fundamental frequency is not
+that different from the previous one, so
+that it maintains certain continuity.
+And then there is this function
+called harmonic detection.
+This is the one that identifies
+the harmonics of fundamental frequency.
+And it's above this code.
+So let's go to here.
+This is the harmonic detection function.
+Okay, so
+this is the one that given the fundamental
+frequency f0 and
+the peaks of the spectrum
+it identifies which of
+these peaks are close to
+multiples of this fundamental frequency.
+We also, as inputs, we accept some
+information from the previous frame,
+so that we can identify if
+there is some time continuity.
+And then this deviation, that
+is the deviation we allow from
+perfect haromonicitiy, and from perfect
+continuity from the previous frame.
+Okay, so the code is not that complicated,
+the core is basically these three lines
+in which we defined the deviation
+from perfect harmonicity.
+So we find the peaks compared, or
+a particular peak compared, with
+a particular perfect harmonic.
+We also compare a peak with
+respect to the previous
+harmonic coming from the previous frame.
+And then we define a threshold based
+on this harmonic deviation slope.
+That's the one that will be accepted.
+So if the current peak
+is within that threshold,
+therefore within the kind of vertical
+deviation and horizontal deviation.
+So it had this frequency and
+time evolution tracking.
+So we accept that peak as a harmonic and
+we keep adding to the harmonic
+that that we create.
+And that's all.
+That's basically what
+the harmonic detection does.
+So we go back to the harmonic model and
+now, after this harmonic detection,
+that's it, this is a sort of some
+code to create the array of
+values that keeps adding up to the whole
+matrix of the output.
+And finally, once
+the whole process is done.
+So, once we have gone through
+the whole sound, we clean the tracks.
+So we delete the tracks that
+are smaller than a given duration.
+And again, this is the same that
+we did in the sinusodial analysis.
+Okay, so I wrote a script that
+basically analyzes a sound with this
+harmonicModelAnal function.
+So we took this Vignesh sound and
+specified all the parameters so,
+the numbers of parameters
+are starting to get quite a few.
+We have the window, we have the window
+size, the FFT size, the threshold.
+There's no need for this comma here, so
+minus 90 as a threshold,
+the minimum duration in time.
+The number of
+maximum number of harmonics.
+The minimum fundamental frequency and
+maximum fundamental frequency.
+The error threshold that we accept.
+And then this deviation slope
+that we just talked about.
+Then there is these two parameters
+that are normally fixed because they
+are more related to synthesis,
+which is the FFT of the synthesis buffer.
+And the hop size, which given that
+the FFT buffer requires
+for the synthesis, it requires a hop
+size to be one fourth of that,
+so we normally put H as being 128.
+So we normally don't allow 
+any changes from that.
+So from 
+the graphical interface there is
+no control over this two parameters.
+Okay, and then we read the sound, we get
+the window and we call this harmonic model
+And here I just plot these
+the frequencies of these trajectories.
+So let's run these.
+So let's run, test3.
+Now let's first save it.
+Okay, and now let's run it.
+Okay, and
+this is the trajectories we obtain.
+Okay, they're, okay, they're pretty good.
+If we zoom in, into a particular region,
+we might be able to see a little bit more.
+Okay.
+Okay, so of course if we zoom in we're
+starting to see the problems at the
+transitions between notes, and
+especially we see a problem as
+the harmonics go higher and higher up.
+And this is because this is,
+of course, a linear scale and these
+deviations are kind of logarithmic.
+So as the
+the frequency goes up, in fact,
+the changes get much larger because
+they are logarithmic changes.
+So in fact this is the reason why we
+need these deviation slope
+that we specified here.
+So for example,
+if we reduce this deviation slope.
+Let's make instead of 0.01,
+let's make 0.001.
+And let's run it again.
+Okay, we will see that now
+there are much fewer tracks,
+especially in the higher frequencies.
+It has restricted the deviation
+allowed in the higher frequencies.
+So it has,
+the increase of deviation is much smaller.
+So it has not allowed
+these larger deviations.
+So with that we have quite a bit of
+control of how this tracking process
+is implemented.
+Okay, so in the sms-tools package,
+there is this harmonic model function
+that performs both the analysis and
+synthesis, and is in fact the file
+that is called from the interface.
+So in this file
+we have one main function.
+And it has all these parameters
+that we already talked about.
+But apart from the analysis that we
+already performed, it does the synthesis.
+Okay, and then it saves the file
+into a synthesis file and
+it plots analysis and synthesis of this.
+So, let's run this harmonic
+model function, okay.
+So this will take a little bit longer
+because it has to do the analysis and
+then the synthesis, and
+then it just plots the first 5,000 hertz,
+I specified to
+plot only this 5000 hertz.
+So here we see all these trajectories
+that evolve in time, and the synthesis.
+At least the waveform looks
+quite similar.
+So let's listen to
+the output sound.
+So now it created a file
+called vignesh_harmonicmodel.wav.
+So I can play it.
+So if I put the exclamation mark
+play, and just type vignesh.
+[MUSIC]
+Okay?
+So this is the synthesized version of
+the original file and it's quite good.
+I mean, we will see starting next week.
+That, in fact there is some things
+that are left, that are not included in
+this resynthesis.
+And this is basically the residual
+component that we are missing.
+But anyway, that's all for
+the harmonic model.
+And we go back to the slides.
+So we have basically seen
+the harmonic model from
+an implementation point of view,
+by looking at the code.
+And all this code is in Python,
+where in fact
+the fundamental frequency detection, the
+one that we are using is a C version
+implementation, but
+we also have the python version.
+And all this is included in
+the sms-tools package, so I would
+definitely encourage you to go through
+that and run it and abuse it if you want.
+So that was all for these programming
+classes on the harmonic model.
+Hopefully this has given you a
+sort of a depth, indepth
+view of what it entails to
+implement this type of of models.
+And well we'll continue.
+So next week this will get a little
+bit more complicated because we
+will try to see what is
+missing out of this model.
+And we will try to model
+this missing part,
+which is going to be the concept of
+the residual or the stocastical component.
+So, I will see you next week.
+Bye, bye.
+Thank you.
+

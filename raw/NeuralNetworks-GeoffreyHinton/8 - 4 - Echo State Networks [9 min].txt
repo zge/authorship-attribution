@@ -1,0 +1,228 @@
+In this video I'm going to describe
+eco-state networks.
+These use a clever trick to make it much
+easier to learn a recurrent neural
+network.
+They initialize the connections in the
+recurrent neural network in such a way
+that it has a big reservoir of coupled
+oscillators.
+So if you provide input to it, it converts
+that input into the states of these
+oscillators, and then you can predict the
+output you want, from the states of these
+oscillators.
+And the only thing you have learn, is how
+to couple the output to the oscillators.
+This entirely gets rid of the problem.
+Of learning hidden to hidden connections
+or even input to hidden connections.
+However, to get these networks to be good
+at complicated tasks, you need a very big
+hidden state.
+As we'll see at the end of the video,
+There's no reason not to use the
+initialization that was carefully designed
+for echo state networks, And then to use
+back propagation through time with
+momentum to train the networks to be even
+better at the tasks that they're doing.
+One interesting and quite recent idea
+about training recurrent neural networks,
+is to not train the hidden to hidden
+connections at all, but to just fix them
+randomly, and hope that you can learn
+sequences by just training the way they
+affect the outputs.
+This has strong similarities with old
+ideas about perceptions.
+So a very simple way to train a
+feedforward neural network, is to make the
+early layers of feature detectors just be
+random.
+You put in sensible sized random weights
+and then all you learn is the last layer
+so that you're learning a linear model
+from the activities of the hidden units in
+the last layer to the outputs.
+And of course it's much faster to learn a
+linear model.
+This relies on the idea that a big, random
+expansion of the input vector, can often
+make it easy for a linear model to fit the
+data, when it couldn't fit the data well,
+just looking at the raw inputs.
+Through the little neural network here,
+those red weights will be fixed at random.
+They would expand the input vector and
+then using that expanded representation,
+we try and fit a linear model.
+This actually has some quite strong
+similarities with support vector machines.
+Which are really just a really efficient
+way of doing this.
+So those same ideas, many years later,
+were recycled for recurrent neural
+networks.
+The idea is to make the input to hidden
+connections.
+And the hidden to hidden connections have
+random values that are carefully chosen.
+And just learn the final layer of hidden
+to output connections.
+The learning is then very simple if you
+use linear output units.
+And it can be done extremely fast.
+This approach is only ever going to work
+if you set the random connections very
+carefully, so that the recurring neural
+network doesn't die out with no activity
+and doesn't explode.
+So, the way they set the random
+connections in a echo state network is
+they set the hidden to hidden weights so
+that the length of the activity vector
+stays about the same after each duration.
+For those of you used to linear systems
+and matrices, you're setting it so the
+spectral radius is one.
+That is the biggest eigenvalue of the
+matrix of hidden to hidden weights is one.
+Or it would be one if it was a linear
+system.
+And you want to achieve the same property
+in a non-linear system.
+If you set those weights to be about the
+right magnitude, then an input can echo
+around in the recurrent state for a long
+time.
+It's also important to use sparse
+connectivity.
+So instead of having lots of medium size
+weights, we have a few quite large
+weights.
+And nearly all the weights are zero in the
+hidden to hidden connections.
+What this does is it makes a lot of
+loosely coupled oscillators.
+So information can hang around in one part
+of the net without being propagated to
+other parts of the net too quickly.
+It's also important to choose the scale of
+the input to hidden connections very
+carefully.
+Those connections need to drive the states
+of the loosely coupled oscillators but,
+they mustn't wipe out information that
+those oscillators contain about the recent
+history.
+Fortunately the learning is very fast in
+echo state networks so we can afford to
+experiment with the scales of the
+important connections.
+You could think of it as a little learning
+loop that's just learning the scales of
+those connections and it's doing it by
+sort of feedback that involves the
+experimenter.
+It also helps to learn the level of
+sparseness that's needed in the hidden to
+hidden connections, and again because the
+learning is so fast, you can afford to
+experiment with that.
+That's important because it's often
+necessary to do those experiments to get
+the system to work well.
+So I'm now going to show you a simple
+example taken from the web of an eco-state
+network.
+It has an input sequence which is a real
+value that varies with time, and specifies
+the frequency of a sine wave for the
+output of the eco-state network.
+So you'd like this thing to generate sine
+waves, and the input is gonna specify the
+frequency.
+The target output sequence is going to be
+the same wave with the frequency specified
+by the output.
+And it's going to be learned simply by
+putting a linear model that takes the
+states of the hidden units and from those
+tries to predict the correct scalar output
+value.
+So here's a picture taken from
+scholarpedia of an echo state network
+doing this program, the input signal is
+the desired frequency of the sine wave.
+The output signal after it's learned, or
+the teacher signal, when it's learning, is
+a sine wave with the frequency specified
+by the input.
+And the stuff in the middle is a big
+dynamical reservoir, so that the inputs
+coming from the input signal driver those
+loosely coupled oscillators, and cause
+complicated dynamics that goes on for a
+long time.
+And those output weights are learning to
+map that complicated dynamics to the
+particular dynamics you want for the
+output.
+All the other pictures are showing you the
+actual dynamics of individual units inside
+the dynamical reservoir.
+One thing to notice is that there are also
+connections from the output back to the
+reservoir.
+Those aren't always needed, but they help
+to tell the reservoir what have has been
+produced so far.
+So here's an example of what they system
+actually produces after it's learned, and
+you can see that at the beginning it's
+producing a sign wave, in phase.
+At the end, it's producing a sign wave of
+the right frequency, but the phase is
+wrong.
+And that's because we weren't telling what
+phase the sign wave should be in.
+So it's satisfying the requirements of
+producing an appropriate frequency.
+There some very good aspects of echo state
+networks.
+They can be trained very fast because they
+just fit in a linear model.
+They also demonstrate how important it is
+to initialize the hidden-to-hidden weight
+sensibly.
+And they can do quite impressive modeling
+of one dimensional time savers.
+That's where they excel.
+They can look at a time series for awhile,
+and then predict it very well a long time
+into the future.
+What they're not so good at is modeling
+high dimensional data, like frames of
+acoustic coefficients, or frames of video.
+In order to model data like that, they
+need many more hidden units than a
+recurrent neural network where you train
+the hidden to hidden connections.
+Recently, Ilya Sutskever tried something
+which is fairly obvious which is to
+initialize a recurrent neural network
+using all the tricks developed by the
+people doing echo state networks.
+Once you've done that, you know you could
+learn quite well just by learning the
+hidden driver connections.
+But then, presumably, you could learn even
+better if you also learn to make the
+hidden to hidden weights better.
+So Ilya tried using the echo state network
+initializations but then training with
+back propagation through time.
+He used rmsprop with momentum and he
+discovered that, that is actually a very
+effective way to train recurrent neural

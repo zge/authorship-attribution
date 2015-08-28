@@ -1,0 +1,443 @@
+Welcome back.
+When the noise in an image is additive,
+but not broadband, but instead it's
+impulsive, also referred to as data
+dropout or, and spike noise,
+then the LSA filters we covered in the
+previous segment are not appropriate.
+If applied, the resulting image looks
+worse,
+since the impulsive noise is spread out.
+A specific form of impulsive noise is salt
+and pepper noise, called so since
+it resembles granules of salt and pepper
+randomly spread over the image.
+For impulsive noise, a class of non-linear
+filters,
+referred to as order statistic filters,
+are appropriate.
+A specific example of such filter is the
+median filter.
+We discussed median filters,
+one-dimensional, two-dimensional,
+multi-dimensional, and general, in this
+segment and
+show a number of results of its
+application to images degraded by
+impulsive noise.
+We'll also discuss other order statistic
+filters, such as the alpha-trimmed mean
+filter and non-linear filters with mean in
+their name, but not the arithmetic
+mean filter, which is an LSA filter, and
+we covered this in the
+last segment, but for example the
+geometric mean or the harmonic mean
+filter.
+We also show some experimental results
+when
+additive broadband and additive impulsive
+noises are combined.
+So let us proceed with this exciting
+material.
+A commonly encountered filter in image
+enhancement is
+the median filter Let's see how it is
+defined.
+Let x be the input image, y the output
+image.
+So, the value of y at location n1, n2 can
+be found by
+considering a neighborhood around the
+pixel n1, n2 of the input image.
+Then, take the values inside this
+neighborhood
+and order them in increasing or decreasing
+fashion.
+And then pick the middle value if the
+number of pixels is odd or
+the average of the two middle values, if
+the number of pixels is even.
+So it's a rather straightforward operation
+in,
+in figuring out the, the median filter.
+Let's look at some of the properties.
+The filter is non-linear.
+And this is straightforward to confirm by
+utilizing
+the definition of linearity that we gave
+earlier.
+Because of that, clearly I cannot describe
+this filter in the frequency
+domain, as was the case with the min
+filter we studied earlier.
+This filter is very useful for reducing
+impulsive,
+or also referred to as salt and pepper
+noise.
+By the way, this is also referred
+to as data drop out or spike noise.
+So it's generated if I take a value of the
+input
+image considering all the values so that
+the value of n1, n2.
+If it changes to a value a with
+probability P of a and the value
+at n1, n2 changes to value b with
+probability P of b, then
+if both P of a, P of b are non-zero, we
+talk about the
+bipolar type of noise, and salt and pepper
+is
+another name for that.
+Typically when a equals to 255 and b
+equals to zero, and clearly
+resembles throwing salt and pepper
+granules randomly over the image,
+if one of the P of a, P of b is equal to
+zero, then it's a unipolar
+noise, and then it can be referred to as
+salt or pepper,
+just salt or just pepper noise.
+So the median filter, as we'll show right
+way with a toy example, is again suitable
+in
+removing this type of noise, while
+preserving the spacial
+resolution, not introducing blurring, and
+also preserving the edges.
+The filter however is not very good if the
+noise is broadband, as
+were the case in what we studied earlier,
+with respect to the min filter.
+Finally, as we'll show with a toy example
+there, the one-dimensional median has a
+better performance in preserving edges in
+an image than the two-dimensional median.
+And very often we'll, we'll implement the
+two-dimensional median as a separable
+operation to one-dimensional median in the
+vertical and the horizontal directions.
+Let us look at the application of a
+three-point one-dimensional median filter,
+filter to a simple signal.
+So first of all to find the location of
+the output
+at n we'll considering input values at
+location n, n-1 and n+1.
+So for this simple signal here, by looking
+at
+it we can say that this particular value
+is noisy.
+It does not fit well with the neighboring
+values.
+So to find the output of the median filter
+at this
+location, I consider the values of the
+input, 1, 2, 1.
+Their median is 1.
+So therefore, the noise is eliminated.
+If I keep processing, also I see easily
+that this perfect
+edge here of the input image's signal is
+finally preserved.
+So here is my y of n.
+Noise is eliminated, sharp edges
+preserved, and this
+is the main characteristic of the median
+filter.
+We show here a simple example of the
+application
+of a two-dimensional, now, three by three
+median filter.
+So here is the image I want to process.
+So the solid dots have a value of one, and
+the thin dot a value of zero.
+So this is a perfect three by three square
+sitting on the zero level around it.
+So if I consider the processing of this
+pixel of the
+input, then I have to find the median of
+these values.
+And the median, the value in the middle,
+is equal to zero.
+So we see that that edge pixel there of
+the input image has
+been eliminated, and this square image of
+the input will
+end up being this cross-shaped picture in
+the output.
+So the corners are distorted, are not
+preserved, and therefore, we typically
+prefer to use separable median filters.
+So first filter the image in the vertical
+direction with a one-d median, and
+then the resulting image is filtered in
+the horizontal direction by another
+one-dimensional median.
+We see here an example of median
+filtering.
+Here is the original image.
+Here is the noisy one, corrupted by salt
+and pepper noise.
+This is the result of the application of a
+three by three median,
+and this is the result of the application
+of a five by five median.
+In both cases, the noise has been
+completely eliminated, however,
+with a five by five median the image has
+been considerably blurred,
+and therefore, for this particular
+experiment the choice, our choice,
+should be the three by three median.
+Let us look now at some additional
+examples of the application of median
+filtering.
+We show here a colored image.
+It's corrupted by salt and pepper noise,
+and this noise has been
+added independently to the three color
+channels, the R, G, and B channels.
+10% of the pixels are corrupted by salt
+and pepper noise.
+If we first use a noise smoothing filter
+that has Gaussian
+shape, a five by five filter, then we
+obtain this result.
+Clearly the impulses, the impulsive noise
+has
+been spread out by this noise smoothing
+filter.
+And this does not seem the appropriate
+filter to be utilized in this particular
+case.
+If we now use a median filter, a three by
+three median filter, then this is the
+result we obtain.
+Clearly, most, if not all, of the spikes
+of the impulses
+have been removed, while the sharpness of
+the image has been maintained.
+So we compare the previous result with
+this one, it's certainly a major
+improvement.
+In this example, we utilize the same image
+again, but
+the noise is heavier now, 20% of salt and
+pepper noise.
+So if we apply the Gaussian filter, this
+is the result we obtain.
+Again, the impulses are spread around,
+therefore
+this is not the appropriate filter to use.
+I should mention here that, on one hand
+,the noise is added on
+each color channel separately, and the
+filter's applied on each color channel
+separately.
+So if I apply now a three by three median
+filter, this is the result we obtain.
+The noise is almost removed, however there
+are still
+impulses that can be seen in the processed
+image.
+So in this particular case we apply the
+median filter a second time, and
+this is the result, further improved,
+although
+there are some impulses around, for
+example here.
+And we can apply it one more time, so
+after the third pass this is the result.
+The impulsive noise is almost completely
+removed.
+However, in each application of the median
+filter, there
+is some blurring that occurs, that's to,
+to the image.
+So the, the motivation for this example is
+just to show
+the simple fact that the median filter can
+be applied multiple times.
+If the noise is heavy and is not
+eliminated to a satisfactory degree by
+the first pass, we can keep repeating
+it as it was demonstrated through this
+example.
+In addition to the median filter, which
+you
+studied in some detail, there are a number
+of
+other filters under the grouping of order
+statistic
+filters suitable primarily for handling
+impulsive type of noise.
+They're called so because they're based on
+the
+ordering of the pixel values in the
+neighborhood.
+So here's again the expression for
+the median filter, written slightly
+differently.
+So x is the input image, y the output.
+So the value at n1, n2 is the result, is
+the median, of the values of the input
+in a neighborhood N which is centered at
+n1 and n2.
+Another filter in this family is the max
+filter, which finds
+the brightest, the maximum value, the
+brightest intensity in the neighborhood.
+Since pepper has low value it's reduced by
+this operation.
+It's replaced by the maximum value in the
+neighborhood, so
+this is therefore good for handling pepper
+type of noise.
+[BLANK_AUDIO]
+The min filter finds the darkest point in
+the neighborhood, the
+minimum value, and therefore, this is good
+for reducing salt noise.
+[BLANK_AUDIO]
+The mid-point combines order statistics
+and averaging.
+So it is the average of the maximum and
+the minimum values in the neighborhood.
+And this works best for randomly
+distributed noise like Gaussian or
+uniform.
+And finally, the alpha-trimmed mean.
+So from the, all the pixels in the
+neighborhood, we delete
+the alpha over two lowest and alpha over
+two highest values.
+And then for the remaining values, which
+number the number of pixels
+in the neighborhood minus alpha, which I
+have deleted, we find the mean.
+So clearly for alpha equals zero we obtain
+the arithmetic mean filter.
+[BLANK_AUDIO]
+While for alpha equals the number of
+pixels in
+the neighborhood minus one, we obtain the
+median filter.
+[BLANK_AUDIO]
+For the other values of alpha, we
+obtain filters which are useful for
+situations that
+involve multiple types of noise, such as a
+combination of salt and pepper and
+Gaussian noise.
+There's a family of filters that have the
+term, mean, in their name.
+The first one is arithmetic mean filter,
+which you've studied extensively.
+We've also been referring to it by the
+name of average or flat filter.
+x, again, is the input to the filter, and
+y is the output.
+So to find the output value at n1, n2, I'm
+considering
+the pixels in the neighborhood N which is
+centered at n1, n2.
+And then I sum the pixels up in this
+neighborhood and divide by that number.
+I find the arithmetic mean.
+So this here denotes the number of pixels
+in the neighborhood,
+or the cardinality of the set of pixels in
+the neighborhood N.
+The geometric mean filter finds the
+geometric mean of a
+set of numbers, so it takes the samples in
+the neighborhood
+and multiplies them, and then this is the
+nth root,
+where again, this is the Number of pixels
+in the neighborhood.
+The geometric mean filter has performance
+comparable to the mean, but
+by and large tends to lose less detail in
+the process.
+The harmonic filter is shown here.
+This does well with Gaussian type of noise
+and also for salt type of noise but not
+for pepper type of noise.
+[BLANK_AUDIO]
+The final filter is the contra-harmonic
+mean.
+Q is the order of the filter.
+[BLANK_AUDIO]
+This filter for Q greater than zero
+eliminates
+[BLANK_AUDIO]
+pepper type of noise.
+And for Q less than zero it eliminates
+salt, but
+not clearly able to eliminate both at the
+same time.
+It is verified that for Q equals zero, I
+obtain the arithmetic mean.
+[BLANK_AUDIO]
+While for Q equals minus one, I obtain the
+harmonic mean filter.
+[BLANK_AUDIO]
+With the exception of arithmetic mean
+filter,
+the remaining are non-linear filters, and
+therefore, I
+cannot really describe them in the
+frequency
+domain, see their shape in the frequency
+domain.
+Let's look at an example
+now where the image has been
+corrupted by two types of noise.
+So this circuit board image is corrupted
+by additive uniform noise, as shown here.
+And then on top of that, salt and pepper
+noise is added with the result shown here.
+So it's a 10% salt and pepper noise.
+So we want to apply some of the filters we
+just discussed
+to the image again that has a combination
+of these two noises.
+And if we use an arithmetic mean filter of
+five by five,
+we obtain this result, while a five by
+five geometric provides this result.
+Both results are really not that good, not
+maybe acceptable, and
+certainly the one by the geometric mean is
+not good at all.
+Now if we apply a five by five median we
+obtain this image, while
+a five by five alpha-trimmed mean with
+alpha equals five provides this result.
+So in this case, both results are
+considerably better, and quite good.
+And one might even say, by looking at the
+fine details,
+that the alpha-trimmed mean is slightly
+better than the median filter.
+Again, this is being an enhancement
+problem, there are no guidelines says
+which
+filter and with which parameters is going
+to provide the better, the best results.
+Instead we try the various filter that we
+have in our ammunition.
+We also change their parameters
+appropriately.
+If there is a lot of noise then
+the support, for example, becomes larger
+until we find
+the result that is acceptable, either for
+human appreciation
+or as an input to a followup processing
+step.
+[BLANK_AUDIO]
+

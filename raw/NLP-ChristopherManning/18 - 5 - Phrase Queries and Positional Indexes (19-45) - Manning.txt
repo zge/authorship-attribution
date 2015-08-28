@@ -1,0 +1,296 @@
+In this segment I’m going to introduce phrase queries,
+which in practice have been the most important kind of extended Boolean query
+and then examine how you need to extend our inverted index data structure
+to be able to handle phrase queries.
+So very often we’d like to query not only for individual words, but also for multi-word units.
+Many useful things that we want to query on
+are multi-word units. So information retrieval
+is a multi-word unit, or many many other things like
+organization names: Stanford University.
+So, what we want to do is have a mechanism
+where we can say, let's match this pair of words
+as a unit. And the syntax that's standardly used
+in modern web search engines
+is to put it in inverted quotes like that.  And so
+if we have that kind of phrase as a query,
+then what we're going to say is a document
+that says "I went to university at Stanford"
+doesn't match that phrase query. So this notion 
+of putting things in inverted commas
+has proven to be very easily understood by users.
+Something that information retrieval
+system designers generally lament is that
+when people design advanced search functionality
+for their systems, that almost nobody uses it, 
+just a few people like me and other academics
+and people like that. But regular users just don't
+use it. And really, this notion of phrase querying
+is sort of the nearest thing to an exception, 
+that it is fairly widely understood and used.
+But I'll point out that as well as overt 
+phrase queries like this, there's actually
+another interesting phenomenon is that 
+many other queries are implicit phrase queries.
+So someone will give as their query 
+San Francisco or something like that,
+and well, really what they want to do is 
+have it interpreted as a phrase,
+but they just didn't bother or know 
+to put inverted quotes around it.
+So in modern web search engines, an active 
+area of research has been how to identify
+these implicit phrases and take advantage 
+of knowing it's an implicit phrase
+to alter what documents get returned. 
+But we're going to leave that aside
+for the moment and we're just going to 
+deal with these explicit phrases
+and work out how we can do a good job 
+at matching them with our information
+retrieval system. Okay, well first what should be clear
+is it no longer suffices to store just a term
+and a postings list of documents for each term,
+because if we have only that
+we can easily find documents that contain
+two terms, but we have no idea
+whether the terms are adjacent to each other
+as a phrase in that document.
+The only way we could do it is by exhaustive 
+post-processing of candidate documents
+to see if they actually did contain the phrase, 
+and that would be extremely slow
+because we'd be back to linear scanning
+of documents. One way to solve this problem
+is the idea of a biword index. So for a 
+biword index what we do is we index
+every consecutive pair of terms as a phrase. 
+So for example, if we have this text here,
+"Friends, Romans, Countrymen", we generate
+the biwords of adjacent words, of
+friends and romans, and then we generate 
+the biword of romans countrymen,
+and for each of these biwords is now a 
+dictionary term. And so what does that mean?
+Well that means that for each of these we'd say 
+that "friends romans" occurs in,
+let's say this is document 17, and maybe 
+it also occurs in document 33,
+and "romans countrymen" occurs in document 
+17 and it might occur in some other document.
+Well, if we build that, 2-word phrase querying 
+is now immediate, because
+if we want to find documents that contain
+"friends romans" in them, we can just look up
+this dictionary entry and then grab the 
+postings list that was returned for it.
+If we consider more complex cases,
+we can even basically handle those.
+So we can handle longer phrase queries
+by breaking them down. So if our phrase query is
+"stanford university palo alto" we can
+break it up into an AND query
+of "stanford university" AND "university palo"
+AND "palo alto". And so we can
+use our biword index to find documents
+that contain all three of these bigrams.
+Now, that's not going to be perfect.
+Without doing a linear scan through the docs,
+we can't be sure that the documents
+that we're returning actually have this
+continuous phrase "stanford university palo alto",
+but it seems highly likely that they will
+because we have checked for each of these
+bigrams occurring. So there's a small chance
+of false positives, but it seems like
+we're in a pretty good state.
+So what are the issues with using
+a biword index? Well, as we noted before
+there can be false positives in what's returned,
+but maybe that's not such a big problem.
+The big problem is that there's this
+enormous blowup of the index, because
+our dictionary has gotten much more massive.
+So that means that, you know,
+it's not practical to have triword and quadword 
+indices to actually exactly match
+long queries. But even for biwords, we're then 
+going to have the, sort of,
+potentially have the space of 
+words squared possible dictionary entries.
+So because of that biword indices are not the standard solution for handling phrase searching.
+But as I'll show, it wasn't useless that
+I explained them to you,
+because as I'll show at the end, they can be
+an important component of a solution.
+So what is the standard solution?
+The standard solution is to move to having
+a positional index. So the idea of the
+positional index is that in the postings,
+we store not only the documents that contain
+a term, but also the position in each document
+where the term appears. So the organization 
+of what we have now is in the dictionary we have
+a term, and the document frequency
+of the term, and then when we point off
+to the postings lists, then instead of just 
+having a list of document IDs,
+we then have a list of document IDs where for each document we then have a list of positions
+where the term occurs.
+Let's look at that concretely with an example.
+So here we have the word "be", 
+which occurs in almost a million documents,
+and then we have where, so in document 1 
+it occurs at words 7, 18, 33, etc.
+Document 2 it occurs in these two word positions. 
+It doesn't occur in document 3.
+Document 4 it occurs in a bunch of places, 
+and so on. And so, with these
+we can then be able to check whether phrases occur by then seeing whether words occur
+adjacent to each other. To get the idea of that, 
+you could consider this little question here.
+So, which of these four documents 
+could contain "to be or not to be"
+based on those document positions? 
+Now obviously we haven't seen
+the postings lists for the other words,
+but just looking at where "be" occurs,
+which document is a candidate?
+So with this kind of data structure, we can handle 
+phrase queries using a merge algorithm
+much as we showed before, it's just 
+a little bit hairier because rather than just doing
+an intersection of the document IDs,
+we have to do this sort of 2-level algorithm,
+where we both intersect the document IDs and 
+then also check that there are compatible
+positions for the words occurring in the phrase. 
+And so that means that we need to deal with
+a bit more than just equality. So for example,
+if we're wanting to find instances of the phrase
+"information retrieval", what we want is that 
+if the word "information" occurs at position 37
+in a certain document, we want "retrieval"
+appearing at position 38 in the document.
+So, going through that in slightly more detail,
+to process a phrase query what we do is,
+so let's assume our phrase is "to be or not to be"
+that we want to find, in inverted commas.
+So we find, we get the postings lists of each of the individual terms, and then what we're going to do
+is we're going to progressively intersect them.
+So if we start off with the "to be",
+we're going to start at the beginning
+doing postings merge, and we're saying, well,
+document 1 can't be a candidate because it doesn't appear on the other postings list.
+Document 2 can't be a candidate because it doesn't appear on the other postings list.
+And at this point we've got to document 4 and the doc IDs match. But then at this point
+with a positional query we have to recurse
+and then do another merge algorithm
+for the positions within the postings lists.
+So we start here and here, but this time
+rather than an equality check, what we're wanting to see is can we find a place where
+"be" occurs with a token number one larger than "to". So we'll again step along,
+and we'll say, well here's one candidate, 190 and 191, and here's a second candidate,
+429 and 430. So those will be two candidate matches inside document 4, and so we'll be returning
+both of those candidate matches separately, cause we're actually finding the positions in documents
+where our phrase query is matching, and that we'll need to refine with the other query words
+coming up ahead. At that point we then revert back, oh wait. No, sorry I'm wrong.
+There's one more candidate, sorry, there are three candidates here, right?
+But, once we've exhausted the positions in one document, we then revert up to the higher level
+of our postings merge, and then we say 5 is less than 7, so this gets crossed off.
+And then we advance that pointer and proceed along. And I hope you can see
+that actually this method works not only for phrase queries, where the words are offset by 1,
+but you could actually use exactly the same method for the proximity queries that we saw earlier
+with the Westlaw service, where you could ask for one word being within three words
+of another word, or something like that.
+Right, so that was the examples like this.
+So here we had "limit" within 3 words of "statute", which is within 3 words of "federal",
+within 2 words of "tort". So we could use the same kind of techniques of optimizing the query
+but if we started with this one, we're then having a condition on how close together
+the token position indices have to be to count as a match within a document.
+And so clearly positional indices can be used for these kind of proximity queries,
+where biword indices do nothing for you.
+So I've sort of said the algorithm here,
+but something that you might want to work through very concretely is how you can change
+the linear postings merge algorithm to handle proximity queries. In particular,
+you can think about how you can get it to work for any value of k. It's actually a little bit tricky
+to do this correctly and efficiently, because you can have the within k words matching
+on either side of the word, and you have have to keep track of things
+for the right number of words on each side.
+It would be good to try and work out by yourself,
+but you can also see one example of an answer
+in the figure 212 of our Introduction to
+Information Retrieval book, which you can find free on the web to look at. So a positional index
+is great because it allows us to answer phrase queries and proximity queries, but there's a cost
+to a positional index, which is that our postings lists just got a lot larger, because rather than
+only storing document IDs, they're storing document IDs and the offsets of tokens
+within the document. And that's a major factor, even though indices can be compressed.
+Nevertheless, it's now completely standard to use a positional index because of the power and
+flexibility you can get from handling phrase and proximity queries, whether they're being
+used explicitly in terms of having these kind of phrase queries or within 3 queries,
+or whether they're just being exploited
+to improve the ranking of a system
+when it's looking for implicit phrases. But as I said, the positional index gets much larger.
+And so when we're estimating the size of a positional index, we note that there has to be
+an entry for each occurrence of a word,
+not just once a document. So what that means
+is the size of the index depends on the average length of the documents now.
+So if we have fairly short documents,
+it's not such a big deal, cause actually
+most of the words that occur in a document occur only once or twice.
+But if we have very long documents, then that blows out the size of the positional index rather more.
+So for example you can consider a word, a common word with frequency 0.1%,
+so this word occurs 1 word in a thousand on average. And so, well if you have
+a document size of average length 1000, then we're kind of getting no blowout really
+from going to a positional index, because there'll only be one position being recorded.
+But if we have a document, documents that are really long, then we might be getting
+100 times blowout in the size of the positional index. So everything that depends,
+but just to give you some very rough rules of thumb for, you know, what is in some sense
+typical documents like web pages, that you might expect a positional index to be
+somewhere around 2-4 times as large as a non-positional index.
+And in particular, the size of a positional index remains smaller than, but starts to approach
+the volume of the size of the original text,
+so heading to sort of a third or a half
+the original size of the text that's being indexed, which is much larger
+than in the case of a non-positional index
+where it might be down to something like
+just 10%. So having an IR system doesn't actually take a lot more space than
+storing the text in the first place. I mentioned
+when I mentioned biword indices,
+that they aren't a useless idea even though they're not normally the solution by themselves.
+And so let me just come back to that.
+These two approaches can be
+very profitably combined. So if you look at the query stream of high query volume services
+like web search engines, there tend to be some queries that keep on turning up
+again and again and again. So things like person names of popular people.
+Well, if we just treat those as, you know, just regular postings list intersections,
+or the positional phrase query posting list intersection, what we'd have to do
+is keep on doing this intersection over and over again every time that someone
+sends that question. And it's bad for cases like Michael Jackson. It's less bad
+when you've got rare names like Britney Spears, cause presumably their posting lists
+are much shorter, and the intersection is roughly the same as each individual postings list.
+Doing this intersection every time is especially bad when you have common words,
+like if you're searching for the band The Who,
+then what's going to happen is
+you're going to retrieve two enormous postings lists, do the intersection of them,
+and end up with a very short postings list for this phrase query.
+So in a paper from a group in Melbourne that's a well known information retrieval group,
+in 2004 they investigated a more sophisticated mixed indexing system. So in this,
+what happened was that for common phrases, you know, like these examples,
+they did build biwords and index the biwords.
+Where for rarer phrases they were done
+by a positional index. And so what they were able to show was with a typical
+web query mixture, you could execute it in one quarter of the time of the positional index alone
+by making use of also having indexed some biwords. But at the cost of only taking
+26% more space than having the positional index alone. So that makes that bit look
+a fairly appealing tradeoff to augment a positional index with common bigrams.
+And, well one model of doing that is to do it as here where you work out in advance
+the common bigrams and then index those in your standard inverted index.
+In practice what happens a lot in modern systems is that people try to do this
+a bit more dynamically so that they keep a cache of commonly being queried
+phrase queries, and what the result of the postings list intersection is for each of those.
+And so that's like having added those biwords to the inverted index, but done
+a bit more dynamically. Okay, so that's introduced what's the most useful extension
+to the classic Boolean retrieval model which is having support for phrase queries.
+And we introduced a method for handling those, or two methods,
+but in particular we looked at positional indices, which can handle phrase queries,
+but also the proximity queries that we saw earlier.

@@ -1,0 +1,84 @@
+In this video, I'm going to describe a
+method developed by David MacKay in the
+1990s for determining the weight penalties
+to use in a neural network without using a
+validation set.
+It's based on the idea that we can
+interpret weight penalties as doing map
+estimation so that the magnitude of the
+weight penalty is related to the tightness
+of the prior distribution over the
+weights.
+Mackay showed we can empirically fit both
+the weight penalties and the assumed noise
+in the output of the neural net to get a
+method for fitting weight penalties that
+does not require a validation set and
+therefore, allows us to have different
+weight penalties for different subsets as
+the connections in a neural network,
+something that will be very expensive to
+do using validation sets.
+Mackay went on to win competitions using
+this kind of method.
+I'm now going to describe a simple and
+practical method developed by David MacKay
+for making use of the fact that we can
+interpret weight penalties as the ratio of
+two variances.
+After we've learned a model to minimize
+squared error we can find the best value
+for the output variance and the best value
+is found by simply using the variance of
+the residual errors.
+We can also estimate the variance in the
+Gaussian prior of the weight.
+We have to start with some guess about
+what this variance should be.
+Then, we do some learning, and then we use
+a very dirty trick called empirical Bayes.
+We set the variance of our prior to be the
+variance of the weights of the model
+learned because that's the variance that
+will make those weights most likely.
+This really violates a lot of the
+presuppositions of the Bayesian approach.
+We're using the data to decide what our
+prior beliefs are.
+So, once we've learned the weights, we fit
+a zero mean Gaussian to the
+one-dimensional distribution of the
+learned weights.
+And then, we take the variance of that
+Gaussian, and we use that for our prior.
+Now, one nice thing about that is, is the
+different subsets of weights.
+Like in different layers, for example, we
+could learn different variances for the
+different layers.
+We don't need a validation set so we can
+use all of the non-test data for training.
+And because we don't need validation sets
+to determine the weight penalties in
+different layers, we can actually have
+many different weight penalties.
+This will be very hard to do with
+validation sets.
+So, here's MacKay's method.
+You start by guessing the noise variance
+and the weight prior variance.
+Actually, all you have to really do is
+guess their ratio.
+Then, you do some gradient descent
+learning, trying to improve the weights.
+Then, you reset the noise variance to be
+the variance of the residual errors and
+you reset the weight prior variance to be
+the distribution of the actually learned
+weight.
+And then, you go back around this loop
+again.
+So, this actually works quite well in
+practice.
+And MacKay won several competitions this
+way.

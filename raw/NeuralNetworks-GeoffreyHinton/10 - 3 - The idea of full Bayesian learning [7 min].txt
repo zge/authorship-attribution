@@ -1,0 +1,198 @@
+In this video, I'm going to return to the
+idea of full Baysian learning, and explain
+a little bit more about how it works.
+And then in the following video, I'm going
+to show how it can be made practical.
+In full Bayesian learning, we don't try
+and find a single best setting of the
+parameters.
+Instead, we try and find the full
+posterior distribution over all possible
+settings.
+That is, for every possible setting, we
+want a posterior probability density.
+And all those densities, we want to add up
+to one.
+It's extremely computationally intensive
+to compute this for all, but the simplest
+models.
+So, in the example earlier, we did it for
+a biased coin which just has one
+parameter, which is how biased it is.
+But in general, for a neural net, it's
+impossible.
+After we've computed the posterior
+distribution across all possible settings
+of the parameters, we can then make
+predictions by letting each different
+setting of the parameters make its own
+prediction.
+And then, averaging all those predictions
+together, weighting by their posterior
+probability.
+This is also very computationally
+intensive.
+The advantage of doing this is that if we
+use the full Bayesian approach, we can use
+complicated models even when we don't have
+much data.
+So, there's a very interesting
+philosophical point here.
+We're now used to the idea of overfitting,
+When you fit a complicated model to a
+small amount of data.
+But that's basically just a result of not
+bothering to get the full posterior
+distribution over the parameters.
+So, frequentists would say, if you don't
+have much data, you should use a simple
+model.
+And that's true.
+But it's only true if you assume that
+fitting a model means finding the single
+best setting of the parameters.
+If you find the full posterior
+distribution, that gets rid of
+overfitting.
+If there's very little data, the full
+posterior distribution will typically give
+you very vague predictions, because many
+different settings of the parameters that
+make very different predictions will have
+significant posterior probability.
+As you get more data, the posterior
+probability will get more and more focused
+on a few settings of the parameters, and
+the posterior predictions will get much
+sharper.
+So, here's a classic example of
+overfitting. We've got six data points and
+we fitted a fifth order polynomial and so
+it should go exactly through the data,
+which it more or less does.
+We also featured a straight line which
+only has two degrees of freedom.
+And so, which model do you believe?
+The model that has six coefficients and
+fits the data almost perfectly, or the
+model that only has two coefficients and
+doesn't fit the data all that well.
+It's obvious that the complicated model
+fits better, but you don't believe it.
+It's not economical, and it also makes
+silly predictions.
+So, if you look at the blue arrow,
+If that's the input value and you're
+trying to predict the output value, the
+red curve will predict a value that's
+lower than any of the observed data
+points, which seems crazy, whereas the
+green line will predict a sense of the
+value.
+But everything changes, if instead of
+fitting one fifth order polynomial, we
+start with a reasonable prior of the fifth
+order polynomials, for example, the
+coefficient shouldn't be to big.
+And then, we compute the full posterior
+distribution over fifth order polynomials.
+And I've shown you a sample from this
+distribution in the picture, where a
+thickened line means higher probability in
+the posterior.
+So, you will see some of those thin
+curves, miss a few of the data points by
+quite a lot, but nevertheless, they're
+quite close to most of the data points.
+Now, we get much vaguer, but much more
+sensible predictions.
+So, where the blue arrow is, you'll see
+the different models predict very
+different things.
+While, on average, they make a prediction
+quite close to the prediction made by the
+green line.
+From a Bayesian prospective, there's no
+reason why the amount of data you collect
+should influence your prior beliefs and
+the complexity of the model.
+A true Baysian would say, you have prior
+beliefs about how complicated things might
+be and just because you haven't collected
+any data yet, it doesn't mean you think
+things are much simpler.
+So, we can approximate full Baysian
+learning in a neural net, if the neural
+net has very few parameters.
+The idea is we put a grid over the
+parameter space,
+So each parameter is only allowed a few
+return to values and then we take the
+cross product of all those values for all
+the parameters.
+And now, we get a number of grid points in
+the parameter space.
+And in each of those points, we can see
+how well our model predicts the data, that
+is, if we're doing supervised learning,
+how well a model predicts the target
+outputs.
+And we can say that the posterior
+probability in that grid-point is the
+product of how well it predicts the data,
+how likely it is under the prior.
+And with the whole thing normalized, so
+that the posterior probability is
+[UNKNOWN].
+This is still very expensive, but notice
+it has some attractive features.
+There's no gradient descent involved, and
+there's no local optimum issues.
+We're not following a path in this space,
+We're just evaluating a set of points in
+this space.
+Once we've decided on the posterior
+probability to assign to each grid-point,
+We then use them all to make predictions
+on the test data.
+That's also expensive.
+But when there isn't much data, it'll work
+much better than maximum likelihood or
+maximum a posteriori.
+So, the way we predict the test output,
+given the test input, is we say, the
+probability of the test output, given the
+test input,
+Is the sum overall the grid points of the
+probability that, that grid-point is a
+good model, is the sum over all
+grid-points of the probability of that
+grid-point, given the data and given our
+prior, times the probability that we will
+get that test output,
+Given the input and given the grid-point.
+In other words, we have to take into
+account, the fact that we might add noise
+to the output of the net before producing
+the test answer.
+So, here's a picture of full Bayesian
+learning.
+We have a little net here, that has four
+weights and two biases.
+If we allowed, nine possible values for
+each of those weights and biases,
+There would be nine to the six grid+points
+in the parameter space.
+It's a big number but we can cope with it.
+For each of those grid-points, we compute
+the probability of the observed outputs on
+all the training cases.
+We multiply by the prior for the
+grid-point, which might depend on the
+values of the weights, for example.
+And then, we re-normalize to get the
+posterior probability over all the
+grid-points.
+Then we make predictions using those
+grid-points, but weight to each of their
+predictions by its posterior probability.

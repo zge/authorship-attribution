@@ -1,0 +1,610 @@
+This sequence of videos are going to take
+it to the next level with Hash tables and
+understand more deeply the conditions
+under which they perform well, amazingly
+well in fact As you know, we've constant
+time performance for all of their
+operations. The main point of this first
+video is to explain in sense in which
+every hash function has its own
+Kyptonite. A pathological data set for
+it which then motivates the need
+to tread carefully with mathematics in
+the subsequent videos. So, a quick review
+So remember that the whole purpose of a
+hash table is to enable extremely fast
+look ups, ideally constant time lookups.
+Now, of course, to have anything to look
+up, you have to also allow insertions. So
+all hash tables are going to export those
+two operations And then, sometimes, a hash
+table also allows you to delete elements
+from it. That depends a little bit on the
+underlying implementation. So certainly
+when you have it implemented using
+chaining, that's when you have one linked
+list per bucket, it's very easy to
+implement deletion. Sometimes, with open
+addressing, it's tricky enough, you're
+just gonna wind up punting on deletion. So
+when we first started talking about hash
+tables, I encouraged you to think about
+them logically. Much the way you do as an
+array, except instead of being indexed
+just by the positions of an array, it's
+indexed by the keys that you're storing.
+So just like an array via random access
+supports constant time look up, so does a
+hash table. There was some fine print
+however with hash tables. Remember there
+were these two caveats. So the first one
+is that the hash table better be properly
+implemented And this means a couple of
+things. So, one thing that it means is
+that the number of buckets better be
+commensurate with the number of things that
+you're storing in the Hash table, we'll
+talk more about that in a second. The
+second thing it means is you better be
+using a descent Hash function. So we
+discussed in a previous video the perils
+of bad Hash functions, and it will be even
+more stringent with our demands on Hash
+functions in the videos to come. The
+second caveat which I'll try to
+demystify in a few minutes is that you
+better have non-pathological data. So, in
+some sense, for ever Hash table
+there's Kyptonite , a pathological
+data set that will render its performance
+to be quite poor. So in the video on
+implementation detail we also discussed
+how hash tables inevitably have to deal
+with collisions. So you start seeing
+collisions way before your hash table's
+start filling up so you need to have some
+sort of method for addressing two
+different keys that map to exactly the same
+bucket. Which one do you put there? Do you
+put both there or what? So there's two
+popular approaches let me remind you what
+they are First called chaining. So this is
+a very natural idea, where you just keep
+all of the elements that hash to a common
+bucket in that bucket. How do you keep
+track of all of them? Well, you just use a
+linked list. So, in the seventeenth
+bucket, you will find all of the elements
+which ever hashed to bucket number 17.
+The second approach which also
+has plenty of applications in practice is
+open addressing. Here the constraint is
+that you are only going to store one item
+one key in each bucket. So if two things
+mapped the bucket number seventeen, you
+gotta find a separate place for one of
+them And so the way that you handle that
+is you demand from your hash function not
+merely one bucket but rather a whole probe
+sequence. So the sequence of buckets so
+that if you try to hash something into
+bucket number seventeen, 17's already
+occupied then you go on to the next.
+Bucket in the probe sequence. You try to
+insert it there And if it, you fail again
+you go to third bucket in the sequence.
+You try to insert it there, and so on. So
+we mentioned briefly the sorta two ways
+you can specify probe sequences. One is
+called linear probing. So this is where if
+you fail in bucket seventeen you move on
+to eighteen and then nineteen and then
+twenty and then 21. And you stop once you
+find an empty one And that's where you
+insert the new element And another one is
+double hashing And this is where you use a
+combination of two hash functions Where
+the first hash function specifies the
+initial bucket that you probe. The second
+hash function specifies the offset for
+each subsequent probe. So for example if
+you have a given elements say the name
+Alice and the two hash functions give you
+the number 17 and 23 then the
+corresponding finding probe sequence is
+going to be initially 17, failing
+that we'll try 40, still failing that
+we'll try 63, failing that we'll try 86
+and so on. So in a course on the design
+and analysis of algorithms like this one
+you typically talk a little bit more about
+chaining than you do open addressing.
+That's not to imply that chaining is
+somehow the more important one both of
+these are important But chaining is a
+little easier to talk about
+mathematically. So we will talk about it a
+little bit more cuz I'll be able to give
+you complete proofs for chaining whereas
+complete proofs for open addressing would
+be outside the scope of this course. So
+I'll mention it in passing but the details
+will be more about chaining just for
+mathematical ease. So, there's one very
+important parameter which plays a big role
+in governing the performance of a hash
+table, and that's known as the load
+factor, or simply the load, of a hash
+table. And it's a very simple definition.
+It just talks about how populated, a
+typical bucket of the hash table is. So
+it's often denoted by alpha And in the
+numerator is the number of things that
+have been inserted, and not subsequently
+deleted in the hash table. Divided by
+the number of buckets in the hash table.
+So, as you would expect, as you insert
+more and more things into the hash table,
+the load grows, keeping the number of
+items in the hash table fixed as you scale
+up the number of buckets, the load drops.
+So just to make sure that the notion of
+the load is clear, and that also you're
+clear on the different strategies for
+resolving collisions, the next quiz will
+ask you about the range of relevant alphas
+for the chaining and open addressing
+implementations of the hash table.
+Alright, so the correct answer to this
+quiz question is the third answer. Load
+factors bigger than one do make sense they
+may not be optimal but they at least make
+sense for hash tables that implement with
+chaining but they don't make sense for
+hash tables with open addressing. And the
+reason is simple remember in open
+addressing you are required to store only
+one object per bucket so as soon as the
+number of objects exceeds the number of
+buckets there is no where to put the
+remaining objects. So the hash the hash
+table will simply crash if, if load factor
+is bigger than one. On the other hand a hash table
+with chaining there is no obvious problems
+with load factor bigger than one so you
+can imagine a load factor equal to two
+say, say you insert 2,000 objects into a
+hash table with 1,000 buckets. You know
+that means, hopefully At least in the best
+case. Each buckets just gonna have a
+length list with two objects in it. So
+there's no big deal. With having load
+factors bigger than one, and hash tables
+With chaining. Alright, so let's then make
+a, a quite easy but also very important
+observation about a necessary condition
+for hash tables to have good performance
+And this goes into the first caveat that
+you better properly implement the hash
+table if you expect to have good
+performance. So the first point is that
+you're only gonna have constant time
+look-ups if you keep the load to be
+constant. So for a hash table with open
+addressing, this is really obvious,
+because you need alpha not just O(1) but
+less than one, less than 100 percent full,
+otherwise the hash table is just gonna
+crash, cuz you don't have enough room for
+all of the items, but even for hash tables
+that you implement using chaining, where
+they at least make sense for load factors
+which are bigger than one, you'd better
+keep the load not too much bigger than one
+if you want to have constant-time
+operations. Right, so if you have, say, a
+hash table with. N buckets and you hash in
+NlogN objects, then the average number of
+objects in a given bucket is gonna be
+logarithmic And remember, when you do a
+lookup, after you hash to the bucket, you
+have to do an exhaustive search through
+the linked list in that bucket. So if you
+have NlogN objects and you hashed it with
+N buckets, you're expecting more like
+logarithmic lookup time - not constant
+lookup time And then, as we discussed with
+open addressing, of course, you need not
+just alpha = O(1), but alpha less
+than one. And in fact, alpha better be
+well below one. You don't want to let an
+open addressing table get to a 90 percent
+load or something like that. So I'm going
+to write need Alpha less than less than
+one. So that just means you don't want to
+let the load grow too close to 100%, you
+will see performance degrade. So again, I
+hope the point of this slide is clear. If
+you want good hash table performance, one
+of the things you're responsible for is
+keeping the load factor under control.
+Keep it at most a small constant with open
+address and keep it well below 100%. So
+you might wonder what I mean by
+controlling the load. After all, you know
+you writing this hash table when you have
+no idea what some client's gonna do with
+it. They can insert or delete whatever
+they want. So how do you, how do you
+control alpha? Well, what you can control
+under the hood of your hash table
+implementation is the number of buckets.
+You can control the denominator Of this
+alpha so if the numerator starts growing
+at some point the denominator is going to
+grow as well. So what actual
+implementations of hash tables do is they
+keep track of the population of the hash
+table. How many objects are being stored,
+and as this numerator grows, as more and
+more stuff gets inserted, the
+implementation ensures that the
+denominator grows at the same rate so that
+the number of buckets also increases. So
+if alpha exceeds some target, you know,
+that could be say 75%, .75, or maybe
+it's.5. Then what you can do is you can
+double the number of buckets, say in your
+hash table. So you define a new hash
+table, you have a new hash function with
+double the range, and now having doubled
+the denominator. The load has dropped by a
+factor two. So that's how you can keep it
+under control. Optionally, if space is at
+a real premium, you can also shrink the
+hash table if there's a bunch of
+deletions, say, in a chaining
+implementation. So that's the first take
+away point about what has to be happening
+correctly under the hood in order to get
+the desired guarantees for hash table
+performance you gotta control the load. So
+you have to have a hash table whose size
+is roughly the same as the as the number
+of objects that you are storing. So the
+second thing you've gotta get right and
+this is something we've touched on in the
+implementation videos is you better use a
+good enough hash function And so what's a
+good hash function? It's something that
+spreads the data out evenly amongst the
+buckets And what would really be awesome
+would be a hash function which works well
+independent of the data And that's really
+been the theme of this whole course so
+far, algorithmic solutions which work
+independent of any domain assumptions. No
+matter what the input is, the algorithm is
+guaranteed to, for example, run blazingly
+fast And I can appreciate that this is
+exactly the sort of thing you would want
+to learn from a course like this, right?
+Take a class in the design analysis of
+algorithms and you learn the secret hash
+function which always works well.
+Unfortunately I'm not going to tell you
+such a hash function And the reason is not
+cuz, I didn't prepare this lecture. The
+reason is not because people just haven't
+been clever enough to discover such a
+function. The problem is much more
+fundamental. The problem is that such a
+function cannot exist. That is for every
+hash function it has its own kryptonite.
+There is a pathological dataset under
+which the performance of this hash
+function will be as bad as the most
+miserable constant hash function you'd
+ever seen. And the reason is quite
+simple; it's really an inevitable
+consequence of the compressing that hash
+functions are effectively implementing
+from some massive universe to some
+relatively modest number of buckets. Let
+me elaborate. Fix any hash function as
+clever as you could possibly imagine. So
+this hash function maps some universe
+through the buckets indexed from 0 to
+n -1. Remember in all of the
+interesting situations of hash functions,
+the universe size is huge, so the
+cardinality of U should be much, much
+bigger than n. That's what I'm going to
+assume here. So for example, maybe you're
+remembering people's names, and then the
+universe is strings, which have, say at
+most, 30 characters, and N, I assure you
+in any application is going to be much,
+much, much smaller than say, 26 raised to
+the thirtieth power. So now let's use a
+variant on the pigeon hole principle, and
+acclaim that at least one of these n
+buckets has to have at least a 1/n
+fraction of the number of keys in this
+universe. That is, there exists a bucket
+I, somewhere between 0 and n -1
+Such that, at least the cardinality of
+the universe over N Keys Hash to I get
+mapped to I under this hash function H. So
+the way to see this is just to remember
+the picture of a hash function mapping in
+principal any key from the universe, all
+keys from the universe to one of these
+buckets. So the hash function has to put
+each key somewhere in one of the n buckets
+So one of the buckets has to have at least
+a 1/n fraction above all of the possible
+keys. One more concrete way of thinking,
+thinking about it is that you might want
+to think about a hash table implemented
+with chaining. You might want to imagine,
+just in your mind, that you hash every
+single key into the hash table. So this
+hash table is going to be insanely
+over-populated. You'll never be able to
+store it on the computer because it will
+have the full cardinality of U objects
+in it, but it has U objects, it only has n
+buckets. One of those buckets has to have
+at least U /n fraction of the
+population. So the point here is that no
+matter what the hash function is no matter
+how clever you build it there's gonna be
+some buckets say bucket number 31 which
+gets its fair share of the universe maps
+to it. So having identified this bucket,
+bucket number 31 where it gets at least
+its fair share of the universe maps to it
+now to construct our pathological dataset
+all we do is picked from amongst these
+elements that get mapped to bucket number
+31. So for such as a data set and we can
+make this data set basically as large as
+we want because the cardinality of U/n
+is unimaginably big, because U itself is
+unimaginably big Then in this data set,
+everything collides. The hash function
+maps every single one to bucket number 31
+and that's gonna lead to Terrible hash
+table performance. Hast table performance
+which is really no better than the naive
+linked list solutions. So for example an
+hash table with collisions, in bucket 31,
+you'll just find a link listed every
+single thing that's ever been inserted
+into the hash table and for open
+addressing maybe it's a little harder to
+see, what's going on but again if
+everything collides, you're gonna
+basically wind up with linear time
+performance A far cry from constant time
+performance. Now, for those of you to whom
+this seems like just sort of pointless,
+abstract mathematics, I want to make two
+points. The first is that at the very
+least these pathological data sets. Tells
+us, indicates, that we will have to
+discuss hash functions in a way
+differently than how we've been discussing
+algorithms so far. So when we talked about
+merge sort, we just said it runs in n log
+n time. No matter what the input is.
+Whether we discuss the Dijkstra's algorithm
+It runs in n log n time, no matter what
+the input is. That first search, that
+first search many a time no matter what
+the input is. We're gonna have to say
+something different about hash functions.
+We'll not be able to say that a hash table
+has good performance, no matter what the
+input is. This slide shows that's false.
+The second point I want to
+make is that while this pathological data
+sets of course are not likely to arise
+just by random chance. Sometimes you're
+concerned about somebody constructing a
+pathological data set for your hash
+function, for example in a denial service
+attack. So there's a very clever
+illustration of exactly this point in a
+research paper, from 2003 By Crosby and
+Wallach. So the main point of Crosby and
+Wallach was that there's a number of real
+world systems And maybe there, most
+interesting application was a network
+intrusion detection system, for which you
+could bring them to their knees by
+exploiting badly designed hash functions.
+So these were all applications that made
+crucial use of hash tables and, the
+feasibility of these systems really,
+completed depended on getting cost and
+time performance from the hash tables. So
+if you could exhibit a pathological data
+set for these hash tables and make the
+performance devolve to linear, devolve to
+that of a simple link list solution, the
+systems would be broken, they would just
+crash of they'd fail to function. Now we
+saw in the last slide that every hash
+table does have its own Kryptonite. Has a
+pathological data set But the question is.
+How can you come up with such a
+pathological data set if you're trying to
+do a denial of service attack on one of
+these systems? And so the systems that
+Crosby and Wallach looked at generally
+shared two properties. So first of all,
+they were open source. You could inspect
+the code. You could see what hash function
+it was that they were using And second of
+all, the hash, function was often very
+simplistic. So it was engineered for speed
+more than anything else And as a result,
+it was easy to, just be inspecting the
+code, reverse engineer a data set. That
+really did break the hash table. That led
+it That devolved the performance to
+linear. So for example, in the network
+intrusion detection application, there was
+some hash table that was just remembering
+the IP addresses of packets that we re
+going through, because it was looking for
+patterns of pack, data packets that seemed
+to indicate some sort of intrusion. And
+Crosby and Wallach just showed how sending
+a bunch of data packets to this system
+with cleverly chosen sender IP's really
+did just crash the system because the hash
+table performance blew up to an
+unacceptable degree. So how should we
+address this fact of life that every hash
+function has a pathological data set? And
+that question is meaningful both from a
+practical perspective, so what hash
+functions should we use if we are
+concerned about someone constructing
+pathological data sets, for example, the
+implemented denial-of-service attack, and
+secondly, mathematically, if we can't give
+the kinds of guarantees we've given so
+far, data-independent guarantees, how can
+we mathematically say that hash functions
+have good performance. So let me mention
+two solutions, the first solution is, is
+meant more just on the practical point.
+You know what hash function should you
+implement if you are concerned with
+someone creating pathological data sets?
+So there are these things called
+cryptographic hash functions. There for
+example, one cryptographic hash function
+or really family of hash functions, for
+different numbers of buckets, is SHA-2
+And these are really outside the scope of
+this course. I mean, you'll learn more
+about this in a In a course on
+cryptography And obviously using these
+keywords you can look it up on the web and
+read more about it. The one point I want
+to make is, you know these cryptographic
+hash functions like SHA2, they themselves,
+they do have pathological datasets. They
+have their own version of kryptonite. The
+reason that they work well in practice is
+because it's infeasible to figure out what
+this pathological dataset is So unlike the
+very simplistic hash functions which
+Crosby and Wallach found in the source
+code of their applications, where it was
+easy to reverse-engineer bad datasets, for
+something like SHA2 nobody knows how to
+reverse-engineer a bad dataset for it And
+when I say infeasible, I mean in the usual
+cryptographic sense, in a way similar to
+how one would say it's infeasible to break
+the RSA cryptosystem if you implement it
+properly, or it's infeasible to factor
+large numbers except in very special case,
+and so on. So that's all I'm going to say
+about cryptographic hash functions. I also
+want to mention a second solution, which
+would be reasonable both in practice, and
+also for which we can say a number of
+things mathematically about it Which is to
+use randomization. So more specifically
+we're not going to design, a single.
+Clever hash function Because again, a
+single hash function we know Must have a
+pathological data set But we're gonna
+design a very clever, family of hash
+functions And then, at run time. We're
+going to pick, one of these hash functions
+at random. Another kind of guarantee you
+are going to want, we are going to be able
+to prove on a family affairs function
+would be very much in the spirit of quick sort.
+So you would call that in the quick sort
+algorithm, pretty much. For any
+fixed pivot sequence there is a
+pathological input for which quick sort
+will devolve to quadratic running time. So
+our solution was randomize quick sort
+which is rather than committing up front
+to any particular method of choosing
+pivots at run time we are gonna pick
+pivots randomly. What did we prove about
+quick sort? We proved that for any
+possible input for any possible array the
+average running time with quick sort was
+O(nlogn) with the average was over the
+run time random choices of quick sort.
+Here we are gonna do the same thing we'll
+now be able to say for any dataset. On
+average, with respect to our run time
+choice of a hash function. The hash
+function will perform well, in the sense
+that it will spread out the data of the
+data set evenly. So we flip to the
+quantifiers from the previous slide.
+There, we said if we pre-commit to a
+single hash function. If we fix one hash
+function, Then there's a data set that
+breaks the hash function. Here we're
+flipping it, we're saying for each fixed
+data set a random choice of a hash
+function is going to do well on average on
+that data set. Just like in Quick Sort.
+This doesn't mean notice that we can't
+make our program open source. We can still
+publish code which says here is our family
+of hash functions and in the code we would be
+making a random choice from this set of hash
+functions But the point is by inspecting
+the code you'll have no idea what was the
+real time random choices made by the
+algorithm. So you'll know nothing about
+what the actual hash function is so you
+won't be able to reverse engineer
+pathological dataset for the real time
+choice of the hash function. So the next
+couple of videos are gonna elaborate on
+the second solution Of using a real time
+random choice of a hash function as a way
+of saying. You do well on every data set
+At least on average. So let me just give
+you a road map of where we're going to go
+from here. So I'm going to break the
+discussion of the details of a randomized
+solution into three parts, spread over two
+videos. So in the next video we're going
+to begin with the definition of what do I
+mean by a family of hash functions, so
+that if you pick one at random, you're
+likely to do pretty well. So that's a
+definition that's called a universal
+family of hash functions. Now a
+mathematical definition by itself is worth
+approximately nothing. For it to be
+valuable, it has to satisfy two
+properties. So first of all there have to
+be interesting and useful examples that
+meet the definition. So that is, there
+better be Useful looking hash functions
+that meet this definition of a universal
+family. So the second thing will be to
+show you that they do indeed exist And
+then the other thing a mathematical
+definition needs is applications. So that
+if you can meet, the definition. Then,
+good things happen. So that'll be part

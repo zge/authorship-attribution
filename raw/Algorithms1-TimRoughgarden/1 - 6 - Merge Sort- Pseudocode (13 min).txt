@@ -1,0 +1,347 @@
+Okay, so let's move on, and actually
+discuss the pseudo-code for the
+merge sort algorithm. First, let me just
+tell you the pseudo-code, leaving aside
+exactly how the merging subroutine is
+implemented. And thus, high levels should
+be very simple and clear at this point. So
+there's gonna be two recursive calls, and
+then there's gonna be a merging step. Now,
+I owe you a few comments, 'cause I'm being
+a little sloppy. Again, as I promised,
+this isn't something you would directly
+translate into code, although it's pretty
+close. But so what are the couple of the
+ways that I'm being sloppy? Well, first of
+all, there's, [inaudible], you know, in
+any recursive algorithm, you gotta have
+some base cases. You gotta have this idea
+that when the input's sufficient. Really
+small you don't do any recursion, you just
+return some trivial answer. So in the
+sorting problem the base case would be if
+your handed an array that has either zero
+or an elements, well it's already sorted,
+there's nothing to do, so you just return
+it without any recursion. Okay, so to be
+clear, I haven't written down the base cases.
+Although of course you would if you were
+actually implementing, a merge short. Some
+of you, make a note of that. A couple of
+other things I'm ignoring. I'm ignoring
+what the, what to do if the array has odd
+lengths, so if it has say nine elements,
+obviously you have to somehow break that
+into five and four or four and five, so
+you would do that just in either way and
+that would fine. And then secondly, I'm
+ignoring the details or what it really
+means to sort of recursively sort, so for
+example, I'm not discussing exactly how
+you would pass these subarrays onto the
+recursive calls. That's something that
+would really depend somewhat on what, on
+the programming language, so that's
+exactly what I want to avoid. I really
+want to talk about the concepts which
+transcend any particular programming
+language implementation. So that's why I'm
+going to describe algorithms at this level
+okay. Alright, so the hard part relatively
+speaking, that is. How do you implement
+the merge depth? The recursive calls have
+done their work. We have these two sort of
+separated half the numbers. The left half
+and the right half. How do we combine them
+into one? And in English, I already told
+you on the last slide. The idea is you
+just populate the output array in a sorted
+order, by traversing pointers or just
+traversing through the two, sorted
+sub-arrays in parallel. So let's look at
+that in some more detail. Okay, so here is
+the pseudo-code for the merge step.
+[sound] So let me begin by, introducing
+some names for the, characters in the,
+what we're about to discuss. So let's use
+C. To denote the output array. So this is
+what we're suppose to spit out with the
+numbers in sorted order. And then, I'm
+gonna use a and b to denote the results of
+the two recursive calls, okay? So, the
+first recursive call has given us array a,
+which contains the left half of the input
+array in sorted order. Similarly, b
+contains the right half of the input
+array, again, in sorted order. So, as I
+said, we're gonna need to traverse the
+two, sorted sub-arrays, a and b, in
+parallel. So, I'm gonna introduce a
+counter, i, to traverse through a, j to
+traverse through b. I and j will both be
+initialized to one, to be at the beginning
+of their respective arrays. And now we're
+gonna do. We're going to do a single pass
+of the output array copying it in an
+increasing order. Always taking the
+smallest from the union of the two sorted
+sub arrays. And if you, if there's one
+idea in this merge step it's just the
+realization that. The minimum element that
+you haven't yet looked at in A and B has
+to be at the front of one or the two lists
+right so for example at the very beginning
+of the algorithm where is the minimum
+element over all. Well, which ever of the
+two arrays it lands in -- A or B -- it has to be
+the smallest one there okay. So the
+smallest element over all is either the
+smallest element A or it's the smallest
+element B. So you just check both places,
+the smaller one is the smallest you copy
+it over and you repeat. That's it. So the
+purpose of K is just to traverse the
+output array from left to right. That's
+the order we're gonna populate it.
+Currently looking at position I, and the
+first array of position J and the second
+array. So that's how far we've gotten, how
+deeply we've probed in the both of those
+two arrays. We look at which one has the
+current smallest, and we copy the smallest
+one over. Okay? So if the, if, the entry
+in the i position of A is smaller, we
+copy that one over. Of course, we have to
+increment i. We probe one deeper into the
+list A, and symmeterically for the case
+where the current position in B has the
+smaller element. Now again, I'm being a
+little bit sloppy, so that we can focus on
+the forest, and not sort of, And not get
+bogged down with the trees. I'm ignoring
+some end cases, so if you really wanted to
+implement this, you'd have to add a little
+bit, to keep track of when you fall off,
+either, either A or B. Because you have
+additional checks for when i or j reaches
+the end of the array, at which point you
+copy over all the remaining elements into
+C. Alright, so I'm gonna give you a
+cleaned up version, of, that pseudo-code
+so that you don't have to tolerate my
+questionable handwriting any longer than
+is absolutely necessary. This again, is
+just the same thing that we wrote on the
+last slide, okay? The pseudo-code for the
+merge step. Now, so that's the Merge Sort
+algorithm. Now let's get to the meaty part
+of this lecture, which is, okay, so merge
+sort produces a sorted array. What makes
+it, if anything, better than much simpler
+non divide and conquer algorithms, like
+say, insertion sort? Other words, what is
+the running time of the merge sort
+algorithm? Now I'm not gonna give you a
+completely precise definition, definition
+of what I mean by running time and there's
+good reason for that, as we'll discuss
+shortly. But intuitively, you should think
+of the running time of an algorithm, you
+should imagine that you're just running
+the algorithm in a debugger. Then, every
+time you press enter, you advance with one
+line of the program through the debugger.
+And then basically, the running time is
+just a number of operations executed, the
+number of lines of code executed. So the
+question is, how many times you have to
+hit enter on the debugger before the,
+program finally terminates. So we're
+interested in how many such, lines of code
+get executed for Merge Short when
+an input array has n numbers. Okay, so
+that's a fairly complicated question. So
+let's start with a more modest school.
+Rather than thinking about the number of
+operations executed by Merge Sort, which
+is this crazy recursive algorithm, which
+is calling itself over and over and over
+again. Let's just think about how many
+operations are gonna get executed when we
+do a single merge of two sorted sub
+arrays. That seems like it should be an
+easier place to start. So let me remind
+you, the pseudo code of the merge
+subroutine, here it is. So let's just go
+and count up how many operations
+that are gonna get used. So there's
+the initialization step. So let's say that
+I'm gonna charge us one operation for each
+of these two initializations. So let's
+call this two operations, just set i equal to one
+and j equal to one then we have this four
+loop executes a total number of end times
+so each of these in iterations of this
+four loop how many instructions get
+executed, well we have one here we have a
+comparison so we compare A(i) to B(j) and
+either way the comparison comes up we then
+do two more operations, we do an
+assignment. Here or here. And then we do
+an increment of the relevent variable
+either here or here. So that's gonna be
+three operations per iteration. And then
+maybe I'll also say that in order to
+increment K we're gonna call it a fourth
+iteration. Okay? So for each of these N
+iterations of the four loop we're gonna do
+four operations. All right? So putting it
+all together, what do we have is the
+running time for merge. So let's see the
+upshot. So the upshot is that the running
+time of the merge subroutine, given an
+array of M numbers, is at most four M plus
+two. So a couple of comments. First of
+all, I've changed a letter on you so don't
+get confused. In the previous slide we
+were thinking about an input size of N.
+Here I've just made it. See I've changed
+the name of the variable to M. That's
+gonna be convenient once we think about
+merge sort, which is recursing on smaller
+sub-problems. But it's exactly the same
+thing and, and whatever. So an array of M
+entries does as most four M plus two.
+Lines of code. The second thing is,
+there's some ambiguity in exactly how we
+counted lines of code on the previous
+slide. So maybe you might argue that, you
+know, really, each loop iteration should
+count as two operations, not just
+one.'Cause you don't just have to
+increment K, but you also have to compare
+it to the, upper bound of N. Eh, maybe.
+Would have been 5M+2 instead of 4M+2. So
+it turns out these small differences in
+how you count up. The number of lines of
+code executed are not gonna matter, and
+we'll see why shortly. So, amongst
+friends, let's just agree, let's call it
+4M plus two operations from merge, to
+execute on array on exactly M entries. So,
+let me abuse our friendship now a little
+bit further with an, an inequality which is
+true, but extremely sloppy. But I promise
+it'll make our lives just easier in some
+future calculations. So rather than 4m+2,
+'cause 2's sorta getting on my nerves.
+Let's just call this. Utmost six N.
+Because m is at least one. [sound] Okay,
+you have to admit it's true, 6MO is at
+least 4M plus two. It's very sloppy, these
+numbers are not anything closer to each
+other for M large but, let's just go ahead
+and be sloppy in the interest of future
+simplicity. Okay. Now I don't expect
+anyone to be impressed with this rather
+crude upper bound, the number of lines of
+code that the merge subroutine needs to
+finish, to execute. The key question you
+recall was how many lines of code does
+merge sort require to correctly sort the
+input array, not just this subroutine. And
+in fact, analyzing Merge Sort seems a lot
+more intimidating, because if it keeps
+spawning off these recursive versions of
+itself. So the number of recursive calls,
+the number of things we have to analyze,
+is blowing up exponentially as we think
+about various levels of the recursion.
+Now, if there's one thing we have going
+for us, it's that every time we make a
+recursive call. It's on a quite a bit
+smaller input then what we started with,
+it's on an array only half the size of the
+input array. So there's some kind of
+tension between on the one hand explosion
+of sub problems, a proliferation of sub
+problems and the fact that successive
+subproblems only have to solve smaller and
+smaller subproblems. And resolute
+resolving these two forces is what's going
+to drive our analysis of Merge Short. So,
+the good news is, is I'll be able to show
+you a complete analysis of exactly how
+many lines of code Merge Sort takes. And
+I'll be able to give you, and, in fact, a
+very precise upper bound. And so here's
+gonna be the claim that we're gonna prove
+in the remainder of this lecture. So the
+claim is that Merge Short never needs than
+more than six times N. Times the logarithm
+of N log base two if you're keeping track
+plus an extra six N operations to
+correctly sort an input array of N
+numbers, okay so lets discuss for a second
+is this good is this a win, knowing that
+this is an upper bound of the number of
+lines of code the merger takes well yes it
+is and it shows the benefits of the divide
+and conquer paradigm. Recall. In the
+simpler sorting methods that we briefly
+discussed like insertion sort, selection
+sort, and bubble sort, I claimed that
+their performance was governed by the
+quadratic function of the input size. That
+is they need a constant times in the
+squared number of operations to sort an
+input array of length N. Merge sort by
+contrast needs at most a constant times N
+times log N, not N squared but N times
+log N lines of code to correctly sort an
+input array. So to get a feel for what
+kind of win this is let me just remind you
+for those of you who are rusty, or for
+whatever reason have lived in fear of a
+logarithm, just exactly what the logarithm
+is. Okay? So. The way to think about the
+logarithm is as follows. So you have the X
+axis, where you have N, which is going
+from one up to infinity. And for
+comparison let's think about just the
+identity function, okay? So, the function
+which is just. F(n)=n. Okay, and
+let's contrast this with a logarithm. So
+what is the logorithm? Well, for our
+purposes, we can just think of a logorithm
+as follows, okay? So the log of n, log
+base 2 of n is, you type the number N
+into your calculator, okay? Then you hit
+divide by two. And then you keep repeating
+dividing by two and you count how many
+times you divide by two until you get a
+number that drops below one okay. So if
+you plug in 32 you got to divide five
+times by two to get down to one. Log base two of
+32 is five. You put in 1024 you have to
+divide by two, ten times till you get down
+to one. So log base two of 1024 is ten and
+so on, okay. So the point is you already
+see this if a log of a 1000 roughly is
+something like ten then the logarithm is
+much, much smaller than the input.
+So graphically, what the logarithm is going
+to look like is it's going to look like. A
+curve becomes very flat very quickly, as N
+grows large, okay? So F(n) being log
+base 2 of n. And I encourage you to
+do this, perhaps a little bit more
+precisely on the computer or a graphing
+calculator, at home. But log is
+running much, much, much slower than
+the identity function. And as a result,
+sorting algorithm which runs in time
+proportional to n times log n is much,
+much faster, especially as n grows large, than a sorting algorithm with a
+running time that's a constant times n
+squared.

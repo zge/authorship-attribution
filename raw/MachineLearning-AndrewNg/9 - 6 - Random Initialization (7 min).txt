@@ -1,0 +1,193 @@
+In the previous videos, we put
+together almost all
+the pieces you need in order
+to implement and train in your network.
+There's just one last idea I
+need to share with you, which
+is the idea of random initialization.
+When you're running an algorithm like
+gradient descent or also the
+advanced optimization algorithms, we
+need to pick some initial value for the parameters theta.
+So for the advanced optimization algorithm, you know,
+it assumes that you will
+pass it some initial value
+for the parameters theta.
+Now let's consider gradient descent.
+For that, you know, we also need to initialize theta to something.
+And then we can slowly take steps
+go downhill, using graded descent,
+to go downhill to minimize the function J of theta.
+So what do we set the initial value of theta to?
+Is it possible to set
+the initial value of theta
+to the vector of all zeroes.
+Whereas this worked okay when we were using logistic regression.
+Initializing all of your
+parameters to zero actually
+does not work when you're trading a neural network.
+Consider training the following neural network.
+And let's say we initialized all of the parameters in the network to zero.
+And if you do that then
+what that means is that
+at the initialization this blue weight, that I'm covering blue
+is going to equal to that weight.
+So, they're both zero.
+And this weight that I'm covering
+in in red, is equal to that weight.
+Which I'm covering it in red.
+And also this weight, well
+which I'm covering it in green
+is going to be equal to the value of that weight.
+And what that means is that both of your hidden units: a1 and a2
+are going to be computing the same function
+of your inputs.
+And thus, you end up with
+for everyone of your training your examples.
+You end up with a(2)1 equals a(2)2.
+and moreover because, I'm not
+going to show this too much
+detail, but because these out
+going weights are the same you
+can also show that the
+delta values are also going to be the same.
+So concretely, you end up
+with delta 1 1,
+delta 2 1, equals delta 2 2.
+And if you work through the
+map further, what you can
+show is that the partial derivatives
+with respect to your parameters will satisfy the following.
+That the partial derivative
+of the cost
+function with respect to
+writing out the derivatives respect to
+these two blue weights neural network.
+You'll find that these two partial
+derivatives are going to be equal to each other.
+And so, what this means, is
+that even after say, one gradient descent update.
+You're going to update, say this
+first blue weight with, you know, learning rate times this.
+And you're going to update the second
+blue weight to a sum learning rate times this.
+But what this means is
+that even after one gradient
+descent update, those two
+blue weights, those two blue
+color parameters will end
+up the same as each other.
+So they'll be some non-zero
+value now, but this value
+will be equal to that value.
+And similarly, even after one gradient descent update.
+This value will equal to that value.
+There will be some non-zero values.
+Just that the two red values will be equal to each other.
+And similarly the two green
+weights, they'll both change values
+but they'll both end up the same value as each other.
+So after each update, the parameters corresponding
+to the inputs going to each
+of the two hidden units identical.
+That's just saying that the two
+green weights must be sustained,
+the two red weights must be
+sustained, the two blue weights
+are still the same and what
+that means is that even after
+one iteration of say, gradient
+descent, you find that
+your two hidden units are still
+computing exactly the same function that the input.
+So you still have this a(1)2 equals a(2)2.
+And so you're back to this case.
+And as keep running gradient descent.
+The blue weights, the two blue weights will stay the same as each other.
+The two red weights will stay the same as each other.
+The two green weights will stay the same as each other.
+And what this means
+is that your neural network really
+can't compute very interesting functions.
+Imagine that you had
+not only two hidden
+units but imagine
+that you had many many hidden units.
+Then what this is saying is that
+all of your hidden units are
+computing the exact same
+feature, all of your hidden units are computing all of the exact same function of the input.
+And this is a highly redundant representation.
+Because that means that your
+final logistic regression unit, you know, really only gets to see one feature.
+Because all of these are the same
+and this prevents your neural network from learning something interesting.
+In order to get around this
+problem, the way we initialize
+the parameters of a neural network
+therefore, is with random initialization.
+Concretely, the problem we
+saw on the previous slide
+is sometimes called the problem
+of symmetric weights, that is if the weights all being the same.
+And so this random initialization
+is how we perform symmetry breaking.
+So what we do is we
+initialize each value of
+theta to a random
+number between minus epsilon and epsilon.
+So this is a notation to
+mean numbers between minus epsilon and plus epsilon.
+So my weights on my
+parameters are all going
+to be randomly initialized between minus epsilon and plus epsilon.
+The way I write code to do
+this in octave, this I've said you know theta 1 to be equal to this.
+So this rand 10 by 11.
+That's how you compute
+a random 10 by 11
+dimensional matrix, and all
+of the values are between 0 and 1.
+So these are going to
+be real numbers that take on
+any continuous values between 0 and 1.
+And so, if you take a
+number between 0 and
+1, multiply it by 2
+times an epsilon, and
+minus an epsilon, then you
+end up with a number that's
+between minus epsilon and plus epsilon.
+And incidentally, this epsilon here
+has nothing to do
+with the epsilon that we were
+using when we were doing gradient checking.
+So when we were doing numerical gradient checking,
+there we were adding some values of epsilon to theta.
+This is, you know, an unrelated value of epsilon.
+Which is why I am denoting
+in it epsilon, just to distinguish
+it from the value of epsilon we were using in gradient checking.
+Absolutely, if you want to
+initialize theta 2
+to a random 1 by
+11 matrix, you can do so using this piece of code here.
+So, to summarize, to
+train a neural network, what you
+should do is randomly initialize the
+weights to, you know, small
+values close to 0, between
+minus epsilon and plus epsilon,
+say, and then implement
+back-propagation; do gradient checking;
+and use either gradient
+descent or one of the
+advanced optimization algorithms to try
+to minimize J of theta
+as a function of the
+parameters theta starting from just
+randomly chosen initial value for the parameters.
+And by doing symmetry breaking, which is this process.
+Hopefully, gradient descent or the
+advanced optimization algorithms will be
+able to find a good value of theta.

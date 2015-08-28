@@ -1,0 +1,86 @@
+The models that we've been looking at to
+motivate maximum entropy models have been
+joint models. We've just had some data and
+we've been putting a probability
+distribution over that observed data. So
+what do these joint models of the
+probability of X have to do with the
+conditional model of the full probability
+of C given D that we were building
+beforehand? The answer to this question is
+that we can think of the C cross D space
+as a complex X and, in particular,
+for the applications we're working with, 
+the set of classes is generally small;
+you know maybe there's something like two 
+to 100 topic classes, part of speech tags,
+named entity labels. Whereas on the other
+hand, D is generally huge, so D is the
+space of all possible documents, which is
+minimally humungous and possibly infinite.
+In principle we can build models over the
+joint space of CD.
+This will involve calculating expectations 
+of features over CD, such as is shown
+in the equation here. But, in this equation 
+we're having to sum over the joint space.
+And in general that's impractical 'cause 
+we can't enumerate all the members
+of X effectively. It's just far too big a space.
+So D may be huge or infinite, but only a 
+few D occur in our actual training data.
+If at the end of the day we're training on 
+a million words of training data or
+a million documents in a document 
+classification system, then we have
+at most one million different D and often 
+in practice we'll have quite a few less
+because of repeats. So something we could 
+try doing is adding an extra feature to
+our model for each D and constrain its 
+expectation to match our empirical data.
+So we're saying that the probability of 
+each D is its observed probability.
+And what that will end up doing is giving 
+all of the probability mass to the observed
+documents, and saying all of the rest of 
+the entries of P(c,d) will be zero.
+And we're showing that here. So now all 
+probability mass is going to the observed D
+and all the rest of them are given probability 
+zero. That seems a slightly crude thing to do,
+but it has a clear practical benefit because 
+now we have a much easier sum,
+because now we only have to sum over 
+the cases which we saw in the data.
+And so then we have to iterate over 
+the different possible classes,
+but we don't have to iterate any more 
+over all possible data items.
+So, if we've constrained the D marginals 
+in this way then in estimating our model
+the only thing that can vary is the 
+conditional distributions.
+So, we're re-writing it as this form and 
+then we're saying that the probability of D
+has to be the observed probabilities of D.
+And so to maximize the likelihood that the 
+model gives to the data, the only degree of
+freedom we're left with is adjusting this 
+conditional probability distribution here.
+This is the connection between joint
+and conditional maximum entropy or
+exponential models. Conditional models 
+can be thought of as joint models with
+marginal constraints where we exactly
+match the distribution of the observed data.
+In this constricted model form, maximizing
+joint likelihood and conditional likelihood
+of the data are actually equivalent, because 
+the joint likelihood with the constraint
+of matching the marginals is the same 
+as maximizing the conditional likelihood.
+Okay, so I hope that's enough of an 
+introduction to have made sense of how
+you can view exponential or log linear 
+models as models that maximize entropy.

@@ -1,0 +1,145 @@
+So we're now going to see how to 
+construct a global feature vector f, 
+which maps an entire sentence paired with 
+an entire tag sequence to a vector 
+through these local feature vectors g. 
+And the way we do it is simply to sum up 
+these local feature vectors at the 
+different positions in the sentence. 
+So, here I have a sum of i equal 1 to n. 
+N is the length of the input sentence, 
+the length of the tag sequence. 
+I assume that h sub i is the ith history. 
+So, the history of the ith position, 
+where i equals 1, 2, 3, 4, 5, and 6. 
+And ti is the ith tag. 
+And I simply sum these feature vectors. 
+So, the global feature vector here 
+[SOUND] is equal to a sum of local 
+feature vectors. 
+[SOUND]. 
+So for example, we take each of these 
+history tagged pairs, so g of h1 one t1. 
+[SOUND] Let's say this has a feature 
+vector equal to this. 
+And then this one might have 0, 0, 0, 0, 
+1. 
+And then we have 1, 1, 1, 0. 
+0, 0, 0, 1. 
+1, 0, 0, 0. 
+[SOUND]. 
+1, 1, 1, 1. 
+Then f, for this particular word sequence 
+[SOUND] paired with this particular tag 
+sequence, would be the sum of these 
+feature vectors. 
+So in the first position, I'd sum 1, 2, 
+3, 4. 
+I have 4 here. 
+Second position, I have 2. 
+The third position I have 1, 2. 
+The final position, I have 1, 2, 3, 4. 
+So the global feature vector is, is 
+formed through a sum of these local 
+feature vectors. 
+Typically, as we've seen in many 
+examples, in log linear taggers in this 
+class and also in the features I gave you 
+earlier in this lecture. 
+Typically, the local features are indi-, 
+indicator functions. 
+They are 01, depending on whether some 
+question about the history in conjunction 
+with the tag is true or false. 
+So, for example, g101 might be an 
+indicator function, which is 1, only if 
+the current word, wi, ends in ing and the 
+tag being proposed if VBG. 
+What then happens is that these global 
+features become counts because they are 
+sums of these local features. 
+So the 101th component of our global 
+feature vector, remember we have f 
+[SOUND] is equal to sum, i equals one to 
+n, g, h, i, t, i. 
+So it's going to be a sum of these g 
+features applied to every possible 
+position in the tag sequence. 
+In this particular case, f101 is going to 
+be the number of times a word ending in 
+ing is tagged as VBG in this entire 
+sequence. 
+So while the local feature vectors are 
+indicated functions, the global feature 
+vectors are actually counts of different 
+occurrences within the tagged sequence. 
+So now when we put things together, we'll 
+see that this way of defining the global 
+features in a global linear model leads 
+to a very convenient property, which is 
+that in spite of the size of GEN, 
+remember this is going to be exponential 
+[SOUND] in n, where n is the length of 
+the sentence. 
+In spite of the size of this, we are 
+going to be able to efficiently calculate 
+this function F that takes a word 
+sequence, a sentence as input and proves 
+a tag sequence at its output. 
+So how does that work? 
+So remember, through a global linear 
+model, this function f is going to be the 
+highest scoring tag sequence. 
+So here I have an arg max of all possible 
+tag sequences in GEN. 
+An exponential of text sequences. 
+The score within the arg max is v.f, 
+where f is this global feature vector 
+definition that takes an entire sentence 
+paired with an entire tagged sequence and 
+returns some feature vectors, for 
+example, 4, 1, 4, 3. 
+Something like this. 
+Now, if we substitute in the definition I 
+showed you before, this f is going to be 
+a sum from i equals 1 to n of g, of hi, 
+comma ti, where hi is the ith history in 
+this tagged sequence and ti is the ith 
+tag in that tagged sequence. 
+So this is, again, just substituting in 
+this definition for f, where we take the 
+sum of these local feature vectors. 
+[BLANK_AUDIO]. 
+Now, of course, I can rewrite this 
+slightly, taking the v inside the sum. 
+So the inner product being between v and 
+the sum of these local feature vectors is 
+equal to the sum of inner products 
+between v and g, just through some fairly 
+straight forward results from linear 
+algebra. 
+And so, this term here can be interpreted 
+as the score [SOUND] for hi in 
+conjunction with ti. 
+So this is basically a score indicating 
+how plausible this part-, particular 
+history tag pair is. 
+So this is the final problem we end up 
+with. 
+We end up with this problem of finding 
+the highest scoring tag sequence, where 
+tagged sequence is scored by a sum of 
+these local scores for each history tag 
+pair in the input. 
+Once we've gone to that point, it 
+shouldn't surprise you that dynamic 
+programming can be used to find the arg 
+max. 
+In fact, it's a very simple task to 
+modify the Viterbi algorithm, which we 
+originally saw for h and m's. 
+And then we saw for log linear models. 
+It's very easy to modify this to finding 
+the highest scoring tag sequence under 
+these scores. 
+

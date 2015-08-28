@@ -1,0 +1,152 @@
+Let's begin our discussion of minimum edit
+distance by defining minimum edit
+distance. Minimum at a distance is a way
+of solving the problem of string
+similarity, how similar are two strings.
+So let's pick a particular example. Spell
+correction, the user typed graffe, what do
+they really mean? And one way of
+operationalizing this question is asking
+which of the following words is closer to
+the letters that they typed. Graph, graft,
+grail, or giraffe. The problem of string
+similarity comes up also in computational
+biology, where we have sequences of
+nucleotides. A, C, G, T [inaudible] we're
+trying to align. And a good alignment
+should be able to tell us that two
+particular sequences, perhaps from two
+samples line up in a certain way with some
+amount of error. And this idea of string
+similarity or sequence similarity comes up
+from machine translation, from information
+extraction, from speech recognition, comes
+up everywhere. So let's define edit
+distance. The minimum edit distance
+between two strings is the minimum number
+of editing operations, insertion,
+deletion, and substitution, that are
+needed to transform one into the other.
+And we generally use these three, editing
+operations, insertion, deletion, and
+substitution, You can imagine more
+complicated transpositions and, and long
+distance movements, but we tend to avoid
+those. So for example we have the string
+intention and the string execution. Here's
+an alignment showing that many of the
+letters line up. And with some
+substitutions and then there are some gaps
+where a gap here lines up with a letter C
+in execution and a gap in execution lines
+up with a letter I in intention and so on.
+So we can think about this alignment as
+having a set of operations that generated
+the alignment. So here the to turn
+intention into execution we have to
+delete (D for delete) an I, we substitute
+an N for an E. Substitute a T for an X.
+Insert a C. Substitute an N for U. And the
+rest of the letters, the E, the T, I, O, N
+are all the same. So the edit distance if
+each operation is one, is five. There's
+five. We had to do five things to turn
+intention into execution. If substitutions
+cost two, this is called Levenshtein
+distance. In Levenshtein distance,
+insertions and deletions cost one, but
+substitutions cost two, and now the
+distance between these two strings is now
+eight. In computational biology we've seen
+sequences of bases, and our job is to
+figure out that this A aligns to this A
+and this G to this G and, and, maybe this
+T A T and C A C and so on. So, this C to
+here so we have some, so we can see that
+there's some kind of insertion there and
+we can represent, again, that alignment
+between characters by showing this align
+string of symbols. So the task is, given
+two sequences align each letter to a
+letter in a gap, that's our task in
+biology. Edit distance comes up all over
+the place. In machine translation, for
+example, we'd like to measure how well a
+machine translation system does. So, let's
+suppose our machine translation system
+Represented some sentence, maybe
+translated from Chinese. As the spokesman
+said, the senior advisor was shot dead.
+And some human, expert translator said it
+should have been spokesman confirms senior
+government advisor was shot. So we can
+measure the difference between these two
+by saying how many words changed. Confirms
+was, was substituted with said. Words that
+were inserted. And the and words and dead.
+And words that were deleted government. So
+it, we have measuring how good our machine
+translation is by comparing it to humans.
+Similarly, in tasks like the entity
+extraction, you know, if IBM Inc. and IBM
+are the same entity, or if Stanford
+University president John Hennessy is the
+same entity as Stanford president John
+Hennessy, then we can do that by using at
+a distance to notice that these are very
+similar, with one word different, and
+here, one word different. And so, by
+measuring the number of words different,
+we can, improve our accuracy at the
+invented extraction, and, and other kinds
+of tasks. Alright. So how are we going to
+find this minimum at a distance? Our
+intuition for this algorithm is to search
+for a path. By path we mean a sequence of
+edits from the start string to the final
+string. So we'll start with an initial
+state, so that will be the word we're
+transforming. We'll have a set of
+operators: insertion, deletion,
+substitution, and we'll have a goal state,
+that's the word we're trying to get to.
+And, finally, we'll have a cost for the
+path of getting there, and that' the thing
+we're trying to minimize. So that's the
+number of x. That's our path cost. So, for
+example from intention here's a piece of
+the path. From intention we could delete a
+letter and end up with ntention. We could
+insert a letter and end up with e
+eintention or we could substitute a letter
+and end up with entention. So that's,
+these are pieces along a path that would
+go from intention. All the way off the
+screen here into all the possible ways you
+can transform intention into something.
+So, this space of all possible sequences
+is enormous. So we can't afford to
+navigate naively in this, in this
+sequence. And the intuition of solving
+this problem of lots of possible sequences
+is some of these paths wind up at the same
+state. So, we don't have to keep track of
+every way of transforming one string into
+another if the second pieces of the set
+are identical. All we have to keep. Is the
+shortest path to every revisited state. So
+let's look at an example of how this
+works, we are gonna to define minimum edit
+distance formally as, for two strings. You
+have string X of length N and string Y of
+length M. We'll define a distance matrix,
+D(i, j). And that will be the
+edit distance between the first i
+characters, one through i, of X and the
+first j characters, one through j, of
+string Y. So that's the, that's what's in
+that's what's defined by D(i, j). And so,
+the distance between the entire two
+strings is gonna be D(N, M) because
+the strings are of length N and M. So that's
+our definition of minimum added distance.

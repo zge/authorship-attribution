@@ -1,0 +1,248 @@
+Hey, so guess what? We just designed our 
+first dynamic programming algorithm that 
+linear time algorithm for computing the 
+max rate in the penance set in the path 
+is indeed an extenciation of the general 
+dynamic programming paradox. 
+Now defer articulating the general 
+principle of the paradox home now but I 
+think they're best understood through 
+comparate examples now that we have one 
+to relate them to let me tell you about 
+these guiding principles, we will in the 
+coming lectures see many more examples. 
+Examples. 
+So, the key that unlocks the potential of 
+the dynamic programming paradigm for 
+solving a problem, is to identify a 
+suitable collection of subproblems. 
+And these subproblems have to satisfy a 
+number of properties. 
+In our algorithm for computing maximum 
+independent sets in path graphs. 
+We had n + 1 subproblems. 
+1 for each prefix of the graph. 
+So formally, our i-th supbroblem in our 
+algorithm. 
+It was to compute the max weight 
+independence set of g sub i of the path 
+graph consisting only of the first I 
+vertices. 
+So, the first property that you want your 
+collection of subproblems to possess is 
+it shouldn't be too big. 
+It shouldn't have too many different 
+subproblems. 
+The reason being is, in the best case 
+scenario. 
+You're going to be spending constant 
+times solving each of those subproblems. 
+So the number of subproblems is a lower 
+bound than the running time of your 
+algorithm. 
+Now, in the maximum independence set 
+example, we did great. 
+We had merely a linear number of 
+subproblems. 
+And we did indeed, get away with mere 
+constant work for each of those 
+subproblems, giving us our linear running 
+time bound overall. 
+The second property you want, and this 
+one's really the kicker is there should 
+be a notion of smaller subproblems and 
+larger subproblems. 
+In the context of independent sets of 
+path graphs. 
+This was really easy to understand. 
+The subproblems were prefixes of the 
+original graph and the more vertices you 
+had the bigger the subproblem. 
+So in general in dynamic programming you 
+systematically solve all of the 
+subproblems. 
+Beginning with the smallest ones and 
+moving on to larger and larger 
+subproblems. 
+And for this to work it better be the 
+case that at a given subproblem, given 
+the solutions to all of the smaller sub 
+problems, it's easy to infer what the 
+solution of the current subproblem is. 
+That is, solutions to previous 
+subproblems are sufficient to quickly and 
+correctly compute the solution to the 
+current subproblem. 
+The way this relationship between larger 
+and smaller subproblems is usually 
+expressed is via recurrence. 
+And it states what the optimal solution 
+to a given subproblem is, as a function 
+of the optimal solutions to smaller 
+subproblems. 
+And this is exactly how things played out 
+in our independence set algorithm. 
+We did, indeed, have a recurrence. 
+It just said that the optimal value, the 
+maximum independent set value for g sub i 
+was the better of two candidates, and we 
+justified this using our thought 
+experiment. 
+Either you just inherit the maximum 
+independent set value from the preceding 
+sub problem, from the i - 1 sub problem, 
+or you take the optimal solution from two 
+sub problems back, from Gi - 2 and you 
+extend it by the current vertex b sub i. 
+That is, you add the i-th vertices weight 
+to the weight of the optimal solution 
+from 2 sub-problems back. 
+So this is a pattern we're going to see 
+over and over again. 
+We'll define sub-problems for various 
+computational problems and we'll use 
+recurrence to express how the optimal 
+solution of a given sub-problem depends 
+only on the solutions to smaller 
+sub-problems. 
+So, just like in our independent set 
+example, once you have such a recurrence, 
+it naturally leads to a table filling 
+algorithm where each entry in your table 
+corresponds to the optimal solution to 1 
+sub problem. 
+And you use your recurrence to just fill 
+it in, moving from the smaller sub 
+problems to the larger ones. 
+So the third property, you probably won't 
+have to worry about much. 
+Usually, this just takes care of itself, 
+but needless to say, after you've done 
+the work of solving all of your 
+subproblems, you'd better be able to 
+answer the original. 
+Qeustion. 
+This property's usually automatically 
+satisfied because in most cases, not all, 
+but in most cases, the original problem 
+is simply the biggest of all your 
+subproblems. 
+Notice, this is exactly how things worked 
+in independent sets. 
+Our biggest subproblem, g sub n was just 
+the orginal graph. 
+So once we fill up the whole table Boom. 
+Waiting for us in the final entry was the 
+desired solution to the original problem. 
+So I realize, you know, this is a little 
+abstract at the moment. 
+We only have one concrete example to 
+relate to these abstract concepts. 
+I encourage you to revisit this again 
+after we see more examples and we will 
+see many more examples. 
+Something all of the forthcoming examples 
+should make clear is the power and 
+flexibitlity of the dynamic programming 
+paradigm. 
+This is really just a technique that you 
+have got to know. 
+Now when you're trying to devise your own 
+dynamic programming algorithms, the key, 
+the heart of the matter is to figure out 
+what the right sub-problems are, if you 
+nail the sub-problems usually everything 
+else falls into place in a fairly 
+formulaic way. 
+Now if you've got a black belt in dynamic 
+programming, you might be able to just 
+stare at a the problem and intuitively 
+know what the right collection of sub 
+problems are. 
+boom, you're off to the races. 
+But, of course, you know, for white belts 
+in dynamic programing there's still a lot 
+of training to be done. 
+So rather in the forth coming examples 
+rather than just plucking the sub 
+problems from the sky We're going to go 
+through this same kind of process we did 
+from independent sets and try to figure 
+out how you would ever come up with these 
+sub problems in the first place, by 
+reasoning about the structure of optimal 
+solutions. 
+That's a process you should be able to 
+mimic in your own attempts at applying 
+this para dine, the problems that come up 
+in your own projects. 
+So perhaps you were hoping that once you 
+saw the ingredients of dynamic 
+programming all would become clear why on 
+Earth it's called dynamic programming, 
+and probably it's not. 
+So, this is an anachronistic use of the 
+word programming, it doesn't mean coding. 
+In the way I'm sure almost all of you 
+think of it. 
+it's the same anachronism and phrases 
+like mathematical or linear programming 
+it more refers to a planning process. 
+But you know for the full story let's go 
+ahead and turn to Richard Bellman himself 
+he's more or less the inventor of dynamic 
+programming. 
+You will see his Bellman-Ford algorithm a 
+little bit later in the course. 
+So he answers this question in his 
+autobiography. 
+And he say, he talks about when he 
+invented it, in the 1950s. 
+And he says those were not good years for 
+mathematical research. 
+He was working at a place called RAND. 
+He says, we had a very interesting 
+gentlemen in Washington named Wilson 
+who's the secretary of defense. 
+and he actually had a pathological fear 
+and hatred of the word, research. 
+I'm not using the term lightly, I'm using 
+it precisely. 
+His face would suffuse, it would turn 
+red. 
+And he would get violent if people used 
+the term. 
+Research in his presence. 
+You can imagine how he felt then about 
+the term, mathematical. 
+So The Rand Corporation was employed by 
+the Air Force. 
+And the Air Force had Wilson as its boss, 
+essentially. 
+Hence, I felt I had to do something to 
+shield Wilson and the Air Force from the 
+fact that I was really doing mathematics 
+inside the Rand Corporation. 
+What title, what name could I choose? In 
+the first place, I was interested in 
+planning and decision making. 
+But planning, it's not a good word for 
+various reasons. 
+I decided therefore to use the word 
+programming. 
+Dynamic has a very interesting property 
+as an adjective in that it's impossible 
+to use the word dynamic in a pejorative 
+sense. 
+Try thinking of some combination that 
+will possibly give it a pejorative 
+meaning. 
+Meaning. 
+It's impossible. 
+Thus, I thought Dynamic Programming was a 
+good name. 
+It was something not even a congressman 
+could object to. 
+So, I used it as an umbrella for my 
+activity. 
+

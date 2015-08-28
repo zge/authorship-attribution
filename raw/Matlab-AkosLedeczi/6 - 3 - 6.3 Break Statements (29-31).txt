@@ -1,0 +1,675 @@
+[MUSIC]
+Sometimes, during the iteration
+of a for-loop or a while loop.
+After some of the iterations are done,
+the rest of them should just be skipped.
+Let's look at an example of this situation
+and some code that takes care of it.
+The code is in the file named
+BreakExamples over here.
+And it looks a little different
+from files that you've seen before.
+First of all, there's no function
+keyword in the file, so it's a script.
+And also, this script, unlike the other
+scripts we've seen in this course,
+is divided into sections.
+Here, let me have a little more room and
+I think I'll just clear the screen here.
+There.
+This is a section, this is a section,
+this is a section and so on.
+A section is a set of lines that begins
+with two successive percent signs.
+The section ends when another section
+begins, or at the end of the file,
+like this one.
+You remember that the percent
+sign signifies that it and
+the text that follows it on the same
+line are part of a comment,
+which is there only for humans to read.
+MATLAB colors a comment green.
+When there are two percent signs in a row,
+it means that a new section is beginning.
+MATLAB indicates that there's something
+special about that with a bold font.
+This font and
+this font is bold compared to that one.
+The significance of sections is that
+each section can be run by itself,
+as if it were the only
+thing in the script.
+You do that using special
+buttons on the editor.
+They're up here,
+we'll look at them in just a minute.
+But first, let's look at
+the first section of this script.
+Not this one, actually the second section,
+which has a while loop in it.
+It sets all the values in the vector
+named readings, this vector
+here equal to 0 until it's reached
+the first value with exceeds 100.
+The condition here in the while loop
+makes this happen with two parts.
+The first part here before the ampersand,
+ampersand, allows the loop to continue
+only while the index is not greater
+than the length of readings.
+And the second part allows it to continue
+only while the readings are less than or
+equal to 100.
+You may remember that a major
+difference between a script and
+a function is that a script has no
+arguments, and it has no local variables.
+It uses the variables in
+the command window workspace.
+Since the script here reads
+the variable readings,
+we need to give readings a value.
+Let's give it a row vector
+of 20 random integers, and
+we'll reset the random number generator
+first, so we can regenerate the same
+set of pseudo-random numbers for
+the next two examples, and
+so that you can easily repeat this
+exercise with the same results.
+I've generated numbers, you know,
+ranging from 1 to 105 here,
+want to get at some numbers above 100.
+And I see I've got some here.
+First one appears to be on one,
+two, three, four, five,
+six, seven, eight, at element nine.
+Now let's run example one.
+I click anywhere inside this section.
+And when I click in that section,
+it's highlighted in yellow.
+Then I come up here to the ribbon, and
+I click the small green arrow with the
+tiny yellow page of text behind it here.
+It says, Run Section.
+Well, it didn't seem like
+anything happened but
+let's take a look at readings.
+Ah-hah.
+We can see that the one, two,
+three, four, five, six, seven,
+first eight elements are now zero.
+And nothing has happened beyond there,
+because,
+over here the while loop got to element
+nine, realized it wasn't less than or
+equal to 100, so
+it skipped the rest of the iterations.
+It did the first eight iterations,
+skipped all the rest of them,
+which is what we wanted it to do.
+Well, this works fine.
+But, the condition of the while-loop
+seems a bit cumbersome, all this here.
+Or, at least let's call it cumbersome to
+give us an excuse to show you another way
+to do this.
+Example two provides another way.
+Let me highlight it.
+First of all, it uses a for loop instead
+of a while loop, which you can see here.
+Its control statement easily enforces
+the requirement that the index stay within
+the range of indices of
+the vector readings.
+But there is no possibility for
+the control statement of any for-loop
+to check any condition whatever,
+the way there is with a control
+statement of a while loop up here.
+So it seems at this point,
+that the loop will scan all the elements.
+The body of this for-loop contains
+just one if else statement.
+That statement checks the value of element
+ii readings here to see if
+it's greater than zero.
+If it is,
+it executes this break statement.
+Otherwise, it sets
+the element equal to zero.
+Word break here is highlighted in
+blue because it's a MATLAB key word.
+And this same key word is used in
+the same way in many other languages.
+It's not the same thing as a break point,
+these things we've set when
+we click up here and make a red circle to
+tell the debugger to stop on a given line.
+Now this break statement is an executable
+statement that causes the loop to end
+immediately.
+And it works for
+both while loops and for-loops.
+And it's a more powerful mechanism for
+ending a loop than a while condition
+because, in addition to skipping
+the subsequent interations,
+it can skip the rest of the statements
+in the current iteration.
+Here for example, there could be more
+statements after this if else statement.
+And every one of them would be skipped
+if this break statement were executed.
+In short, the loop quits as soon as that
+break statement is executed regardless of
+where it occurs in the loop body.
+Let's try this example.
+First, we give our vector
+readings the same pseudo random
+number sequence as before.
+See if I can find that, there.
+And now we click anywhere inside the next
+section of code, this one, example two.
+Last time we did example one.
+And we hit the run section button again.
+Now, let's see if it worked.
+We have to look at readings.
+And it looks like it worked again.
+All these values before 101,
+which were originally less than 100,
+are now set to 0, and
+the rest have been untouched.
+Let's go over one more time how it worked.
+We enter the for loop, and it appears that
+we're going to process each element of
+the vector because of the phrase
+ii equals 1:length of readings.
+That doesn't happen.
+As long as this if statement
+finds that the value
+of element ii of readings
+is not greater than 100,
+then the else clause dutifully
+sets that element to 0.
+When the if else statement
+finds that the value
+is greater than 100,
+it enters the if clause and
+hits the break right here which
+ends the loop immediately.
+By the way the break statement
+can appear only inside a loop.
+In fact Matlab will stop the program and
+print an error message if it encounters
+a break anywhere that's not inside a loop.
+Okay, both these examples work,
+but we've got another example.
+It also uses the break statement
+as you can see here, but it takes
+advantage of Matlab's answer to an age
+old question in programming languages.
+When the loop ends,
+what happens to the for loop index?
+Well in most languages and Matlab is
+one of them, it's still there and
+it keeps the last value it had
+while the loop was executing.
+And that's true whether the for
+loop ended normally or
+ended with a break and
+whether it was set by the for
+loop control statement or
+by a statement inside the body, et cetera.
+Occasionally we can take advantage of
+the fact that the loop index keeps its
+last value.
+For example, suppose the problem
+is simply to find the first index
+with a value greater than 100,
+without setting smaller values equal to 0.
+Example 3 was designed to do just that.
+It starts out with the apparent intention
+of scanning through all the elements,
+of the readings,
+with ii=1:length of readings.
+Its body is an if statement though.
+And it uses a break statement to exit
+the loop at the first element that's
+greater then 100.
+After the loops comes this fprintf
+statement which tells us the index
+of the first reading above 100.
+Looks pretty good, let's try it.
+We'll generate the same values once again.
+You recognize them by now.
+And we click in the last section, and
+then click the Run Section
+button to run the code.
+And over here we see it says,
+first reading above 100 is at index 9,
+and that's correct.
+This seems to work well.
+But there's a bug lurking in this code.
+Can you see it?
+It will give the wrong
+answer in many cases.
+Let's try one of those cases.
+We just need to give it values that
+are all less than or equal to 100.
+There, now let's run it again.
+Hm, it seems to think that the last
+element is greater than 100.
+But, it's not.
+Well, let me see if I can
+figure out the problem.
+Gosh, I'm kind of tired, though.
+Hey, I know what.
+I'll let you fix it.
+It'll be good exercise for
+you to exterminate this bug.
+And, since you're going
+to take care of that,
+we're done with our little script and
+its sections.
+I got to show you one feature of scripts
+with sections that is quite cool.
+Let's go up here to the ribbon and
+click on the tab labeled Publish here.
+There are lots of things you can do here,
+but I'm going to show you just one.
+Let's click this button labeled Publish.
+And what shows up is a web
+page version of your
+script with fancy type setting and
+layouts and links and so on.
+Let's compare the two.
+Here we have the top label,
+might call it a title.
+It's been put in red, nice, large type.
+The version of Matlab you have
+may vary this a little bit.
+This is the latest version
+as I'm speaking here.
+And then there are these sections here.
+Each one of those is put inside
+this thing called Contents, and
+if we click on these we
+see that they are links.
+Like, there's Example 1.
+If we click there, we're on Example 1.
+You can see the code.
+Here's the comment I've got in Example 2.
+Skipping is accomplished
+with a break statement.
+That's go to Example 3 down here.
+Shows that the for
+loop index looks very professional and
+even runs each one of these.
+There was no output with the first two.
+But this one has output.
+First reading above 100 is at index 20.
+Hm, well,
+that reminds me that bug is still there.
+You haven't fixed it yet.
+Maybe we don't want to show this.
+But if we did,
+you can link it into other web pages.
+You can email it.
+You can show it to your friends.
+I think that's quite cool.
+And by the way, this webpage is stored in
+a little folder inside the current folder.
+That's generated by publish.
+If you go in here,
+you can see BreakExamples,
+which was the name of this m file, .html.
+Let's go back up to where we were before.
+Okay now, what were we talking about?
+Oh yes, you were going to get rid
+of that embarrassing bug, you know,
+that we discovered when we
+ran this third example.
+And speaking of bugs, there's an extremely
+common bug that shows up when
+break statements are used in nested loops.
+It's a big problem for novice programmers.
+Not that, you know, being a novice
+programmer is like a bad thing.
+Me and my favorite people over
+the years have been novice programmers.
+I used to be a novice programmer myself.
+The fact remains that novice programmers
+have trouble with this problem.
+The problem is that the break statement
+breaks out of only the innermost loop.
+Meaning that it will cause the loop
+it appears in to terminate, but
+the outer loop will continue.
+That is often not what
+the new programmer expects.
+We're going to look at an example that
+works with a two-dimensional array.
+So let's generate one.
+There is a nice array.
+We want to look at each element in
+row measure order, that's first row,
+then second row and so on, and
+set the elements equal to zero until we
+find the first value that's
+greater than 90, and
+we want to leave that element and all
+the other elements after it as they are.
+So in this case,
+we want to put all zeros on this first row
+because there's nothing
+greater than 90 there.
+Then we move the second row,
+and we put zero here and
+here, but when we get to the 97,
+we stop, we don't put a zero there,
+and we se, leave everything else as it is,
+and we're done.
+This is a job for for-loops, and
+since we want to be able to stop before we
+get to the end, but we can't know where we
+want to stop until we get there,
+it's also a job for the break statement.
+Here's our first try in
+this file called bad break.
+[SOUND] As you can see, there's a for
+loop here whose index ii goes
+from 1 to the size of A,1.
+Size of A,1 means the first dimension
+of A, which is the number of rows.
+Then there's an enter loop whose index
+jj goes from one to the size of A,2.
+Size of A,2 returns the second dimension
+of A, which is the number of columns.
+So ii is set equal to one,
+and we go in here,
+and jj goes from one to eight because
+there are eight columns in A.
+And it checks the values of
+the elements ii, jj against 90, and
+if they are less than or equal to 90,
+it sets them to zero, else it breaks.
+Well, that looks pretty good.
+Let's try it.
+We can run it by typing its name.
+We can also run it by
+clicking on run up here.
+That works well for
+scripts, so let's do that.
+So bad break ran and
+let's take a look at A.
+Something's wrong.
+We should've set the first row
+equal to zeros, we did that.
+Then we should've set these two
+equal to zero, we did that, and
+stopped with the 97, and
+it looks like we're stopped.
+But then, we seem to start up again
+on the third row, two more zeroes.
+And wait a minute,
+this 63 here got set to zero, too.
+This is exactly the problem
+we were talking about.
+The break statement stopped the inner
+loop, but not the outer loop.
+Well, this example is just complicated
+enough to warrant the debugger.
+First, I'm going to clear the command
+window because I want to print some things
+in there, and then I'm going to set
+A back to the value it had before.
+[SOUND]
+There.
+Okay, I'm going to set a break point,
+but before I do, I'm going to
+remove the semicolon here, after this
+zero because I want A to print out.
+And I want it to print out each
+time through the inner loop,
+and that will make it do it.
+Now I'm ready to set a break point,
+I'm going to put it right
+here at the beginning.
+Woo, it's gray,
+that means I have to save this.
+It means that the file that I'm
+breaking is not the same file that I'm,
+that I'm looking at here.
+Okay, we're ready.
+Let's run it.
+I'm going to click run.
+And we see that bad break is run and
+K means we are in the break system, and
+so this little green arrow,
+which points to the next statement,
+is going to be executed.
+We haven't done anything yet.
+We are about to enter the outer loop,
+so I'm going to take one step.
+When I do this, you see that little hint
+there that that shows you, depending on
+your operating system, a shortcut you
+can use for this on the keyboard.
+I like to use the button,
+so I'm going to do that.
+So we go in here, and
+ii is set equal to one.
+If you hover over the ii you
+can see its value is one.
+Now we're about to enter the inner loop.
+Let's do that.
+Now we see that ii is still one,
+jj is one, and
+we're checking the value of A,
+ii, jj, which is A one one.
+It's 81.
+If it's less than or equal to 90,
+we'll set it equal to zero.
+And of course it is, so
+we're going to enter this if branch and
+set this equal to zero,
+so let's carry that out.
+And when we do,
+you'll see the whole array A printed out.
+That's what happens when you
+assign any value to an array and
+leave the semicolon off
+the assignment statement.
+Not just the element that you assigned,
+but the whole array prints out, and
+that's kind of nice for us here.
+We can see what the array looks like and
+we can see how it was
+changed from the last time.
+Just this zero showed up here.
+Okay, we're ready to complete
+that iteration of the inner loop.
+And now,
+here we are at the second iteration.
+The outer loop still has ii equal to one,
+the inner loop now has it at two, and
+we're about to check the element one two,
+which is also less than 90.
+And you can see it's set to zero.
+And we can continue in this way,
+going all the way through, the first row.
+Every single thing on that
+row gets set to zero.
+Now we finish that row, and
+that puts us at the end of the inner loop,
+and
+we're down here at the end statement
+of the outer loop, and you know,
+the end statement will cause the ii to
+take on its next value, which is two.
+So lets go forward one step.
+Okay, we're now back at the top, and
+we're about to enter the inner loop again.
+This time ii is equal to two.
+Be a little more careful here.
+So now we've entered that loop,
+ii is equal to two, jj is equal to one.
+So we're going to be looking at this
+element right here, which is equal to 90.
+It is less than or
+equal to 90 because it's equal to 90, so
+we'll go into this branch again.
+There we did, and we'll carry it out,
+by setting that element equal to zero.
+Let's do that.
+And it got set equal to zero,
+as you can see here.
+So we're at the end of that iteration.
+Let's take another step.
+Ii's still equal to two,
+we're still on the second row.
+Jj is now equal to two, so
+we're looking at this element, it's 28,
+it'll be less than 90.
+So we enter the if branch, we set it equal
+to zero, you saw it become zero there.
+Now lets take one more step.
+We've entered the third
+iteration of this inner loop.
+Ii is equal to two, jj is equal to three,
+so we're about to look at this element.
+This element is not less than or
+equal to 90, it's 97,
+so we'll go to the else branch.
+There we are.
+We're about to execute
+the break statement.
+In the break statement, we were
+expecting to exit the whole thing but
+it's only going to exit the inner loop.
+So let's watch that happen.
+There.
+We jump down.
+We're out of the inner loop.
+We've jumped down to the next iteration
+of the outer loop, ii is now equal to 3.
+So we're down here on the third row.
+Now we see the problem.
+We needed to break out of the outer loop
+at the same time we broke
+out of the inner loop.
+We needed to break out of this loop
+when we broke out of this loop,
+with this break statement.
+Well, now we know what went wrong,
+so let's quit our debugging session.
+We can do that by clicking the great big
+red square here labeled Quit Debugging.
+There, bugging session is over,
+and one indication that it is,
+is there's no green arrow here, and
+another one is that we don't have
+the K in front of our prompt anymore.
+We've established that we need
+to break out of the outer loop
+as well as the inner loop when
+we find what we're looking for.
+So how do we do that?
+Well we've got code here
+that does it in GoodBreak.m.
+Let's take a look at that.
+Well first,
+we see a new variable here called found.
+We set it equal to false before
+we even enter the outer loop.
+Then, inside the inner loop down
+here is where we have the break.
+We set found equal to true
+before we execute the break.
+And then in the outer loop,
+after we're done with the inner loop,
+we check found to see if it's true.
+There are two versions of the conditional
+for checking the value of found.
+The first version is found
+double equals true, like this.
+That certainly checks to see
+if found is equal to true.
+And the second version is
+the one we've got here.
+Either case works because in both cases,
+the condition will be true if and
+only if found is equal to true.
+If found is true,
+then we break out of the loop.
+We've already broken out of the inner loop
+right after we set found equal to true,
+and so we break out of the outer loop and
+we're done.
+The variable found which shows up in
+three places typically is called a flag.
+A flag usually has only a few values,
+and most often just two values,
+like this, true and false the most common.
+And it serves as a signal that
+affects the behavior of the program.
+Here, the behavior is to
+exit the outer loop or not.
+And the flag is the standard solution
+to the problem of exiting nested loops.
+There is another way, but
+it can only be used when a,
+the nested loop is inside a function and
+b, it's appropriate to exit the function
+when you exit the nested loops.
+You just replace this break in
+the inner loop with a return.
+And you can forget this part.
+And this part.
+And this part.
+In other words you can forget all
+the breaks and all the flags.
+Return leaves the function for good,
+regardless of how many
+nested loops there are.
+If you have work to do in the function
+after the nested loops are done, then it's
+not appropriate to exit the function
+when you exit the nested loops and
+it typically is inappropriate, so
+you should remember how to use a flag.
+Well, let's get our nested loops
+back the way they were by doing
+a few of these undos.
+There.
+And with that,
+we're done with the break statement, but
+there is a related statement
+called the continue statement.
+It's similar to the break but
+instead of using the break keyword,
+you use the continue key word.
+And instead of quitting the loop, it skips
+what's left of the current iteration
+of the loop and
+moves to the next iteration.
+In a for-loop the loop index takes on its
+next value and next iteration begins.
+In a while loop,
+it just goes to the beginning and
+checks the loop condition again.
+What probably the biggest difference
+between the continue statement and
+the bracket statement, is that the
+continue statement is just not used very
+much, and
+the break statement is used a lot.
+So we're not going to cover the continue
+statement in this course, but
+if you're interested in it,
+check it out in the textbook.
+[MUSIC]
+[SOUND] [APPLAUSE]
+

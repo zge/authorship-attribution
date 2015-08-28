@@ -1,0 +1,173 @@
+So let's first give a brief review, of 
+what we've seen so far in this class. 
+So many of the problems we've considered, 
+involve supervised learning. 
+So in supervised learning problems, the 
+general task is to learn some function, 
+capital F, that maps members of sum set 
+capital X. 
+This is a set of possible inputs, to 
+members of sum set Y. 
+This is a, a set of possible outputs. 
+So we're going to have sum function 
+capital F, which maps sum X to sum Y. 
+So, for example in the parsing problem, 
+each input X is a sentence, and each 
+output is a parse tree. 
+in machine translation, each input might 
+be a sentence in one language, say 
+French, and the output is a sentence in 
+another language, say English. 
+The language we're translating into. 
+In part of speech tagging, the input is 
+again a sentence, and the output is the 
+sequence of tags, in particular the part 
+of speech tags, for that particular 
+sentence, that sequence of words. 
+So in supervised learning problems, we've 
+assumed that we have some training set, 
+which consists of Xi, Yi pairs for i 
+equals 1 to n. 
+So, for example, we would have n examples 
+consisting of a sentence and a parse 
+tree. 
+Or we might have n translation examples 
+where each example consists of a French 
+sentence paired with an English sentence. 
+Or we might, in a tagging case, have n 
+examples where each example consists of a 
+sentence paired with a sequence of tags. 
+And so, we're going to somehow learn this 
+mapping F, from this training set. 
+So we're going to have some algorithm, 
+that takes this training set as input, 
+and somehow produces some function 
+capital F as the output. 
+So almost all of the models we've seen so 
+bar, far what I'll refer to as history 
+based models. 
+So at a very high level, these models 
+take the following approach. 
+We break some structure, for example, the 
+parse tree or tag sequence, into what you 
+might call a derivation, or basically a 
+sequence of decisions. 
+So for example, we might have the 
+sequence of tagging decisions, or the 
+sequence of rule applications, in a 
+context free grammar. 
+I'll give some examples of this in a 
+moment. 
+Each decision has an associated 
+conditional probability. 
+So we might, for example, in the case of 
+an HMM, we had conditional probabilities 
+of the form Ti, given Ti minus 2, Ti 
+minus 1, or E of Xi given Ti. 
+The decisions here, being to choose the i 
+tag, given the previous two tags, or to 
+generate the ith word given the ith tag. 
+We multiply these decisions to get the 
+probability of an entire structure. 
+So the probability of a structure, is the 
+product of these decision probabilities. 
+We typically estimate the parameters, 
+using variants of maximum likelihood 
+estimation, so typically some kind of 
+maximum likelihood estimation with some 
+form of smoothing or regularization. 
+And then finally, this function capital 
+F, which maps input X to labels Y, is 
+defined as the label Y, that maximizes 
+either the joint probability of X and Y. 
+Think of HMN's or PCFG's as being one 
+example of this case, or the conditional 
+probability of Y given X. 
+this is what we saw with log-linear 
+taggers. 
+So basically we are going to use these 
+history based models, to define either a 
+joint distribution over inputs and 
+outputs, or a conditional distribution 
+over outputs given inputs. 
+But in all of these models, we followed 
+this methodology were we've broken 
+structures down into sequence decisions, 
+associated each decision with a 
+probability, and then multiplied these 
+probabilities together, to get the 
+probability for, for an entire structure. 
+Just briefly, here's a first example of 
+this PCFGs. 
+so what is the sequence of decisions in a 
+PFCG? 
+We talked a lot about left most 
+derivations, top down derivations. 
+So at each point in a derivation, we have 
+some non-terminal, for example S, and our 
+decision is to expand that, with some 
+rule, for example, S goes to NP VP. 
+Each of these decisions has some 
+associated conditional probability. 
+So q of s goes to NP VP. 
+There's a parameters that basically 
+specifies the conditional probability. 
+We're seeing the rule S goes to NPVP, 
+given that we're expanding S. 
+The probability of a structure as a 
+product of these terms. 
+So, if I have a rule with n rules, sorry 
+a tree with n rules. 
+Alpha i goes to beta i for i goes 1 to n. 
+Then we just multiply together, these q 
+parameters for each of the, the 
+individual rules. 
+parameter values are usually estimated 
+using variants of maximum-likelihood 
+estimation. 
+In this case, this just means that our 
+parameter estimate is a ratio of two 
+counts. 
+The number of times we've seen the rule, 
+divided by the number of times we've seen 
+it on terminal alpha. 
+And then finally, as I said in the last 
+slide, the final function from a sentence 
+to a parse tree, is to find as follows; 
+for any sentence X, we search over all 
+parse trees Y, and return the parse tree 
+with the highest probability the 
+probability here being a joint 
+probability of Y and X. 
+Here's a second example log linear 
+taggers. 
+So in this case, for a sentence of length 
+n, we have n tagging decisions, in left 
+to right order. 
+So, for example, we might have the 
+decision of determiner, noun, verb. 
+If we had a sentence of length three, for 
+example. 
+Each decision has an associated 
+conditional probability. 
+So, this is going to be the probability 
+of i'th tag. 
+Given the previous two tags, and given 
+the entire sentence. 
+The probability of a tag sequence 
+conditioned on a word sequence, is a 
+product of terms, where we have the 
+probability of Ti, given the previous two 
+tags and the entire word sequence. 
+And in this case we estimate or we define 
+this model, this conditional model of the 
+i's tag, given the previous two tags in 
+the sentence, using a log-linear model. 
+And we saw how to define those models, 
+and how to define the parameter 
+estimation in those models. 
+Finally, for an input X, we define the 
+function F of X to be the Y that 
+maximizes the conditional probability of 
+Y given X. 
+

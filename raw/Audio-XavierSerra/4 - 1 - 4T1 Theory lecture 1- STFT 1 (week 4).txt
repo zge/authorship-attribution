@@ -1,0 +1,404 @@
+Welcome back to the course on Audio 
+Signal Processing for Music Applications.
+Until now we have seen how to compute
+the spectrum of a signal, its DTF.
+But real sounds can not be
+represented by a single spectrum.
+Sounds change in time, and
+we need to capture this time variation.
+The short-time Fourier
+transform is our solution.
+Again, this lecture is
+divided into two parts.
+So this is the first one.
+We'll first present and explain
+the short-time Fourier transform equation.
+And then discuss,
+what we call the analysis window.
+The is the short-time
+Fourier transform equation.
+Basically, a modified version of the DFT.
+With few but important differences.
+So for example, the input to the equation,
+the input signal
+is not just x of n, but
+is the multiplication of
+w, which is our analysis window, by
+a fragment of x of n.
+So here, x is has an argument, that has n,
+our time in that.
+But also has a frame number and
+a hop size.
+So, l is the frame number and
+this is our time in that.
+So we will be
+iterating over l, so
+we will be skipping over time this way.
+And capital H is our hop size,
+how much we're going to hop from
+one time instance to the next.
+So basically,
+x is going to be changing in time
+according to l and H and
+then at every time instance, at every l,
+it's going to be multiplied by
+this analysis window w of n.
+The rest is the DFT.
+So the only thing that changes is that
+the input signal
+changes.
+And therefore, the output also
+is not a single spectrum, but
+a sequence of spectra.
+There is the, X sub l, so the
+the variable l is the frame number.
+So that means that the output of
+the short-time Fourier transform is
+going to be a sequence of spectra.
+Each one of the same size and
+having magnitude and phase.
+But, each one different because the input
+will be a different fragment of the sound.
+Stepping through the sound
+in a progressive manner.
+So, to emphasize the idea of zero phase
+windowing, that we already have talked about,
+from now on we generally
+specify the time index to go
+from minus N over 2 to N over 2 minus 1.
+Okay, so it's always centered around 0.
+We don't have any phase changes,
+we don't have any
+kind of shifting in the time and
+therefore in the spectrum.
+The windowing is a way to step through
+the sound, as I mentioned.
+So, here we can see 
+a depiction of that.
+And if we use the analogy of image and
+video, we coud relate a spectrum
+with a photograph, a static image,
+and then the short-time Fourier transform
+with video, a time varying image.
+So, here we see in this picture,
+the whole time for
+for a sound at the bottom and
+how we are basically
+stepping through the sound by windowing
+the sound with this analysis window.
+And therefore being able to get all the
+sound as a sum of sound fragments.
+Okay, to better understand the effect
+of windowing a sound let's put an example
+of what happens when we window a real
+sinusoid and then compute its spectrum.
+So we start from a real sinusoid,
+sinusoid we already have seen that.
+So it's a cosine with 
+a frequency index k sub 0,
+and an amplitude, a sub 0, which can be
+expressed as the sum of two complex
+sinusoids, one with a positive frequency
+and another with a negative frequency.
+Then if we substitute
+into the short time Fourier
+transform equation this signal and
+we window it, we can step through
+these different steps in which
+we first put x of n in the
+equation.
+Then we are substituting the sum
+of these two complex exponentials.
+Therefore, because of the linearity of
+the DFT, we can split these into two
+equal equations
+in which in each one we have
+a complex exponential as the input signal,
+and the amplitudes
+can be moved outside and
+basically what we get back to.
+Is the sum of two DFTs of the window and
+with frequency shifting operation.
+So basically and the end here we see that
+the result is the spectrum of the window,
+of course, frequency shifted by
+the frequency of the input signal,
+and multiplied by the amplitude, by half
+of the amplitude, of the input signal.
+Plus, of course, the other window at
+the other complex exponential frequency.
+One is the minus frequency and
+the other is the plus frequency.
+So this will be the result
+of this cosine so
+which is basically the transform
+of the window shifted to the frequency
+of the input signal and multiplied by 
+the amplitude of the input signal.
+Well with this plot we can understand
+this windowing process a little better.
+So on the top we have the window,
+and underneath is the windowed
+sinusoid that we have
+as our input signal,
+and then the transform of
+the window can be shown on the top,
+in which the transform of this window,
+which, in this case is a hanning window,
+is the magnetic spectrum
+centered around zero,
+and with the symmetry and
+with the even phase.
+And now if we take the DFT
+of the windowed sinusoid well,
+what we are saying is basically
+the same shape than the window,
+but at the frequency of the sinusoid,
+the two frequencies of the sinusoid,
+the positive and
+the negative frequencies.
+And at the phase of the sinusoid too.
+So we have the two values for
+the two phases with these
+anti-symmetry that is analysis results into.
+So for this discussion we can
+realize the importance of the analysis
+window in the spectrum of a sinusoid and
+thus of any sound.
+It's clear that we have to spend
+some time explaining the windows.
+So an analysis window
+is generally a real function
+and is symmetric around the origin,
+and this is the simplest window,
+the rectangular window.
+It's time domain is
+nothing too particular, but
+it's magnitude spectrum
+is much more interesting.
+So time domain it has value of
+one for the duration of the window,
+in this case 64, and
+the spectrum, the magnitude spectrum,
+has a shape which we call it
+is a sinc shape, because the
+the transform is a sinc function.
+And it basically could be described
+in many different ways but
+we focus on two main aspects.
+On what we call, the main lobe,
+the peak at the center,
+and we'll be talking about
+the width of the main-lobe mainly.
+And then, we talk about the
+side-lobes, which are these
+small lobes next to it.
+And we basically focus on the level
+of the highest of these side-lobes.
+So we will be talking about
+the highest side-lobe level.
+And okay, so there are many
+windows used in audio signal processing and
+this is the list of windows available
+in the SciPy module of Python.
+So we can go through them and
+we can see quite are a variety of windows.
+Some of them we're not
+going to pay much attention to but
+for example we will be talking
+about the Blackman window,
+we will be talking about the Hamming
+window, the Hanning window.
+We will be talking about
+the Triangular window etc.
+Some others are not so much used in audio.
+Each window can be distinguished from
+the others by measuring the main lobe
+width and the side lobe level
+and each window offers a different
+compromise with respect to these
+two values.
+So, let's show some of them.
+So
+the first one is the rectangular window.
+And the equation shows
+how it's computed.
+And the spectrum is what
+we call a sinc function.
+Is the sine pi k, where k is
+the the frequency index divided by
+another sine function.
+So if you look in the plots
+the spectrum could be thought,
+well is the magnitude spectrum,
+so is the absolute value of this W k.
+So basically, is a sine
+function with kind of attenuated
+function applied to them,
+at the boundaries.
+So it results into
+this shape, very characteristic shape,
+that's going to
+called sinc, function.
+And talking about how to describe
+it we mentioned about the
+width of the main lobe and
+this has two bins, and
+two bins means two samples, and
+this we have to be careful because this
+is measured when the DFT is
+the same size than the window.
+So if we take a window size of
+the same size of the window,
+lets say ten samples,
+then its going to be two bins.
+But generally since we do zero padding,
+then the number of bins is higher.
+But this is because of the zero padding.
+And we normally do it
+in order to better visualize the shape.
+So in fact this shape, has been
+generated by a lot of zero padding.
+So that we can
+have this smooth visualization.
+But strictly speaking, the number of
+bins that we refer to is two.
+And the side lobe level, the higher
+side-lobe level, is minus 13.3 dB.
+So the distance between the center
+peak and the first side-lobe level.
+Maybe, the most popular
+window is the Hanning window,
+which is a raised cosine.
+So the equation is .5
+plus .5 of the cosine,
+this raises the cosine, so
+it's just one cycle of a cosine.
+And if we compute the spectrum
+it also can be expressed as
+sums of the sync functions.
+In fact all the windows can be expressed,
+in the time domain by sums of cosines and
+in the frequency domain by
+sums of this sinc function.
+So in this case is the sum, in the
+frequency domain of three sinc functions.
+And, again the two values that
+characterize this shape, this frequency
+domain's shape, is the width of
+the main-lobe, which is four bins.
+So, twice as much as
+a rectangular function.
+And, the side-lobe level is
+minus 31.5 decibels, so which is lower.
+Okay.
+Now the main lobe is wider and
+the side lobe level is is lower.
+The Hamming window is very similar
+to the Hanning but with a small and
+significant difference.
+It's a raised cosine with a step 
+at the side.
+By having these small steps
+into the sides we get
+a magnitude spectrum that maintains
+the same main-lobe width, so
+that's good, it doesn't
+get wider.
+But, in exchange, we get
+much lower side-lobe level.
+Minus 42.7 decibels.
+And this is,
+as we going to see, an important thing.
+The ideal is to have
+the lowest side-lobe level
+and the narrowest possible main-lobe.
+So, this is a good window.
+Of course, nothing comes for free,
+so the side-lobe level
+do not decrease so abruptly, as they go
+away from the main lobe.
+The Blackman window is the sum of
+two sinusoids, and with that
+we accomplish a significant improvement
+in terms of the side lobe level measure.
+Okay, so we see the magnitude spectrum,
+which the main lobe
+is wider, is 6 bins,
+but the side-lobe level is lower,
+is -58 dB.
+And that's good because
+that's starting to be
+quite useful value at the side-lobe
+level for many audio applications.
+we will come back to that.
+And then finally
+the window I want to end talking
+about is the Blackman-Harris window
+which is a very special one,
+because we can basically say
+that it has no side lobes.
+So, it's a sum of several cosines,
+in this case is four cosines.
+with different coefficients
+in the summing.
+And then in the frequency domain,
+the magnitude spectrum,
+the main lobe, again, gets wider.
+In this case, it's eight bins.
+But, the side-lobe level is minus 92 dB.
+And if we think about it in
+terms of signal to noise ratio,
+which is a very important factor in
+digital, signals, 92 decibels is basically
+below the noise floor of 16 bits, of
+the kind of signals that we deal with.
+So basically that means that these
+side-lobes, and if we consider them as
+artifacts or as noise,
+they are not heard.
+In other windows we could say that
+these side lobes are artifacts that
+can't be heard and
+again we will come back to that.
+And now to finish let me just
+compare some of these windows
+being applied to the same sound.
+So we start with a fragment of a sound,
+of a certain length,
+and we are applying
+three different windows.
+The first one is rectangular,
+the next one hamming,
+and the finally the Blackman.
+Clearly, very distinct spectra.
+And by looking at these we can see
+
+that maybe the best for
+this particular analysis is the Blackman.
+We see a smoother spectrum.
+We see these peaks are
+much more clearly distinct.
+And in fact these peaks correspond
+to the harmonics of the sound.
+Okay, so this is all and there are a lot
+of references for the topics I covered.
+Especially about Windows.
+In Wikipedia you can find quite a bit
+of information about the short time Fourier
+transform, about Windows.
+Julius, in his website and in his online
+books discusses this quite a bit, so
+that's a very good reference.
+And the rest are the standard
+credits and references.
+So this is all for
+the first part of the lecture
+on the short-time Fourier transform.
+We have explained the basic equation
+of the short-time Fourier transform and
+we have focused on the analysis window.
+In the second part
+we will continue with this topic.
+I will see you in next class.
+

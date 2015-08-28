@@ -1,0 +1,178 @@
+Welcome back. Today we're going to do some
+math and some science. Not a lot, but we
+need to have a scientific basis for
+understanding the performance of our
+algorithms to properly deploy them in
+practise. So today we're going to talk,
+about how to, observe performance
+characteristics of algorithms. We're going
+to look at how to make mathematical models
+and how to classify algorithms according
+to the order of growth of their running
+time. We'll talk a bit about the theory of
+algorithms and also how to analyze memory
+usage. So to put this all in perspective,
+we're going to think about these issues
+from the point of view of different types
+of characters. So the first one is the
+programmer who needs to solve a problem
+and get it working and get it deployed.
+Second one is the client who wants to use
+the whatever program did to get the job
+done. Third one is the theoretician,
+that's somebody who really wants to
+understand what's going on. And, and the
+last one is kind of a team, this basic
+blocking and tackling sometimes necessary
+to get, you know, all these things done.
+So, there's a little bit of each one of
+these in today's lecture. And actually
+when you're a student you have to think
+that you might be playing any or all of
+these roles some day. So, it's pretty
+important to understand the different
+points of view. So, the key that we'll
+focus on is running time. And actually the
+idea of understanding the running time of
+a computation goes way back even to
+Babbage and probably before. And here's a
+quote from Babbage, "As soon as an
+analytical engine exists, it will
+necessarily guide the future course of the
+science. Whenever any result is sought by
+its aid, the question will arise by what
+course of calculation can these results be
+arrived at by the machine in the shortest
+time". If you look at Babbage's machine
+called the analytic engine, it's got a
+crank on it. And literally the concern
+that Babbage had in knowing how long a
+computation would take is, how m any times
+do we have to turn the crank. It's, it's
+not that different, in today's world. The
+crank may be something electronic that's
+happening a billion times a second. But
+still, we're looking for, how many times
+does some discreet operation have to be
+performed in order to get a computation
+done. So, there are lot of reasons to
+analyse algorithms. In the context of this
+course we are mainly interested in
+performance prediction. And we also want
+to compare the performance of different
+algorithms for the same task, and to be
+able to provide some guarantees on how
+well they perform. Along with this, is
+understanding some theoretical basis for
+how algorithms perform. But primarily, the
+practical reason that we want to be
+analyzing algorithms and understanding
+them is to avoid performance bugs. We want
+to have some confidence that our
+algorithms going to complete the job in
+the amount of time, that, that we think it
+will. And it's very, very frequent to see,
+in today's computational infrastructure, a
+situation where the client gets bad
+performance, because the programmer did
+not understand the performance
+characteristics of the algorithm. And
+today's lecture is about trying to avoid
+that. Now, we're going to focus on
+performance and comparing algorithms in
+this course. There's later courses in
+typical computer science curricula that
+have more information about the
+theoretical basis of algorithms and I'll
+mention a little bit about that later on.
+But our focus is on being able to predict
+performance and comparing algorithms. Now
+there's a long list of success stories in
+designing algorithm with better
+performance in, in enabling the solution
+of problems that would otherwise not be
+solved. And I'll just give a couple of
+examples. One of the first and most famous
+is the so called FFT algorithm. That's an
+algorithm for breaking down the wave form
+of n samples of a signal into periodic
+components. And that's at the basis for
+dvds and jpegs and, and many other appl
+ications. There's an easy way to do it
+that takes time proportional to N^2. But
+the FFT algorithm, takes only N log N
+steps. And the difference between N log N
+and N^2 is, is the difference between
+being able to solve a large problem and
+not being able to solve it. A lot of the
+digital technology, digital media
+technology that we have today is enabled
+by that fast algorithm. Another example
+was actually developed by Andrew Appel,
+who's now the chair of computer science
+here at Princeton. And it was developed
+when he was an undergraduate for his
+senior thesis. It's a fast algorithm for
+the N body simulation problem. The easy
+algorithm takes time proportional to N^2,
+but Appel's algorithm was an N log N
+algorithm that again, meant that
+scientists can do N body simulation for
+huge values of N. And that enables new
+research. S0, o the challenge is that we
+usually face is, will my program be able
+to solve a large practical input? And, and
+actually, the working programmer is
+actually faced with that all the time.
+Why, why is my program running so slowly?
+Why does it run out of memory? And that's
+faced programmers for a really long time
+and the insight to address this. Deuter
+Kanoof, in the 1970s, was that, we really
+can use the scientific method to
+understand the performance of algorithms
+in operation. Maybe we're not unlocking
+new secrets of the universe but, we can
+use the, scientific method, and treat the
+computer, as something to be studied in
+that way and come to an understanding of
+how our program are going to perform. And
+let's take a look at that in more detail.
+So this just a quick summary of what we
+mean by the scientific method, which has,
+been successful for a couple of centuries
+now. So, what we're going to do is,
+observe from some feature of the natural
+world. In this case, it's going to be the
+running time of our program on a computer.
+Then we're going to develop hypothesis
+some model that's consistent with the
+observations, and we're going to hope
+that, that hypothesis is good enough that
+it'll allow us to predict something.
+Usually predict a running time for larger
+problem size, or on a different computer.
+And then we'll verify the predictions by
+making more observations, and validate
+until we're comfortable that our model
+hypothesis and observations all agree.
+That's a way to get comfort that we
+understand the performance of our
+programs. Now, the within the scientific
+method, there's some basic principles and
+the, the first is that if you're going to
+run experiments, you should expect that
+somebody else should be able to run
+experiments and get the same result. And
+also the hypotheses have to have a
+specific property that the experiment can
+show the hypothesis to be wrong. So, it
+has to be carefully crafted, and we'll be
+sure to try to do that. So, and again the
+future of the natural world that we're
+studying is some particular computer that
+exists in the natural world. It changes
+the algorithm from an abstraction to a,
+some, some kind of actual physical thing
+happening like electrons racing around
+inside the computer.

@@ -1,0 +1,245 @@
+[MUSIC]
+So as we use our data visualization
+tools to visualize databases,
+to visualize data cubes,
+these data cubes are data hypercubes.
+They're going to be high-dimensional
+databases with lots of dimensions.
+Our challenge is going to be getting
+that information presented on
+a two-dimensional screen.
+And as we've seen before,
+we can use worlds within worlds.
+In this case, we're visualizing
+a four-dimensional hypercube
+of our World Bank indicator data.
+We're looking at life expectancy
+versus infant mortality, but
+we're also looking at that over different
+regions and also over different years.
+And so we have this worlds within worlds.
+We're looking at a four-dimensional
+hypercube where we're plotting a table
+of region versus year, and
+each element in that table is,
+itself, a two-dimensional plot of life
+expectancy versus infant mortality.
+So this gives us a four-dimensional view
+that we can expand from just that worlds
+within worlds idea to the general idea
+of the organization of these axes.
+And each of these axes is representing
+different dimensions of our data.
+And the relationship of the dimensions
+of our data is organized quite well
+in OLAP databases as
+the relationship between keys.
+So these database visualization systems
+have special tools designed
+to help organize axes,
+especially since those axes are often
+used to display multiple dimensions or
+represent different aggregations or
+projections of multiple dimensions
+in order to reduce the dimensionality
+of a large hypercube.
+And these are rows from
+a paper on Polaris.
+Polaris is an early prototype system
+that was a precursor to Tableau.
+So one of the things you can do
+with axes is concatenate them.
+You can take two dimensions and
+place one dimension after the other in
+order to display that on a single axis.
+And it provides, basically,
+multiple views of the data.
+For example,
+here's our sales data plotted by quarter.
+And so you can see that the sales were
+low in the first two quarters and
+then they increased in
+the second two quarters.
+And so
+we can concatenate the time dimension
+with the product dimension into a single
+axis that has time followed by product.
+And so we're getting two views of the same
+data, but in the first half of the axis
+we're seeing the data plotted over time,
+separated by quarter.
+And in the second half of the axis
+we're seeing the same data plotted but
+separated by product.
+And so we can see that this
+general trend of sales over time
+is being followed by the three
+different products, but it's
+more accentuated with one of the products
+than it is perhaps with the other two.
+And so
+that makes sense to concatenate a time
+axis with a product axis in this case.
+It may not make sense to
+concatenate a quarter axis with
+a month axis because they're
+both time dimensions, and
+so you'd be seeing the same plot here
+over the demarcations of quarter and
+then the same plot over
+the demarcations of a month.
+And you'd be using half of
+the space to build this up, and
+so it doesn't make as
+much sense in that case.
+We can also take two dimensions and
+create an axis from the product
+of those two dimensions.
+For example, if we have the data
+over time, over four quarters.
+And we have the data over products
+instead of showing them side-by-side,
+we might show the data for the coffee,
+espresso and tea, the product values for
+quarter one, quarter two,
+quarter three, quarter four.
+And so this product basically gives
+you every combination of coffee and
+quarter so that you can see how your
+data's performing over time and
+product simultaneously, with a single
+axis here representing these two
+dimensions by looking at
+all the combinations.
+Similarly, we could look
+at quarter times month.
+This doesn't make much sense either,
+because we'd be looking at the first
+quarter, which should represent
+just the first three months and yet
+I'm plotting all 12 months here.
+And so just doing a simple product
+of two time axes doesn't really
+help, because I'd only have data for
+the first quarter showing up in
+the first three months, and then
+the other nine months would basically be
+zero valued because there wouldn't
+be data for these months.
+That was also in the first quarter.
+What makes sense for this case is
+to do something called nesting, and
+nesting is a way of
+limiting the combinations
+to the combinations that
+are available in the database.
+And so in quarter one maybe we
+didn't have any sales of tea.
+In quarter three maybe we didn't
+have any sales of espresso.
+And so by doing this nesting operation,
+it's basically similar
+to a product except we're not looking
+at every possible combination.
+We're only showing on the axes
+the combinations that actually exist in
+the database.
+And so now, if we have the month
+nested inside quarter,
+if you have quarter as the major axis.
+And then the minor axis is the month.
+We're not seeing January, February, March,
+April, May, June all in quarter one.
+We're only seeing the months in
+quarter one where we have actual
+data values in the database.
+And since January, February,
+March are the three months in quarter one,
+we'll have data values there, but
+we wouldn't for April, May and June.
+We won't have any data values for April,
+May and June in quarter one because April,
+May and June are in quarter two.
+And so that nicely nests
+this higher resolution time
+axis into this coarser resolution
+time axis, into a single axis.
+So Tableau has some functionality
+that helps organize axes nicely.
+If we take our life expectancy data and
+display that,
+we get an average over all
+time over all the countries.
+And so we can start to
+disaggregate this data by country.
+And what we will get is an alphabetized
+list of all the countries.
+If we want to organize this better,
+we can organize it by the continents.
+And now we get continents on the top and
+then all the countries
+alphabetized by the continents.
+And then we can insert a subregion in
+here that further refines the data
+by subregion.
+So you get this nice organization that
+Tableau can automatically discover
+based on the data that's in there
+because the data's in there by country,
+by region and by subregion.
+And it can detect how that data should be
+organized hierarchically in the axis
+by each one of these sections.
+So it's by region, then subregion,
+then country and region, and
+so we've got Africa and
+Eastern Africa, and
+then we have all the countries
+alphabetically in Eastern Africa.
+We can further subdivide this axis.
+For example,
+if we want to disaggregate by the year,
+each one of these bars represents
+the average over a year.
+If we want to drill down into how
+the performance is over each year,
+I can add for each country
+the performance over each year.
+And now for each country,
+I've got the performance per year.
+And this might look better
+actually as a line graph so
+that we can see how each country's
+improving its performance in life
+expectancy over the 11 years
+that we've recorded it here.
+You can also move the year in between,
+and so
+now we're seeing the performance
+on a per region basis.
+This is how each of the countries in
+a given region are performing over a year.
+And then finally,
+you can move year all the way out and
+now we're seeing for each year
+the different breakdown in the countries.
+And so you can set up these hierarchical
+axes and get worlds within worlds.
+You could even put it on the vertical axis
+and you can get a higher dimensional view
+of your data by basically implementing
+a worlds within worlds visualization.
+Where you have a table of plots and
+each cell of a two-dimensional data
+is itself a two-dimensional plot, or
+two-dimensional table, or in this case,
+a two-dimensional bar chart.
+So we can see how information
+visualization systems specifically
+designed for visualizing databases,
+specifically OLAP data cube
+style databases, can provide
+a database user with visualization
+tools to gain insight into the data.
+[MUSIC]
+

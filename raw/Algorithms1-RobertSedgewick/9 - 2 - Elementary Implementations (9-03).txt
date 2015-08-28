@@ -1,0 +1,177 @@
+Next, we'll look at some elementary symbol
+table implementations. These are so simple
+that we won't go into much detail. But
+still, it's worthwhile to take a look at
+them to set the stage for the more
+advanced implementations we'll consider
+next. Well, one thing we could do is
+maintain a link list. We could keep it in
+order or keep it unordered, this version
+keeps it unordered. So, we are going to
+have nodes in the link list, that have key
+value pairs, they have every key in the
+symbol table and a value associated to
+that key. For search, we have to, since
+it's unordered, scan through the whole
+list to find a match, a key that's there.
+For insert, I would also have to scan
+through all keys to find the place to
+update a value, if it's a value that's
+already there. And if there's no match,
+then we could add it to the front. So
+here's our simple client for traces. So if
+we associate S with zero, we just had it
+that's our one node link, link list that's
+got that information. Associate E with one
+that's not there, so we just add it to the
+beginning of the list. A with two, R with
+three, C with four, H with five, and so
+forth. So now, when we associate E with
+six, we have to search through the list to
+see if there's an E. In this case there
+is, and then we update, just update that
+value. That's the associative array
+abstraction. It's possible to implement
+symbol tables that allow multiple values
+with the same key and so forth. And that
+leads to different types of clients,
+different types of implementations. We're
+going to stick to this associative array
+abstraction and no duplicate keys in the
+symbol table because it both simplifies
+implementations and leads to simpler
+client code. Okay, X7 is a new value A8 we
+found A in there and update the value
+eight and then M9, P10, L11 are all out
+there, and they go at the beginning, and
+then the last one changes the value at E
+again, twelve. So, this is a, a simple
+implementing this as a example of link
+list processing. Slight modification of
+our stack and queue code. And we will skip
+the details and just a note that what's
+the cost of implementing this. Well if
+there's been if there are N things on the
+symbol table, you have to, for both search
+and insert look all the way through. And
+if everything's random then on average,
+you only have to look halfway through for
+a successful search. And well, you still
+have to insert another issue is for many
+clients if the keys are ordered it's nice
+to be able to iterate through the symbol
+table in order and this one by definition
+doesn't provide that. And this one just
+uses equals. So, the keys don't have to be
+comparable for this it just uses equals.
+So our challenge is to look for methods
+that give us more efficient
+implementations than search and insert
+searching operations. And we've already
+looked at an algorithm that can do this
+and that's binary search. So for binary
+search the now, what we're going to do is
+use an ordered array. And actually use
+parallel arrays, one for the keys and one
+for the values. And the idea is to keep
+the array of keys in sorted order. And
+then find the index associated with the
+key that we're searching for using binary
+search and then use that index to get the
+value that's associated with that key
+that's stored in the parallel array. And
+we looked at the binary search algorithm
+earlier in the course. And so, for
+example, if we're doing a, if these are
+the keys in our symbol table. And we're
+doing a search for the index where P is
+stored. We look at the middle. P is bigger
+than L, so we look to the right. Look in
+the middle of the right half. P is less
+than R so we look to the left. Continue
+until we find P. When we find P, we return
+its index, and we use that index to get us
+the value that we need or another way to
+look at this is that implements the
+function, how many keys are there that are
+less than K. So, for example, for queue
+that's unsuccessful search and you can
+figure out from the last index when you
+don't find your the element that you're
+seeking you can figure out the return
+value, which is the number of keys that
+are less than it. So, that's a trace of
+implementing binary search to find the
+rank of a key in an ordered array, and
+again, for successful, you can use that
+rank to return the value and for if it is
+unsuccessful, you can use that rank to
+figure out where to insert the new key.
+Alright. So, this is the code for the get
+operation in this rank, which is binary
+search. So this is precisely the binary
+search curve that we looked at before. So,
+let's look at again. So if the whole table
+is empty, return null. Otherwise, we call
+rank and that could gives us the number of
+keys less than the current key. And so,
+that is where we look to check to see if
+that key is there. If it's there, then we
+return the value with the same index in
+the parallel array. If it's not there,
+then we return null, saying the key's not
+there. Now, the problem with minor
+searches well, not necessarily a problem
+but the situation is that if when it's
+time to insert a new element, we have to
+move everything larger over one position
+just like an insertion sort. So, if the
+table has A, E, R, and S and we have to
+insert the value C, then we have to move
+the E, R, and S over one position to put
+the C and then put the value associated
+with C if they're the same thing in the
+values array. Move all the values
+associated with those keys over one
+position and put the associated value in.
+So, this is a trace of what would happen
+for our trace. And, and again, every
+insertion involves, involves making a new
+position by moving all the larger keys
+over one position do the same thing in the
+values array. And if it's changing the
+value associated with a key that's already
+there, then it's just a matter of finding
+where the key is and changing the value at
+that index. So, those from that trace is
+pretty easy to see what's involve, what's
+involved for the code and we'll skip that
+code. And just take a look at the
+comparison between this elementary
+implementation for symbol tables with the
+sequential search in an unordered list.
+So, one thing is we're using a different
+key interface. We're taking advantage of
+the fact that the keys are comparable to
+give us an efficient search. Ah., we can
+do search in worst case in average case,
+in time proportional to log N. That's what
+binary search provides for us. And this is
+a fine data structure for symbol tables
+where there's where, that are relatively
+static, where the values don't change
+much, and most of the operations are
+search. It's hard to beat binary search.
+On the other hand, in a dynamic situation
+where there are a lot of inserts. This
+method is going to be problematic because
+the cost of its insert is linear and
+proportional to N/2. If you have a huge
+number of operations and everyone who is
+proportional to the symbol table size,
+then you're just not going to be able to
+support huge numbers of keys. What we want
+is efficient implementations of both
+search and insert. Those are elementary
+implementations. Next we'll look at more
+advanced ones.

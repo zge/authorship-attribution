@@ -1,0 +1,180 @@
+Lets walk through a detailed, worked
+example in multi numeral naive based. So
+for this example, we put up here the
+equations for naive based. So the
+probability of a class, is the number of
+documents with that class, over the total
+number of documents. And the likely hood
+of a word given a class, we'll just do
+simple add once moving. The count of the
+word going in that class. Divided by the
+count of all the words in that class. >>
+And with add one smoothing, and let's
+assume that we have four training
+documents, one, two, three, four, and one
+test document. And here are the documents,
+they are, they are simplified, obviously
+documents. This document has only three
+words. Chinese, Beijing, Chinese. And this
+document has three words, Chinese,
+Chinese, Shanghai. And so on. And, let's
+say we have just two classes, Chinese and
+Japanese and our job is to do Asian, news
+topic classification. So three of our
+training documents are in the, are in the
+class China, and one of them is in the
+class Japan. And our question is, what's
+the class of this test document? All
+right. So let's do some computation. First
+thing we're going to do is compute the
+primers. So we need to compute P of C,
+code the class China, and P of J, of the
+class Japan. So P of C is how many times
+the class Chinese occur in our training
+set. Three. Out of how many total classes
+are there in our trade documents are there
+in our training set? Four. So three of the
+four training documents. So that's three
+out of four are about China. So our
+probabil-, our prior probability of a
+document being in the topic China is three
+out of four. How about Japan? Well,
+there's only one document in our training
+set about Japan. Out of the four
+documents. So the probability of Japan is
+one-quarter. So we've seen how to compute
+our prior probabilities here. Let's move
+on to the likelihoods. Let's compute each
+of these probabilities. What's the
+probability of the word Chinese, given the
+class C? What's the probability of the
+word Chinese, given the class J? And so
+on. Alright, so, the probability of
+Chinese is. How many times does the word
+Chinese occur in our training set of
+documents that are in the class China?
+Okay, so this word Chinese, how many times
+does that occur in these three documents?
+One, two, three, four, five. So we have
+five, we have, add one [inaudible] so
+adding one and how many total words are
+there in our training set? One, two,
+three, four, five, six, seven, eight. Now
+in our Chinese class, and then we're gonna
+add the vocabulary size V and we're doing
+add one smoothing, so add the vocabulary
+size V and our vocabulary is six. One,
+two, three, four, five, six. So, that's
+five plus one-eighth plus six, or 6/14, or
+three-sevenths. And we'll do the same
+thing for the word Tokyo. Tokyo doesn?t
+occur at all in our three classes, it has
+a count of zero. But we're doing add once
+moving, so we will add one. And that?s the
+same denominator. The same number of total
+words, and vocabulary size in our Chinese
+class. So that would be one out of
+fourteen. And the same exact thing is true
+for the word Japan. Doesn?t occur in our
+training set. An in our, now, now let?s
+turn to the class J for Japan. So now the
+word Chinese does occur once. And I will
+do, so it's once, poss one for add one
+smoothing, and will divide by the count of
+the words in this class, and there's three
+words in this, in this meta document of
+one document, and then again we have the
+vocabulary size, and so we've got two
+nines. And we can compute the next two
+numbers the same way. So now, we have our
+priors and we have our conditional
+probabilities, we're ready to decide which
+class is more likely for our test
+document. So for our test document, we'll
+call that document five. We need to
+compute our prior. And our likelihoods. So
+our prior is three quarters. The prior of
+being Chinese for a document five is three
+quarters. That's the prior for Chinese
+times the word Chinese occurs three times
+one, two, three and each one of those gets
+the probability. Probability of Chinese
+given three. So it's three sevenths, three
+sevenths, three-sevenths. Then the word
+Tokyo occurs. That's got probability
+one-fourteenth. Then the word Japan.
+One-fourth. And we multiply all that
+together and we get approximately 0.003.
+Notice that we say that this probability
+is proportional to this product because we
+are computing the ArgMax between these two
+classes. We are computing the class which
+maximizes the product of the two
+probabilities. But the actual probability
+has a denominator in it. It would have to
+be divided by. P of the document. And
+we're just skipping that part. And so,
+we're actually not computing the
+probability. We're computing the numerator
+of the probability. But since document
+five has the same P of document five in
+both M, the Chinese and Japanese classes,
+we're just gonna not compute that. So we
+have a proportional to, and not an equal
+sign here. Good, and then for the
+probability of document of class Japanese,
+given document five, now we have the prior
+for document Japanese and we multiply that
+by the probability of Chinese given the
+class Japanese. So that's two-ninths times
+two-ninths times two-ninths and then the
+probability of Tokyo, given Japanese
+that's another two-ninths and then Japan,
+given Japanese another two-ninths. And, so
+we get, a slightly lower probability.
+[sound] So, in this example, our, our
+model would choose which class for this
+document? You would choose. Chinese,
+because.003 is bigger than.001. Now we've
+talked about naive bays, where we're using
+each word as a feature and we're using all
+of the words. But in lots of examples of
+naive bays, we're gonna use richer
+features than just words, and we're gonna
+use specific kind of words and other
+things. So, spam assassins in naive bays
+classified are for spam detection, and it
+looks for things like, is the phrase
+generic Viagra mentioned, is the phrase,
+online pharmacy mentioned, a little
+regular expression for millions of dollars
+mentioned, is there a phrase, impress, and
+nearby the word girl. Does the firm have a
+lot of numbers in it, is the subject in
+all caps. All sorts of different features
+that we can use to combine and you can
+look at the spamassassin website to see a
+common set of features. So in summary,
+Naive Bayes is actually not that naive.
+It's a very fast algorithm, it has low
+storage requirements. It's pretty robust
+to irrelevant features, they tend to
+cancel each other out. It works well in
+domains where you have lots equally
+important features and this turns out to
+be a problem for some other classifiers in
+particular decisions trees which have some
+advantages in numeric domains, don't work
+well if lots of features are equally
+important. If the independence assumptions
+hold. If the assumed independence is
+correct, then it turns out the Naive Bayes
+is in fact the optimal classifier for a
+problem, of course that's rare that these
+independence assumptions are really true.
+But if they happen to be true or close to
+true, it turns out Naive Bayes is in fact
+optimal. And in general, Naive Bayes is
+just a good, dependable baseline for text
+classification. Although we will see other
+classifiers that give much better

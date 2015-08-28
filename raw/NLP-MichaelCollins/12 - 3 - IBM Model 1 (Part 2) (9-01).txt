@@ -1,0 +1,220 @@
+Okay, so let's looks at how IBM model 1
+now defines these two probabilities.
+Remember we have two parts to the model.
+Conditional probability of an alignment
+given an English sentence and the length
+of the French sentence m, and then
+secondly p of f given e a m.
+So I'm going to go over these two.
+Side of the model in turn.
+So, firstly, for the alignment model, IBM
+model 1 is the simplest model you can
+think of, which is just assuming that
+every possible alignment is equally
+likely.
+So, remember we have some English
+sentences.
+We have, the null word, I'll call that e
+0, and then e 1, e 2, e 3, up to e l, and
+then I have some French sentence lengths,
+so I have m positions on the French side.
+So we're just going to assume that for
+each of these positions.
+Each of these l plus 1 alignments.
+So this word for example can be aligned to
+any of these different things.
+Each of these has probability 1 over l
+plus 1 because there are l plus 1
+possibilities.
+The null word plus each of the English
+positions.
+And I have m French words to choose.
+So the overall probability is just going
+to be 1 over l plus 1 to the n.
+So, again, this is just assuming that
+every possible alignment is equally
+likely.
+It's the dumbest possible model, it's a
+major simplifying assumption, but it gets
+things started.
+It will get us off the ground.
+So now let's talk about the second part of
+the model.
+This is the model of p of f.
+Given a,e,m.
+So what's going on here?
+We have some English sentence e.
+So for example we might again have the dog
+barks.
+And I'll write null as the 0th word in the
+sentence.
+We have some length.
+Of the French sentence, say m equals 3.
+So we have 1, 2, 3 positions here.
+And we have some alignments, so for the
+sake of argument let's assume we have this
+alignment here.
+The first word in French is aligned to the
+first in English, second word in French,
+second word in English.
+Third word in French.
+Third word in English.
+Okay?
+So how do we calculate the distribution of
+the possible French sentences?
+And let me give a particular example,
+let's assume that we have, this is f 1.
+This is f 2 and then finally, we have f 3.
+So, how do we calculate the conditional
+probability of this particular French
+sentence?
+We have a conditioning on the entire
+English sentence, the alignment and the
+length of the French sentence.
+So in this particular case it's going to
+be the product of three terms.
+We'll have t of le given the, and
+intuitively this is a parameter
+corresponding to the conditional
+probability it's in the french word le
+given that we're aligned to the English
+word the.
+It's the probability of this English word
+the emitting the French word le as its
+translation.
+The second term is t of the second word
+given dog.
+And then we have a final translation of
+this third word given barks.
+So one t parameter for each of the French
+words.
+Where we condition the identity of the
+French word on the English word that we're
+aligned to.
+The abstract form of this is as follows.
+So we have a product from j equals 1 to m,
+remember m is the length of the French
+sentence, so we're going position by
+position in the French sentence, and at
+each point we have t of f sub j, that's
+the jth word.
+Conditioned on e of a sub j, so this is
+the identity of the English word, which
+the jth French word is aligned to.
+So we're essentially assuming that each of
+these French words is filled in, in turn,
+independently from all of the other French
+words, actually conditioned only on the
+identity of the English word that we're
+aligned to.
+So here's another example of how this
+goes, this is coming back to the example I
+showed you earlier.
+Assume again we have this English
+sentence, this French sentence, we have
+the English length six, French word French
+length seven.
+And let's say, say we have this alignment
+so I'll draw this here so this alignment
+looks like.
+Then in this particular case, sorry this
+should also be conditioning on m which is
+7 in this case.
+So in this particular case the probability
+of seeing this particular French sentence
+conditioned on e and the alignment is a
+product of t terms.
+Notice I have one t term for each French
+word.
+So we have one t term for each of these
+seven French words, and at each point we
+condition on the English word we are
+aligned to, so le is lined to the, for
+example, programme is lined to program and
+so on and so on.
+So intuitively, IBM Model 1 corresponds to
+the following generative process.
+So, we have some English string.
+So for example we might have, the dog
+barks.
+And we have some length of the English
+string for example m equals 3.
+So we have three possible French words.
+And so here's how we proceed.
+So firstly we pick some alignment A,
+uniformly random from the space of all
+possible alignment.
+So we might, for example, pick some
+alignment like this.
+Okay, Having done that we then fill in the
+French words with a product of
+probabilities.
+So we might, for example, pick these three
+words.
+And[cough], this part of the expression
+would have probability t of le given dog,
+times t of chien given the, times t of
+aboie given the.
+Of course, this is a very unlikely
+alignment, given these two sentences, but
+it's nevertheless possible.
+And so intuitively in the second step, the
+generative processes for each French
+position, we choose a French word at
+random from the distribution defined by t.
+So for example this word is chosen from
+the distribution t of the word given dog.
+And this word is chosen from the
+distribution t of the word, given the, and
+so on.
+So first step, choose an alignment uniform
+at random, second word second step, fill
+in the French words one by one,
+conditioning only on the English words
+which we're aligned to.
+The final result is a model of the
+following forms, we have conditional
+probability f and a, given e m.
+We have product of two terms.
+Firstly, p of a can be m, secondly, f,
+given a e m.
+That's what just an application of the
+chain rule to this.
+And given this particular form, for IBM
+model 1, the final expression is the
+following.
+So this corresponds to the uniform
+probability of the alignments, this
+corresponds to picking each French word
+based just on the English word which we're
+aligned to.
+So, later in this class we'll see how to
+estimate these t parameters okay.
+So we're going to have some parallel
+corpus as the input to our model and from
+this we're going to get t f e for all
+English words e, and French words f, so
+like f should get a conditional
+probability.
+What I've shown you here is one such entry
+from a model which is actually trained on
+a real data.
+And this is for an English word position.
+A list of the most probable words in
+French once we trained the parameters of
+this model.
+And you can see it actually done a
+reasonable job, if you know some French,
+this seems like a reasonable set of
+translation probabilities.
+So position can be translated as this
+word.
+It can be translated as position, in
+French, there are other possibilities like
+this word and so on and so on.
+Okay, so this is a typical kind of lexicon
+that you might get from the output of this
+process.
+For each English word you get a
+probability for every possible french
+word.

@@ -1,0 +1,417 @@
+In this video, I'm going to talk about
+convolusional neural networks for hundred
+and digit recognition.
+This was one of the big success stories of
+neuron networks in the 1980s.
+The deep convolutional nets developed by
+Yann LaCun and his collaborators did a
+really good job of recognizing handwriting
+and were actually used in practice.
+They're one of the few examples from that
+period of deep neural nets that it was
+possible to train on computers that
+existed then, and that performed really
+well.
+Convolutional neural networks are based on
+the idea of replicated features.
+So, because objects move around and show
+up on different pixels, if we have a
+feature detector that's useful in one
+place in the image, it's likely that the
+same feature detector will be useful
+somewhere else.
+So, the idea is to build many different
+copies of the same feature detector in all
+the different positions.
+If you look on the right I've shown you
+three feature detectors, which are
+replicas of each other.
+Each of them has weights to nine pixels.
+And those weights are identical between
+the three different feature detectors.
+So the red arrow has the same weight on it
+for all three feature detectors.
+And when we learn we keep those red arrows
+all having the same weight as each other
+and we keep the green arrows having all
+the same weight as each other.
+Even though the red and green arrows will
+have different weights.
+We could also try replicating across scale
+and orientation but that's much more
+difficult and expensive and probably not a
+good idea.
+Replication across position greatly
+reduces the number of free parameters that
+you have to learn.
+So those 27 pixels that you see in those
+three replicated detectors only have nine
+different weights.
+Now we don't just want to use one feature
+type.
+So we're going to have many maps.
+Each map will have replicas of the same
+feature, features that are constrained to
+be identical in different places.
+And then different maps will learn to
+detect different features.
+This allows each patch of the image to be
+represented by features of many different
+types.
+Replicated features fit in nicely with
+back propagation that is it's easy to
+learn using back propagation.
+In fact its easy to modify the back
+propagation algorithm incorporate any
+linear constraint between the weights.
+So what we do is we compute the gradients
+as usual.
+But then we modify the gradients, so that
+if the weight satisfied the linear
+constraint before the weight update,
+they'll also satisfy the linear constraint
+after the weight update.
+So, the simplest example is we want two
+weights to be equal.
+We want w1 to equal w2.
+That would be true if we start off with W1
+equal to W2.
+And then we make sure that the change in
+W1 is always equal to the change in W2.
+The way we do that is we compute the
+gradient of the arrow with respect to W1.
+And the gradient with respect to W2.
+And then we use the sum or average of
+those two gradients for both W1 and W2.
+By using weight constraints like that, we
+can force back propagation to learn
+replicated feature detectors.
+There's quite a lot of confusion in the
+literature about what replicated feature
+detectors are actually achieving.
+Many people claim they're achieving
+translation invariance.
+And that's not true.
+Well at least it's not true in the
+activities of the neurons.
+So if you look at the activities, what
+replication features achieve is
+equivariance not invariance.
+An example should make that clear.
+Here's an image, and the black dots are
+the activated neurons.
+Here's a translated image.
+And notice the black dots have also
+translated.
+So the image changed and the
+representation also changed by just as
+much as the image.
+That's equivariance not invariance.
+There is somethings invariant, and that's
+the knowledge.
+So if you learn replicative feature
+detectors, if you know how to detect a
+feature in one place, you'll know how to
+detect that same feature in another place.
+And it's important to note that we're
+achieving equivariance in the activities
+and invariance in the weights.
+If you want to achieve some invariance in
+the activities, what you need to do is
+pool the acts replicative feature
+detectors.
+So you can get a small amount of
+translation in variance at each level of a
+deep net, by averaging full neighboring
+replicated detectors.
+One advantage of this is that it reduces
+the number of inputs for the next layer.
+So that we can have more different maps,
+allowing us to learn more different kinds
+of features in the next layer.
+It actually works slightly better to take
+the maximum of four neighboring feature
+detectors, rather than an average, but
+there is a problem.
+And the problem is that after several
+levels of doing this kind of pooling,
+we've lost precise information about where
+things are.
+That's okay if we just want to recognize
+that it's a face.
+The fact that we've got a few eyes, and a
+nose, and a mouth floating about in
+vaguely the same position is very good
+evidence that it's a face.
+But if you want to recognize whose face it
+is, you need to use the precise spatial
+relationships between the eyes and between
+the nose and the mouth.
+And that's been lost by these
+convolutional neural nets.
+I'll come back to that issue later on.
+So the first impressive example of a
+convolution on your own end was done by
+Yann Lecun and his collaborators who
+developed a really good recognizer for a
+hundred digits.
+In it had many hidden layers.
+In each layer, it had many maps of
+replicated units.
+And it had pooling between layers.
+So you pool adjacent replicated units
+before you send them to the next layer.
+But I also used a wide net that could cope
+with several characters at once.
+And that would work even if the characters
+overlapped.
+So you didn't have to segment out
+individual characters before you fed them
+to their net.
+And something which, people often forget,
+is that they used a clever way of training
+a complete system.
+They weren't just training a recognizer of
+individual characters.
+They were training a complete system, so
+that you put in pixels at one end and you
+get out whole zip codes at the other end.
+And in training that system they used a
+method that would now be called maximum
+margin.
+But when they did it, it was way before
+maximum margin had been invented.
+The net they used was at one point
+responsible reading about for ten percent
+of the checks in North America.
+So it was of great practical value.
+There were some very nice demos on that,
+on Yann's workpaget.
+You should really go look at them.
+Look at all of them.
+Because they show you just how.
+Well it copes with variations in size,
+orientation, position, overlap of digits,
+and all sorts of background noise that
+would, would kill most methods.
+The architecture of LeNet-5 looks like
+this.
+There's an input, which is pixels.
+And then there's a whole sequence of
+feature maps followed by sub sampling.
+So in the C1 feature map, the six
+different maps, each which is 28 by 28.
+Of those maps contain small features that
+just look at I think three by three
+pixels.
+And their weights are constrained
+together.
+So per map there's only about nine
+parameters.
+That makes learning much more efficient.
+It means you need much less data.
+Then after the feature map, there's what
+they call sub-sampling which is now called
+pooling.
+And so, you pool together the outputs of a
+bunch of neighboring replicated features
+in C1.
+And that gives you a smaller map, which
+will then provide the input to the next
+layer, which is discovering more
+complicated replicated features.
+As you go up this hierarchy, you get
+features that are much more complicated,
+but are more invariant to position.
+Here's the errors that LeNet5 made.
+And this shows you the data that it's
+dealing with is quite tricky.
+There's 10,000 test cases, and these are
+the 82 errors that it makes.
+So it's doing better than 99% correct.
+Nevertheless, most of the errors it makes
+are the things that people find quite easy
+to recognize.
+So there's some way to go still.
+Nobody knows the human error rate on this
+data.
+But it's probably twenty to 30 errors.
+Of course the might-be digits that LeNet5
+got right and you would get wrong.
+So you have to be careful in estimating
+the error rate.
+You can't just look at these 82 and ask
+which ones you'll get right and which ones
+you'll get wrong.
+You have to worry about all those other
+ones that Lynette Five might've got right
+and you might've got wrong.
+I'm now want to go to a very general
+point, about how to inject prior knowledge
+in machine learning, and it applies
+particularly to neural networks.
+We can put in prior knowledge as it is
+done in the net five, by the design of the
+network.
+We can have local connectivity.
+We can have weight constraints.
+Or we can choose neuro-activites that are
+particularly appropriate for the task
+we're doing.
+This is much less intrusive than trying to
+hand-engineer the futures.
+But it still prejudices the network
+towards a particular way of solving the
+problem that we had in mind.
+We have an idea about how to do object
+recognition by gradually making bigger and
+bigger features.
+And by replicating these features across
+space.
+And we force the network to do it that
+way.
+There is an alternative way to put in
+prior knowledge that gives the network a
+much freer hand.
+What we can do is use our prior knowledge
+to get a whole lot more training data.
+One of the first examples of this was work
+by Hofmann and Tresp on trying to model
+what happens in a steel mill.
+They wanted to know the relationship
+between what comes out of the steel mill
+and various input variables, and they
+actually had an, big old Fortran simulator
+that would allow them to simulate the
+steel mill.
+Of course, the simulator wasn't reality.
+It was making all sorts of approximations.
+So they had real data, and also a
+simulator.
+And what they did was run the simulator in
+order to create some synthetic data.
+We then added that to the real data, and
+showed that they could do better than just
+using the real data alone.
+If I remember right, their great, big
+Fortran simulator was only worth a few
+dozen extra real examples, but
+nevertheless, they made the point.
+Of course, if you generate a lot of
+synthetic data, it may make learning take
+much longer.
+So in terms of the speed of learning, it's
+much more efficient to put in knowledge by
+using things like connectivity and weight
+constraints, as was done in Lynette five.
+But as computers get faster, this other
+way of putting in knowledge, by generating
+synthetic examples, begins to look better
+and better.
+In particular, it allows optimization to
+discover clever ways of using the
+multilayer network that we didn't think
+of.
+If fact, we might never fully understand
+how it does it.
+If we just want good solutions to a
+problem, that might be fine.
+So using the idea of synthetic data,
+there's a brute force approach to
+handwritten digit recognition.
+Lenet5 uses knowledge about invariances to
+design the connectivity and the weight
+sharing and the pooling.
+And that achieves about 80 errors.
+Adding a lot more tricks, including
+synthetic data, [UNKNOWN] was able to get
+that down to about 40 errors.
+A group in Switzerland, led by [UNKNOWN]
+went to town with injecting knowledge by
+putting in synthetic data.
+They put a lot of work into creating very
+instructive synthetic data.
+So for every real training case, they
+transformed it to make many more training
+examples.
+They then trained a large net with many
+units per layer, many layers on a graphic
+processor unit.
+The graphics processor unit gave them a
+factor of thirteen computation.
+And because of all the synthetic data they
+put in, it didn't overfit.
+If they just use a large net with a GPU.
+It would have been a disaster that over
+fitted terribly that they would have done
+on the training data but terribly on the
+test data.
+So they were really combining three
+tricks.
+Put your effort in to generating lots of
+synthetic data then train a large net on a
+gpu.
+They managed to achieve 35 errors like
+that.
+So here's the 35 errors that they got.
+The top printed digit is the right answer.
+And the bottom two digits are their top
+two answers.
+What you'll notice is that they nearly
+always get the right answer in their top
+two.
+There's only five cases where they don't.
+With some more work by building several
+different models like this and then using
+a consensus to decide what the digit was,
+they managed to get down to about 25
+errors.
+And that must be around about the human
+error rate.
+One question this work raises is how do
+you tell if a model makes 30 errors is
+really better than a model that makes 40
+errors.
+Is that significantly different?
+Rather surprisingly, it turns out it
+depends on which errors they make.
+The numbers then provide you enough
+information.
+You have to know which ones they get wrong
+and which ones they get right.
+So this statistical test called the
+McNemar test that uses the particular
+errors and is far more sensitive than just
+using the numbers.
+Let me give you an example.
+If you look at this two by two tape.
+It shows you, in the top left hand corner,
+how many examples Model one got wrong and
+Model two also got wrong.
+That's 29.
+And in the bottom right, it shows you how
+many examples Model one got right and
+Model two also got right.
+And in the Magnema Test, you can just
+ignore those numbers in black.
+All you're interested in is ones where
+Model one got it right and Model two get
+it wrong, or Model two got it right and
+Model one get it wrong.
+And if you look at that, there's an eleven
+to one ratio, and it turns out that's
+pretty significant.
+Model two is definitely better than model
+one.
+That didn't happen by accident, almost
+certainly.
+By contrast if you look at this table,
+again.
+Model one is making 40 hours, model two is
+making 30 hours, but now model one is
+winning fifteen times when model two loses
+and model 2's winning 25 times when model
+one loses.
+That difference is not very significant so
+we wouldn't be confident that model two is
+better than model one.

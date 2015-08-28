@@ -1,0 +1,117 @@
+So, in this segment, we'll first define 
+the dependency parsing problem. 
+We'll then talk about how Global Linear 
+Models can be applied to dependency 
+parsing. 
+And then finally, we'll talk about some 
+results from work by Ryan McDonald and 
+others, who were amongst the first to 
+apply, actually they were the first to 
+apply, global linear models to the 
+dependency parsing problem. 
+So, a dependency parse looks like the 
+following. 
+Dependency structures are essentially an 
+alternative form of syntactic 
+representation, from the treelike 
+structures we saw earlier in the course. 
+So remember, earlier in the course we saw 
+these kind of tree structures, which were 
+derived from, for example, a context-free 
+grammar. 
+Dependency structures are another way of 
+representing syntactic information. 
+What we have here, is a set of dependency 
+arcs. 
+So each dependency arc is a directed arc 
+between two symbols, which signifies that 
+there's a grammatical relation between 
+those two symbols, or rather those two 
+wor, words. 
+So root is a special symbol in this 
+particular structure. 
+I have a directed arc from root to the 
+verb saw, because that in a sense is the 
+root of the sentence. 
+It's the main word in the sentence. 
+I have a directed arc from saw to John, 
+because John is the subject of saw, and 
+that's what this directed arc signifies. 
+I have a directed arc from saw to movie, 
+because movie is the object of saw. 
+And finally I have a directed arc from 
+movie to a, because a is a modifier, 
+actually a determiner, modifier to the 
+word movie. 
+Now, in the simplest case, these 
+dependencies structures are unlabeled, 
+which means they look just like the 
+structure I've shown you here. 
+Its easy enough to go beyond this, to 
+have lebels on these arcs and naturally 
+that's a very natural thing to do. 
+So in labeled structures, you might label 
+this as being a subject, this arc as 
+being an object art, arc. 
+Maybe this would be the main verb arc. 
+And this would be, say a, determiner arc, 
+DT. 
+So, throughout this lecture, I'll 
+actually stick with the unlabeled case 
+where these arcs don't have labels. 
+But it's very easy to extend the 
+techniques I'll describe to the labeled 
+case. 
+And in a way, the labeled case is a 
+little more intuitive. 
+You can see exactly how recovering these 
+kind of dependency-style annotations, 
+certainly carries a lot of useful 
+syntactic information about the sentence 
+being analyzed. 
+and is, in some sense, quite equivalent 
+to the parse trees that we saw earlier in 
+this class. 
+In fact, a little bit later I'll talk 
+about how to directly derive these 
+dependency structures from parse trees of 
+the form we've seen earlier. 
+So, it'll be useful to develop a little 
+bit of notation, for dependency 
+structures. 
+So each dependency Is going to be a pair 
+(h,m), where h is the index of a head 
+word and m is the index of a modifier 
+word. 
+So when I have, ever I have one of these 
+directed arrows, I have a head, for 
+example, saw, and a modifier, for 
+example, John. 
+So let's number these words. 
+We always number the root as zero. 
+So there are four directed arcs in this 
+dependency structure, and that means 
+there are actually four dependencies. 
+So I have (0,2), that's this dependency 
+here. 
+I have (2,1), this dependency here. 
+I have (2,4), this dependency here. 
+And I have (4,3), this dependency here. 
+So throughout this lecture, we'll 
+represent these dependency structures as 
+sets of dependencies, where dependency is 
+an (h,m) pair. 
+H is the head. 
+M is the modifier. 
+So the dependency parsing problem which 
+we are considering in this segment, is to 
+take a sentence as input, and produce one 
+of these dependency structures as the 
+output. 
+And again, I'm going to focus on the case 
+where these arcs are unlabeled. 
+That's the simpler case, but it's easy 
+enough to extend the approaches I'll 
+describe to the cases where to the case 
+where these arcs actually have labels. 
+

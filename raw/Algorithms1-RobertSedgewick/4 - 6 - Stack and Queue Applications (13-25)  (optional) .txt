@@ -1,0 +1,250 @@
+Okay. Those are some basic data structures
+and implementations and it seem quite
+elementary and simple but actually right
+away we can get to some very sophisticated
+applications of these basic concepts and
+that's what we're going to consider next.
+Now, first thing to mention is that often
+the kinds of data types and data
+structures that we implement or found in a
+Java library. So, that's true in many
+programming environments. So, for example
+stacks and queues you can find those words
+mentioned in the Java library so there's a
+Java collection library and the so-called
+List interface which is displayed here. So
+Java has general API for sequences of
+items and its got things like a, append at
+the end, remove from the beginning, and
+so forth. Any uses of the resizing array,
+so many of the principles that we consider
+does also a, a link list interface. So,
+why not just use those? Why use our own
+implementations? Well, the problem is
+often in such library code is kind of
+designed by committee phenomenon that more
+and more operations get added and the API
+becomes too broad or bloated. It's not a
+good idea to have lots and lots of, you
+know, operations in the same API. And
+we'll see example in a second. The
+problem, the real problem is that when you
+do that you can't know much about the
+performance or you can't assume much about
+the performance. And so you can kind of
+immediately arrive at that performance
+even for simple clients. So our best
+practice that we recommend is so few that
+these basic data structures that we use
+and there's so simple is to go ahead and
+use the implementations that we've just
+discussed for these fundamental data
+structures. Maybe later, later on, after
+an experienced programmer who knows what
+he or she is doing could use some of these
+library collections effectively. But
+inexperienced programmers often have
+trouble with it. Here's a war story from
+students Programming assignments not that
+long ago. So, we have an assignment where
+you need to generate a random open sites
+in a percolation system. We have one
+student who was paying attention to what
+we're saying and uses an array and can
+pick the indices into that array at random
+check whether they're open and, and
+repeat. And so the array is N by N, it's
+N^2 things and it takes about N^2 time,
+which is actually a linear time for this
+application. But then we have another
+student who had some Java before coming to
+us and considered himself an expert and
+said, well, I'm going to use linked list
+because I could use Java's library and I
+don't have to worry about downloading your
+stupid code. And so, I'll just use that
+one and pick an index at random and delete
+and that program took quadratic time and
+poor Kenny, when trying to run his program
+for the huge instance that we asked found
+out that it wasn't finishing. And the
+reason is that the Java linked list
+implementation takes a linear time to find
+an item with a given index. Not constant
+time like an array. And that's difficult
+for Kenny to think about and difficult to
+drive that information from the
+implementation so program is just too
+slow. And with the Swiss knife
+implementation with so many operations
+it's hard to know whether or not the
+particular set of operations that your
+client needs is efficiently implemented. So
+our insistence in this course is that
+students should not use the library until
+we've implemented it in class. At least
+that some indication that you understand
+the performance characteristics. So now,
+let's look at some applications then of,
+of stacks. There's the stacks are really
+actually fundamental underlying
+computation because they implement ,
+recursion and so, you use stacks often
+everyday when you wrote, use the Back
+button in the Web browser, the places that
+you've been are saved on a stack. Right
+now we will look at two examples. One,
+having to deal with compiling from a
+programming language or interpreting into
+an actual computation and then the other
+one is the PostScript language which is
+widely used for, for printing and
+publishing. So, so the way the compilers
+implement functions is using stacks. When
+there's a function call the whole local
+environment is pushed and then along with
+the return address and then the function
+returned is pop the return address in the
+local environment. So there is the stack
+there that contains all that information
+and whether the function calls itself or
+not is not relevant. The stack contains
+the recursion. In fact, you can always use
+an explicit stack to make a recursive
+program non-recursive. So, this is so when
+we have the GCD function, computing the
+greatest common denominator, greatest
+common denominator p and q is greatest
+common denominator of q and p mod q and it
+just calls itself until q gets to be zero.
+And as this graphic integrates, it just
+does it by saving the information on a
+stack. Now a specific example that really
+shows this off and also will illustrate
+the utility of being able to process
+multiple types of data with the same code
+is this example is Dijkstra's two-stack
+algorithm for arithmetic expression
+evaluation. So the goal is, you got an
+arithmetic expression this is just
+actually like a simple stand in for a
+program and we'll talk about that in a
+second but let's say, arithmetic
+expressions. We have operands and
+operators and you want to evaluate it. And
+Dijkstra's algorithm is very simple to
+express. You processes through the
+expression from left to right. If you see
+a value, you put it, you maintain two
+stacks and if you see a value, you put it
+on the value stack and if you see an
+operator, you put on the operator stack.
+Left parenthesis you ignore. Right
+parenthesis, you pop the operator and two
+values and push the result. Now that's a
+lot of words let's look at a demo. So we
+start out with the empty value stack and
+operator stack and we're going to move
+from left to right. So, and those are the
+a top is summarize the four type of things
+that we could wind up with and what to do
+so the left parenthesis we've ignored, a
+value we put on to the value stack. So,
+that one goes right in to the value stack.
+Operator, we put on to the operator stack.
+And plus it goes on the operator stack.
+Left parenthesis you ignore. It seems strange
+to be ignoring parenthesis and we'll get
+back to that in a second. Value, put in
+the value stack. Operator, put on the
+operating stack. Doesn't seem like we're
+doing much except putting stuff on stacks
+and now, when we come to our right
+parenthesis and that's when it gets
+interesting. What it says is to you have
+the top operator and the top two values
+and that's what you want to do. Supply
+that operator to those values and put the
+resulting value that you get back on to the
+operation stack. So, we take off the top
+two things, we do the operation and then we
+put the thing that we get onto the value
+stack. And that's right parenthesis. So
+now continuing along we put a star on.
+Left parenthesis, we ignore. Four on, star.
+The right goes to the value stack and now
+we got a lot of stuff on the stacks and we
+got through right parenthesis and that's
+going to finish up the computation, take
+the top two items off the stack and the
+top operator off the operator stack,
+perform the operation, put the result
+back on the value stack. Another right
+parenthesis, take the top two values off.
+Perform the operation. Put the value on to
+the value stack and finally, the last
+right parenthesis, take the two operators
+of the value stack, operators of the value
+stack, and operator of the operator stack,
+perform the operation, put the result back
+on the value stack. And we're at the end
+of the computation and that's the result.
+The value that arithmetic expression is
+101. Okay? Yup. Here's the code that
+implements Dijkstra's two-stack algorithm.
+We have two different stacks. The operand
+stack the operator stack is string, it
+could be characters which is just our
+operator. Then our value stack is doubled
+so that's the same stack code but with
+generics, we're using, using two different
+types of data. And then simply perform
+Dijkstra's algorithm. If we have a left
+parenthesis... Read a new string. If we have
+a left parenthesis, do nothing. If we have
+plus or times, push it. If we have a right
+parenthesis, then go ahead and pop the
+operator. And if it's plus, add the result
+of the two values at the top of the value
+stack and if it's a star, multiply the two
+values on the top of the stack and, and
+then push the result. So and then when
+you're done then simply print out the
+value on the stack and that's a fine and
+elegant implementation using stacks for
+any arithmetic expression. And it's easy
+to extend that to handle other types of
+things and so, why does this work? Well,
+when the algorithm encounters an operator,
+say, in the inside, we got the parenthesis,
+operand, operator, operand, parenthesis
+its easy to see that what its going to do
+inside there is put the at the top of the
+stack whatever it is, is to put the two
+and three on the top of the value stack
+and plus on the top of the operating stack
+and when it hits that right parenthesis,
+it's going to perform the operation and
+it's going to proceed then exactly as if
+the original input where that, where the
+value replaced. So, just go in from the
+inside out for every operation enclosed
+within parenthesis like that it's just
+repeat the argument that's exactly as if
+the original expression were (one + five)
+twenty and then again, replacing that one,
+one + 100, 101. That's, that's why
+Dijkstra's algorithm works. Actually
+fairly easy to understand why it works.
+And you can go ahead and extend this
+algorithm to add functions like logs and
+sines or other operators and have
+precedence among operators, have them
+associate and multiple operations, and so
+forth. And actually that's on the road to
+developing a compiler or a way to
+translate a, a program from a programming
+language to a computation, so
+Dijkstra's algorithm that uses stack is
+one way for entering and understanding of
+the basis of computation.

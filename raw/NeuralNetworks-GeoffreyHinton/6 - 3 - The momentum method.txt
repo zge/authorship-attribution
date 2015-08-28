@@ -1,0 +1,216 @@
+In this video we're going to look at the
+momentum method for improving the learning
+speed when doing grading descent into
+neural network.
+The momentum method can be applied to full
+batch learning, but it also works for mini
+batch learning.
+It's very widely used.
+And probably the commonest recipe for
+learning big neural nets is to use
+stochastic grade and descent with mini
+batches combined with momentum.
+I'm going to start with the intuition
+behind the momentum method.
+So, we think of a ball on the area
+surface, where the location of the ball in
+the horizontal plane represents the
+current weight vector.
+The ball starts off stationary and so
+initially it will follow the direction of
+steepest descent.
+It will follow the gradient.
+But as soon as it's got some velocity
+it'll no longer go in the same direction
+as the gradient.
+Its momentum will make it keep going in
+the previous direction.
+Obviously we wanted eventually to get to a
+low point on the surface, so we wanted to
+lose energy.
+So we need to introduce a bit of
+viscosity.
+That is, we make its velocity die off
+gently on each update.
+What the momentum method does, is it damps
+oscillations in directions of high
+curvature.
+So if you look at the red starting point,
+and then look at the green point we get to
+after two steps, they have gradients that
+are pretty much equal and opposite.
+As a result, the gradient across the
+ravine has cancelled out.
+But the gradient along the ravine has not
+cancelled out.
+Along the ravine, we're going to keep
+building up speed, and so, after the
+momentum method has settled down, it'll
+tend to go along the bottom of the ravine,
+accumulating velocity as it goes, and if
+you're lucky, that'll make you go a whole
+lot faster, than if you just judge
+steepest descent.
+The equations of the momentum method are
+fairly simple.
+We say that the velocity vector at time t,
+is just the velocity vector at time t
+minus one, time here is the updates of the
+weights.
+So it's the velocity vector that we got
+after mini batch t minus one, attenuated a
+bit.
+So we multiply by some number like
+point.9.
+Which is really viscosity, or it's related
+to viscosity.
+But unfortunately, I called it momentum.
+So we now call alpha momentum.
+And then we add in the effect of the
+current gradient,
+Which is to make us go downhill by some
+learning rate times the gradient that we
+have at time t And that'll be our new
+velocity at time t We then make our weight
+change at time t equal to velocity.
+That velocity can actually be expressed in
+terms of previous weight changes as it's
+shown on the slide share.
+Then I will leave it to you to follow the
+math.
+The behavior of the momentum method is
+very intuitive.
+On an air surface that's just a plane, the
+ball will reach some terminal velocity of
+which the gaining velocity that comes from
+the gradient is balanced by the
+multiplicative attenuation of velocity due
+to the momentum term,
+Which is really viscosity.
+If that momentum term is close to one,
+then it'll be going down much faster than
+a simple gradient descent method would.
+So the terminal velocity, the velocity you
+get at time infinity is the gradient times
+the learning weight, multiplied by this
+factor of one over one minus alpha.
+So if alpha is 0.99, you'll go 100 times
+as fast as you would with the learning
+rate alone.
+You have to be careful in setting
+momentum.
+At the very beginning of learning, if you
+make the initial random weights quite big,
+there may be very large gradients.
+You have a bunch of weights that's
+completely no good for the task you're
+doing.
+And it may be very obvious how to change
+these weights to make things a lot better.
+You don't want a big momentum.
+Because you're going to quickly change
+them to make things better.
+And then you're going to start on the hard
+problem of finding out how to get just the
+right relative values of different
+weights.
+So you have sensible feature detectors.
+So it pays at the beginning of learning to
+have a small momentum.
+It is probably better to have 0.5 than
+zero, because 0.5 will average out some
+sloshes and obvious ravines.
+Once the large gradients have disappeared,
+and you've reached the sort of normal
+phase of learning, where you're stuck in a
+ravine.
+And you need to go along the bottom of
+this ravine without sloshing to and fro
+sideways.
+You can smoothly raise the momentum to its
+final value.
+Or you could raise it in one step, but
+that might start an oscillation.
+You might think that, why didn't we just
+use a bigger learning rate.
+But what you'll discover is that, using a
+small learning rate and a big momentum
+allows you to get away with an overall
+learning rate that's much bigger than you
+could have had if you used learning rate
+alone with no momentum.
+If you use a big learning rate by itself,
+you'll get big divergent oscillations]
+across the ravine.
+Very recently Ilya Sutskever has
+discovered that there's a better type of
+momentum.
+The standard momentum method works by
+first computing the gradient at the
+current location.
+It combines that with its stored memory of
+previous gradients, which is in the
+velocity of the ball.
+And then it takes a big jump in the
+direction of the current gradient combined
+with previous gradients.
+So that's its accumulated gradient
+direction.
+Ilya Sutskever has found that it works
+better in many cases to use a form of
+momentum suggested by Nesterov who was
+trying to optimize convex functions, where
+we first make a big jump in the direction
+of the previous accumulating gradient, and
+then we measure the gradient where we end
+up and make a correction.
+It's very, very similar, and you need a
+picture to really understand the
+difference.
+One way of thinking about what's going on
+is in the standard momentum method, you
+add in the current gradient and then you
+gamble on this big jump.
+In the Nesterov method, you use your
+previously accumulated gradient, you make
+the big jump and then you correct yourself
+at the place you've got to.
+So here's the picture, when we first make
+the jump and then make a correction.
+Here is a stamp in the direction of the
+accumulated gradient.
+So this depends on the gradient that we've
+accumulated on, in our previous iteration.
+We take that step.
+We then make it the gradient, and go
+downhill in the direction of the gradient.
+Like that.
+We then combine that little correction
+stat with the big jump we made to get our
+new accumulated gradient.
+We then take that accumulated gradient, we
+attenuate it by some number, like nine.
+Or 99. multiply it by that number, and we
+now take our next big jump in the
+direction of that accumulated gradient,
+like that.
+Then again, at the place where we end up,
+we measure the gradient and we go
+downhill.
+That correct any errors you made, and we
+our new accumulated gradient.
+Now if you compare that with the standard
+momentum method, the standard momentum
+method starts with a accumulating
+gradient, like that initial brand vector,
+but then it measures the gradient where it
+is, so it measures the gradient at its
+current location, and it adds that to the
+brown vector, so that it makes a jump like
+this big blue vector.
+That is just the brown vector plus the
+current gradient.
+It turns out, if you're going to gamble,
+it's much better to gamble and then make a
+correction, than to make a correction and
+then gamble.

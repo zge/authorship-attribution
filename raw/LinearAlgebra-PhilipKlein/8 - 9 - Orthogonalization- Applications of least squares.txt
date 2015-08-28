@@ -1,0 +1,276 @@
+
+Here's an application of least squares, 
+fitting a line to data. 
+So here's some completely made-up data 
+that gives average brain mass as a 
+function of age after age 45. 
+Here's the data plotted. 
+Now let f(x) be the function that 
+predicts average, brain mass for a given, 
+number of years x. 
+You might have the hypothesis that brain 
+mass decreases linearly at least after 
+age 45. 
+That is, that f(x) has the form f of x 
+equals m times x plus b, for some numbers 
+m and b. 
+And our goal is to figure out what those 
+numbers are. 
+Which numbers m and b should we choose in 
+order that this function best match our 
+data? 
+And what do we mean by best match? 
+Our goal will be to minimize the sum of 
+squares of prediction errors. 
+So here's a line. 
+These are the points. We're trying to find the line that best 
+fits these points. 
+The prediction error on a particular 
+observation is the absolute value of the 
+difference between the prediction and the 
+actual value. 
+And the sum of squares of prediction 
+errors is just the sum of squares of those 
+differences. 
+Here we're zooming in on the graph. 
+Now, you might think that the way to 
+measure error corresponding to an 
+individual data point is to compute the 
+distance of that data point from the 
+line. 
+Okay. 
+In this case, the line is not exactly 
+vertical. 
+That's the wrong way to do it in fact. 
+Keep in mind that the units of the 
+horizontal direction are years and the 
+unit of the vertical direction are 
+pounds. 
+So in what units would this distance be? 
+It just doesn't make sense in the context 
+of this problem. 
+Instead, you measure just the vertical 
+distance. 
+That's the distance between the predicted 
+value and the actual value. 
+To find the line that best fits the data, 
+we used our algorithm for least squares. 
+We formulate the problem as this least 
+squares problem, where we have a matrix 
+A. 
+Whose first column consists of the first 
+coordinates, x1, x2, x3, x4, x,5, and 
+whose second column just consists of 
+ones. 
+The unknowns are m and b, and The right 
+hand side vector consists of y1, y2, y3, 
+y4, y5. 
+What does this have to do with fitting a 
+line to data? 
+Note that the dot-product of row i of the 
+matrix a, with the vector m b. 
+Is M times X I plus B, 
+which is the prediction of the line model 
+for that particular data. 
+So the vector of predictions is this 
+matrix A times the vector MB. 
+It's this product. 
+The vector of differences between 
+predictions and observed values therefore 
+is a times n b minus the observed values. 
+And the sum of squares of differences, 
+that is the the measure of the error of 
+this of this line is just the squared norm of this vector. 
+So, the method of least squares will find 
+us the vector (m,b) such that m times x 
+plus b is the best line, the line that 
+best fits this data. 
+There are a bunch of products, and we 
+wanted to figure out how many of each 
+product a factory was making by measuring 
+the resources that they were consuming. 
+We had a table that told us for each unit 
+of each product how much of each of these 
+resources was needed. 
+And we found out how much of each product 
+was made by solving the vector matrix 
+equation, U times M equals B. 
+Where B is the vector, given the amount 
+of each resource used. 
+So here's the vector B. 
+We use solve, and what we end up with is 
+this vector U, which gives the amount of 
+each product being used. 
+So that works great, except that it's 
+really an unrealistic scenario. 
+When you measure something like the 
+amount of a resource being used, you're 
+probably going to get not the exact value 
+but an approximate value. 
+So instead of the vector b representing 
+the true amounts of each resource being 
+consumed. 
+What we'll probably get is a vector, 
+we'll call it b tilde, which is an 
+approximation to those. 
+Where each number here is an 
+approximation to the true amount. 
+Now, but solving with b tilde instead of 
+b, gives us this. 
+Which is a really bad answer right for 
+example here the number of shooters that 
+were manufactured were 75 but our solver 
+came up with 594.34. 
+It, it seems like we can't get accurate 
+output when we only have approximate 
+inputs. 
+Slight changes in the input data lead to 
+big changes in the output. 
+So that the output data's not accurate 
+and, and possibly useless to us. 
+So how can we improve the accuracy of the 
+output without getting more accurate 
+measurements Of the resources, of the, 
+without having more accurate inputs. 
+And the answer is, we take more 
+measurements. 
+So, in this, problem, we have to measure 
+some other resource. 
+this isn't really a resource, but let's 
+say we could measure the amount of waste 
+water produced by this factory. 
+So now we get a slightly bigger table 
+with one more column. 
+The new column tells us, for each 
+product, how much waste water is produced 
+per item manufactured. 
+Now our measurement has one more number, 
+the total amount of waste water that's 
+produced, by the factory. 
+Now if we look at the equation, u times m 
+equals b tilde, it's more constrained. 
+It is an additional equation. 
+As a consequence in fact since we're 
+using this approximate data this equation 
+has no solutions. 
+It's too constrained. 
+So what do we do? 
+Well, we find the least squares solution. 
+The least squares solution is this which 
+is a pretty good approximation of the 
+real answer. 
+So we saw that we can get better output 
+accuracy without improving the input 
+accuracy by adding more equations and by using 
+least squares. 
+Here we want to estimate the current draw 
+for each hardware component in our sensor 
+node. 
+We define the domain d to consist of the 
+names of the harder components. 
+And our goal is to compute a d vector u, 
+that for each hardware component gives 
+the current drawn by that component. 
+We did this by running 4 test periods. 
+We know the total milliampere-seconds. 
+For the sensor node in each of these test 
+periods, which we write in this vector b. 
+And in each test period, we know how long 
+each component was running. 
+We specify those durations in vectors 
+duration 1 through duration 4. 
+Now we form a matrix, a, whose rows are the 
+duration vectors and we solve the equation, ax equals b. 
+If the measurements we put into the 
+vector b are exactly accurate, when we 
+solve ax equals b,w e get back the true 
+current draw for each of the components. 
+However, in a more realistic scenario, 
+our measurements are only approximate. 
+Let's call the resulting vector tilde 
+b. 
+When we solve the equation Ax equals 
+tilde b, we get only rough approximations 
+to the true current draw of our 
+component. 
+How can we get more accurate results 
+without making more accurate 
+measurements? 
+We need to collect more data. 
+We add some test periods. 
+Here we've added four test periods and 
+corrected the original data. 
+The measurements are still only 
+approximate. 
+Now, when we form the matrix vector 
+equation Ax=tilde b, we find it has no 
+solution because of the approximation 
+the constraints conflict with each other. 
+However, we can find the least-squares 
+solution which gives us more accurate 
+estimates of the current draw for each 
+hardware component. 
+Once again, collecting more data and 
+using least-squares, gives us more 
+accurate outputs without having to 
+improve the accuracy of our inputs. 
+Finally, let's recall the breast cancer 
+lab that we did. 
+The problem was this. 
+We had a bunch of vectors, specifying 
+features of different specimens and 
+values specifying plus one or minus one 
+according to whether the specimen was 
+malignant or benign. 
+Informally, the goal was to find a vector, 
+w, that helps you predict whether a 
+specimen is malignant or benign from the 
+feature vector. 
+And the way it would do that is the sign 
+of the dot product of the i, feature 
+vector ai, with this vector w. 
+Is supposed to predict the sign of bi, which is whether the whether the specimen 
+is malignant or benign. 
+Formerly, our goal was to find the vector, 
+w, that minimizes this loss function, minimizes the sum of squares of the 
+errors. 
+And the approach we used in the lab was 
+gradient descent. 
+I don't know about you for me that took a 
+few minutes and it actually came up with 
+an error rate of maybe 7, 8%. 
+Can we do better with our least squares 
+algorithm? 
+Well remember this is the goal, to find a 
+vector w, it minimizes this sum of 
+squares. 
+Well we can rewrite that sum of squares 
+as the squared norm of a vector b minus a 
+times x. 
+This is just the least squares problem. 
+So we can go ahead and use the algorithm 
+based on QR factorization. 
+It takes a fraction of a second and it 
+gets a better solution, a solution with 
+smaller error. 
+Now this is just the very beginning of 
+machine learning. 
+You can use a lot more sophisticated 
+methods, to get even better solutions. 
+Such as using a different inner product, 
+not the dot product. 
+You want an inner product that reflects 
+the the, the variance of the various 
+features. 
+[SOUND] . 
+You can use linear programming to 
+optimize a slightly different cost 
+function, a slightly different loss 
+function. 
+You can even use convex programming to 
+minimize some more sophisticated loss 
+functions. 
+All of this is beyond the scope of this 
+course, but now you have the ingredients 
+so you can go learn it. 
+

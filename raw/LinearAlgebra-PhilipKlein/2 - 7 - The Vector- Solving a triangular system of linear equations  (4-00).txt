@@ -1,0 +1,80 @@
+
+Now we introduce a technique for 
+computing the answer to a linear system, 
+that works only if the linear system has 
+a very special form. Its called a 
+triangular system. 
+Here's an example. 
+To solve this let's rewrite x as the 
+vector of x1, x2, x3, and x4. 
+Then the system looks like this. 
+How would we solve this system? 
+Well look at the last fourth equation. 
+From this we can immediately derive the 
+value of x4. 
+Having derived the value of x4, we can 
+plug it into the third equation and solve 
+for x3. 
+Now we've go tx3 and x4. 
+We can plug those into the second 
+equation and solve for x2 and finally 
+plug x2 and x3 and x4 into the first 
+equation and solve for x1. 
+So, here's how that works. 
+We solve this fourth equation to get the 
+fourth equation states that 2x4 equals 6. 
+We can solve that to get x4. 
+We plug that into the third equation. 
+And we find out that one X of three 
+equals minus 19. 
+So X three is minus 19. 
+We plug X three and X four into the 
+second equation. 
+We find out that three X two equals 54. 
+So X two equals 54 over three, is 18, and 
+finally we plug x2, x3, and x4 into the 
+first equation. 
+We find out that 1x1 equals minus 67, so 
+we've solved for all the variables. 
+Now how would we implement this in 
+Python? 
+Well, I'm going to suggest a hack. 
+You initialize vector x to the 0 vector. 
+And now, the procedure will populate the 
+vector x, entry by entry. 
+At the point where you have to solve for 
+some entry xi, the subsequent entries in 
+the vector will have already been 
+populated. 
+So we can use the dot product to help 
+simplify the calculation for that, for 
+that entry. 
+So for example, suppose we're solving for 
+X2 using this equation. 
+Well at that point we already know X3 and 
+X4 and the vector has those entries 
+populated. 
+So that we can take the dot-product and 
+compute x2 in this way. 
+So here's the code in python. 
+Given a list of vectors, and given a list 
+of the right hand sides, this calculates 
+the values of the vector X. 
+Couple things to note, if the number we 
+divide by is zero, they'll be an error. 
+So we have to make sure that these 
+numbers are non-zero. 
+But if they're non-zero, there's only one 
+solution, and this, this procedure will 
+find it. 
+Now our code so far only works if the 
+vector is in row lists have the domains 0 
+through n minus 1. 
+So we can, we can rewrite this to be a 
+bit more general. 
+But if we do so we have to specify in 
+what sense this, this linear system is 
+triangular, and that requires specifying 
+an order on the domain of the vectors. 
+So here's the code for that. 
+

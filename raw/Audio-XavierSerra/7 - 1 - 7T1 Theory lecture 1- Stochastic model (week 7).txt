@@ -1,0 +1,460 @@
+Welcome again to a lecture of the course
+on Audio Signal Processing from Music Applications.
+Until now we have been analyzing sounds
+using sinusoidal representations.
+They work, but
+there are many types of sounds that
+are best described by what
+we call Stochastic models.
+Signals like the sound of the ocean, or
+the bow noise of a violin fit into
+this category of stochastic signals.
+We will talk about these today.
+We will first introduce
+the concept of Stochastic signals,
+then how to model them.
+What is the model of a Stochastic signal.
+And then more specifically on how to
+deal with sounds using this model.
+So how to approximate from a
+stochastic perspective a particular sound.
+And finally, we will describe the concept
+of a system that can perform analysis and
+synthesis of sounds using these models.
+The Stochastic model is complementary to
+the models that we've covered until now.
+In fact, in the following lecture
+we will combine the Stochastic model
+with the sinusoidal-based models and
+we'll be able to take advantage of
+the best of both types of models.
+What is an Stochastic signal?
+Well, an Stochastic signal can
+not be described in a deterministic way,
+it can only be described probabilistically,
+and the field of statistical
+signal processing deals with these type
+of signals and it's quite advanced topic.
+Here, we'll give a very broad approach,
+which is sufficient for our needs.
+So in statistical signal processing we
+talk about the laws of probability
+as a way to describe these stochastic
+signals, and we talk about the mean,
+the variance and the probability
+distribution of particular signals.
+And there is some mathematical
+functions that are used
+to analyze these type of signals
+and capture some of its characteristics.
+For example one is
+the autocorrelation function.
+We have already seen this function before,
+the autocorrelation function
+allows us to measure
+the periodicity of a signal or
+the degree of repeating patterns 
+in a particular signal, we use it
+for detecting the fundamental frequency.
+So this is a function that can be used
+to measure how stochastic is a signal.
+If there are no repetitions, that means
+that it's going to be closed to any
+stochastic signal, so the lower
+the autocorrelation function value is
+the closer is going to be
+this signal to an stochastic signal.
+Okay.
+And another mathematical function
+that we can use is what is called
+the power spectral density.
+And also we have seen a similar version
+of that, is basically the DFT but
+with a major difference, is
+basically the DFT to the limit.
+We take the square value
+of the absolute value of the DFT.
+And we take N,
+the size of the FFT, to infinity, and
+if it converges,
+if it converges to a function,
+that's our power spectral density, and
+that happens in quite a few signals.
+And there are many models that
+have been proposed to deal with
+this type of stochastic signal.
+We'll use a very general model
+expressed by this equation,
+which is in fact the convolution
+of two signals.
+So we'll consider 
+as an Stochastic model
+the idea that a signal can be
+expressed as the convolution of white
+noise with the filter
+approximation of our signal.
+So by taking this convolution
+we are assuming that
+the signal that we are dealing with
+is is well expressed, or
+well represented, by its impulse response.
+If we look at the same equation
+from a spectral point of view
+we can understand a few more things.
+So, a convolution in the frequency domain
+is the product of the two spectra.
+So, the product of the white noise,
+the spectral of the white noise with
+the spectrum of the impulse
+response of the filter.
+And if we express it
+in polar coordinates,
+then we can express it as the product
+of the two magnitude spectra and
+multiplied by the exponential e to the j and
+the sum of the two phase spectra.
+Okay.
+So that's the product of
+these two spectra.
+And if we consider that this
+is a stochastic signal
+we basicaly can say that
+the magnitude spectrum of
+white noise is a flat line, and
+we will see that a bit later,
+so it's a constant, so therefore we can
+take it out of the equation.
+So we can reduce the concept of
+the impulse response 
+of the filter of the input signal by the
+magnitude spectrum of the input signal,
+an approximated version of that.
+Which could be the
+the frequency response of a filter or
+it could be some other type of function.
+But a function that approximates the
+magnitude spectrum of the input signal and
+as the phase of the model,
+we use the phase of white noise.
+Because the phase of a stochastic
+signal is not so relevant.
+Therefore, we just can reduce 
+the phase representation of
+our signal with random numbers, with
+random numbers of the white noise.
+Okay.
+So this is 
+a good way to express
+this stochastic model.
+So, we take an approximation of
+the magnitude spectrum of our signal and
+we take random phases for
+the modeling the phase spectrum.
+So this is an example, so
+we start from a fragment of the sound,
+for example, of an ocean sound, and
+let's listen to that.
+[SOUND]
+Okay.
+So we just take just one frame 
+of that.
+And then we compute the magnitude and
+phase spectrum of this ocean sound.
+So the red plot is the magnitude
+spectrum of our input signal.
+And the phases the cyan function is
+the phases of the input signal.
+And then the black line,
+the black line on top of 
+of the magnitude spectrum, is
+the approximation of this
+spectrum, and we'll talk about
+different ways to approximate that.
+So it's basically a smooth
+approximation to the magnitude spectrum.
+And the black line in the phase
+spectrum are basically random numbers.
+Okay?
+And we claim that these random
+numbers are an approximation, or
+a model, of the random numbers that in
+fact are in the ocean phases.
+So, we are basically saying that the phase
+spectrum of an ocean sound are just
+random numbers and can be approximated
+with a random number sequence.
+Okay.
+And then if we take the inverse Fourier
+transform of these two black lines, of
+the approximation of the magnitude and the
+random phases, we get this output signal.
+And we are
+claiming that perceptually this signal
+is going to be similar to the first one.
+Of course, by looking at it that
+might not seem to be the case.
+because it's clearly different shape.
+But given that we are talking
+about stochastic signals,
+the details of the shape are not relevant.
+What is important is the statistical
+properties and so we will be able to
+to try to prove if this type
+of approximation works.
+So the main analysis issue for
+this Stochastic model
+is the approximation of the time varying
+magnitude spectrum of the input signal.
+So we will have to compute this
+approximation at every frame.
+A common approach for obtaining
+a filter that approximates the spectral
+characteristics of a sound is to
+use linear predictive coding.
+With LPC, with linear predictive coding,
+we can obtain a set of filter
+coefficients, a sub k.
+And the frequency response of the
+resulting filter approximates the spectrum
+of the input sound.
+So here we see
+a signal, x, and the idea is that
+the approximation of this signal is
+defined, according to this LPC model,
+as the linear combination of past samples.
+So it's defined as the sums
+from k equal one to capital K
+of a sub k multiplied by x of n minus k,
+which are the previous samples.
+This is basically
+the expression of an IR filter.
+Infinite impulse response filter.
+That is a linear combination
+of previous samples.
+And then the goal of LPC
+is to find these coefficients.
+To find a sub k that best approximates
+x and generates a similar signal
+x hat.
+So we define an error function
+that is the sum of 
+the square root of this, the original
+signal, with this approximated signal
+and with some originally from
+minus infinity to infinity,
+of course we narrow it
+down to finite length signals.
+But with this error measure, basically
+we can try to identify the a signal,
+the a coefficients, that
+minimizes this error signal.
+We will not talk about
+how to actually implement that but
+this is a very common approach for
+obtaining
+these coefficients and therefore for
+doing what we call the LPC approximation.
+So if we start from a sound, for
+example, a voice sound like this
+soprano sound that we can listen to.
+[SOUND] In fact,
+this is the type of sound that is
+commonly approximated with an LPC model.
+And what it does is obtains this black
+line that we see in the bottom plot.
+So in the bottom plot we see the magnitude
+spectrum of this fragment of this voice.
+And the black line is the magnitude
+spectrum of the approximation
+of this LPC filter,
+that approximates this signal.
+And as we can see 
+it kind of approximates what is a very
+common characteristics of the voice
+which is these formants, so these are resonances.
+So an IR filter
+is a way to approximate
+the resonances of a signal 
+quite well and so the LPC works
+quite well for this type of signal.
+But the LPC does not work so
+well for many other type of signals.
+In here we present a more simple, 
+a simpler approximation,
+that is just based on low-pass filtering.
+And we show it by implementing a
+low-pass filtering using the DFT.
+So we start from a signal, a of k,
+and then we take the DFT of that and
+we low-pass filter.
+Low-pass filter means, basically,
+we cut the spectrum and
+we only accept
+the lower part of that spectrum.
+And then we can take the inverse DFT 
+of that and
+we get another signal which this a tilde is
+is an approximation,
+a smooth approximation, of
+the original a sub k signal.
+Then we might need to extend
+the signal in order to
+generate the same number of samples,
+at the same sampling rate that
+the signal that we started with.
+So in order to do that we might have
+to take the DFT of that, zeropad
+to extend it to a longer a FFT size, and
+then take the inverse DFT of that.
+So then b of k is of the same length than
+a of k, because the a tilde is
+just an approximation, it has less samples,
+which is good because that means
+that we have an approximation, with few
+number of samples, these coefficients,
+basically, this a tilde, is just
+the coefficients of the approximation.
+And this is going to be the approach
+that we'll use in our implementations.
+So now let's talk about the syntheses
+part of the stochastic model.
+If we approximate a sound using LPC or
+with any other type of filter
+design approach, we can
+synthesize a signal from the obtained filter
+coefficient by filtering white noise.
+This equation that we
+have already seen before is
+the implementation of an IR filter
+in which we are filtering white noise.
+We are filtering the signal
+u with a series of
+coeficients, a sub k, that
+are the coefficients of the filters.
+And the implementation of this equation
+can be done in different ways.
+For example,
+these two block diagrams are two
+different structures that are used
+to implement these type of filters.
+The one on the top is called
+direct form structure and
+the bottom one is the lattice structure.
+But it we obtain an approximation
+using the low pass
+filtering approach that we mentioned
+we can synthesize the sound directly
+by computing the inverse DFT.
+So in here we start from our approximation
+of the spectrum, of the spectrum
+of the original signal, which is basically
+this smooth version of the signal.
+it's kind of like,
+what we said the low-pass filter
+approximation of the signal.
+And then
+we can just take a random phases,
+the phases of the white noise, and
+we take the inverse DFT and
+that's basically going to be
+a filtering operation of white noise.
+Okay, so we start, we start from
+the smooth approximation of the signal,
+the random phases, and
+then we take the inverse DFT.
+And this will be the method
+that we'll use in our examples.
+So now let's put it out together
+into an analysis synthesis system
+using this stochastic model.
+And, so here we see the block diagram
+that we will be implementing,
+Which we start from the signal, x of n,
+hopefully an stochastic signal.
+We compute the FFT.
+We take
+the absolute value and then we
+do this stochastic approximation which is,
+again, this idea of low-pass filtering.
+And so, approximating the magnitude
+spectrum with a smooth curve and
+then we can do the synthesize.
+The synthesize will be done
+by doing this inverse FFT of
+this Stochastic approximation that
+might have to be zero pad and
+so to interpolate it to
+be a longer size spectrum.
+And then we generate random numbers for
+the phase spectrum.
+And we can take the inverse FFT of that,
+and that will return
+a fragment of a sound.
+And then we can just do an overlap add,
+similar, in exactly the same
+way we did for the sinusoidal modeling.
+Here also we will have to take care
+about some smoothing window, so
+that the overlap add works correctly.
+But with this we can
+reconstruct the original signal.
+So let's listen to some example.
+Okay?
+So this is
+the ocean sound that we've played before.
+And then the first is
+the magnitude spectrum.
+The absolute value of 
+the spectrum, of the whole, so
+the spectrogram of this whole sound, with
+a particular window and FFT size and
+a hop size, and
+then the stochastic approximation
+is basically a visualization of these
+coefficients, that are much fewer.
+so in fact here we took a kind
+of a compression of .1 so
+every ten samples of our magnitude
+spectrum we reduced it to one.
+So that's 
+the idea of the approximation and
+then we can synthesize by combining this
+magnitude spectrum with random numbers.
+So, let's listen to
+the synthesized result.
+[SOUND] If you do an AB comparison
+with the original ocean
+it sounds different, but
+it clearly sounds like an ocean sound.
+So for a stochastic signals
+maybe it's not so relevant to
+reproduce the exact characteristics of
+the sound but basically, these kind of
+general characteristics of this sound and
+this is what this approach does.
+So the field of statistical signal
+processing is quite an advance topic,
+as I mentioned and
+most of the reference in fact are quite
+complicated, are quite advanced.
+If you start by looking at these
+Wikipedia pages, you can get links and
+descriptions to all this more complex
+view of stochastic processes and
+statistical signal processing,
+so feel free to go there and
+check all these topics.
+And that's all.
+So we talked in this lecture
+about stochastic models.
+The goal was to introduce a strategy
+with which to model some sounds, or
+parts of sounds, that cannot be
+well represented with sinusoids.
+In the next lecture we will see how
+we can combine this stochastic models
+with the other models we have been
+discussing, the sinusoidal-based models.
+So, I see you in the next lecture.
+Bye-bye.
+

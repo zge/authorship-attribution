@@ -1,0 +1,327 @@
+We're now going to apply Hessian-free
+optimization, to the task of modeling
+character strings from Wikipedia.
+So, the idea is, you read a lot of
+Wikipedia and then try to predict the next
+character.
+Before we get to see what the model
+learns, I want to describe why we need
+multiplicative connections and how we can
+implement those multiplicative connections
+efficiently in a recurrent neural network.
+I need to start by explaining why we chose
+to model character strings rather than
+strings of words, which is what you
+normally do when you're trying to model
+language.
+The web is composed of character strings.
+Any learning method that's powerful enough
+to understand what's going on in the world
+by reading the web, ought to find it
+trivial to learn which strings make words.
+As we'll see, this turns out to be true.
+So we're going to be very ambitious here.
+We want something that will read Wikipedia
+and understand the world.
+If we have to pre-process the text in
+Wikipedia into words it's going to be a
+big hassle.
+There's all sorts of problems.
+The first problem is morphemes.
+The smallest units of meaning, according
+to linguists, are morphemes.
+So we're going to have to break up a word
+into these morphemes if we want to deal
+with it sensibly.
+The problem is, it's not quite clear what
+morphines are.
+There's things that are a bit like
+morphemes, but that a linguist wouldn't
+call a morpheme.
+So in English, if you take any word that
+starts with the letters sn, it has a very
+high chance of meaning something to do
+with the lips or nose, particularly the
+upper lip or nose.
+So words like snarl, and sneeze, and snot,
+and snog, and snort.
+There's too many of these words for it
+just to be coincidence.
+Many people say yes but what about snow?
+That's got nothing to do with the apple
+lips or nose. But, ask yourself something,
+why is snow such a good word for cocaine?
+Then there's words that come in several
+pieces.
+So normally, we'd want to treat New York
+as one lexical item.
+But if we're talking about the New York
+minster roof, then we might want to treat
+New and York as two separate lexical
+items.
+And then there's languages like Finnish.
+Finnish is an agglutinative language, so
+it puts together lots of morphemes to make
+great big words.
+So here's an example of a word in Finnish
+that takes about five words in English to
+say the same thing.
+I have no idea what this word means.
+But despite my lack of understanding, it
+makes the point.
+So here's an obvious kind of recurring net
+we might use to try and model character
+strengths.
+It has a hidden state and in this case,
+we're going to use 1500 hidden units.
+And, the hidden state dynamics is that the
+hidden state at time T provides inputs to
+determine the hidden state at time T+11.
+And the character also provides some
+inputs.
+So we add together the effect of the
+current character with the previous hidden
+state to get the new hidden state.
+And then when we arrive at a new hidden
+state, we try and predict the next
+character.
+So, we have a single Softmax over the 83
+characters, and we get the hidden state to
+try and assign high probability to the
+correct next character, and low
+probability to the others.
+And we train the whole system by
+backpropagating from that Softmax,
+The low probability of getting the correct
+character.
+We backpropagate that through the hidden
+to output connections back through the
+hidden to character connections, and then
+back through the hidden to hidden
+connections, and so on and all the way
+back'til the beginning of the string.
+It's a lot easier to predict 86 characters
+than 100,000 words.
+So it's easier to use a Softmax at the
+output, we don't have the problem of a
+great, big Softmax.
+Now, to explain why we didn't use that
+kind of recurrent net, but instead used a
+different kind of net that worked quite a
+lot better.
+You could arrange all possible character
+strings into a tree with a branching ratio
+of 86, in our case.
+And what I'm showing here, is a tiny
+little subtree, of that great big tree.
+In fact, this little subtree will occur
+many times, but with different things that
+are represented by that dot, dot, dot
+before the fix.
+So this represents that we had a whole
+bunch of characters, then we had f and
+then i and then x.
+And now if we get an i, we're going to go
+to the left.
+If we get an e, we're gonna go to the
+right, and so on.
+So each time we get a character, we move
+one step down in this tree to a new note.
+There's exponentially many nodes in the
+tree of all character strings of length n.
+So this is going to be a very big tree.
+We couldn't possibly store it all.
+If we could store it all, what we'd like
+to do is put a probability on each of
+those arrows.
+And that will be the probability of
+producing that letter, given the context
+of the node.
+In an RNN, we try and deal with the fact
+that the full tree is enormous by using a
+hidden state vector to represent each of
+these nodes.
+So now, what the next character has to do
+is take the hidden state vector that's
+representing the whole string of
+characters followed by fix and operate on
+the hidden state vector to produce the
+appropriate new hidden state vector if the
+next character was an i.
+So when you see an i, you want to turn the
+hidden state vector into a new hidden
+state vector.
+A nice thing about implementing these
+nodes in this character tree by using the
+hidden state of recurrent neural network,
+is that we can share a lot of structure.
+For example, by the time we arrive at that
+node, that says f, i, x, we may have
+decided that it's probably a verb.
+And if it's a verb, then i is quite likely
+because of the ending i, n, g. And that
+knowledge that i is quite likely with a
+verb, can be shared with lots of other
+nodes that don't have f I x in.
+So we can get I to operate on the part of
+the state that represents that it's a
+verb, and that can be shared between all
+the verbs.
+Notice that, it's really the conjunction
+of the current state we're at and the
+character that determines where we want to
+go.
+We don't want i, to give us a state that's
+expecting to get an n next if it wasn't a
+verb.
+So, we don't want to say that i tends to
+make you expect an n next.
+We really want to say, if you already
+think it's a verb, then when you see an,
+i, you should expect an n next.
+It's the conjunction of the fact that we
+think it's a verb, and that we saw an i,
+that gets us into this state labeled f, i,
+x, i, that's expecting to see an n.
+So we're going to try and capture that by
+using multiplicative connections.
+Instead of using the character inputs to
+their current net to give extra additive
+input to the hidden units, we're going to
+use those characters to swap in a whole
+hidden-to-hidden weight matrix.
+The character is going to determine the
+transition matrix.
+Now, if we did that in the naive way, we'd
+have each of the 86 characters to find a
+1500x1500 matrix and that would be a lot
+of parameters.
+If we have that many parameters, then
+that's likely to overfit, unless we run it
+on huge amount of text, for which we might
+not have time.
+So the question is, can we achieve this
+kind of multiplicative interaction, where
+the character determines the
+hidden-to-hidden weight matrix using many
+fewer parameters, by making use of the
+fact that characters have things in
+common.
+For example, all of the digits are all
+quite similar to each other in the way in
+which they make the hidden state evolve.
+So, we want to have a different transition
+matrix for each of those 86 characters,
+but we want those 86 character-specific
+weight matrices to share parameters, and
+that's a reasonable thing to do cuz we
+know that characters eight to nine should
+have very similar transition matrices.
+So here's how we're going o do it.
+We're going to have things called factors,
+and they're going to be denoted by this
+little triangle with an f above it.
+What that factor means is that Group a and
+Group b interact multiplicatively to
+provide input to Group c.
+So, what each factor does is it first
+computes a weighted sum for each of its
+two input groups.
+So, we take the vector state of Group a,
+which I just call a, and we multiply that
+by the weight sum connections coming into
+the factor.
+In other words, we take the scale of
+product of the vector a and the weight
+vector u, and that gives us a number at
+the left hand vertex of that triangle.
+Similarly, we take the vector stage of
+Group b and we multiply it by the weight
+factor w, and we get another number off
+the bottom vertex of the triangle.
+We now multiply those two numbers together
+and that gives us a number or scalar.
+And we use that scalar to scale the
+outgoing weights v in order to provide
+input for Group c.
+So the input to Group c is just the
+product of the two numbers that come into
+the two vertices of the triangle, times
+the outgoing weight factor v.
+We can write that as an equation.
+The input that factor f provides to Group
+c, so its vector input to Group c, is a
+scalar input to f from Group b, that's got
+by multiplying the state of Group b by the
+weights w, f times a scalar input to f
+from Group a, that's got by multiplying
+that state of Group a by the weights u.
+We then take the product of those two
+scalars and multiple the weight vector vf
+by that, and that's the input that the
+factor gives to Group c.
+Then, of course, we're going to have a
+whole bunch of those factors.
+There's another way we can think about
+these factors that gives more insight into
+what's going on.
+Each of the factors actually defines a
+very simple kind of transition matrix.
+It's a transition matrix that has rank
+one.
+So, the equation we had on the previous
+slide treats a factor as computing two
+scalar products, multiplying them
+together, and then using that as a weight
+on the outgoing vector v.
+We can rearrange that equation.
+So that we get one scalar product, and
+then we rearrange the last bit so that
+now, we take the outer product of the
+weight vector u and the weight vector v,
+And that gives us a matrix. And the scalar
+product that would be computed by
+multiplying b by w is just a coefficient
+on that matrix.
+So we get a scalar coefficient, we
+multiply a rank one matrix by that scalar
+coefficient to give us that scalar matrix.
+And then, we multiply the current hidden
+state a by this matrix to determine the
+input the factor f gives to the next
+hidden state.
+If we sum that up over all the factors,
+the total input to Group c is just a sum
+over all factors of a scaler times a rank
+one matrix, and that sum is a great big
+matrix, that's the transition matrix, and
+it gets multiplied by the current hidden
+state to produce the new hidden state.
+So, we can see that we synthesized the
+transition matrix,
+Actually, these rank one matrices provided
+by each factor. And what the current
+character in Group b has done is, is it's
+determine the weight on each of these rank
+one matrices.
+So, bw times w determines the scalar
+weight, the scalar coefficient to put on
+each of the matrices, actually which we
+are going to compose this great big
+character specific right matrix.
+So here's a picture of the whole system,
+we have a number of factors, in fact we'll
+have about 1500 factors.
+And the character input is different in
+that only one of those is active so there
+will only be one relevant weight at a
+time.
+And that weight from the current character
+k, which called w, kf, is the gain that's
+used on the rank one matrix got by taking
+the outer product of u and v.
+So the character determines again W, kf,
+you multiply the rank one matrix uv by
+that gain, you add together the scale
+matrices for all the different factors and
+that's your transition matrix.

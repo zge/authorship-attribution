@@ -1,0 +1,259 @@
+So just to recap, the output of this 
+whole algorithm, the output of this 
+process, is ahierarchical clustering. 
+As I showed you earlier, we have this 
+kind of tree-like structure, with words 
+at the leaves of this tree. 
+And each node corresponds to a different 
+cluster, for example, this node would 
+correspond to the two words red and blue. 
+And so on and so on. 
+As I described earlier, these 
+hierarchical constraints can be described 
+as bit strings or they can be mapped to a 
+mapping from each word to a bit string. 
+So in this case, for example, red would 
+get the bit string 111. 
+Blue would get the bit string 110. 
+So, these kind of representations can be 
+extremely useful. 
+It can be very useful to know, for 
+example, that each of these words is, in 
+some sense, similar. 
+They're in the same cluster. 
+At least if we look at the first several 
+bits. 
+And what I'm going to talk about in the 
+remainder of this lecture is a very 
+effective application of these 
+representations, within the context of 
+named identity recognition. 
+This work by Miller and others, published 
+by NAACL in 2004. 
+So let's now describe how this works. 
+So this is the paper. 
+It's called name tagging with word 
+clusters and discriminative training. 
+It's a really wonderful paper, I think. 
+Bringing together the ideas from these 
+brown cluster representations. 
+In combination with, actually the log 
+linear tagging models we saw in the last 
+week of the class. 
+So Miller et al motivate their work in 
+the following way and this is actually an 
+excerpt directly taken from their paper. 
+So they say they, they relate this 
+experience where they had actually built 
+a name identity tagger. 
+And they were demonstrating to a 
+potential user and actually this work was 
+done at BBN company, which developed some 
+of the best named entity or has developed 
+over the years some of the best name 
+entity recognition methods and so they 
+had considerable experience in this 
+domain. 
+and they were saying that, you know? 
+They knew this. 
+The technology had performed well in 
+former evaluations. 
+Had been applied successfully in several 
+research groups. 
+all it needed, was some annotated 
+training examples for it to be trained in 
+a new domain. 
+but nevertheless, it wasn't quite what 
+the user wanted. 
+And the critical problem was this need 
+for annotated training examples. 
+So, as you've probably realized. 
+If we want to apply, or rather, we want 
+to develop a named entity recognizer for 
+a new set of entities. 
+Say, going beyond people, locations and 
+organizations. 
+Then, we're going to have to, at least if 
+we use the methods that I've described 
+earlier in this class, we'll have to 
+collect labeled examples. 
+Examples where we have sentences with 
+underlying segmentations, underlying 
+markings of the entities. 
+And of course gathering this kind of 
+annotated training data can be an 
+expensive proposition. 
+The same is true for the pausing problems 
+we've looked at, also for the part of 
+speech tagging problems we've looked at. 
+And actually many other problems in 
+natural language processing. 
+And so Miller et al go on to emphasis 
+this point. 
+And, so, the actually the HMM-based 
+technology they had, which is very 
+similar to what we saw in the second week 
+of this class, required roughly 150,000 
+words of annotated examples. 
+And to get to peak accuracy, maybe about 
+a million words. 
+Okay, so a fairly considerable amount of 
+training data. 
+And that's because there are a large 
+number of parameters in these models. 
+And there's always sparse data. 
+There are always words which you have too 
+little information. 
+So getting more training data is always 
+going to help. 
+And in reality we need quite large 
+amounts of training data for these models 
+to work well. 
+So, the annotators that they actually 
+employed might annotate this data at, 
+pretty fast rate, I have to say, around 
+5,000 words per hour, that's impressive. 
+But nevertheless, annotating this kind of 
+quantity of data might take several days 
+of annotation. 
+And, that might be feasible in some 
+cases, but in other cases that may be 
+just simply be too slow, this may be be 
+too expensive. 
+So, the key idea in this work, was to use 
+the brown cluster information to 
+significantly reduce the number of 
+labeled required to build a named entity 
+classifier. 
+And so Miller et al used something very 
+similar to the lock linear taggers we've 
+seen in the last weeks lectures. 
+So remember in a long linear tagger the 
+history is going to be a tuple t minus 2 
+or t minus 2 rather t minus 1, these are 
+the previous two tags. 
+A sentence w1 through wn and position i 
+for example, we could have the history, h 
+is equal to, say determiner, NN, the dog 
+laughs,3. 
+Signifying that we're attacking word, 
+three in the sentence and the previous 
+two tags would determine our noun. 
+The label, which is y is going to be some 
+tag for example we have y equals verb 
+maybe. 
+And we have a feature of definitions we 
+have a set of feautres fk hy, the k 
+equals 1 to d where d are the number of 
+features. 
+And these are generally questions about 
+the history in conjunction with the label 
+y. 
+So, they key insight of this Miller et al 
+paper was to include features in a log 
+linear tagger, which not only looked at 
+the identity of particular words in the 
+context. 
+But also looked at the cluster identities 
+of the, the words at the current 
+position, and the previous position and 
+the next position. 
+Let me go over this. 
+Actually we have a list of the features 
+which we used in this work here. 
+So they used features like the tag and 
+the previous tag. 
+So this would be a fairly standard 
+feature, something like the following 
+fkhy equals 1 if t minus 1 equals NN and 
+y equals VB. 
+And so you have many features this form 
+be be 0 otherwise looking at all possible 
+pairs of tags. 
+We have feauters which look at the tags 
+in the current word so this would be a 
+feature such as fkhy equals 1, if wi 
+equals less. 
+And y equals VB 0 otherwise. 
+And you would have most likely a feature 
+like this for a very large number of 
+combinations of words together with 
+possbile tags. 
+They had a feature which looked at the 
+current tag for example VB and some 
+spelling features of the word being 
+tagged maybe whether it's capitalized or 
+whether it has numbers. 
+this is essentially going to look very 
+much like the mapping from words to these 
+rare word feature, which capture the 
+spelling features of the particular word 
+being tagged. 
+We have features which look at the tag in 
+the previous word, and tag in the next 
+word. 
+These are all pretty standard features. 
+Exactly the kind of thing we saw in the 
+previous lectures on lock linear taggers 
+so nothing new there. 
+Whats new is these new features, which 
+look at the brown clustering information 
+that i was just describing. 
+So what does this mean this says its 
+feature looking in the tag and the Pref 
+eight of the current word. 
+This essentially is going to look at, the 
+first eight bits of those bit screen 
+representations that I showed you for 
+brown clusters. 
+So this might for example say fkhy is 1 
+if the label y is equal to VB and the 
+first 8 bits of wy that's the word being 
+tag is equal to 1011, you know some 8 bit 
+string. 
+And you would have features like this for 
+all 8 bit strings that are actually seen 
+in your training data in conjunction with 
+all tags. 
+Now, remember that given the way brown 
+clusters work, if we look at the set of 
+words with this particular prefix. 
+We're going to get a cluster of words at 
+a certain level of granularity, at an 8 
+bit level of granularity. 
+So maybe you'd find, for example, red, 
+blue, green, or some basically related 
+set of words in this cluster. 
+And this feature will fire for all of 
+those words. 
+So we now have features which generalize 
+across multiple words and moreover 
+capture the membership of words in these 
+different clusters. 
+Now in this work they looked at eh 8 bit 
+prefix, the 12 bit, the 16 bit, and the 
+20 bit. 
+And so, there looks at everything from a 
+fairly coarse level of granularity. 
+At this level you have at most 2 to the 
+8, which is equal to 256 possible 
+clusters right the way down to a bit 
+string of length 20 where you have 2 to 
+the 20 possible clusters which is an 
+enormous number at this point you've 
+probably almost gotten down to individual 
+words. 
+In addition to looking at the current 
+word, you can look at the bit strings of 
+the previous word, maybe of length 8 or 
+12, or 16, or 20. 
+Or you can look at the bit strings for 
+the next word with 8 length 8 or 12, or 
+16, or 20. 
+But, again at a high level the critical 
+idea is we now have features which can 
+look at the bit strings corresponding to 
+words in the context. 
+And can thereby generalize across words 
+which occur in the same cluster. 
+

@@ -1,0 +1,165 @@
+So let me now just go through quite
+concretely how you will go about building a
+maxent model and this is the kind of stuff
+that you will be doing in the assignment
+for this week. So the first step is that
+we define features. So our features are.
+Boolean functions, binary indicator
+functions over the data points. And what
+we're thinking about is what are things
+that are, we'll pick out sets of data
+points which say something distinctive
+about our classification task. So for
+something like text classification or
+sentiment we're definitely going to want
+to include individual words as features,
+but sometimes those aren't the best or
+the only good features. For example, there
+are infinite space of numbers like 3.42 or
+7.86 and it's going to be hard to usefully
+use these numbers just as words. Because
+most likely the numbers that turn up at
+test time weren't in your training data.
+So you can get a lot of value from
+defining more general features, which
+might be just simply word contains a
+digit, or it might be something more
+specific, like is floating point number.
+But there are also many other
+cases of useful kinds of features. So in
+many languages, including English, the end
+of a word gives you information about its
+class. So if you have words like, helping,
+making, drying that you can tell that
+these words are participial forms of verbs
+by looking at the ing end. Of course this
+isn't always true, you'll get a word like
+sting. But nevertheless it's a good
+indicator and so a feature like this is
+something that you can be expecting to get
+a positive weight in a model if you're
+wanting to have a model that classifies
+words for something like part of speech.
+So what we will do in class, and it's
+commonly done in practice is that for
+each Phi feature that picks out a data
+context that we will just represent as a
+string. So the string could just be the
+word, um, computer or whatever. But
+since we're also going to have other
+features like word contains number
+commonly what we wanna do is kind of have
+some informal name space. So this might be
+the word equals computer and this one
+might be the num equals decimal or
+the feature here might be end equals ing.
+So we've got this informal name space of
+features. And the reason that we want to
+do that is, we want to represent each
+feature as a unique string so we can use
+that in something like a hash map, where
+we can then look up the weight for each
+feature. Now of course you don't have to
+encode the features as strings, you could
+encode them as some more general
+structured object, but in practice a lot
+of the time strings are used, 'cause
+they're just a fairly flexible informal
+way to encode features. Okay. And then
+remember that this part gives us our phi
+feature and then from the phi feature
+we're gonna construct the F features,
+where the F features are going to be a phi
+feature and a particular class. So for a
+particular phi feature, we're then going
+to build a set of F features, one for each
+choice of class CJ. And then it's the
+particular F features like F1, F2, F3,
+that are then going to be given weights
+like 0.3, -0.7, 1.2 or whatever.
+We concentrate on defining the
+phi features, in terms of what are useful
+features for the problem domain, but you
+should remember that in the presentation
+that follows, and in the code, that the
+code is working in terms of indices I of
+the individual F features, where each phi
+feature is then being turned into a set
+of F features, one for each class. How do
+you go about building a maxent model?
+Well, normally to start off with you
+define some features that you're just
+basically sure are going to be useful, so
+that might be things like words in the
+document, or the word before the word you
+want to classify, or something like that.
+But typically, we go through an iterative
+development process where we initially
+build one model with some features, we
+test it on some development data, not our
+final test data, and we see how it does.
+And it gets some performance level. Like,
+it might be 57%. And we'd like to do a bit
+better. And so what we're then gonna do is
+come up with a refined second model, and
+then repeat over. And we'll commonly do
+this a number of times until we've tried
+to come up with the best model that we
+think we can. And so the question, then,
+is, well, what do we do for this next
+model? And, in general you can look at the
+features and see which ones are useful
+with good features and bad features. Often
+the easiest way to make progress in
+practice is to try and define features
+that mark bad situations. So if you look
+through your classified development data
+you'll see some piece of data, and it's
+classified something as a drug, and it
+just shouldn't have been a drug. And so
+then maybe you can look at the, actual
+observed data, and see something about it.
+So maybe there's a smiley face here, or
+something like that. And you can say,
+well, it just isn't likely that a piece of
+text which has a smiley face near it, is
+going to be talking about a drug. And so
+you can define a feature for this
+combination. And so this kind of style of
+features, where you target errors
+and find some way to explain to the model why
+that's a bad configuration, is often one
+of the most effective ways to add
+features. Then for any particular set of
+features and their weights, what we're
+gonna want to be able to do is calculate
+the data conditional likelihood, the
+probability of a class given the data
+item. But we already know how to do
+that. That's what we did in the preceding
+slides with the worked examples. But then
+secondly, we're also gonna want to work
+out the derivative. The derivative of the
+condition likelihood with respect to each
+feature weight. So that's so we're gonna
+want a partial derivative of
+our overall probability according to a
+particular feature like lambda I. This is
+what we're gonna work it through the
+math of in the next section, but crucially
+to do that, what we're gonna end up doing
+is using those two feature expectations
+that I defined earlier. And so using those
+two things we'll then be able to work out
+these optimum feature weights. Okay, so I
+hope that's given you a good sense of what
+features are in discriminative maxent
+models, and at least some idea of how to go
+about defining them to build a classifier
+in a practical context. Though that
+question of what kinds of features are
+good is something that we'll come back to
+later, when looking at particular
+problems. After we work through more of
+the math and properties of maximum
+entropy models.

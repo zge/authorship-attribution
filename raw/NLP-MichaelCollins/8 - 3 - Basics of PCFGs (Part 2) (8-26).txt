@@ -1,0 +1,208 @@
+So the next thing we should discuss is 
+how we can actually learn a PCFG from 
+data. 
+And as I described earlier in the course, 
+we have resources available called 
+treebanks, which are extremely useful for 
+this purpose. 
+So, an early and very famous example of a 
+treebank is The Penn Wall Street Journal 
+Treebank. 
+And Treebanks consist of sentences, here 
+we have a 30 word sentence together with 
+their underlying parse tree and these 
+parse trees are actually annotated by 
+hand. 
+So for example, in the case of the Penn 
+WSJ Treebank, a group of people in the 
+early 90's at University of Pennsylvania 
+got together and came up with a set of 
+conventions based on linguistic theory 
+for the form of these structures, and 
+went through and annotated 50,000 
+sentences. 
+That's close to a million words of data. 
+So we actually have example parse trees 
+from which we can learn the rules and 
+parameters of the PCFG. 
+The Penn WSGA treebank was one of the 
+earliest examples but by now we actually 
+have many different resources in many 
+different languages of this form. 
+[BLANK_AUDIO] So once we have a treebank, 
+learning a PCFG is actually extremely 
+straight forward, almost trivial. 
+so there're two things we really need to 
+learn. 
+One is, the set of underlying rules, in 
+the context free grammar the 
+probabilistic context free grammar so, we 
+might for example learn a few rules like 
+this. 
+And the other thing we need to learn is, 
+is parameters associated with these rules 
+for example 1.0 and 0.6 and so on. 
+In terms of the rules in the PCFG that we 
+learned, we simply take all rules seen in 
+the Treebank. 
+So, learning, quote, learning, the 
+context free grammar is simply a matter 
+of reading the, off the rules in the 
+Treebank, reading off the context free 
+rules. 
+How do we estimate the parameters? 
+So, remember, q of some rule alpha goes 
+to beta is the probability associated 
+with that rule. 
+We're again, going to make use of maximum 
+likelhood estimates, which again, have a 
+very simple and intuitive form. 
+And so to estimate the parameter for sum 
+rule alpha goes to beta. 
+We take a ratio so on the denominator we 
+have the number of times we've seen 
+alpha, and on the numerator we have the 
+number of times we've seen the entire 
+rule. 
+So for example qml of vp goes to vt, np, 
+would simply be count of vp goes to vt, 
+np divided by count of vp. 
+Where these counts are taken very 
+directly from the example trees in the 
+tree bank. 
+There are various guarantees for these 
+kinds of estimates. 
+this is one important one. 
+So if the data we're looking at, if the 
+treebank is actually generate, generated 
+by some underlying PCFG. 
+You could show that as the training data 
+size gets larger and larger. 
+These paramater estimates will get closer 
+and closer to the true underlying 
+probabilities in the PCFG generating the 
+data. 
+And that leads fairly, fairly directly to 
+property that the distribution over 
+entire parse tree defined by our PCFG 
+that we learned converges to the correct 
+the correct underlying distribution under 
+under the PCFG which is generating our 
+trading data. 
+Bottom line, though. 
+Given a tree bank, it's very easy to 
+learn a PCFG, we simply read off the 
+rules from the tree bank. 
+And then we calculate these maximum 
+likely hood estimates, which amounts 
+essentially just to count, just to 
+counting the number of times you've seen 
+non terminals. 
+And counting number of times we've seen 
+entire rules. 
+So, I just want to talk about one final 
+technical property of PCFGs. 
+This goes back to work by Booth and 
+Thompson from the early 70's. 
+So if we step back and think about what 
+we've done, it's, it's really rather 
+remarkable. 
+So if we take a given CFG, there will be 
+some set of well formed parse trees under 
+that CFG, so we have some set of parse 
+trees. 
+These are quite complex structures, and 
+in fact for many CFGs this set will be 
+infinite, so actually for the CFG I 
+showed you earlier there are actually an 
+infinite set of possible trees. 
+we now have a way of calculating a 
+probability for each tree under the CFG. 
+So for example this might be 0.01. 
+I have 0.00057, 0.004, and so on, and so 
+on. 
+And we've done this by simply assigning a 
+probability to every rule in the CFG, and 
+then for a given tree we just multiply it 
+together, the, the, the rule 
+probabilities within that tree to get 
+this probability. 
+So for this to define a correct 
+distribution over possible parse trees, 
+these propability have to sum to 1. 
+So we're attempting to define a 
+distribution over an infinite set and an 
+infinite set of quite complex structures. 
+So Booth and Thompson give conditions on 
+the rule probabilities, under which we 
+get a proper distribution over trees. 
+The first one is exactly what I showed 
+you earlier, and it's by far the most 
+important, and that is that if we take 
+any non terminal, for example vp. 
+And we look at all of the rules with that 
+non terminal on the left hand side for 
+example we might have the following. 
+Then these rule probabilities have to sum 
+to 1, okay so this would be valid for 
+example that's the first condition. 
+And that's really the only 1 you, you 
+really need to worry about I'll just 
+briefly mention though that there are 
+some other conditions which are rather 
+technical. 
+And we'll go over them very quickly. 
+well they are somewhat interesting. 
+So let me give an example of a grammar, 
+which satisfies this first condition, but 
+actually does not define the distribution 
+of the possible trees. 
+So the rules in this grammar are very 
+simple, s goes to ss, or s goes to a. 
+And so we'll generate parse trees like 
+this or this one right here and so on. 
+And in fact, you can see there are an 
+infinite set of possible parse trees 
+under this grammar . 
+And, let's say I choose probability 1 for 
+this rule, probability 0 for this rule. 
+So, this satisfies the condition that the 
+rule probabilities sum to 1. 
+But actually, for any finite tree, this 
+is going to get probability 0. 
+'Cause it has s goes to a in it. 
+This is going to get probability 0, 
+'cause it has s goes to a in it. 
+And so on, so actually it's going to 
+assign propability 0 to any finite tree 
+and it will fail to define a distribution 
+over possible trees. 
+Okay, so that's a simple example of a 
+grammar that satisfies condition one, but 
+is ill-formed in some sense. 
+Um... 
+The second example which I'll just 
+briefly mention is a little bit more 
+surprising you can actually show that on 
+a certain setting with these rule 
+parameters. 
+So, if I say 0.6 for this, and 0.4 for 
+this, you can actually show that this 
+grammar also fails to define a well 
+formed distribution of the trees. 
+You can show that the sum of 
+probabilities for the set of finite sized 
+trees actually sums to less than one for 
+this particular case. 
+And intuitively what's going on here is 
+the grammar's splitting too quickly and 
+it has probability less than one of 
+actually producing a finite length parse 
+tree. 
+Okay, but I just wanted to mention that 
+very briefly. 
+It's sort of curious. 
+In practice, this is never really a 
+practical concern but it's just worth 
+having at the back of your mind. 
+

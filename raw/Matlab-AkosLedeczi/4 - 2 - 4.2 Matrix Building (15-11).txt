@@ -1,0 +1,346 @@
+[MUSIC]
+So far we've always created
+matrices manually, like this.
+[SOUND] There's a two by four matrix.
+But MATLAB has a few functions
+that let you create matrices or
+arbitrary size really quickly.
+Here's one.
+[SOUND] You can see what it gives you,
+zeros.
+A matrix of all zeros and
+this was a five by six matrix.
+What if you want ones?
+[SOUND] You can get those too.
+What if you want all fives?
+Well.
+[SOUND] That's the way you get that.
+Oh and lets look at this.
+Just give him one argument,
+oh, a four by four.
+This is another example of polymorphism.
+If you give it two arguments,
+the first one's a number of rows,
+the next one is a number of columns.
+If you give him one argument,
+you're giving rows and the columns.
+If you want a vector, let's do ones.
+[SOUND] This gives you a row vector.
+If you want a column vector,
+we'll do it with zeros.
+[SOUND] And if you want a diagonal matrix,
+you can have that.
+Suppose you want a matrix with seven,
+three, nine, one on the diagonal.
+[SOUND] Seven, [SOUND] nine, one.
+[SOUND] There you are.
+A diagonal matrix of course,
+has elements that are nonzero only where
+the row index equals the column index.
+So here's one, one.
+This is two, two, three,
+three, four, four.
+We won't look at random numbers now.
+Random numbers are very important in many
+fields, such as signal processing and
+on and on.
+And MATLAB has some different
+functions to support this.
+We've seen rand in the last lesson,
+but let's revisit that one now.
+And remember rand, there.
+It outputs numbers between zero and
+one that are uniformly distributed on that
+range, meaning that any number
+in the range zero to one has
+the same probability of being
+returned by rand at any given time.
+And as we've seen, it can return matrices.
+[SOUND] This is one we did a lot
+of in a function called myRand.
+[SOUND] And, [SOUND] and
+like these other matrix producers when you
+give rand one input argument,
+it treats that as a number of rows and
+columns and you get a square matrix.
+Now in our previous lesson, we showed how
+to get a range other than zero to one by
+combining rand with arithmetic operators.
+For example,
+here's how you get a five by four matrix
+with numbers between one and eleven.
+[NOISE] What if you want random
+integers in that range?
+Well, first note that
+the whole number part of these
+numbers ranges from one to ten.
+If we could just drop the fractional part,
+we'd have integers that
+go from one to ten.
+Well MATLAB provides the function
+fix that'll do that.
+It returns the whole
+number part of a number.
+In other words,
+fix rounds the number toward zero.
+Let's just give fix the expression
+we just came up with.
+So I'm going to hit the up arrow.
+I'm going to put parentheses around this.
+There.
+It doesn't have to be a one there,
+that time.
+But these numbers range from one to ten,
+I'm going to repeat that command.
+And there you see some numbers,
+a little bit different,
+there is a one there, maybe that's
+reassuring that it's one to ten.
+But MATLAB will do better than that,
+it provides a function that returns
+random integers, it's called randi.
+[SOUND]
+Rand i.
+And I'm going to give it three arguments.
+Ten, you can see all these hints there.
+There's lots of different ways to call it.
+Five, four.
+That ten means that we want
+integers that go from one to ten.
+The five and the four say that we
+want a five by four matrix of them,
+and so there they are.
+And by now, you probably correctly
+guessed that randi is polymorphic.
+If you give it just two arguments,
+the first one's still treated as
+the maximum possible integer, but
+the second argument gives the number
+of rows and columns of a square matrix.
+So randi 25 will return a five by
+five matrix of integers between 1,
+or ranging from 1 to 20.
+You can also call randi one other way.
+[SOUND] Well more than one other way,
+but as you can see there,
+if you give a vector for
+this first argument of two elements,
+five say ten.
+That means you want numbers
+that range from five to ten.
+And now two, three.
+Says that we want a two
+by three matrix of them.
+Many times, we need random numbers that
+have a normal distribution instead of
+a uniform distribution.
+This is also known as
+the Gaussian distribution.
+Sometimes it's called the bell curve.
+Here's how you get that.
+You use the function randn.
+The n's for normal.
+I give it a five.
+[SOUND] Oh, the input sort of the same.
+A five means a five by five matrix.
+The numbers range from
+minus infinity to infinity,
+clustered about zero with
+a standard deviation of one.
+And a lot of times,
+we want a lot of these numbers.
+Suppose you want [SOUND]
+a million of them.
+Better not forget that semicolon.
+There, it didn't take long,
+generated a row vector
+of a million numbers distributed normally,
+with a mean of zero and
+a standard deviation of one.
+Now let's look at this distribution
+using the hist or histogram function.
+[SOUND] Figure pops up.
+And we see a nice little plot and
+you can see this bell curve here.
+The first argument is the set of numbers,
+the list of numbers.
+We got a million numbers there.
+And the second argument is the number of
+bins, so there's 100 bins divided up.
+In a reasonable way, MATLAB does that.
+And you can see the number
+of points of the, actually,
+the number of random numbers
+that was generated by randn.
+In this little range right here
+around zeros, very large and
+it drops off as we get out here and
+they get more rare and more rare.
+We've seen a number of ways to
+get random numbers from MATLAB.
+Now I'm going to tell you a dirty little
+secret about these random numbers.
+They're not random.
+For example, the first time we call rand
+after we start MATLAB, it returns 0.8147.
+That exact same number every time.
+Go ahead.
+Try it if you don't believe me.
+Not all that random, is it?
+And why is that, you may ask.
+Well, a computer is
+a deterministic machine.
+Everything it does is
+determined by an algorithm.
+There's no real randomness involved.
+So you don't get a truly random number,
+instead, the random number
+generator uses some fancy math to
+generate a pseudo random number sequence.
+It's pseudo because it seems to
+be something that it's not, but
+the sequence of numbers that it generates
+sure looks random because there's no
+discernible way to predict the next
+number from the ones that came before it.
+For almost any purpose,
+unpredictability is all we need and
+that's what we get, well, almost.
+When we start MATLAB, the algorithm is
+initialized the same way every time so
+we generate the same sequence every time.
+Now that may seem like a bad thing,
+since it always gives us the same numbers.
+In fact, it's a good thing.
+It's a feature, not a bug, as the popular
+saying goes among us programmers.
+It's a feature because it helps us
+during the development of our programs.
+When we're developing a program,
+we often use the random number generator
+to give us many of thousand test cases.
+And just as often, we need to see what
+happens when we change the program,
+but use the same input.
+Well, the only way to do that is to
+generate the same numbers repeatedly.
+So, it's very useful that MATLAB
+generates the same pseudo random sequence
+each time it starts.
+Of course, restarting MATLAB every time
+you need to restart the random number
+generator hardly seems convenient.
+So, MATLAB provides a separate
+function that will reinitialize
+the random number generator for
+you without restarting MATLAB.
+It's called RNG, which you might guess
+stands for random number generator.
+It takes an input argument and
+it uses that to determine the sequence
+that rand will produce when you call it.
+It also uses a neat trick to
+let you initialize randomly.
+This trick allows you to get a different
+sequence every time you're on your program
+even if you restart
+MATLAB in the meantime.
+All this may sound complicated,
+it's really not.
+Let's switch to MATLAB and you'll see.
+Okay, to demonstrate this pseudo
+randomness idea, I've quit MATLAB.
+And I'm going to restart and
+ask it for three random numbers.
+There, MATLAB's awake [SOUND] and
+I'm asking for the three random numbers.
+And there they are,
+they look pretty random I guess
+let me copy those to my clipboard.
+[SOUND] Now let's do that again.
+Let's quit, [SOUND] and restart.
+[SOUND] [SOUND]
+You know they look pretty familiar.
+Let's take a look at that clipboard.
+[SOUND] There.
+Yeah, that's the same numbers.
+Looks like every time MATLAB
+wakes up from oblivion,
+it starts all over at the same point.
+sort of like Groundhog Day.
+And that was a great movie by the way.
+So anyway, here's how to have a new
+Groundhog Day anytime you want it without
+quitting and restarting MATLAB.
+First, let's get rid of these
+numbers we pasted on here.
+And then, I'm going to call rng
+[SOUND] and give it an input of zero.
+[SOUND] Giving it that zero as input
+resets the random number stream to
+the beginning,
+right where MATLAB always starts it.
+[SOUND] When it first opens up.
+[SOUND] So we get the same numbers.
+You can use any other non-negative
+integer to start at a different place in
+the pseudo sequence.
+One for example.
+[SOUND] There,
+that starts to set a new position.
+And by the way, rng sets both randn, for
+the normal distribution, and
+randi, for the integers too.
+Let's look at those.
+[SOUND] I'm putting them
+all in brackets here so
+that they'll be on one line and
+one vector.
+And gave randi one argument.
+When you do that, it gives back
+one pseudorandom number I should
+say one pseudorandom integer
+ranging from one to that argument.
+And you can start at that same point in
+a random sequence anytime you want to.
+[SOUND] We gave rand the one twice so
+we started at the same position twice and
+got the same numbers both times.
+Or you can start at some other point.
+I went up arrow to get
+that command back and
+I'm going over here to
+change this one to a two.
+And of course, if I repeat that command,
+same random numbers again.
+If you want a more random sequence,
+an actual random
+sequence instead of this
+pseudorandom business,
+you can input a string,
+the string shuffle to rng like this.
+Let me go back and
+change my argument over here,
+to the string, S-H-U-F-F-L-E.
+Gotta end that string with
+another single quote.
+Let's repeat that.
+See if we get the same thing.
+[SOUND] No, and let's repeat it again.
+We're getting different numbers in
+the sequence even though we're inputting
+the same argument to rng every time.
+Well, how does that work?
+Well, it uses that trick I
+mentioned to start the pseudorandom
+sequence number stream at a random point.
+It does that by getting the current
+reading of the system clock to general to
+generate a truly random number.
+Since that clock has a microsecond
+resolution, this is all but
+guaranteeing a random sequence
+that will never be repeated.
+[MUSIC]
+[APPLAUSE]
+

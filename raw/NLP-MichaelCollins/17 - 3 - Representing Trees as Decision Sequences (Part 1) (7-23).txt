@@ -1,0 +1,168 @@
+So, the first important question in this 
+kind of approach is, how do we implement 
+step one? 
+How do we represent a tree as a sequence 
+of decisions? 
+And so, the next several slides in this 
+segment will go over this in some detail. 
+This is an example tree that I'm going to 
+use throughout this part of a lecture. 
+So, we have a sentence. 
+The lawyer questioned the witness about 
+the revolver. 
+We have some standard pen tree bank style 
+tree, and parse tree for the sentence. 
+And you'll notice that we have head words 
+in this tree in the same way as we saw 
+with lexicalized context free grammars. 
+So, I'm going to focus on an approach 
+developed by Adwait Ratnaparkhi in his 
+PhD thesis. 
+This is his approach to parsing. 
+This is one way of representing a tree as 
+three sorry, of representing a tree as a 
+sequence of decisions. 
+And he actually used three layers of 
+structure in these decisions, which we'll 
+go over bit by bit. 
+The first set of decisions correspond to 
+part-of-speech tagging decisions. 
+So actually, the first level of the 
+parsing model looks very much like a 
+regular log linear tagging model. 
+And then, we build up what are called 
+Chunks. 
+And then finally, we'll build up the 
+remaining structure in these parse trees. 
+So, here's layer 1. 
+So, just to recap, we're trying to 
+represent a tree as a sequence of 
+decisions, d1 through dn. 
+so T is going to be represented as a 
+sequence of decisions. 
+We have some input sentence, w1, w2, up 
+to wn where little n is the number of 
+words in the input. 
+So, in Ratnaparkhi's parser/g, the first 
+n decisions in the sequence of tagging 
+decisions. 
+So, d1 through dn is just the sequence 
+determine a noun, verb, determine a noun 
+and so on, seen left to write in this 
+particular input sentence. 
+Okay, so the first n decisions are simply 
+the tagging decisions as seen in the 
+log-linear tagging model. 
+So that's the first layer, and simply 
+part of speech tags. 
+The second layer corresponds to what are 
+called Chunks. 
+So in the second layer, we're going to 
+have a sequence of decisions that recover 
+the chunks within the parse tree. 
+A chunk, under Ratnaparkhi's definition, 
+is defined as any phrase where all the 
+children are part of speech tags. 
+So, for this particular parse tree that I 
+showed you in this example we're working 
+on, you can verify there are actually 
+three chunks. 
+The lawyer has a NP chunk, the witness 
+has an NP chunk, and the revolver has an 
+NP chunk. 
+And you can see each of these 
+constituants, each of these three NPs, 
+satisfies this condition that all the 
+children are part of speech tags. 
+And actually, in all cases, they have two 
+children. 
+Firstly, a determiner, and secondly, a 
+noun both of these parts of speech. 
+So now, phrases are one very common type 
+of chunk. 
+Other common chunks are ADJP title 
+phrases, and QPs which are actually 
+essentially numeric phrases. 
+So, things like 200 might be a QP. 
+Ratnaparkhi introduced this level, I 
+think, because he found it was beneficial 
+to first recover these low-level chunks 
+before you recover high levels of the 
+parse tree. 
+So, these chunks, as it turns out, can be 
+recovered with quite high accuracy. 
+And once they've been built, we can build 
+the higher levels of representation on 
+top of these. 
+So, recall that the whole game here is to 
+define a mapping from parse trees to 
+decision sequences d1 through dn. 
+And so the second layer, this layer of 
+chunks, is also going to be encoded as a 
+sequence of decisions. 
+And our first n decisions in the parsing 
+process are going to be tagging 
+decisions. 
+Then next n decisions are going to be 
+what are called Chunk Tagging Decisions. 
+And that means I'm going to actually tag 
+each word at this next level in the tree. 
+With some tag indicating whether or not 
+its part of a chunk. 
+Specifically, I'll have tags such as 
+Start(NP) at the start of each noun 
+phrase chunk, or Join(NP). 
+This is basically saying we have the 
+continuation of a noun phrase chunk, and 
+Other for words which are not part of 
+chunks. 
+So notice, as we saw on the previous 
+slide, I have three NP chunks in this 
+particular example. 
+They're marked here, one, two, and then 
+three. 
+And you can see how these Start and Join, 
+and Other annotations encode those 
+chunking decisions. 
+So, we have m decisions total, and the 
+first two n have now been covered. 
+The first n are these part- of-speech 
+tagging decisions, and the next n are 
+these chunking decisions, Start, Join, 
+Other, Start, Join Other, Start, Join. 
+So recall that the whole game here is to 
+define a mapping, from parse trees to 
+decision sequences, d1 through dm. 
+And so, the second layer, this layer of 
+chunks, is also going to be encoded as a 
+sequence of decisions. 
+And our first n decisions in the parsing 
+process can be tagging decisions. 
+The next n decisions are going to be what 
+are called Chunk Tagging Decisions. 
+And that means I'm going to actually tag 
+each word at this next level in the tree. 
+With some tag indicating whether or not 
+it's part of a chunk. 
+Specifically, I'll have tags such as 
+Start(NP) at the start of each noun 
+phrase chunk, or Join(NP). 
+This is basically saying we have the 
+continuation of a noun phrase chunk, and 
+Other for words which are not part of 
+chunks. 
+So, notice as we saw on the previous 
+slide, I have three NP chunks in this 
+particular example. 
+They're marked here, one, two, and then 
+three. 
+And you can see how these Start and Join 
+and Other annotations encode those chunky 
+decisions. 
+So, we have m decisions total, and the 
+first two n have now been covered. 
+The first n are these part-of-speech 
+tagging decisions, and the next n are 
+these chunking decisions, Start, Join, 
+Other, Start, Join, Other, Start, Join. 
+

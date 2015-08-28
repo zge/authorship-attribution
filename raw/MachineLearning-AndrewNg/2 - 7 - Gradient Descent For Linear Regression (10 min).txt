@@ -1,0 +1,270 @@
+In previous videos, we talked
+about the gradient descent algorithm
+and talked about the linear
+regression model and the squared error cost function.
+In this video, we're going to
+put together gradient descent with
+our cost function, and that
+will give us an algorithm for
+linear regression for fitting a straight line to our data.
+So, this is
+what we worked out in the previous videos.
+That's our gradient descent algorithm, which
+should be familiar, and you
+see the linear linear regression model
+with our linear hypothesis and our squared error cost function.
+What we're going to do is apply
+gradient descent to minimize
+our squared error cost function.
+Now, in order to apply
+gradient descent, in order
+to write this piece of
+code, the key term
+we need is this derivative term over here.
+So, we need to figure out
+what is this partial derivative term,
+and plug in the
+definition of the cost
+function J, this turns
+out to be this "inaudible"
+equals sum 1 through M of
+this squared error
+cost function term, and all
+I did here was I just
+you know plugged in the definition of
+the cost function there, and simplifying
+little bit more, this turns
+out to be equal to, this
+"inaudible" equals sum 1 through M
+of tetha zero plus tetha one, XI
+minus YI squared.
+And all I did there was took
+the definition for my hypothesis
+and plug that in there.
+And it turns out we need
+to figure out what is
+the partial derivative of two
+cases for J equals
+0 and for J equals 1 want
+to figure out what is this
+partial derivative for both the
+theta(0) case and the theta(1) case.
+And I'm just going to write out the answers.
+It turns out this first term simplifies
+to 1/M, sum over
+my training set of just
+that, X(i)-  Y(i).
+And for this term, partial derivative
+with respect to theta(1), it turns
+out I get this term: -Y(i)<i>X(i).</i>
+Okay.
+And computing these partial
+derivatives, so going from
+this equation to either
+of these equations down there, computing
+those partial derivative terms requires some multivariate calculus.
+If you know calculus, feel free
+to work through the derivations yourself
+and check take the derivatives
+you actually get the answers that I got.
+But if you are less
+familiar with calculus you don't
+worry about it, and it
+is fine to just take these equations
+worked out, and you
+won't need to know calculus or
+anything like that in order to
+do the homework, so to implement gradient descent you'd get that to work.
+But so, after these definitions,
+or after what we've worked
+out to be the derivatives, which
+is really just the slope of
+the cost function J.  We
+can now plug them back into
+our gradient descent algorithm.
+So here's gradient descent, or
+the regression, which is going
+to repeat until convergence, theta 0
+and theta one get updated as,
+you know, the same minus alpha
+times the derivative term.
+So, this term here.
+So, here's our linear regression algorithm.
+This first term here that
+term is, of course, just
+a partial derivative of respective
+theta zero, that we worked on in the previous slide.
+And this second term here,
+that term is just
+a partial derivative with respect to
+theta one that we worked out on the previous line.
+And just as a quick reminder,
+you must, when implementing gradient descent,
+there's actually there's detail that, you
+know, you should be implementing
+it so the update theta zero and theta one simultaneously.
+So, let's see how gradient descent works.
+One of the issues we solved
+gradient descent is that it can be susceptible to local optima.
+So, when I first explained gradient
+descent, I showed you this picture
+of it, you know, going downhill
+on the surface and we
+saw how, depending on where
+you're initializing, you can end up with different local optima.
+You know, you can end up here or here.
+But, it turns out that
+the cost function for gradient
+of cost function for linear regression
+is always going to be
+a bow-shaped function like this.
+The technical term for this
+is that this is called a convex function.
+And I'm not going
+to give the formal definition for what
+is a convex function, c-o-n-v-e-x, but
+informally a convex function
+means a bow-shaped function, you know, kind of like a bow shaped.
+And so, this function doesn't
+have any local optima, except
+for the one global optimum.
+And does gradient descent on
+this type of cost function which
+you get whenever you're using linear
+regression, it will always convert
+to the global optimum, because there are no other local optima other than global optimum.
+So now, let's see this algorithm in action.
+As usual, here are plots of
+the hypothesis function and of
+my cost function J.
+And so, let's see how
+to initialize my parameters at this value.
+You know, let's say, usually you
+initialize your parameters at zero
+for zero, theta zero and zero.
+For illustration in this
+specific presentation, I have
+initialised theta zero at
+about 900, and theta one at about minus 0.1, okay?
+And so, this corresponds to H
+over X, equals, you know,
+minus 900 minus 0.1 x
+is this line, so out here on the cost function.
+Now if we take one
+step of gradient descent, we end
+up going from this point
+out here, a little
+bit to the down left
+to that second point over there.
+And, you notice that my line changed a little bit.
+And, as I take another step
+at gradient descent, my line on the left will change.
+Right.
+And I have also
+moved to a new point on my cost function.
+And as I think further step
+is gradient descent, I'm going
+down in cost, right, so
+my parameter is following
+this trajectory, and if
+you look on the left, this corresponds
+to hypotheses that seem
+to be getting to be
+better and better fits for the
+data until eventually,
+I have now wound up at the global minimum.
+And this global minimum corresponds to
+this hypothesis, which gives me a good fit to the data.
+And so that's gradient
+descent, and we've just run
+it and gotten a good
+fit to my data set of housing prices.
+And you can now use it to predict.
+You know, if your friend has a
+house with a
+size 1250 square feet, you
+can now read off the value
+and tell them that, I don't
+know, maybe they can get
+$350,000 for their house.
+Finally, just to give
+this another name, it turns out
+that the algorithm that we
+just went over is sometimes
+called batch gradient descent.
+And it turns out in machine
+learning, I feel like us machine
+learning people, we're not always
+created has given me some algorithms.
+But the term batch gradient descent
+means that refers to the
+fact that, in every step
+of gradient descent we're looking
+at all of the training examples.
+So, in gradient descent, you
+know, when computing derivatives, we're computing
+these sums, this sum of.
+So, in every separate
+gradient descent, we end up
+computing something like this, that
+sums over our M training examples.
+And so the term batch gradient
+descent refers to the fact
+when looking at the entire batch
+of training examples, and again,
+this is really, really not
+a great name, but this is
+what Machine Learning people call it.
+And it turns out there are
+sometimes other versions of
+gradient descent that are not
+batch versions but instead do
+not look at the entire traning set
+but look at small subsets
+of the training sets at the time,
+and we'll talk about those versions later in this course as well.
+But for now, using the algorithm
+you just learned, now we're
+using batch gradient descent, you
+now know how to implement
+gradient descent, or linear regression.
+So that's linear regression with gradient descent.
+If you've seen advanced linear algebra
+before so some you may
+have taken a class with advanced
+linear algebra, you might
+know that there exists a solution
+for numerically solving for the
+minimum of the cost function
+J, without needing to
+use and iterative algorithm like gradient descent.
+Later in this course we will
+talk about that method as
+well that just solves for the
+minimum cost function J without
+needing this multiple steps of gradient descent.
+That other method is called normal equations methods.
+And, but in case you
+have heard of that method, it turns
+out gradient descent will
+scale better to larger data
+sets than that normal equals
+method and, now that
+we know about gradient descent, we'll
+be able to use it in
+lots of different contexts, and we'll
+use it in lots of different Machine Learning problems as well.
+So, congrats on learning
+about your first Machine Learning algorithm.
+We'll later have exercises in
+which we'll ask you to
+implement gradient descent and
+hopefully see these algorithms work for yourselves.
+But before that I first
+want to tell you in
+the next set of videos, the
+first want to tell you about
+a generalization of the gradient descent
+algorithm that will make
+it much more powerful and I
+guess I will tell you about that in the next video.

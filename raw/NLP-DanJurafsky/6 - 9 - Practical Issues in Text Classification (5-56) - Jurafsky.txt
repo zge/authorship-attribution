@@ -1,0 +1,147 @@
+Finally, let's talk about some practical
+issues in text classification. Now that we
+have seen the math of naive Bayes we can
+turn to some real world questions. How in
+practice do we build our classifiers in
+the real world. What classifier you build
+and what you do depends a lot on what kind
+of data you have. Let's suppose you have
+no training data. Well in that case the
+right thing to do is to use manly written
+rules. So here is a rule for deciding if a
+document is a grain let's say. We might
+say if the word wheat or the word grain is
+there and doesn't have the word whole or
+the word bread so it's not a recipe then
+we say this is a grain document. Now
+manually written rules are difficult. They
+need careful crafting. They have to be
+tuned, and developed in data and it's very
+time consuming because they take days to
+write the rules for each class. But if we
+have no training data this may be the
+right approach. What if you have very
+little data? Well, if you have very little
+data, then naive Bayes is just the
+algorithm for you. Naive Bayes is what's
+called a high bias algorithm in machine
+learning. A high bias algorithm is one
+that doesn't tend to overfit training data
+too badly. It sort of trades off, variance
+or generalization to a new, to a new test
+set. So it doesn't overfit too much on a
+small amount of data. So that's the
+advantage of naive Bayes. But it's also
+important to get more data. And you can
+often find clever ways to get humans to
+label data for you. I mean, that's an
+important thing, if you don't have enough
+data, get more data. There's also various
+ways that we're not going to talk about so
+much in this class, of, of semi-supervised
+training. Find some way to use a small
+amount of data to help train a larger
+amount of data, and that's called
+bootstrapping. Another thing you might do
+if you have very little data. If you have
+a reasonable amount of data, now you might
+try all the clever classifiers we'll talk
+about later in the quarter, classifiers
+like regularized logistic regression, or
+support vector machines. In fact you could
+even use decision trees. Decision trees
+have advantages and disadvantages. But a
+big advantage of decision trees is they're
+user interpretable. And that's helpful
+because people like to be able to modify a
+rule or hack in a classifier and it's very
+easy to modify a decision, much easier to
+modify your decision tree at a rule or
+change a threshold by hand. It's much
+harder to do that with an SVM or logistic
+aggression. Now if you have a huge amount
+of data, well now you can achieve high
+accuracy, although there is a cost. Many
+classifiers just take a long time, SVMs
+especially. Hm, k-nearest neighbors can be
+very slow to train a classifier. Logistic
+rationing can be somewhat better. But
+really, if you have a huge amount of data,
+then it may just be efficient to train
+naive Bayes, which is quite fast. Actually
+if you have a very huge amount of data,
+here is it may turn out that the
+classifier may not matter. Here's a result
+from Brill and Banko on spelling
+correction, comparing the performance of
+three, four different machines running
+algorithms. A memory based learner, wino,
+a perception and naive Bayes with on a
+spelling correction task with a million
+words, ten million words, 100 million and
+so on, and so on. So, a log scale, and
+where we're measuring how accurate the
+classifiers are and you can see that as
+you, that the difference between the
+classifiers is much smaller than the
+difference you get by just adding more
+data. Hm. And in fact things, depending on
+how much data you have, the classifiers
+cross over in their performance curve. So
+with enough data, it may not matter what
+classifier you have. So a real world
+system in general will combine this kind
+of automatic classification, whether it is
+from rules or supervised machine learning.
+With manual review of uncertain, or
+difficult, or new cases. There are some
+important details for the computation in
+naive Bayes. One is underflow prevention.
+So it turns out that multiplying lots of
+probabilities can result in floating point
+underflow. We talked about this for
+language modeling. So, since b, by the,
+the definition of logarithm, the log of XY
+is log of X plus log Y. In general, we, we
+keep, store our probabilities in the form
+of logs, and we add them instead of
+multiply them. So we still have the same,
+formula. Here's the, the naive Bayes
+formula expressed now in terms of log
+probabilities, instead of probabilities.
+It's still [inaudible] max. But now,
+instead of multiplying a probability, and
+a, and a product of likelihoods, we're
+adding a log probability with a sum of log
+likelihoods. So now the model is just
+maximizing, choosing a class that
+maximizes over some sum of weights. Very
+simple model. Finally, we're going to want
+to treat the performance. And domain
+specific features for your particular
+task, domain specific weights are very
+important in the performance of real
+systems. For example sometimes we're going
+to want to collapse terms. Let's say we're
+dealing with part. Numbers and some
+inventory task. Now we might want to class
+all the part numbers together into a part
+number class, part number kind of word or
+chemical formula. We might want to have
+just one, named entity called chemical
+formula. But, other kind of collapsing
+such as stemming generally doesn't help.
+So, you have to know about whether you
+need to collapse terms or not. It's also
+very important to upweight. Upweighting is
+counting a word as if it occurs twice. And
+so often we upweight title words or we
+might upweight the first sentence of each
+paragraph. Or sentences that have words
+that occur in the title, you might
+upweight all the other words in that
+sentence, and so on. So small ways that
+can help in treating performance. So we've
+seen a number of practical things that we
+can do in building a, a real world test
+classification system.

@@ -1,0 +1,207 @@
+So let's just look at a little bit of the
+context of hashing in practical
+applications. As I mentioned, it's very
+widely used. So here's an, here's an
+example right from Java. The first.
+Implementation of Java 1.1. The designers
+found that the cost of computing the hash
+function for strings seemed to be
+excessive, particularly for long strings.
+And that was one of the main uses of
+hashing, was just to be able to do
+searching with string keys. And so what
+they decided in the first implementation
+was let's just look at every eighth or
+ninth character, and that way, we don't
+have to spend a lot of time computing the
+hash function. So they had a hash function
+pretty much like the one that we use.
+Except that it compute a skip that would
+mean that, that only look at about every
+eight key and they wouldn't have to do
+quite so much work performing the hash
+function. And that's diffidently one thing
+to consider when using hashing is that the
+cost of computing the hash function for a
+complicated key might exceed the cost of
+searching and using a simpler structure
+like a binary search tree. And anyway for
+Java 1.1 what happened was that there was
+a huge potentail for really bad collision
+patterns on typical data. So here's the
+example of typical data, which is a URL.
+All of these keys, which are totally
+different, would wind up having the same
+collision. And so client programs and
+system programs on the Java system were
+having terrible performance on their
+symbol table because of the shortcut in
+hashing. So this well illustrates that you
+need to use all of the data in the hash
+function and sometime we do a closer
+analysis. The cost of computing the hash
+function can mean that something like red
+black trees will even outperform hashing
+even for just searching and insert. So
+there is another thing about the uniform
+hashing assumption is that it is an
+assumption and if you are writing code
+where we have to have guaranteed
+performance like when your aircraft is
+landing or you are controlling a nuclear
+reactor or somebody's pa cemaker. That, if
+that assumption doesn't hold and you get
+bad performance you're going to have
+disastrous consequences. So that's another
+reason to think about maybe paying a
+little extra and using to guarantee that
+you get with red black search trees.
+Instead of hashing. And there's another
+surprising situation that happens in
+today's world. For example Java publishes
+its hash function. And so if you're trying
+to provide a service over the web. An
+adversary can learn your hash function and
+just send you data that causes huge
+performance problem by just making all
+that data hash to one particular item. And
+that's definitely something to worry
+about. And, and in the real world you can
+nowadays find on the web particular
+sequences of keys that will cause
+particular services to crash. And again,
+that's a little harder to do with
+something like a red black tree where we
+have performance guarantees. When you make
+an assumption you better be sure and
+you're depending on that assumption, you
+better be sure that it holds somehow. This
+is different than for example for quick
+sort when we, our assumption was we're
+going to create randomness and we are
+going to depend on that randomness. In
+this care we're kind of hoping for
+randomness and maybe that doesn't really
+always hold. So that's certainly something
+to be aware of when using hashing in
+practice. So here's just simple example on
+hashing in java. So what we can do is it's
+pretty easy to find a family of strings
+that have the same hash code for example
+with just a little fooling around now days
+you can just look it up on the web, you
+can see that these two character keys,
+both have the same hash code because when
+you just do the math in a base 31 hash
+code it'll tell you that answer. Well what
+that means is that actually, just like
+working in binary you got, you can combine
+those things. In all possible ways, and
+you can get two to the N strings, for any
+N of length to N that all hash to the same
+value. And somebody's implemented a
+service in Java that it uses a simp le
+table that takes string keys, you can
+cause that to crash in this way. Little
+bit scary for some systems designers. At
+least reason for pause in using hashing.
+Now, hashing also has a extremely
+important application in today's Internet
+commerce. And so the, it's the concept of
+so called one way hash functions which
+mean that we, we, use it for secure to try
+to be, have some secure fingerprints for
+use on the web. And there's been a lot
+research done to develop functions that
+take keys as input, and then produce
+values that look random. In such a way
+that, it's hard for someone else to find
+another key that collides with that. This
+technology is, is useful for storing
+passwords and digital fingerprints and
+things. But it's too expensive for use, in
+a symbol table. So the bottom line is
+separate chaining versus linear probin
+collision resolution message methods. Now
+there's a number of considerations to take
+into account. Separate chaining is really
+easy to implement both insert and delete
+it performs, it degrades, it does so
+gracefully and the clustering is, is maybe
+less of a problem if you have a bad hash
+function. Linear probing tends to make
+better use of space. And also it'll
+perform better for huge tables whereas
+caching is involved. And if, in the
+classic algorithm or computer science
+problems for people to think about is what
+do we do to delete in these two situations
+and exactly how do we resize. Those are
+all at the level of exercises in the
+context of the kinds of algorithms that
+we've seen. And as I mentioned, there's
+been many, many improved versions of
+hashing that have been studied. I
+mentioned the two probe, or double hashing
+version. Another way to use two hash
+functions is just to hash the two
+positions and put the key in the shorter
+of the two chains. In, in that case, then
+the expected length of the longest chain
+will be lg, lg N which is quite an
+improvement. You get constant time
+expected and lg, lg N worst case. Double
+hashing is the variant of layer probing
+where you just skip a variable amount, not
+one each time. And that pretty much wipes
+out clustering but it, it is more
+difficult to implement delete for that
+one. In a new method called, relatively
+new method called Cuckoo Hashing. It's
+another variant of linear probing where we
+hash a key to two positions and insert the
+key in either one. If occupied you, you
+reinsert the displaced key into its
+alternative. It was in one, each one can
+go to two. And that one actually gives
+constant worst case time for search.
+That's another variation on the team. And
+all of these things allow us to make
+better use of memory, allows the table to
+become nearly full. It would have been
+very exciting. Thing to be researchers in
+the 1950's who cared so much about memory
+and nowadays a little extra memory is not
+something that people care about so much
+and most people just go with the easy
+algorithm except for really performance
+critical applications. What about hash
+tables versus balance search trees? Well
+hash tables are really simple to code
+usually if you don't have to do the hash
+function. And if you don't have order in
+the keys at all then you need the compare
+to, to implement balance search trees. So
+you have to use hashing if you don't have
+the comparison. And it'll probably be
+faster for simple keys to use hashing.
+It's a few arithmetic operations to do the
+hash versus lg N and compares for the
+balance tree. And there's some better
+system support in Java for strings that
+cache hash code means that you don't even
+have to compute the hash if your, your
+simple table for strings is in an inner
+loop. On the other hand, balanced search
+trees have a much stronger performance
+guarantee. It, you don't have to assume
+anything. It's going to be less than lg N
+and compares and it's got support for all
+those ordered ST operations, and compared
+to and is pretty easy and natural function
+to implement. So it's more flexible and
+more broadly useful. And actually the Java
+system and other systems include both so
+that programmers can make use of either
+one in diff erent situations. That's our
+context for hashing algorithms.

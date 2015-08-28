@@ -1,0 +1,167 @@
+>> So, very soon, we will start to talk
+about techniques that solve precisely this
+problem, this problem of taking a training
+samples input and returning a function p
+as its output.
+But the first question to ask really is,
+you know, why on earth would we want to do
+this?
+At first sight, this seems like a rather
+strange problem to be considering.
+But actually, there's very strong
+motivation for considering it.
+So, there are two reasons I'll give for
+considering the language modeling problem.
+The first is that language models are
+actually useful in a very wide range of
+applications.
+So, speech recognition was really the
+first application of language models.
+And language models are critical to modern
+speech recognizers.
+Other examples are optical character
+recognition, handwriting recognition,
+another example we'll see later in the
+course is machine translation.
+So, in short, language models are actually
+useful in many applications.
+I'll come back to this point in more
+detail in a second but the other reason
+for studying language models is that the
+estimation techniques that we develop,
+later in this lecture, will be very useful
+for other problems in NLP.
+So, for example, we'll see problems such
+as part of speech tagging, and natural
+language pausing, and machine translation
+where the estimation techniques described
+are applied very directly.
+So, let me go back to this first issue and
+describe in a little more detail how
+language models are relevant to the
+problem of speech recognition.
+And this will be a fairly high level
+sketch, but hopefully you'll get the basic
+idea.
+So, the basic problem in speech
+recognition is as follows.
+As input, we have some acoustic recording.
+So, this is actually somebody speaking.
+On one axis we have time.
+On the other axis, we have the amplitude
+or energy.
+And in a speech recognizer, we typically
+go through some pre-processing steps,
+something like the following.
+We would typically split the sequence into
+relatively short time periods.
+These are often called frames.
+Each frame might be, for example, around
+10 milliseconds long.
+And then for each frame, we might perform
+some kind of Fourier analysis, where we
+get energies of different frequencies
+within that frame.
+So, the details aren't too important, but
+this is the kind of pre-processing we
+might carry out.
+Having performed this pre-processing, the
+task is then to map this acoustic input to
+the words which were actually spoken.
+So, let's say, for the sake of example
+recognized speech was what was actually
+spoken in this case.
+The speech recognizer takes an acoustic,
+sequences input, and outputs a sentence or
+sequence of words as its output.
+Now in practice, there are often many
+possible alternative sentences which could
+have been spoken which are quite
+confusable.
+So, another example sentence might be,
+wreck a nice beach.
+It's a famous example from the speech
+processing community.
+And the issue here is that these two
+sentences are quite similar from an
+acoustic point of view.
+And if you simply look at a measure of how
+compatible this sentence is with this
+acoustics versus this sentence, it's quite
+possible you might confuse these two
+sentences, and this is just one example
+sentence.
+In practice, there are many, many, many
+other possibilities which might have a
+reasonable degree of, of fit with the
+acoustic input and might be quite
+confusable with the true sentence
+recognized speech in this case.
+Now, if we have a language model, we can
+actually evaluate a probability, p, of
+each of these sentences.
+And a language model adds some very useful
+information to this whole process, which
+is the fact that this sentence, recognize
+speech, is probably more probably than the
+sentence wreck a nice beach.
+[laugh] So the, the, the language model is
+going to provide us additional information
+in terms of the likelihood or probability
+of different sentences in a language, and
+again, there are going to be many others
+down here with which some of them which
+might look acoustically like a, like a
+very good match to the input, but which
+are completely unlikely as sentences in
+English.
+So, in practice, modern speech recognizers
+use two sources of information.
+Firstly, they have some way of evaluating
+how well each of these sentences match the
+input from an acoustic point of view.
+But secondly, they also have a language
+model which gives you a, essentially a
+prior probability over the different
+sentences in the language.
+It can be very useful in getting rid of
+these kind of confusions.
+Okay, finally, let's talk about a kind of
+very naive method for language modeling,
+just to get us off the ground as a though
+experiement.
+So, say, we have N training sentences.
+Maybe a few million sentences from the New
+York, New York Times, for example.
+And for any sentence, X1 up to Xn, I'll
+just define c of X1 through Xn to be the
+number of times that, that sentence is
+seen in our training example, okay?
+A very simple estimate is then the
+following, where we define p to be simply
+c over N, okay?
+So, we simply count the number of times
+the sentences being seen and divide by the
+total number of sentences seen in our
+training corpus.
+And this is a language model, you can
+verify that p is always greater and equal
+to zero.
+And also if you sum over all sentences, p
+will sum to one.
+It's a perfectly well-formed language
+model.
+But it has some very, very clear
+deficiencies.
+Most importantly, it will assign
+probability 0 to any sentence not seen in
+our training sample.
+And we know that we're continuiusly seeing
+new sentences in a language.
+So, this model really has no ability to
+generalize to new sentences.
+So, the most important question in this
+lecture is essentially, how can we build
+models to improve upon this naive estimate
+and in particular, models which generalize
+well to new test sentences.

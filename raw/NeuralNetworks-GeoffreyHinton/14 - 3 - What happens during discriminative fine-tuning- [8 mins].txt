@@ -1,0 +1,210 @@
+In this video we'll look in more detail 
+at what happens when a neural network is 
+discriminatorily fine tuned after it's 
+first been pre-trained as a stack of 
+Boltzmann machines. 
+What we'll see is that the weights in the 
+lower layers hardly change at all. 
+But that nevertheless these tiny changes 
+make a big difference in the 
+classification performance of the neural 
+net, because they put the decision 
+boundaries in the right places. 
+We also see that the effect of 
+pre-training is to make deeper networks 
+more effective than shallower ones. 
+Without pre-training it's often the other 
+way around. 
+Finally, I give a fairly general argument 
+about why it makes sense to start by 
+doing generative training. 
+And only after this is well under way to 
+consider discriminative training. 
+So now we're going to look at some work 
+done in Yoshua Bengio's lab, examining 
+what happens during fine tuning after a 
+net's been generatively pre-trained. 
+If you look on the left, there's the 
+receptive fields in the first hidden 
+layer of feature detectors, after the 
+generative pre-training but before the 
+fine tuning. 
+Then on the right, there's the same 
+receptive fields after the fine-tuning 
+then you'll see almost nothing has 
+changed. 
+Nevertheless, the changes helped with 
+discrimination. 
+Here's an example of how pre-training 
+reduces the test errors for networks with 
+one hidden left. 
+The task was discriminating between 
+digits in a very large set of distorted 
+digits. 
+And you can see that after the back 
+propagation fine tuning, the networks 
+with pre-training almost always did 
+better than the networks without 
+pre-training. 
+The effect gets even bigger, if you use 
+deeper networks. 
+So here you can see that there's 
+basically no overlap between the two 
+distributions. 
+And the deep networks with pre-training 
+have got better than the shallow 
+networks, and the deep networks without 
+pre-training have got worse than the 
+shallow networks. 
+This is showing you the classification 
+error and the variation classification 
+error as you change the number of layers 
+when you're not doing pre-training. 
+And you can see that two layers appears 
+to be best. 
+And by the time you've got four layers, 
+you're doing considerably worse. 
+By contrast, if you use pre-training, 
+four layers is better than two layers. 
+There's much less variation and DR is 
+lower. 
+This is a visualization made with Teeson 
+of what happens to the weights during 
+training for both pretrained and 
+non-pretrained networks and they are all 
+plotted in the same space but you can see 
+they form two distinct classes in 
+networks. 
+One's at the top and that works without 
+pretraining and the ones at the bottom 
+and that works with pretraining. 
+Each point shows a model in function 
+space. 
+It's no use comparing weight vectors 
+because two nets might differ by having 
+two of the hidden units swapped round. 
+So they behave exactly the same way, but 
+the weights would look very different. 
+In order to compare them, you have to 
+compare the functions of the 
+implementation. 
+And a way to do that is to have a suite 
+of test cases and look at the outputs the 
+networks produce on those test cases. 
+And then concatenate those outputs into 
+one great long vector. 
+And so if two networks produce very 
+similar outputs for all the test cases, 
+that concatenated vector will be very 
+similar for the two networks. 
+Now you take those concatenated output 
+vectors and you plot those in 2D using 
+t-SNE. 
+The colors show the stages of training so 
+if you look at the networks at the top, 
+there's an initial blob in dark blue. 
+And then you can see that it's all moving 
+roughly the same direction. 
+In other words, the networks after one 
+epoch of learning are all more similar to 
+one another then they are to the initial 
+networks. 
+That's even more pronounced with the 
+pre-trained networks at the bottom. 
+So the color tells you which epoch you're 
+in. 
+The trajectories at the top without 
+pre-training show that different networks 
+end up in different places in function 
+space. 
+And they're quite widely spread. 
+The trajectories of the bottom show that 
+with pre-training, you end up in a quite 
+different region of function space. 
+And the networks tend to be more similar 
+to one another. 
+But the main point is there's no overlap. 
+The kinds of solutions you find, if you 
+pre-train the networks generatively, are 
+just qualitatively different from the 
+kinds of solutions you find if you start 
+with small random words. 
+The last thing I want to say in this 
+video is to explain why pre-training 
+makes sense. 
+So let's imagine that the way we 
+generated pairs of an image and a label 
+was by taking the stuff in the real 
+world, using that to generate an image, 
+for example by taking a photograph of 
+something. 
+And then having generated the image we 
+attached a label to it that didn't depend 
+on the stuff in the world. 
+So contingent on the image itself, the 
+stuff in the world is relevant the label 
+thus depends on the pixels in the image 
+That would be the case for example if the 
+label told us whether the top left pixel 
+was similar to the bottom right pixel. 
+Now if we generated images that way, then 
+it would make sense to try and learn a 
+mapping from images to labels. 
+Because the labels depend directly on the 
+images but actually, it's more plausible 
+that the way we generate image label 
+pairs are by there being stuff in the 
+world that gives rise to the image. 
+And the reason the image has the name it 
+has is because of the stuff in the world, 
+not because of the pixels in the image. 
+So you see a cow. 
+You take a photograph. 
+And you call that a photograph of a cow, 
+because you were looking at a cow when 
+you took it. 
+Now the point is, there's a high 
+bandwidth from the stuff in the world to 
+the image. 
+And there's a low bandwidth from the 
+stuff in the world to the label. 
+For example if I just say cow, you don't 
+know whether the cow is upside down, 
+whether it was brown or black and white, 
+whether it was alive or dead, how big it 
+was, what else was in the image, whether 
+it was facing you or facing away from 
+you. 
+One of those things aren't conveyed by 
+the label. 
+If you see an image with thousands and 
+thousands of pixels, you typically know 
+all of those things. 
+You get much, much more information about 
+the causes of an image by looking at the 
+image then you do by looking at the label 
+of the image. 
+So in that situation, where there's a 
+high bandwidth pathway from the world to 
+the image, and a low bandwidth image from 
+the world to the label, because the label 
+typically contains very few bits. 
+It makes much more sense to try and 
+recover the label by first inverting the 
+high boundary pathway to get back to the 
+stuff in the world that caused the image. 
+And then having recovered the stuff in 
+the world that caused the image, to 
+decide what label it would be given. 
+So that's a much more plausible model of 
+how we assign names to things in images. 
+And that justifies having a pre-training 
+phase where you try and go from the image 
+to its underlying causes, followed by a 
+discriminative phase where you try and go 
+from those underlying causes to the 
+label. 
+And perhaps you slightly fine tune the 
+mapping from the image to the underlying 
+causes. 
+

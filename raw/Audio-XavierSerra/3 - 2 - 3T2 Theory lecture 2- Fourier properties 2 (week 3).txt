@@ -1,0 +1,302 @@
+Welcome back to the course on Audio Signal
+Processing for Music Applications.
+in the first part of this lecture
+we presented some properties of
+the discrete Fourier transform,
+we now continue we some more properties
+that will be very much
+useful when using the DFT.
+In particular, we will talk about
+energy conservation and decibels,
+Phase unwrapping, Zero padding,
+the Fast Fourier Transform,
+the Fast Fourier Transform together with
+what we call zero-phase windowing and
+finally we will put it together with the
+the concept of analysis and
+synthesis of a sound.
+Okay.
+So let's start, the property of
+energy conservation relates with
+the idea that energy of a signal both
+in the time domain or in the frequency
+domain can be measured in the same way,
+and it's basically the same.
+So we can either compute
+energy in one domain or the other.
+Energy is defined as a
+the sum of the square root of
+the absolute values of the signal
+and in the frequency domain if we take
+also the absolute value, square it and
+sum it,
+and if we just add this normalization
+factor by dividing over N,
+we get the same value.
+So here we see an example,
+we have time domain signal, we do
+this energy calculation, and
+we get this value 11.8,
+and if we do the same thing in
+the frequency domain,
+we square the absolute
+value, we sum, and
+then divide by N, we get
+exactly the same value.
+OK.
+A concept related to energy
+is amplitude which is what we
+normally use either in the time domain or
+in the frequency domain.
+When we obtain the polar representation
+of the spectrum of the signal, its DFT,
+the amplitude is obtained by computing the
+absolute value, which is a linear measure.
+However for the case of sounds
+a more intuitive representation of
+the amplitude can be obtained
+by converting into decibels,
+into a log value.
+So, the decibels are defined,
+as we see here,
+as 20 times log 10 of
+the absolute value of the signal.
+So, from the original time domain
+here we can see the absolute value of
+the spectrum in a linear representation,
+and what we are now saying that is
+a more intuitive way to visualize the
+the amplitude in the frequency domain, so
+using decibel scale.
+Okay the spectrum of
+a signal includes the amplitude,
+now computed in decibels, and
+also the phase,
+And phase unwrapping is a way to
+represent the phase spectrum of the DFT
+in a way that is easier to visualize and
+understand.
+So here we see an original signal,
+the magnitude spectrum in decibels, and
+the phase spectrum, computed as the angle
+of the complex value of the spectrum.
+And here, we see clearly that is
+a very messy type of visualization.
+So, the unwrapping, what it does, it
+basically smooths that out by adding
+two pi whenever there is a discontinuity.
+So since this is bounded
+between zero and two pi,
+whenever it reaches beyond two pi,
+it wraps back and
+it goes to zero, so what we're
+going to do is to unwrap that and
+let it grow as it behaves
+in a natural way,
+so we get these smoother functions that
+become much easier to read and interpret.
+Zero padding means to add
+zeros at the end of a signal.
+In the context of the DFT,
+it we zero pad one domain
+it produces an interpolated
+signal in the other domain.
+So here
+we see an example of that.
+We start from a signal, x,
+of size 8, and this is the signal
+from which we compute the DFT, 
+Its DFT will also be of size eight.
+Here we see the absolute value, in this
+case computed into db, into decibels
+of these 8 samples.
+Now, instead of computing
+the DFT of these 8 samples,
+we can compute the DFT of these 8
+samples plus 8 samples of zero.
+Therefore having the size of the DFT
+to be sixteen, this is this second plot.
+So, by computing the DFT of size 16
+but of only these 8 samples
+what we are seeing is that is
+a much smoother visualization.
+The samples of N equal 8, of the magnitude
+spectrum of N equal 8, are exactly here.
+But apart from those
+there are interpolated values in between,
+so that to make the spectrum smoother.
+And we can even do more,
+if we zero pad even more, up to N equal 32,
+we will get more interpolated
+values in between,
+therefore resulting into
+a smoother spectrum.
+Okay.
+So now, let's talk about the
+the Fast Fourier Transform.
+The DFT can be a quite
+demanding operation.
+The implementation
+can be quite slow if
+we don't pay attention about
+some efficient implementations.
+So, the Fast Fourier Transform
+is that,
+an efficient implementation
+of the DFT equation.
+And it does that by taking
+advantage of symmetries.
+So what it does, it restricts
+the input signal to be of size
+a power of 2.
+And because of that, and
+thanks to that, then there are a whole
+bunch of symmetries that appear.
+And so in this example, for example,
+having 8 samples of a signal
+we can combine them so that we can group
+them and take advantage of the symmetries.
+And then perform computation at this pair-wise type
+of signals and therefore having
+a much more efficient computation.
+There are other algorithms that take
+advantage of other symmetries.
+In this case, this is the algorithm
+that was originally proposed by Coley-Tukey.
+And here we can see
+a little the difference in
+computation time between
+the standard DFT and the FFT.
+So here in my laptop
+I computed the DFT that
+I showed last week, in python implementation, and 
+I computed different DFT sizes
+and a computed the
+time that it took.
+So, as the size of
+the DFT was increasing
+the computation time increased
+exponentially and here
+the last one I tried, 16,000 it was
+close to two minutes of compute time.
+If I use the FFT implementation
+that comes with Python, of
+course is an efficient implementation
+also, because it's implemented in C,
+but clearly, we see the huge
+amount of difference between that.
+So an FFT size of 16,000 samples
+is much less than a millisecond
+of compute time.
+And the growth of this compute time,
+is growing not exponentially,
+is growing a little
+bit flatter, it is growing at 
+at a growth of N log N.
+Which is lower the
+the exponential growth
+of the DFT implementation.
+Okay, so in order to use the FFT
+we need to have the input signal
+to have a power of two length.
+But we want to compute the spectrum
+of any length signal, so
+this is the way we propose to
+compute the spectrum of a signal.
+We would first do zero padding, and
+then we will do what
+we call zero phase windowing.
+So
+lets go through this example.
+If we start from a fragment of a sound,
+x, that has a given length,
+let say 401 samples.
+Now we want to use the FFT, so
+we'll need to use power of two, so
+the next power of two will be 512, so
+we'll add zeros, so
+this next representation has zeroes, but
+it doesn't add them
+at the end, it does it by kind
+of splitting the signal
+through the middle in a way that, this is
+what we call the zero phase windowing,
+yhat the zero sample, which is center
+sample, is at the left side of the buffer.
+That's where the zero sample is.
+Then we have the positive
+samples up until the middle,
+with zero padding included.
+And then from the right side
+we have the negative samples,
+the samples that are negative time.
+So this is the way we will pack
+the signal in what we call the FFT buffer,
+before calling the FFT.
+And it would compute the FFT of that and
+then
+compute the spectrum in dB and
+the phase with unwrap,
+unwrapping the phase, we see this
+visualization in which we see the symmetry
+of the magnitude spectrum and we see it
+quite nicely we see it quite smoothly
+and the phase,
+we see the odd symmetry of the phase.
+We see a very smooth phase
+visualization because of two reasons.
+Because we did the zero-phase windowing,
+and because we did the unwrapping.
+So because of the zero-phase windowing,
+basically we are getting rid
+of the shifting distortion that
+would occur if we had not centered
+all the samples around zero.
+And of course the unwrapping allows us to
+see this very smooth visualization.
+Okay so this is the last part
+of what I wanted to talk about.
+So we have seen the DFT.
+We have seen the different properties,
+and now we can put it together and
+doing the analysis and
+synthesis of the DFT in
+what we call the analysis -
+synthesis type of operation.
+So, we can start from a signal.
+Compute the FFT, represented
+correctly in the magnitude and phase,
+and since there are symmetries,
+there is need to only show half of it,
+the positive side.
+So this is the positive side
+of the magnitude spectrum.
+And the positive side
+of the phase spectrum.
+So, the spectrum is twice as long.
+And then we can do the inverse Fourier
+transform from this, and reconstruct
+the original signal, and it should be
+exactly the same, so if we do things right
+the input signal and the output signal
+should have exactly the same values.
+So we have seen this slide before.
+This is just the slide for
+giving some references and credits.
+Information on the DFT is
+available in many places,
+about the Fast Fourier Transform too.
+The sounds from Freesound.
+Again, the reference for Julius
+DFT information in his website.
+And the standard credits.
+So with this lecture we complete
+the presentation of the relevant
+Fourier Transform properties, that
+are of relevance for our audio processing work.
+In the next lecture,
+we will take this further and
+start working with more complex sounds.
+So I hope to see you next class.
+Bye-bye.
+

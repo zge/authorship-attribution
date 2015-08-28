@@ -1,0 +1,311 @@
+Hi. In this segment I'm gonna introduce
+the machine learning sequence model
+approach to named entity recognition and
+other kinds of information extraction
+tasks. So I'm gonna say a little bit about
+the structure of how you approach things
+and the features that you use for that
+task and then in the next segment I'm
+gonna talk about the details of using
+maximum entropy models as sequence
+classifiers. [sound]. So, if
+we're going to use a sequence model for
+named entity recognition, we need supervised
+training data. What that means is we have
+examples of training documents where
+the words are labeled for what their
+entity class is. So the steps that we're
+going to have to go through is, first of
+all collecting a representative set of
+training documents that contain entities
+that we're interested in and the context we're
+interested in them and then we're going to
+go though each word and label each token
+for its entity class or if it's not in
+any class, it'll be labeled
+other, which is normally denoted o. Then.
+On the machine learning classifier side,
+we're going to design appropriate feature
+extractors, for identifying words of the
+classes. And then we're going to train a
+sequence classifier, whose job is to do
+the best job possible it can of labeling
+each token with its entity class or
+other. And so this is the part we'll talk
+about, in the next chunk. When we then want
+to run the classifier on actual documents
+to do stuff that's often referred to as
+testing but maybe we should just call it
+classifying. We than have the train model
+so we get a set of testing documents we have
+modeled. [sound] And we just run the
+sequence model inference each document and
+it will be able to tell us the highest
+probability label for each token. And we
+use those labels to output recognized
+entities. This all probably becomes more
+concrete if I show you an example. Okay so
+here is our document which is a sequence of
+words and so the labeling which is done by
+hand for the training documents and
+automatically by the train model at
+classification time is putting on each
+word a label which is representing either
+its entity type or it's an other. So, in
+this column, I am showing what gets called
+IO encoding, which is inside, short for
+inside-outside. And it's the most obvious and
+natural thing for you to, for someone to
+come up with for doing named entity
+recognition and sequence labeling. So we
+are taking Fred and labeling him as a
+person. We're then taking showed and
+labeling it as an other. Then Sue is a
+person name, Mengqiu is a person name,
+Huang is part of a person name, and then
+these next three tokens are all other,
+other, other. But there's a catch in that
+labeling scheme, which is actually, this
+is one person's name, and then this is
+another person's name. And we can't
+represent that in IO encoding. We can only
+say that we'll take maximal sequences of
+entities of the same class, and call them
+the name of an entity. So to recognize two
+entities here, whereas, really, there are
+three. And so there's a technical way to
+fix that problem and that's known as IOB
+encoding. And the way that you do IOB
+encoding is you're prefixing each class with
+a B if it's the beginning of an entity of
+that class, or an I if it's a
+continuation of an entity of that class.
+So, then we can see here's one person
+name, here's a second person name, and we
+know it stops here because we have another
+B right there. And then we have a third
+person name which is two tokens
+long. So, the IOB encoding isn't
+deficient and solves this problem. It
+comes at a bit of a cost because if we
+suppose that we have C entity classes, for
+IO encoding you need to have C plus one
+labels. Whereas for IOB encoding you have
+to have two C+1 labels and the +1's coming
+from the other for which you don't need to
+distinguish the BI, even in IOB encoding.
+Well that seems a fairly small difference,
+but as we'll see when we look at sequence
+models. If you have any sequence
+information you're raising this to the
+order of the sequence model. So you're at
+a minimum squaring this. And so that means
+that you are ending up with things having
+a considerably slower runtime with the IOB
+encoding. And so, while in some sense this
+is clearly the right thing to do since
+it's not deficient representation, and a
+lot of people actually do, do this. I'll
+reveal a little secret here which is in
+the Stanford named entity recognizer we actually
+use ION coding. And the reasons why we do
+that is it runs a lot faster and it
+turns out that the slight limits in the
+representation aren't really a problem. In
+practice. And there are two reasons that.
+It's not a problem in practice. One is,
+situations like this very, very rarely
+occur. While you quite often get entities
+next to each other, they're most commonly
+entities of different classes. But the
+IO encoding had no problem if
+it's a person followed by an organization,
+then it can see the boundary perfectly
+well. You only have a problem when you
+have two entities of the same class, and
+that happens pretty rarely. Now it does
+happen occasionally, but it turns out
+that in practice systems trained with IOB
+encoding very rarely get this right even
+though they are capable of representing it.
+That, because of the fact that having more
+classes worsens the sparseness and
+because of the fact that it's simply hard
+to tell where one name ends and the next
+one begins, what you find is, in practice
+IOB trained systems, given data like this to
+tag, will nearly always tag them as one
+person name of three tokens. Which is
+exactly the same classification we extract
+in practice with the IO classification.
+And so, in practice, using this works
+fine, despite its slight ugliness and
+so, we use it. Okay, let me now
+just say a moment about what features we
+put into sequence labeling for information
+extraction or named entity recognition
+problems. The obvious starting point, is
+we put in features for the words. So we
+put in a feature for the current word in
+each class. So that essentially works like
+a learned dictionary of words in each
+class, and then we also put in features
+for the previous and next words, which
+give us some context features. We know that
+for things like words after at or to
+might be more likely to be locations. If
+we have used other kinds of linguistic
+processing and we know part-of-speech
+tags, they'll often also be useful
+features, and we might also
+throw them in for the current word's
+part-of-speech tag, the next word's
+part-of-speech tag, and the previous
+word's part-of-speech tag. Now all of
+these features are just looking at the
+observed data, and they could be just done
+in a straight classifier built for each
+word. You only have a sequence model when
+you also put in the label context. And so
+that's when you are saying that. John
+Smith. If you think that John Smith. If
+you think that John is a person name, then
+it's quite likely that the next token is
+also a person name. Because person names
+are commonly more than one token long. And
+so you can have features that model this
+label sequence. And it's having features
+of this type that are definitional for
+making something a sequence model.
+[sound]. But before we get into the
+details of sequence models, I'd just like
+to mention a couple of other kinds of
+features that are back at this level that
+are a little bit more interesting than
+just using the words as they are. And
+these features are really useful for
+having the models generalized better and
+work better on rare and unseen words. The
+one of those kinds of features is
+character sub sequences. So character
+sub sequences of a word can be very useful
+classificatory features. So I am gonna
+show a neat example of this that was done
+by a student of mine Joseph Smarr years
+ago. So he was classifying entities as
+one of these five classes.
+Drug, company, movie, place, person. And what he
+asked was, how indicative are particular
+character subsequences? And here are just
+a couple of examples from his data. So
+here are some of the words he was trying
+to classify, just to give you an idea.
+Well, they weren't only words, actually.
+They could be, multiword sequences, like
+this one here. But now let's ask some
+questions about particular character
+subsequences. Suppose you know that the
+term to be classified has OXA in it. Well it
+turns out this X letter is a really strong
+marker of drug names, right? That's all of
+the drug names like Xanax and things like
+that, that people have these kind of
+particular semantic sound patterns that
+they name drugs after and in this data, at
+least, if you saw the letter OXA in a
+term, 100 percent of the time it was a
+drug name. So that's why it's all purple
+here, so that was a categorical indicator
+feature. So that's an extreme case and
+most of them aren't like that, but there
+are lots of other good features. Here's
+another very good feature from his data,
+for these terms, if you saw a colon in the
+term, that was pretty much a giveaway that
+it was a movie name. There were only a few exceptions
+up here, so that one's an almost
+categorical feature. Here's perhaps a
+more typical example, but a place where
+character subsequences are still very
+useful. So that if a word ends in field, I
+mean, it could be anything just about. It
+couldn't be a drug name with this data,
+but it could be a place, it could be a
+person, say David Copperfield. It could be
+the name of a movie cause there's a movie
+David Copperfield. It could be the name of
+a company. But because of the semantic
+origins of this field ending, if it ends
+in field it's overwhelmingly a location
+over two thirds of the time. So,
+ending in field is still a very good
+indicative feature. And so in this way,
+character substring features are very
+useful. Here's one other kind of feature
+that turns out to be quite complementary
+to character subsequences. So this is
+what I call word shape sequences, and
+it's an idea that was first suggested by
+Michael Collins, as far as I'm aware, and
+the idea is that you map words onto
+equivalence classes, which are a
+simplified representation, that encodes
+attributes such as. Something about the
+length of the words, something about its
+capitalization, use of numerals, internal
+punctuation and things like that. There
+are very many particular ways that you can
+do it but this gives you an example of the
+general idea of how to do it done on
+biological entities. So precisely in this
+system the way it was defined was that any
+capital letter, A, B. Etc, were being
+mapped to a capital X. Any little Latin
+letter was being mapped on little x. Any
+number was being mapped to a little d and
+symbols like a hyphen or colon or period
+were being mapped to themselves. And then
+there's one more trick that was being used
+here, which was a way of shortening
+adjacent letters. The idea was that
+beginnings and ends of words are
+important, but maybe we can pay less
+attention to stuff in the middle. So, how
+these were worked out is the first two
+letters and the last two letters are being
+encoded according to this system that I've
+drawn over here. And so that means, if the
+word is four characters or less. So that's
+picking up this length idea. You can see
+its length in the encoding. So if we had
+another example, and something was just
+XP, that would be encoded as XX. But if a
+word is longer than four characters you
+are not encoding everything about the
+remaining characters. For all the
+characters in the middle you are just
+saying what is the set. All of these
+character types that occur, so in this set
+here. There's a lower case letter and
+there's a dash symbol and then that set is
+being written out in a canonicalized order
+which is always the same so actually dash
+comes before the x and that's giving this
+form. Lot of details there, lot of
+different ways you can imagine doing it
+but the important part is that in this way
+we're defining this word shaped equivalence
+class for each word and so these are much
+denser than the rare individual words but
+can be kind of good predictors of their
+behavior because they're recording important
+attributes like is there a digit, is it
+capitalized, is it all caps or having
+funny capitals at the end of it. And so
+those can be useful features for
+classification. Okay, so I hope that
+introduced the problem of sequence models
+and some of the features we use for NER
+and now we'll get back into a bit of the
+details of building a maximum entry
+sequence model.

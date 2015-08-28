@@ -1,0 +1,250 @@
+
+﻿Now we'll see how to use Gaussian 
+elimination to solve a system of 
+equations. 
+The key idea is to keep track of the 
+transformations performed in converting a 
+matrix to echelon form. 
+The algorithm actually computes matrices 
+M and U, such that, M times A is U, where 
+U is in echelon form, and M is an 
+invertible matrix. 
+Let's see how we can use this to solve a 
+matrix vector equation, Ax equal b. 
+First we compute M and U, such that M 
+times A equals U. 
+Next, we compute the matrix vector 
+product M times b and use that as the 
+right hand side for another matrix vector 
+equation Ux times Mb. 
+Let's see why this gives us the solution 
+to the original matrix vector equation. 
+Well, suppose we use a solution to this 
+equation. 
+So, U times v equals,M times b. 
+Now, M is an invertible matrix. 
+Here's it's inverse. 
+Multiply both sides of this equation by M 
+inverse. 
+Now use associativity to reorganize it. 
+And notice that M inverse times M is the 
+identity matrix. 
+And use the fact that M inverse times U 
+equals A. 
+This shows that A times V equals the 
+identity matrix times B which is B. 
+But why is this matrix factor equation 
+any easier then the original one. 
+Well, U was, if U was triangular, then we 
+can solve using back substitution. 
+And it more generally U is an echelon 
+form and we can use a similar algorithm. 
+Now let's see how we can use Gaussian 
+elimination to find the null space of a 
+matrix. 
+Well in fact we're going to find, given a 
+matrix A, we're going to find the set of 
+vectors u such that u times A, is the 
+zero vector. 
+Which is actually, the null space of A 
+transpose. 
+But of course you can use this algorithm 
+on the transpose of the matrix. 
+Let's say this is the input matrix. 
+So, we find, matrices M and U, such that, 
+M times A equals U and U is in echelon 
+form, M, and M is invertible. 
+Here's the solution to that now notice 
+the last two rows of U are 0 vectors. 
+Now row 3 of U is attained by multiplying 
+row 3 of M by A. 
+And row 4 of U is obtained by multiplying 
+row 4 of M times A. 
+So, we've identified two vectors, u, such 
+that u times A is the zero vector. 
+Namely, rows 3 and 4 of M. 
+Do these vectors form a basis for this 
+space? 
+Well, the dimension of the row space of A 
+is 3. 
+We already know that the non zero rows of 
+U form a basis for the row space of A. 
+Since there are three non zero rows, that 
+shows that the dimensions of the row 
+space of A is 3. 
+By the Rank-Nullity Theorem, the 
+dimension of the row space of A plus the 
+dimension of the Null space of A 
+transpose equals the number of rows, 
+which is 5. 
+So that shows that the dimension of the 
+Null space of A transpose is 2. 
+Now since M is invertible, all its rows 
+are linearly independent. 
+Therefore, in particular, rows 3 and 4 of 
+M are linearly independent. 
+So they span a space of dimension too. 
+Since these vectors are in this space. 
+And have the same dimension as this 
+space, they are a basis for that space. 
+Now let's see what it means to record the 
+transformations. 
+Let's recall how Gaussian elimination 
+works. 
+You start with a matrix and you start 
+performing these operations, these 
+elementary row addition operations on the 
+matrix to change the matrix. 
+Eventually the rows of the matrix can be 
+reordered to get a matrix in echelon. 
+We're going to keep track of those 
+transformations. 
+So we start with this matrix. 
+and initially this matrix is the same. 
+Now at some point the algorithm performs 
+an elementary row addition operation. 
+Adding some multiple of one row to 
+another. 
+We represent that by a matrix, matrix 
+multiply where this matrix is an 
+elementary row addition operation. 
+Say the algorithm performs another 
+elementary row addition operation. 
+We represent that by multiplying by 
+another matrix. 
+All the time this right hand side matrix 
+is being transformed. 
+This is the current state of the matrix 
+after those transformations have taken 
+place. 
+So, now we do another transformation. 
+However, it's going to be too cumbersome 
+to keep track of all these elementary row 
+addition matrices. 
+So, we'll see there's a shortcut. 
+Let's do a concrete example. 
+We start with this matrix. 
+And on the right is the same matrix 
+because we haven't carried out any 
+transformations yet. 
+The first step of the algorithm, we 
+perform an elementary row addition 
+operation. 
+We subtract two times the second row from 
+the third row. 
+And this is the result. 
+Next we do another elementary row 
+additional operation, we subtract two and 
+a half times the second row from the 
+fourth row. 
+And this is the resulted matrix. 
+Now these two transformations can be 
+combined to make a single transformation 
+just by multiplying them together. 
+Now we can continue. 
+We carry out another transformation 
+represented by this matrix in which we 
+add half the first row to the third row. 
+And this is what we get. 
+We again reduce the number of matrices 
+here by combining them. 
+Here's how we record the transformation. 
+We maintain a matrix M which is initially 
+the identity matrix and a matrix U which 
+is originally the input matrix A. 
+And whatever transformations you do to A 
+to start to move it towards echelon form, 
+you do the same transformations to M. 
+So let's go through Gaussian elimination. 
+We start with this equation, here's the 
+matrix M this is initially identity. 
+Here’s the original matrix that we’re 
+going to transform and here’s the matrix 
+we’re going to put into echelon form. 
+We go through the columns of this matrix 
+one by one. 
+Let’s start with column A. 
+For that, we select row 1 as the pivot 
+row. 
+And we add it to rows 2 and 3 in order to 
+zero out those entries. 
+So here's what we get, the entries have 
+been zeroed out and we're done with row 
+one. 
+Next we move on to column B. 
+For this, we select as our pivot row Row 
+3. 
+We add it to no rows because all the 
+other entries on Row B are already zero. 
+Next we go to Column C and we select as 
+our pivot row, row zero. 
+We added to row 2 to zero out that entry 
+and we get this matrix. 
+Finally we consider column D. 
+We select as the pivot row, row 2. 
+And we don't have to add it to anything 
+because there aren't any rows left. 
+So we're done. 
+Now I'll give you the code for carrying 
+out that process. 
+As before, we initialize rowlist to be 
+the list of rows of A and we initialize M 
+rowlist to be the list of rows of the 
+identity matrix. 
+Then we carry out the iteration. 
+Here are the differences from the 
+previous code. 
+Every time we choose a pivot row, we 
+append to new_M_rowlist the corresponding 
+row of M. 
+And then when we do an operation that 
+adds a multiple of some row to another 
+row, we do the same operation on the 
+matrix M, represented by M row list. 
+Now we've, we've been appending the pivot 
+rows to new_M_row list, so that takes 
+care of all the rows of m in order that 
+correspond to pivot rows. 
+But at the end there's some other rows 
+that never get chosen as pivot rows. 
+they're the ones that correspond to zero 
+rows in the echelon form that we create. 
+So we have this loop at the end to just 
+add those remaining rows to 
+new_M_rowlist. 
+That will ensure that new_M_rowlist times 
+the original matrix will give us the 
+whole matrix in echelon form including 
+the zero vectors. 
+And finally at the end we form the 
+procedure will form a matrix M from row 
+list and return that. 
+We provided that code in the module 
+echelon. 
+So, with Gaussian elimination, the black 
+box has started to become less opaque. 
+We're starting to figure out all what's 
+inside it. 
+In particular, both the modules 
+independence and solver use Gaussian 
+elimination in dealing with matrices and 
+vectors over GF 2. 
+So the procedure solve A, b computes this 
+matrix M, such that M times A is in 
+echelon form and then uses M to try to 
+find a solution as we described earlier. 
+The procedure rank defined in the module 
+independence converts a matrix to echelon 
+form and then counts up vectors that are 
+non zero. 
+That tells you the rank of the matrix in 
+echelon form and therefore also the rank 
+of the original matrix formed by the 
+vectors in L. 
+We also saw the Gaussian elimination can 
+be used to find non zero vectors. 
+In fact the basis for the null space of a 
+matrix. 
+And you'll use that in an algorithm for 
+integer factoring. 
+

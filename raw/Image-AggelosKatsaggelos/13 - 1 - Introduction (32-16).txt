@@ -1,0 +1,747 @@
+Hello and welcome to week 12, the final
+week of the course.
+As the expression goes, time flies when
+you're having fun.
+During this week, we'll cover some of the
+more recent results in image and video
+processing.
+They're based on the simple notion of
+sparsity.
+A signal can be sparse in its native
+domain,
+for example, an image of the stars in the
+night sky, or it can be sparse or
+compressible
+in some transfer domain, such as the DCT
+domain.
+Our first reaction might be, what's the
+big deal?
+We know that an image is sparse to the DCT
+domain from week nine already.
+The big deal is that, if we know that a
+solution to a problem is
+sparse, we can then solve problems for
+which we did not have meaningful solutions
+before.
+One such problem is a solution of an
+under-determined system of equations.
+Such a system of equations appears in
+numerous applications.
+In the first segment of this week, we will
+look at applications not just from the
+image and video processing domains but
+also from machine learnings, statistics,
+genetics, econometrics, neuroscience, and
+other domains.
+We will describe them at the high level in
+order to
+see under what circumstances we have
+sparse signals or vectors in general.
+We will also discuss a formulation and
+even their solution approach.
+However, we will need the material we will
+cover in
+the subsequent segments before being able
+to fully appreciate the solution.
+Operate approaches will be following.
+The applications are presented here to
+hopefully excite
+you and increase your interest on the
+topic.
+We will revisit some of these
+applications,
+however, at the end of the week.
+So, let us proceed with this current and
+exciting material.
+During this week, we will first talk about
+applications
+where sparsity plays a key role, and these
+applications
+will be from signal and image and video
+processing
+but also from machine learning,
+statistics, economics, and so on.
+We will then see what is the role that the
+l2, l0, and l1 norms play,
+and we'll see, for example, that the l0
+and l1 norms promote sparsity.
+We will then discuss specific solution
+approaches to
+optimization problems when the l0, l1
+norms are involved.
+So when the l0 norm is involved, we talk
+about the matching pursuit.
+This is a greedy iterative algorithm for
+finding a solution.
+When the l1 norm is involved, we'll talk
+about Smooth
+reformulations of both the basis pursuit
+and the LASSO problems.
+And, finally, we'll go full circle and
+revisit
+some of the applications where we show
+specifically
+the formulation of the problem and the
+solution
+approach that is followed to obtaining a
+solution.
+What is sparsity?
+As the name implies, a vector is sparse if
+it
+only has a few non-zero components while
+the rest are zero.
+Now this vector can represent a signal,
+such as an image or a video, in which
+case the signal can be sparse in its
+native domain, if for example
+we have an image of the sky at night, so
+there are some bright stars
+only and the sky is dark or it can be made
+sparse in another domain.
+So natural image, for example, in the
+native domain are sparse.
+A sparse vector, however, may originate in
+numerous applications as we could see.
+There is a large number of applications in
+which sparsity plays a key role.
+Of course, for the purpose of this course,
+image and
+video processing applications are the ones
+we primarily are interested in.
+But, in the beginning, we'll also talk
+about applications from machine learning
+in general, statistics, genetics,
+econometrics, neuroscience,
+and so on and so forth.
+It is known that some diseases, like
+cystic
+fibrosis, are caused by alterations in a
+single
+gene or a small set of genes, and
+this knowledge can be utilized in creating
+gene-targeted therapy.
+However, the genetic basis of many leading
+causes of
+death in the world, such as heart disease
+and consequence
+of diabetes, are so far not clearly
+understood, and
+this limits the use of gene therapy in
+these situations.
+Genewiz Association studies the
+associations between millions of
+genetic loci from across the human genome
+with quantitative trades, such
+as cholesterol and glucose levels, which
+in turn can
+be used as strong predictors of the above
+mentioned diseases.
+This problem however, the Genome-Wide
+Association, is
+extremely under-determined because even
+for large studies
+there are typically a few thousands
+individuals,
+but there are tens of thousands of genes.
+We show here a linear modeling of the
+problem, so an Ax equals b formulation.
+A is the genotype matrix.
+[BLANK_AUDIO]
+And contains genetic information about
+each of the individuals that took part in
+the
+study and the corresponding trade levels
+here, so each of these endings of this
+matrix
+show the number of so called alleles.
+These are the alternative forms of the
+same
+gene for the ith person at the jth locus.
+So, this matrix A, as already mentioned
+is, is a long matrix.
+So, for example, it can have 1,000
+rows and 60 thousand columns.
+In solving this problem, it is desired
+that the
+solution here, x as a long vector, is
+sparse.
+So this way, there are a few genes
+that give rise to understanding this
+particular trade.
+So, for example, if this is a known zero
+entry, then it is this column of this
+matrix that will be utilized again towards
+the prediction of this particular trade.
+So, this is a specific example where we
+are asked to solve an ax equals b problem
+and their solution x here is desired to be
+sparse.
+Functional or magnetic resonance imaging,
+FRMI of the brain is becoming more
+and more popular in diagnosing disorders,
+such as ADHD, attention deficit
+hyperactivity disorder.
+In this application, three-dimensional
+scans of the brain are acquired,
+while the subject is being asked to
+perform certain cognitive tasks.
+Now only certain parts of the brain light
+up or fire up.
+The ones responsible for the specific task
+being performed.
+The f-MRI scans actually can combined
+with EG, electroencephalography signals,
+and finding which
+parts fired up in the brain is referred to
+as the source localization problem.
+So you see in this examples here which
+parts of the brain fired up
+while the subject, the person is
+performing an, a rhyming task.
+[BLANK_AUDIO]
+Now, in processing such volumes, we
+typically divide them
+into small cubes, which are referred to as
+voxels.
+So these are volume pixels of
+three-dimensional pixels, so
+scanning the volume we can stack these
+voxels into vectors, and again
+here is another application in which the
+vectors we deal with are sparse.
+So the problems we might be interested in
+solving there,
+for example, the social characterization
+problem that I just mentioned, or
+we might be interested in solving a
+classification problem if
+the person is classified as having ADHD,
+for example, or not.
+In which case, sparse logistic regression
+can be used or we might be solving
+a prediction problem, trying to predict if
+the person will develop ADHD in the
+future.
+So again, here is an example where the
+signals
+we are working with are sparse due to
+their nature.
+Econometrics is allowing economiets to
+sift through huge
+amounts of data and extract simple and
+useful relationships.
+So here we see a map of the world, and for
+each country, we see the GDP, gross
+domestic product per capita.
+An interesting question is, which factors
+correlate in a positive
+or a negative way to the GDP of a country?
+So, economists have considered hundreds of
+factors, such as the ones shown here:
+population density, size of economy, life
+expectancy, land area, and so on.
+So we put in a matrix A, the actual values
+of these factors
+and in a vector B, the GDP of each
+country, and then
+we are interested in finding an x so that
+Ax equals b.
+So we want to solve this linear system of
+equations
+under the constraint that solution we
+obtain x here is sparse.
+Similarly to the genetics problem, since
+we expect
+a small number of factors to have strong
+correlation,
+positive or negative to the GDP while the
+rest of them being irrelevant, but equal
+to zero.
+Actually from studies, the factors here
+shown inside these red
+rectangles, show strong correlation,
+negative or positive, to the GDP.
+So again, we need to know how to solve an
+Ax equals b system of linear
+equations under the constraint that x is a
+sparse solution.
+Linear regression is a common problem in
+many application areas.
+Given a set of points, as shown here, we
+want to
+find a line that best describes or best
+fits these points.
+So, if we call the axis here a and b, we
+are given pairs of points,
+a of i, b of i, such as this one, and the
+model we use, the
+model of the line is that a of ix is
+approximately equal to b of i.
+Our objective, therefore, is to find the
+best
+possible value of x to describe this data.
+A very common approach we follow is that
+this squared approach according to which
+we minimize back to x the sum of the
+squared arrows.
+This minimization will result in an
+optimal value of x based
+on which, if a new point A is given to us,
+we can form
+Ax star, which will give us the new value
+of b.
+So, if here is a new, we
+have found the equation of this line.
+After we find the x optimal, and therefore
+we can use it to find the value b new.
+We can write this equation in matrix
+vector form.
+Our model takes the form Ax equals b,
+where in vector b, we have
+stack all the values of a of i, and matrix
+A we start the badges
+of a of i, which in general is not a
+scalar but is a row vector.
+Then the objective, the squares objective
+here is to minimize with respect to x
+the, this norm squared, and this is
+referred to as an l2 norm, as we will see
+later in the class.
+In a number of applications, there are
+sparse
+outliers in the data like the ones shown
+here.
+So these are clearly outliers, they don't
+look
+like the rest of the data, but they're
+sparse.
+There's just a few of them otherwise,
+this, this would be the data.
+The question is now, how well can a line
+describe this data
+if we follow the squares approach that we
+described in the previous slide?
+Following [UNKNOWN] squares approach in
+solving the linear regression problem, we
+obtain the blue line here as the optimal
+line for fitting the available data.
+Clearly, as these squares approach towards
+linear regression, tends
+to fit to these outliers and therefore
+produces poor results.
+We can make linear regression robust by
+introducing
+a sparse arrow term that compliments the
+linear model.
+That is, we're using now the model Ax plus
+e, approximately equal to b.
+So this is the sparse arrow term,
+and the objective is to find optimal x
+star here to describe the data.
+So we need ways now to be able to solve
+this problem by taking into account the
+sparsity of b and
+as you'll see, we have means through the
+use of the
+l0 and the l1 and the lp norms to
+accomplish this.
+The resulting method is referred to as the
+Least Absolute
+Deviations Approach.
+In some other applications, you might be
+interested not just in robustifying the
+least squares
+problem as we describe here, but also in
+finding the sparse term, e, as well.
+So following the least absolute deviations
+approach with this toy example here,
+we obtain the red curve as the best curve
+to fit the data.
+So this is LAD, the least absolute
+deviations, and this is least squares.
+So clearly we are doing a much better job
+now
+in describing the data and not feeding to
+the outliers.
+Matching consumers with the appropriate
+products is
+key to enhancing user satisfaction and
+loyalty.
+Therefore, more and more retailers are
+interested in recommender
+systems, systems which would predict the
+preference of a user
+to a product based on which the retailer
+can
+then recommend or not recommend the
+product to a user.
+A version of the problem addressed by the
+recommender system is described here.
+It relates to the so called Netflix
+problem, since it's posed
+by the provider of streaming movies here
+in the US, Netflix.
+So, we have in this column various movies
+while in this row various users.
+When a movie is rented and watched by a
+viewer, he or she is asked to rate the
+movie.
+Let's say from zero to five or from zero
+stars to five stars.
+So this person here watched this movie and
+gave it one
+star, while this person watched this movie
+and gave it four stars.
+So, each user watched and rated certain
+movies, but, of course, there are
+a large number of other movies that he or
+she has not watched.
+So, we don't know the preference of this
+user
+to this movie, and the retailer would like
+to predict
+this preference so that the retailer can
+decide whether
+to recommend or not recommend this movie
+to this user.
+So, the retailer has an incomplete matrix.
+Some of it's entries are known, but very
+many others
+are not known and would like to complete
+this matrix.
+So, the problem becomes a matrix
+completion problem.
+By the way there, are thousands of movies
+but millions
+of users, so this is really a very large
+matrix.
+The matrix completion problem, by the way,
+appears in various other applications.
+Clearly, if there is no additional
+information or additional
+constraints, we cannot provide the
+meaningful solution to this problem.
+The additional information we have with
+the problem at hand is that there are
+typically a few types of people, or
+put it differently, similar people like
+similar movies.
+So if these two users have similar
+preferences in movies, then this column
+of the matrix, and this column will be
+very similar or there will be identical.
+A matrix with many similar columns or
+groups of similar columns is of low rank.
+The matrix completion problem, therefore,
+becomes a rank minimization problem.
+A low rank matrix gives a number of zero
+singular values.
+Therefore, the vector of singular values
+of the low-rank matrix is sparse.
+It is that nuclear norm of a matrix, which
+is equal to the sum of the
+singular values of the matrix, that is
+typically minimized, subject to the
+requirement that the fidelity of the data
+is preserved.
+So, here's yet another example where we
+encounter a sparse vector,
+and this vector in this particular case
+contains the singular values of the matrix
+we tried to complete since this matrix is
+a low rank matrix.
+Here is the denoising or noise problem
+again.
+We address this problem at various points
+during the course,
+but, for example, we talked about
+enhancement during week five.
+And also when we talked about recovery
+during weeks six and seven.
+We can look at the image denoising problem
+from a different angle as well.
+We know from the discussion from week nine
+when we
+talked about compression that we can
+transform this image to
+a different, and in that different domain,
+only a few
+transform coefficients can do a good job
+in representing the image.
+Then use for example, the, the DCT
+transform.
+So, if we consider a patch here of this
+image.
+Let's call it y of i, then we can write
+that y of i equals Ax of i.
+A here represents either the basis of the
+DCT
+transform, so it's a fixed dictionary, or
+it can be
+designed specifically for classes of
+images in which case it
+would be another complete, a long matrix,
+another complete dictionary.
+The important point here for the current
+discussion is that this vector x of i is
+a sparse vector, which means that only
+a few coefficients of this transform are
+needed to provide a
+good representation of this patch or a
+good approximation of this patch.
+So by and large, we're interested in
+solving problems of
+that nature, so y of i is the observed
+noisy image.
+A is the dictionary, either fixed or
+designed from the
+data, and we're interested in solving for
+x of y.
+We can obtain a solution to this problem
+by minimizing with respect to x of, the
+l2 norm of y minus
+Ax squared minus lambda, the l1 norm of
+this vector were the coefficients.
+As you will see, the l1 norm promotes
+sparsity.
+Since noise is not sparse in the
+transferred domain, by
+solving this problem, we are going to
+reconstruct a smooth patch.
+And, of course, we can solve this problem
+for each and every patch of the image
+or we can combine all the patches, and
+we can rewrite this equation in terms of
+matrices.
+So, if we follow such, such an approach,
+here is the resulting de-noised image.
+We are going to talk about the details of
+this approach later in this lecture.
+We talked about image inpainting when we
+covered imagine recovery during weeks six
+and seven.
+It is indeed a recovery problem.
+Information is lost due to some scratches
+in the image, as the
+depicted here or due to the superposition
+of text on the image.
+We want to recover this lost information
+about the
+pixel density, which are represented again
+here as black pixels.
+Why there are a number of techniques
+published
+in the literature in providing solutions
+to this problem.
+We want also to also obtain solutions
+utilizing
+the sparsity machinery we are discussing
+this week.
+We'll use similar ideas to the ones we use
+for denoising.
+So, if we look at a patch here of this
+image, will be noted by y of i, and we use
+this model to represent y of i, r Ax of i.
+So A is the dictionary again, which
+is either fixed or designed utilizing the
+data.
+X of i is the sparse vector that provides
+this approximation,
+and r is a mask, which allows us to use
+this representation
+for the pixels that we know but not the
+pixels we do not know.
+The black pixels in other words inside
+this patch.
+We want again to be able to obtain
+solutions with x of i,
+which has sparse, and we can accomplish
+that, can obtain an xi
+star here as the argument that minimizes
+with respect to x of i, the l2 norm of
+this error
+squared plus lambda.
+The l1 norm of this representation vector,
+which again is remote sparsity.
+We can utilize X star to obtain the
+impainted image as Ax of i star.
+So, putting this machinery to work, we
+obtain these results here.
+We see that the information that was lost
+due
+to scratches and text super position is
+fully recovered.
+We also mention super-resolution during
+weeks six
+and seven when we talked about recovery.
+It is indeed the recovery problem.
+Information is lost during the
+down-sampling process.
+We are observing an image like this one,
+and we want, for
+example, to increase it's resolution by a
+factor of four in each dimension.
+There remain techniques in the literature
+providing solutions to this SR problem.
+We can also provide solutions utilizing
+dictionaries and
+the sparsity machinery we have discussing
+this week.
+We assume we have a set of low resolution
+and corresponding high resolution images.
+Utilizing these data, we train low
+resolution and high
+resolution dictionaries simultaneously,
+relating these
+low resolution, high resolution patches.
+The same sparse coefficient vector
+provides the representation of
+both the low resolution and it's
+corresponding high resolution parts.
+So if we take this patch here and denote
+by h low
+resolution, given this patch and the whole
+image, you can find an x star sparse, as
+we already
+mentioned, to represent y low-resolution
+as A.
+Low resolution h star sparse but also y
+high resolution
+equal to A, the high resolution
+dictionary, but the
+same representation sparse co-efficient
+vector.
+So, utilizing this approach, we observe
+this, and we can construct, reconstruct
+this.
+And with the image at hand here, we
+can obtain the high resolution image as
+shown here.
+If we are to blow up this patch here
+in yellow by using pixel duplication, we
+get this image.
+While if we blow up this patch here, we
+obtain this image.
+So clearly, there is a lot of additional
+resolution that
+has been recovered due to this method we
+discussed here.
+A typical problem in video surveillance is
+to
+separate a background from the foreground
+in a video.
+Here is an example of such a video.
+This is an old problem in video processing
+and computer vision, but a lot of
+people have looked at using the sparsity
+machinery we are discussing this week.
+We can also obtain a solution to this
+problem.
+We put all the observed data into
+one matrix, and then decompose this matrix
+into
+a low rank matrix as was the case
+that made this completion and the sparse
+matrix.
+The low rank matrix represents the
+background.
+This is a video.
+It seems like it's still image because
+nothing changes there in the background.
+While the sparse matrix represents the
+foreground.
+So we see that we can obtain a very good
+separation foreground, background
+using the machinery of sparsity that we
+will cover this week.
+We'll provide the details of the solution
+to this problem in the later lectures.
+Another application where we deal with
+sparse vectors is Robust Face Recognition.
+Given a database of faces, as shown here,
+we form a face dictionary.
+Let's call it A.
+In this A, we stuck each and every image
+into a column of this matrix.
+Then, given a query image, such as this
+one, if we call this b,
+b is approximately equal to Ax where x
+here is a sparse vector,
+indicating which entry in the database
+this b corresponds to.
+So, x can have just one entry equal to one
+if there
+is a perfect match of this squaring image
+into the database or
+the query image can be a combination of
+images in the database,
+where x will have more than one entries,
+but nevertheless it is sparse.
+Here is another query image.
+In both these cases, we have
+abnormalities, such as a scratch or
+occlusion.
+Therefore, the model we end up working
+with is
+that b is approximately equal to Ax plus
+e.
+So this is an error term that takes the
+scratches or
+the occlusion into account where also this
+vector e is sparse.
+Therefore, we need to be able to solve
+problems of this nature whereby we just
+constrain again both x and d to be sparse
+solutions when we try to solve for x.
+So, therefore we identify a person that
+exists in the database.
+Compressive sensing, or compressive
+sampling, is another important
+application area where sparsity plays a
+key role.
+We show here an n by n image.
+It has therefore n squared samples.
+We talked about Nyquist's theorem earlier
+in the course.
+According to which, I need to sample with
+sampling frequencies at
+least twice as high as the highest
+frequency in the signal.
+In the image, you're talking about spacial
+frequencies in the two dimensions.
+According to compressive sampling, we can
+reconstruct the original image with very
+little
+or no error if we acquire fewer samples
+than those, dictated by Nyquist's theorem.
+The sampling, however, now is not done
+with deltas were we go and pick out the
+value of each and every pixel, but by
+projecting the image onto random bases.
+Projection means that we form the inner
+product of the image with a random
+matrix, and this inner product will give
+me a scalar which represents the sample.
+Then, we end up with an undetermined
+system of equations, which we
+can solve efficiently, as we'll see later
+in the class, while informing sparsity.
+And the image is sparsely there in its
+original domain or in a transform domain.
+So, by acquiring only 50% of the samples,
+in other words n squared
+over two, big cells, and getting out the
+construction, we obtain this image.
+It is almost indistinguishable from the
+original image.
+Utilizing only 25% of the sample, so n
+squared over 4, we
+see this at construction, and if we go
+down all the way to 10%,
+n squared over 10, we see this
+reconstruction shown here.
+So we're going to talk about this
+application
+later in this course with considerably
+more detail.
+

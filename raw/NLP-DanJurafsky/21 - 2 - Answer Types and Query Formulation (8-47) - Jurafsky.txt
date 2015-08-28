@@ -1,0 +1,217 @@
+The first step in any kind of question
+answering is answer type detection and
+query formulation. So going back to our
+box diagram here, our flow chart.
+We have a question, and the first thing 
+we're going to do in question processing is
+understand what's being asked here.
+There are as many as five things that we
+normally extract from a question. Perhaps
+the most important is the answer type.
+This is a named entity, a person or a
+place or a date, that tells us what we're
+looking for in this factoid question.
+Query formulation, equally important,
+that's the set of words we're
+gonna send the IR engine, that tells us
+what to look for, what passages are likely
+to have the answer. And then others kinds
+of things depending on the system, may
+also be extracted. So question type
+classification, we wanna know for example,
+is this a definition question. We might
+have to find the definition in the
+dictionary, or build one ourselves. Is it
+a math question? We might wanna answer
+that with mathematics directly, rather
+than, than going to find text snippets. Or
+a list question, we're looking for lists
+of things. So we might wanna look for list
+sources. And there are other kinds of
+things like focus detection, so find the
+question words that are being replaced by
+the answer. Or relation extraction, find
+all the relations between entities in the
+question. We talked about relation
+extraction earlier. And these are used by
+some systems and not by others. So here's
+an example of the kind of things we might
+extract from a question. This is from a
+Jeopardy kind of question. So, they're
+the two states you could be re-entering,
+if you're crossing Florida's northern border.
+So here we're looking for a state,
+a U.S. state, so the answer type is a
+state. What we might want to send to the
+IR engine is, two states, border, Florida,
+and north. These words are gonna be good
+words to find passages that might have the
+answer. The focus, the thing that we're
+trying to answer, is two states. And the
+relations that we might extract, the relations 
+that express what the answer is,
+is, the answer is some
+unknown thing, which is in the border's
+relation with Florida and north. So,
+something that's north of Florida. So if
+we had databases that express geographical
+information like what state borders what
+state, we might look for this relation in
+those databases.
+So, the first step, answer type detection, 
+here we just need named entities.
+So if I see a question like who founded 
+Virgin Airlines, the answer type is person.
+If I see a question like, what Canadian 
+city has the largest population,
+the answer is a city. Relatively simple. 
+And for that we need an answer type
+taxonomy or a type of named entities that 
+might be useful in question answering.
+So for example here's the taxonomy from 
+Li and Roth. They talked about six coarse
+classes. We might ask about abbreviations 
+or entities, descriptions of entities, people, places,
+and numbers. You know, the kind of things
+you might have. And inside those, we might
+have more specific classes. So we might be
+asking about a city or a country or a
+mountain as a type of location, or we
+could be asking about a person or a group
+of people, and we could be asking about
+all sorts of different kinds of entities.
+And here's their answer type taxonomy 
+showing that, some of the, some
+of the individual subtypes of the major
+six entity types. So a numeric
+question could be a date question, or a
+distance question, or a percent question,
+and so on. Any of these kind of types that
+we might wanna find. And here, it's just
+showing you, it's in a small font, so
+you can come back and look at it later.
+But, the kind of answer types that are in
+the Li and Roth taxonomy. So we might
+have currencies or diseases or foods, or
+instruments and so on. And some examples
+of each of these. Or for locations, we
+might have mountains or states, and all
+sorts of things for numbers. Speeds and
+sizes and temperatures and so on.
+The Jeopardy system also used a lot of 
+answer types and they did a nice analysis,
+looking at 2,500 answer types inside
+20,000 questions and what they found was,
+that the most frequent 200 answer types
+covers less than half of the data.
+Here's the 40 most frequent Jeopardy answer 
+types. You can see in Jeopardy you tend
+to be asking about people, or movies or
+countries or cities, and so on.
+Here's more people, authors and so on. 
+But still, there's a pretty broad distribution
+of possible answer types, so we're gonna 
+need a large number of answer type
+detectors to really get a large set of questions
+for something like Jeopardy or even
+for easier factoid questions. How do
+we do answer type detection? Like almost
+everything we've seen so far, we can do
+hand written rules, we can do machine
+learning or we can do hybrids of the two.
+And we're going to see all three of these
+in modern systems. So for example, for
+some kinds of answers we might do very
+well with regular expression rules. So, if
+we see who, and then a form of to be, and
+then a named entity person, then our guess 
+is that we're asking, this is a person
+question. Or if, or if we see in an answer, 
+person and then year dash year, we
+know that this is, this a, that we're
+looking here for a person.
+In other kind of rules, we're gonna be 
+using the question head word.
+And the head word is generally the head of 
+the first noun phrase after the WH word.
+So, here we have WH word which, and then 
+the head word is city. Or here we have
+WH word what and here's the noun phrase, 
+the state flower of California
+and its head is flower. So, this head word 
+often will tell us a lot about the answer type.
+This tells us we're looking for a city 
+and this tells us we're looking for a flower.
+But more often rather than simply writing 
+handwritten rules we treat the problem
+as machine learning. So we define a 
+taxonomy of question types.
+We've seen some already. We annotate 
+training data for each question type
+and now we'll train classifiers using some 
+rich features which might include those
+handwritten rules we've talked about to
+decide what question type a question is.
+What's the answer type of a particular
+question. And the features we're going to
+use for these answer types are the words or
+phrases in the answer, the parts of speech
+tag, we might use the head words we talked
+about, named entities, semantically
+related words. And all of these kind of
+regular expressions we can hand write for
+particular question patterns.
+The next step in factoid QA. We've done, 
+now we've done answer type detection.
+The next step is query formulation. 
+How do we decide what words
+to send to the IR engine to return
+documents and then passages.
+And one well known keyword selection 
+algorithm from Moldovan et al uses
+a number of heuristics, each of which tell you 
+which keywords in the question might be
+important keywords to put in the, in the query. 
+So, if we see words in quotations, that's a
+very likely word that people are looking for.
+We, and that, and another important thing
+to look for is proper names. And then
+other kinds of nominals. And maybe less
+important, verbs. And then, even less
+important, adverbs. And maybe all other
+words maybe even less important. So we
+have a ranking of what words are important
+to put in the query. So for example here's
+a slide from Mihai Surdeanu. So we have a
+question like, who coined the term
+cyberspace, in his novel Neuromancer. Well
+we might throw out some stop words. So who
+and the and in and his. And now we might
+say, well cyperspace and Neuromancer are 
+in quotes. Those are probably things we
+definitely be putting in the query. Term
+and novel are, are nominals, and we saw
+that nominals are an important thing.
+We ranked them as rank four. And now a
+verb might be rank seven. So we might
+say, extract from this that we have two
+terms that are extremely likely to want to
+be in the query and something that's
+a little less likely, couple less likely
+things and even less likely. So now we can
+form the query in various ways. We could
+try just sending the things of rank one.
+Or we could send, go until we have enough
+query words to make a long query, or we
+can send the things that rank one, see how
+many queries we get back, and if there's
+not enough, add in more query terms and so
+on. So what we do with these ranking of
+queries depends on exactly what database
+were querying, whether it's the web or a
+smaller database and so on. So we've seen
+the first step in factoid-based,
+IR-based factoid question-answering. Which is
+extracting an answer type from the
+question and extracting the query terms
+that we're gonna send to the IR engine.

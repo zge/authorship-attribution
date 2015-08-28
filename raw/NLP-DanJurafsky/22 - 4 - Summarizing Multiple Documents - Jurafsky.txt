@@ -1,0 +1,275 @@
+Let's conclude this section by looking at
+more advanced research systems that try to
+answer much more complex questions. So
+consider the following definition
+question, what is water spinach and I've
+given a potential long answer to the
+question what is water spinach. Could we
+generate answers to definition questions
+like this, if let's say they didn't occur
+in a good place on the web and wanted to
+generate them ourselves. Or take a medical
+question. What is the efficacy of a
+particular therapy for a particular
+disease? You might wanna give an answer.
+This one's from a particular paper in the PubMed
+database that answers this question.
+So difficult, hard to answer questions
+that might involve summarizing one or more
+documents. There's in fact a competition on
+answering such complex questions. And I've
+given you some simplified versions of some
+of those questions. How is compost made
+and used for gardening? What causes train
+wrecks? What can be done to prevent them?
+What's the human toll in death or injury
+of tropical storms in recent years? So
+these are the kind of questions that to
+answer them, you'd want to read a lot of
+documents automatically, pull information
+from them, and summarize this information.
+So it's a very difficult task, Answering
+these harder questions is the task of
+query-focused multiple document
+summarization. And there are two standard
+algorithms for this. What we might call
+the bottom up or snippet style method Is
+just like we saw for single document
+summarization. We are going to find a set
+of relevant documents first. Now we are
+going to extract informative sentences
+from the documents, and then maybe we will
+do some ordering and modification. So we
+are just going to grab sentences from
+documents and mix them together. The
+top-down or information extraction method,
+we are going to build specific answers for
+different question types. We will build an
+answer for definition questions and one
+for biography questions, and so on,
+by extracting particular
+information needed for those questions.
+And we will see both of these in this
+little lecture. So here's the snippet based
+method. The bottom up method for query
+focused multi document
+summarization. We're gonna start as, as
+again by grabbing all the sentences from
+now multiple documents. Not just one
+document. So we have a set of sentences.
+And we're gonna modify them. It's common
+to do sentence simplification. We'll take
+a sentence, I'll show you in a second, and
+we'll simplify them in various ways. And
+we'll have lots of different simplified
+versions of sentences. So now we've got lots of
+families of clouds of sentences. And we're
+gonna apply, the log likelihood ratio
+test, and other wa-, other methods of
+pulling good sentences from this set of
+sentences. We now have a set of extracted
+sentences, the little black dots I've
+marked here. And we're gonna order those
+extracted sentences, as we talked about
+for single document summarization. And
+we're gonna modify them in various ways to
+produce the realized sentences. We often
+simplify sentences to get rid of
+unimportant details that would make the
+summary too long. And the, one of the most
+common ways to do this involves parsing.
+We parse the sentences, then we have hand
+written rules based on the parse tree that
+suggest which modifiers are better to
+prune. So, for example, appositives are
+the kind of thing you might prune, so
+Rajam, an artist who was living at the time
+in Philadelphia. We can eliminate that. Or
+attribution clause, International Observer
+said Tuesday blablabla. Well we care more,
+more about what they said, that rebels
+agreed to talks. That's an important fact
+and we can delete maybe the attribution
+clause in our summary. Preposition phrases
+especially those without named entities
+turn out to be the kind of thing that we
+can delete and keep a summary more
+concise. So, the, the increased to a
+sustainable number, maybe a shorter
+summary would just say increased. And
+adverbials at the beginning, like for
+example, or on the other hand or as a
+matter of fact. Things that mattered in a
+lo nger document bur aren't going to be
+appropriate in a small abstract or a small
+summary. So, the simplest method is taking
+writing various rules of this kind. And
+each of these papers gives you another,
+some interesting sets of rules that you
+can use to simplify the sentences. So once
+we've done this, we have a large set of
+sentences including the original sentence
+and the one with the appositive deleted,
+the ones with the PPs deleted and so on. We
+have a whole bunch of different sentences.
+The original and various shortened
+versions. What do we do next? Well now
+we'd like to select from these very
+redundant set of sentences just the ones
+to put in the summary. And they're
+redundant for two reasons. They come from
+multiple documents that might talk about
+the same event. And we've added these
+simplified sentences, so there are all
+sorts of redundancies there. One iterative
+method for content selection, given these
+redundant sentences, is called MMR,
+maximal marginal relevance. And the idea
+is as follows, we're going to iteratively
+or greedily choose the best sentence from our
+set of sentences to insert in our summary
+so far and we want the best sentence to
+satisfy to satisfy two properties. We want
+it to maximally relevant to the user's query
+so we might do something simple like just
+insure it has high cosine similarity to
+the query. And we want it to be novel,
+meaning we want it to be minimally
+redundant with the summary so far. If we've
+just put in a sentence, we don't want to
+put in a variant of that sentence that's
+mostly the same. And we want to measure
+that by just measuring its cosine
+similarity to the summary in choosing
+sentences that have low cosine
+similarity. So, one version of MMR might
+be, we'll have a lambda for weighting these
+two factors. We want a sentence that has a
+high similarity with the query. And which
+has a low, we'll subtract out the similarity
+of the sentence with its most similar
+sentence that's in the summary so far. So
+we'll pick sentences that don't look like any of
+the sentences in the summary so far but
+do look like the query and we'll add those
+sentences in iteratively and we'll stop by
+some criterion, perhaps when we've just
+achieved our desired length. Now, we're
+gonna wanna combine the intuitions of log
+likelihood ratio, picking informative
+sentences, and MMR, choosing non redundant
+sentences. So one of the many ways we
+might combine these intuitions is to start
+by scoring every sentence, based on log
+likelihood ratio, using the words that
+either occurred more than we expect by
+chance, or words that occurred in the
+query. And now, start by including the
+sentence with the highest log likelihood
+ratio score in the summary. And now start
+iteratively adding into that summary,
+other sentences that are not redundant
+with the sentences with the summary so
+far. And when we had single document
+summaries we could pick document order as
+our ordering for the sentences in the
+summary. That's a little harder to do if
+our sentences come from multiple
+documents. So there's various things we
+can do. We can if we're summarizing news
+we can do chronological ordering and look
+at the date that the article came out and
+order the sentences in order of, of actual
+time. We can choose coherence based
+ordering. We can put sentences near each
+other if they have similar meaning. So we
+could look at the cosine between the two
+sentences and sentences that have high
+cosine we could put next to each other.
+Or perhaps we could look at the entities
+discussed by the sentences and if two
+sentences talk about the same entity, we
+could put them near each other. Or we
+could even do some kind of fancy method
+where we look at the source documents and
+look at the actual semantic topics that
+happen in the documents and we could order
+tho--, pick an ordering and apply that to
+our output sentences. So various ways we
+can do information ordering. So that's the
+bottom-up or snippet-based approach to doing
+query focused multi document
+summarization. We grab a whole bunch of
+sentences, we rank them by log likelihood
+ratio with MMR and form our summary that
+way and we order them by some method. The
+alternative method, the information
+extraction method, is used when we have a
+particular kind of question that we wanna,
+we know what kind of things we expect to
+put in the answer. So we know, for
+example, that a good biography contains a
+birth and death, maybe why they're famous,
+their education and nationality, and so
+on. Whereas a good definition contains
+what's called a genus, or hypernym
+sentence. The Hajj is, what is it? It's a
+type of ritual. Or a medical answer about
+a drug's use, You want to talk about the
+problem, the medical condition. You want
+to talk about what is this intervention, this drug or
+procedure and what's the outcome. So,
+knowing these types of questions we can
+know the types of things we might want to
+see in the answer. So, we could then build
+a little detector; let's say that finds
+genus sentences in the documents. Find me
+a genus sentence, find me a species
+sentence, find the dates this person was
+born or died, or was educated. Find where
+they went to school. Or if we're talking
+about a drug, who was the study run on,
+and what is the actual intervention and so
+on. So we could build classifiers to
+extract these kind of information. So
+let's look at an example of a system from
+Blair-Goldensohn that does this kind of
+complex question answering for definition
+questions. We have a question, what is the
+Hajj? And we specify let's say that we
+are going to look at twenty documents to
+pull our summary out and we want a summary
+of length eight sentences long. So we are
+going to extract all of our documents, we
+are going to pull out, we say this is a
+definition question, so we know we need a
+genus species sentence, so we run our
+classifier and find all of our genus
+species sentences, in all of these
+documents, and now we find the other
+sentences and we're gonna for each of the
+pieces of information we need, build little
+clusters of sentences, and use your
+log likelihood ratio and MMR and other
+approaches to decide which sentence to
+pick, and then we're gonna paste these
+into a definition. So we've talked about
+two methods for answering these complex
+difficult questions that require looking at
+multiple documents. We talked about the
+bottom up snippet based method that uses
+log likelihood ratio and MMR to choose
+just the right non-redundant informative
+sentences from lots of documents. We've
+talked about an information extraction
+style method in which we build separate
+templates for each question type and pull
+out particular attributes that are
+important things to put in the answer, for
+that question. Of course research on these
+harder questions that require looking at
+multiple documents is really just
+beginning. And this is gonna be an
+important and exciting area for us to
+follow in the future to see where their
+research goes.

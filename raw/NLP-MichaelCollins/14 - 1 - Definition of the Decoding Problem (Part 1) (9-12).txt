@@ -1,0 +1,201 @@
+Okay, so in this next segment of the 
+class, we're going to talk about how to 
+decode with phrase-based translation 
+models. 
+That is, how we actually apply 
+phrase-based translation models to new 
+sentences to produce translations. 
+So to recap, the critical ideal in a 
+phase-based model is the idea of a 
+phrase-based lexicon. 
+So, a phrase-based lexicon contains 
+phrase entries f, e. 
+So these are pairs, where each f is a 
+sequence of one or more foreign, foreign 
+words, and each e is a sequence of one or 
+more English words. 
+So, if we look at this particular German 
+sentence, we shall use as an example 
+throughout these slides. 
+and say we want to translate that into 
+English, then the phrase-based lexicon is 
+going to provide various entries which 
+may be relevant to this particular 
+sentence. 
+So here are some example entries in the 
+lexicon, we might say, these two words in 
+German correspond to we must or maybe 
+these three words in German correspond to 
+we must also. 
+So we have the first two words here and 
+the first three words here. 
+This single word in German, which appears 
+here, might be translated as seriously, 
+so these are three entries from the 
+phrased-based lexicon. 
+In practice, a lexicon might have, you 
+know, millions of entries. 
+And we saw in the last lecture segment 
+how we can extract these kinds of 
+lexicons from large quantities of 
+translation examples, by first running 
+the IBM translation models to derive 
+alignments, and then based on those 
+alignments, pulling out these phrase 
+based entries. 
+I'll use g of f, e to refer to the score 
+for lexicon entry. 
+So each of these has a score. 
+And I wouldn't mind having minus 1.5 
+here, minus 1.8 here, minus 0.2 here. 
+so for example, this might be the log of 
+the ratio of accounts. 
+This is very similar to maximum 
+likelihood estimate, this could be 
+thought of as t of f given e with the 
+conditional probability of the foreign 
+sequence of words, f condition on the 
+English sentence sequence of words e 
+ratio of these two counts. 
+And we're going to take the log of this 
+as we saw in the last lecture, it's 
+convenient to take logs, and then, we'll 
+start summing these different scores for 
+different phrases used in the 
+translation. 
+So throughout this lecture, I'm going to 
+consider phrase-based models consist of 
+three things. 
+So firstly, a phrase-based lexicon 
+consisting of f, e pairs, exactly as I 
+just showed you, the second thing we're 
+going to make use of is a trigram 
+language model for the language which 
+we're trying to translate into. 
+So throughout this lecture, I'll assume 
+that we're trying to translate from 
+German into English. 
+And so, we have these phrase entries as 
+one component. 
+The second component is a trigram 
+language model for English. 
+So we have a language model, for example, 
+a trigram language model for the language 
+into which we're trying to translate. 
+So this will have parameters exactly as 
+we saw in the first lecture of this 
+class, for example, parameters such as 
+the probability of also, given that the 
+previous two words were we and must. 
+And finally, we're going to have a 
+distortion parameter. 
+This is a single parameter, this is 
+typically negative. 
+And as we'll see, this will penalize 
+things from moving too far in the 
+translation process, when we start to use 
+these phrases to translate particular 
+examples. 
+So that's essentially it. 
+These are the three components of a 
+phrase-based translation model. 
+The little bit more about the trigram 
+language model. 
+So these parameters can be trained on 
+very large quantities of English text. 
+And the trigram language model is going 
+to be invaluable in providing a prior 
+distribution over which sentences are 
+versus aren't likely in English. 
+So, here's some notation I'll use 
+throughout this lecture for the given 
+sentence that we're try, trying to 
+translate. 
+We can extract a set of possible phrases 
+that are applicable to this particular 
+sentence, and it'll be useful to use the 
+following notation for these phrases, 
+s,t,e. 
+So s is going to be a start point of the 
+phrase, and t is going to be the end 
+point of the phrase, and e is a sequence 
+of one or more English words. 
+So one phrase that is applicable to this 
+particular example is 1, 2, we must, so 
+let's number these words. 
+And that says that these two words, wir 
+mussen, can be translated as we must. 
+Okay, so words 1 to 2 inclusive can be 
+translated as we must. 
+Okay? 
+so I'm going to use capital P, script P, 
+to denote the set of all possible phrases 
+for a particular sentence, okay? 
+So, these are going to be derived through 
+entries. 
+This comes from the fact that we have 
+some phrase entry in our lexicon, saying 
+that these two words can be translated as 
+we must. 
+And because, these two words, wir mussen, 
+appear here we can apply this entry. 
+It's just going to be a little bit more 
+convenient to think of these phrases once 
+we have a particular input sentence as 
+having a start point, an end point and an 
+English string. 
+So P is going to be the set of all 
+possible phrases for a sentence. 
+So this is going to be a set. 
+So this might, for example, include 1, 2, 
+we must. 
+It might include 1, 3, we must also, 
+saying that these three words can be 
+translated as we must also. 
+it might include an entry saying 6, 6, is 
+seriously, that would come from an entry 
+saying that the word ernst, which is 
+sixth here can be translated as 
+seriously, and so on, and so on. 
+This set might again, be quite large, and 
+notice that many of these phrases will 
+overlap. 
+For example, here, I have an entry for 
+words 1 through 2, and here, I have an 
+entry for words 1 through 3. 
+So in summary, big P is just the set of 
+all possible phrases for an input 
+sentence, where a phrase is a start point 
+and an end point and an English string. 
+So for any phrase p, so let's say p is 
+equal to 1, 2, we must. 
+I'll sometimes use the following 
+notation. 
+So, sp, tp, ep are its three components. 
+So s of p is 1, t of p is 2 in this case, 
+and e of p is equal to we must. 
+Okay? 
+And so these three functions are just 
+pulling out the three different 
+components of the phrase. 
+And then, finally, g of p is going to be 
+the score of the phrase, so this might be 
+minus 2.5. 
+And that will come from the original 
+lexicon, so if we have this entry, entry 
+saying wir mussen, we must, and g of this 
+is equal to minus 2.5. 
+Remember, this is typically log count of 
+this whole phrase divided by count of the 
+English. 
+This is just saying that's the score from 
+the phrase in the table, okay? 
+So again, p is going to be the set of old 
+phrases for the sentence, each phrase is 
+going to have some scores, some 
+probability. 
+And we can easily calculate the set just 
+by taking our phrase-based lexicon and 
+applying it to the particular input 
+sentence that we're trying to translate. 
+

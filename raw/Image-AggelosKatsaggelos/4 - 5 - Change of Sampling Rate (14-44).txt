@@ -1,0 +1,367 @@
+Welcome back.
+Now that we covered and understood
+something in the previous segments, we
+address in this segment the change of
+sampling rate of a discrete signal.
+Any many applications we are interested in
+either
+increasing the number of samples in an
+image, referred
+to as up-sampling or interpolation, or
+reducing the number
+of samples, referred to as down sampling
+or decimation.
+We analyze in this segment these
+operations in the discrete frequency
+domain.
+We see, for example, that down-sampling
+introduces aliasing,
+and the way to minimize the effect of
+aliasing is to robust filter the image
+first
+with an appropriate filter before deducing
+its special resolution.
+Similarly we show one of the possible ways
+to perform app sampling using discrete
+frequency domain fielding.
+Sampling grade conversion is an important
+operation with
+many applications, for example in e-merge
+and video compression.
+Multi-rate signal processing is an
+important sub-area of signal processing.
+The rate conversion in general can be
+performed by a non-integer factor.
+So, we are touching the tip of the iceberg
+in
+some sense in this segment on this very
+important topic.
+Let us now proceed and look at the
+details.
+Sampling is an important topic.
+And it [UNKNOWN] from the continuous world
+to the discreet world.
+Equally important is the process of
+resampling or
+changing the sampling grade in the
+discreet world.
+It's often that we need to change the size
+of an image.
+Either make it larger, outsample it, or
+smaller, downsample it.
+Although this is an interesting and rather
+broad
+topic, that'll be revisited during the
+course, we
+want to mention a few ideas here, as they
+relate to what we've been covering so far.
+Again, I will not be showing or deriving
+any
+equations, but pictorially provide some
+information of what's taking place.
+For those of you interested to look
+further into this, they can find
+this material in any standard book on
+image processing, or one-dimensional
+digital signal processing.
+So given an image, I'm interested in
+reducing its size by two in each
+direction.
+And here you see an eight by eight image.
+[SOUND] But I want to reduce it to a four
+by four image.
+We also show the spectrum of the this
+image here so this is 2 pi, 2
+pi, [SOUND] and let's call this frequency
+omega one
+maximum in the one dimension, omega two
+maximum in the vertical direction.
+A simple, or naive way to perform this
+down-sampling is to remove
+every other column and every other row of
+the image as shown here.
+[SOUND]
+So, therefore, I end up with a four by 40
+wedge.
+[SOUND]
+What happens in the frequency domain is
+shown here.
+The spectrum is squeezed down.
+The height is reduced.
+I, of course, don't show the height here.
+I just show the support.
+But also, we see that the maximum
+frequency moves to this point, [SOUND]
+in the horizontal and to this point in the
+vertical direction.
+So because of that, we see that aliasing
+occurs.
+High frequencies alias themselves as low
+frequencies.
+And this again, manifests itself in the
+special domain in the form of jagged
+edges.
+So, if this is my form of down-sampling,
+throwing away, in other words, every
+other column of every other row, in order
+to avoid aliasing, I should be
+robust filtering the image before
+down-sampling.
+And I will, should, be robust filtering
+with a filter with cut-off
+frequencies pi over m in the 1, and pi
+over m in the other direction
+where m is the down-sampling factor.
+[BLANK_AUDIO]
+So, you see an example here of the
+down-sampling process we just described.
+They original image is eh, 4200 by 3000
+pixels.
+It's too large.
+It's not shown here.
+And they show the result of down-sampling
+with and wit, without, pre filter.
+Pre-robust filtering.
+So on the left, you see the image that
+resulted by just again throwing away every
+ninth columns and every ninth rows since
+the
+down-sampling factor is ten in this
+particular case.
+And the aliasing effect as already
+mentioned manifests itself here if
+we look at you know, edges or high
+frequency components, we
+see that low and high frequencies are
+mixed up it appears
+everywhere in this building, this is a
+picture of the Chicago skyline.
+While the flat regions, like the regions
+here don't show any effective aliasing, as
+expected.
+On the right, I show the down sample to
+the
+image the same size to the one on the
+left, but
+in this case, before down sampling, the
+image was robust
+filter by the Gaussian filter of support
+11 by 11 pixels.
+And the Gaussian means that the impulse
+gets some Gaussian shade within this
+original support.
+So in this case, you see that the high
+frequencies available preserved.
+Of course, we lost some high frequencies
+with the
+robust filtering, but we were able to
+preserve some
+of them it's just, you compare all kind of
+different regions here you can easily see
+the difference.
+[BLANK_AUDIO]
+So let us see what is a way now for
+up-sampling an image based on what we have
+learned so far.
+So, we're shown here in this toy example a
+four by four image.
+And we are interested in turning it into
+an eight by eight image.
+We show the spectrum here of this image,
+so this
+is 2 pi, this is 2 pi in the vertical
+direction.
+The first step towards up-sampling is to
+introduce columns
+and rows of zeros in between the existing
+samples.
+So clearly now I have an eight by eight
+image.
+[BLANK_AUDIO]
+What takes place in the frequency domain
+is that
+I see frequency scaled version of the
+original spectrum.
+So I have a replica, a scaled replica of
+the original
+spectrum appear here at pi, another one at
+pi in this direction.
+And I only have one replica between zero
+and
+2 pi because the up-sampling factor is
+equal to two.
+All I'm interested in is keeping the base
+band of the spectrum of the image.
+And they can do that by utilizing the
+robust filter indicated here.
+So, what happens in the special domain is
+that I'm convolving the image within this
+fully
+transfer of this robust filter, which is
+referred
+to as the idea low pass interpolation
+filter.
+So, the zero values that they have
+introduced will change
+now to specific values based on the
+existing neighboring pixels.
+[BLANK_AUDIO]
+Let us look at the up-sampling example.
+And 128 by 128 image is shown here.
+And we would like to increase its
+resolution
+by a factor of two in both direction.
+So, end up with a 256 by 256 image.
+We show here the spectrum of the image.
+It's a 256 by 256 spectrum, which was
+obtained by zero
+padding the originally image to the 256 by
+256 size.
+We want to show the spectrum so that they
+can see
+how the result is after we follow the
+steps of up-sampling.
+[BLANK_AUDIO]
+So, the first step towards up-sampling is
+to insert zero
+columns and zero rows to the original 128
+by 128 image
+so that the resulting image now is a 256
+by 256 image.
+[SOUND]
+If I look at the spectrum of this image,
+I see this replicas of the base-bun appear
+here,
+this is pi, pi for example, [SOUND] due to
+the insertion of zeros.
+The final step is to low-pass filter the
+spectrum so that I only keep
+the base-bun, [SOUND]
+while rejecting all other frequencies.
+So, the blue areas here represent zero
+values.
+Now if I bring this back to the special
+domain, I see the interpolated image as
+shown here.
+[SOUND] An alternative way to up-sample
+the image is to perform the convolution in
+the special domain with an interpolating
+filter like the one shown here.
+So this the impulse filter of the filter.
+This is the H zero, zero point.
+So first of all lets see what this filter
+is doing so if I have in the
+low resolution image let's say four values
+A, B, C, D.
+As we saw the first step is to introduce
+rows and columns of zeros.
+[SOUND]
+And the idea of interpolation is to change
+these values of zero to some other values.
+So, if I perform the convolution again of
+this filter here, with this image we see
+that this zero here will be replaced by a
+plus b over 2.
+This by b plus d over 2.
+While this pixel here will be replaced a
+plus b plus c plus d divided by 4.
+I just take the impulses pulse of these.
+It's symmetric, so even I flip it around,
+it will stay the same.
+And I place it.
+Place the one, the center, the pixel
+location I tried to find its value.
+And we see that this is indeed the case.
+Now what's happening the frequency domain
+is that the spectrum of the
+low resolution, let's call it, the 128 by
+128 image the 256
+by 256 spectrum, which again we find by
+padding with zeros as
+I showed earlier, is multiplied by the
+frequency response of the filter.
+And what's the frequency response of this
+one?
+Is by now, we should be able to look at it
+and by observation
+we know that it's one plus cosine omega
+one, plus cosine
+omega two, plus one half cosine omega one,
+plus omega
+two, plus one half cosine omega one, minus
+omega two.
+So this filter will show actually the
+magnet of
+this at an earlier point how it looks
+like.
+It's going to multiply the spectrum of the
+image.
+And this is the resulting spectrum of this
+up-sampled image.
+So we see that what happens is exactly
+what I had before.
+In other words, this is a low-pass filter.
+So, that replicas here in the middle of
+the spectrum are rejected, and I only keep
+just one replica of the spectrum, the base
+bun.
+However, now I am not using a sharp robust
+filter as in the previous example but
+the filter here is the shape that is
+expressed by this, equation here, right?
+H omega one omega two.
+And this is a big fit here is an image.
+[BLANK_AUDIO]
+So, this brings us to the end of the third
+week.
+By now, when we look at an image we do not
+only see it's bright and
+dark regions, or its different colors, but
+we
+can distinguish between high and low
+spatial frequencies.
+Regions where they decide the values
+transition in a
+fast way or regions where the transition
+slowly expected it.
+During this week, we learned that there
+exist computationally efficient ways
+called Fast Fourier Transforms.
+That allow us to represent any given image
+in the discrete
+frequency domain, and therefore
+distinguish between
+high and low and intermediate frequencies.
+We also learned that we can now implement
+an
+LSI system or perform filtering in the
+discrete frequency domain.
+For filters with life support variables
+response, this is
+indeed a much faster way to carry out
+filtering.
+We finally learned how the Fourier tools
+can
+help us in analyzing sampling or sampling
+grade conversion.
+The Fourier tools, are of the most
+fundamental and useful tools,
+one interesting thing, working in discrete
+signals can get equipped with.
+They are actually the same tools whether
+we are interested in
+processing speech, or audio, images, video
+or videos of three dimensional objects.
+I'm certain that the tools you've acquired
+in these last two weeks
+will serve you well for the rest of your
+signal processing related careers.
+We will actually cover next week another
+tool, you might call it
+so, motion estimation, which is of the
+utmost usefulness when we process video.
+We'll also cover, next week, some of
+the fundamental notions of color image
+processing.
+So, with that, I'll see you all next week.
+

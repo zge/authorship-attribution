@@ -1,0 +1,319 @@
+Welcome to the course on audio signal
+processing for music applications.
+In the previous demonstration
+lecture of this week
+we talked about the sinusoidal model,
+from a practical perspective.
+So we analyzed some sounds,
+some simple sounds.
+And we tried to figure out what parameters,
+from the sinusoidal model,
+would give us a good visualization and
+re-synthesis of the sound.
+So we want to
+complicate it a little more, by choosing
+a little bit more complex sound.
+So, we are going to analyze the Mridangam.
+The Mridangam is an instrument,
+a percussive instrument.
+From the south of India that is played
+as part of the Carnatic music tradition.
+And in this picture in fact,
+we're seeing Ajay on the Mridangam and
+he's a T.A. of this course.
+And in the voice,
+singing, is Vighnesh.
+Which is also a collaborator
+in our group and we are 
+also going to be analyzing
+some of his sounds.
+So let's go find some Mridangam sounds.
+And of course what we would do is
+go into freesound.
+So if we look for Mridangam in freesound.
+Now we're going to see, well,
+there are quite a few sounds.
+There are 7,000 sounds of the Mridangam,
+that's pretty good.
+And the first one,
+let's maybe just open this first one,
+And in fact it's a sound
+that was uploaded by Ajay.
+And we can listen to it.
+[SOUND]
+Okay, that's
+pretty nice.
+The Mridangam is a
+very interesting instrument.
+It produces quite a few different
+qualities of sound, the way
+the instrument is hit and
+there is different bowls, that are called,
+to produce different sound qualities.
+And rhythmically is really complex.
+I mean, the music of
+the Carnatic music tradition.
+And the way that the Mridangam is played
+it explores very sophisticated and
+complex rhythmic structures.
+Let's just use one of these sounds.
+In fact, as part of the package of sounds
+that we are using for this class,
+there is a sound by Ajay.
+In fact it's this fragment here.
+And we can also listen for that one.
+'Kay so this is the sound.
+And we can play it.
+[SOUND] 'Kay so
+let's analyze this sound by Ajay.
+Let's open the sms-tools GUI.
+And let's start by looking at
+the short time Fourier transform.
+So we'll go and get a mono version
+of this sound, Mridangam sound.
+Okay, and we have to decide what
+parameters to use, so before we can
+really make any decision let’s just
+takes some default kind of parameters.
+For example, let's use Hanning window,
+that's kind of a default
+window that works quite well.
+In terms of the window size okay,
+we don't know much, but okay, let's
+start with 1,000 samples of the window.
+The FFT size,
+when we don't know much about it
+the bigger the better,
+if it does not take too long.
+So okay, so
+4,096 seems like a good enough number.
+And the hop size, well it should be
+the smaller possible,
+because percussive instrument,
+with this sharp attacks,
+it's good that we have a lot of frames and
+we can have 
+like a decent time resolution.
+So let's compute this, okay.
+So this is
+the result, the output should be
+the same because we haven't done much
+[MUSIC]
+Yeah.
+it's the same,
+we haven't done much to it and
+the hop size is in a good 
+relation with the window size.
+Now what basically would like to is
+understand a little bit the sound so
+that we can better choose the parameters.
+So, let's think about the window
+size that best fits this sound.
+So for doing that
+let's zoom into one of these sounds.
+For example, this one looks good
+because it has a lot of horizontal lines.
+Okay?
+So these are the partials of the sound.
+
+It's a membrane that creates 
+some vibrations.
+They may not be completely harmonic,
+but clearly there are
+some very stable partials of the sound, of
+the resonance of the instrument.
+And we would like to see what is the
+minimum distance between two partials,
+so that we can decide what is
+the resolution that we need,
+the best resolution that we need.
+Okay?
+And by looking here
+where the cursor is, we can see, for
+example, that this first horizontal line
+is around 200 hertz, and
+the second one is around 400 hertz.
+Okay?
+So that means that according to this,
+at least
+the minimum distance between two
+consecutive partials is around 200 Hertz,
+okay.
+So from that we can try to compute
+an appropriate window size. 
+As we said in theory class, we have to
+start with number of bins of a window.
+So, let's start with this Hamming Window,
+so it's four bins and
+let's multiply it by the sampling rate,
+44100, and divide it by the frequency
+resolution we want to have.
+In this case we make a guess of
+200 hertz, that we identified as
+a distance that was
+present in these sounds.
+Okay, so this is 882 samples.
+Okay, so we would need these 881, or
+lets say 83 samples, so that we have
+a value
+that is an odd size.
+Let's still keep the FFT size big.
+So, there's no harm on that.
+And in terms of the hop size, well it
+looks like we can have a smaller one.
+So let's see,
+220, that would be 1 4th of that.
+Okay?
+And let's compute it.
+That's not that different
+from where we started.
+So in fact
+where we started was pretty good.
+Okay.
+So this is the kind of analysis that
+should be okay according to this measure.
+Now, let's analyze the sound
+using the Sinusoidal model.
+So let's go to the interface,
+and let's open the sine model.
+So let's go for
+the Mridangam sound, okay?
+And well, we have to choose 
+the parameters for
+that, so let's use the same ones,
+So, we have this 800,
+around 883 samples.
+Lets use the same, the hamming window.
+The FFT size, lets leave it to this 4096.
+Magnitude threshold,
+maybe we do not need that much.
+Let's say minus 60.
+duration, well let's make sure
+that we have good enough tracks, so
+0.05.
+Number of sinusoids, 150,
+Yeah, we need quite a bit.
+Deviation, doesn't deviate that much
+the sinusoids in this type of sounds.
+So, this will be okay.
+Let's just first try this one.
+Let's see what we get.
+Well, not that much, okay?
+So we have analyzed the sound and
+we obtained very few sinusoids,
+and if we listen to the result,
+[MUSIC]
+well, not much there,
+it has some sound, but not much.
+So, what can we improve from this.
+Well, the window size, 
+I guess it was all right.
+Clearly the magnitude threshold could be lower,
+because clearly this sound
+was not recorded very loud.
+And a lot of these things, especially
+within the decay, is quite soft.
+And clearly the sinusoidal
+tracks could be shorter.
+Because the strokes are very short.
+And some of these trajectories
+are going to be very short.
+So let's have it at 0.01.
+Let's just have the rest as it is.
+Okay, that's better.
+That's better.
+Of course from this picture we might not
+get a good idea because we don't see 
+the amplitude of each of these but
+it gives you something.
+And clearly on the waveform
+it's pretty good, much better.
+Let's listen to that.
+[MUSIC]
+Yeah, that's pretty good,
+that's pretty good.
+Of course, one basic problem is
+the frequency resolution and
+the time resolution,
+this time-frequency compromise.
+So let's see if we can get
+better frequency resolution.
+So these harmonics,
+I am sure there are some,
+as we can see here,
+that are closer together.
+These are partials.
+They're not harmonic, in fact.
+So, some are related harmonically,
+because in the resonance of
+the instrument emphasizes certain
+harmonics, but some are not completely.
+So let's try to make it bigger window so
+that we can capture partial that
+might be closer together.
+So for example let's go to 3001 samples.
+Quite a bit more.
+See what happens.
+Okay.
+And let's just leave the rest untouch.
+And let's compute it.
+Okay, interesting.
+So we definitely got many more lines.
+But looking at the wave form,
+it doesn't look too good.
+Let's listen to that.
+[SOUND] So in fact, if you pay attention,
+one of the biggest difference is that
+now the attacks are not crisp.
+They are kind of a smeared.
+We see it also here in the waveform,
+that the attacks are not so good.
+So okay.
+So that was not a good idea.
+We might have gained on
+frequency resolution.
+But we definitely lost in time resolution.
+So let's go back to
+a number that is, maybe?
+let's have 1,000 which
+is kind of a compromise.
+See what's happening now.
+And okay, that's pretty good.
+Looking at the waveform
+It looks quite decent.
+And if we listen to that
+[SOUND] Okay it's pretty good.
+Even though
+if you listen carefully we are still
+missing a little bit of the sound.
+The sound especially during the attacks.
+There is a lot of energy.
+There is a lot of noise into 
+that maybe with these sinusoids
+are not well captured.
+But that's one of the things
+that we'll talk about and
+we'll learn how to handle
+in the next few classes.
+This is all I wanted to
+say in this lecture.
+So let's go back to the slides.
+So we have done a little bit of more
+analysis of a particular sound.
+In this case, the Mridangam,
+using the sinusoidal model.
+And of course, we have used the sms-tools
+and sounds from freesound.
+Hopefully, this has given you a better
+understanding of the sinusoidal model and
+at the same time
+Maybe you have discovered this
+new fascinating instrument,
+which is the Mridangam, and which I
+encourage you to listen to it and
+especially in the context
+of Carnatic music.
+So this is all and
+I will see you next class.
+Thank you very much.
+

@@ -1,0 +1,280 @@
+In this video, I'm going to talk about the
+storage capacity of Hopfield nets.
+Their ability to store a lot of memories
+is limited by what are called spurious
+memories.
+These occur when two nearby energy minima
+combine to make a new minimum in the wrong
+place.
+Attempts to remove these spurious minima
+eventually led to a very interesting way
+of doing learning in things considerably
+more complicated than a basic Hopfield
+net.
+At the end of the video,
+I'll also talk about a curious historical
+rediscovery where the physicist trying to
+increase the capacity of Hopfield nets,
+rediscovered the perceptron convergence
+procedure.
+Off to Hopfield, invented Hopfield nets as
+memory storage devices.
+The field became obsessed by the storage
+capacity of a Hopfield net.
+Using Hopfield Storage Rule for a totally
+connected net, the capacity is about 0.15N
+memories.
+That is, if you have N binary threshold
+units, the number of memories you can
+store is about 0.15N before memories start
+getting confused with one another.
+So that's the number you can store and
+still hope to retrieve them sensibly.
+Each memory is a random configuration of
+the N units, so it has N bits of
+information it.
+And so, the total information being
+stored, in a Hopfield net is about 0.15N
+squared bits.
+This doesn't make efficient use of the
+bits that are required to store the
+weights.
+In other words, if you look at how many
+bits the computer is using to store the
+weights, it's using well over 0.15N
+squared2 bits to store the weights.
+And therefore, this kind of distributed
+memory and local energy minima is not
+making efficient use of the bits in the
+computer.
+We can analyze how many bits we should be
+able to store if we were making efficient
+use of the bits in the computer.
+Those N squared weights and biases in the
+net.
+And after storing M memories, each
+connection weight has an integer value in
+the range -M to M. That's because we
+increase it by one or decrease it by one
+each time we store a memory, assuming that
+we used states of -one and one.
+Now, of course, not all values will be
+equiprobable, so we could compress that
+information.
+But ignoring that, the number bits it
+would take us to store a connection rate
+in a naive way is log 2M + one, Cuz that's
+the number of alternative connection rates
+and that's a log to the base two.
+And so, the total number of bits of
+computer memory that we use is of the
+order of N squared log 2M + one.
+So, notice that, that scales
+logarithmically with M.
+Whereas, if you store things in the way
+that Hopfield suggests, you get this
+constants 0.15 instead of something this
+scale is logarithmically.
+So, we're not so worried about the fact
+that the constant is a lot less than two,
+What we're worried about is this
+logarithmic scaling.
+That shows we ought to be able to do
+something better.
+If we ask, what limits the capacity of a
+Hopfield net? What is it that causes it to
+break down? Then, its merging of energy
+minima.
+So, each time we memorize a binary
+configuration, we hope that we'll create a
+new energy minima.
+So, we might have a state space for all
+the states of the net being depicted
+horizontally here, and the energy being
+depicted vertically.
+And, we might have one en, energy minimum
+for the blue pattern and another for the
+green pattern.
+But, if those two patents are nearby, what
+will happen is we won't get two seperate
+minima. They'll merge to create one
+minimum at an intermediate location. And
+that means, we can't distinguish those two
+seperate memories, and indeed we'll recall
+something, that's a blend of them rather
+than the individual memories.
+That's what limits the capacity of a
+Hopfield net, that kind of merging of
+nearby minima.
+One thing I should mention is this
+picture, is a big misrepresentation. The
+states of a Hopfield matter really, the
+corners of a hyper cube. And, it's not
+very good to show, the corners of a hyper
+cube, as if they were continous one
+dimensional horizontal space.
+One very interesting idea that came out of
+thinking about how to improve the crest of
+the Hopfield net is the idea of
+unlearning.
+This was first suggested by Hopfield,
+Feinstine and Palmer, who suggested the
+following strategies.
+You left a net settle from a random
+initial state, and then you do unlearning.
+That is whatever binary state it settles
+to, you apply opposite of the storage
+rule.
+I think you can see that with the previous
+example, that red merge minimum.
+If you let the net settle there and did
+some unlearning on that merge minimum,
+you'd get back the two separate minima cuz
+you'd pull up that red point.
+So, by getting rid of deep spurious
+minima, we can actually increase the
+memory capacity.
+Hopfield, Feinstein and Palmer showed that
+this actually worked, but they didn't have
+a good analysis of what was really going
+on.
+Francis Crick, one of the discovers of the
+structure of DNA, and Graham Micherson,
+proposed that unlearning might be what's
+going on during REM sleep, that is Rapid
+Eye Movement sleep.
+So, the idea was that during the day, you
+store lots of things, and you'll get
+spurious minima.
+Then at night, you put the network in a
+random state, you settle to a minimum,
+And you unlearn what you settled to.
+And that actually explains a big puzzle.
+This is a puzzle that doesn't seem to
+puzzle most people that study sleep but it
+ought to.
+Each night, you go to sleep and you dream
+for several hours. When you wake up in the
+morning, those dreams are all gone. Well,
+they're not quite all gone. The dream you
+had just before you woke up, you can get
+into short term memory and you'll remember
+it for a while. And if you think about it,
+you might remember it for a long time.
+But, we know perfectly well that if we'd
+woken you up at other times in the night,
+you'd have been having other dreams, and
+in the morning their just not there.
+So, it looks like you're simply not
+storing what you're dreaming about, and
+the question is, why? In fact, why do you
+bother to dream at all?
+Dreaming is paradoxical and that the state
+of your brain looks extremely like the
+state of your brain when you're awake,
+except that it's not being driven by real
+input. It's being driven by a relay
+station just after the real input called
+the thalamus.
+So the Crick and Mitchison theory at least
+explains, functionally, what the point of
+dreams is, is to get rid of the spurious
+minima.
+But, there's another problem with
+unlearning, which is more mathematical
+problem, Which is, how much unlearning
+should we do?
+Now, given more you've seen in the school
+so far, a real solution to that problem
+will be to show that unlearning is part of
+the process of fitting a model to data.
+And, if you do maximum likelihood fitting
+of that model, then unlearning will
+automatically come out and fit into the
+model.
+And what's more, you'll know exactly how
+much unlearning to do.
+So, what we're going to try and do is
+derive on learning as the right way to
+minimize a cost function.
+Where the cost function is, how well your
+neural net models the data that you saw
+during the day.
+Before we get to that, I want to talk a
+little bit about ways that physicists
+discovered for increasing the capacity of
+the Hopfield net.
+As I said, this was a big obsession with
+the field.
+I think it's because physicists really
+love the idea that math they already know
+might explain how the brain works.
+That means, post doctoral fellows in
+physics who can't get a job in physics
+might be able to get a job in
+neuroscience.
+So, there are a very large number of
+papers published in physics journals about
+Hopfield and their storage capacity.
+Eventually, a very smart student called,
+Elizabeth Gardner, figured out that
+there's actually a much better storage
+rule if you were concerned about capacity.
+And that it would use the full capacity of
+the weights.
+And I think this storage rule will be
+familiar to you.
+Instead of trying to store vectors in one
+go, what we're going to do is we're going
+to cycle through the training set many
+times. So, we lose our nice online
+property that you only have to go through
+the data once. But in return, we're going
+to gain, more efficient storage.
+What we going to do is we going to use the
+perceptual convergent procedure to train
+each unit to have the correct state given
+the states of all the other units in that
+global vector that we want to store.
+So, you take your net, you put it into the
+memory state you want to store, and then
+you take each unit separately and say,
+would this unit adopt the state I want for
+it, given the states of all the other
+units?
+If it would, you leave its incoming
+weights alone.
+If it wouldn't, you change its incoming
+weights in the weights specified by
+convergence procedures. And notice, these
+would be integer changes to the weights.
+You may have to do this several times, and
+of course, if you give it to many
+memories, this won't converge. You only
+get convergence with a perceptron
+convergence procedure if there is a set of
+weights that will solve the problem.
+But assuming there is, this is much more
+efficient way to store memories in a
+Hopfield net.
+This technique is also being developed in
+another field, statistics.
+And statisticians call the technique
+pseudo-likelihood.
+The idea is to get one thing right given
+all the other things.
+And so, with high dimensional data, if you
+want to build a model of it, the idea is
+you build a model that tries to get the
+value on one dimension right given the
+values on all the other dimensions.
+The main difference between the perceptron
+convergence procedure that's normally used
+and pseudo-likelihood is that, in the
+Hopfield net, the weights are symmetric.
+So, we have to get two sets of gradients
+for each weight and average them.
+But, apart from that, the way to use the
+full capacity of a Hopfield net is to use
+the perceptron convergence procedure and
+to go through the data several times.

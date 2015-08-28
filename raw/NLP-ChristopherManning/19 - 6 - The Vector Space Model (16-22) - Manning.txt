@@ -1,0 +1,339 @@
+Hi again. Okay we've already laid some of
+the ground work with notions like term
+frequency and inverse document frequency.
+In this segment what I want to introduce
+is probably the retrieval model of the
+vector space model, which is one of the
+most commonly used models of information
+retrieval in real systems. So we saw in
+the previous segment how we turn documents
+into real valued vectors. And so we now
+have a V-dimensional vector space where V
+is the number of words in our vocabulary.
+The terms, the words, are the axes of the
+space, and documents you can think of as
+either just points in this space, or
+vectors from the origin pointing out to
+those points. So we now have a very high
+dimensional space. Tens of millions of
+dimensions in a real system when you apply
+this such as in a web search engine. The
+crucial property of these vectors is that
+they're very sparse vectors. Most of the
+entries are zero, because each individual
+document only typically has a few hundred
+or thousand words in it. So then if we
+have this vector space of documents, how
+do we handle querying it when a query comes
+in? And the key idea there is that we
+treat queries in exactly the same way.
+They're also going to be vectors in the
+same space. And then if we do that we can
+rank documents according to their
+proximity to the query in this space. So
+proximity corresponds to similarity of
+vectors, and therefore it's roughly the
+reverse of distance. And we're doing this
+because we want to get away from the,
+you're either in or out, Boolean model,
+and have a relative score as to how well a
+document matches a query. We're going to
+rank more relevant documents higher than
+less relevant documents. Let's try and
+make that all a bit more precise. So how
+can we formalize proximity in a vector
+space? The first attempt is just to take
+the distance between two points. That is
+the distance between the end points of
+their vectors. And the standard way to do
+that in a vector space would be Euclidean
+distance between the points. But it turns
+out Euclidean distance by itself isn't
+actually a good idea. And that's because
+Euclidean distance is large for vectors of
+different lengths. Let me explain what I
+mean by that. Let's suppose, here is our
+vector space. Well, what we're finding is
+the distance between here and here is
+large. In particular it's larger than
+either the distance here or the distance
+there. But if we actually think of this
+in terms of an information retrieval
+problem and look at what's in our space,
+that seems wrong. So in this teeny
+example, the two word axes shown are here
+for gossip and here for jealous. And what
+our query is, this is the query that would
+come out precisely if your query is gossip and
+jealous. So it has both of those words
+occurring with equal weight. Well if we
+then look at our documents, what we find
+is document one seems to have a lot to do
+with gossiping and nothing to do with
+jealousy. And document three has a lot to
+do with jealousy and nothing to do with
+gossiping. Whereas document two seems just
+the kind of document we want to get, one
+that has a lot to do with both gossiping
+and jealously. So the terms in the
+document D2 are very similar to the ones
+in Q, so we want to be saying that that
+is actually the most similar document. So
+this suggests a way to solve this problem
+and move forward. And that is, rather than
+just talking about distance, what we want
+to start looking at is the angle in the
+vector space. So the idea is we can use
+angle instead of distance. So let's in
+particular motivate that once more by
+considering this thought experiment.
+Suppose that we take a document and append
+it to itself, giving us a document D
+prime. So clearly semantically, D and D
+prime have the same content, they cover
+the same information, But if we're just
+working in a regular vector space with
+Euclidean distance, the distance between
+the two documents will be quite large.
+That's because if we had a vector, and
+we had, this was the vector for D, then the vector
+for D prime would be twice as long,
+pointing out here, and so that we have a
+quite large distance between these two
+vectors. So we don't want to do that,
+instead what we want to notice is that
+these two vectors are in a line so the
+angle between two vectors is zero,
+corresponding to maximal similarity. And
+so the idea is, we're going to rank
+documents according to that angle between
+the document and the query. And so the
+following two documents are equivalent.
+Ranking documents in decreasing order of
+the angle between the query and the
+document, and ranking documents in
+increasing order of the cosine of the
+angle between the query and the document.
+And so I'll go through that in a little
+bit more detail. But you'll often hear the
+phrase cosine similarity, and this is what
+we're introducing here. And the secret
+here is just to notice that cosine is a
+monotonically decreasing function for
+angles between the interval zero and 180
+degrees. So here's the cosine which you
+should remember. So if the angle is zero,
+the cosine of it is one. If it's, if it's
+perpendicular, 90 degrees, the, the cosine
+is zero. And it can keep on going right up
+to 180 degrees and the cosine is
+continuing to descend to minus one. So
+essentially, all we have, need to
+observe here is that cosine is a
+monotonically decreasing function, in the
+range of zero to 180. And so therefore
+cosine score serves as a kind of inverse of
+angle. And, well that might still make it
+seem a reas-, a rather strange thing to
+use. I mean, we could have just taken the
+reciprocal of the angle, or the negative
+of the angle, and that would've also
+turned things around. So we got a measure
+of closeness between documents as a
+similarity measure. But it turns out that
+the cosine measure is actually standard,
+because there's actually a very efficient
+way to evaluate the cosine of the angle
+between documents using vector arithmetic,
+where we don't actually use any
+transcendental functions like cosine that
+would take a long time to compute. So the
+starting point of going through this is
+getting an idea of the length of a vector,
+and how to normalize the length of a
+vector So, for any vector so if we have a
+vector X, we can work out the length of
+the vector by summing up each of its
+components squared and then taking the
+square root around the outside. So that,
+if have something like a vector that's
+3,4, what we're going to do is take three
+squared nine, four squared sixteen, and
+then take the, add those gives 25. Take
+the square root gives five. And that's the
+length of the vector just like in the
+standard Pythagorean triangle. Okay so if
+we then take any vector and divide it by
+its length we then get a unit length
+vector, which will, you can think of as a
+vector that touches the surface of a unit
+hypersphere around the origin. Now if we
+go back to the example that we had
+earlier of two documents, D and D
+appended to itself to give D prime, you
+can see that these documents, if they're
+both length normalized will both go back
+to exactly the same position. And because
+of that, once you length normalize
+vectors, long and short documents have
+comparable weights. So, the secret of our
+cosine measure is that we do this
+length normalization. So here's the
+cosine similarity between two
+documents, which is the cosine of the
+angle between the two documents. And the
+way we do that is in the numerator, we
+calculate here a dot product. So we're
+taking the individual components of the
+vector here, component by component, and
+multiplying them and taking their sum. But
+then the way we do that is that we've then
+got this denominator, which is
+considering the lengths of the vectors.
+And you can write it like this. But
+actually what it's equivalent to is taking
+each vector and length normalizing it. And
+then taking the dot product of the whole
+thing, because it's these sort of two
+parts. You can factor apart as you wish.
+And so of, fill, written out in full it's
+over here that we have the length
+normalizations on the bottom and then this
+summed up dot product on the top. Okay
+where each of these elements QI is a TF-IDF
+weight of term I in the query. And DI is
+the TF-IDF weight of the term in the
+document. In particular what we might want
+to do is actually length normalize our
+document vectors in advance. And length
+normalize our cosine, length normalize our
+query vector once the query comes in.
+And if we do that, this cosine similarity
+measure is simply the dot product of
+length-normalized vectors. And, so, we're
+simply just taking this sum here in the
+vector space. Where as we discussed
+before, in reality we won't do it over all
+elements of the vector. We'll just do it
+over the terms in the vect, the terms of
+the vocabulary that are in the
+intersection of the ones that appear in q
+and the document. So going back, to the
+kind of picture we had before, we now
+again have our vector space, which again
+we're showing with just two axes here to
+keep it viewable, which are now poor and
+rich. And we can take any document vector
+and we can map it down to unit length by
+doing by this length normalization. And
+when we do that we get all document
+vectors, being vectors that touch the
+surface of this unit hypersphere, which is
+just a circle in two dimensions. And so
+then when we want to order documents by
+similarity to a query, we take this query
+here and we're working out the angle, or
+the cosine of the angle to other, to other
+documents. So in particular the cosine
+will be highest for small angles. So
+we'll be, if we order these documents in
+terms of the cosine of the angle, the
+document that will rank first will be d2,
+then it'll be d1, and then it will be d3.
+Okay. Now let's now go through this
+concretely with an example. So, in this
+example what we have is three novels of
+Jane Austen's and we are going to
+represent them in the vector space, length
+normalized. Then we're going to work out
+the cosine similarity between the
+different novels. So, in other words
+in this example there isn't actually any
+query vector. We're just working out the
+similarity between the different novels
+that are our documents. So the starting
+off point is starting with these term
+frequency count vectors, for the different
+novels. And so what we can see is,
+affection is one of Jane Austin's favorite
+words that appears frequently in every
+novel. The word Wuthering only occurs in
+Wuthering Heights. And then other words
+like jealous and, jealous and gossip occur
+occasionally. And so this is going to be
+our vocabulary for this example that I
+give. And what we're going to want to do
+is take these term frequency vectors and
+turn them into length normalized vectors
+on the unit hypersphere. Now for this
+example I'm just going to use term
+frequency weighting. We're going to leave
+out idf weighting to keep it a bit
+simpler. Let's see what happens on the
+next slide. Okay, so here we've done log
+frequency weighting of the kind we saw
+before. So what were the zeros, stay zero,
+and then we're having mapping down,
+so we're getting a weighting of three for the number of
+times that affection appeared in Sense and
+Sensibility. But these vectors aren't yet of
+the same length. This is clearly the
+longest of the vectors. So the next step
+is to length normalize them. So now here
+are the length normalized vectors for the
+three documents, and you can see how this
+vector has gotten much shorter than it was
+here by scaling it down. And the property
+that we have for each of these vectors for
+their being length normalized is that if
+you took this quantity squared, plus this
+quantity squared, plus this quantity
+squared, you would get one. And therefore
+the square root of that sum would also be
+one. So they're length one vectors. So
+given that they're length one vectors we
+can then calculate cosine similarities as
+simply the dot product between the
+vectors. So let's see what happens when we
+do that. Okay, so then we have the cosine
+similarity between Sense and Sensibility
+and Pride and Prejudice is taking these
+pair-wise products and summing them
+together. And it gives us a cosine
+similarity of 0.94, so they're very
+similar. And then we can do it for the
+other cases, and what we see that for Sense
+and Sensibility and Wuthering Heights,
+it's 0.79. And for the final pair, these
+two, it's 0.69. And the thing that we
+might wonder is, why do we have that the cosine
+similarity of Sense and Sensibility and
+Pride and Prejudice is higher than that
+for Sense and Sensibility and Wuthering
+Heights? And so we can try and look at
+that. So we're going to be comparing this
+one with the other two. And what we can
+see is that, this part of the
+Wuthering Heights vector doesn't help
+at all in producing similarity with
+Sense and Sensibility. The biggest component
+in the Sense and Sensibility vector is
+this one. And so that generates a lot of
+similarity with Pride and Prejudice, which
+also has that word very prominently
+represented, where that word is less
+represented in Wuthering Heights. And so
+therefore, this dot product here, that
+this term in the dot product is much
+larger, and so we get greater similarity.
+And so you can see there that it's sort of
+the ratio of occurrence of different words
+in the document has a big effect on
+measuring overall similarity. Okay, I hope
+that example helped to make it more
+specific, and that you now have a good
+idea of what the vector space model of
+information retrieval is. It's the idea
+that we can rank documents for retrieval,
+based on their similarity of angles in
+a high dimensional vector space.

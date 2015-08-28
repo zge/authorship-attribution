@@ -1,0 +1,383 @@
+
+Here's the definition that helped us 
+solve the fire engine problem. 
+For any vector B and another vector A, we 
+defined the projection of B along A, B 
+parallel, and the projection of B 
+orthogonal to A B perp, so that B is 
+the sum of B parallel and B 
+perpendicular. 
+Where B parallel is a scalar multiple of 
+A and B perpendicular, is orthogonal to 
+A. 
+We use a generalization of this 
+definition to address the least squares 
+problem. 
+For a vector B and now a vector space, 
+big V, we define the projection of B onto 
+big V, written B parallel, and the 
+projections of B orthogonal to big V, 
+written B perpendicular, so that B is the 
+sum of B parallel and B perpendicular and 
+B parallel to V, is a vector in the 
+vector space V. 
+And b perpendicular to V is orthogonal to 
+every vector in the vector space big V. 
+So again, we're decomposing B as a sum of 
+two parts, the parallel part and the 
+perpendicular part. 
+You recall that the fire engine lemma 
+gave us a way to identify the point in 
+span of A, closest to B. 
+It was, the projection of B parallel to 
+A, and the distance was the norm of the 
+projection of B perpendicular to A. 
+We generalize that as follows. 
+A point in a vector space, big V, that's 
+closest to the vector B, is B parallel 
+and the distance is the norm of B 
+perpendicular. 
+Now suppose, big V is specified by 
+generators V1 through VN, then our goal 
+is an algorithm for computing B 
+perpendicular from the inputs, the vector 
+B and the generators V1 through VN. 
+The output should be, the projection of B 
+orthogonal to the vector space big V, 
+which is the span of V1 through VN. 
+Now, we already know how to solve this, 
+when we only have one generator, we use 
+projector orthogonal one. 
+Given a vector B in a single vector V, 
+the solution is, to take B and subtract 
+out from it, the projection of B along 
+the vector V. 
+So let's take this algorithm and try to 
+generalize it, to higher dimensions. 
+So here's the algorithm we have and 
+here's the natural generalization to 
+higher dimension. 
+The input is a vector B and a list of 
+vectors and the algorithm goes through 
+the list of vectors and for each one, 
+subtracts out from B, the projection 
+along that vector, then returns the 
+result. 
+Well, what do people think about this 
+algorithm? 
+It's short, elegant and flawed. 
+Beautiful if only it worked, a tragic 
+failure. 
+So let's see this algorithm in action. 
+Let's say we're given the vector b which 
+is 1,1 and our vlist consists of 1,0 and 
+root 2 over 2, root 2 over 2. 
+So the red is the vector B, the first 
+vector in V list is this one 1 0 and the 
+second one is this one root 2 over 2, 
+root 2 over 2. 
+Let's see what the algorithm does to b. 
+We'll let BI, denote the value of the 
+variable B after I iterations. 
+So, initially at input, the value of B is 
+B 0. 
+In one iteration, the algorithm derives 
+B1 by taking B0 and subtracting from it, 
+the projection of B0 along the first 
+vector of V list. 
+Okay. 
+So, the first vector of V list is 1 0. 
+So we're subtracting the projection of 1, 
+1 along 1, 0. 
+Well, here's the projection, it's 1, 0 
+itself. 
+So when we subtract that from B0, we just 
+get 0, 1. 
+So here's B1, the value of the variable B 
+after one iteration of our proposed 
+algorithm. 
+Next, we have to derive B2 and B2 is 
+derived by taking B1 and subtracting from 
+it, the projection of B1 along the second 
+vector in V list root 2 over 2, root 2 
+over 2. 
+So, here's the projection of B1 along the 
+second vector in V list and the result of 
+subtracting that, B1 minus one half one 
+half, is here. 
+Alright, well, this is a failure. 
+Of course, the resulting vector B2 is 
+orthogonal, to the second vector in V 
+list because, we just subtracted off the 
+projection, along, that second vector. 
+But, doing so, destroyed, the 
+orthogonality, between, B and the first 
+vector in V list. 
+So we establish that in the first 
+iteration, and then we destroyed it in 
+the second iteration. 
+The result is not orthogonal to the first 
+vector in V list. 
+So, this algorithm, beautiful as it is, 
+doesn't get us the right answer. 
+Well, maybe there's a way to fix it, 
+maybe if we instead, find the projection 
+of B along each of the vectors in V list 
+and then subtract off, all those 
+projections. 
+Here's the algorithm, I call it classical 
+project orthogonal. 
+It initializes the output to the all 
+zeros vector and then, runs through each 
+of the vectors in V list, finding the 
+projection of B, along that vector, and 
+adding up all those projections. 
+At the end, it returns the result of 
+subtracting the sum of those projections 
+from B. 
+Does this algorithm work? 
+No, this gives us the wrong answer as 
+well. 
+In fact, if you run it on these inputs 
+the output vector, is not orthogonal to 
+either of the two vectors in V list, so 
+this fails spectacularly. 
+but here's an example where it works, you 
+take these two vectors v1 and v2. 
+These vectors are orthogonal, so these 
+two vectors represented here and the 
+vector B represented here, in the first 
+iteration, the algorithm takes the 
+initial value of B and subtracts off the 
+projection of that vector along V1, 
+getting B1. 
+So here it is, it gets this vector. 
+In the second iteration, it takes B1, the 
+value after the first iteration, and 
+subtracts off the projection of that 
+vector along V2 and here's the vector and 
+here's the result. 
+This vector is orthogonal to V1 and V2. 
+Was it a coincidence? 
+Let's do the math under the assumption 
+that V1 and V2 are orthogonal. 
+Remember, BI is the value of the variable 
+B after I iterations. 
+In the first iteration, we obtained B1 by 
+subtracting from B0, the projection of B0 
+along V1. 
+So that gives you a vector B1, it's 
+orthogonal to V1, the first vector in V 
+list. 
+So the inner product is 0. 
+In the second iteration, the algorithm 
+derives B2 by taking B1 and subtracting 
+off the projection along V2, giving a 
+vector B2 that is orthogonal to V2, it's 
+inner product with V2 is 0. 
+But, what about the inner product of B2 
+with V1, have we lost orthogonality? 
+Let's see. 
+The inner product of V1 with B2 is the 
+inner product of V1 with B1 minus sigma 
+V2. 
+The projection of B1 along V2, the thing 
+we subtracted off, in the second 
+iteration. 
+Using an algebraic rule of inner product, 
+we can break this up as the inner product 
+of V1 with B1 minus the inter product of 
+V1 with sigma times V2. 
+We can factor out the sigma to get the 
+inner product of V1 with B1, minus sigma 
+times the inner product of V1 with V2. 
+Now, the inner product of V1 with B1 is 
+0, because B1 results from subtracting 
+off the projection along V1. 
+So this inner product is zero. 
+This inner product is also 0 because we 
+assumed that V1 and V2 were orthogonal. 
+So, we indeed get 0, when we take the 
+inner product of V1 with B2. 
+Thus the result is orthogonal to both 
+vectors in V list. 
+The solution then, for project orthogonal 
+is not to throw away the procedure, it's 
+to change the spec. 
+So, we'll now require, that the input 
+list, V list consist of mutually 
+orthogonal vectors, that is all the 
+vectors, every vector on V list is 
+orthogonal to every other vector on V 
+list. 
+So the spec for the procedure is, it's 
+given a vector B, and a list, V list of 
+mutually orthogonal vectors and it's 
+required to output the projection of B 
+orthogonal to all the vectors in V list. 
+To show that this procedure satisfies its 
+spec we'll define the loop invariant and 
+we'll prove it's correct. 
+As before let BI be the value of the 
+variable B after I iterations. 
+The loop invariant requires that BI is 
+the projection of B, orthogonal to the 
+first I vectors in V list. 
+That means, its BI is orthogonal to those 
+first I vectors and B minus BI, is in the 
+span of those first I vectors. 
+We'll prove this invariant holds by 
+induction. 
+And the case i equals 0 is very easy, b0 
+is certainly orthogonal to the first 0 
+vectors. 
+Every vector's orthogonal to an empty set 
+of vectors and b minus b0, is in the span 
+of the first 0 vectors, because b minus 
+b0, is the 0 vector. 
+So now we want to prove the induction 
+step. 
+Here's the invariant that we're trying to 
+show, BI is the projection of B, 
+orthogonal to the first I vectors in V 
+list and what that means is that BI is 
+orthogonal to those first I vectors and B 
+minus BI is in the span of those first I 
+vectors. 
+Here's the procedure and let's assume 
+that the invariant holds after K minus 1 
+iterations and will show that it also 
+holds after K iterations. 
+In the Kth iteration, the algorithm 
+computes BK, which is BK minus 1 minus 
+the projection of BK minus 1 along the 
+vector VK. 
+So, that projection is of course a 
+multiple of vk. 
+Now, by the inductive hypothesis, we 
+assumed that bk minus 1 satisfied the 
+invariant, that is, bk minus 1 is the 
+projection of b, orthogonal to the first 
+k minus 1 vectors. 
+What we have to prove is that bk, the 
+next iterate, is orthogonal to the first 
+k vectors and b minus bk is in the span 
+of those first k vectors. 
+We computed BK from BK minus 1 by 
+subtracting off the appropriate multiple 
+of VK, the Kth vector in V list. 
+The multiplier was chosen to ensure that 
+bk was orthogonal to vk but, what about 
+all the vectors in V list that occur 
+before vk? 
+We have to show that bk is also 
+orthogonal to them, to vj for j equals 1, 
+2, 3 and up to k minus 1. 
+Let's take the inner product, the inner 
+product of BK with VJ. 
+Well we know what BK is, it's BK minus 1, 
+minus sigma K, VK, so we plug that in. 
+The inner product of BK minus 1 minus 
+sigma K VK with VJ and using some 
+algebraic properties of inner product, we 
+can re-write this as the inner product of 
+BK minus one with VJ minus sigma K times 
+the inner product of VK with VJ. 
+Now, the inner product of bk minus 1 with 
+vj is 0 because by the inductive 
+hypothesis, bk minus 1 is orthogonal to 
+all the vectors in V list up to vk minus 
+1. 
+This inner-product is also 0 because we 
+have assumed that, the vectors in V list 
+are all mutually orthogonal. 
+So the result is that the inner product 
+is 0. 
+So that shows that BK is orthogonal to 
+the vectors V1 through VK but, we also 
+have to show that B minus BK lies in the 
+span of the first K vectors of V list. 
+Well, B minus BK is B minus BK minus 1 
+minus sigma KVK. 
+We can rewrite that as B minus BK minus 1 
+plus this multiple sigma K of VK. 
+Well, this first quantity is a vector in 
+the span of the first K minus 1 vectors 
+in V list by the inductive hypothesis. 
+The second quantity is just a multiple of 
+VK. 
+Since we're adding something that's in 
+the span of v1 through vk minus 1, and a 
+multiple of vk, the result is a vector in 
+a Span of v1 through vk. 
+So we've proved the second property, and 
+that completes the proof. 
+Alright, we've gotten through that proof, 
+we've shown that this procedure has the 
+following property. 
+That given a vector b and a V list 
+consisting of vectors v1 through vn, it 
+outputs the vector b perpendicular such 
+that b equals b parallel plus b 
+perpendicular where b parallel lies in 
+the span of those vectors in V list and b 
+perpendicular is orthogonal to each of 
+them. 
+Now we're, we're going to work with a 
+code a little bit and for that reason I 
+want to restate the correct, using 0 
+based addressing. 
+So, the list consists of the vectors V0 
+through VN. 
+Ah,and B parallel is in the span of 
+vectors V0 to VN and B perpendicular is 
+orthogonal to V0 through VN. 
+We're going to need a procedure that 
+gives us a little bit more information. 
+Since b parallel which is b minus b 
+perpendicular is in the span of v0 
+through vn, there exist coefficients 
+alpha 0 through alpha n such that b minus 
+b perpendicular equals the corresponding 
+linear combination, alpha 0 times v0 and 
+so on. 
+We can move B perpendicular to the other 
+side, so we get this, B equals this 
+linear combination plus 1, times the 
+vector B perpendicular. 
+We can write that in matrix form, as B 
+equals the matrix whose columns are V0 
+through VN together with B perpendicular, 
+times this column vector consisting of 
+alpha 0 through alpha N followed by the 
+one the coefficient of N perpendicular. 
+So we're going to augment the procedure 
+project orthogonal, to actually output 
+this vector of coefficients, as well as B 
+perpendicular. 
+And for technical reasons, we're going to 
+represent that not as a vec but as a 
+dictionary. 
+So, here's the defining equation. 
+The procedure has to create this 
+dictionary, that has one entry for each 
+of the vectors in vlist, together with 
+one additional entry, the 1 that's the 
+coefficient of b perpendicular. 
+So, we initialize the dictionary, with 
+that one element, we're going to drive 
+the code from two previous procedures, 
+project along and project orthogonal and 
+here's the augmented procedure, it 
+initializes the dictionary. 
+In each iteration, it pulls out the 
+vector, computes the scalar multiple 
+sigma, then populates the dictionary with 
+that value of sigma and updates the value 
+of B. 
+At the end it returns, the value of the 
+variable B, which is B perpendicular and 
+the dictionary of the alpha values 
+together with a 1. 
+Later on we'll use this procedure. 
+

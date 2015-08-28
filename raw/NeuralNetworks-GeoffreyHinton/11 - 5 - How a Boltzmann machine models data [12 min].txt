@@ -1,0 +1,308 @@
+In this video, I'm going to explain, how a
+Boltzmann machine models a set of binary
+data vectors.
+I'm going to start by explaining, why we
+might want to model a set of binary data
+vectors, and what we could do with such a
+model if we had it.
+And then I'm gonna show how the
+probabilities assigned to binary data
+vectors are determined by the weights in a
+Boltzmann machine.
+Stochastic Hopfield nets with hidden
+units, which we also call as Boltzmann
+machines are good at modelling binary
+data.
+So, given a set of binary training
+vectors, they can use the hidden units to
+fit a model per assigns the probability to
+every possible binary vector.
+Per several reasons, why you might like to
+be able to do that.
+If, for example you had several
+distributions of binary vectors, you might
+like to look at a new binary vector and
+decide which distribution it came from.
+So, you might have different kinds of
+documents, and you might represent a
+document by, a number of binary features
+each of which says, whether there is more
+than zero occurrences of a particular word
+in that document.
+For different kinds of documents, you
+would expect different kinds of the
+different words, may be you'll see
+different correlations between words And
+so you could use a set of hidden units to
+model the distribution for each document.
+And then you could pick the most likely
+document, by seeing.
+And then you could assign a test document
+to the appropriate class, by seeing which
+class of document is most likely to have
+produced that binary vector.
+You could also use Boltzmann machines for
+monitoring complex systems to detect
+unusual behavior.
+Suppose for example that you have a
+nuclear power station, and all of the
+dials were binary.
+So you get a whole bunch of binary numbers
+that tell you something about the state of
+the power station.
+What you'd like to do, is notice that it's
+in an unusual state.
+A state that's not like states you've seen
+before.
+And you don't want to use supervised
+learning for that.
+Because really you don't want to have any
+examples of states that cause it to
+blowup.
+You'd rather be able to detect that it's
+going into such a state without every
+having seen such a state before.
+And you could do that by building a model
+of a normal state and noticing that this
+state is different from the normal states.
+If you have models of several different
+distributions.
+You can complete the posterior probability
+that a particular distribution produced
+the observed data by using Bayes' Theorem.
+So giving the observed data, the
+probability it came from Model I, under
+the assumption that it came from one of
+your models, is the probability that Model
+I would have produced that data, divided
+by the same quantity for all models.
+Now I want to talk about two ways of
+producing models of data in particular
+binary vectors.
+The most natural way to think about
+generating a binary vector is to first
+generate the states of some latent
+variables,
+And then use the latent variables to
+generate the binary vector.
+So in a causal model, we use two
+sequential steps.
+These are the latent variables, or hidden
+units, and we first pick the states of the
+latent variables from their prior
+distributions.
+Often in the causal model, these will be
+independent in the prior.
+So their probability of turning on, if
+they were binary latent variables, would
+just depend on some bias that each one of
+them has.
+Then, once we picked a state for those, we
+would use those to generate the states of
+the visible units by using weighted
+connections in this model.
+So this is a kind of neural network,
+causal, generative model.
+It's using logistic units, and it uses
+biases for the hidden units and weights on
+the connections between hidden and visible
+units to assign a probability to every
+possible visible vector.
+The probability of generating a particular
+vector v, is just the sum of all the
+possible hidden states of the probability
+of generating those hidden state times the
+probability of generating v, given that
+you've already generated that hidden
+state.
+So, that's a causal model, factor analysis
+for example is a causal model using
+continuous variables.
+And, it's probably the most natural way to
+think about generating data.
+In fact, some people when they say
+generated model mean, the causal model
+like this.
+But just a completely different kind of
+model.
+A Boltzmann machine is an energy based
+model, and, in this kind of model, you
+don't generate data causally.
+It's not a causal generative model.
+Instead everything is defined in terms of
+the energies of joint configurations of
+visible and hidden units.
+There's two ways of relating the energy of
+a joint configuration to its probability.
+You can simply define the probability to
+be the probability of a joint
+configuration of the visible and hidden
+variables is proportional to e to the
+negative energy of that joint
+configuration.
+Or you can define it procedurally by
+saying we are going to define the
+probability as the probability finding the
+network in that state after we've updating
+all the stochastic binary units for enough
+time so that we reached thermal
+equilibrium.
+The good news is that those two
+definitions agree.
+The energy of a joint configuration of the
+visible and hidden units has five terms in
+it.
+So I've put the negative energy to save
+having to put lots of minus signs.
+And so the negative energy of the joint
+configuration VH.
+That's with vector V on the visible units,
+and H on the hidden units,
+Has bias terms where VI is the binary
+state of the Ith unit in vector V.
+And the bk is the bias of the kth unit, in
+this case, a hidden unit.
+So that's the first two terms.
+Then there's the visible-visible
+interactions,
+And to avoid counting each of those
+interactions twice, we can, just say,
+we're going to count within c's, I, and j
+and make sure that I's always less than j.
+That'll avoid counting the interaction of
+something with itself, and also avoid
+counting pairs twice, and so we don't have
+to put a half in front.
+Then there's the visible hidden
+interactions.
+My WIK is a weight on a visible hidden
+interaction.
+And then there's the hidden to hidden
+interactions.
+So the way we use the energies to define
+probabilities is that the probability of a
+joint configuration over vnh is
+proportional to e to the minus vh.
+To make that an equality we need to
+normalize the right hand side by all
+possible configurations over the visible
+and hidden and that's what the divisor
+there is.
+That's often called the partition
+function.
+That's what physicists call it.
+And notice it has exponentially many
+terms.
+To get the probability of a configuration
+of the visible units alone, we have to sum
+over all possible configurations of the
+hidden units.
+So P of V is the sum over all possible Hs,
+of each of the minus the energy you get
+with that H, normalized by the partition
+function.
+I want to give you an example of how we
+compute the probabilities of the different
+visible vectors, because that'll give you
+a good feel for what's involved.
+It's all very well to see the equations,
+but I find that I understand it much
+better when I've worked through the
+computation.
+So let's take a network with two hidden
+units and two visible units.
+And we'll ignore biases, so we just got
+three weights here.
+To keep things simple, I'm not gonna
+connect visible units to each other.
+So the first thing we do is write down all
+possible states of the visible units.
+I need to put them in different colors,
+and I'm going to write each state four
+times,
+Because for each state of visible units,
+there's four possible states of the hidden
+units that could go with it.
+So that gives us sixteen possible joint
+configurations.
+Now, for each of those joint
+configurations, we're going to compute
+it's negative energy minus E.
+So if you look at the first line, when all
+of the units are on.
+The negative energy will be +two -one,
++one is +two.
+And we do this for all sixteen possible
+joint configurations.
+We then take the negative energies and we
+exponentiate them.
+And that will give us un-normalized
+probabilities.
+So these are the un-normalized
+probabilities of the configurations.
+Their probabilities are proportional to
+this.
+If we add all those up to 39.7 and then we
+divide everything by 39.7, we get the
+probabilities of joint configurations.
+There they all are.
+Now, if we want the probability of a
+particular visible configuration, we have
+to sum over all the hidden configurations
+that could go with it.
+And so we add up the numbers in each
+block.
+And now we've computed the probability of
+each possible visible vector in a
+Boltson's machine that has these three
+weights in it.
+Now let's ask how we get a sample from the
+model when the network's bigger than that.
+Obviously, in the network we just
+computed, we can figure out the
+probability of everything'cause it's
+small.
+But when the network's big, we can't do
+these exponentially large computations.
+So, if there's more than a few hidden
+units, we can't actually compute that
+partition function, there's too many terms
+in it.
+But we can use Markov Chain Monte Carlo to
+get samples from the model by starting
+from a random global configuration.
+And then picking units at random and
+dating them stochastically based on their
+energy gaps.
+Those energy gaps being determined by the
+states of all the other units in the
+network.
+If we keep doing that until the Markov
+chain reaches its stationary distribution,
+then we have a sample from the model.
+And the probability of that sample is
+related to its energy by the Boltzmann
+distribution, that is, the probability of
+the sample is proportional to each-(the of
+the minus energy. What about getting a
+sample from the posterior distribution
+over hidden configurations, when given a
+data vector?
+It turns out we're going to need that for
+learning.
+So the number of possible hidden
+configurations is again exponential.
+So again, we use Markov Chain Monte Carlo.
+And it's just the same as getting a sample
+from the model, except that we keep that
+we keep the visible units clamped to the
+data vector we're interested in.
+So we only update the hidden units.
+The reason we need to get samples from the
+posterior distribution, given a data
+vector, is we might want to know a good
+explanation for the observed data.
+And, we might want to base our actions on
+that good explanation.
+But, we also need to know that for
+learning.

@@ -1,0 +1,228 @@
+In this video, I'm going to describe a new
+way of combining a very large number of
+neural network models without having to
+separately train a very large number of
+models.
+This is a method called dropout that's
+recently been very successful in winning
+competitions.
+For each training case, we randomly omit
+some of the hidden units.
+So, we end up with a different
+architecture for each training case.
+We can think of this as having a different
+model for every training case.
+And then, the question is, how could we
+possibly train a model on only one
+training case and how could we average all
+these models together efficiently at test
+time?
+The answer is that we use a great deal of
+weight sharing.
+I want to start by describing two
+different ways of combining the outputs of
+multiple models.
+In a mixture, we combine models by
+averaging their output probabilities.
+So, if model A assigns probabilities of
+0.3, 0.2 and 0.5, to three different
+answers, model B assigns probabilities of
+0.1, 0.8 and 0.1, the combined model
+simply assigns the averages of those
+probabilities.
+A different way of combining models is to
+use a product of the probabilities. Here,
+we take a geometric mean of the same
+probabilities.
+So, model A and model B again assign the
+same probabilities as they did before.
+But now, what we do is we multiply each
+pair of probabilities together and then
+take the square root.
+That's the geometric mean and the
+geometric means will generally add up to
+less than one.
+So, we have to divide by the sum of the
+geometric means to normalize the
+distribution so that it adds up to one
+again.
+You'll notice that in a product, a small
+probability output by one model, has veto
+power over the other models.
+Now I want to describe an efficient way to
+average a large number of neural nets that
+gives us an alternative to doing the
+correct Bayesian thing.
+The alternative probably doesn't work
+quite as well as doing the correct
+Bayesian thing, but it's much more
+practical.
+So, consider the neural net with one
+hidden layer, shown on the right.
+Each time we present a training example to
+it,
+What we're going to do is randomly emit
+each hidden unit with a probability of
+0.5.
+So, we crossed out three of the hidden
+units here.
+And we run the example through the net
+with those hidden units absent.
+What this means is that we're randomly
+sampling from two to the h architectures,
+where h is the number of hidden units,
+It's a huge number of architectures.
+Of course, all of these architectures show
+weights.
+That ism whenever we use a hidden unit,
+it's got the same weight as it's got in
+other architectures.
+So, we can think of dropout as a form of
+model averaging.
+We sample from these two to the h models.
+Most of the models, in fact, will never be
+sampled.
+And a model of this sampled only gets one
+training example.
+That's a very extreme form of bagging.
+The training sets are very different for
+the different models, but they're also
+very small.
+The sharing of the weights between all the
+models means that each model is very
+strongly regularized by the others.
+And this is a much better regularizer than
+things like L2 or L1 penalties.
+Those penalties pull the weights toward
+zero.
+By sharing weights with other models, a
+models gets regularized by something
+that's going to tend to pull the weight
+towards the correct value.
+The question still remains what we do with
+test time.
+So, we could sample many of the
+architectures, maybe a hundred, and take
+the geometric mean of the output
+distributions.
+But that would be a lot of work.
+There's something much simpler we can do.
+We use all of the hidden units, but we
+halve their outgoing weights.
+So, they have the same expected effect as
+they did when we were sampling.
+It turns out that using all of the hidden
+units with half their outgoing weights,
+exactly computes the geometric mean that
+the predictions that all two to the h
+models would have used, provided we're
+using a softmax output group.
+If we have more than one hidden layer, we
+can simply use drop out at 0.5 in every
+layer.
+At test time, we halve all the outgoing
+weights of hidden units,
+And that gives us what I call the mean
+net.
+So, we use a net that has all of the units
+but the weights are halved.
+When we have multiple hidden layers, this
+is not exactly the same as averaging lots
+of set per dropout model, but it's a good
+approximation and it's fast.
+We could run lots of stochastic models
+with dropout, and then average across
+those stochastic models.
+And that would have one advantage over the
+mean net.
+It would give us an idea of the
+uncertainty in the answer.
+What about the input layer?
+Well, we can use the same trick there,
+too.
+We use dropout on the inputs, but we use a
+higher probability of keeping an input.
+This trick's already in use in a system
+called denoising autoencoders, developed
+by Pascal Vincent, Hugo Laracholle and
+Yoshua Bengio at the University of
+Montreal, and it works very well.
+So, how well does dropout work?
+Well, the record breaking object
+recognition net developed by Alex
+Krizhevsky would have broken the record
+even without dropout.
+But it broke a lot more by using dropout.
+In general, if you have a deep neural net
+and it's overfitting dropout, it will
+typically reduce the number errors by
+quite a lot.
+I think any net that requires early
+stopping in order to prevent it
+overfitting would do better by using
+dropout. It would, of course, take longer
+to train and it might mean more hidden
+units.
+If you got a deep neural net and it's not
+overfitting, you should probably be using
+a bigger one and using dropout, that's
+assuming you have enough computational
+power.
+There's another way to think about
+dropout, which is how I originally arrived
+at the idea.
+And you'll see it's a bit related to
+mixtures of experts, and what's going
+wrong when all the experts cooperate,
+What's preventing specialization?
+So, if a hidden unit knows which other
+hidden units are present, it can co-adapt
+to the other hidden units on the training
+data.
+What that means is, the real signal that's
+training a hidden unit is, try to fix up
+the error that's leftover when all the
+other hidden units have had their say.
+That's what's being back propagated to
+train the weights of each hidden unit.
+Now, that's going to cause complex
+co-adaptations between the hidden units.
+And these are likely to go wrong when
+there's a change in the data.
+So, a new test data,
+If you rely on a complex co-adaptation to
+get things right on the training data,
+it's quite likely to not work nearly so
+well on new test data.
+It's like the idea that a big, complex
+conspiracy involving lots of people is
+almost certain to go wrong because there's
+always things you didn't think of.
+And if there's a large number of people
+involved, one of them will behave in an
+unexpected way.
+And then, the others will be doing the
+wrong thing.
+It's much better if you want conspiracies,
+to have lots of little conspiracies.
+Then, when unexpected things happen, many
+of the little conspiracies will fail, but
+some of them will still succeed.
+So, by using dropout,
+We force a hidden unit to work with
+combinatorially many other sets of hidden
+units.
+And that makes it much more likely to do
+something that's individually useful
+rather than only useful because of the way
+particular other hidden units are
+collaborating with it.
+But it is also going to tend to do
+something that's individually useful and
+is different from what other hidden units
+do.
+It needs to be something that's marginally
+useful, given what its co-workers tend to
+achieve.
+And I think this is what's giving nets
+with dropout, their very good performance.

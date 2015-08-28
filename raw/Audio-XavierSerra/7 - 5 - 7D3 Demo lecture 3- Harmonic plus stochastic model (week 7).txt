@@ -1,0 +1,276 @@
+Welcome back to the course on Audio Signal
+Processing from music applications.
+In the previous demonstration class
+we talked about the harmonic
+plus residual model.
+We actually analyzed
+the sound with the model,
+with the sms-tools, and we were able to
+identify the harmonics, subtract them
+from the original sound and
+obtain a residual,
+which then we combined with the harmonics
+to obtain the original signal.
+In this demonstration class we want to go
+a little bit beyond that by approximating
+the residual with the stochastic model.
+And in the case that the residual is
+close to an stochastic signal,
+then this will be a good representation,
+the harmonic plus
+the stochastic component, to
+represent a sound.
+So, let's start and let's open the,
+the GUI of sms-tools.
+And we will start with
+the sound of the flute sound.
+Okay, so let's listen to this flute sound.
+[SOUND] Okay, so 
+it's a very stable note,  quite
+clearly defined,in
+fact is an A4 and it clearly has some
+breathing quality that will be relevant
+for this idea of the stochastic component.
+In order to decide what window
+size, well again let's 
+use the Blackman window, since it's stable
+sound Blackman will be a good choice
+for being able to get low
+the side lobes and
+getting a good kind of signal to noise
+ratio in terms of the window.
+So in order to compute what
+is the best window size, so
+we'll have to just do 6, which is the
+number of bins of the Blackman window,
+times the sampling rate, 44,100,
+divide by the fundamental
+frequency of this sound, and
+this is A4, so this is 440 Hertz.
+Okay?
+So 601 would be a good window to use.
+Even that we really want to get a good
+resolution of the harmonics and
+try to minimize the rest of
+the components, and it's quite stable,
+we can afford to take a longer window,
+maybe, so let's take 801 samples.
+The FFT size, again, let's,
+we can take a bigger FFT, so
+that we get a smoother spectrum.
+So, 2,048.
+Okay and well lets analyze
+just in the middle of the sound.
+This is quite a long sound, so let’s do it like that.
+So, this is the samples
+of the input signal.
+In the spectrum we see quite well
+the low frequency harmonics.
+And similar to the organ that we analyzed
+before,
+at the high frequencies areas,
+there is quite a bit of kind of
+unstable or
+kind of very stochastic type of
+components that are not so
+clearly defined as partials.
+So they may be there might
+be some harmonics or
+partials, but they're kind of a mask, and
+are difficult to identify here.
+Anyway, so okay, so now let's just
+go directly to the harmonic model.
+And let's apply the same parameters.
+For example 801.
+2,048.
+Now we have to choose the parameters for
+the peak detection and harmonic detection.
+I don't think we need to go very
+much down in the spectrum for
+the harmonics,
+because, as we saw, there are not that many.
+In terms of the duration of the harmonics,
+I think it's good to make sure that
+they're long, it is a stable note,
+So you might want to put like
+.2 in terms of the minimum duration,
+in terms of number of harmonics, there
+are clearly not that many so, I'm sure
+with forty should be plenty.
+And, we have to set the minimum and
+maximum fundamental, so
+that 440 fits here, so
+I'm sure if we put 300 and 500
+should be plenty.
+And the error for the peak detection,
+well let's take the default 7.
+And the deviation, let's start
+with this value, see what happens.
+Oh, and
+of course we need to get flute sound.
+Okay, now we can compute it.
+Okay, so
+clearly we got quite a few harmonics,
+and some here that appear and disappear.
+Of course, we have to realize that here
+we're just plotting the first 5,000 hertz.
+If you want to see more and
+what's going on in
+the higher frequencies we should
+display it a little bit differently.
+Okay so let's just listen to the result.
+[SOUND]
+Okay.
+that's pretty good.
+That's a quite accurate rendition of that.
+Of course 
+it's different from the original sound. In fact,
+if we hear back the original,
+[SOUND] The original has more brighter
+type of of quality and this is because
+it has all these other components.
+Of course, we can play around
+with these parameters, for
+example, to allow for
+more harmonics to appear.
+So, for example, if we allow let's
+say, put .1 here and we compute it again.
+Yeah, now, we are allowing these high
+harmonics which are very unstable to
+appear sort of more, but
+of course all these jumps
+are not really that good so
+that means that these harmonics
+are not really stable so
+they are really buried into
+the, kind of that noise or
+the the breath that we also hear.
+Okay.
+Now we can go ahead and
+use the harmonic plus residual model,
+so that we can listen to the residual.
+And let's again use the same parameters,
+the flute sound, let's put 800.
+Let's put 2048, and so
+the threshold minus 80.
+The minimum duration, let's just put 0.2.
+Number of harmonics, yeah,
+we don't need that many and well
+these will be okay at 350 and
+700, and this
+I think 7 was all right
+and yeah, let's make it 
+not as open in terms of
+the deviation as before,
+let's just put maybe 0.02,
+see what happens.
+Okay, so here we see the original and
+the harmonics and
+maybe we see a few more than before.
+And synthesize.
+So let's listen to the residual.
+[SOUBD] Okay, that's a pretty
+nice residual, very [SOUND].
+We hear the attack, and
+the attack, in fact, there is this
+red in here, during the attack
+iss clear louder this breath and
+then it's just sort of gets attenuated and
+we hear a very clear
+breath noise throughout.
+Okay.
+So
+now so this is very much an
+stochastic signal.
+It's, it's very noisy so
+that means that we can apply
+the stochastic analysis to that.
+So, now let's use the harmonic
+plus the stochastic model and
+let's get the same type of parameters.
+Of course, we can play around these
+parameters to get better values.
+But the ones we chose they look okay so
+let's, then let's put 0.2 here,
+let's get the number of harmonics.
+Yeah, I think 40 harmonics and
+these was all right,
+this was 7 and this was 0.02.
+Okay, now we,
+the parameter that is specific of
+stochastic analysis is
+the stochastic approximation factor.
+And here, by default is .1.
+So it means that it reduces
+the whole spectrum by 90% so
+it only, it will quantitize
+kind of the resolution.
+To one tenth of what it originally was.
+So, let's just try this.
+Okay.
+So, clearly, now,
+we see, Well, we see differently.
+Because, in this one we are showing
+the range from zero to 14,000 hertz.
+So, in fact, we're seeing
+quite a bit more.
+So we see more of
+the stochastic component.
+but, As we see, the harmonics
+are very much on the lower side.
+Above 5,000 hertz
+There isn't that much.
+There is some of this.
+But maybe.
+These, even these lines should not be
+considered harmonics and maybe 
+they should be discarded.
+But let's listen to the,
+the stochastic component.
+[SOUND] Okay.
+Of course we have lost
+like a little bit
+of the details that the residual had.
+But it definitely keeps
+these breathy noise.
+Of course, it's not that loud.
+So when we put it together with
+the original signal, with the harmonics,
+[SOUND] Okay, so it sounds good.
+But clearly
+the harmonics are taking over and
+they are kind of masking quite
+a bit this stochastical point.
+We have to listen to it quite
+carefully if we want to be able to
+distinguish the stochastical
+component of this type of sound.
+And that's basically all I wanted to say.
+Let's, go back.
+So we have talked about harmonic plus
+stochastic model.
+And and we have used the sms-tools,
+the interface, that has allowed us
+to play around with this model.
+And of course, the sound, this flute sound,
+Is in freesound.
+So hopefully
+that has given you a view of the potential
+of the harmonic plus stochastic model.
+It's a little bit different from
+the harmonic plus residual,
+but the main difference is
+that now with the stochastic,
+representation of the residual we will
+be able to do quite a bit of things.
+Next week in fact we're going to 
+be doing transformations to these sounds.
+And, the stochastic representation will
+allow us to do that, weather in the
+residual would not be able
+to give us that flexibility.
+So anyway, so that's all for
+this demonstration class and
+I hope to see you next lecture.
+Thank you very much.
+

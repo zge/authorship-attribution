@@ -1,0 +1,261 @@
+Hello welcome back to the course on
+signal processing for music applications.
+In these transformations week,
+we are talking about how the spectral
+modeling strategies that will
+be presenting throughout the course
+can be used for transforming sines.
+And in these programming
+lectures we're actually trying to
+understand those transformations
+from a programming perspective.
+We're actually looking at
+the code of the SMS tools,
+and trying to understand and
+use these transformation possibilities.
+So we actually going
+through this block diagram.
+This is the block diagram of the analysis
+synthesis of the sinusoidal model.
+And what we are doing now is from
+the output of the sinusoidal model,
+by just taking the amplitude and
+frequencies of the sinusoid, we
+are applying sine transformations to them.
+And then de-synthesizing the sound.
+And if you notice here the phase
+information of the analysis is
+not being used,
+most of the transformations required to
+regenerate the phases because
+we we're changing time or
+we're changing the frequency, and
+therefore it affects the phase.
+So, the regional phase are not using
+anymore, and we're generating the phases.
+And first I want to look at this issue,
+and
+see how relevant is, to not preserve
+the phases of the regional.
+So we wrote these little script,
+in which I analyze the sound,
+a piano sound using the sinusoidal model.
+And I do analysis and synthesis.
+Okay, so first I have all the packages
+that we need to import it,
+then I have all these parameters for
+the analysis, that I needed.
+We go in window size, I select the size,
+et cetera, et cetera.
+And then well, we wait the file, I get
+a window that I need, the window in this
+case, and I call the analysis function
+of this sinusoidal model file.
+Okay.
+And it returns frequencies,
+magnitudes and phases.
+Now I want to call the synthesis of that,
+in fact let's use everything,
+so let's use the man,
+the frequencies, the magnitudes, and
+the phases of the analysis,
+that generate the sound.
+Okay, so let's save this and
+let's run this file.
+Okay so,
+now it has executed everything, and
+let's plot first the input sound x.
+And we can plot on top of it,
+the output sound y.
+Okay.
+Very close, in fact,
+if you listen to them,
+also clearly they should be quite close.
+So if you just type, the input sound
+from that, let's move this here.
+From the piano, okay, and
+let's listen to that.
+[MUSIC]
+And now we can play the resynthesize
+sound so that test2.wav that I created.
+[MUSIC]
+Okay, they are quite similar.
+The attacks are a little bit not ideal.
+But now let's zoom into
+one fragment of these.
+Okay for example this region here, let's
+take a tinier version of it, tiny section.
+So clearly they're very similar,
+they're not identical,
+well the blue is the original and
+the green is the synthesized,
+the synthesized has lost some aspecta bit,
+but they look very close.
+They're little bit different in the high
+frequencies, in the, in the contourse.
+Okay.
+Now let's do the synthesis, but
+instead of using the original phases,
+let's pass an array, an empty array,
+and this is the condition that then
+the synthesis will recreate these phases
+and we're going to see that next.
+But let's first let's just run these,
+it's running error again.
+Okay let's find this file.
+And now we can do the same thing,
+we can just plot the input sound,
+then we can plot the output sound.
+Already we can see they are different and
+of course we can play,
+we can for example play the,
+the sound that was generated.
+[MUSIC]
+Basically it looks identical.
+That it sounds identical than
+the synthesized sound with phases, but
+it will look at the phases.
+If we look at the shape of
+the waveform which are going to be
+the phase information.
+Usually we do a tiny portion of it,
+and we do more.
+Okay, clearly the shapes of the waveforms
+are very different, input and
+output shapes are very different.
+That means that the phase
+is quite different.
+They all preserve a phase continuity but
+the phase is different.
+Okay, so basically they're synthesized,
+now we have generated the phases.
+Let's go to the sign model file.
+Where the synthesizes perform.
+So in the, in the sinusoidal model
+synthesis here in this function,
+that where it passes and it accepts the,
+the frequency [INAUDIBLE] phases and
+it calls synthesis.
+Okay.
+And then in the main loop,
+we can see that there is some lines
+to take care of these phase issues.
+Basically if the input parameter if
+the three phase parameter exists,
+that means that,
+there is an array delivering zero.
+It will use as the synthesis
+phase these phase
+otherwise it generates
+a phase using these line.
+What does this does is starts
+from an initialized phase that is
+initialize before here, it's initialized
+as random phase as the first time through.
+And everytime after that with
+increments the previous phase
+by I think the frequency,
+the new frequency.
+So and takes the frequency that has to
+be synthesized, I'm using the hop size.
+It computes basically the phase
+that the new frame should have.
+So, it does phase continuity, but
+without measuring or
+using the analysis phases.
+And this is what results,
+into this shape that we saw here.
+Okay, now out of these,
+the sinusoidal transformations, so
+this is the file what implements
+the different transformations on
+the sinusoidal representation,
+basically there are two types,
+the time scaling ones and
+the frequency scaling ones.
+The time scaling is very simple,
+it accepts frequencies and
+magnitudes, so again no phase is here.
+And what it does is basically
+it creates frames in between.
+So the core part of these function
+which is these, it basically
+it keeps creating a new matrix,
+a new array of frequencies and magnitudes,
+and it adds interpolated
+frames in between.
+It actually does not interpolate, it just
+simply repeats or jumps actual frames.
+So, that's the way that we can create
+a much longer set of frames so
+the frame rate is exactly the same,
+and it keeps adding or
+deleting frames, in order to make
+it longer or shorter, the sound.
+And for the frequency scaling,
+it's simpler,
+it basically just takes the frequencies.
+Okay they every, at every frame,
+and the frequency scaling
+can vary in time, the same thing that
+the time is given was varying in time.
+And now it will multiply every single
+frequency value of all the, the sinusoids
+of a particular frame by this scaling
+factor at that particular frame.
+And that's basically all it does.
+Then we have the sine transformation
+function that actually
+calls the analysis and transformation and
+synthesis and displays the,
+the results and this is the file that
+is used from the graphical interface.
+So here we have a function
+that performs the analysis and
+has some default parameters.
+And it does just the standard analysis
+that we have seen but it plots
+intermediate data, and then there is this
+file, transformation and synthesis, that
+accepts the analysis parameters that we
+have obtained without the phases, and then
+it performs these transformations that we
+just mentioned, the frequency scaling.
+From a given array of scaling factors and
+then it has the time scaling that
+performs a time scaling operations.
+And then of course it does the,
+the synthesis and it writes the file.
+So let's call this.
+Okay it plots two figures,
+plots the figure of the analysis,
+which we see the intermediate data,
+and the synthesized, and
+it plots the modified version where
+the sinusoids have been scale.
+Both in frequencies, so
+we see here some of the transformations,
+and in time,
+in which the duration has changed.
+And that's, that's all, so basically,
+this was an explanation of the code,
+of the [INAUDIBLE] tools that
+performs sinusoidal transformations.
+This sinusoidal transformations
+can be quite powerful because we
+have quite a bit of flexibility and we can
+do some interesting time stretching and
+frequency shifting or transposition
+operations that sound very nice.
+So next lecture we will continue in
+presenting the possibilities of another
+transformation and another model.
+And in this case is going to be
+the [INAUDIBLE] plus model, and
+we're talking about the morphing
+that we already have seen in
+the demonstrations like we actually going
+to try to understand the good of it.
+So thank you very much and
+I see you next class
+

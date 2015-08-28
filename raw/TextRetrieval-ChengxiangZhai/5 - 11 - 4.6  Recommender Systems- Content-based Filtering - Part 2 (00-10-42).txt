@@ -1,0 +1,260 @@
+[SOUND].
+There are some interesting
+challenges in threshold.
+Would have known in the filtering problem.
+So here I show the,
+sort of the data that you can collect in,
+in the filtering system.
+So you can see the scores and
+the status of relevance.
+So the first one has a score 36.5,
+and it's relevant.
+The second one is not relevant.
+Of course, we have a lot of documents for
+which we don't know the status,
+because we will have to the user.
+So as you can see here,
+we only see the judgements of
+documents delivered to the user.
+So this is not a random sample.
+So it's a censored data.
+It's kind of biased, so
+that creates some difficulty for learning.
+And secondly, there are in general very
+little labeled data and very few relevant
+data, so it's, it's also challenging for
+machine learning approaches.
+Typically they require
+require more training data.
+And in the extreme case at the beginning,
+we don't even have any,
+label there as well.
+The system still has to make a decision,
+so
+that's a very difficult
+problem at the beginning.
+Finally, the results of this issue of
+exploration versus exploitation tradeoff.
+Now this means we also want to
+explore the document space a little bit,
+and to, to see if the user
+might be interested in the documents
+that we have not yet labeled.
+So, in other words, we're going to
+explore the space of user interests
+by testing whether the user might be
+interested in some other documents that
+currently are not matching
+the user's interest.
+This so well.
+So how do we do that?
+Well we could lower the threshold a little
+bit and do we just deliver some near
+misses to the user to see what
+the user would respond so
+see how the user will,
+would respond to this extra document.
+And, and this is a trade off, because
+on the one hand, you want to explore,
+but on the other hand,
+you don't want to really explore too much,
+because then you would over-deliver
+non-relevant information.
+So exploitation means you would,
+exploit what you learn about the user.
+And let's say you know the user is
+interested in this particular topic, so
+you don't want to deviate that much.
+And, but if you don't deviate at all,
+then you don't explore at all.
+That's also not good.
+You might miss opportunity to learn
+another interest of the user.
+So this is a dilemma.
+And that's also a difficult
+problem to solve.
+Now how do we solve these problems?
+In general, I think why can't I used the
+empirical utility optimization strategy?
+And this strategy is basically to optimize
+the threshold based on, historical data,
+just as you have seen on
+the previous slide, right?
+So you can just compute the utility
+on the training data for
+each candidate score threshold.
+Pretend that [INAUDIBLE]
+cut at this point.
+What if I cut out the [INAUDIBLE]
+threshold, what would happen?
+What's utility?
+Compute the utility, right?
+We know the status, what's it based on
+approximation of click-throughs, right?
+So then we can just choose this
+threshold that gives the maximum
+utility on the training data.
+Now but this of course doesn't account for
+exploration that we just talked about.
+And there is also the difficulty of bias.
+Training sample, as we mentioned.
+So in general, we can only get an upper
+bound or, for the true optimal threshold
+because the, the al, the threshold
+might be actually lower than this.
+So it's possible that the discarded item
+might be actually interesting to the user.
+So how do we solve this problem?
+Well we generally as I said we can lower
+the threshold to explore a little bit.
+So here's one particular approach called
+the beta-gamma threshold learning.
+So the, the idea is foreign.
+So, here I show a ranked list of
+all the training documents
+that we have seen so far.
+And they are ranked by their positions.
+And on the Y-axis, we show the Utility.
+Of course, this function depends on
+how you specify the coefficients in
+the Utility function.
+But we can not imagine depending on the
+cut off position we will have a utility.
+That means suppose I cut at this
+position and that will be the utility.
+So we can for
+example I then find some cut off point.
+The optimal point theta
+optimal is the point
+when we would achieve the maximum
+utility if we had chosen this threshold.
+And there is also 0 threshold,
+0 utility threshold.
+As you can see at this cut off.
+The utility is 0.
+Now, what does that mean?
+That means if I lower the threshold, and
+then get the, and now I'm I reach this
+threshold, the utility would be lower,
+but it's still positive.
+Still non-elective, at least.
+So it's not as high as
+the optimal utility, but
+it gives us a a safe point
+to explore the threshold.
+As I just explained, it's desirable
+to explore the interest space.
+So it's desirable to lower the threshold
+based on your training data.
+So that means, in general, we want to set
+the threshold somewhere in this range.
+It's the when user off fault to
+control the the deviation from
+the optimal utility point.
+So you can see the formula of the
+threshold will be just the incorporation
+of the zero utility threshold and
+the optimal between the threshold.
+Now the question is how,
+how should we set r form, you know and
+when should we deviate more
+from the optimal utility point.
+Well this can depend on multiple factors
+and the one way to solve the problem is to
+encourage this threshold
+mechanism to explore
+up the 0 point, and
+that's a safe point, but
+we're not going to necessarily
+reach all the way to the 0 point.
+But rather we're going to use other
+parameters to further define alpha.
+And this specifically is as follows.
+So there will be a beta
+parameter to control.
+The deviation from the optimal threshold.
+And this can be based on for
+example can be accounting for
+the over throughout
+the training data let's say.
+And so
+this can be just the adjustment factor.
+But what's more interesting is this gamma
+parameter here, and you can see in this
+formula gamma is controlling
+the the influence
+of the number of examples
+in training data set.
+So you can see in this formula as N which
+denotes the number of training examples.
+Becomes bigger than it would
+actually encourage less exploration.
+In other words, when N is very small,
+it will try to explore more.
+And that just means if we
+have seen few examples,
+we're not sure whether we have
+exhausted the space of interests.
+So [INAUDIBLE].
+But as we have seen many examples
+from the user, many data points,
+then we feel that we probably
+dont' have to explore more.
+So this gives us a dynamic of strategy for
+exploration, right?
+The more examples we have seen,
+the less exploration we are going to do.
+So, the threshold will be closer
+to the optimal threshold.
+So, that's the basic
+idea of this approach.
+Now, this approach actually, has been
+working well in some evaluation studies.
+And, particularly effective.
+And, also can welcome arbitrary utility
+with a appropriate lower bound.
+And explicitly addresses
+exploration-exploration tradeoff.
+And it kind of uses a zero in this
+threshold point as a, a safeguard.
+For exploration and exploiting tradeoff.
+We're not, never going to explore
+further than the zero utility point.
+So, if you take the analogy of gambling,
+and you,
+you don't want to risk losing money.
+You know, so it's a safe strategy,
+a conservative strategy for exploration.
+And the problem is, of course,
+this approach is purely heuristic.
+And the zero utility lower bound
+is also often too conservative.
+And there are, of course, calls
+are more advanced than machine learning
+projects that have been proposed for
+solving these problems.
+And this is a very active research area.
+So to summarize there
+are two strategies for
+recommending systems or filtering systems.
+One is content based,
+which is looking at the item similarity.
+And the other is collaborative filtering,
+which is looking at the user similarity.
+In this lecture we have covered
+content-based filtering approach.
+In the next lecture, we're going to
+talk about collaborative filtering.
+The content-based filtering
+system we generally have to solve
+several problems related to filtering
+decision and learning, etc.
+And such a system can actually
+be based on a search engine
+system by adding a threshold mechanism and
+adding adaptive learning
+algorithm to allow the system
+to learn from long term
+feedback from the user.
+[MUSIC]
+

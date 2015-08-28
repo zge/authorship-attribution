@@ -1,0 +1,168 @@
+Okay.
+So, so far in this lecture, we have
+described the basic language modelling
+problem.
+We've introduced a very important class of
+language models, namely trigram language
+models.
+And finally, we've spoken about how to
+evaluate different language models using
+this measure which is called perplexity.
+So, in the final part of the lecture, I'm
+going to talk about estimation techniques
+for, for trigram models m, namely, linear
+interpolation and discounting methods.
+And we'll first focus on this method
+called linear interpolation.
+So just to recap, one of the primary
+challenges involved in estimation of
+trigram language modes is the sparse data
+problem that I described earlier in the
+lecture.
+So, let's just go over this, this argument
+again.
+So, a very natural estimate for a trigram
+language model is what's called the
+maximum likelihood estimate.
+So, the general form is as follows.
+If I'm estimating the parameter q for some
+word Wi, conditioned on previous words Wi
+minus 2 and Wi minus 1, then we simply
+define this parameter estimate as the
+ratio of two terms.
+On the numerator, I have what is often
+called the trigram count and this is
+simply the number of times I've seen the
+sequence of words, Wi minus 2, Wi minus 1.
+Wi, in my training corpus.
+On the dot denominator, I have the bigram
+count.
+And that is simply the number of times
+I've seen the words Wi minus 2, Wi minus
+1, in my training data.
+So, let's take a specific parameter as an
+example.
+Say, I want to estimate the parameter
+corresponding to the probability of
+laughs, given that the previous two words
+are the and dog, I just have the ratio of
+these two counts, the trigram count and
+the bigram count.
+Now, as I said earlier, in general, in
+these models, we are going to have a very
+large number of parameters.
+So, if our vocabulary size is N, then
+there are roughly N cubed parameters in
+our model.
+As one example, if N is 20,000, then we
+have 20,000 cubed.
+That's around 8 times 10 to the 12
+parameters.
+So, even with the very large training sets
+that we use nowadays to estimate the
+parameters of a language model, this is a
+very, very large number.
+Now, because of this inevitably, many of
+the counts used in these estimates will be
+equal to zero and that will lead to all
+kinds of problems.
+And in many cases, these q parameters will
+be equal to zero that happens if this
+count on the numerator, the trigram count
+is equal to zero.
+Where still if the bigram count is equal
+to zero, this count on the denominator,
+this estimate is completely undefined.
+So, this leads us to the estimation
+methods we're now going to consider.
+And as I've said, we're first going to
+consider this method called linear
+interpolation.
+So first, let's get some definitions.
+Q sub ML is going to be our maximum
+likelihood of estimate.
+And this is the trigram parameter estimate
+based on the ratio of counts that I showed
+you on the previous slide.
+But in addition to this trigram estimate,
+I can also describe what are called bigram
+and unigram estimates as follows.
+So, the bigram estimate.
+A game we use q sub ML looks at a word Wi
+and just the previous word Wi minus 1.
+So, this is an estimate which conditions
+only on the previous one word as opposed
+to the previous two words in the context.
+And again, this is simply defined as a
+ratio of counts.
+On the numerator, I have now a bigram
+count.
+And on the denominator, I have a unigram
+count.
+If we go a step further, to the unigram
+estimate, this is actually an estimate of
+the probability of a word that completely
+ignores the context.
+So now, we're not even going to condition
+on the previous word in the context.
+And this is, again, to find as a ratio of
+counts on the numerator I have the unigram
+count.
+That's simply the number of times I've
+seen the word Wi in the corpus.
+And on the denominator, this expression
+here Is going to be the number, total
+number of words in the, in the corpus.
+So, the total number of words in our
+training data.
+So, this is simply a ratio of the
+frequency of the word Wi to the total
+number of words I've seen in my corpus.
+So, if we look at these three different
+estimates corresponding to these three
+different levels, they have different
+strengths and weaknesses.
+And, the trade-off here is often referred
+to as the bias-variance trade-off in
+statistics.
+The trigram estimate has the benefit that
+it conditions on a lot of context, namely,
+the previous two words, and so it has
+relatively low bias.
+Given enough training samples, these
+counts will be relatively high and this
+will converge to a reasonable estimate of
+the probability of wi, given the context.
+In contrast, if we look at the unigram
+estimate, it completely ignores the
+context.
+And so, it'll fail to capture contextual
+effects.
+And so, it'll converge to a less good
+estimator as the number of trading samples
+increases.
+Conversely, however, the trigram maximum
+likelihood estimator has this problem that
+many of these counts will be equal to
+zero.
+So, we need a very large number of
+training samples to get an accurate
+estimate of the trigram, a maximum length
+of estimate.
+Conversely, for the unigram estimate,
+these counts will converge rather quickly
+to their expected values.
+And this estimate will quickly converge to
+the true unigram distribution underlying
+the data.
+The bigram estimate is somewhere between
+these two extremes where conditions on a
+reasonable amount of context.
+And it converges reasonably quickly to its
+true underlying value.
+So, what we'd really like to do is to come
+up with an estimator which trades off
+these different strength and weaknesses
+with these three estimators.
+And this is where linear interpolation
+comes into play.

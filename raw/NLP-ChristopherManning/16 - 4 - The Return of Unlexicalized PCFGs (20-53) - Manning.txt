@@ -1,0 +1,415 @@
+Now that we have a much better
+understanding of the role of independence
+assumptions in PCFG's, in this segment
+I'm gonna show you how you can make a
+much, much better PCFG, without doing
+lexicalization. And so this was work that
+was done in the accurate unlexicalized
+parsing paper by me and Dan Klein in 1993.
+So first, what do I mean by an
+unlexicalized PCFG? What that's gonna mean
+is that in general the grammar rules are
+not systematically specified down to the
+level of lexical items. So we're not gonna
+be able to have lexicalized categories
+like in a lexicalized PCFG, like NP-stocks
+or VP-rose. On the other hand, we
+are going to be allowed to do things like
+parent annotation of categories, or to
+note other things about the make-up of
+categories like saying this is a noun
+phrase that is a co-ordinated noun phrase.
+To drill down on that just a teeny bit
+more. In particular, we wish to make a
+distinction between closed versus open
+class words. So there is a long
+tradition in linguistics and syntax to
+make use of function words as features or
+markers for categories of the selection.
+So in English, the verbs have, be, and do
+act as verbal auxiliaries in things like I
+am running, he has eaten, and so it's okay
+to recognize that those function words
+have special role and to treat them
+specially. Or if you have a sentential
+complement, it's okay to know whether it's
+a that complement versus an if whether
+complement. Those kind of conditioning
+features are allowed in state splits,
+because they're fundamentally different to
+this idea of marking the semantic heads of
+phrases for working out things like
+prepositional phrase attachment, where
+really you're using the lexical heads as a
+kind of proxy for semantics. And so what
+our thesis was, is that a large percent of
+what you need for accurate parsing, and
+indeed, much of what was actually being
+captured by lexicalized PCFGs wasn't
+actually anything to do with probabilistic
+dependencies being captured by content
+words. But it was actually really just
+these basic grammatical features like
+verb form, finiteness, presence of a
+verbal auxiliary, that were well known
+from people working out traditional
+grammars. In particular, people who'd
+worked on feature based grammars for
+languages. So the way we went about
+investigating this, is that with the Penn tree
+bank Wall Street Journal, we chose
+a small development set that we could do a
+whole bunch of experiments on. In the days
+when we did it computers were much slower,
+so doing 100 files of the Wall Street
+Journal seemed like it'd take a long time.
+So we just used twenty files of the Wall
+Street Journal development section that we'd
+run on again and again. And we'd make
+manual state splits in the grammar and try
+and improve performance by breaking down
+wrong independence assumptions. And so we
+have a couple of statistics.
+One is our performance level, which will
+be our usual F1 of labelled precision
+recall. And then the other one is the size
+of our grammar. And as we make more state
+splits, the grammar will be bigger in
+terms of its number of non-terminals. And
+if this number gets too big, that's both
+dan-, dangerous for two reasons. It'll
+both slow down the parser, and we'll start
+to get problems with sparseness, because
+we're not smoothing the rewrites of our
+PCFG, except down at the lexical level
+where we're rewriting as words. And so our
+goal will be to state split as sparingly
+as possible. So we just want to make a
+limited number of state splits that give the
+most bang for the buck in terms of
+capturing necessary probabilistic
+dependencies. So let's just look at a few
+examples of how we did that. Our
+motivation was in part having looked at
+what had been done in lexicalized PCFGs.
+And it turns out that some of the things
+that been, been done in the lexicalized
+PCFG models the prominent ones of those
+days were Eugene Charniak's and Mike
+Collins's, didn't actually have anything
+to do with content word lexicalization at
+all. They'd been doing other things. So
+one idea was to split up context-free
+grammar rules which have long right hand
+sides. So, you only do limited
+conditioning on the other things on the
+right hand side. So, if you have a flat
+wall, of which there are lots in the Penn
+tree bank, we've already discussed needing
+to binarize those. And there's sort of a
+straightforward way of binarization where
+at each point, you preserve your left
+context, and then you have the
+probabilities of expanding further. So,
+now we're again preserving our left
+context and saying what are the
+probabilities of expanding further. But,
+as you go on, you're conditioning on more
+and more stuff that might not make much of
+a difference, because you're also going to
+have places in the Penn tree bank where a
+noun phrase expands as five proper nouns
+in a row. If you have something like,
+Greater Duluth Investment Advancement
+Committee or something like that, you're
+going to get five noun, proper nouns in a
+row. And it seems like at some point you
+just wanna know that you're expanding a
+bunch of proper nouns. And how many there
+were beforehand doesn't matter. And so
+what you can do is get rid of some of the
+history in the same way as we do with
+language models where we Markovize them
+and say, let's not use the entire
+preceding context, let's just use a bit of
+preceding context. But our preceding
+context now is in terms of these
+categories of what we'd seen previously on
+the right-hand side. So if we only keep
+what we're expanding and the thing that we
+saw most recently on the right-hand side,
+we get rid of some of the prior
+conditioning context and then these two
+states become the same. Our grammar will
+actually get smaller again. So from this
+perspective, if you do naive binarization
+of these very flat rules, you actually get
+a big grammar and you parse at about this
+73 percent number that we've talked about
+for a plain vanilla PCFG. It turns out
+that if you condition on less context,
+like only the two preceding tags, or only
+the one preceding thing on the right hand
+side, your grammar gets enormously
+smaller. And actually its performance
+goes up. So, in particular, if you
+condition on just the two previous
+categories in your expansion of the right
+hand side, your performance goes up a
+little bit. But we have found that we can
+do a little bit better than that. We could
+condition on sometimes one piece of
+preceding context, and sometimes two bits
+of preceding context, depending on how
+often you'd seen expansions for that
+category, as to how common this
+non-terminal is. Okay, so that's
+horizontal markovization. The idea of
+using parent categories, you can think of
+as vertical markovization. So before, we
+were saying, okay, we're expanding just a
+verb phrase and then we could say well,
+let's also look at the thing above that in
+the tree. And so we're then marking that
+in our category. So this looking at the
+thing above you in the tree is kind of
+looking at your history going upwards. And
+you can think of having your whole history
+going upwards and then progressively
+deleting out some of it. And that's a form
+of vertical markovization. So from this
+perspective, a standard PCFG, you're just
+expanding your own category and you're
+looking at nothing above you. So you're at
+vertical markov order one which is again
+that slightly under 73 percent performance
+level. But as Johnson noticed that by
+simply doing nothing else but also knowing
+your parent category here, that gives you
+a lot of value. So that's pushing up your
+parsing numbers by that four percent here.
+It turns out that if you put in
+grandparents as well, you can push the
+numbers up even a little bit further. But
+the problem is that, as you do that, you
+start having a bigger and bigger grammar
+with more non terminals. So the model we
+used as a basis for doing more linguistic
+state splits, was actually, again, to take
+this in between parent and nothing model,
+where you were using the parent category
+most of the time, but not always, for
+certain very rare non-terminals. So
+they're some of the ones that we saw
+mention of occasionally. They're
+things like where you have special non
+terminals for fragments and for
+reduced relative clauses, and things like
+that, that occur rarely.
+Okay. So, once we took the vertical and
+horizontal markovization level 2V
+between one and two, we then get to a PCFG
+where our accuracy is 77.8 percent F1. And
+the number of non terminals we have in the
+grammar is now seven and a half thousand.
+And that'll be the basis for introducing
+some further, more linguistic state splits.
+Okay well what other problems do the
+independent assumptions of PCFG cause?
+An easy way to find them is to just run
+your PCFG see where it makes parse errors on
+your development set and then scratch your
+head and think why is it choosing the
+wrong rule here. What information could I
+encode into the non terminals that would cause it to
+stop doing that. And so here's an example
+of this, so you find in a basic PCFG that
+unary rules are used too often, because
+they make it easy to change one category
+into another, so if you have high category
+rule here like a verb phrase going to a
+verb ending in ing and a noun phrase it's
+gonna want to use it. And so it finds that
+it can just change a sentence into a verb
+phrase with fairly high probability that's
+a high probability unary rule and so it
+will use it. But there's, and do that, but
+there's a problem here which is that this
+unary rewrite isn't appropriate for this
+higher level rule. That this higher level
+rule is expecting here to have a finite
+sentence with a s-, a subject, and so
+therefore it shouldn't then expand as a
+unary rule. So the way we can capture
+that is by saying, well let's mark the
+unary rewrites in the training data.
+Whenever there is a unary rule applied,
+we'll just stick unary on the parent
+category, so we know the kinds of places
+that unary rewrites occur. And then
+at that point it'll decide on, at
+parsing time, this isn't a place that
+unary rewrites occur, and so it'll
+choose a different structure for the
+sentence. It will decide to choose the
+structure where this is actually a modifier
+phrase modifying the noun phrase, and
+that's the right answer. And so just
+making this little change here will
+immediately already move our parsing
+numbers up by half a percent. So let's
+keep going. Another problem of the
+independent assumptions is that in various
+places the part of speech tags are too
+coarse. One of the worst examples of that
+is with the tag IN in the Penn tree bank tag
+set. So that's used for all three of the
+sentential complementizers
+of sentence complements, words like that,
+whether, and if; for subordinating conjunctions,
+like while and after; and for true prepositions,
+words like in, of, and to. Well, and that causes
+wrong parses. So here's an example of how it
+causes a wrong parse. So here we have this
+sentential complement, if advertising
+works. Where we should have this be a
+sentence advertising works. But instead
+what it's chosen to do is just give a
+regular prepositional phrase analysis,
+despite the fact that the preposition here
+is if, which is the, not really a true
+preposition, it's one of the sentential
+complementizers. Okay, well the way to
+deal with this is to split this IN tag
+here and have different kinds of words
+here. So if we say that if you have a noun
+phrase under your preposition, then what
+we want is the kind of IN that appears with
+a noun phrase as its complement. Well
+then, what's going to happen is we're
+going to learn that if is not an example
+of that. If is instead an example of the kind
+of IN that appears with a sentential
+complement, Because it appears in this
+SBAR construction that we have here. And
+so that means the parser is then going to
+choose a different and correct
+construction here. It's going to say that
+this part here is an SBAR with an S in
+it. So splitting the IN tag in this way
+is a big change. And by itself, it gives
+you an extra two percent in parsing
+accuracy. We can keep on and do more of
+the same. So let's just look at a couple
+of other examples of that. So, sometimes we
+also want to refine phrasal categories, so
+if you have a verb phrase it makes a fair
+bit of difference knowing what kind of a
+verb phrase it is. Is it a finite verb, or
+is it a non-finite or infinitive verb? And
+one way that you can capture that is by
+knowing what the part of speech tag of
+the verb is because this here is a finite
+tag for the verb, and this here is an
+infinitive non finite tag for the verb.
+And so we can represent that information
+also on the verb phrase category. And if
+we do that we will find that this
+structure is bad because, although the
+verb is can take VP complements, it won't
+take infinitive, bare infinitive VP
+complements like panic. Instead, it's
+going to take things like, participial for
+the progressives like, she is running, or
+things like that. And so when we annotate
+that extra information, the parser will
+again know that this isn't a good
+structure, and it will choose a different
+structure. And so here it's choosing to
+make panic buying a noun phrase correctly.
+Okay, so that's the idea of splitting verb
+phrase categories. And we mentioned
+earlier why we wanted to split off
+possessive noun phrase categories. Both of
+those are worth quite a bit in parsing
+accuracy. So we're getting almost a
+percent from the possessives. And we're
+getting over two percent by knowing about
+what kind of very phrase we're dealing
+with. There's one other category of splits
+that we introduced. And that is that
+somehow we want to know something about
+attachment sites for prepositional
+phrases. Even though we're not doing
+lexical conditioning. We want to have some
+kind of an idea as to do prepositional
+phrases tend to attach low or tend to
+attach high. And we put in some
+features that can, can capture that. So we
+mark whether any phrase contains a verb.
+That tends to capture whether it's already
+something big and sentence sized. And also
+mark, for noun phrases, whether they've
+already had things attached to them or
+whether they're still a base noun phrase
+that hasn't had anything attached to them.
+And these ideas also push up the
+performance numbers a little. Indeed, on
+the development set, we've now gotten up to
+87 F1. So at the end of the day, what we've
+constructed here is that we transformed the
+training data with manual rules done as
+state splits to produce this richer set of
+non-terminals here. So this is a verb
+phrase that's under an S-category. It has
+a finite verb in it, and it's a phrase
+that contains a verb. And so these are our
+categories. We then build a
+straightforward PCFG with those categories
+and parse. How well do we do? Well the
+answer is that this unlexicalized PCFG can
+suddenly actually do rather well. So these
+are the results. So these were two of the
+earliest lexicalized PCFG models and they
+got almost 85 and 86%. And here we have
+this hand-built unlexicalized PCFG, and
+it's actually doing a little bit better
+than those. It isn't doing quite as well
+as the model of Charniak that I showed
+earlier, or indeed, Collins's slightly
+later model. These ones were getting, you
+know, a little bit more 87, 88%. At any
+rate. But that shows you that if we're
+considering. You know, we started off at
+about 72.7 for our plain PCFG. And
+then if we look at what gave mileage to
+get up to here, it then looks like, well,
+you know about thirteen to fourteen percent
+of the mileage is coming from these ideas
+like knowing more about context, parent
+annotation, refining critical categories.
+Knowing that you have possessive noun
+phrases. Knowing about the type of verb
+phrases, participial infinitive, finite
+verb phrases. And the amount that these
+better models were capturing from having
+true lexicalization was really rather
+small. So it's somewhere between one and
+three percent. And so that changed the
+orientation somewhat as to better
+understanding what is and isn't important
+in being able to choose the right parses.
+Okay. So that showed that although the idea
+of lexicalization is clearly important for
+capturing certain kinds of parsing
+decisions such as prepositional phrase
+attachments, you can do a lot with just a
+little bit of linguistic modeling, rather
+than actually going the whole way of
+having this massive space of lexicalized
+PCFGs. And the kind of modeling that we're
+doing there is actually a kind that was
+very familiar from work on feature-based
+and unification-based models that have
+been explored in linguistics in the 1980s
+and 1990s.

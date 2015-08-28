@@ -1,0 +1,202 @@
+So to summarize, a brown clustering model 
+consists of the following. 
+We have some vocabulary. 
+To typically be the set of all words seen 
+in our training course. 
+Again, that training course might costed 
+a few, cost us of a few million or a few 
+tens of millions. 
+Or even a few hundreds of millions of 
+sentences or words. 
+We have a function C that defines a 
+partition of the vocabulary into the K 
+different clusters. 
+Typically mid k might be around a 
+thousand for example. 
+we have a parameter, e of v given c for 
+every v paired with every c, and then we 
+have a parameter q of c prime given c for 
+every pair of clusters, c prime to the c. 
+This intuitively is the probability of 
+the next cluster being C primed. 
+Given that the previous cluster is C. 
+And this is a parameter saying what's the 
+probability of admitting the word V. 
+Given that I have the cost of C as the 
+current cluster. 
+So, the critical question is going to be. 
+How do we take a training corpus as 
+input, and as output produce these three 
+things, the function C and these 
+parameters e and q? 
+That's what we're going to come to next. 
+So we're now going to describe how we 
+derive a partition C. 
+From a training corpus. 
+A training corpus consists of a sequence 
+of words w1, w2 up to wn. 
+Just think of this as the concatenation 
+of all the sentences in our training 
+data. 
+Again this might easily be a few 10s or 
+100s or millions of words. 
+And what I'm going to describe here is a 
+measure. 
+Of how well a particular, partition C 
+fits this particular training corpus. 
+So this is a function called quality, 
+which takes, as input, a training corpus 
+and a partition C and returns a value 
+reflecting how well that partition C fits 
+this particular set of training samples. 
+This is nothing more than the log 
+likelihood of the data, as we'll see in a 
+moment. 
+So this function quality is going to 
+drive the algorithm that actually picks a 
+partition C. 
+We'll see soon how we can attempt to 
+maximize this quality. 
+But for now I want to describe. 
+The actual definition of this term. 
+So what I have here is a sum from i 
+equals 1 to n of the log probability of 
+the ith word and the corpus, whereas 
+before, this log probability consists of 
+two terms, the product of two terms. 
+Firstly, the probability of omitting wi 
+from cluster wi And secondly, the 
+probability given that the previous word 
+of the same cluster, W I minus one, that 
+the next word in the same cluster W I. 
+So, we're actually going to see in a 
+second how we can simplify this 
+considerably. 
+[INAUDIBLE] . 
+There's a number of steps here which I'm 
+not going to go through in detail. 
+I'll post a note describing this. 
+so I'm just going to give a sketch on the 
+slide of, of what we end up with here. 
+But we end up with a really rather 
+beautiful expression here, which was 
+derived in the Brownatail paper. 
+Let's just talk a little bit more about 
+this criterion, though. 
+So This is actually a function of three 
+things. 
+It's a function of the partition C. 
+It's a function of the cubed parameters. 
+And it's a function of the E parameters. 
+So in fact we're going to maximize this 
+function with respect to these three 
+things. 
+And this function can be thought of as a 
+measure of how well these three things 
+fit the training data. 
+So there's a bit of a cheat here in that 
+this quality function depends just on C, 
+but actually e an q have to be modified 
+to. 
+A critical observation is that once I 
+have a function c, the values for the e 
+and q parameters can be derived in the 
+usual maximum likelihood way. 
+So, for example, e of v given one. 
+Is cgoing to be count of the state one 
+emitting there, divided by the number of 
+the number of times we've seen the state 
+one. 
+Or Q of 2 given 1 say, is going to be the 
+count of our One being followed by two, 
+divided by the count of one. 
+So if I fix the value for c, this 
+partition, I can read off counts like 
+this. 
+I can read off the number of times I see 
+the cluster one. 
+The number of times I see the, the word 
+there in that cluster. 
+Or I can count off the number of times I 
+see cluster 1 followed by cluster 2. 
+And these relationships hold because if I 
+fix C I still want to maximize this 
+function with respect to emq and this 
+will be the values for emq that maximizes 
+function. 
+This insight is critical, and it leads 
+through a few lines of algebra to 
+following form down here. 
+So I have two terms here. 
+G is a constant, so we can ignore this 
+because we're going to be maximizing this 
+function and this constant is insensitive 
+to the partition C, but what we end up 
+with here is a term where we sum over all 
+pairs of clusters, c and c primed. 
+I look at the probability of seeing c 
+followed c primed in the corpus. 
+And then I look at the log of p of c 
+followed by c primed divided by p of c 
+and p of c primed. 
+How these "p"s are actually derived? 
+Well, I can read off these counts from 
+the corpus. 
+So if I see, for example, the dog. 
+So are the cat. 
+Let's say I have some function of capital 
+c, which I'm trying to evaluate and say 
+that maps the word the to one. 
+Dog to two. 
+Saw to 3. 
+The to 1. 
+Cat to 2. 
+Having performed this mapping, I can 
+calculate the number of times I see c 
+followed by c prime. 
+So, for example, n 1, 2 is equal to 2 in 
+this case. 
+Or I can compute the number of times I've 
+seen a particular class, for example n 2 
+is equal to 2 and so on. 
+So I can read off these counts directly, 
+from my[INAUDIBLE] once I have that h 
+function capital C and so I can estimate 
+these probabilities. 
+So what I'm describing here is a 
+mechanical way to go from a partition C, 
+to some value which is actually equal to 
+this likelyhood. 
+And it involves just computing these 
+probabilities, the joint probability of 
+seeing c followed by c primed, and the 
+marginal probability of seeing a cluster 
+c and then computing this expression. 
+This identity just follows through a few 
+lines of algebra. 
+So that's the most important point, 
+really, that we have simple way of 
+evaluating a clustering And it has this 
+relatively simple form. 
+And actually, just very briefly, for 
+those of you who might have seen some, 
+some information theory, this is actually 
+the mutual information, but again I 
+should stress the main result in this 
+slide is that we now have a way of taking 
+a partition C So some assignment of words 
+to clusters, and evaluating the quality 
+of that clustering. 
+So this is a function that will take a 
+clustering and measure how well it fits 
+our training corpus, and it's derived 
+through likelihood. 
+It's basically Going to be a measure of 
+the likelihood of the corpus under this 
+particular classroom. 
+And the game the derivation from this 
+line to this takes a few times of algebra 
+I'm not going to go into other details 
+with that we'll post the original paper 
+or notes explaining that in more detail. 
+

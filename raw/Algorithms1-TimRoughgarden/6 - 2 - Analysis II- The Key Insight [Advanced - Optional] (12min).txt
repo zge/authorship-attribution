@@ -1,0 +1,177 @@
+This is the second video of three, in which we prove that the average running time
+of randomized quicksort is O(N log N).
+So to remind you of the formal statements,
+so getting into thinking about quicksort
+where we implemented the choose pivot subroutine
+to always choose a pivot uniformly at random
+from the subarray that it gets passed.
+And we're proving that for a worst case input array
+for an arbitrary input array of length N
+the average running time of quicksort with
+the average over the range of possible pivot choices
+is O(N log N).
+So let me remind you of the story so far, this is where we left things at the previous video
+we defined a few random variables, the sample space, recall,
+is just the - all the different things that can happen
+that is, all of the random coinflip outcomes that
+quicksort can produce, which is equivalent to all the pivot choices made by quicksort
+Now the random variables we care about - so first of all there's capital C
+which is the number of comparisons between pairs of elements
+in the input array that quicksort makes for a given pivot sigma
+and then there are the xijs
+and so that is just meant to count the number of comparisons involving
+the i-th smallest and the j-th smallest elements in the input array.
+You'll recall that zi and zj denote the i-th smallest and the j-th smallest entries in the array.
+Now because every comparison involves some zi and some zj,
+we can express capital C as a sum over the xijs.
+So we did that in the last video, we applied linearity of expectation
+we used the fact that xij are 0 or 1, that is indicator random variables
+to write the expectation of xij just as a probability that is equal to one
+and that gave us the following expression.
+So the key insight and really the heart of the quicksort analysis
+is to derive an exact expression for this
+probability as a function of i and j.
+So for example the third smallest element in the array, the seventh smallest element in the array
+wherever they may be scattered in the input array and you want to know exactly what is the probability
+they get compared at some point of the execution of quicksort.
+And we're going to get an extremely precise understanding of this probability in the form
+of this key claim.
+So for all pairs of elements, and again, ordered pairs, we're thinking of i being less than j,
+the probability that zi and zj get compared at some point of the execution in the quicksort is exactly
+two divided by j minus i plus one.
+So for example, in this example of third smallest element and the seventh smallest element
+it would be exactly 40% of the time.
+Two over five is how often those two elements would get compared
+if you ran quicksort with a random choice of pivots.
+That going to be true for every j and i.
+The proof of this key claim is the purpose of this video.
+So how do we prove this key claim?
+How do we prove that the probability that zi and zj get compared
+is exactly two over the quantity of j minus i plus 1?
+Well fix your favorite ordered pair.
+So fix elements zi, zj
+with i  less than j, for example the third smallest and the seventh smallest elements in the array
+now, what we want to reason about is
+the set of all elements in the input array
+between zi and zj, inclusive.
+I dont  mean between in term of positions in the array
+I mean between in terms of their values.
+So consider the set
+between zi and zj plus one inclusive.
+So zi, zi + 1 dot dot dot zj - 1 and zj
+so for example the third, fourth, fifth, sixth and seventh smallest elements in the input array.
+Wherever they may be, they are of course -
+the initial array is not sorted, so there's no reason to believe that these j minus i plus one elements are contigous, okay?
+They're scattered throughout the input array. We're going to think about them, okay? zi through zj inclusive.
+Now, throughout the execution of quicksort, these j minus i plus one elements
+lead parallel lives, at least for a while
+in the following sense:
+Begin with the outermost call to quicksort
+and suppose that none of these j minus i plus one elements
+is chosen as a pivot.
+Where then could the pivot lie?
+Well it could only be a pivot that is greater than all of these
+or it could be less than all of these
+For example this is third, fourth, fifth, sixth and seventh smallest elements in the array.
+Well the pivot is then either the minimum or the second minimum
+in which case it is smaller than all the five elements
+or it is eigth or largest - or larger element - in the array, in which case, bigger than all of them. So there's no way
+you're going to have a pivot that somehow is wedged in between this set
+because this is a contiguous set of order statistics, okay?
+Now what do I mean by these elements leading parallel lives?
+Well in the case where the pivot is chose to be smaller than all of these elements
+then all of these elements will wind up to right of the pivot
+and they will all be passed to the  recursive call, the second recursive call.
+If the pivot is chosen to be bigger,
+than all of these elements, then they'll all show up on the left side of the partitioned array
+and they'll all be passed to the first recursive call.
+Iterating this or proceeding inductively, we see that
+as long as the pivot is not drawn from the set of j minus i plus one elements,
+this entire set will get passed on to same recursive call.
+So this j minus i plus one elements are living blissfully together in harmony,
+until the point in which one of them is chosen
+as a pivot
+and of course that has to happen at some point
+the recursion only stops at some point when the array length is either equal to zero  or one
+so if for no other reason, at some point, there will be no other elements in the recursive call, other than these j minus i plus one
+Okay? So at some point the reverry is interrupted and one of them is chosen as a pivot.
+So, let's pause the quicksort algorithm and think about
+what things look like, at the time that one of those j minus i plus one elements
+is first chosen as a pivot element.
+There are two  cases worth distinguishing between
+In the first case the pivot happens to be either zi or zj.
+Now remember what is that we are trying to analyse.
+We're trying to analyse the frequency, the probability that zi and zj gets compared
+Well, if zi and zj are in the same recursive call,
+and one of them gets chosen as the pivot
+Then they're definitely are going to get compared
+Remember, when you partition an array around its pivot element,
+the pivot gets compared to everything else.
+So, if zi is chosen as a pivot, it certainly gets compared to zj.
+if zj gets chosen as a pivot, it gets compared to zi.
+So either way, if either one of these is chosen,
+they're definitely compared.
+If on the other hand, the first of these j minus i plus one elements to be chosen as a pivot,
+is not zi or zj. If instead it comes from the set zi + 1 up to zj - 1 and so on
+then the opposite is true,
+then  zi and zj are not compared now, nor will they ever be compared in the future.
+So why is that? That requires two observations
+first recall that when we choose an pivot and we partition an array
+all of the comparisons involved will pivot.
+So two elements of which neither of them is a pivot, do not get compared, in the partition subroutine.
+So they don't get compared now.
+Moreover, since zi is the smallest of these and zj is the biggest of these
+and the pivot comes from somewhere between them
+this choice of pivot is going to split zi and zj in diferent recursive calls
+zi gets passed to the first recursive call
+zj gets passed to the second recursive call
+and they will never meet again.
+So there's no comparisons in the future either.
+So these two  right here, I would say is the key insight, in the quicksort analysis.
+The fact that for a given pair of elements we can very simply characterize
+exactly when they get compared, and when they do not get compared in the quicksort algorithm.
+That is, they get compared exactly when one of them
+is chosen as the pivot before any of the other elements with value in between those two
+has had the oportunity to be a pivot.
+That 's exactly when they get compared.
+So this has allowed us to prove this key claim. This exact expression on the comparison probability,
+that we'll plug into the formula that we had earlier
+and will give us the deisred valued on the average number of comparisons.
+So let's fill in those details.
+So first let me just first rewrite the high order bit from the previous slide.
+So now at last, we will use the fact, that our quicksort implementation
+always chooses a pivot uniformly at ramdom.
+That each element of a subarray is equally likely to serve as the pivot element
+in the corresponding partitioning call
+So what does this buys us? This just says all of the elements are symetric.
+So each of the elements  zi, zi + 1 all the way up to zj is equally likely to be the first one asked to serve as a pivot element.
+Now the probablity that zi and zj get compared is simply the probability that we're in case one as opposed to in case two
+and since each element is equally likely to be the pivot
+that just means there're just two bad cases, two cases in which one can occur
+out of the j minus i plus one possible different choices of pivot.
+Now we're talking about a set of set of j minus i plus one elements, each of which of whom is equally likely to be asked
+to be served first as pivot element
+and the bad case, the case that leads to a comparison,
+there's two different possiblities for that.
+If zi or zj is first and the other j minus i minus one outcomes lead to the good case, where zi and zj never get compared.
+So overall because everyone is equally likely to be the first pivot
+we have that the probability that zi and zj get compared
+is exactly the number of pivot choices that we do comparison divided by the number of pivot choices overall.
+And that is exactly the key claim.
+That is exactly what we  was the probability that a given zi and zj get compared no matter i and j are.
+So wrapping up this video, where does that leave us? We can now plug in this expression
+for this comparison probability
+into the double sum we had before.
+So putting it all together what we have is that - what we really care about - the average number of comparisons
+that quicksort makes on this particular input of array of length N
+is just this double sum which iterates over all the possible
+ordered pairs  i, j
+and what we had here before was the probability of comparing zi and zj. We now know exactly what that is.
+So we just substitute
+and this is where we're gonna stop for this video.
+So this is gonna be our key expression star
+which we still neeed to evaluate, but that is going to be the third video.
+So essentially we done all of the conceptual difficulty
+in understanding where comparisons come from in the quicksort algorithm.
+All that remains is a little bit of an algebraic manipulation
+to show that this star expression really is O(N log N) and that's coming up next.

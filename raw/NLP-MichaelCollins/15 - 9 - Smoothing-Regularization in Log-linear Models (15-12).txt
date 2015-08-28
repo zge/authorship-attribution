@@ -1,0 +1,341 @@
+So we've now described the basic form of 
+log-linear models. 
+And we've talked about he parameter 
+estimation in these models. 
+The final piece of the puzzle is going to 
+be to talk about smoothing and 
+regularization, which is going to be a 
+slight modification, but a very important 
+modification to the parameter estimation 
+methods that I've just described. 
+Okay, so let's look at a particular 
+problem with the maximum likelihood 
+estimates that I've just described. 
+And we'll do this by looking at a 
+particular example. 
+So, let's return to this problem of part 
+speech tagging. 
+Remember, in this case, each history x 
+consists of a sentence. 
+w1 through wn the sequence of previous 
+tags, t1 through ti minus 1. 
+And also position i, and so we have these 
+three things that we're conditioning on. 
+And the label y is a tag for example Vt. 
+Okay, let's say we have a feature 
+definition, say a 100th feature, is going 
+to be 1 if the word we're tagging is base 
+and the tag we're choosing is Vt. 
+Okay. 
+Now, let's assume that for the sake of 
+argument in our training data, we see the 
+word base three times, and we see it with 
+the tag Vt every single time. 
+And that 's not a unrealistic situation. 
+In many cases, we will see words with the 
+same tag every time. 
+So, if you look at the gradients at the 
+maximum, we're going to have dLv by dL 
+dv100 is equal to 0. 
+So, if we hill climb to the maximum of 
+this function I was talking about, at 
+this global maximum, all the gradients 
+are going to be zero. 
+And so, we can reason about to some 
+extent about our final parameters by 
+using this property that the gradients 
+are equal to zero. 
+And that means that if you look back at 
+the definition of gradients, this 
+equation will be satisfied. 
+So, here we have a sum of i of f 100 xi 
+yi. 
+Here we have a sum of i and y, py under 
+the, the, the model times the feature 
+value. 
+So, I'm not going to go into tremendous 
+detail about this derivation, but the 
+important point is the following. 
+You can ensure that in this case, the 
+only way these gradients are going to be 
+satisfied is if this conditional 
+probability Vt given xi under the 
+parameters v is equal to 1 whenever we 
+see the word base in our history in our 
+training data. 
+And that is essentially going to mean 
+that this parameter, v100, is going to 
+tend towards infinity as we optimize our 
+solution. 
+that's going to happen in almost all 
+cases. 
+So, for these probabilities to be one, 
+we're going to set our parameters to be 
+tends towards infinity. 
+And that means for any test data example, 
+whenever we see a word base being tagged, 
+we're going to estimate its probability 
+as well. 
+So, this model is essentially smoothed. 
+It looks very much like, you know, if you 
+think about estimating our Trigram 
+parameters of the language model. 
+So we have dog given saw, the, and let's 
+say we have, this is equal to count saw 
+the dog over count saw the. 
+Let's for the sake of argument assume 
+that this count is equal to sorry, this 
+denominator count is equal to say 3, and 
+this numerator count is equal to 3. 
+And this estimate is going to be 1. 
+So, we're going to estimate the 
+probability of seeing dog given the 
+content saw there as being probability 
+one. 
+Because every time I've seen saw the, I 
+see dog as the next word. 
+This is in some sense an extreme 
+estimate. 
+It doesn't seem really justified on the 
+basis of three examples to estimate one. 
+This is very similar. 
+This particular example here, on the 
+basis of basically three examples, we're 
+estimating this probability to be one. 
+Now in practice, because we use large 
+numbers of features in this model, this 
+is an actually a very severe problem. 
+You will end up with many of the 
+parameters diverging to very, very large 
+values. 
+And that will lead to really rather bad 
+generalizations in test data examples in 
+the same way that this maximum likelihood 
+estimate for trigram language models, 
+generalized this poly to new sentences. 
+These maximum likelihood estimates for 
+log-linear models will in generalize, in 
+general, generalize poly because of this 
+problem where probability has go to 1 and 
+parameters diverge to infinity. 
+So, what I am going to show you here is 
+very simple and effective solution to 
+this problem called Regularization. 
+And the basic idea is going to be to 
+modify our loss function slightly. 
+So again, I'm going to take the optimal 
+parameters, V star, to be the parameters 
+v which maximizes function L of v. 
+And what I have here is just exactly the 
+same as what I saw, showed you before, 
+some i equals 1 to n of log p y(i) given 
+x(i) under the parameters v. 
+But now I have a new term which is 
+showing you here. 
+So remember, we're maximizing this 
+function L of v. 
+I have minus lambda over 2. 
+So lambda is some parameter, is greater 
+than 0. 
+And lambda is usually chosen by 
+validation on a development set. 
+So usually, you try several different 
+values of lambda and see which model 
+performs better on some held out sort of 
+beta. 
+It's very similar to the lambda as we saw 
+for the language models in that sense. 
+And then, here I have a sum from k equals 
+1 to m over vk squared. 
+So, this is essentially the length of vk 
+squared. 
+This is the euclidian norm, or length of 
+vk. 
+We square that. 
+So, what is this going to do in practice? 
+Now we think of our function Lv. 
+It has two terms. 
+This first term can be thought of as 
+measure of how well v fits the data. 
+It's a measure of the more likelihood of 
+the beta, the higher this value, the 
+higher the probabilities we've, we've 
+given to the actual training examples. 
+So, this term is going to drive us 
+towards fitting the data as well as 
+possible. 
+But the second term is going to penalize 
+large values for vk sorry, this should be 
+v squared. 
+v squared, the length of this vector. 
+So, this is going to encourage us to keep 
+our parameter values relatively small, or 
+at the very least, to keep the sum of 
+squares of our parameter parameter values 
+relatively small. 
+And this can be thought of as a penalty 
+on the complexity of the model. 
+If you think of simpler models having 
+smaller parameter values, this will 
+encourage models with smaller parameter 
+values. 
+And so, these two parts of this 
+subjective function will also play off 
+against each other. 
+This is a fit to the data, this is 
+something which tries to keep a parameter 
+value relatively small. 
+This second term can be justified in 
+various ways. 
+But, to cut a long story short, there has 
+been a great deal of evidence both 
+empirically and also in theoretical 
+analyses, that by including these kind of 
+penalties, on primitive values, you can 
+learn effectively in very high 
+dimensional spaces. 
+So, we can now actually have m, our 
+number of features be extremely large. 
+But as long as we penalize large 
+parameter values, we can still get models 
+which generalize very well to new test 
+examples. 
+And in fact, under this kind of strategy, 
+these log-linear models are highly 
+effective models in many scenarios. 
+We optimize this function L of v again 
+using gradient-based methods. 
+And the gradients look very similar to 
+what I showed you before. 
+So now, if we differentiate with respect 
+to the parameter vk, these two terms were 
+exactly the same as what I showed you 
+before. 
+They resolved from differentiating this 
+term here. 
+And finally, when I differentiate this 
+expression here with respect to vk, I 
+simply get lambda times vk. 
+So, there's a very simple change to the 
+gradient. 
+So, you can run conjugate gradient 
+methods or LBFGS which is often the 
+method of choice for these models. 
+Under this new objective, and it requires 
+a very small modification to the method 
+in the simple change to the gradients 
+that we saw. 
+So, here's one example of an application 
+of log-linear models. 
+We'll see several others in the next few 
+lectures of the class. 
+But, just to complete the story of that 
+language modeling, let's talk about an 
+early paper by Chen and Rosenfeld from 
+1998. 
+And they tried a very simple experiment 
+to sort of validate log-linear models 
+with the kind of regularization I just 
+showed you. 
+And so, in this case, they just 
+replicated a trigram language model, but 
+where they used these log-linear methods 
+to estimate the parameters of these 
+models. 
+So, in this case, our features look at a 
+history . 
+So, our x that we're conditioning on is a 
+pair of previous words, and our y is a 
+single word. 
+So, this is just a language modeling 
+problem that where we go back to the 
+scenario where we just condition on the 
+previous two words, and they introduce 
+trigram, bigram, unigram features. 
+For example, the trigram feature might, 
+here might look at this particular 
+trigram. 
+This bigram, this unigram and as I 
+described before, they basically included 
+all trigrams, bigrams and unigrams seen 
+in trending data. 
+Or rather, they included features for 
+every trigram, bigram and unigram seen in 
+the trending data. 
+You can then define a locally log-linear 
+model where our estimate of Wi given the 
+previous two words is we gain 
+exponentiate this in our product f.v ,and 
+we normalize by summing over all possible 
+words in the vocabulary. 
+And we could estimate these parameters v 
+using gradient ascent on the regularized 
+log-likelihood function that I showed you 
+on the previous slides. 
+So, there are a couple of interesting 
+things to note with this log-linear 
+method to language modeling. 
+One is the following. 
+If we use plain maximum-likelihood 
+estimation, so that is no regularization. 
+We just use maximum-likelihood estimation 
+as I showed you as, as our first attempt 
+at a parameterization method. 
+Then, for these very simple methods, the 
+q parameters end up being the regular old 
+maximum-likelihood estimates for trigram 
+models simply the ratio of these two 
+counts. 
+So, this is what we would have referred 
+to as qML, of wi given i minus 2 and i 
+minus 1. 
+So that sort of emphasizes how these 
+models are really unsmoothed in the pure 
+maximum-likelihood case, and they will 
+have all the deficiencies we saw of 
+maximum-likelihood estimation for trigram 
+language models. 
+However, Chen and Rosenfeld showed that 
+with the regularization method I showed 
+you, they actually get very good results. 
+If you look at the plexity, it performs 
+at least as well as the discounting 
+methods or the new interpolation methods. 
+We saw way back in the first lecture or 
+two of this class. 
+So that's very reassuring. 
+So, out of the box, log-linear models get 
+highly competitive results on this 
+particular problem. 
+And that's appealing because in many 
+ways. 
+The method I've described is rather 
+cleaner and more elegant and more 
+principled than the estimation methods we 
+saw using discounting and linear 
+interpolation for example. 
+The only downside in this particular case 
+is that, recall that to calculate the 
+probability of any w given some context, 
+the previous two words, we calculate e of 
+v.f. 
+And on the denominator, we have a 
+normalization term which involves summing 
+over all the words in the vocabulary. 
+Computing this sum is slow. 
+We're literally going to have to sum over 
+all possible words in the vocabulary. 
+And so, that is a downside in this 
+particular context of language modeling. 
+Having said that, log-linear models are 
+incredibly effective in many domains. 
+And we may see a resurgence of their use 
+in language models as people start to 
+come up with approximations or other 
+methods to deal with these kinds of terms 
+more efficiently. 
+They certainly have the benefit of being 
+able to incorporate features in a much 
+more flexible and clean way than the 
+methods we saw with linear interpolation. 
+

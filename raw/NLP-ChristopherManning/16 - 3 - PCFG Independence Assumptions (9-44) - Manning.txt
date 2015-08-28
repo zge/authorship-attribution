@@ -1,0 +1,202 @@
+In this segment we're gonna dig it
+little deeper into the independence
+assumptions of PCFGs and what that means
+in practice. So the symbols of a PCFG
+define the independence assumptions. So if
+we have a pair of rules like this: S goes to
+noun phrase, verb phrase, noun phrase goes
+to determiner noun. When you're expanding
+here the only thing you know is that
+you've got a noun phrase and you've got
+probabilities for how it expands. So the
+right way to think of categories in a
+PCFG is that they are kind of
+choke points information flow.
+So we have the outside tree up here
+and when we've expanding this noun phrase,
+we know nothing about the outside
+tree, all we know is that we're
+expanding a noun phrase. Or, looked at
+from reverse, when we're working out what
+parse to choose up here, we don't know
+anything about what went on down here.
+All we know is that this is a noun
+phrase over some number of words,
+and then we need to work out what
+happens above it. So precisely, this is a
+point at which there's an independence
+assumption. The assumption is you can work
+out the probabilities of things inside
+here knowing only that this is a noun
+phrase. And, you can work out the
+probabilities of things up here knowing
+only that this is a noun phrase. That's a
+very strong independence assumption.
+And we can see clearly that it's too strong by
+looking at various cases. Here's one
+example. So, if we just say, what are the
+chances of expanding a noun phrase
+overall? Well, the chance of a noun
+phrase expanding as a noun phrase,
+prepositional phrase in the Penn tree bank,
+it's about 11 percent, and the
+chances of it expanding as a pronoun, so
+this is something like a noun phrase goes
+to the pronoun she. That's six percent.
+And these are just the overall statistics.
+And let's suppose we now ask about
+particular categories. Suppose we know
+that this is a noun phrase under an S, so
+that's the subject noun phrase of a
+sentence. Then we find out the statistics
+are enormously different. So the chance
+of this expanding as a NP PP go down a
+little, but what's really dramatic is that
+the chances of it becoming a pronoun go up
+enormously, about three and a half times.
+In contrast if we know it's a noun phrase
+after, under a verb phrase, the chance of
+it being a pronoun drops. But the chances
+of it being an NP PP go up a lot. They more
+than double. Now, if you have a bit more
+background in linguistics, you would say
+at this moment, well, of course. That's
+exactly what you'd expect, based on
+knowledge about information structure of
+language. So that subjects are normally
+used for topics, established discourse
+reference, and therefore it's highly
+appropriate for that to be a pronoun.
+Whereas, inside the verb phrase, what
+you're normally doing is introducing new
+information, which therefore needs to be
+explained a little bit more. And therefore,
+it would be quite common for that
+to be a noun phrase with a prepositional
+phrase hanging off it, because that's one
+of the ways in which you can express more
+information, so you can say something
+like, the man by the railway, railroad tracks or
+something like that, where you're giving
+more descriptive content. But just
+thinking about it at the moment for our
+PCFG, well, what we're finding is that if
+we just say we're expanding a noun phrase,
+we, we're losing this additional
+information which would let us give
+much better probabilities about how to
+expand it. Another way that you can see
+that your independence assumptions are too
+strong is when you run a basic PCFG and
+you find that it just does the wrong
+thing. So it's choosing rules that look
+wrong, that it shouldn't have used, but
+somehow it's choosing to use them. Here's
+an example of this, so for a noun phrase
+like big board composite training, the
+noun phrase structure that you're meant to
+choose in the Penn tree bank is just this
+flat structure. In general the Penn tree
+bank uses a lot of flat structures for
+compound nouns like this. But if you train
+up a simple PCFG and run it on this
+sentence, the structure that you actually
+get is this one here where it's put in an
+extra noun phrase node around big board.
+Well, it just shouldn't have done that.
+And your first reaction is, well, why did
+it do that? Because all of the compound
+nouns in the Penn tree bank have this kind
+of flat structure. Why didn't it learn
+that? But the reason that it was able to
+do this is that there's a different
+structure in the Penn tree bank where you
+do get these NP nodes at the start of an
+NP. And when that happens is with
+possessives. So here we have this
+possessive NP, and then you do have a noun
+phrase up here going to noun phrase
+adjective noun. And so what you'd like to
+say is, well this rule here, it's okay to
+use it as, for possessives, but this noun
+phrase isn't a possessive. But then,
+that's precisely where the problem is
+'cause both of these nodes are just marked
+noun phrase. And so we're not recording
+the information that this one here is a
+possessive noun phrase. So somehow, we
+want to get more information to this
+category to say this is a possessive noun
+phrase, so the parser would know that you
+can't use that expansion rule when you
+have a non possessive noun phrase like big
+board. So that's what we want to do. So we
+can relax the independence assumptions of
+a PCFG by encoding more information into
+the non-terminal symbols. A process that's
+often referred to as state-splitting. So
+one of the first proposals for
+state-splitting, and showing how
+successful it was, was Mark Johnson
+noticed that you could improve a
+probabilistic context free grammar quite a
+lot, by encoding as part of each
+non-terminal, also what was the parent
+category. And remember you also saw
+this idea in the conditioning of the
+Charniak parser in a preceding segment.
+So Johnson's observation was that if you
+did nothing more but changed all of the
+non-terminals to also record in them
+what the parent non-terminal is, so you
+then effectively have a number of
+non-terminals squared space of
+non-terminals, that that change alone, if
+you just train a PCFG in the regular manner
+makes a big difference, it pushes up
+your parsing numbers by a couple of
+percent. So that's a useful idea. But
+there are other things that we might want
+to do that have a slightly different
+character. So for the example from the
+previous slide, if we want to rule out the
+big board bad parse, it seems like what we
+also want to do is know about possessive
+noun phrases. So possessive noun phrases
+are these ones like fidelity's with an
+apostrophe s at the end and they have a
+very different nature than regular noun
+phrases but it wasn't being recorded in
+the category symbol. They are just being
+called noun phrase. So why don't we do
+state splitting and say, oh no, we're
+gonna split out noun phrases that are
+possessives and call them an NP-POS and
+then that information will also be
+captured in the grammar and again we'll
+have a more accurate PCFG. Of course
+there's a danger of doing this too much.
+And that is that if we have too much state
+splitting, we start getting more and more
+non-terminals, and our information about the
+non-terminals becomes sparser and sparser.
+And in particular, in the model we're
+gonna show in the next segment, there is
+actually no sm-, smoothing of the rule
+rewrite probabilities. And so, if you did
+too much state splitting, you'd end up
+having zero probabilities for things that you
+haven't seen before. But unlike with word
+probabilities where you basically have to
+smooth them you can do a reasonable amount
+of state splitting of categories in this
+sort of a way before you have to deal with
+smoothing and so what we're going to look at
+is well, which ways of splitting
+categories are most useful for capturing
+probabilistic dependence that's needed
+to do a good job in PCFG parsing.
+Okay, I hope that gives you a more concrete sense
+about PCFG independence assumptions
+and how they can hurt you, but also how to
+solve them.

@@ -1,0 +1,203 @@
+And let's begin with the idea of
+shortest paths. So, again I'll give you
+the movie graph. I'll give you Kevin Bacon
+as a starting point. What's the fewest
+number of hops, the fewest number of edges
+on a path that leads to, say, Jon Hamm? So
+some notation, I'm going to use DIST of V,
+to denote this shortest path distance. So
+with respect to a starting node S, the
+fewest number of hops or the fewest number
+of edges on a path that starts at S, and
+goes to V. And again you can define this
+in the same way for undirected graphs or
+directed graphs. In a directed graph, you
+always want to traverse arcs in the
+forward direction, in the correct
+direction. And to do this we just have to
+add a very small amount of extra code to
+the BFS code that I showed you earlier.
+It's just gonna be a very small constant
+overhead, and basically it just keeps
+track of what layer each node belongs to,
+and the layers are exactly tracking
+shortest path distances away from the
+starting point S. So what's the
+extra code. Well first in the initialization
+step, you set your preliminary estimate of
+the distance, the number of the shortest
+path distance from S to vertex V as well
+if V equals S, you know you can get from S
+to S on a path of length zero, the empty
+path. And if it's any other vertex all
+bets are off, you have no idea if there's a
+path to V at all. So let's just initially
+put plus infinity for all vertices other
+than the starting point. This is something
+we will of course revise once we actually
+discover a path to vertex V. And the only
+other extra code you have to add
+is, when you're considering, so when you
+take a vertex off of the front of the
+queue and then you iterate through its
+edges and you're considering one of those
+edges V, W, so your V would be the vertex
+that you just removed from the front of
+the queue. And as usual if the other end
+of the edge W has already been dealt with
+then, you know, you just throw it out.
+That would be redundant work to look at it
+again. But if this is the first time
+you've seen the vertex W. Then, in
+addition to what we did previously, in
+addition to marking it as explored and
+putting it in the queue at the back, we
+also compute its distance, and its
+distance is just going to be one more than
+the distance of the vertex V, responsible
+for W's addition to the queue, responsible
+for first discovering this vertex W. So,
+returning to our running example of
+breadth first search, let's see what
+happens. So, again, remember the way this
+worked is we start out with from the
+vertex S, and we set the distance, you
+know in our initialization equal to zero.
+We don't know what the distance is of
+anything else. So, then how did breadth
+first search work? So, we, in the initial
+step we put S in the queue. We go to the
+main while loop, and then the queue's not
+empty. We extract S from the queue. We
+look at its neighbors. Those neighbors are
+A and B. We handle them in some order.
+Let's again think of that we first handle
+the edge between S and A. So, then what do
+we do? We say we haven't seen A yet. So we
+mark A as explored. We put A in the queue at
+the front, and now we have this extra
+step. It's the first time we're seeing A,
+so we wanna compute its distance. And we
+compute its distance as one more than the
+vertex responsible for discovering A. And
+so in this case S was the vertex whose
+exploration unveiled the existence of the
+vertex A to us. S's distance is zero so we set
+A's distance to one. And that's tantamount
+to being a member of the ith layer. So
+what happens in the next iteration of the
+while loop. So now the queue contains
+Sorry, the next iteration of the for
+loop, excuse me. So after we've handled
+the edge S comma A, we're still dealing
+with S's edges, now we handle the edge S
+comma B. We put, it is the first time
+we've seen B. We put B at the end of the
+queue, we mark it as explored, and then we
+also execute this new step. We set B's
+distance to one more than the vertex
+responsible for discovering it. That would
+again be the vertex S. S led to B's
+discovery. And so we set B's distance to
+be one more than S's distance, also known
+as one. And that corresponds to being the
+other node in layer one. Now having
+handled all of S's adjacent arcs we go
+back to the while loop. We ask if the queue is
+empty. Certainly not. It takes two
+vertices, first A then B. We extract the
+first vertex cuz it's FIFO, that would be
+the vertex A. Now we look at A's incident
+edges. There's S comma A, which we ignore.
+There's A comma C. This is the first time
+we've seen C. So as before we mark C as
+explored. We add C to the end of the queue
+and now again we have this additional
+line. We set C's distance to be one more
+than the vertex responsible for its
+discovery. In this case it's A. That first
+discovered C. So we're gonna set C's distance to
+be one more than A's distance also known
+as two. So then having handled A
+we move on to the next vertex in the
+queue, which in this case is B. Again we
+can forget about the edge between S and V.
+We've already seen S, we can forget about
+the edge between B and C. We've already
+seen C but D is now discovered for the
+first time via B. It gets more as explored,
+it goes to the end of the queue and its
+distance is set equal to one more than B's
+distances which is two. So, then we deal
+with C. Again it has four arcs, four
+edges, three of them are irrelevant. The
+one to E is not irrelevant, cause this is
+the first time we've seen E. So, E's
+distance is computed as one more than C,
+cause C was the one who first found E, and
+so E gets a distance of three, and then
+the rest of the algorithm proceeds as
+before. And you will notice that the
+labelings, the shortest path labels, are
+exactly the layers as promised. I hope you
+find it very easy to believe at this point
+that, that claim is true in general. That
+the distance computed by breadth-first
+search for an arbitrary vertex V, that's
+reachable from S is, that's gonna be equal
+to i if and only if V is in the ith
+layer as we've been defining it
+previously. And what does it really mean
+to be in the ith layer? It means
+that the shortest path distance between V
+and S has i hops, i edges. So I don't
+wanna spend time giving a super rigorous
+proof of this claim but let me just give
+you the gist, the basic idea,
+and I encourage you to produce some formal
+proof at home if that is something that
+interests you. So one way to do it is you can do it
+by induction on the layer i. And so what you
+want to prove is that all of the nodes that belong to a given layer i do Indeed, breadth
+first search does indeed compute the
+distance of i for them. So what does it
+mean to be a node in layer i? Well, first
+of all, you can't have been seen in either
+of the, any of the previous layers; you
+weren't a member of layer zero through i
+minus one. And furthermore, you're a, a
+neighbor of somebody who's in layer i
+minus one. Right? You're seen for the
+first time once all of the layer i minus
+one nodes are processed. So the inductive
+hypothesis tells you that distances were
+correctly computed for everybody from the
+lower l, from the lower layers. So in
+particular, whoever this node V was from
+layer i minus one was responsible for
+discovering u, in layer i. It has a distance
+computed as i minus one. Yours is assigned
+to be one more than its, namely i. So that
+pushes through the inductive step
+everything in layer i indeed gets the
+correct label of a shortest path
+distance i away from S. So before we wrap
+up with this application, I do wanna
+emphasize, it is only breadth first search
+that gives us this guarantee of shortest
+paths. So, we have a wide family of graph
+search strategies, all of which find
+everything findable. Breadth-first search is
+one of those, but this is a special
+additional property that breadth-first search
+has: you get shortest path distances from
+it. So in particular depth-first search does not in
+general compute shortest path distances.
+This is really a special property of
+breadth-first search. By contrast in this next
+application, which is going to be
+computing the connected components of
+an undirected graph, this is not really
+fundamental to breadth first search. For example,
+you could use depth first search instead and
+that would work just as well.

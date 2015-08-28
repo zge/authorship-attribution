@@ -1,0 +1,390 @@
+Hello, welcome to the course on Audio
+Signal Processing from Communications.
+This week, we are presenting
+diverse spectrum modeling
+strategies to model sounds.
+And one of the underlying concepts that
+we are introducing is a idea that there
+are many sounds that are not quite
+well modeled with sinusoids or
+with a harmonic analysis approach.
+That, there are signals
+that are very noisy.
+That are what we call Stochastic, that
+require a different, modeling approach.
+This this modeling approach is based
+more on statistical signal processing on
+describing the sound from
+a probabilistic point of view.
+So, in this programming class,
+I want to go over that from
+a programming perspective.
+So, I present uh,the models that we have
+been implementing in the SMS tools and
+that implement this idea
+of stochastic modelling.
+So, we'll basically,
+we talking about this block diagram.
+In which we start from a signal and then
+after windowing it and computing the FFT,
+we just keep the magnitude spectrum
+[INAUDIBLE] stochastic signals.
+The phase spectrum is not relevant and
+so the approximation is based on
+the magnitude spectrum that then is
+approximated with a smooth curve.
+And this smooth curve is what
+we call the stochastic model.
+And from that, we can reconstruct or
+we can regenerate a signal by sort of
+reconstructing the, a magnitude spectrum
+and then generating phases randomly.
+So that, we can create another
+complex spectrum that captures
+some of the essence of the original
+sound and then by over lap adding.
+We can generate a signal that hopefully,
+if the original signal had
+these stochastic properties will be
+quite similar to the original sample.
+So let's go to text editor and
+here I wrote a very short
+script that implements this idea of,
+approximating a fragment of so,
+of a sound with this stochastic model.
+Okay, so we start by importing
+few packages that we need and
+then the core of the code is
+basically reading sound file.
+This is the ocean sound file
+that we already have been using.
+So, it's clearly
+an stochastic type of signal.
+And then, in order to analyze,
+the spectrum of it we have
+to define the FFT size and
+the window size in this type of, sound.
+And this type of situation,
+there is no need to zero pad,
+there is no need to,
+have, a odd size window.
+So we have m the window size and
+FFT size, on the same size which is 256.
+Then the key parameter is
+this what we call stochastic
+factor; which is basically the smoothing
+factor of the down sampling factor.
+So .2 in this case that we define.
+It means, that we're basically reducing
+the information by a factor .2.
+And getting only kind of
+the surface information.
+Then we get the window,
+in case we get a Haming window.
+But it can be any, any type of window.
+It doesn't have to be very complex.
+In fact, I would say that maybe
+it's easier to just use the Hanning
+because it's even simpler and
+it, it works.
+Okay?
+Then we need to select the portion
+of the sound we're going to analyze.
+And in this case, well, we chose
+a section in, in the sample of 10,000 and
+then plus the window size and
+we multiplied by the window.
+Then, we compute the spectrum and
+then we convert it to DV.
+And we do the approximation,
+the stochastic approximation
+on the DV spectrum.
+And we do it by using these
+pattern function call re-sample.
+Re-sample is a function that
+basically uses a FFT approach.
+It uses a spectral analysis
+approach to down sample a signal or
+to re-sample a signal.
+Both with a down sample or
+up sample or signal.
+So we give a function in this case is nx.
+And we just make sure there is
+nothing below minus 200 decibel's.
+It wouldn't make any sense.
+And we specify the length the new
+length that we want to create.
+So the original length was of size n over
+two because we are only
+using half of the spectrum.
+Okay, so from n over two samples,
+we are going to generate n over two
+multiplied by this,
+stochastic factor approximation.
+So, basically if this is 0.2,
+we are going to have one fifth of
+the samples that we started with.
+Okay, let's run this little script so
+we will run the And
+we can plot the signal that we start with.
+The windowed fragment that we start with.
+So this is the,
+the fragment of the ocean sound
+already windowed by a Hanning window.
+'Kay?
+And
+then we are computing
+the spectrum of that.
+So the spectrum is this mxArray.
+Okay?
+So, this is the magnitude spectrum of that
+and now we can plot of that,
+the the smooth approximation or the,
+the down sample approximation of that.
+So which is mxm but
+in order to make sure that it,
+it's shown on top of this array
+which is a, a longer sized.
+We have to, party different rules and
+we have to say NP range of,
+NXN, well the size of that.
+And then, if we divide by, stock factor.
+This should stretch the,
+these points to the size that
+we had of the mx.
+Okay, so yes.
+So here we show in in green
+the approximation, this approximation.
+Of course, it has less samples, so
+Mxm has the size of it is 25 samples.
+So from the, the 128 samples that this
+the positive side of this spectrum has.
+We have reduced it to 25.
+Okay, of course it would
+change to stochastic factor.
+We will do we will have more or
+less samples to be approximated but
+clearly this, this green line is
+an approximation to the blue line.
+Okay.
+So, this is what the,
+kind of a stochastic approximation
+that we are going to be using thus and
+now let's go to this other script and
+what we will be doing is to actually
+synthesizing a sound from this.
+So we have the,
+the same first part up until here.
+Okay.
+So we generate the envelope and
+now what we're going to do is to re-sample
+again the, the approximated spectrum but.
+To the size of n over 2 so that we get
+all the samples of the complete FFT.
+Then we will generate random numbers for
+the face.
+And then to create the whole
+complex spectrum, we will have to.
+Deal with the symmetry so
+that we will recreate the magnitude and
+face for the negative frequencies and
+of course convert it to complex numbers.
+So, the positive spectrum, the positive
+complex spectrum would be 10 to the power
+of the magnitude multiplied by
+the Exponential of the face.
+Okay, well this is of course
+the conversion from DV to linear
+scale and then for the negative
+part we do the same thing, but
+we reverse the order and
+the face is at negative at that.
+And then which is that,
+that inverse FFT of the complex spectrum.
+So, let's run these.
+This is test1.
+Okay.
+And in here,
+we have the magnitude
+spectrum that we started.
+The mx.
+Okay, so this is the original spectrum and
+now we can plot on top of that
+the approximated and
+the up sample to have the same size.
+In fact, NY has the same size than this,
+so now this green line.
+Started from the samples
+that we showed before.
+So, it was a more a jagged line and
+had fewer points and now it has converted
+into a smalls version that has the same
+size than the regional spectrum and
+of course the,
+the face spectrum we would plot the PY.
+This is the phase spectrum
+that we generated,
+which is just random numbers
+from 0 to pass, to, to pi.
+And by taking the english at 15,
+we can just obtain the output signal.
+So this is the synthesize signal from
+that approximated approximated spectrum.
+Of course this is.
+Different from the x w,
+the, we have started from.
+So the now, the green is
+the original signal we started from.
+Clearly very different, but
+that's not the point here.
+Because being the stochastic signal.
+The shape in the time domain
+is not that relevant,
+what is important is this general
+distribution in the magnitude spectrum.
+Okay, so now let's look at
+how the actual analysis and
+synthesis work for longer sounds.
+So in here, we have the.
+Stochastic model.
+PY, file in which we have different
+functions that implement the analysis.
+Of of complete Stochastic signal and
+the synthesis from the, analyze.
+Stochastic representation and basically
+does they do what I have done for
+a single frame.
+In which stochastic model and now,
+it starts from the signal, the hop size,
+the [INAUDIBLE] size and
+this stochastic factor.
+And it iterate over the whole sound.
+And it does what is [INAUDIBLE]
+on the [INAUDIBLE], it finds the,
+the [INAUDIBLE] spectrum.
+Then it reduces the re-sample
+function to done,
+down sample it to fewer samples
+depending on stochastic factor.
+And it keeps appending these to
+a sequence of envelops and because we're,
+going to have a time varying.
+Envelope for
+the stochastic representation, and
+of course the synthesis does again what I,
+I showed before.
+It has to the manuspectrum
+to the complete size.
+It has to generate the random face and
+then it has to convert to the complex
+spectrum and do the overlap add.
+To recover the whole signal.
+So, let's call this for a particular
+sound so in here I wrote a little script
+that takes that ocean sound and
+it calls the stochastic model anal.
+So it analyzes the whole sound.
+Okay, and it is a up size of 128.
+The, the,
+the fft size it used to be twice as that.
+So, instead of specifying an f50 size
+the default is normally to just take
+twice the hub size, and then there is
+the stochastic factor which is point two.
+So now if we run.
+This, test two,
+'Kay now we have created stock,
+and that if we look at the shape of that,
+that's a matrix that has 2217 frames.
+And each frame has 25 points which
+are the points of the approximation,
+and these we can we can look
+up individual frames, but
+basically what we normally do
+is we plot it with P color mesh.
+Okay.
+The pcolormesh and we specify a stocm will
+display this array like a,
+in a color, like a 3D type of plot.
+Of course, this is shown in the,
+the, kind of the wrong direction.
+We are accustomed to see
+time in the horizontal axis.
+So, what we normally do is
+show it with np and transpose.
+Okay.
+So, this will reverse the plot and
+it will show the x axis in the as,
+as time.
+And vertical axis as frequency.
+Okay, so this is the, the, the plot
+of the, the spectral representation
+of these of these coefficients of
+the stochastic representation.
+Okay, and let's now go to this this
+function that basically does
+this Stochastic analysis and
+synthesis for a complete sound and
+at the same time it plots it nicely.
+This is the code that is
+used from the interface and
+it plots a nice spectrogram of the,
+of the stochastic representation.
+So, in here we have this main function.
+That has some parameters like default and
+it needs a sound.
+It performs the analysis that we just,
+did.
+And then it does the synthesis
+from the whole, analysis.
+And then it outputs a sound file and
+then it plots the, the.
+The different components the input sound,
+the stochastical percentage, a,
+and the output sound.
+So, let's run these run
+the stochastic model function of py.
+Okay, and these plots input sound.
+That stochastic approximation and,
+the output sound and
+of course, we plan now it has saved
+a file; called ocean stochastic model WAV.
+And I can just play by typing play ocean,
+okay.
+[SOUND]
+[NOISE]
+Okay.
+So, this has played the, the complete
+sound and as we showed before, well,
+it's quite similar even though it's not.
+Identical.
+It definitely sounds like an ocean sound.
+And, even though, it's it doesn't, it
+has lost some of the low frequencies, so
+we might have to change a little bit
+the stochastic approximation in order to
+recover the complete sound
+a little bit better.
+But anyway, okay, so that's what's.
+I wanted to present, so
+we talked about this stochastic model
+implementation that we have
+in the SMS tools package.
+And of course we use quite
+a bit of the python/?
+functions, and also the plotting of So
+we have seen how to implement.
+The stochastic model that we talk about
+in class, in the theory class, and
+this will be one important
+component to then now in the next
+classes to incorporate it into
+the harmonic or sinusoidal
+plus a stochastic representation, so
+therefore we will be using this model.
+To analyze the,
+the residuals that we obtained by
+subtracting the sinusoidal, the harmonic.
+So I hope to see you next lecture.
+Bye-bye.
+

@@ -1,0 +1,293 @@
+[MUSIC]
+So when we visualize data
+organized as a graph,
+we'll likely want to
+lay it out in a plane.
+There's a kind of graph that
+enables that called a planar graph.
+So as we saw before we're going to
+represent data items as nodes and
+edges between nodes will represent
+relationships between those data items.
+In some cases we'll have a graph,
+a planar graph for example.
+A planar graph can be drawn such that the
+edges connecting the nodes don't cross.
+That's called a planar embedding.
+The same planar graph,
+in this case you've got the same foreign
+nodes connected by the same five edges.
+In this non planar
+embedding the edges cross.
+And so, the same graph,
+they're both planar graphs.
+What we'd like to do is be
+able to find the embedding,
+the way to lay out the nodes so
+that the edges don't cross, so
+it'll be clearer to the observer,
+the relationship between the nodes.
+So we can do this.
+We can do this for very large graphs.
+For example, here's a triangle mesh
+representing a geometric object.
+It's a triangle mesh, so
+the vertices are nodes and
+the edges of the triangles form
+the edges between the nodes.
+This graph, this large graph of
+50,000 nodes is not a planar graph,
+but if I make cuts in it, if I separate
+the faces and duplicate edges,
+I can turn it into a planar graph just by
+making these cuts along the black lines.
+And as a planar graph, I can then find
+a way of embedding it into the plane so
+that the edges don't cross.
+There's so many nodes and so
+many edges in this this graph and
+it's hard to see all of the edges,
+so trust me that they don't cross.
+Hopefully you'll be working
+with fewer nodes and edges so
+that your layouts will be
+a little more clear than this.
+So there's a way we can find these
+embeddings automatically, and
+it's called Tutte's Method, and it
+starts by picking some of your nodes and
+defining where they
+should be in the layout.
+So in this case, I'm going to use eight
+nodes, 12 edges that make a cube,
+and I'm going to take
+these first four nodes,
+and I'm going to find positions for
+them in for example an SVG Canvass.
+I'm going to position node 1 at (0,0),
+node 2 at (1,0),
+node 3 at (0,1), and node 4 at node (1,1).
+And then I'm going to try to figure out
+where do I want to position nodes 5, 6, 7,
+and 8, in order to make a plainer
+embedding of this graph.
+This graph is shown in
+a non planar embedding,
+because we've got edge crossings.
+We want to find out how to
+make a planar embedding of it.
+So in order to do this automatically for
+any graph,
+we're going to need to
+solve a linear system.
+So we'll create a matrix.
+In fact, an adjacency matrix,
+a special kind of adjacency
+matrix called a Laplacian matrix.
+So it's an adjacency matrix which means,
+I'm going to take one node to another node
+in case of node 1 is connected to node 2,
+so in row one, column two,
+I'm going to have a non zero entry.
+In this case, the non zero entry
+is going to be 1 over the degree.
+The node one has degree three,
+it has three edges extending from it,
+so I'll put a one-third there.
+And so node 1 is connected to nodes 2,
+3, and 5,
+and so I'll put one-third in columns two,
+three, and
+five, and node one isn't
+connected to the other nodes.
+So in those columns including node one,
+in those columns I'll put a zero.
+The nice thing about the Laplacian
+form of an adjacency
+matrix is the for
+node 1 I'm connected to three items.
+My degree is three.
+The value I'm putting in
+is one over the degree.
+So if I add all of the elements up for
+row one I get one.
+So no we're going to create a special
+matrix from that Laplacian adjacency
+matrix.
+We'll just call this matrix A.
+First thing I'm going to do is I'm
+going to take that Laplace matrix, and
+I'm going to zero out all of the rows for
+the nodes I've already assigned.
+So I've already assigned Node 1,
+2, 3, and 4 a position.
+So I'll just zero those out
+in my adjacency matrix,
+subtract the whole thing
+from the identity matrix.
+The identity matrix just has ones down
+the diagonal and zeros everyplace else.
+That will give me this matrix
+A that I'm going to solve
+in order to find the placements for
+nodes 5, 6, 7, and 8.
+So I need to set up a linear system,
+and so
+we'll set up a linear system for
+the x coordinates of our nodes, and
+then we'll set up a separate linear
+system for the y coordinates.
+So the linear system we use for
+the x coordinates looks like this.
+It's my matrix A, and
+then I've got times x,
+a column vector that's just the x
+coordinates of my nodes, and
+then finally I've got the answer, what
+the x coordinates actually should be in
+the case of the first four nodes and
+then zeros for the nodes I want to solve.
+So this is saying that one times x one,
+the x coordinate of node one,
+one time x one and
+zero times everything else equals zero.
+Because that what I've assigned.
+So here I've got node 0,
+node 1, nodes 2 and node 3,
+these are the x coordinates of node 1,
+2, 3, and 4.
+And so here I've got one, this second row.
+1 times x2 is equal to 1, and the x
+coordinate of a sine for node two is one.
+So that's what I put
+in these first entries
+of this bx column vector, and
+the remaining entries are just zero.
+The nice thing here is that
+if we look at row five,
+row five says that the x
+coordinate of node 5, x5,
+one times x5 minus one-third times x1,
+minus one-third times x6,
+minus one-third times x7,
+is going to be equal to zero.
+That's basically setting
+up a linear equation so
+that wherever I position nodes 6 and
+7, they're going to impact node 5.
+Once we do that for rows five, six, seven,
+and eight corresponding to nodes 5,
+6, 7, and 8, and when we solve this
+system we'll have positions for
+nodes 5, 6, 7, and
+8 that solve that relationship.
+Do the same thing for the y coordinates.
+So now my by column vector is equal
+to the y coordinates for nodes 1, 2,
+3 and 4 that I've placed, and
+then add zeroes for everything else.
+Node 1 has zero for the y coordinate.
+Node 2 has zero for the y coordinate.
+Node 3 has one for the y coordinate, and
+node 4 has one for the y coordinate,
+and this is basically saying that y1 = 0,
+y2 = 0, y3 = 1, y4 = 1.
+But it's saying that the y coordinate for
+node 5 is equal to whatever the y
+coordinate is for node 5, minus one-third,
+times the y coordinate for node 1, minus
+one-third the y coordinate for node 6,
+and minus one-third the y coordinate for
+node 7, and so on for the remaining nodes.
+So I've basically setup these
+equations for the x system.
+I said x1 is equal to zero, x2 is
+equal to one, x3 is equal to zero, and
+x4 is equal to one.
+And then I've set up these equations for
+the x coordinates of the remaining.
+I've set up similar equations for
+the y coordinate.
+So if I group these together,
+I basically position x1 and
+y1 at the xy coordinates for
+node 1 at (0, 0), node 2 at (1,
+0), node 3 at (0, 1),
+node 4 at (1, 1), and
+I've set up these relationships for
+remaining coordinates.
+Now, you might notice something here.
+I'm basically saying that node 5
+It's going to be node 1's position
+plus node 6 position plus node
+7 position divided by three.
+So basically the position of each node is
+going to be the average of the position
+of its neighboring nodes that it shares
+an edge with, and that's true for
+all the remaining nodes.
+And so we fix the position,
+we set the position for
+some of our nodes and
+then the remaining are just
+going to be set to be the average
+of the nodes that are connected to.
+And so if I solve that system, if I
+solve that linear system you can use any
+numerical methods you like to solve that
+matrix problem, you get the solution.
+So that node 5 is at (1/3, 1/3).
+Node 6 is at (2/3, 1/3).
+Node 7 is at (1/3, 2/3), and
+node 8 is at (2/3, 2/3).
+And so each of these nodes ends up being
+at the average, the position of node five
+is equal to the average, the centroid
+of node one, node six, and node seven.
+So I take node 1 plus the position of
+node 6 plus the position of node 7,
+divide by three, and I get node 5.
+So we've solved for
+these positions of node 5, 6, 7, and
+8 to find this planar layout of this
+graph shown here in a non planar
+embedding by solving a matrix problem.
+You don't have to solve a matrix
+necessarily to do this.
+You can do the same thing by basically
+starting with your nodes 1, 2,
+3, 4 in their fixed position, and
+then for all the remaining nodes,
+you can assign them random positions
+to begin with and then iteratively,
+replace those node positions with
+the average of their neighboring nodes.
+And if you continually
+replace every node's position
+with the average of it's
+neighboring node's position,
+those nodes'll work into
+place where they belong.
+And so you can solve this system
+without setting up a matrix
+just by constantly doing
+that iterative procedure
+of moving every node to the average
+of it's neighboring nodes.
+So Tutte's method tells us that we can
+solve a linear system to embed a planar
+graph, but it's not that difficult.
+You can do the exact same
+thing by nailing down
+a few of your nodes into fixed positions.
+And then the rest of the nodes,
+you just replace their position with
+average of their neighbor's positions,
+the positions of the neighbors
+that share an edge with that node.
+If you keep doing that over and over,
+those nodes will relax into the exact same
+position that tutte's
+method will converge to.
+[MUSIC]
+

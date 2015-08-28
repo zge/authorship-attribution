@@ -1,0 +1,283 @@
+Okay so we've now introduced Hidden Markov
+Models, and in the previous section I gave
+basic definitions of those models.
+In this next section I want to talk about
+how these models are learned from a set of
+training examples.
+In particular how those Q and E parameters
+we saw, the trigram parameters and the
+emmission parameters can be estimated from
+a set of training examples.
+And this is actually quite
+straightforward.
+So let's take the q parameters as a start
+and let's say for example we want to
+estimate the q parameter corresponding to
+the probability of seeing this tag Vt
+given that the previous two tags are these
+2 tags here.
+And, we can use our training corpus, of
+course, to induce counts of different tag
+sequences.
+So, what I've shown you here is
+essentially a linear interpretation method
+for estimation.
+Very similar to the methods we saw for
+trigram language models in the last,
+lecture in this course.
+So, here I have an ML estimate, maximum
+likelihood estimate.
+Actually, this is the trigram maximum
+likelihood estimate.
+And notice on the denominator, I have the
+number of times I've seen DT followed by,
+Followed by JJ, that's what we were
+conditioning on here.
+And on the numerator, I have the number of
+times I've seen this sequence of 3 tags.
+So, this is the trigram count, this is the
+bigram count, and I've taken the ratio of
+these 2 terms.
+These counts can be taken directly from
+those training samples which consist of
+entire sentences, together with their part
+of speech sequences.
+Similarly here I have a bigram maximum
+likely estimate.
+So again it's a ratio of counts, number of
+times I've seen JJ.
+It's the second tag in this sequence we're
+conditioning on.
+And then on the numerator, the number of
+times I've seen JJ followed by Vt.
+And finally, I have the unigram ml
+estimate.
+Our numerator is number of times I've seen
+the tag Vt.
+And our denominator is the total number of
+tags I've seen in my training corpus.
+So we have a linear ineterpolation mthod.
+We have these three smoothign parameters.
+Exactly as we saw for language modeling,
+these lambdas satisfy the constraints that
+they sum to 1, and they're all greater
+than equal to 0, and they can be estimated
+from data in a very similar way.
+Actually, an identical way to, to what I
+showed you for the language modeling
+problem.
+So, this is basically a direct application
+of the methods we saw for language
+modeling.
+Okay so secondly we've got to consider
+these omission parameters for example E of
+base given Vt is the probability that the
+tag Vt emits the word base.
+And again, we can derive maximum
+likelihood estimates that take a very
+intuitive form.
+So, on the denominator, I have the number
+of times I've seen the tag, vt.
+And on the numerator, I simply have the
+number of times that I've seen the tag vt
+paired with the word, base.
+And we simply take the ratio of these 2
+terms.
+So it's blindingly simple estimate.
+So that's basically it, although there's
+one problem we need to worry about and
+that's the fall a.
+So e of x given y is going to be zero for
+all y if x is never seen in the training
+data.
+So what am I saying here?
+I'm basically saying, for any word x that
+is never seen in he training data.
+We're going to estimate all of the
+submission parameters to be equal to zero.
+And, in some sense that means we have no
+useful information about that word.
+And, this is actually going to be a real
+problem in these models.
+But I'll describe a simple solution to it.
+Why is this important?
+Let's come back to an example from before.
+And let's say for the sake of argument
+that this is a test sentence.
+And so, I would apply my tagging models to
+this test sentence and try to find the
+most likely sequence of public speech tags
+for that sentence.
+Then, we're very likely in a given test
+sentence to encounter words which we've
+never seen before in training.
+So Mulally for example, quite possibly has
+never been seen in our training data.
+Or maybe even topping is a relatively
+infrequent word that may not have been
+seen in our training data.
+An d actually if you look at the
+statistics of English for example even
+with say a million words of training data
+for tagging, you will frequently encounter
+words in testator, which you've never seen
+in training data.
+What that means is, let's take this
+particular example, so e of Mulally given
+y is equal to 0 for all tags y.
+And that means if this is defined at our
+sequence x1 through xn is equal to is
+equal to this.
+To easily verify it the P of x1, xn, y1,
+through yn plus 1 is equal to 0 for all
+tag sequences.
+Y1 to yn plus 1 and that's because any
+text sequence is going to involve an
+emission parameter like this which is
+equal to 0 and so all of these
+probabilities can be taken to be 0.
+And of course at this point, the model is
+completely broken down because all of my
+tag sequences have probability zero.
+And in fact if I think about trying to
+find the most likely tag sequence, rather
+the aug max of all tag sequences of this
+expression we just have a tie where all
+tag sequences get the same value of zero.
+Okay.
+So, so this model is broken but there is a
+very simple fix.
+So the common method which is used is as
+follows.
+So in the first step we split the
+vocabulary into two different sets.
+We'll do this as follows.
+I'll define so-called frequent words, to
+be any word occuring greater than some
+threshold.
+So, for example, a typical value might be
+5.
+We define a frequent word to be any word.
+Occurring five times or more in training
+and we define low frequency words to be
+all other words.
+So this is going to include words seen
+less than five times in the training data
+and also words which seen zero times in
+the training data.
+So all those new words that we see on test
+data example which have never been seen in
+training.
+So, that's the first step.
+In the second step, we're going to define
+a mapping where we map low frequency
+words.
+So, all the words in this set into a small
+finite set, typically depending on
+spelling features of those words.
+I'll give an example of this in the next
+slide.
+But the basic idea is to take this very
+large set of low-frequency words.
+There might be many, many words that fall
+into this class, and for each word just
+map it into one of, say, 10 or 20 New
+words, this, this small finite set.
+Let, let me be concrete by, by giving an
+example.
+And this is from the paper by Bikel and
+others from 1999, specifically on the
+problem named entity recognition.
+So they defined a mapping from these low
+frequency words.
+To roughly, think it's roughly 10 or 15
+different possible word classes.
+And these were chosen by hand and using
+some intuition and insight about the
+problem that they were attacking which was
+named-entity recognition.
+So this partition of the low frequency
+words into these different classes has
+been chosen to try to preserve some useful
+information in the named entity
+recognition task.
+So for example, if they see an low
+frequency word consisting of two digits.
+They map this to a class called
+twoDigitNum.
+Four digits, fourDigitNum.
+Let's look at some others.
+A word which is all capitals gets mapped
+to a word called allCaps.
+We have any, anything which is the first
+word of a sentence, (no period) Is mapped
+to a symbol called first word.
+But that's essentially because even though
+that word is capitalized, the
+capitalization information is, is not that
+useful in that case because all words at
+the start of a sentence are capitalized.
+Any word whose initial letter is capital
+There's other words not capitalized
+this[UNKNOWN] to initCap and so on and so
+on.
+So let's continue this example.
+And let's come back to.
+This is the original form, of our training
+data.
+So again, I'm looking at the main density
+problem here, and assume this is a
+training example, where somebody has,
+actually annotated the different entities,
+in this particular example.
+So before the transformation, the data
+looks like this.
+But here's what the data looks like after
+the translate transformation.
+And there are a number of low-frequency
+words here which have been mapped to these
+kind of pseudo-words.
+These words in a small set of categories
+that preserve spelling features about the
+words.
+So, profits is mapped first word.
+Boeing is mapped to initCap, you have
+lowercase initCap, and so on and so on.
+So you, as a human, can look at this data,
+and you can see that even though we've
+discarded the precise identity of these
+words, we've still preserved quite a bit
+of information.
+And most importantly, information about
+the underlying spelling of those words,
+which will be useful in the named entity
+problem.
+Okay, so we perform this transformation to
+both our training examples, and also our
+test examples.
+And then we simply build a hidden Markov
+model tagger, using data in this format.
+[inaudible] So, we now have parameters
+such as the probability of seeing first
+word, given that the tag is NA, or an
+emission parameter specifying the
+probability of seeing Init cap.
+Given that I have the tag SC, and so on
+and so on.
+So, we've essentially finessed this
+problem of low-frequency words, or words
+in test state and never seen in training,
+by closing the vocabulary.
+By mapping those low-frequency words to a
+much smaller set of 20 words which
+preserve information about.
+About the spellings.
+The nice thing about this is that it's a
+very simple method.
+Once we've done this we can simply read
+off straight forward maximum likelihood
+estimates of these different parameters.
+The downside is that it's clearly
+heuristic in that some human expertise has
+to go into the design of this mapping to a
+small number of word classes.

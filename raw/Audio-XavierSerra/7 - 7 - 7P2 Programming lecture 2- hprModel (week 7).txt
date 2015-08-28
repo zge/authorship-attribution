@@ -1,0 +1,445 @@
+Welcome to the course on Audio Signal
+Processing for Music Application.
+This week, we're talking about
+how to model sounds by combining
+the sinusoidal or harmonic approach,
+that we talked in the previous weeks.
+With the idea of a residual or
+a stochastic component, and the core
+aspect of that is how to subtract.
+The sinusoids of a sound
+from the actual sound.
+And this is what we're going to,
+we're going to be talking about in this,
+programming lecture from
+a programming perspective.
+So, we're going to be implementing the
+subtraction of sinusoids from a signal.
+And we're going to do it
+through the hprModel,
+implementation of the model that we
+have within the SMS tools package.
+Basically, we're going to be
+talking about this block, diagram.
+In which, from the input sound,
+and all the,
+the analyses that we have
+already been talking about.
+The computing of the spectrum detection of
+the peaks in the case of harmonic models,
+detection of, the fundamental frequency
+and identification of harmonics.
+Then, we are synthesizing these
+harmonics in the spectral domain, so
+we're synthesizing the,
+the lobes of of the harmonics.
+And now, in this, in this, week.
+What we are focusing on
+is on this subtraction.
+So we are focusing on how these,
+sinusoids can be subtracted
+from the original signal.
+And, what,
+what we do is we compute, again,
+the spectrum of the input signal
+with the same parameters.
+So therefore, with the same window that is
+implicit or in fact it's quite explicit
+in the spectral domain of these sinusoids
+so that then we can subtract them.
+And then this residual spectrum can
+be some to the harmonic spectrum and
+obtain the time domain synthesize
+signal by combining the two.
+So let's look at some code that they
+wrote to show these in a concise way.
+So, I I wrote some code just.
+And does it for one signal frame.
+So first, we poured all the packages
+that we need for this analysis.
+Okay, we already have seen
+all of theses packages.
+And then we read sound files.
+We're going to start
+from the oval sound 84.
+And, we need to specify some parameters.
+In particular, we're going to be analyzing
+only one frame, so we choose, we choose
+the location, the pointer where we're
+going to be reading, the, the sound from.
+So, the place for the thousand, a sample.
+Okay.
+And then well we need to window size m we
+take 801 samples.
+We need a f50 size bigger than
+that let's so we take 2,048.
+Then, we need a threshold for
+identifying the peaks.
+Since we going to be doing a harmonic
+analysis, we need a minimum and
+maximum frequencies to look for
+the, the fundamental frequency.
+Then, we need an error threshold to to
+have the lower bound for the algorithm
+that we are using for F0 detection that
+[INAUDIBLE] mismatch error function.
+Then we will decide how many harmonics,
+the maximum number and,
+of harmonics that we
+are going to be identifying.
+And this is the,
+the deviation slope that we choose so
+that the higher harmonics have a higher
+degree of deviation than the lower ones.
+Okay, so these are the parameters,
+and now we start by computing things.
+So first, we compute the analysis
+window and we take the window.
+Then since we're going to
+be doing the subtraction,
+the phase information is fundamental,
+we need to do zero phase window.
+This is where, it's fundamental.
+The idea of,
+centering everything around zero.
+So that the, the times domain,
+basically wave forms.
+They align perfectly.
+So that, the faces match.
+And therefore,
+the subtraction is possible.
+And here,
+the outside window is again fundamental.
+So, that's why you need to compute
+the center of the window in this way.
+Okay, then we choose
+the fragment of the sound.
+And here with the pointer.
+So we, we choose the center of the window.
+The pointer is the center of the window.
+And we take half of the sample
+from the left of this pointer and
+half of the samples on
+the right of this pointer.
+Okay, so this is going to be
+our sound that we analyze.
+And then, we have seen all these before.
+We compute the DFT of this
+fragment of the sound.
+We find the peaks.
+We interpolate the peaks with
+parabolic interpolation,
+here we convert the locations to hertz.
+And now,
+we detect the fundamental frequency, okay?
+So we call the 2 wave
+mismatch algorithm and
+it return the best candidate for
+fundamental frequency.
+And we identified all the harmonics,
+by calling the harmonic.
+Detection function that looks for the
+peaks that are closest to the multiples of
+different amount of frequency.
+OK.
+And now, we can synthesize these
+harmonics that we have identified, and
+we synthesize it with another 50 and
+window that we did the original analysis.
+So now, we take an F50 of 112.
+And, half of that is 256.
+And we're going to be
+synthesizing the spectral sine.
+So, the main lobes of the Blackman window.
+Okay.
+And this is the, yh is the complete
+spectrum of the, this harmonic component.
+And now the, this is what we
+are basically focusing on this week.
+We have to subtract this harmonics
+from the original signal.
+But to do that, we need to recompute
+the spectrum on the original signal.
+So that we use the Black man Harris
+window that is in this spectrum.
+Okay?
+So, we have to compute a window, a black
+window of the size of the same size that
+we now using for this synthesis 512.
+And then, we going into choose
+again from the original signal.
+Of the fragment of the sound but
+only the 500th and,
+and two of samples around the pointer.
+So here, we we choose another original
+signal with these these 512 samples.
+And multiply it by the blackmanharris
+window normalize, so
+that then it becomes easier to
+compute the, to do the subtraction.
+Okay, and, so
+this is our new input signal and
+then we have to zero zero phase window it.
+So, we have to put it around zero and
+we'll do that.
+By defining the FFT offer
+we're going to use and
+center everything around zero and
+then we can compute the spectrum of that.
+And the, the subtraction of
+the sinusoidals them becomes easy.
+It's just a complex subtraction.
+We subtract the harmonics.
+Harmonic spectrum from this new
+spectrum that we just compute.
+So okay, so lets run this and
+let's step through the different
+variables that we have been generating.
+So, this is the file called test three.
+Okay.
+So, this has computed it.
+And now, let's keep looking
+at the different variables.
+So, for example, let's plot the x1 sound.
+Okay, this is the fragment of
+the sound we are analyzing.
+Okay.
+Then, we can plot the resulting ex,
+spectrum that we computed from that.
+So, we can plot mx.
+Okay.
+So, this is in dB the magnitude
+spectrum of that.
+Then, it has compute out of that a peak so
+we can even just print the, the,
+the locations of the peaks.
+So, tploc is the peaks are the peaks that
+it has found within
+the array of of the fft.
+It's better the show it in hertz so
+we, we print ip frequency.
+Is frequency of the peaks it has found.
+Right?
+Then this has gone to the the,
+at zero detection.
+So, it has identified from
+the Mendel frequency.
+And from the Mendel frequency,
+has been chosen to be 443 Hz which makes
+sense here, we're analyzing an oboe sound.
+A 4 and
+then out of these fundamental frequency,
+it has chosen the,
+the peaks that are harmonics of these.
+So each frequency is the set
+of harmonics that it has identified,
+in this particular location.
+So it has identified all these harmonics,
+the other peaks have not
+been considered harmonics.
+Of course, we have chosen a,
+a [INAUDIBLE] and
+a even set of parameters that has limited
+the number of harmonics to these 6,000.
+So it becomes easier, so we just have to
+analyzed up, into this this harmonic.
+Okay.
+Then,
+we generate these harmonics as a spectrum.
+And, so it has generated yh.
+So if we plot, the absolute value of yh,
+we're going to see the.
+The, the magnitude of
+the complete spectrum, but
+let's plot it, just the, in the, in dB.
+So, we will just plot in 20 times log 10
+of the absolute value of yh,
+And let's just take only,
+let's say the first 70 samples, so
+from the beginning to the sample 70.
+So, we focus on the first harmonics
+which are the ones that basically we
+have generated.
+Okay.
+So these are the harmonics
+that we basically,
+we have synthesized this,
+the synthesized this spectrum.
+On top of that we can plug the,
+the signal that from the original sound,
+that we have recomputed.
+So x 2, the x 2 spectrum,.
+And so you plot on top of that.
+The absolute value of x2.
+In here, we now see the green line.
+Which is basically the original spectrum.
+And as you can see,
+it's very much similar.
+Which means that we very much have
+synthesized the, the original spectrum.
+And then,
+we can plot the subtracted spectrum.
+So, the subtracted is the xr spectrum and
+this is this red line.
+Okay?
+So, the red line is
+the subtraction of the two.
+And it it clearly shows
+the residual that it has.
+OK, so, and this works and
+basically we do that at every frame.
+And then, of course we can do the inverse
+to generate all these signals back.
+Now, let me show you
+the actual code that is in
+the SNS tools package that performs
+this harmonics plus residual modeling.
+So, there is file called hprModel.py
+within the models directly and
+in it there is the analysis and
+synthesis of hpr modelling.
+There is one function
+that does the analysis.
+Another one that performs the synthesis.
+And then, there's another one,
+that does both the analysis and
+synthesis at 1 frame at a time.
+In fact we recommend very much to do
+the analysis and synthesis separate.
+So that we can take advantage
+of cleaning trajectories and
+having some memory in the tracking.
+So that the the, the harmonics are,
+are better and in
+the analysis part of the function,
+it basically calls two functions.
+One, that we already have seen, it does
+the harmonic analysis in the same way that
+we saw it when we talked
+about the harmonic model.
+And then, the new thing that
+it does is the subtraction.
+So there is this function,
+sine subtraction, that has us input
+the harmonics identified by the harmonic
+model, has us input also the input sound
+again, and it subtracts
+the harmonics from this input sound.
+So this function is in
+the util functions directory.
+In the file and in here,
+you will find the sign subtraction
+function and it basically does what
+I have explained just a while ago.
+It goes through the sound and
+then at every frame,
+it does the subtraction of the sinusoid.
+So the sinusoids have already been
+identified so here it iterate
+our all the analyze frame and then it
+reads again fragment of the input sound
+which recomputes the input sound with this
+window, with the black [INAUDIBLE] window.
+And then, it synthesizes the harmonics
+with this Blackman main And
+then, it's able to subtract the,
+the harmonics from the input sound.
+And that's all.
+And then it synthesizes the,
+the residual signal and back.
+And, and there's the windowing effect,
+so we can do the overlap at, correctly.
+And that's, that's all.
+That's, what,
+the sinusoidal subtraction does and
+it returns, of course,
+the residual signal.
+And the output of the analysis is the,
+the harmonic frequencies, magnitudes and
+phases and this residual signal.
+And then synthesis, it basically
+receives back the harmonic magnitude and
+phases that we analyze and
+the residual signal and simply.
+Puts it together, so
+it calls the sinusoidal model
+synthesis we already have seen.
+And it simply adds the,
+these sinusoids we've the residual.
+And that's all.
+Then we have these other function,
+HPR model function.
+PY; which is the, the file that puts
+it all together and it's the in fact,
+the file that is called from
+the interface there we have been using.
+And it's simply there is
+one function main and it
+does the analysis and synthesis of a sound
+and it plots the intermediate values.
+So, it calls the hpr model OK.
+And then, while it computes
+the spectogram of the residual so
+that we can show it as a spectogram.
+And then, it performs the synthesis and
+generates the overall output sound,
+the sound of the residual plus
+the harmonics and just the harmonics.
+And it writes the files
+into the same directory.
+Okay, so now we can execute this file and
+run this HPR model function file.
+And, it will analyze a fragment
+of a saxophone sound,
+which is the default
+sound with the APR model.
+So we will get, here we see the harmonics
+of the sound and the background is
+the spectrum of the residual, so we have
+computed the spectrum of the residual.
+And here are the two together.
+And, of course, we can listen to them.
+We can just in this directory.
+It has save the residual signs and
+the sum of the two.
+So, we can just play the,
+the, for example.
+First, the residual.
+Okay, and then we can play for
+example, the signs
+[MUSIC],
+and we can play the sum of the two
+[MUSIC].
+Okay, and that's,
+that's all basically we have gone through.
+The, the harmonics plus residual model and
+we have used quite a bit of
+code from the SMS tools and
+from Python to be able to subtract
+the harmonics from the residual and
+hopefully that has given you programming
+prospective to this idea of harmonic.
+Plus versus well, subtraction.
+And it's not a very sophisticated thing
+from a signal processing point of view.
+But from a programming point
+of view is quite delicate.
+We have to be very careful in
+how to put the signals, and
+how to analyze them, in order that oh,
+they align perfectly.
+And in order that the complex
+subtraction in the spectral domain.
+Is is done correctly and
+we obtain a real residual.
+And that's all so, in next class we're
+going to take the next step; which will be
+to from a programming perspective
+look at the stochastic components.
+So how we can then convert this
+signal that we just computed into
+a component then have the harmonics
+plus the stochastic model.
+So see you next lecture.
+Bye bye.
+

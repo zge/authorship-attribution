@@ -1,0 +1,294 @@
+
+﻿[BLANK_AUDIO]. 
+And recall our original goal was to find 
+a projection of a vector b, orthogonal to 
+a vector space big V, spanned by some 
+arbitrary vectors. 
+And all we've been able to do so far, 
+using projection orthogonal, is find the 
+projection of b orthogonal to the space 
+spanned by neutrally orthogonal vectors. 
+So, how are we going to go about solving 
+this original problem? 
+Well, the procedure we have would 
+suffice. 
+If only we had a way of going from 
+arbitrary vectors, v1 through vn, to 
+mutually orthogonal vectors, v1* 
+through vn*, that happened to span 
+the same space as v1 through vn. 
+This is called orthogonalization. 
+We're given vectors v1 through vn, and we 
+want to produce a list of neutrally 
+orthogonal vectors, v1* through vn 
+star, such that the span of those vectors 
+equals the span of the original vectors. 
+How can we solve this problem? 
+Here's the key idea, we're going to use 
+project orthogonal in an iterative 
+fashion to make a longer and longer list 
+of mutually orthogonal vectors. 
+So, let's start with v1. 
+We define v1* to be just v1, since 
+the set consisting just of v1* is 
+trivially, mutually orthogonal. 
+Next, we define v2*. 
+What's v2*? 
+v2* is the projection of v2 
+orthogonal to the vector that's already 
+in our list, v1*. 
+Now, since v2* is orthogonal to v1 
+star, our set is a set of mutually 
+orthogonal vectors. 
+Now lets move on to v3. 
+We define v3*, to be the projection 
+of v3, orthogonal, to both v1*, and 
+v2*. 
+So the set v1*, v2*, v3* is a 
+set of mutually orthogonal vectors. 
+In each iteration, all we have to do is 
+project a vector 
+orthogonal to a collection of mutually 
+orthogonal vectors. 
+And we can use project orthogonal for 
+that. 
+So in the ith iteration, we project the 
+ith vector in vlist, vi, orthogonal to 
+the i minus 1 vectors that are already in 
+our mutually orthogonal list, v1* through 
+vi minus 1*. 
+And that's how we find vi*. 
+We just add that to the list. 
+So, here's the procedure. 
+If given a list of vectors, vlist, 
+initially the list of mutually orthogonal 
+vectors is empty. 
+The procedure iterates through the 
+vectors in vlist. 
+And for each one, projects that vector 
+orthogonal to the vectors already in the 
+list of mutually orthogonal vectors, 
+vstarlist, takes the result, and appends 
+it to vstarlist. 
+Preserving this property that all the 
+vectors in vstarlist are mutually 
+orthogonal. 
+At the end the procedure returns the 
+value of vstarlist. 
+So, it's pretty easy to see that at each 
+stage in the algorithm the value of 
+vstarlist is a list of 
+mutually orthogonal vectors, in 
+particular at the end. 
+The value returned consists of 
+mutually orthogonal vectors. 
+So here is the example lets say we 
+want to orthogonalize on the list 
+consisting of these three vectors. 
+Will show that it returns. 
+They list consisting of these three 
+vectors, v1*, v2*, and v3*. 
+In the first iteration the vector v is 
+v1. 
+The vstarlist is empty so the first 
+vector added to vstarlist is just v1. 
+The next iteration we're working on v2; 
+vstarlist consists only of v1*. 
+So, the procedure projects v2 orthogonal 
+to the list consisting only of v1*. 
+And this is the vector it comes up with. 
+So, this is the vector that's added to 
+v*list in the second iteration. 
+In the third iteration, we're working on 
+v3. 
+v* list consists ov v1* and v2 
+star. 
+We take v3, project it orthogonal to v1 
+star getting 0, 0, 2. 
+And then take that vector and project it 
+orthogonal v2* getting 0 minus 1, 1 
+so this is the vector that's added to 
+vstarlist, this is v3*. 
+As we mentioned before, at any point in 
+the algorithm the vectors in v* list 
+are our mutual orthogonal. 
+But what we need to show that after i 
+iterations of the algorithm, the span of 
+the vectors in v*list at that point, 
+equals the span of the first i vectors in 
+vlist. 
+And we use induction. 
+The case i equals 0 is trivial. 
+So, we do the induction step. 
+After i minus 1 iterations, v*list 
+consists of the vectors v1* through 
+vi minus 1*. 
+Now, assume the lemma holds at this 
+point. 
+That means that the span of these 
+vectors, v1* through vi minus 1*, 
+equals the span of the first i minus 1 
+vectors in vlist, v1, through vi minus 1. 
+Now we take the vector vi, we insert it 
+into both of these sets. 
+Well, the span of this set is still equal 
+to the span of this set. 
+So what we need to show is that the span 
+of v1* through vi minus 1* 
+together with vi equals the span of v1 
+star through vi*. 
+The ith iteration computes vi* by 
+projecting vi orthogonal to v1* 
+through vi minus 1*. 
+Therefore, there are coefficients such 
+that these equations holds, vi is the 
+linear combination of v1* through vi*. 
+But this equation shows that any linear 
+combination of v1* through vi minus 1* 
+ together with vi, can be re-written 
+as the linear combination of v1* 
+through vi*. 
+Because vi can be written in that way and 
+vice versa. 
+So this shows the induction step and 
+completes the proof. 
+Now notice that the order of the vectors 
+in vlist does matter. 
+If you ran the procedure orthogonalize 
+with different orders on vlist, you'd get 
+different answers. 
+This is different from project orthogonal 
+because the projection of a vector 
+orthogonal to a vector space is unique. 
+There's only one such projection. 
+So at least in principle the order of the 
+vectors in vlist shouldn't matter. 
+Now, for project orthogonal, we were able 
+to express the result using this matrix 
+equation. 
+The vector b is the product of this 
+matrix, columns v0 through vn, and b 
+perpendicular, times this column vector. 
+For orthogonalize we have the following 
+equations; v0 is just v0* times 1. 
+v1 is the matrix with v0* and v1* 
+as its columns, times this column vector 
+v2, v3, and so on. 
+We can combine all these equations in a 
+single matrix matrix equation. 
+The matrix whose columns are v0, v1,v2 
+and v3 is the product of the matrix whose 
+columns are v0*, v1*, v2*, v3* 
+ times this matrix. 
+Well, in general, the solution looks like 
+this. 
+Now notice that these two matrices have a 
+special form. 
+The columns of this matrix are all 
+mutually orthogonal. 
+And this is an upper triangular matrix. 
+So we’ll use those properties later on in 
+algorithms. 
+Here's an example. 
+If vlist consists of v0, v1 and v2, the 
+output v*list consists of v0*, v1* and v2*. 
+We'd write a matrix equation in this way. 
+These are the input vectors, these are 
+the output vectors. 
+These columns are mutually orthogonal. 
+And this is an upper triangular matrix. 
+Now let's get back to the original 
+problem. 
+We're given a vector space big V, which 
+is expressed the span of input vectors v0 
+through vn. 
+The factor in big V is closest to b. 
+Is b parallel? 
+Which is b minus b perpendicular. 
+So how can we find b perpendicular? 
+There are two equivalent ways. 
+Here's one method. 
+We first apply orthogonalize to v0 
+through vn. 
+So we get v0* through vn*. 
+These are mutually orthogonal and they 
+span the same vector space as v0 vn, 
+namely big V. 
+Now we can call project orthogonal with b 
+as the first argument, and the list 
+consisting of v0* through vn* is 
+the second argument. 
+This satisfies The spec of project 
+orthogonal because v0* to vn* are 
+mutually orthogonal. 
+So we get the correct result. 
+So here's another method. 
+We just call orthogonalize with an input 
+list consisting of v0  through vn 
+together with b. 
+And exactly the same computations take 
+place we get as it output for less 
+consisting of v0* through vn* and 
+a final vector I'll call b*. 
+Well, in the last iteration of 
+orthogonalize, the vector b* is 
+obtained by projecting the input vector 
+b, orthogonal, to the previous star 
+vectors, v0* through vn*. 
+So that also gives you b perpendicular. 
+We've shown how orthogonalize, can find a 
+vector, in, span of, v0 through vn, 
+closest to b. 
+Namely, b parallel. 
+And later we'll find out how to give the 
+coordinate representation of the b 
+parallel in terms of these vectors. 
+For now we are going to look at how we 
+can use our orthogonalize to give 
+algorithms for other problems. 
+Let's start with the mathematical result 
+about mutually orthogonal vectors. 
+We'll show that mutually orthogonal 
+nonzero vectors are linearly independent. 
+So let v0* through vn* be 
+mutually orthogonal nonzero vectors. 
+We'll show that these vectors are 
+linearly independent. 
+By showing that, if you can write the 
+zero vector as a linear combination of 
+those vectors, then the coefficients, 
+alpha 0 through alpha n, must be zero. 
+So, here we'll show that alpha 0 is zero. 
+We do that by taking the inner product 
+with v0* on both sides of the 
+equation. 
+On the left side, we take the inner 
+product of v0* with the zero vector. 
+And on the right side we take the inner 
+product of v0* with this whole 
+expression, which using algebraic 
+properties of inner product. 
+We can replace with this expression. 
+So now let's look at each of these inner 
+products. 
+The inner product of v0* with v0* 
+is the norm squared of v0*. 
+These other inner products are all 0 
+because the vectors are mutually 
+orthogonal. 
+So we end up with alpha 0 times the norm 
+squared of v0*. 
+Now, this inner product, v0* with the 
+zero vector, is zero. 
+So we've shown that alpha 0 times the 
+norm squared of v0 squared star is zero. 
+Well, since v0* is non-zero vector, 
+its norm is non-zero. 
+So the only solution to this equation is 
+alpha 0 equals 0. 
+So we've shown that alpha 0 must be equal 
+to 0. 
+The same argument can be used to show 
+that all the other coefficients also have 
+to be 0, and that completes the proof. 
+

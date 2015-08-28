@@ -1,0 +1,490 @@
+So, in this video, we're going to start
+reasoning about the performance of hash
+tables. In particular, we'll make precise
+this idea that properly implemented they
+guarantee constant time lookup. So, let me
+just briefly remind you of the road map
+that we're in the middle of. So, we
+observed that every fixed hash function is
+subject to a pathological data set and so
+exploring the solution of making a real
+time decision of what hash function to
+use. And we've already gone over this
+really quite interesting definition of
+universal hash functions and that's the
+proposed definition of a good random hash
+function. More over, in the previous video
+I showed you that there are simple such
+families of hash functions. They don't
+take much space to store, they don't take
+much time to evaluate. And the plan for
+this video is to prove formally, that if
+you draw a hash function uniformly at
+random from a universal family of hash
+functions, like the one we saw in the
+previous video, then you're guaranteed
+expected constant time for all of the
+supported operations. So, here's the
+definition once more of a universal family
+of hash functions. We'll be using this
+definition, of course, when we prove that
+these hash functions give good
+performance. So, remember, we're talking
+now about a set of hash functions. These
+are all of the conceivable real time
+decisions you might make about which hash
+function to use. So, the universe is
+fixed, this is something like IP
+addresses, the number of buckets is fixed.
+You know that's going to be something like
+10,000, say, and what it means for a
+family to be universal is that the
+probability that any given pair of items
+collides is as good, as small as with the
+gold standard of completely perfect
+uniform random hashing. That is for each
+pair xy of distinct elements of the
+universe, so for example, for each
+distinct pair of IP addresses, the
+probability over the choice of the random
+hash function little h from the family
+script h is no more than one over n, where
+n is the number of buckets. So, if you
+have 10,000 buckets, the probability that
+any given pair of IP addresses winds up
+getting mapped to the same bucket is
+almost one in 10,000. Let me now spell out
+the precise guarantee we're going to prove
+if you use a randomly chosen hash function
+from a universal family. So, for this
+video, we're going to only talk about hash
+tables implemented with chaining, with one
+length list per bucket. We'll be able to
+give a completely precise mathematical
+analysis with this collision resolution
+scheme. We're going to analyze the
+performance of this hash table in
+expectation over the choice of a hash
+function little h drawn uniformly from a
+universal family script h. So, for
+example, for the family that we
+constructed in the previous video, this
+just amounts to choosing each of the four
+coefficients uniformly at random. That's
+how you select a universal, that's how you
+select a hash function uniformly at
+random. So, this theorem and also the
+definition of universal hash functions
+dates back to a 1979 research paper by
+Carter and Wegman. The idea of hashing
+dates back quite a bit before that,
+certainly to the 50s. So, this just kind
+of shows us sometimes ideas have to be
+percolating for awhile before you find the
+right way to explain what's going on. So,
+Carter and Wegman provided this very clean
+and modular way of thinking about
+performance of hashing through this
+universal hashing definition. And the
+guarantee is exactly the one that I
+promised way back when we talked about
+what operations are supported by hash
+tables and what kind of performance should
+you expect, you should expect constant
+time performance. As always, with hashing,
+there is some fine print so let me just be
+precise about what the caveats of this
+guarantee are. So, first of all,
+necessarily this guarantee is an
+expectation. So, it's on average over the
+choice of the hash function, little h. But
+I want to reiterate that this guarantee
+does hold for an arbitrary data set. So,
+this guarantee is quite reminiscent of the
+one we had for the rand omized quick sort
+algorithm. In Quicksort, we made no
+assumptions about the data. It was a
+completely arbitrary input array and the
+guarantee said, on average over the real
+time randomized decisions of the
+algorithm, no matter what the input is,
+the expected running time was in log in.
+Here we're saying again, no assumptions
+about the data. It doesn't matter what
+you're storing in the hash table and
+expectation over the real time random
+decision of what hash function you use,
+you should expect constant time
+performance, no matter what that data set
+is. So, the second caveat is something
+we've talked about before. Remember, the
+key to having good hash table performance,
+not only do you need a good hash function
+which is what this universality key is
+providing us but you also need to control
+the load of the hash table. So, of course,
+to get constant time performance, as we've
+discussed, a necessary condition is that
+you have enough buckets to hold more or
+less the stuff that you're storing. That
+is the load, alpha, the number of objects
+in the table divided by the number of
+buckets should be constant for this
+theorem to hold. And finally, whenever you
+do a hash table operation, you have to in
+particular invoke the hash function on
+whatever key you're given. So, in order to
+have constant time performance, it better
+be the case that it only takes constant
+time to evaluate your hash function and
+that's, of course, something we also
+discussed in the previous video when we
+emphasized the importance of having simple
+universal hash functions like those random
+linear combinations we discussed in the
+previous video. In general, the
+mathematical analysis of hash table
+performance is a quite deep field, and
+there is some, quite mathematically
+interesting results that are well outside
+the scope of this course. But what's cool,
+in this theorem I will be able to provide
+you a full and rigorous proof. So, for
+hash tables with chaining and using
+randomly chosen universal hash functions,
+I'm going to now prove that you do get
+cons tant time performance. Right, so hash
+tables support various operations, Insert,
+Delete and Lookup. But really if we can
+just bound a running time of an
+unsuccessful lookup, that's going to be
+enough to bound the running time of all of
+these operations. So, remember in hash
+table with chaining, you first hash the
+appropriate bucket and then you do the
+appropriate Insert, Delete or Lookup in
+the link list in that bucket. So, the
+worst case as far as traversing though
+this length list is if you're looking for
+something but it's not there cuz you have
+to look at every single element in the
+list and followup into the list before you
+can conclude that the lookup has failed.
+Of course, insertion, as we discussed, is
+always constant time, deletion and
+successful searches, well, you might get
+lucky, and stop early before you hit the
+end of the list. So, all we're going to do
+is bother to analyze unsuccessful lookups
+that will carry over to all of the other
+operations. So, a little more precisely,
+let's let s be the data set. This is the
+objects that we are storing in our hash
+table. And remember that to get constant
+time lookup, it really needs to be the
+case that the load is constant. So, we are
+assuming that the size of s is bigger over
+the number of buckets n. And let's suppose
+we are searching for some other object
+which is not an s, call it x. And again, I
+want to emphasize we are making no
+assumptions about what this data set s is
+other than that the size is comparable to
+the number of buckets. So, conceptually
+doing a lookup in a hash table with
+chaining is a very simple thing. You just
+hash to the appropriate bucket and then
+you scan through the length list in that
+bucket. So, conceptually, it's very easy
+to write down the what the running time of
+this unsuccessful lookup is. It's got two
+parts. So, the first thing you do is you
+evaluate the hash function to figure out
+the right bucket. And again, remember
+we're assuming that we have a simple of a
+hash function and it takes constant time.
+Now, of course, the magic of hash
+functions is that given that this hash
+value, we can zip right to where the
+lenght list is to search for x using
+random access into our array of buckets.
+So, we go straight to the appropriate
+place in our array of buckets and we just
+search through the list ultimately failing
+to find what we're looking for s.
+Traversing a link list, as you all know,
+it takes time proportional to the length
+of the list. So, we find something that we
+discussed informally in the past which is
+that's the running time of hash table
+operations implemented with chaining is
+governed by the list lengths. So, that's
+really the key quantity we have to
+understand. So, lets call this, lets give
+this a name, Capital L, it's important
+enough to give a name. So, what I want you
+to appreciate at this point is that this
+key quantity, Capital L, the list of the
+length in x's bucket is a random variable.
+It is a function of which hash function
+little h, we wind up selecting in a real
+time. So, for some choices of our hash
+function, little h, this list length might
+be as small as zero but for other choices
+of this hash function h, this list, list
+length could be bigger. So, this is
+exactly analogous too in Quicksort where
+depending on the real time decision of
+which random pivot element you use, your
+going to get a different number of
+comparisons, a different running time. So,
+the list length and hence the time for the
+unsuccessful storage, depends on the hash
+function little h, which we're choosing at
+random. So, let's recall what it is we're
+trying to prove. We're trying to prove an
+upper bound on the running time of an
+unsuccessful lookup on average, where the
+on average is over the choice of the hash
+function little h. We've expressed that
+this lookup time in terms of the average
+list length in x's bucket where again the
+average is over the random choice of h.
+Summarizing, we've reduced what we care
+about, expected time for lookup to
+understanding the expected value of this
+random variable Capital L, the average
+list length in x's bucket. So, that's what
+we've got to do, we've got to compute the
+expected value of this random variable,
+Capital L. Now to do that, I want to jog
+your memory of a general technique for
+analyzing expectations which you haven't
+seen in awhile. The last time we saw it, I
+believe, was when we were doing the
+analysis of randomized Quicksort and
+counting its comparisons. So, here's a
+general decomposition principle which
+we're now going to use in exactly the same
+way as we did in Quicksort here to analyze
+the performance of hashing with chaining.
+So, this is where you want to understand
+the expect, expectation of random variable
+which is complicated but what you can
+express as the sum of much simpler random
+variables. Ideally, 0,1 or indicator
+random variables. So, the first step is to
+figure out the random variable, Capital Y,
+it's what I'm calling it here that you
+really care about. Now, we finished the
+last slide, completing step one. What we
+really care about is Capital L, the list
+length in x's bucket. So, that governs the
+running time a bit unsuccessful Look up,
+clearly that's what we really care about.
+Step two of the decomposition principle is
+well, you know, the random variable you
+care about is complicated, hard to analyze
+directly but decompose it as a sum of 0,1
+indicator random variable. So, that's what
+we're going to do in the beginning of the
+next slide. Why is it useful to decompose
+a complicated random variable into the sum
+of 0,1random variables? Well, then you're
+in the wheelhouse of linear of
+expectations. You get that the expected
+value of the random variable that you care
+about is just the sum of the expected
+values of the different indicator random
+variables and those expectations are
+generally much easier to understand. And
+that will again be the case here in this
+theorem about the performance of hash
+tables with chaning. So, let's apply this
+three-step-decomposition principle to
+complete the proof of the Carter-Wegman
+theorem. So, for the record, let me just
+remind you about the random variable that
+we actually really care about, that's
+Capital L. The reason that's a random
+variable is that because it depends on the
+choice of the hash function, little h.
+This number could vary between zero and
+something much, much bigger than zero,
+depending on which each you choose. So,
+this is complicated, hard to analyze
+directly, so let's try to express it as
+the sum of 0,1 random variables. So, here
+are the0,1 random variables that are going
+to be the constituents of Capital L. We're
+going to have one such variable for each
+object y in the data set. Now, remember
+this is an unsuccessful search, x is not
+in the data set Capital S. So, if y is in
+the data set, x and y are necessarily
+different. And we will define each random
+variable z sub y, as follows. We'll define
+it as one if y collides with x under h and
+zero otherwise. So, for a given zy, we
+have fixed objects x and y So, x is some
+IP address, say, y is some distinct IP
+address, x is not in our hash table, y is
+in our hash table. And now, depending on
+which hash function we wind up using,
+these two distinct IP addresses may or may
+not get mapped to the same bucket of our
+hash table. So, this indicates a random
+variable just indicating whether or not
+they collide, whether or not we unluckily
+choose a hash function little h that sends
+these distinct IP addresses x and y to
+exactly the same bucket. Okay, so, that's
+zy, clearly by definition, it's a 0,1
+random variable. Now, here's what's cool
+about these random variables is that
+Capital L, the list length that we care
+about decomposes precisely into the sum of
+the zy's. That is, we can write capital L
+as being equal to the sum over the objects
+in the hash table of zy. So, if you think
+about it, this equation is always true, no
+matter what the hash function h is. That
+is if we choose some hash functions that
+maps these IP address x to, say, bucket
+number seventeen, Capital L is just
+counting how many other objects in the
+hash table wind up getting mapped to
+bucket number seventeen. So, maybe ten
+different ob jects got mapped to bucket
+number seventeen. Those are exactly the
+ten different values of y that will have
+their zy equal to1, right? So, so l is
+just counting the number of objects in the
+data set s that's collide with x. A given
+zy is just counting whether or not a given
+object y in hash table is colliding with
+x. So, summing over all the possible
+things that could collide with x, summing
+over the zy's, we of course get the total
+number of things that collide with x which
+is exactly equal to the number, the
+population of x's bucket in the hash
+table. Alright, so we've got all of our
+ducks lined up in a row. Now, if we just
+remember all of the things we have going
+for us, we can just follow our nose and
+nail the proof of this theorem. So, what
+is it that we have going for us? Well, in
+addition to this decomposition of the list
+length in to indicate random variables,
+we've got linear expectation going for us,
+we've got the fact that our hash function
+is drawn from a universal family going for
+us. And we've got the fact that we've
+chosen the number of buckets and to be
+comparable to the data set size. So, we
+want to use all of those assumptions and
+finish the proof that the expected
+performance is constant. So, we're going
+to have a few inequalities and we're going
+to begin with the thing that we really
+care about. We care about the average list
+length in x's bucket. Remember, we saw in
+the previous slide, this is what governs
+the expected performance of the lookup. If
+we can prove that the expected value of
+capital L is constant, we're done, we've
+finished the theorem. So, the whole point
+of this decomposition principle is to
+apply linear of expectation which says
+that the expected value of a sum of random
+variables equals the sum of the expected
+values. So, because L can be expressed as
+the sum of these zy's, we can reverse the
+summation and the expectation and we can
+first sum over the y's, over the objects
+in the hash table and then take the
+expected value of zy. Now, something which
+came up in our Quicksort an alysis but
+which you might have forgotten is that 0,1
+random variables have particularly simple
+expectations. So, the next quiz is just
+going to jog your memory about why 0,1
+random variables are so nice in this
+context. Okay, so the answer to this quiz
+is the third one, the expected value of zy
+is simply the probability that x and y
+collide, that just follows from the
+definition of the random variable zy and
+the definition of expectation, namely
+recall how do we define zy. This is just
+this one, if this object y in the hash
+table happens to collide with the object x
+that we are looking for under the hash
+function x and zero otherwise, again, this
+will be, this will be one for some hash
+functions and zero for other hash
+functions. And then we just have to
+compute expectations. So, one way to
+compute the expected value of a 0,1 random
+variable is, you just say, well, you know,
+there are the cases where the random
+variable evaluates to zero and then
+there's the cases where the random
+variable evaluates to one, and of course
+we can cancel the zero. So, this just
+equals the probability that zy = one. And
+since zy being one is exactly the same
+thing as x and y colliding, that's what
+gives us the answer. Okay, so it's the
+probability that x collides with y. So,
+plenty of that into our derivation. Now,
+we again have the sum of all the objects y
+in our hash table and the set of the
+expected value of zy what's right that in
+the more interpretable form, the
+probability that this particular object in
+the hash table y collides with the thing
+we are looking for x. Now, we know
+something pretty cool about the
+probability that a given pair of distinct
+elements like x and y collide with each
+other. What is it that we know? Okay, so I
+hope you answered the second response to
+this quiz. This is really in some sense
+the key point of the analysis. This is the
+role, that being a universal family of
+hash functions plays in this performance
+guarantee. What does it mean to be
+universal? It means for any pair of
+objects distinct like x and y in that
+proof, if you make a random choice of a
+hash function, the probability of
+collision is as good as with perfectly
+random hashing, hashing. Namely at most,
+1/ n where n is the number of buckets. So,
+now I can return to the derivation. What
+that quiz reminds you is that the
+definition of a universal family of hash
+functions guarantees that this probability
+for each y is at most 1/n, where n is the
+number of buckets in the hash table. So,
+let's just rewrite that. So, we've upper
+bounded the expected list length by a sum
+over the objects in the data set of 1/n.
+And this, of course, is just equal to the
+number of objects in the data set, the
+[inaudible] of s divided by n. And what is
+this? This is simply the load, this is the
+definition of the load alpha which we are
+assuming is constant. Remember, that was
+the third caveat in the theorem. So,
+that's why as long as you have a hash
+function which you can compute quickly in
+constant time. And as long as you keep the
+load under control so the number of
+buckets is commensurate with the size of
+the data set that you're storing. That's
+why, universal hash functions in a hash
+table with chaining guarantee expected
+constant time performance.

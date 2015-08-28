@@ -1,0 +1,594 @@
+So let's review this story so far. We've
+been discussing the quick sort algorithm,
+here again is its high level description.
+So quick sort you call two subroutines
+first and then you make two recursive
+calls. So the first subroutine,
+ChoosePivot , we haven't discussed yet at all.  That will be one of the main topics of this video.
+But the job of the choose pivot subroutine is to somehow select one
+of the N elements in the input array to
+act as a pivot element. Now, what does it
+mean to be a pivot? Well, that comes into
+play in the second subroutine. The
+partition subroutine, which we did discuss
+quite a bit in a previous video. So what
+partition does is it rearranges the
+elements in the input array, so that it
+has the following property. So that the
+pivot P winds up in its rightful position.
+That is, it's to the right of all of the
+elements less than it. And it's to the
+left of all of the elements bigger than
+it. The stuff less than it's to the left
+in some jumbled order. The stuff bigger
+than it is to the right in some jumbled
+order. That's what's listed here as the
+first part and the second part of the
+partitioned array. Now, once you've done
+this partitioning you're good to go. You
+just recursively solve recursively sort
+the first part. After you get them in the
+right order, you call Quick Sort again and
+recursively sort the right part. And,
+bingo, the entire array is sorted. You
+don't need to combine step. You don't need
+a [inaudible] step. Moreover, recall in a
+previous video we saw that the partition
+array can be implemented in linear time
+and, moreover, it works in place with
+essentially, no additional storage. We,
+also, in an optional video formally
+prove the correctness of Quick Sort. And
+remember, QuickSort is independent of how
+you implement the ChoosePivot subroutine.
+So what we're going to do now is discuss
+the running time of the QuickSort
+algorithm. And this is where the choice of
+the pivot is very important.
+So what everybody should be wondering about at
+this point is, "Is Quick Sort a good
+algorithm? Does it run fast?"  The bar is
+pretty high. We already have MergeSort,
+which is a very excellent, practical, n
+log n algorithm. [sound] The key point to
+realize at this juncture is that we are
+not currently in a position to discuss the
+running time of the quick sort algorithm,
+the reason is we do not have enough
+information. The running time of the quick
+sort depends crucially on how you choose
+the pivot. It depends crucially on the
+quality of the pivot chosen.
+You'd be right to wonder what I mean by a pivot's
+quality. And basiclaly what I mean is
+pivot is good if it splits the partitioned
+array into roughly two equal-sized
+subproblems. And it's bad, it's of low
+quality if we get very unbalanced
+subproblems. So to understand both what I
+mean and the ramifications of having
+good-quality and bad-quality pivots, let's
+walk through a couple of quiz questions.
+This first quiz, quiz question is meant to
+explore a sort of worst case execution of
+the quick sort algorithm. What happens
+when you choose pivots that are very
+poorly suited for the particular input
+array. Let me be more specific. Suppose we
+use the most naive choose pivot
+implementation like we were discussing in
+the partition video. So, remember, here we
+just pluck out the first element of the
+array and we use that as the pivot. So
+suppose that's how we implement the choose
+pivot subroutine, and moreover, suppose
+that the input array to quicksort is an
+array that's already in sorted order. So,
+for example, if we just have the numbers
+one through eight, it would be one, two,
+three, four, five, six, seven, eight, in
+order. My question for you is, what is the
+running time of this recursive quicksort
+algorithm on an already sorted array if
+we always use the first element of a
+subarray as the pivot?  Okay so this is a
+slightly tricky, but actually a very
+important question. So the answer is the
+fourth one. So it turns out that quick
+sort, if you pass it an already sorted
+array and you're using the first element
+as pivot elements, it runs in quadratic
+time. And remember, for a sorting
+algorithm, quadratic is bad. It's bad in
+the sense that we can do better.  Merge short runs in time n log n, which is
+much better that n-squared, and if we are
+happy with an n-squared running time, we
+wouldn't have to resort to these sort of
+relatively exotic sorting algorithms. We
+could just use insertion sort and we'd be
+fine, we'd get that same quadratic running
+time. Okay so now I owe you an
+explanation. Why is it that QuickSort
+can actually run in quadratic time in this
+unlucky case of being passed already
+sorted input array. Well, to understand,
+let's think about what pivot gets chosen
+and what are the ramifications of that
+pivot choice for how the array gets
+partitioned, and then what the recursion
+looks like. So. Let's just think of the
+array as being the numbers one through n
+in sorted order. What is gonna be our
+pivot?  Well, by definition we're choosing
+the first element of the pivot, so the
+pivot is just gonna be one. Now we're
+going to invoke the partition subroutine
+and if you go back to the pseudo code of
+the partition's subroutine, you'll notice
+that if you pass in an already sorted
+array, it's gonna do essentially nothing.
+It's just gonna advance the n [inaudible]
+and j until it falls off the end of the
+array. And it's just going to return back
+to us the same array that it was pathed as
+input. So, partitioned subroutine is given
+an already sorted array, returns an
+already sorted array. Okay? So we have
+just a pivot one in the first position and
+then the numbers two through n in order in
+the remainder of the positions. So if we
+draw our usual picture of what a,
+partitioned array looks like, with
+everything, less than the pivot, to the
+left, everything bigger than the pivot, to
+the right. Well, since nothing is less
+than the pivot, this stuff is going to be
+empty. This will not exist, and to the
+right of the pivot, this will have length,
+N minus one, and moreover it will still be
+sorted. So once partition completes, we go
+back to the outer call of quick sort,
+which then calls itself recursively twice.
+Now in this case, one of the recursive
+calls is just vacuous. There's just an
+empty array. There's nothing to do. So
+really there's only one recursive call,
+and that happens on a problem of size only
+one less. So this is about the most
+unbalanced split we could possibly see.
+Right? Where one side has zero elements,
+one side's N minus one. That's not really good any worse than that. And this
+is going to keep happening over and over
+and over again. We're gonna recurse on the
+numbers two through n. We're gonna choose
+the first element, the two as the pivot.
+Again, we'll feed it to partition, we'll
+get back the exact same subarray that we
+handed it in, we get to the numbers two
+through n in sorted order. We exclude the
+pivot two. We recourse on the numbers
+three through n, a subarray of length n -
+two. The next recursion level, we recurse
+on an array of size, of length n - three,
+then n - four, then n - five, and so on,
+until finally, after [inaudible] a
+recursion depth of n roughly, we got down
+to just the last element. N, the base case
+kicks in and we return that and Quick Sort
+completes. So that's how Quick Sort is
+gonna execute on this particular input
+with these particular pivot choices, so
+what running time does that give to us?
+Well. The first observation is that, you
+know in each recursive call we do have to
+invoke the partition at sub-routine, and
+the partition sub-routine does look at,
+every element in the array it is passed as
+input. So if we pass partition in array of
+like K, it's gonna do at least K
+operations Cuz it looks at each element at
+least once. So the run time is going to be
+bounded below, by the work we do on the
+outermost call, which is on an array of
+like M. Plus the amount we do in the
+second level of recursion, which is on a
+subarray of length n - one, plus n - two,
+plus blah, blah, blah, blah, blah, all the
+way down to plus one for the very last
+level of recursion. So this is a lower ban
+on our running time and this is already
+theta of n squared. So one easy way to see
+why this sum, N+N-1+ etcetera, etcetera,
+leads to a bound of N squared, [inaudible]
+just focus on the first half of the terms.
+So the first N over two terms in the sum
+are all of magnitude at least N over two.
+So the sums at least N squared over four.
+It's also evident that this sum is at
+most, N squared. So, overall, the running
+time of Quick Sort on this bad input is
+going to be quadratic. Now having
+understood what the worst case performance
+the Quick Sort algorithm is, let's move on
+to discuss its best case running time. Now
+we don't generally care about the best
+case performance of algorithms for its own
+case, the reason that we wanna think about
+Quick Sort in the best case, first of all
+it'll give us better intuition for how the
+algorithm works, second of all it will
+draw a line in the sand. Its average case
+running time certainly can't be better
+than the best case so this will give us a
+target for what we're shooting for in our
+subsequent mathematical analysis. So what
+with the best case, what is the highest
+quality pivot we could hope for, well
+again. We think of the quality of a pivot
+as the amount of balance that it provides
+between the two subproblems. So ideally,
+we choose a pivot which gave us two
+subproblems, both of size n/2 or less. And
+there's a name for the. Element that would
+give us that perfectly balanced split.
+It's the median element of the array,
+okay? The element where exactly half of
+the elements are less than it and half of
+the elements are bigger than it. That
+would give us essentially perfect 50/50
+split of the input array. So here's the
+question. Suppose we had some input and we
+ran quicksort and everything just worked
+out in our favor in the, magically in the
+best possible way. That is, in every
+single recursive indication of quicksort
+on any sub-array of the original input
+array, suppose we happen. To get as our
+pivot the median element. That is, suppose
+in every single recursive call we wind up
+getting a perfect 50, 50 split of the
+input array before we recurse. This
+question asks you to analyze the running
+time of this algorithm in this magical
+best case scenario. So the answer to this
+third to this question is the third
+option. The answer is it runs in n log n
+time. Why is that? Well, the reason is
+that then the recurrence which governs the
+running time of quicksort is, exactly
+matches the recurrence that governs the
+merge sort running time, which we already
+know is n log n. That is, the running time
+Quick Sort requires, in this magical,
+special case, on an array of like N well,
+as usual you have a recurrence in two
+parts. There is the work that gets done by
+the recursive calls and there is the work
+that gets done now. Now by assumption, we
+wind up picking the Median as the Pivot.
+So there's going to be two recursive
+calls, each of which will be on
+[inaudible] input of size of most and over
+two, and we can write this. This is
+because the Pivot equals the Mid-Median.
+So this is not true for quicksort in
+general. It's only true in this magical
+case where the pivot is the median. So
+that's what's gets done by the two
+recursive calls, and then how much work do
+we do outside of the recursive calls?
+Well, we have to do the choose pivot
+subroutine, and I guess strictly speaking
+I haven't said how that was implemented,
+but let's assume that choose pivot does
+only a linear amount of work. And then as
+we've seen, the partition subroutine only
+does a linear amount of work as well. So
+let's say oh then, for work outside of the
+recursive calls. And what do we know? We
+know this implies [inaudible] using the
+master method or just by using the exact
+same argument as from [inaudible]. This
+gives us a running time bound of N log in.
+Then again something I haven't really been
+emphasizing but which is true is that
+actually we can write. Theta of N log N.
+And that's because, in the recurrence, in
+fact, we know that the work done outside
+of the recursive calls is exactly theta of
+N, okay? Partition needs really linear
+time, not just big O of N time. In fact,
+the work done outside of the recursive
+calls is theta of N. That's because the
+partition subroutine does indeed look at
+every entry in the array that it's passed.
+And as a result, we didn't really discuss
+this so much in the master method. But as
+I mentioned in passing, if you have
+recurrences which are tight in this sense,
+then the, the results of the master
+method, can also be strengthened to be
+theta instead of just big O. But those are
+just some extra details. The upshot of
+this quiz is that even in the best case,
+even if we magically get perfect pivots
+throughout the entire trajectory of
+quicksort, the best we can hope for is an
+n log n upper bound. It's not gonna get
+any better than that. So the question is,
+how do we have a principled way of
+choosing pivots so that we get this best
+case, or something like it that's best
+case n log n running time? So that's what
+that problem that we have to solve next.
+So the last couple quizzes have identified
+a super important question as far as the
+implementation of Quick Sort, which is how
+are we going to choose these pivots,
+right. We now know they have a big
+influence on the running time of our
+algorithm. It could be as bad as N squared
+or as good as N log N. We really want to
+be on the N log N side. So key question.
+How to choose pivots. [sound] And
+quicksort is the first killer application
+we're going to see of the idea of
+randomized algorithms, that is, allowing
+your algorithms to flip coins in the code
+so that you get some kind of good
+performance on average. So the big idea.
+Is random [sound] pivots. By which I mean.
+For every time we recursively call quick
+sort and we are passed some sub-array of
+length k. Among the k candidate pivot
+elements in the subarray, we're going to
+choose each one with eq, equally likely.
+With probability of one over K, and we're
+gonna make a new random choice every time
+we have a recursive call. And then we're
+just gonna see how the algorithm does. So
+this is our first example of a randomized
+algorithm. This is an algorithm, where, if
+you feed it exactly the same input, it
+will actually run differently on different
+executions. And that?s ?cause there's
+randomness internal to the code of the
+algorithm. Now, it's not necessarily
+intuitive that randomization should have
+any purpose in computation, in software
+design and algorithm design. But, in fact,
+and this has been sort of one of the real
+breakthroughs in algorithm design. Mostly
+in the'70s, realizing how important this
+is. That the use of randomization can make
+algorithms more elegant. Simpler, easer to
+code, more faster. Or just simply you can
+solve problems that you could not solve,
+at least not solve as easily without the
+use of randomization so it's really one
+thing that should be in your toolbox as an
+algorithm designer, randomization. Quick
+Sort will be the first kill, killer
+application but we'll see a couple more
+later in the course. Now, by the end of
+this sequence of videos, I'll have given
+you a complete, rigorous argument about
+why this works. Why with random pivots,
+quicksort always runs very quickly on
+average. But, you know, before we begin to
+say anything too formal, let's develop a
+little bit of. Intuition, or at least kind
+of a daydream, about why on earth could
+this possibly work. Why on earth could
+this possibly be a good idea, to have
+randomness internal to our quicksort
+implementation. Well, so first just, you
+know, very high level. What would be sort
+of the hope or the dream? The hope would
+be, you know, random pivots are not gonna
+be perfect. I mean, you're not gonna just
+sort of guess the median. You only have a
+one in n chance of figuring out which one
+the median is. But the hope is that most
+choices of a pivot will be good enough. So
+that's pretty fuzzy. Let's drill down a
+little bit and develop this intuition
+further. Let me describe it in two steps.
+[sound] The first claim is that, you know
+in our last quiz we said suppose we get
+lucky and we always pick the median in
+every single recursive call. We observed
+we'd do great. We'd get enlogin running
+time. So now let?s observe that actually
+to get the enlogin running time that it's
+not important that we magically get the
+median every single recursive call. If we
+get any kind of reasonable pivot by which
+a pivot that gives us some kind of
+approximately balanced split of the
+problems again, we are gonna be good. So
+the last quiz really wasn't particular to
+getting the exact median. Near medians are
+also fine. To be concrete, suppose we
+always pick a pivot which guarantees us a
+split of 25 to 75 or better. That is both
+recursive calls should be called on a
+raise of size. And most 75 percent of the
+one that we started with. So precisely, if
+we always get a 25/75 split or better in
+every recursive call. I claim that the
+running time of Quick Sort in that event
+will be Big O of N log N. Just like it was
+in the last quiz where we were, we were
+actually assuming something much stronger,
+that we were getting the median. Now this
+is not so obvious, the fact that 25/75
+splits guarantee N log N running time. For
+those of you that are feeling keen, you
+might wanna try to prove this. You can
+prove this using a recursion tree
+argument. But because you don't have
+balanced subproblems, you have to work a
+little bit harder than you do in the cases
+covered by the master method. So that's
+the first part of the intuition. And this
+is what we mean by [inaudible] being good
+enough. If we get a 25/75 split or better,
+we're good to go. If we get our desired,
+our target N log N running time. So the
+second part of the intuition is to realize
+that, actually, we don't have to get all
+that lucky to just be getting a 25/75
+split. That's actually a pretty modest
+goal. And even this modest goal is enough
+to get the N log N running time. Right? So
+suppose our array contains the numbers,
+the integers between one and 100, so it's
+an array of length 100. Think for a
+second, which of those elements is gonna
+give us a split? That's 25, 75, or better.
+So if we pick any element between 26 and
+75. Inclusive. Will be totally good.
+Right. We pick something that's at least
+26. That means that the left subproblem is
+going to have at least the elements one
+through 25. That'll even have at least 25
+percent of the elements. If we pick
+something less than 75, then the right
+subproblem will have all of the elements
+76 through 100 after we partition. So,
+we'll also have at least 25 percent of the
+elements. So anything between 26 and 75
+gives us a 75, 25 split or better. But
+that's a full half of the elements. So
+it's as good as just flipping one
+[inaudible] fair coin and hoping we get
+heads. So with 50 percent probability, we
+get a split good enough to get the. Isn't
+enough to get this N log inbound. And so,
+again, the high level hope is that often
+enough, you know, half of the time, we get
+these you know, good enough splits. 25, 75
+splits or better. So, that would soon
+suggest and end log and running time of
+average is a legitimate hope. So thats the
+hell of a intuition, but if I were you I
+would certainly not be content with this
+somewhat hand wavy explanation that I've
+given you so far. What I've told you is
+sort of the hope, the dream, why there is
+at least a chance, this might work. But,
+but the question remains, and I would
+encourage such skepticism, which is, does
+this really work. And to answer that we're
+gonna have to do some actual mathematical
+analysis and that's what I am gonna show
+you. I am gonna show you complete vigorous
+analysis of the quick sword algorithm with
+random pivots and we'll show that yes in
+fact it does really work. And this
+highlights what's gonna be a recurring
+theme in this course and a recurring theme
+in this just study and understanding of
+algorithm which is quite often there's
+some fundamental problem we are trying to
+go to the solution and you come up with a
+novel idea. It might be brilliant. And it
+might suck, and you have no idea. Now
+obviously you can cut up the idea, run it
+on some concrete instances, and get a feel
+for you know, whether it seems like a good
+idea or not, but if you really wanna know
+fundamentally what makes the idea good or
+what makes the idea bad, really you need
+to turn to mathematical analysis to give
+you a complete explanation. And that's
+exactly what we're going to do with Quick
+Sort and then we'll explain in a very deep
+way why it works so well. Specifically, in
+the next sequence of three videos, I'm
+going to show you an analysis, a proof of
+the following theorem about quicksort. So
+under no assumptions about the data, that
+is for every input array of a given
+length, say n, the average running time. A
+quick sort implemented with random pivots
+is [inaudible] than log in. And again, In
+fact it's theta and then log in, but we'll
+just focus on the big O of N log in part.
+So this is a very, very cool theorem about
+this randomized Quick Sort algorithm. One
+thing I wanna be clear so that you don't
+undersell this guarantee in your own mind,
+this is a worst case guarantee with
+respect to the input. If you'll notice at
+the beginning of this theorem, what do we
+say, for every input array of linked in.
+Alright so we have absolutely no
+assumptions about the data so this is a
+totally and general purpose sorting
+subroutine which you can use whenever you
+want even if you have no idea where the
+data's coming from and these guarantees
+are still going to be true. This of course
+is something I held forth about at some
+length back in our Guiding Principles
+video. When I argued that, if you can get
+away with it, what you really want is
+general purpose algorithms which make no
+data assumptions so they can be used over
+and over again in all kinds of different
+contexts and it still have guarantees, and
+quicksort is one of those. So, basically,
+if you have a dataset and it fits in the
+main memory of your machine, again,
+sorting is a for free subroutine. In
+particular, quicksort the quicksort
+implementation is for free. So, this runs
+so blazingly fast. It doesn't matter what
+the array is. Maybe you don't even know
+why you want to sort it but go on ahead.
+Why not? Maybe it'll make your life easier
+like it did, for example, in the clo.
+[inaudible] Payout rhythm for those of you
+that watched those two optional videos.
+Now, the word average does appear in this
+theorem. And, you know, as I've been
+harping on this, average is not over any
+assumptions on the data. We're certainly
+not assuming that the input array is
+random in any sense. The input array can
+be anything. So where is the averaging
+coming from? The averaging is coming only
+from randomness, which is internal to our
+algorithm. Randomness that we put in the
+code ourselves, that we're responsible
+for. So remember, randomized algorithms
+have the interesting property that, even
+if you run it on the same input over and
+over again, you're gonna get different
+executions. So the running time of a
+randomized algorithm depend-, you know,
+can vary as you run it on the same input
+over and over again. The quizzes have
+taught us that the running time of Quick
+Sort on a given input fluctuates from,
+anywhere between the best case of N log N
+to the worst case of N squared. So what
+this theorem is telling us is that, for
+every possible input array. While the
+running time does indeed fluctuate between
+an upper bound of N squared, and the lower
+bound of N log N. The best case is
+dominating. On average, it's N log N. On
+average, it's almost as good as the best
+case. That's what's so amazing about Quick
+Sort. [inaudible] N squared that can pop
+up once in a while, has, it doesn't
+matter. You're never gonna see it. You're
+always gonna see this N log N like
+behavior in randomized quick sort. So, for
+some of you, I'll see you next in a video
+on probability review, that's optional.
+For the rest of you, I'll see you in the
+analysis of this theorem.

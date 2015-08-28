@@ -1,0 +1,324 @@
+So let's just see how it works on the same
+example we traced here earlier. So we
+sorta have just by initializing things in
+the obvious way. So, the shortest path
+distance from S to itself is zero. And the
+shortest path from S to itself is just the
+empty path. And initially X is going to be
+just the source vertex itself. So now we
+enter them in while loop. And so remember,
+in the while loop, we say, well, let's scan
+all of the edges whose tail is in the
+vertices we've already looked at. Whose
+tail is in X, and whose head is outside of
+X. Now in this first iteration, there are
+two such edges. There's the edge SV, and
+the edge SW. So how do we know which of
+these two to use. Well we evaluate
+Dijkstra's greedy criterion. You guys
+remember what that is. Dijkstra's greedy
+score for a given edge VW That's crossing
+the frontier, is just the previously
+computed shortest path distance for the A
+tail of the arc plus the length of the arc
+itself. So at this point SV has a greedy
+score of zero plus one, which is one, and
+the arc S comma W has a greedy score of
+zero plus four, which is four. So
+obviously SV is going to be the shorter of
+those two, so we use the edge SV, this is
+playing the role of V star W star on the
+previous slide, and the algorithm them
+suggests we should add V to our set X, so
+we suck in V, and our new X consists of S
+and V. [sound]. And it also tells us how
+to compute the shortest path distance and
+the shortest path from S to V, namely in
+the A array, we just write down what was
+the greedy, the Dijkstra's greedy score
+for this particular edge, and that was
+zero plus one, or one. It also tells us
+how to compute the shortest path for v,
+namely we just inherit the shortest path
+to the tail of the arc, which, in this
+case, was the empty path from S to itself,
+and then we tack on the end, we append the
+arc we used to get here, the arc S to V.
+So now we go to the next iteration of the
+while loop. So with our new set
+[inaudible] consisting of S and v. Now
+again we wanna look at all edges which are
+crossing the fr ontier. Edges that have
+tail in X and head outside x. And know we
+see there is three such crossing edges.
+There is SW there is VW and there is VT
+all of those have the tail in X and the
+head outside of X, so we need to compute
+Dijkstra's greedy score for each of those
+three and then pick the minimum, so let's
+go from bottom to top, so first of all we
+can look at the arc SVSW, excuse me. And
+the greedy score here is the shortest path
+distance for the tail, so it's zero, plus
+the length of the arc, which is four. So
+here we get a four in this iteration.
+Then, if we do this crossbar edge, this VW
+edge, the Dijkstra greedy score is the a
+value, or the shortest path distance value
+of the tail, and we computed that last
+iteration. The a of V value is one. We add
+to that the length of the arc, which in
+this case is two. So this edge three,
+[inaudible] this edge VW has a score of
+three. Finally there's the arc VT, and
+here, we're gonna add one, which is the
+shortest path distance of the tail of the
+arc, plus the edge length which is six. So
+that has the worst score. So since the
+edge VW has the smallest score, that's the
+one that guides how we supplement X, and
+how we compute the shortest path distances
+in the shortest path for the newly
+acquired vertex W. So the changes are,
+first of all, we enlarge X. So X is now
+everything but T. And then how do we
+compute things for W? Well the shortest
+path, so our entry in A array is just
+going to be Dijkstra's [inaudible] greedy
+score in the previous set of rations so
+that was one plus two so that's going to
+be equal to three. And then what is the
+shortest path, how do we fill up the array
+B? Well we inherit the shortest path to
+the tail of the arc. Which in this case is
+the arc SV and then we append the arc that
+we used to choose this new vertex W so
+that's the arc VW. So the new path is just
+the SVW Path, okay? So [inaudible] we
+computed the shortest path from S to W in
+this graph. So now we proceed to the final
+iteration of Dijkstra's algorithm. We know
+what vertex we're going to bring into X.
+It's gonna be the vertex T. That's the
+only one left. But we still have to
+compute by which edge we discover T and
+bring it into the set X. So we have to
+compute the [inaudible] score for each of
+the two crossing arcs... VT and WT. And in
+this final iteration the score for the arc
+(V, T) is unchanged. So this is still
+gonna be the a value of its tail, one,
+plus the length of the arc, six. So the
+score here is still seven. And now, for
+the first time, WT is a crossing edge of
+the frontier, and when we compute its
+score, it's the a value of its tail W,
+which is three, plus the length of this
+arc, which is three, so we get a rescore
+of six. So by Dijkstra's greedy criterion,
+we pick the edge wt instead of the edge
+VT, and of course, that doesn't matter who
+gets brought into X, but it does matter
+how we compute the A and B values for T.
+So in the final iration. We compute AT to
+be the Dijkstra greedy score of the edge
+that we picked, which is the edge, WT and
+the score was six. So we compute the
+shortest path distance from S to T to be
+six. And then what is the path itself?
+Well, we inherit the shortest path from
+the tail of the arc that we used to
+discover T. So that's the shortest path to
+W, which we previously computes as being
+the path through V. And then we append the
+edge we used to discover T, so we append
+the edge, WT. So the shortest path from S
+to T, we're going to compute as the
+zig-zag path. S. Goes to V, goes to T,
+Sorry, Goes to W, goes to T. And then now
+indeed X is all the vertices. We've
+computed it for everything. This is our
+final output. The contents of the,
+especially the A array, this, the final
+output. Shortest path distances from S to
+all of the four possible destinations. And
+if you go back and compare this to the
+example you went through to the quiz, you
+will see at least on this example, indeed.
+Dijkstra's algorithm corrects pa, the
+shortest path distances. Now, I've said it
+before and I'll say it again. If someone
+shows you their algorithm works just on
+some example, especia lly a pretty simple
+four note example, you should not jump to
+the conclusion that this algorithm always
+works. Sometimes the algorithms work fine
+on small examples, but break down once you
+go to more interesting complicated
+examples. So I definitely owe you a proof
+that Dijkstra's algorithm works not only
+in this network, but in any network. And
+actually, it doesn't work in any network.
+It's only gonna work in any network with
+non-negative edge lengths. So to help you
+appreciate that, Let's conclude this video
+with a nonexample showing what goes wrong
+in Dijkstra's algorithm when you have
+networks with negative edge lengths. So
+before I actually give you a, a real non
+example let me just answer preliminary
+question which you might have and should
+be have very good question if it something
+that's occurred to you. The question would
+be well, ya why is it, why are these
+negative instance such a big deal. Why
+can't we just reduce shortest path
+competition with negative edge links to
+the problem of computing shortest paths
+with non negative edge links. Right so
+whatever just clear things out we just add
+big number to all the edges that makes
+them all non-negative and now we just run
+Dijkstra's algorithm and we're good to go.
+So this is exactly the sort of question
+you should be looking to ask, if, as a
+computer scientist, as a serious
+programmer. When confronted with a problem
+you always want to look for ways to reduce
+it to simpler problems that you already
+know how to solve. And this is a very
+natural idea of how to reduce a seemingly
+harder sort of path problem to one we
+already know how to solve using dutch
+[inaudible] algorithm. The only problem is
+it doesn't quite work. One isn't gonna
+work. Well if you, Let's say you have a
+graph, and the most negative edge is -ten.
+So all the edge lengths are negative ten
+and above. So then what you'd want to do
+is add ten to every single edge in the
+network, and that insures that all of the
+edge lengths are non negative, run
+Dijkstra's algorithm, get your shortest
+path. The is sue is that different. Paths
+between a common origin and destination
+have differing numbers of edges. So some
+might have five edges, Some might have two
+edges. Now if you add ten to every single
+edge in the graph you're going to change
+path lengths by different amounts. If a
+path has five edges, it's going to go up
+by 50, when you add ten to every edge. If
+a path has only two edges, It's only going
+to go up by twenty, when you add ten to
+every edge. So as soon as you start
+changing the path lengths of different
+paths by different amounts, you might
+actually screw up which path is the
+shortest. The path which is shortest under
+the new edge lengths need not be the one
+that's shortest under the old edge
+lengths. So that's why this reduction
+doesn't work. To be concrete, let's look
+at this very simple three vertex graph
+with vertices s, v, and t and edge lengths
+as shown. One minus five and minus two.
+Now what I hope is clear, is that in this
+graph. The shortest path. The one with the
+minimum length is the two hot path Svt,
+That has length minus four. The direct STR
+has length minus two which is bigger than
+minus four. So the upper path is the
+shortest path. Now, suppose we tried to
+massage this by adding a constant to every
+edge so all edge lengths were
+non-negative. We'd have to add five to
+every edge because that's the biggest
+negative number the VT edge. So that would
+give us new edge lengths of six. And zero
+ends three. [sound]. And now the problem
+is, we've changed which path is the
+shortest one. We added ten to the top path
+and only five to the bottom path and as a
+result, they've reversed. So now the
+bottom path ST is actually the shorter
+one. So if you run Dijkstra on this graph,
+it's going to come with the path ST even
+though that's not in fact the shortest
+path in the original network, the one that
+we actually care about. Okay, so that's
+why you can't just naively reduce shortest
+path with negative edge lengths to
+shortest paths with non-negative edge
+lengths. Moreover on this very same, super
+simple thre e node graph, You know, we can
+try to run, running dikes for shortest
+path algorithm. It's perfectly well
+defined. It will produce some output. But
+it's actually going to be wrong. It is not
+going to compute shortest path distances,
+correctly in this graph. So let me show
+you why. Unless of course initialization
+will work as it always does. So it's gonna
+start by saying the shortest path distance
+from S to itself is zero via the empty
+path. And then, what's it going to do
+next? It's going to say well we need to
+enlarge the set capital X by one vertex
+and there are two crossing edges, it's the
+XV edge and the ST edge. And what's it
+going to do. It's going to use the
+Dijkstra Greedy score. So the score of
+this upper edge is going to be one, and
+the score of this bottom edge. Is going to
+be negative two. 'Cause remember, you take
+the previously computed shortest path
+[inaudible] of the tail, that's zero in
+both cases. And then you add the edge
+lengths. So the edge lengths are one and
+minus two, so the scores are one and minus
+two. Which of these is smaller? Well
+evidently, the ST arc has the smaller
+score minus two. So what is Dijkstra's
+algorithm gonna do? It's going to say yes,
+let's go for this edge ST. Let's bring T
+into the set capital X. T is now part of
+the conquered territory. And of course as
+soon as you bring a node into the set X,
+into the [inaudible] territory, you have
+to commit or Dijkstra's algorithm chooses
+to commit to a shortest path distance and
+a shortest path. What is the definition of
+its shortest path distance, as computed by
+Djikstra? Well it's just a degree score.
+So it's going to assign the vertex t the
+shortest path distance of minus two, and
+the path is going to be just the arc S t.
+But notice that this is in fact wrong. The
+shortest path distance from S to t is not
+minus two, in this graph. There is another
+path, namely the one that goes thorough V
+that has length minus four, less than
+minus two. So, [inaudible] computes
+incorrect shortest path distances on this
+trivial 3-note graph. So t o summarize the
+story so far, We've described Dijkstra's
+algorithm. I've shown you that it works in
+a very simple example that doesn't have
+negative edge lines and I've showed you
+that it doesn't work in and even simpler
+example that does have negative edge
+lines. So, I've both given you some
+plausibility that it might work generally
+at least for non negative edges links. But
+I've also tried to sew some seeds of doubt
+that it's not an all clear if at this
+point if Dijkstra's algorithm is always
+clear correct or not even if you have
+non-negative edge lengths and certainly if
+it is always correct there better be a
+fool proof argument to why. You should be
+demanding and explanation of a claim If
+Dijkstra's is correct in any kind of
+generality. That's the subject of the next
+video.

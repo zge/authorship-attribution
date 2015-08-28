@@ -1,0 +1,296 @@
+Okay, so we're now going to go back and 
+fill in the rest of the steps of this 
+history based approach to pausing. 
+Remember the first step is to somehow 
+represent trees as sequences of decisions 
+and that's what I've just shown you on 
+the previous slides. 
+The second step is to, say that the 
+probability of a tree is by the chain 
+rule. 
+A product of terms, where at each point, 
+a condition the, the ice decision on the 
+entire sentence's input and the previous 
+i minus 1 decisions. 
+So the remaining steps of this approach 
+are going to be to derive a log-linear 
+model that estimates these conditional 
+distributions. 
+And finally to somehow implement search 
+for the highest probability parse tree. 
+So let's talk about this next. 
+How do we use a log-linear model to 
+define this conditional probability? 
+So the basic idea is rather simple 
+actually. 
+following the usual definition of 
+log-linear models, this condition of 
+probability is going to be e raised to 
+the power f.v. 
+Where f is some feature vector and v is 
+some parameter vector. 
+Divided by a normalization constant where 
+sum l all of my decisions. 
+So, notice here. 
+I have f, which is a feature vector that 
+looks at a history, in combination with 
+the outcome di. 
+So the history in this case, considers 
+the entire sentence s, and the previous i 
+minus 1 decisions. 
+And the outcome of course is the di th, 
+decision. 
+Similarly, if I look at the denominator, 
+I have a sum of all possible decisions at 
+this point in the parse tree. 
+So, we use script A to refer to the set 
+of possible decisions at this point that 
+would considering. 
+So f is going to be a function that takes 
+a history out compare, and maps it to 
+feature vector. 
+and v is going to be parameter vector and 
+of course we're going to take f of all 
+this context and a product of v. 
+Exponentiate it and then normalized in 
+the usual way we've seen with log-linear 
+model models. 
+So let's think a little bit more about 
+this feature vector. 
+It could potentially look at any 
+information in the history in combination 
+with the decision outcome at this point. 
+Remember the history consists of a 
+sentence and a sequence of i minus 1 
+decisions. 
+This in fact is going to correspond to 
+some partially built structure. 
+Okay, so we may have some structure like 
+this, maybe with some starts and various 
+other pieces of structure. 
+At each point in those slides I showed 
+you previously with the decisions, we 
+have some decision that we need to be 
+made. 
+So let's say for the sake of argument 
+we're trying to make a decision over this 
+constituent. 
+And we could potentially condition on any 
+information in the surrounding sentence 
+or in the previously built structure. 
+the part of speech tanks, the chunks and 
+so on that I built. 
+So again, we are going to leverage the 
+flexibility of log-linear models in 
+defining quite rich features. 
+That can look at the decision being made 
+in conjunction with the contextual 
+information. 
+So the big question is, how do we define 
+this feature f. 
+And so I'm just going to give brief 
+sketch of the kind of features that 
+Ratnaparkhi used in his particular parse 
+tree. 
+So the feature vector definition can vary 
+depending on whether the next decision 
+falls into the four different classes. 
+I've basically shown you on the previous 
+slides. 
+So they can vary depending on whether I 
+have a tagging decision next, a chunking 
+decision. 
+Or one of these stop join decisions at 
+the stage after chunking, or a check 
+equals no versus check equals yes 
+decision. 
+And so he actually develops different 
+feature, vector definitions for each of 
+these four cases. 
+Very briefly, for the tagging decisions, 
+he used exactly the same features as 
+we've seen before for part-of-speech 
+tagging. 
+So, he basically used exactly the same 
+approach as for the part-of-speech 
+tagging case. 
+For the chunking decisions, he used very, 
+very similar decisions. 
+Sorry very, very similar features which 
+again considered the word being chunked. 
+Spelling features of the word being 
+chunked, the previous the word, the next 
+word, the previous two chunking decisions 
+and so on. 
+Really these features mirrored the 
+features used for part-of-speech tagging. 
+The only subtlety with these features. 
+Is that they can themselves look back at 
+the tagging decisions. 
+So I could ask questions about what is 
+the part-of-speech tag for the current 
+word that I'm trying to chunk. 
+That obviously is a very useful feature. 
+Let me now give a sketch of the features 
+used with these join or start decisions. 
+So, we can look at head words, we can 
+look at constituent labels, we can look 
+at start, join annotations. 
+All considering the n'th tree relative to 
+the decision being made. 
+Where n constitutes the previous two 
+constituents, that's the choice that 
+Ratnaparkhi made. 
+So these head words were covered using 
+the head finding rules that we saw right 
+at the start of the class from 
+lexicalized PCFGs. 
+And so we'll assume that we do have these 
+lexical items available, they can be 
+useful. 
+But in addition, we can look constituents 
+labels, parts-of-speech type of labels 
+and so on. 
+Similarly we can look ahead, so we can 
+look at the head word, constituent label, 
+relative to the decision, at position 0. 
+That is actually the current tree being 
+built upon. 
+And also one position ahead and two 
+position ahead, positions ahead. 
+So to give a sketch, I have some set of 
+sub trees. 
+Some of them have join or start 
+annotations and then I'm trying to make 
+the decision here. 
+I can look at the not terminal label 
+here, the part-of-speech tag here, not 
+table, terminal label here. 
+The head words of each of these 
+constituents. 
+And similarly I can do this for the 
+previous two constituents. 
+He also looked at bigram features. 
+Which might conjoin information here 
+between these two constituents, or here 
+between these two constituents. 
+Or trigram features which would look at 
+three sequences of label three. 
+Where we might look at the three 
+non-terminal labels along here or three 
+non-terminals here, or the three 
+non-terminal labels here. 
+Finally, we might look at various 
+punctuation features. 
+because punctuation is often very useful 
+in pausing. 
+Things like commas, colons, semicolons, 
+the presence of those in the neighborhood 
+of a decision can be quite useful in 
+disambiguating these parse trees and in 
+deciding which position to take. 
+So this is really just a sketch, the main 
+point I'm trying to get accross here. 
+Is that when we make this decision, join 
+or start at a particular constituent, we 
+can employ quite rich representations of 
+the context surrounding that decision. 
+For the check decision, there are two 
+choices, either check equals no, or check 
+equals yes. 
+And so we might, for example, if we had 
+check equals yes right at the start of 
+the parse tree I showed you earlier. 
+We might have constructed this parse tree 
+here, which is actually a rather bad 
+parse tree fragment. 
+Whereas, so this is check equals yes. 
+If I'd chosen check equals no, I would've 
+left this as a start S, and would've, we 
+would've had this kind of structure. 
+So for these check decisions Ratnaparkhi 
+used a set of features, which asked a 
+variety of questions about the 
+constituent which would be built, if, 
+check equals yes. 
+So, we might for example, have a feature 
+saying, well, in this case, I've 
+constructed a rule, s goes to n s goes to 
+np. 
+And presumably, by the way, this is bad. 
+This is an indicator that something's 
+gone wrong, and so this feature should 
+get a negative weight. 
+We might ask a variety of other questions 
+about the constituent that I've 
+constructed through this check, check 
+operation. 
+So that's it for basically the feature 
+effected definitions in Ratnaparkhis' 
+model. 
+That's a fairly high level sketch of the 
+type of features he used. 
+Once those feature vectors have been 
+defined, we can train the parameters of 
+the log-linear model in the usual way, 
+using typically some kind of regularized 
+maximum likelihood approach. 
+Basically using an identical algorithm 
+with the one we saw for training the 
+parameters in general log linear models 
+or specifically in the log-linear models 
+for tagging. 
+Again I'll stress that one nice thing 
+about these models is that we can make 
+use of quite rich representations, quite 
+rich feature vector definitions. 
+Now remember in part-of-speech tagging we 
+made this Markov assumption, that the j 
+th tag depended only on the previous two 
+tags. 
+In addition to the entire sentence. 
+But in the parsing problem, I've, in 
+general, made use of features that might 
+be sensitive to all kinds of decisions, 
+that are made in the past. 
+That's because, when I was making this 
+decision here I wanted to condition on 
+all kinds of context. 
+In the past in the future part-of-speech 
+tagging and chunking decisions. 
+And so this kind of Markov assumption 
+doesn't really make sense, or at least it 
+would be very limiting in the case of 
+parsing. 
+Now because this decision di could depend 
+on arbitrary decisions in the past, 
+because I do not make a, an independent 
+assumption like this one. 
+This really means that dynamic 
+programming is going to be out of the 
+question. 
+Because it doesn't, the problem, the 
+decoding problem, does not have the 
+required structure for dynamic 
+programming. 
+I.e, it does not have some kind of Markov 
+structure. 
+So instead, Ratnaparkhi used a beam 
+search method. 
+Very similar to the beam search method 
+that you saw for phrase-based translation 
+to coding. 
+I won't go into the details, but 
+intuitively, this is going to build 
+several possible parse trees, left to 
+right, using the kind of decisions we 
+just described. 
+Each of these parse trees is going to 
+have some probability. 
+And at each point we'll just keep around 
+say the top 20 or 30 most probable parse 
+trees under the model. 
+So that partial set of decisions that 
+I've made in constructing each one of 
+those parse trees. 
+

@@ -1,0 +1,288 @@
+This lecture is about the web search.
+In this lecture we
+are going to talk about one of
+the most important applications of
+text retrieval, web search engines.
+So let's first look at some
+general challenges and
+opportunities in web search.
+Now, many information retrieval
+algorithms had been developed at the,
+before the web was born.
+So, when the web was born,
+it created the best opportunity to apply
+those algorithms to major application
+problem that everyone would care about.
+So naturally, there had to be some
+further extensions of the classical
+search algorithms to address some new
+challenges encountered in web search.
+So here are some general challenges.
+Firstly, this is a scalability challenge.
+How we handle the size of the web,
+and ensure completeness of
+coverage of all the information.
+How to serve many users quickly,
+and by answering all their queries.
+All right, so, that's one major challenge.
+And before the web was born,
+the scale of search was relatively small.
+The second problem is that there
+is low quality information.
+And there are often spams.
+The third challenge is
+dynamics of the web.
+The new pages are constantly created and
+some pages may be updated,
+eve-, very quickly.
+So it makes it harder to,
+keep the index fresh.
+So these are some of
+the challenges that the,
+we have to solve in order to,
+build a high quality web search engine.
+On the other hand, there are also some
+interesting opportunities that we can
+leverage to improve search results.
+There are many additional heuristics.
+For example you know using links that
+we can leverage to improve scoring.
+Now the errors that we talked about such
+as the vector space model are general
+algorithms.
+And they can be applied to any search
+applications, so that's, the advantage.
+On the other hand, they also don't take
+advantage of special characteristics
+of pages, or documents, in the specific
+applications such as web search.
+Web pages are linked with each other so
+obviously the linking is something
+that we can also leverage.
+So because of these challenges and
+opportunities there are new techniques
+that have been developed for web search,
+or due to the need of a web search.
+One is parallel indexing and searching,
+and this is to address the issue of
+scalability, in particular
+Google's imaging of MapReduce
+is very inferential, and
+has been very helpful in that aspect.
+Second, there are techniques
+that are developed for,
+addressing the problem of spams.
+So, spam detection.
+We'll have to prevent those,
+spam pages from being ranked high.
+And there are also techniques
+to achieve robust ranking.
+And we're going to use a lot
+of signals to rank pages so
+that it's not easy to spam the search
+engine with particular tricks.
+And the third line of
+techniques is link analysis.
+And these are techniques
+that can allow us to
+to improve search results by
+leveraging extra information.
+And in general in web
+search we're going to use
+multiple features for ranking.
+Not just link analysis but
+also exploiting all kinds of crawls like
+the layout of web pages or anchor text
+that describes a link to another page.
+So here's a picture showing the basic
+search engine technologies.
+Basically, this is the web on the left and
+then user on the right side.
+And we're going to help these, this
+user get access to the web information.
+And the first component is the crawler
+that with the crawl pages and
+the second component is indexer.
+That will take these pages
+create an invert index.
+The third component that is a retrieval,
+not with the using,
+but the index to answer user's query,
+by talking to the user's browser.
+And then, the search results would be,
+given to the user.
+And, and then the browser
+will show those results and,
+to allow the user to
+interact with the web.
+So we're going to talk about
+each of these component.
+First we're going to talk about
+the crawler also called a spider or
+a software robot that would do something
+like a crawling pages on the web.
+To build a toy crawler is relatively easy
+because you just need to start with a set
+of seed pages and then fetch pages from
+the web and parse these pages new links.
+And then add them to the priority of q and
+then just explore those additional links,
+right.
+But to build a real crawler
+actually is tricky and
+there are some complicated issues
+that we have do deal with.
+For example robustness,
+what if the server doesn't respond.
+What if there's a trap that generates
+dynamically generated webpages that might,
+attract your crawler to keep
+crawling the same site and
+to fetch dynamically generated pages.
+The results of this issue of crawling and
+you don't want to overload one particular
+server with many crawling requests.
+And you have to respect the,
+the robot exclusion protocol.
+You also need to handle
+different types of files.
+There are images, PDF files,
+all kinds of formats on the web.
+And you have to also
+consider URL extensions.
+So, sometimes those are cgi scripts, and,
+you know, internal references, etc., and
+sometimes, you have JavaScripts on the
+page that, they also create challenges.
+And you ideally should also
+recognize [INAUDIBLE] the pages
+because you don't have to
+duplicate to the, those pages.
+And finally, you may be interesting
+to discover hidden URLs.
+Those are URLs that may not be linked,
+to any page.
+But if you truncate the URL to,
+shorter pass,
+you might be able to get
+some additional pages.
+So, what are the major
+crawling strategies?
+In general, Breadth-First, is most common,
+because it naturally balance,
+balances server load.
+You would not, keep probing
+a particular server [INAUDIBLE].
+Also parallel crawling is very natural,
+because this task is very easy
+to parallelise and there are some
+variations of the crawling task.
+One interesting variation
+is called focused crawling.
+In this kind we're going to crawl just
+some pages about a particular topic.
+For example, all pages about automobiles.
+And, and, this is typically
+going to start with a query,
+and then you can use the query
+to get some results.
+From the major search engine.
+And then you can start it with those
+results and gradually crawl more.
+So one challenge in crawling is to find
+the new pages that people have created,
+and people probably are creating
+new pages all the time, and this is
+very challenging if the new pages have
+not been actually linked to any old page.
+If they are, then you can probably refine
+them by recrawling the older page.
+So these are also some um,interesting
+challenges that have to be solved.
+And finally we might face the scenario of
+incremental crawling or repeated crawling.
+Right?
+So your first,
+let's say if you want to be
+able to web search engine.
+And you were the first to crawl
+a lot of data from the web.
+And then, but then once you
+have collected all the data and
+in future we just need to crawl the,
+the update pages.
+You, you, in general you don't have
+to re-crawl everything, right?
+Or it's not necessary.
+So, in this case you,
+you go as you minimize a resource overhead
+by using minimum resource to,
+to just still crawl updated pages.
+So this is after a very interesting
+research question here.
+And [INAUDIBLE] research
+question is that there aren't
+many standard algorithms [INAUDIBLE] for
+doing this, this task.
+Right?
+But in general, you can imagine,
+you can learn from the past experience.
+Right.
+So the two major factors that
+you have to consider are first,
+will this page be updated frequently?
+And do I have to crawl this page again?
+If the page is a static page
+that hasn't been changed for
+months you probably don't have
+to re-crawl it everyday, right?
+Because it's unlikely that it
+will be changed frequently.
+On the other hand if it's you know,
+sports score page that gets
+updated very frequently and
+you may need to re-crawl it maybe
+even multiple times, on the same day.
+The other factor to consider is,
+is this page frequently accessed by users?
+If it, if it is,
+that means it's a high utility page, and
+then thus it's more important to
+ensure such a page to be fresh.
+Compare it with another page that has
+never been fetched by any users for
+a year.
+Than, even though that page
+has been changed a lot, then,
+it's probably not necessary to crawl that
+page or at least it's not as urgent as,
+to maintain the freshness of
+frequently accessed page by users.
+So to summarize,
+web search is one of the most important
+applications of text retrieval.
+And there are some new challenges
+particularly scalability,
+efficiency, quality information.
+There are also new opportunities
+particularly, rich link information and
+layout, et cetera.
+Crawler is an essential component
+of web search applications.
+And, in general,
+we can classify two scenarios.
+Once is initial crawling and
+here we want to have complete crawling
+of the web if you are doing
+a general search engine or
+focus crawling if you want to just
+target it at a certain type of pages.
+And then there is another scenario that's
+incremental updating of the crawl data or
+incremental crawling.
+In this case you need to
+optimize the resource.
+For to use minimum resource
+we get the [INAUDIBLE]
+[MUSIC].
+

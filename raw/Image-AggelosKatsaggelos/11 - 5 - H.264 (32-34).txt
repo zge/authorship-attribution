@@ -1,0 +1,848 @@
+H.264 is the latest and bravest of the
+video compression standards, although
+H.265 is along the way.
+We described its major advances and
+differences.
+Over preview standards in this segment.
+By and large, there are no conceptual
+differences with respect to the preview
+standards.
+Again, this hybrid [INAUDIBLE] code that
+is used.
+However, computer technology has advanced,
+and now it's possible to perform
+considerably more complicated operations
+when a code is implemented even a on
+a hand held device, which keep in mind is
+the code
+is are computationally much lighter than
+encoders because it involves motion
+estimation.
+And this is why they're implemented first
+on a small portable devices, we will
+see that there are advancement with
+respect
+to motion estimation, special prediction,
+and entropy encoding.
+Since by now, you have knowledge of over
+two
+weeks of material uncompression,
+everything should make perfect sense.
+So, let's check out the details of this
+particular topic.
+Let's us now discuss H.264.
+This is the latest and greatest offering
+by JVT.
+There is actually H.265, but its in its
+phase of completion as
+we speak and we'll say a few things
+potentially about it as well.
+So as I mentioned earlier, the rule of
+thumb is to have twice the compression
+efficiency as anything else and the last
+standard was established in about 1998.
+So 264 has the same name as MPEG4 Part 10
+because it's the collaboration between
+ITU and MPEG and its also carries the name
+of H.264/AVC advanced video coding.
+Initially at least it was carrying the
+name H.26L.
+So if you look in the literature and see
+any of
+these names, you should realize that,
+you're talking about the same standard.
+So we're going to see next what are the
+distinguishing factors.
+What are the similarities, but primarily
+part of the major differences that
+offers so much improve in, improved
+performance in H.264.
+Let us look now at the new features of
+H.264.
+As you'll see these features do not
+deviate from that
+basic block diagram I showed at the
+beginning of the course.
+In other words it's a hybrid
+motion-compensated video encoder.
+However, due to the advancement of,
+processors, now more
+elaborate processing steps can be taken
+along the way.
+And therefore for example additional
+considerations, additional situations
+can be checked when we do motion
+estimation.
+So, specifically, as we'll see, the
+motion compensation and intra-prediction
+differ from previously.
+We'll see that, motion compensation can be
+done, now, with respect to 30 frames in
+the past, not just one frame, and
+also there are additional intra-prediction
+modes per macroblock.
+Also, the transforms have more
+flexibility, when DCT is used there
+is an integer DCT, and some other
+differences that we'll talk about.
+The deblocking fil, filters are back.
+As I mentioned at an earlier point, they
+were 261 for example.
+And then they were not used for a
+while and now they, their benefit was
+again reevaluated.
+So they're back into the new features of
+8064.
+Entropy coding is different.
+It's actually, as you'll see,
+a context-adaptive arithmetic coding, a
+topic
+we covered two weeks ago when we talk
+about lossless encoding.
+And also there's a difference in how the
+frames and slices can be defined.
+You'll see that it's a mu, a much more
+flexible structure.
+So let's go down the list and examine each
+one of them in some detail.
+So one of the major differences is the
+user
+variable block-size when motion estimation
+compensation is taking place.
+This is not a new idea.
+It has been used widely I would say in the
+literature.
+However it was deemed that it was
+appropriate now again to the
+advances in computational power to
+implement such a, a change while encoding.
+So the motivation is clear and simple
+since
+the moving or stationary objects are
+variable in size,.
+If we use a fixed block size if it's
+too small then we're losing too many bits
+to encode.
+If it's too large then the prediction is
+not good.
+So clearly we have to have a means to
+adapt to accommodate both situations.
+And this is exactly what H.264 is doing.
+So we start with a 16 x 16 macroblock as
+were
+the case in the preview standards, but
+then we have choices.
+So, it can be kept as a whole, or it can
+be divided horizontally,
+or vertically into two sub blocks of size
+16 x 8, or 8 x 16.
+It could be divided into eight sub-blocks
+and then the last case, the
+four sub-blocks may be divided once more
+into two or four smaller blocks.
+So there are a number of choices, seven
+actually as
+you see, and, but this choice are not
+arbitrary, they have
+actually, a quarry structure review in
+vision of the splitting of
+the 16 x 16 into the situation, then
+there's, [UNKNOWN] structure.
+Of course the price you pay, you have to
+signal the decoder for
+each of the particular blocks I use
+when motion estimation compensation is
+taking place.
+So here we see exactly the seven sizes,
+different sizes of blocks that they
+mentioned earlier.
+So.
+The microblock, it's still at 16 x 16
+block.
+It's the same definition actually back
+from MPEG-1 and 2.
+And then, the first choice is I just
+divide it horizontally.
+It's shown here.
+So this is now 8 x 16.
+Or vertically, this is 16 x 8.
+It will split this split into four, so
+each of
+them now is 8 x 8, a block in essence.
+Further subdivided, the way it is shown
+here, so this is now a 4 x 8 block.
+This is an 8 x 4 block, and each of these
+little ones are 4 x 4.
+And then you can have combinations as
+shown here.
+So, this was divided in four.
+And then we have the choice of the
+vertical and the quarter.
+So, you see that, the, large number of
+combinations of the block
+sizes and therefore we can accommodate any
+scene utilized in this way.
+So it offers quite a lot of flexibility.
+Again, it's not a arbitrary visual that
+would be very difficult to signal
+to the decoder, but each one of these
+seven choices, so therefore we
+need three beats to let the encode, the
+decoder know which of these
+choices were picked, so which block was
+used for motion estimation and motion
+compensation.
+However, the benefit outweighs the cost
+and this is one of
+the features in H.264 that provides quite
+a lot of benefit.
+In this example we show the benefit of
+the variable block size in doing motion
+estimation compensation.
+So it's a specific sequence you use, the
+Bus sequence,
+it's a CIF and it's at 30 frames per
+second.
+So on the horizontal axis we see the bit
+rate; how many bits are sent per second.
+And then vertically is the quality
+of the constructed video, the [INAUDIBLE]
+moderation.
+So what we see here is that if a fixed
+block
+size is used, then we get this curve, the
+green curve.
+If modes run in four from previously used
+we get the red curve.
+One three the blue curve, and so on.
+So, two main observations here.
+In going from a fixed to a variable block
+size, you see quite a bit of benefit.
+So, for example, if you take any point
+here, you can look at it either,
+I fix the bit-rate, and then you see that,
+you gain about
+a degree in performance, or if you think
+the quality, at this point for
+example, we see that we say, this is about
+200 kilobytes per second.
+And the second observation is that the
+major benefit
+comes from utilizing variable block size
+versus fixed and then
+within the fixed it's, it's it's the
+situation of diminishing
+returns like the improvement is not as
+great as possible.
+However, in going from a fixed again this
+green curve.
+To the combinationable seven, if I allow
+myself to use any
+of the seven is shown before then we have
+taken this care.
+And again, the, the, difference either,
+the difference in
+bit rate is over 200 kilobytes per second
+or in
+quality, you gain over 150 just by
+allowing the encoded
+dis-flexibility of variable block sizes
+when motion estimation is performed.
+So let us see with a little toy example
+here what
+is the benefit of, the variable block size
+in doing motion estimation.
+So you see here the two frames that times
+equals 1 and T equals 2.
+And you see that the cloud moved to the
+right here away from the sun.
+Now, this is a microblock, a 16 x 16
+microblock that I tried to
+match to the previous frame, so that
+prediction based on the motion is taking
+place.
+Using this fixed one, the best possible
+match is achieved at the location shown
+here.
+So we see that the best possible match
+does not really reflect what happened
+because here the cloud and the sun
+overlap, while here they, they're
+completely separated.
+So this is really a very bad, terrible
+prediction, but
+that's the best that we can do under this
+specific model of block matching.
+So here we see the matching of the rest of
+the blocks.
+In which case this is accurate so in
+this case there is no need to consider,
+splitting
+the blocks, but using just the fixed block
+size
+can do a good job in, predicting the
+scene.
+But now, if we are allowed to use variable
+block sizes then it would be reasonable
+to split as shown here the block
+vertically so each of them is 16 x 8.
+And then this one on the left is matched
+to this one.
+It has much bigger overlap with the sun
+while this one to the right
+is matched to this one since there is much
+bigger overlap with the cloud.
+So it's again a toy example but I believe
+it strongly demonstrates the
+benefit of this addition of flexibility of
+using a variable block size.
+[BLANK_AUDIO].
+One of the major innovations of H.264 in
+[UNKNOWN] from
+previous standards is the use of an
+arbitrary reference frame.
+So, in 263, as we saw, the reference
+frame for prediction is always the
+previous frame.
+And we also saw that in MPEG, in other
+version of H.26L, some frames are
+predicted from both the previous and the
+next frames and we call them
+bi-directional frames.
+So this is what was done in the past.
+Now in 264, any frame can be used as a
+reference.
+So the encoder and decoder maintain
+synchronized
+buffers of available frames that were
+previously
+decoded and their reference frame is just
+specified by the index into the buffer.
+So clearly this allows this tremendous
+flexibility, because you can match
+one block if not in the previous frame if
+you're allowed to
+look at 32 or so frames in the past then
+you
+are bound to find a much better or the
+best possible match.
+Clearly this Increases tremendously
+storage.
+But storage as we know is very, very
+inexpensive.
+So there is no major difficulty here.
+But of course it increases the search
+size.
+But this is because of the faster
+processors
+we have available, does not present an
+issue either.
+So we still have the bi-predictive mode.
+And now, the, each macroblog can be
+predicted from one of the two
+references and if predicted from both
+weighted
+means of predictors is also a choice.
+So this gets not changed, but instead of
+using two frames, one in
+the front, one in the back, we can use
+arbitrary number of frames.
+So here is a simple demonstration of
+this multi reference frame motion
+compensated prediction.
+So what has been done so far by all the
+standards?
+I'm at the frame N and I consider just the
+previous
+frame, so then for this specific
+macroblock here we look and find
+the best match in the previous frame as we
+covered multiple times
+and also go and talked about motion
+estimation earlier in the course.
+So this is the best match for this
+particular case.
+So this is where the frame is matched with
+this particular macroblock.
+In the previous standards we only have
+available the previous
+frame and therefore that's the best job we
+can do.
+Now with 264 we're given the option to
+look at
+frame and minus 2 and we find the best
+match there.
+And let's say for example it was with this
+is a resulting motion vector.
+And then we are able to compare if the
+match at frame N
+minus 1 is better or worse than the match
+of frame N minus 2.
+And we are allowed to pick the smaller
+one.
+But we don't stop at N minus 2, we can
+[UNKNOWN]
+additional frames it is a matter of factor
+allows to look
+at 32 frames in the past,and it's should
+be intuitively clear
+that you are bound to find by and large a
+better solution.
+But in the worst case the solution you
+obtain by using
+just frame N minus 1 is included in the
+other solution.
+So you cannot do any worse.
+You are only bound to do at least as good,
+but probably better.
+So here's the look at the relative
+performance comparison, we compare 263 if
+we
+only use the previous frame, then we
+intentionally modify 263 using up to five
+frames.
+This is not allowed by the standard but we
+want to see even 263 how it will improve.
+And then 264 using one frame and using
+five frames.
+So the blue curve, the worst performance,
+is H.263
+with one past frame and doing motion
+estimation compensation.
+And we see that 263, if we're allowed to
+get the official
+way to use up to five frames it moves now
+to this curve.
+So, we see a benefit of about 1dB lets say
+at 1600 kilobytes per second we see
+that, the performance improves by 1dB,
+with respect to
+the video quality, in terms of PSNR of
+course.
+And here we only computed with respect to
+the Y component.
+Now, with, 264, just using one past frame,
+we have this
+considerable jump in performance, and,
+actually, justifies this, rule of thumb.
+That you get the same performance at half
+the bit-rate.
+So it will look, for example, here, at 32
+dB right
+264 is around here and they should be
+around 600
+or so kilobits per second while its over
+here for 263
+and this is around 1200 kilobits per
+second.
+So its roughly speaking again, twice their
+age for the same quality.
+And then we see that the improvement in
+264 by allowing multiple
+frames for prediction is not as sizable as
+in jumping from 263 to 264.
+And this would be expected because the,
+the, the, the higher
+you increase the performance the smaller
+the room for improvement there is.
+Intra Prediction is another major notation
+of
+H.264, so we do temporal prediction
+through
+motion estimation but no [INAUDIBLE]
+special prediction
+when an intra-encoded macroblock is, is
+encountered.
+So the motivation is that intraframes
+in natural images exhibit strong
+correlations.
+It's the same exact motivation we've been
+using when we talked about prediction.
+This is actually implemented to some
+extent to 263 and [UNKNOWN]
+but it's done in the transform, not in the
+spatial domain.
+So the macroblocks and intra coded frames
+are based on previously coded ones.
+And we need to have already coded pixels
+because
+we want the decoded and the encoded to be
+synchronized.
+To be able to operate on the same exact
+data, so there is no error [UNKNOWN].
+And the past is above and to the left of
+the
+current block, assuming a raster scan of
+the frame and those
+of the macroblocks can be sub-divided as
+we'll see into 16
+4 x 4 sub-blocks which are predicted in a
+cascading fa, fashion.
+Thus shows it right away with an example.
+Of course we have to let the decoder know
+which of
+the neighborhoods, which of the modes is
+used in, doing the prediction.
+So there's an overhead but again, the
+benefit outweighs the cost.
+So here the macro block is shown.
+So this is a 16 x 16 macro block.
+And then as you can see its divided into 4
+x 4 blocks.
+So the nables to the left, and the Bov are
+used as predictions.
+So this are also 4 x 4 blocks and
+these representing coded intensity values
+so this is recursive computability.
+Were using also the past to predict the
+current values.
+So if vertical prediction is used, then
+the values of these blocks are propagated
+vertically.
+That's what we're trying to show here with
+these colored coding.
+So this gray value
+is propagated this way.
+It's different value is propagated this way.
+And so on.
+So this for the prediction of this micro
+block under
+consideration and we're going to take the
+difference between the
+actual values and the predicted values to
+form the prediction
+error which is going to be sent to the
+decoder.
+So the assumption here is that there is
+continue
+into your smoothness or strong correlation
+to vertical direction.
+Alternatively we can use the horizontal
+mode
+which means now these values are
+propagated
+horizontally so these are all the same
+values, these are all the same values.
+Again that's a prediction, I find the
+prediction error
+and encode it and send it to the decoder.
+This prediction along the main diagonal so
+these values now the same.
+So in summary here we have all these modes
+that are shown here.
+So we can predict actually at the 16 x 16
+macroblock level.
+The prediction is vertical, horizontal,
+the [UNKNOWN] and the three plane as
+demonstrated here, all the prediction can
+be done at the 4x 4 level.
+And it's the vertical, horizontal, the
+[UNKNOWN] down left diagonal.
+Or downright, vertical-right,
+horizontal-down,
+vertical left and horizontal up.
+So you see that there are four 16 x 16
+modes and then five
+plus 49, 4 x 4 modes, and therefore, the
+idea goes
+that each and every situation, I consider
+all these modes.
+And of course we'll utilize the one that
+will
+give you the best performance the smallest
+prediction error.
+So there's a course of course again
+associated
+with this that the decoder needs to be
+notified
+as which one of these all, all, all
+of these choices was used in doing the
+prediction.
+But based on excessive, extensive
+experimentation.
+The benefit outweighs the cost and that's
+why
+it has been inter, included in the
+standard.
+So from the list of new features that I
+showed at the beginning of this part of
+the presentation.
+We've talked about motion compensation,
+intra-prediction.
+So let's look now at what is
+different when image transformations are
+taking place.
+So when it comes to the transformation,
+the
+DCT is used again, as in the previous
+standards.
+However, it's realized that when real
+number operations are used in fighting the
+cosine transform, then inaccuracies can be
+used when intake the inverse DCT.
+So in other words, if I take a block and
+take the forward and followed
+by in the inverse DCT, I will not find
+exactly the block I started with.
+So since now we are using variable
+block sizes for motion estimation
+compensation, there
+is less spatial correlation and therefore
+there is no need for the 8x8 transform.
+So what 264 is doing is using a very
+simple integer 4x4 transform.
+So it's an approximation to the 4x4
+DCT, but it's implemented using only
+integerized [INAUDIBLE].
+In other words,.
+Matrix, matrices that contain only plus
+minus 1 and plus minus 2.
+And then it can be computer clearly with
+only addition, subtraction and shifts.
+So it's a very efficient implementation
+that does not take
+anything away from the implementation of
+the DCT using real life method.
+The loss in quality is negligible, at the
+level on the average of 0.02dB.
+So the gain in, in speed of implementation
+outweighs the, the little marginal
+of loss here in quality, due to this
+approximation of the DCT that is used.
+The deblocking filter is a filter that you
+use in the feedback loop.
+When the constructed pixels are used from
+the past to predict the current pixel
+value.
+So they had been used in the past, but, as
+we know when we compress and especially at
+high compression ratio's.
+We have these annoying blocking artifacts.
+They are artificial, and they, distract
+from the quality of the image.
+They're very visible to the human eye,
+especially at low bit-rates.
+So, previous standards used a deblocking
+filter, but they used a very simple
+one to, as I call it here, to smudge the
+edges between blocks.
+No sophisticated filter was used, and
+therefore there was no benefit.
+That's why they were used early on, and
+then they were abundant.
+But here, what is done in 264, is that
+there is a choice of filters.
+So there's some adaptivity and depending
+on the type
+of edge one of five deblocking filters are
+used.
+And this is just a very reasonable but
+also known thing that one can do.
+You use adaptivity and you adapt to the
+content of the image
+and based on the type of an edge at
+different filterings apply.
+So, for example, if both blocks, both
+neighboring blocks
+have the same motion vector, then less
+filtering is needed.
+The experiment show that the quality
+improves, not just the PSNR.
+So, for the same PSNR.
+One can reduce the bit-rate by 7 to 9%,
+and of course, every little, bit helps.
+I should add here that all these benefits
+and effects are not necessarily additive.
+So, we mentioned here a benefit due to the
+deblocking, earlier,
+we mentioned a benefit due to the
+multiframe motion estimation compensation.
+But these two benefits again, they, they
+do not add, it's not a linear process
+and therefore one has to include all of
+them to see what the benefit is.
+So heres an example of the benefit of the
+use of the de-blocking filter.
+This is a frame from foreman, so no
+deblocking filter on the left.
+The PSNR is 35.07 dB.
+And while the deblocking filter is used,
+[UNKNOWN] on the right,
+then the PSNR increases by about 35 or so,
+point 35 that is dB.
+Although in terms of PSNR, the, the
+benefit is not tremendous.
+If you have a close look at the images,
+the visual quality does improve.
+And this is one of the issues of how
+exactly
+one can measure the, the visual quality of
+an image.
+But by and large, the blocking is part of
+264, and the benefits are there.
+Moving down the list of the new features
+in 264, let's see what's new in entropy
+coding.
+We have covered already these three new
+features.
+So with respect to the new features in
+entropy coding.
+The, we have to look at what was done in
+the past
+and in the past the traditional code use
+fixed, variable length codes.
+The Huffman style codes they're
+non-adaptive and they cannot
+encode symbols with probability greater
+than than a [INAUDIBLE] efficiently.
+Since at least one bit is required.
+And these are all points that we made when
+we were covering
+[INAUDIBLE] image and data compression in
+week eight of the class.
+263 defines an arithmetic coder.
+But it is still non-adaptive and it uses
+multiple non-binary alphabets.
+And this results in high, high
+computational complexity.
+So,.
+There was an improvement, improvement
+already in [UNKNOWN] 63.
+But with [UNKNOWN] 64 this so called CABAC
+called the deductive binary code is used.
+So this is a framework that was
+specifically designed for [UNKNOWN] 64.
+And it binarizes all syntax symbols.
+Which are translated into bit strings.
+So, there are 399 predefined context
+models, and these
+are used in groups to encode the various
+parameters.
+So, for example, models 14 to 20 are
+used to code the macroblock type for
+inter-frames.
+If you recall we have all these
+possibilities in doing intraframe
+prediction and therefore each of them
+needs to be signaled to
+the decoder and the model to use is
+selected based on
+previously encoded information as the
+context basic same idea that we covered.
+But a number of times already.
+So using the same test sequence as before.
+This is the bus sequence CIF at 30 frames
+per second.
+We show the relative gain for going from
+universal
+variable length codes to this binary
+context adoptive binary.
+So this is a [UNKNOWN] for VLC.
+And this is the [UNKNOWN] for CABAC.
+So, you do see some, some benefits
+certainly.
+You might say it's not tremendous, but
+it's, it's sizeable.
+So, for the same quality here, it will
+look at 32 dB PSNR.
+We see that there is about 100 kilobits
+per second or so improvement.The
+fileum, new feature we're going to address
+is that of frames and slices.
+So along this lines in previous standards,
+263 and
+MPEG each frame is either P, interframe or
+I, intraframe.
+Exception is that some macroblocks in
+P-frames
+may be intra-coded, and are called
+I-blocks.
+But now with 264, this is generalized.
+And each frame now consists of one or more
+slices.
+The slices are quite flexible.
+They are formed by contiguous.
+Groups of macroblocks, and they're
+processed in internal raster order.
+The main concept of a slice, which was
+also included in previous standards, is
+that this group of macroblocks can be
+independently encoded and decoded.
+So they've used, been used by and large to
+stop error propagation.
+Due to this independent encoding decoding,
+there is no, there are no dependencies
+from one slice to anything outside the
+slice and now we have,
+we can have intrapredictive and also
+bidirectoral, bidirectional
+or B-slices, so looking at applications
+[UNKNOWN]
+264 [UNKNOWN] demand a strong processor.
+It should be clear based on all the
+many computations and choices we have to
+perform.
+It has been used in cellular products but
+usually the baseline.
+So it's a simplified version of 264 it
+does not
+have as the typically refer to all the
+bells and whistles.
+And, but there are many variants to decode
+only.
+Its also been used in set top boxes.
+So broadcasting, in conjunction with
+transcoders and
+for personal media, such as camcorder
+storage.
+It's, you might say an overkill for
+surveillance applications.
+But sometimes is used in high end systems
+so
+there's no such great need for a
+survalence video
+but typically stationary nothing is
+happening and only once
+in a while an event of interest is taking
+place.
+So in providing some commentary regarding
+264 on one
+hand is this magnificent latest and
+greatest of the standards.
+It includes very competitive compression,
+application friendly user
+uses, such as the flexible macroblock
+orbiting here.
+And the flexible slicing.
+And also it includes a large selection of
+optional tools
+in the higher profiles, such as the film
+grain analysis,.
+But it's also a cumbersome standard.
+We, we see that there are so many
+computations that have to, to take place.
+And it's a much higher complexity than
+263+ or MPEG2.
+And some of the complicated features is
+the 4x4 transformation, the smaller inter
+prediction blocks.
+And again there are many more choices,
+many more features to run such as
+the multiple reference frame, the
+deblocking filter
+that we talked about the quarter-pel
+motion estimation
+motion conversation and then actually one
+can
+use also [UNKNOWN] adaptive VLC's for half
+[UNKNOWN]
+encoding but the content of that binary
+[INAUDIBLE] code is the main feature of
+it.
+So, in summary, with expect to 264, some
+of the very strong result is the quarter
+pixel prediction, CABAC and the deblocking
+filters, and it's been the
+major improvement since the 90s and here's
+this two-fold improvement in performance.
+

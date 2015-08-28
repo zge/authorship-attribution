@@ -1,0 +1,216 @@
+[MUSIC]
+Now we discuss Strategy 2:
+Post Topic Modeling Phrase Construction.
+What is post topic modeling
+phrase construction?
+Which in our philosophy is,
+we first do topic modeling based
+on back off words in documents.
+The typical topic modeling method could
+be Latent Dirichlet Allocation, okay.
+After that we do phrase construction,
+we construct phrases based on those
+words with the same topic label, 'kay.
+That means eh, based on this TurboTopic,
+done by Blei and
+Lafferty in 2009, it works like this.
+We first do Latent Dirichlet Allocation on
+corpus to assign each token a topic label,
+that means we first do topic
+modeling to get topic label.
+Then we merge the adjacent unigrams with
+the same topic label by some kind of test,
+usually is a distribution free permutation
+test on arbitrary-length back off model.
+We're not going to get in
+to detail into this part.
+Then we will end recursive merging when
+all significant adjacent unigrams have
+been merged, means when we can not see we
+should merge further we're finished, 'kay.
+This is one method.
+Another method called KERT
+done by Danilevsky eh, and
+others, that's all groups work in 2014.
+Eh, we, we also do
+Latent Dirichlet Allocation first, and
+then do phrase construction afterwards.
+But the difference is we perform
+frequent pattern mining on each topic,
+then perform phrase ranking based
+on four different criteria.
+Let's look at the Turbo topic.
+The turbo topic method
+essentially is we first do LDA
+on corpus to assign every
+token a topic label.
+For example, phase and the transition
+both assigned topic label 11,
+but game and theory game may assign the
+topic label 153, theory may assign 127.
+Eh, in this time, when we do merging for
+the adjacent unigrams with the same
+topic label, and phase and transition,
+maybe merged together, but
+a game and theory were no
+chance to be merged together, because
+they belong to different topics, 'kay?
+Please note there is is like
+a quantum phase transition.
+This, actually, if you look at a quantum,
+is also topic label 11.
+But, based on the test,
+you may not see quantum should
+be merged with phase transition.
+Then phase transition is a phrase.
+But a quantum phase transition or quantum
+phase may not be a good phrase, 'kay.
+This is turbo topics.
+Then we look at another
+wise by Danilevsky and
+it called KERT which essentially is
+Keyphrase Extraction and Ranking.
+The keyphrase extraction is
+still based on topic modeling.
+We first do topic model like LDA.
+Then you can see these different color
+means actually different topic labels.
+To that extent, knowledge and discovery,
+they belong to different topics,
+then there's no chance you can generate
+a phrase for knowledge discovery.
+Okay, but you do have chance to
+generate support vector machine, but,
+of course, we have chance to generate
+support vector machine classifiers.
+But we are going to see how
+we should rank them and
+which one would have better chance, 'kay.
+Actually after the ranking for machine
+learning we get the set of phrases.
+Some could be unigrams.
+Some can be trigram, bigram, okay.
+So this is key phrase extraction and
+ranking.
+Let's look at little detail.
+The framework.
+First is we run bag-of-words model,
+the topic model by treating
+every word independent,
+we run bag-of-words model inference,
+then we assign topic label to each token,
+'kay, then we will
+do frequent pattern mining, extract the
+candidate key phrases within each topic.
+For those candidate key
+phrases we are going to rank,
+those candidate key phrases in each topic.
+What are the criteria we
+are going to rank them?
+Okay, we have four criteria.
+One called popularity.
+For example if you see
+information retrieval versus
+cross language information retrieval,
+you'll find that information
+retrieval is much more frequent than
+cross language information retrieval.
+That information retrieval would be
+ranked higher because it is more popular.
+Then the second criteria
+we call discriminativeness.
+What is discriminativeness?
+Is if this key phrase is only frequent
+in documents about a topic t,
+but not frequent in the conference about,
+say t prime or other, you know, topics.
+Then this keyphrase is more discriminative
+than the other keyphrases, so
+that why it can be ranked higher.
+The third right here called concordance,
+okay.
+Simply say whether the phrase getting
+together, they really, quite frequently,
+get together.
+For example,
+active learning could be a nice phrase but
+learning classification,
+even occasionally, they get together, but
+they are not so
+naturally getting together.
+You actually were, maybe you will see
+active learning classification schemes.
+So, to that extent active
+learning may be more
+concordant than learning classification.
+The fourth one is called completeness
+simply says, if vector machine
+versus support vector machine,
+you in the [INAUDIBLE], you see
+support vector machine happens much
+more frequent than vector machine alone.
+That means every time
+you see vector machine,
+almost you always see
+support vector machine.
+Then support vector machine is more
+complete than vector machine, okay.
+Based on these criteria, we actually can
+directly compare phrases of mixed lengths,
+that means unigram, diagram,
+triagram, or other engrams.
+We can compare them together
+based on these four criteria.
+Then we can rank them in a nice way.
+For example, this is one, you know,
+running output based on
+mining paper titles in DBLP.
+DBLP is a computer science
+bibliographic database.
+It contains about 2 million papers.
+Only mind these paper titles.
+Okay, those keywords eh,
+getting together we want to use first,
+the first using topic modeling,
+then we rank them.
+If you can see, based on these learning
+readouts this one, two, three,
+four, are the four different those on
+occurred, not on different criteria.
+For example this kpRel you,
+you'll see what it generated
+essentially is unigram,
+'kay, then that, that means the,
+that it may not consider,
+you know, so many phrases.
+But if, for,
+if you knock down the popularity for
+KERT criteria you will generate
+these kind of phrases.
+But actually many of them
+are unigrams as well.
+But if you knock down discriminativeness,
+you will find that this is the output,
+okay.
+If you knock down the concordance for
+the full criteria, you get this output.
+But you take all the full criteria,
+what you finally get is
+this right-most column.
+If you look at this, some are unigrams,
+some are trigram, bigrams.
+But the interesting thing is
+these top-ranked to phrases
+are very good phrases for
+machine learning.
+Remember this software knows nothing about
+computer science or even English, but
+if they can just look at
+the paper titles in DBLP for
+machine learning topics, it can get this
+phrase ranking, it is not easy, 'kay.
+To that extent,
+this is pretty interesting algorithm.
+Generally very good results.
+[MUSIC]
+

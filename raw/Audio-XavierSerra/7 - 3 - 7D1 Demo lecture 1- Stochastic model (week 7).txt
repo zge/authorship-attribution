@@ -1,0 +1,237 @@
+Hello.
+Welcome to the course on Audio Signal
+Processing for Music Applications.
+This week, we introduced the concept
+of Stochastic signals, and
+a way to model this type of signals
+using spectral approximation.
+So in this demonstration class
+I want to actually use an implementation
+of this model on the sms-tools package.
+And see how it works.
+So let's open the interface
+of the sms-tools.
+And let's first use the short time Fourier
+transform to try to understand the sound.
+So, let's open a sound, a good sound for
+Stochastic analysis is the ocean sound.
+It's very noisy so that
+would be quite good for
+this type of approximation.
+In terms of parameters
+the default are okay.
+I mean window,
+window size 1024, hop-size 512.
+Well let's first listen to the sound.
+[SOUND] And now let's compute the STFT.
+Okay, so here we see the spectrum of
+this ocean sound and clearly is
+the kind of things we expected.
+In the sense the magnitude
+spectrum is very granular and
+there is very little kind
+of repeated structure.
+The only kind of a structure we can
+see is this overall shape,
+we see basically the amplitude,
+the swirling of the waves,
+being shown here as this
+increase of this red area.
+And also we see that the higher
+frequencies are softer than
+the lower frequencies.
+So there is much more
+emphasis on the low frequencies.
+And in the phase spectrum basically
+see random numbers, there is nothing
+particular here that we can see in
+terms of a given structure.
+And if we zoom into the phase spectrum,
+definitely you'll corroborate this idea
+that these are basically random numbers.
+If we do it on the magnetic
+spectrogram maybe one of the areas that
+are more sort of stable, and yeah
+it's also very noisy.
+Of course in here there is some
+more overall trends that we can see.
+But now, let's see what we can do
+with the sinusoidal model that we have
+been been talking about and using.
+So, let's take the sine model, and let's
+get the ocean sound.
+Okay, and in here we definitely
+will need a lot of sinusoids.
+In terms of the window size I don't
+think it matters too much but
+maybe let's take a smaller window,
+say 1,000.
+Here since the phases do
+not matter, we can really
+just say 1024 and FFT 1024.
+There is not need for
+doing anything different from that.
+The hop size will be one fourth of that,
+so that would be fine.
+Magnitude threshold, minus 80.
+well, 
+the duration of the sinusoid's here,
+Clearly, we need to account for
+tiny sinusoids that will come in and out.
+And in terms of the number of sinusoids,
+well, we need a lot.
+So let's put 200.
+And this tracking, I don't think this
+matters much because they're going to be
+coming in and out all the time.
+So let's see what happens.
+Okay, so that's quite a lot of
+sine waves and quite longer sound.
+So that may take a little bit longer.
+Okay, so this is what we get.
+Again maybe what we were expecting, 
+the sine waves, these are the frequencies.
+They are all over.
+We just see that they
+are scattered all over again in
+a very kind of granular random way.
+Let's listen to the sound that is
+synthesized from the sinusoidal model.
+[NOISE] It doesn't sound too good.
+It has this kind of tonal quality and
+we hear like pitches that
+where not really in the original sound.
+This is why the sinusoidal model
+may not be that appropriate for
+this type of sound.
+We can push it more and make it
+sound closer to the ocean sound but
+clearly it's not an appropriate
+modelling approach for this sound.
+So now let's go to the Stochastic model.
+And let's open the ocean sound.
+Okay, and in here there is not
+that many parameters to choose.
+One is the hop size and the FFT
+size will basically be twice as that.
+So, there is no need to control that.
+And then there is an important parameter,
+which is this smoothing approximation
+factor, which is basically how much
+smoothing we're going to perform.
+For example, we can start by 0.1,
+that means that we're going to
+reduce the size of the FFT by 90%.
+So, we're going to have
+the result is 10% of the overall.
+So that means that we're going to
+have only one every ten bins, or
+frequency samples, in the frequency domain.
+And of course the phase spectrum
+will be a random numbers.
+So let's listen,
+well let's compute that.
+Okay, that's quite fast.
+And here of course what we're seeing.
+And maybe we can compare it with
+the original STFT.
+We have, magnitude spectrum,
+which is much coarse.
+So there is much fewer horizontal,
+lines, because we have
+the FFT size was was down sampled because
+basically was the smoothed out, okay?
+And but let's listen to the output sound.
+[NOISE] Well it does not
+sound like the original.
+Let's listen again to the original.
+[NOISE] But
+it definitely sounds like some water.
+So the quality is very much the same.
+It sounds with a kind of high pass,
+that kind of thing.
+So let's try to get a little better.
+Let's, have a hop size smaller than
+than this one,
+maybe 64,
+because these time changes are important.
+And maybe let's not reduce,
+this that much, like 0.5,
+and let's see what happens.
+Okay, now we have more information.
+We have a finer grain,
+both in the horizontal and vertical axis.
+So lets hear what is the result.
+[NOISE] Yeah this sounds
+a little bit better and
+we can play around with these parameters
+to get different types of approximations.
+Now to finish this
+lets try how this approximation works
+with a sound that is not
+really completely stochastic.
+So for example,
+let's open the speech sound.
+Let's open this speech male sound.
+Okay?
+And let's not do so much,
+Maybe let's do 256.
+And let's do maybe 0.2
+as approximation.
+Let's first listen to the sound.
+>> Do you hear me?
+>>They don't lie at all.
+Okay, so now we're going to,
+attempt to approximate this.
+We're going to get rid
+of the phase spectrum.
+We're going to make it
+like random numbers and
+we're going to smooth out the magnitude
+spectrogram, so let's see how it sounds.
+Okay?
+So this is the approximation.
+So this was original sound.
+This is the stochastic approximation.
+We see a very coarse type of approximation
+to the magnetitude spectrum.
+And this is the resynthesized sound.
+Let's listen to that.
+>> Do you hear me?
+They don't lie at all.
+Okay.
+That's very interesting.
+In factit sounds 
+like a whisper type of sound.
+We have lost all the speech information
+because a lot of this speech
+information is in the phase spectrum and
+we have basically got rid of that.
+And since the magnitude spectrum is quite
+smooth, also we've got rid of quite a bit
+of the possible pitch information that
+was present in the magnitude spectrum.
+Okay, so that's all,
+that's what I wanted to show.
+So we have looked at one
+one implementation of this
+Stochastic approximation
+that we have talked about.
+Within the sms-tool we have this
+code that approximates
+a sound using this model.
+And well we have used some
+sounds from Freesound.
+So hopefully
+that has given you a flavor of
+what does it means to approximate a sound
+with this stochastic modeling approach.
+And of course
+we're going to be using that for
+the residual of some signals.
+And so, in the next demonstration class
+we want to put it together with the other
+models that we have been talking about.
+So we will see you next class.
+Bye bye.
+

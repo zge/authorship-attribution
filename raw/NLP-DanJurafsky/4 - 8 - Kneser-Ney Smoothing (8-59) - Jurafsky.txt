@@ -1,0 +1,119 @@
+Let’s talk about Kneser-Ney Smoothing,
+one of the most sophisticated forms of smoothing,
+but also one with a beautiful and elegant intuition.
+Remember that from Good-Turing, we talked about the c<i>’s,</i>
+the discounted counts you end up from Good-Turing,
+and we discounted each of the counts —
+the count of one was discounted to point four,
+and the count of two discounted to 1.26 and so on —
+in order to save mass to replace the zero counts with some low number.
+And if you look at the actual values of these counts — 8.25 for nine and 7.24 for eight —
+you’ll notice that in a very large number of cases,
+the discounted count has a very close relationship with the original count.
+It’s really the original count minus .75, or somewhat close to that.
+So, in practice what Good-Turing often does is produce a fixed small discount from the counts.
+And that intuition, that of a fixed small discount, can be applied directly.
+When we do this, we call this absolute discounting, and absolute discounting is a popular kind of smoothing.
+And here we’re showing you absolute discounting interpolation.
+And again, the intuition is just: We’ll save some time and have to compute all those complicated Good-Turing numbers
+and we’ll just subtract .75, or maybe it will be a different discount value for different corpora.
+Now here’s the equation for absolute discounting.
+So we’re doing diagrams again.
+So the probability, absolute discounted, of a word, given the previous word,
+will be some discounted bigram, interpolated with some interpolation weight, with the unigram probability.
+So we have a unigram probability P(w), and then the bigram probability,
+and we just subtract a fixed amount, let’s say it’s .75, from the count.
+And otherwise compute the bigram probability in the normal way.
+So, we have a discounted bigram probability, mixed with some weight,
+which I shall talk later about how to set this weight, with a unigram.
+And maybe we might keep a couple of extra values of d for counts one and two.
+Counts one and two, we saw on a previous slide, weren’t quite subtracting .75,
+so we can model this more carefully by having separate counts for those.
+But the problem with absolute discounting is the unigram probability itself.
+And I want to talk about changing the unigram probability.
+And that’s the fundamental intuition of Kneser-Ney.
+So in Kneser-Ney smoothing, the idea is keep that same interpolation that we saw in absolute discounting,
+but use a better estimate of probabilities of the lower unigrams.
+And the intuition for that, we can go back and look at the classic Shannon games.
+Remember, in the Shannon game we’re predicting a word from previous words,
+so we see a sentence, “I can’t see without my reading <u><u><u><u>.”</u></u></u></u>
+What’s the most likely next word?
+Well, “glasses” seems pretty likely.
+Well, how about instead the word “Francisco”?
+Well, that seems very unlikely in this situation.
+And yet “Francisco”, as just a unigram, is more common than “glasses”.
+But the reason why “Francisco” seems like a bad thing after “reading”,
+one intuition we might be able to get is that “Francisco” always follows “San” or very often follows “San”.
+So while “Francisco” is very frequent, it’s frequent in the context of the word “San”.
+Now, unigrams in an interpolation model, where we’re mixing a unigram and a bigram,
+are specifically useful — they’re very helpful — just in case where we haven’t seen a bigram.
+So it’s unfortunate that just in the case where we haven’t seen the bigram “reading Francisco”,
+we’re trusting “Francisco”’s unigram weight which is just where we shouldn’t trust it.
+So instead of using the probability of w, how likely is a word,
+our intuition is going to be when we’re backing off to something
+we should instead use the continuation probability.
+We’re going to call it P continuation of a word,
+how likely is the word to appear as a novel continuation.
+Well, how do we measure novel continuation?
+Well, for each word we’ll just count the number of bigram types it completes.
+How many different bigrams does it create by appearing after another word.
+In other words, each bigram type is a novel continuation the first time we see this new bigram.
+In other words, the continuation probability is going to be proportional to the cardinality of this set,
+the number of words of preceding words, i minus one, that occur with our word.
+So, how many words occur before this word in a bigram.
+How many preceding words are there.
+That will be the cardinality of that set, that’s a number we would like our continuation probability to be proportional to.
+So how many times does w appear as a novel continuation?
+We need to turn that into a probability.
+So we just divide by the total number of word bigram types.
+So, of all word bigrams that occur more than zero times, what’s the cardinality of that set?
+How many different word bigram types are there,
+and we’re just going to divide the two to get a probability of continuation,
+of all the number of word bigram types how many of those have w as a novel continuation.
+Now it turns out that there’s an alternative metaphor for Kneser-Ney with the same equations
+so again we can see the numerator as the total number of word types that precede w,
+how many word types can w follow and we’re going to normalize it by the number of words that could precede all words.
+So, this sum over all words of the number of word types that can precede the word.
+And these two are the same:
+The number of this denominator and the denominator we saw on the previous slide are the same
+because the number of possible bigram types is the same as the number of word type that can precede all words summed over all words.
+If you think about that for a second, you’ll realize that’s true.
+So in other words, with this kind of Kneser-Ney model,
+a frequent word like “Francisco” that occurs only in one context like “San” will have a low continuation probability.
+So if we put together the intuition of absolute discounting with the Kneser-Ney probability for the lower order n-gram,
+we have the Kneser-Ney smoothing algorithm.
+So, for the bigram itself we just have absolute discounting —
+We take the bigram count, we subtract some d discount,
+and I’ve just shown here that we take the max of that and zero
+because, obviously, if the discount happens to be higher than the probability we don’t want a negative probability.
+And we’re just gonna interpolate that with this same continuation probability that we just saw,
+p continuation of w sub i.
+And, the lambda, now let’s talk about how to compute that lambda.
+The lambda is gonna take all that probability mass from all those normalized discounts
+that we took out of these higher-order probabilities,
+and use those to weight how much probability we should assign to the unigram.
+We’re gonna combine those.
+So that lambda is the amount of the discount weight divided by the denominator there.
+So, it’s the normalized discount.
+And then, we’re gonna multiply that by the total number of word types that can follow this context, w<u>i minus one.</u>
+In other words, how many different word types did we discount
+or how many times did we apply this normalized discount.
+And we multiply those together
+and we know how much probably mass total we can now assign to the continuation of the word.
+Now, this is the bigram formulation for Kneser-Ney.
+Now in this slide, we’re showing you the general recursive formulation for n-grams in general,
+and here we have to make a slight change to deal with all the higher-order n-grams.
+So here we’re just showing the Kneser-Ney probability of a word given the prefix of the word.
+And, just like Kneser-Ney we saw before,
+we’re just interpolating a higher-order n-gram which is discounted with a lambda weight and a lower-order probability.
+But now we need to distinguish between the very first top-level time that we use a count and these lower order counts.
+So we’re going to use the actual count for the very highest order bigram,
+and we’re going to use the continuation value that we just defined earlier for all the lower order probabilities.
+So we’ll define this new thing count Kneser-Ney of dot which will mean actual count.
+This will be actual count, let’s say we’re doing trigrams.
+For the trigram, and then when we recurse and have the Kneser-Ney probability for the lower order things.
+When we get down to the bigrams and unigrams, we’ll be using the continuation count,
+that’s again the single word context that we defined earlier.
+So Kneser-Ney smoothing, a very excellent algorithm.
+It’s very commonly used in speech recognition and machine translation
+and yet it has a very beautiful and elegant intuition and I hope you appreciate it.

@@ -1,0 +1,238 @@
+So let's next give some justification for
+why this recursive method for calculating
+these pi values is correct.
+And again I'll use this sentence as an
+example, and I'll use pi 3 8 Vp as an
+example.
+So, we're trying to find the highest
+probability for any Vp spanning these
+words three through eight inclusive, and
+I'll assume our grammar has these two
+rules.
+And in this case, we're going to search
+through these two rules.
+And we're going to search for the split
+point, in the range of values three
+through seven.
+So the basic intuition is the following.
+So if I have words three, four, five, six,
+seven, eight.
+If I think of any VP spanning these words,
+then I have to make some choice of rule.
+For example, it might be VP prepositional
+phrase, and I have to make some choice of
+split-point.
+So, let's take s equals 5 for example,
+what does the split point mean?
+That means that I'm considering the case
+where the VP Spans with three to five and
+the prepositional phrase spans with six
+through eight.
+So given I choose this rule VP goes to VP
+prepositional phrase and I choose this
+split point, ie.
+I choose this VP under here to span words
+three through five prepositional phrase to
+span words six through eight.
+The highest probability for any tree which
+makes those choices is going to be Q VP
+goes to VP, prepositional phase.
+Because that's the probability for this
+rule.
+And then, as I'll argue in a moment, pi of
+3, 5, VP times pi.
+Of six, eight prepositional phrase so
+where did these two terms come from?
+They come from the observation that for
+this to be the highest probability tree
+with this choice of rule and this choice
+of split point.
+I have to use the highest probability tree
+under this VP.
+And that this pi term is going to
+correspond to the highest probability for
+any tree under this vp here.
+And similarly I have to use the highest
+probability for any tree underneath this
+prepositional phrase.
+That's where this pi value comes from.
+So to calculate the highest probability,
+for a vp spanning all of these words, with
+this choice of rule, and this choice of
+split point, this is the calculation I'm
+going to carry out.
+Now, searching over these different
+options, the fact that this max is over
+the choice of rule and the choice of split
+point disreflects the fact that we're
+going to search through all different
+composition, decompositions of this form.
+We're going to, to search for all
+different choices of rules and all
+different choices of split point will
+thereby find the single best way of
+reaching a VP spanning words three through
+eight Inclusive.
+So that essentially the justification for
+why we can calculate these pi values using
+the recursive.
+The definition that I've shown you here.
+So here's the final algorithm, which puts
+all of these ideals together.
+So the input to the, to the algorithm is a
+sentence, so that's a sequence of n words,
+x1 through xn.
+And in addition, we have a PCFG.
+Which consists of non-terminals, terminal
+symbols, a start symbol, rules, and a set
+of parameters.
+And we're assuming of course that this
+PCFG is in Chomsky normal form.
+So the first thing we do is implement the
+base case of the recursion.
+So for i in 1 to n, for each non-terminal,
+we define pi i, i x.
+To be Q of Q goes to XI, if that rule
+occurs in the grammar, and zero otherwise.
+That's the base case I showed you earlier.
+In the main loop of the algorithm, we
+implement the recursive definition I just
+showed you.
+And the only thing we need to be careful
+about is to fill in these pie values for
+smaller segments, before we get to larger
+segments.
+And that's what.
+These this loop here is doing.
+So L is essentially going to be the length
+of the of the segment that we're filling
+in.
+We go for I cause/g 1 to N minus L, and we
+said j equals i plus 1.
+So, if you go through this.
+We're firstly going to set l equals 1, and
+we're going to try i equals 1, j equals 2.
+I equals 2, j equals 3.
+I equals 3, j equals 4.
+And so on, the secondly one we try l
+equals 2.
+We come back to this.
+We try[UNKNOWN] was 1, j equals 3, i
+equals 2, j equals 4.
+So notice here we have segments length of
+2 words.
+Here we haev segments of lenght, 3 words.
+And so all this is doing is just making
+sure that we fill in the shorter segments
+before the longer segments and that means
+when we calculate pi i j we guarantee to
+have these pi values lower down filled in.
+So this is just applying the recursive
+definition I showed you.
+And the only other thing is that, remember
+these pi values are just going to store
+the maximum value for the probability for
+any subtree root that x spanning words i
+through j, but we really want to recover
+the tree that achieves that max.
+And we do this by storing back pointers in
+a very similar way to the algorithms we
+saw for HMMs.
+So in addition to storing pi i j x, I have
+bp for back pointer i j x, which is the
+arg max.
+So this records which rule and which split
+point actually achieved this maximum
+value.
+Once you've filled in all of these values
+it's straightforward to use the back
+pointers to actually trace back the pause
+tree that is the highest probability tree
+under the grammar.
+So lastly, let's talk about the run time,
+the time complex to get this algorithm.
+And it's actually cubic in the number of
+words in the input sentence.
+So remember N is the number of words, and
+it's also cubic in the number of
+non-terminals in the grammar.
+So this is the final run time of this
+algorithm.
+Let me explain how we arrive at this
+number.
+If you consider this far in to be, the
+algorithm, there are order n squared
+choices for I J and that's the start point
+and the end point for the pie value we're
+calculating so we have basically ordered N
+squared choices for these two values.
+And then at each point we have, N possible
+values for X.
+And for each value of x we consider all
+possible rules expanding x.
+And we have, at most, n-squared possible
+rules, because there's n choices for y and
+there's n choices for z.
+And then s is also, as at most, little n
+values, puts us in the range of i to j
+minus one.
+And i and j between one and.
+Okay.
+So we have, in, this implies, finally, we
+have n cubed times, big N cubed times the
+final complexity of the algorithm.
+So, again, what I need to emphasize here
+is, this is way, way better than brute
+force search.
+Remember, it's easy to come up with the
+grammars where the number of possible
+parse trees for an input sentence is.
+Exponential in the size of the input, and
+the length of that sentence.
+And so we now have polynomial time
+algorithm.
+Which is cubic in the, the length of the
+sentence.
+And also cubic in the number of non
+terminals in the grammar.
+So, to summarize.
+What we've seen in this lecture of the
+course is that PCFGs augments CFGs by
+simply introducing a probability of each
+rule in the grammar.
+They there by assign a probability to
+every possible parse tree under the
+grammar where the probability is just
+calculated as the product for
+probabilities for the rules in the tree.
+To build a parser based on a PCFG, you go
+through the following steps.
+So firstly, you learn a PCFG from a
+treebank.
+And as we saw, that's really quite
+trivial, which is read off the rules from
+the treebank, and then compute maximum
+likely estimates based on simple counts.
+And secondly given a new test data
+sentence we can use this dynamic
+programming algorithm the CKY algorithm to
+compute the highest probability tree for
+the sentence on the PCFG.
+So, that's essentially it, what I'm going
+to describe nest is actually we are going
+to look at some weaknesses of PCFGs.
+We're going to give some arguments for why
+they are really rather poor models for
+language.
+When they were initially tried in the '90s
+when tree banks first became available.
+The results were disappointing.
+But then we'll see there are some fairly
+simple ways to augment PCFGs in ways which
+make them much more sc-, effective parsing
+models.
+And indeed, many of the state-of-the-art
+models for parsing nowadays are directly
+based on the ideas of PCFGs you've seen in
+this lecture.
+(End of transcription.)

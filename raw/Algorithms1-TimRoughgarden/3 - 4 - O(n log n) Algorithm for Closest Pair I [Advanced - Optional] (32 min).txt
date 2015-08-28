@@ -1,0 +1,923 @@
+So in this video and the next, we're going
+to study a very cool divide and conquer
+algorithm for the closest pair problem.
+this is a problem where you're given n
+points in the plane and you want to figure
+out which pair of points are closest to
+each other. So this would be the first
+taste we get of an application in
+computational geometry, which is the part
+of algorithms which studies how to reason
+and manipulate geometric objects. So those
+algorithms are important in, among other
+areas robotics, computer vision and
+computer graphics. So this is relatively
+advanced material, it's a bit more
+difficult than the other applications of
+divide and conquer that we've seen. The
+algorithm's a little bit tricky and it has
+a quite nontrivial proof of correctness,
+so just be ready for that and also be
+warned that because it's more advanced I'm
+going to talk about the material in at a
+slightly faster pace tha I do in most of
+the other videos. So let's begin now by
+defining the problem formally, so we're
+given as imput endpoints in the plane, so
+each one just define by its x coordinate
+and ist y coordinate. And when we talk
+about the distance between two points in
+this problem, we're going to focus on
+Euclidean distance. So, let me remind you
+what that is briefly, but we're going to
+introduce some simple notation for that,
+which we'll use for the rest of the
+lecture. So we're just going to note the
+Euclidean distance between two points, pi
+and pj, by d of pi pj. So in terms of the
+x and y coordinates of these two points,
+we just look at the squared differences in
+each coordinate, sum them up, and take the
+square root. And now as the name of the
+problem would suggest, the goal is to
+identify among all pairs of points that
+pair which has the smallest distance
+between them.
+Next, let's start getting a feel for the
+problem by making some preliminary
+observations. First, I want to make an
+assumption purely for convenience that
+there's no ties. So that is I'm going to
+assume all endpoints have distinct x
+coordinat es, and also all endpoints have
+distinct y coordinates.
+It's not difficult to extend the algorithm
+to accommodate ties. I'll leave it to you
+to think about how to do that. So next,
+let's draw some parallels with the problem
+of counting inversions, which was a
+earlier application of divide and conquer
+that we saw. The first parallel I want,
+want to out is that, if we're comfortable
+with the quadratic time algorithm, then
+this is not a hard problem, we can simply
+solve this by brute-force search. And
+again, by brute-force search, I just mean
+we set up a double for loop, which
+iterates over all distinct pairs of
+points. We compute the distance for each
+such pair and we remember the smallest.
+That's clearly a correct algorithm, it has
+to iterate over a quadratic number of
+pairs, so its running time is going to be
+theta of n squared. And, as always, the
+question is can we apply some algorithmic
+ingenuity to do better? Can we have a
+better algorithm than this naive one which
+iterates over all pairs of points? You
+might have a, an initial instinct that
+because the problem asks about a quadratic
+number of different objects, perhaps we
+fundamentally need to do quadratic work.
+But again, recall back in counting
+inversions, using divide and conquer, we
+were able to get an n log n algorithm
+despite the fact that there might be as
+many as a quadratic number of inversions
+in an array. So the question is, can we do
+something similar here for the closest
+pair problem? Now, one of the keys to
+getting an n log n time algorithm for
+counting inversions was to leverage a
+sorting subroutine. Recall that we
+piggybacked on merge sort to count the
+number of inversions in n log n time. So
+the question is, here, with the closest
+pair problem, perhaps, sorting again can
+be useful in some way to beat the
+quadratic barrier. So, to develop some
+evidence that sorting will indeed help us
+compute the closest pair of points
+embedded in quadratic time, let's look at
+a special case of the problem, really, an
+easier version of t he problem, which is
+when the points are just in one dimension,
+so on the line rather that in two
+dimensions in the plane. So in the 1D
+version, all the points just lie on a line
+like this one, and we're given the points
+in some arbitrary order not necessarily in
+sorted order. So, a way to solve the
+closest pair problem in one dimension, is
+to simply sort the points, and then of
+course, the closest pair better be
+adjacent in this ordering, so you just
+iterate through the n minus 1 consecutive
+pairs and see which one is closest to each
+other So, more formally, here's how you
+solve the one-dimensional version of the
+problem. You sort the points according to
+their only coordinate, because you're
+going to remember, this is one dimension.
+So as we've seen, using merge sort, we can
+sort the points in n log n time and then
+we just do a scan through the points, so
+this takes linear time. And for each
+consecutive pair, we compute their
+distance and we remember the smallest of
+those consecutive pairs and we return
+that. That's gotta be the closest pair.
+So, in this picture here on the right, I'm
+just going to circle here in green the
+closest pair of points. So this is
+something we discover by sorting and then
+doing a linear scan. Now, needless to say,
+this isn't directly useful, this is not
+the problem I started out with. We wanted
+to find out the closest pair among of
+points in the plane not points in the
+line. But, I want to point out that, this,
+even in the line, there are a quadratic
+number of different pairs, so brute-force
+search is still a quadratic time algorythm
+even in the 1D case. So at least, with one
+dimension, we can use sorting, piggyback
+on it, to beat the naive brute-force
+search bound and solve the problem in n
+log n time. So our goal for this lecture
+is going to be to devise an equally good
+algorithm for the two-dimensional case, so
+we want to solve closest pair of points in
+the plane, again, in n log n, n time.
+So we will succeed in this goal. I'm going
+to show you an n log n time algo rithm for
+2D closest pair. It's going to take us a
+couple steps. So let me begin with a high
+level approach. Alright. So the first I
+need to try is just to copy what worked
+for us in the one-dimensional case. So the
+one-dimensional case, we first sorted the
+points by their coordinate and that was
+really useful. Now, in the 2D case, points
+have two coordinates, x coordinates and y
+coordinates, so there's two ways to sort
+them. So let's just sort them both ways,
+that is, the first step of our algorithm,
+which you should really think of as a
+preprocessing step. We're going to take
+the input points. We invoke merge sort
+once to sort them according to x
+coordinate, that's one copy of the points.
+And then we make a second copy of the
+points where they're sorted by y
+coordinates. So we're going to call those
+copies of points px, that's an array of
+the points sorted by x coordinate, and py
+for them sorted by y coordinate. Now, we
+know merge short takes n log n times, so
+this preprocessing step only takes o of n
+log n time. And again, given that we're
+shooting for an algorithm with running
+time big O of n log n, why not sort the
+points? We don't even know how we're going
+to use this fact right now, but it's sort
+of harmless. It's not going to effect our
+goal of getting a big of O n log n time
+algorithm. And indeed, this illustrates a
+broader point, which is one of the themes
+of this course. So recall, I hope one of
+the things you take away from this course
+is a sense for what are the four free
+primitives, what are manipulations or
+operations you can do on data which
+basically are costless. Meaning that if
+your data set fits in the main memory of
+your computer, you can basically invoke
+the primitive and it's just going to run
+blazingly fast, and you can just do it
+even if you don't know why. And again,
+sorting is the canonical for free
+primitive, although, we'll see some more
+later in the course and so, here, we're
+using exactly that principle.
+So we don't even understand why yet we
+might wa nt the points to be sorted. It
+just seems like it's probably going to be
+useful, motivated by the 1D case, so let's
+go ahead and make assorted copies of the
+points by x and y coordinate upfront. So
+reasoning by analogy with the 1D suggests
+that sorting the points might be useful,
+but we can't carry this analogy too far.
+So in particular, we're not going to be
+able to get away with just a simple linear
+scan through these arrays to identify the
+closest pair of points. So, to see that,
+consider the following example.
+So we're going to look at a point set
+which has six points. There's going to be
+two points, which I'll put in blue which
+are very close in x coordinate, but very
+far away in y coordinate. And then there's
+going to be another pair of points which
+I'll do in green, which are very close in
+y coordinate, but very far away in x
+coordinate. And then there's going to be a
+red pair of points, which are not too far
+away in either the x coordinate or the y
+coordinate. So in this set of six points,
+the closest pair is the pair of red
+points. They're not even going to show up
+consecutively on either of the two arrays,
+right? So in the array that's sorted by x
+coordinate, this blue point here is going
+to be wedged in between the two red
+points, they won't be consecutive. And
+similarly in the, in py, which is sort of
+by y coordinate, this green coordinate is
+going to be wedged between the two red
+points. So you won't even notice these red
+point if you just do a linear scan if your
+px and py, or py look at the consecutive
+pairs of points. So, following our
+preprocessing step where we just invert,
+invoke merge sort twice we're going to do
+a quite nontrivial divide and conquer
+algorithm to compute the closest pair. So
+really, in this algorithm, we're applying
+the divide and conquer algorithm twice.
+First, internal to the sorting subroutine,
+assuming that we use the merge sort
+algorithm to sort. Divide and conquer is
+being used there to get an n log n running
+time in this preprocessing step, and the
+n, we're going to use it again on sorted
+arrays in a new way and that's what I'm
+going to tell you about next. So let's
+just briefly review the divide and conquer
+algorithm design paradigm before we apply
+it to the closest pair problem. So, as
+usual, the first step is to figure out a
+way to divide your problem into smaller
+subproblems. Sometimes this has a
+reasonable amount of ingenuity, but it's
+not going to. Here in the closest pair
+problem, we're going to proceed exactly as
+we did in the merge sort and counting
+inversions problems, where we took the
+array and broke it into its left and right
+half. So here, we're going to take the
+input point set, and again, just recurse
+on the left half of the points, and
+recurse on the right half of the points.
+So here, by left and right, I mean with
+respect to the points x coordinates.
+There's pretty much never any ingenuity in
+the conquer step, that just means you take
+the sub-problems you identified in the
+first step, and you solve them
+recursively. That's what we'll do here,
+we'll recursively complete the closest
+pair in the left half of the points, and
+the closest pair in the right half of the
+points. So where all the creativity in
+divide and conquer algorithms is in the
+combined step. Given the solutions to your
+sub problems, how do you somehow recover a
+solution to the original problem? The one
+that you actually care about. So for
+closest pair, the questionis going to be,
+given that you've computed the closest
+pair on the left half of the points, and
+the closest pair on the right half of the
+points, how do you then quickly recover
+the closest pair for the whole point set?
+That's a tricky problem, that's what we're
+going to spend most of our time on. So
+let's make this divide and conquer
+approach for closest pair a little bit
+more precise, so let's now actually start
+spelling out our closest pair algorithm.
+The input we're given, it's, this follows
+the preprocessing steps or recall that we
+invoke, merge sort, we get our two sorted
+copies of the poin t set Px, sorted by x
+coordinate, and py sorted by y coordinate.
+So the first dividend is the division
+step. So given that we have a copy of the
+points px sorted by x coordinate, it's
+easy to identify the leftmost half of the
+points, those with the, those n over two
+smallest x coordinates and in the right
+half, those were the n over two largest x
+coordinates. We're going to call those Q
+and R respectively. One thing I'm skipping
+over is the base case. I'm not going to
+bother writing that down, so base case
+omitted, but it's what you would think it
+would be. So basically once you have a
+small number point, say two points or
+three points, then you can just solve the
+problem in constant time by a brute-force
+search. You just look at all the pairs and
+you return the closest pair. So think of
+it being at least four points in the
+input. Now, in order to recurse, to call
+clo pair again, in the left and right
+halves, we need sorted version of Q and R,
+both by x coordinate and by y coordinate,
+so we're just going to form those by doing
+suitable linear scans through px and py.
+And so one thing I encourage you to think
+through carefully or maybe even code up
+after the video is how would you form Qx,
+Qy, Rx and Ry given that you already have
+Px and Py. And if you think about it,
+because Px and Py are already sorted just
+producing these sorted sublists takes
+linear time. It's in some sense the
+opposite of the merge subroutine used in
+merge sort. Here, we're sort of splitting
+rather than merging. But again, this can
+be done in linear time, that's something
+you should think through carefully later.
+So that's the division step, now we just
+conquer, meaning we recursively call
+closest pair line on each of the two
+subproblems, so when we invoke closest
+pair on the left half of the points on Q
+we're going to get back what are indeed,
+the closest pair of points amongst those
+in Q. So we're going to call those P1 and
+Pq, So among all pairs of points that both
+lie in Q, P1 and Q1 minimize the distance
+between them. Similarly, we're going to
+call Q2Q2 the results of the second
+recursive call, that is, P2 and Q2 are
+amongst all pairs of points that both lie
+in R, the pair that has the minimum
+Euclidean distance. Now, conceptually,
+there's two cases. There's a lucky case
+and there's an unlucky case. In the
+original point set P, if we're lucky, the
+closest pair of points in all of P,
+actually, both of them lie in Q or both of
+them lie in R. In this lucky case, we'd
+already be done if the closest pair in the
+entire point set they happen to both lie
+in Q, then this first recursive call is
+going to recover them and we just have
+them in our hands P1Q1. Similarly, if both
+of the closest pair of points in all of P
+lies on the right side in R, then they get
+handed to us on a silver platter by the
+second recursive call that just operate on
+R. So in the unlucky case, the closest
+pair of point in P happens to be split.
+That is, one of the points lies in the
+left half, in Q, and the other point lies
+in the right half, in R. Notice, if the
+closest pair of points in all of P is
+split, is half in Q and half in R, neither
+recursive call is going to find it. Okay?
+The pair of points is not passed to either
+of the two recursive calls, so there's no
+way it's going to be returned to us. Okay?
+So we have not identified the closest pair
+after these two recursive calls, if the
+closest pair happens to be split.
+This is exactly analagous to what happened
+when we were counting inversions. The
+recursive call on the left half of the
+array counted the left inversions. The
+recursive call on the right half of the
+array counted the right inversions. But we
+still had to count the split inversions,
+so in this closest pair algorithm, we
+still need a special purpose subroutine
+that computes the closest pair for the
+case in which it is split, in which there
+is one point in Q and one point in R. So
+just like in counting inversions, I'm
+going to write down that subroutine and
+I'm going to leave it unimplemented for
+now, we'll figur e out how to implement it
+quickly in the rest of the lecture. Now,
+if we have a correct implementation of
+closest split pair, so that takes us input
+the original point set sort of the x and y
+coordinate, and returns the smallest pair
+that's split or one points in Q and one
+points in R, then we're done. So then, the
+split, then the closest pair has to either
+be on the lef or onm the right or it has
+to be split. Steps two through four
+compute the closest pair in each of those
+categories, so those are the only possible
+candidates for the closest pair and we
+just returned the best of them. So that's
+an argument for y, if we have a correct
+implementation of the closest split para
+subroutine, then that implies a correct
+implementation of closest pair. Now, what
+about the running time? So the running
+time of the closest para algorithm is
+going to be in part determined by the
+running time of closest split pair. So in
+the next quiz, I want you to think about
+what kind of running time we should be
+shooting for with a closest split pair
+subroutine. So the correct response of
+this quiz is the second one, and the
+reasoning is just by analogy with our
+previous algorithms for merge sort and for
+counting inversions. So, what is all of
+the work that we would do in this
+algorithm or we do have this preprocessing
+step we call merge sort twice, we know
+that's n log n, so we're not going to have
+a running time better than n log n cause
+we sort at the beginning. And then, we
+have a recursive algorithm with the
+following flavor, it makes two recursive
+calls.
+Each recursive call is on a problem of
+exactly half the size with half the points
+of the original one. And outside of the
+recursive calls, by assumption, by, in the
+problem, we do a linear amount of work in
+computing the closest split pair. So we,
+the exact same recursion tree which proves
+an n log n bound for merge sort, proves an
+n log n bound for how much work we do
+after the preprocessing step, so that
+gives us an overall running time bound of
+n log n. Remem ber, that's what we were
+shooting for. We were working n log n
+already to solve the one-dimensional
+version of closest pair and the goal of
+these lectures is to have an n log n
+algorithm for the 2D versions. So this
+would be great. So in other words, the
+goal should be to have a correct linear
+time implementation of the closest split
+pair subroutine. If we can do that, we're
+home-free, we get the desired n log
+algorithm. Now, I'm going to proceed in a
+little bit to show you how to implement
+closest split pair, but before I do that,
+I want to point out one subtle, the key
+idea, which is going to allow us to get
+this linear time correct implementation.
+So, let me just put that on the slide. So,
+the key idea is that we don't actually
+need a full-blown correct implementation
+of the closets split pair subroutine. So,
+I'm not actually going to show you a
+linear time subroutine that always
+correctly computes the closets split pair
+of a point set. The reason I'm going to do
+that is that's actually a strictly harder
+problem than what we need to have a
+correct recursive algorithm. We do not
+actually need a subroutine that, for every
+point sets, always correctly computes the
+closest split pair of points. Remember,
+there's a lucky case and there's an
+unlucky case. The lucky case is where the
+closest pair in the whole point set P
+happens to lie entirely in the left half
+of the points Q or in the right half of
+the points R In that lucky case, we, one
+of our recursive calls will identify this
+closest pair and hand it over to us on a
+silver platter. We could care less about
+the split pairs in that case. We get the
+right answer without even looking at the
+split pair, pairs. Now, there's this
+unlucky case where the split pairs happens
+to be the closest pair of points. That is
+when we need this linear time subroutine,
+and only. then, only in the unlucky case
+where the closest pair of points happens
+to be split. Now, that's in some sense, a
+fairly trivial observation, but, there's a
+lot of ingenuity here i n figuring out how
+to use that observation. The fact that we
+only need to solve a strictly easier
+problem and that will enable the linear
+time implementation that I'm going to show
+you next. So now, let's rewrite the high
+level recursive algorithm slightly to make
+use of this observation that the closest
+split pair subroutine only has to operate
+correctly in the regime of the unlucky
+case, when in fact, the closest split pair
+is closer than the result of either
+recursive call. So I've erased the
+previous steps 4 and 5, that, but we're
+going to rewrite them in a second. So,
+before we invoke close split pair, what
+we're going to do is we're going to see
+how well did our recursive calls do. That
+is, we're going to define a parameter
+little delta, which is going to be the
+closest pair that we found or the distance
+of the closest pair we found by either
+recursive call. So the minimum of the
+distance between P1 and Q1, the closest
+pair that lies entirely on the left, and
+P2Q2, the closest pair that lies entirely
+on the right. Now, we're going to pass
+this delta information as a parameter into
+our closest split pair subroutine. We're
+going to have to see why on earth that
+would be useful and I still owe you that
+information, but, for now, we're just
+going to pass delta as a parameter for use
+in the closest split pair. And then, as
+before we just do a comparison between the
+three candidate closest pairs and return
+the best of the, of the trio. And so, just
+so we're all clear on, on where things
+stand, so what remains is to describe the
+implementation of closest split pair, and
+before I describe it, let me just be
+crystal clear on what it is that we're
+going to demand of the subroutine. What do
+we need to have a correct in o of n log n
+time closest pair algorithm. Well, as you
+saw on the quiz, we want the running time
+to be o of n always, and for correctness,
+what do we need? Again, we don't need it
+to always compute the closest split pair,
+but we need it to compute the closest
+split pair in the events that there is a
+split pair of distance strictly less than
+delta, strictly better than the outcome of
+either recursive call. So now that we're
+clear on what we want, let's go ahead and
+go through the pseudocode for this closest
+split pair subroutine. And I'm going to
+tell you upfront, iIt's going to be fairly
+straightforward to figure out that the
+subroutine runs in linear time, o of n
+time. The correctness requirement of
+closest split pair will be highly
+non-obvious. In fact, after I show you
+this pseudo you're not going to believe
+me. You're going to look at the pseudocode
+and you'd be like, what are you talking
+about? But in the second video, on the
+closest pair lecture, we will in fact show
+that this is a correct sub-routine. So,
+how does it work? Well, let's look at a
+point set. So, the first thing we're going
+to do is a filtering step. We're going to
+prune a bunch of the points away and so to
+zoom in on a subset of the points. And the
+subset of the points we're going to look
+at is those that lie in a vertical strip,
+which is roughly centered in the middle of
+the point set. So, here's what I mean. By
+center dot, we're going to look at the
+middle x coordinate. So, let x bar be the
+biggest x coordinate in the left half, so
+that is in the sorted version of the
+points by x coordinate, we look at the n
+over two smallest ex-coordinate. So, in
+this example where we have six points, all
+this means is we draw, we imagine drawing
+a line between the third points, so that's
+going to be x bar, the x coordinate of the
+third point from the left. Now, since
+we're passed as input, a copy of the
+points sorted by x coordinate, we can
+figure out what x bar is in constant time.
+Just by accessing the relevant entry of
+the array, px. Now, the way we're going to
+use this parameter delta that we're
+passed, so remember what delta is. So
+before we invoke the closest split pair
+subroutine in the recursive algorithm, we
+make our two recursive calls, we find the
+closest pair on the left, the closest pair
+on the right, and delta is whatever the
+smaller of those two distances are. So
+delta is the parameter that controls
+whether or not we actually care about the
+closest split pair or not, we care if and
+only if there is a split pair at distance
+less than delta. So, how do we use delta?
+Well, that's going to determine the width
+of our strip, so the strip's going to have
+width 2 delta, and it's going to be
+centered around x. And the first thing
+we're going to do is we're going to
+ignore, forevermore, points which do not
+line in this vertical strip.
+So the rest of the algorithm will operate
+only on the subset of p, the subset of the
+points that lie on the strip, and we're
+going to keep track of them sorted by y
+coordinate. So the formal way to say that
+they line the strip, is that they have x
+coordinate in the interval with lower
+endpoint x bar minus delta and upper
+endpoint x bar plus delta. Now, how long
+does it take to construct this set Sy
+sorted by y coordinate? Well fortunately,
+we've been passed as input a sorted
+version of the points Py So to extract Sy
+from Py, all we need to do is a simple
+linear scan through p y checking for each
+point where its x coordinate is. So this
+can be done in linear time. Now, I haven't
+yet shown you why it's useful to have this
+sorted set as y, but if you take it on
+faith that it's useful to have the points
+in this vertical strip sorted by y
+coordinate. You now see why it was useful
+that we did this merge sort all the way at
+the beginning of the algorithm before we
+even underwent any recurssion. Remember,
+what is our running time goal for closest
+split pair? We want this to run in linear
+time, that means we cannot sort inside the
+closest split pair subroutine. That would
+take too long. We want this to be in
+linear time. Fortunately, since we sorted
+once and for all at the beginning of the
+closest pair algorithm, extracting sorted
+sublists from those sorted lists of points
+can be done, done in linear time, which is
+within our goals here. Now, it's the rest
+of t he subroutine where you're never
+going to believe me that it does anything
+useful. So, I claim that essentially with
+a linear scan through Sy, we're going to
+be able to identify the closest split pair
+of points in the interesting, unlucky case
+where there is such a split pair with
+distance less than delta. So here's what I
+mean by that linear scan through Sy. So as
+we do the scan, we're, we're going to keep
+track of the closest pair of points of a
+particular type that we've seen so far.
+So, let me introduce some variables to
+keep track of the best candidate we've
+seen so far. There's going to be a vary,
+variable best which will initialize to be
+delta. Remember, we're uninterested in
+split pairs unless they have distance
+strictly less than delta. So, and then
+we're going to keep track of the points
+themselves, so we'll initialize the best
+pair to be null. Now, here is the linear
+scan. So we go through the points of Sy in
+order y coordinate. Okay, well, not quite
+all the points of Sy. We stop at the
+eighth to last point and you'll see why in
+a second. And then, for each position I of
+the array Sy, we investigate the seven
+subsequent points of the same array Sy. So
+for j going from one to seven, we look at
+the Ith, and I plus jth entry of Sy. So if
+sy looks something like this array here,
+in any given point in this double for
+loop, we're generally looking at an index
+I, a point in this, in this of the array,
+and then some really quite nearby point in
+the array I plus j, because j here's going
+to be at most seven. Okay? So we're
+constantly looking at pairs in this array,
+but we're not looking at all pairs of all.
+We're only looking at pairs that are very
+close to each other, within seven
+positions of each other. And what do we do
+for each choice of i and j? Well, we just
+look at those points, we compute the
+distance, we see if it's better than all
+of the pairs of points of this form that
+we've looked at in the past and if it is
+better, then we remember it. So we just
+remember the best, ie c losest pair of
+points, of this particular type for
+choices of i and j of this form. So in
+more detail, if the distance between the
+current pair of points of p and q is
+better than the best we've seen so far, we
+reset the best pair of points to be equal
+to p and q, and we reset the best
+distance, the closest distance seemed so
+far to be the distance between p and q and
+that's it. Then, once this double for loop
+terminates, we just return it the best
+pair. So one possible execution of closest
+split pair is that it never finds a pair
+of points, p and q, at distance less than
+delta. In that case, this is going to
+return null and then in the outer call. In
+the closet pair, obviously, you interpret
+a null pair of points to have an infinite
+distance. So if you call closest split
+pair, and it doesn't return any points,
+then the interpretation is that there's no
+interesting split pair of points and you
+just return the better of the results of
+the two recursive calls p1Q1 or P2Q2. Now,
+as far as the running time of the
+subroutine, what happens here? Well, we do
+constant work just initializing the
+variables. Then notice that the number of
+points in Sy, well in the worst case, you
+have all of the points of P. So, it's
+going to be the most endpoints, and so,
+you do a linear number of iterations in
+the outer for loop. But here is the key
+point, in the inner for loop, right,
+normally double for loops give rise to
+quadratic running time, but in this inner
+for loop we only look at a constant number
+of other positions. We only look at seven
+other positions and for each of those
+seven positions, we only do a constant
+number of work. Right? We just, we want to
+compare distance and make a couple other
+comparisons, and reset some variables. So
+for each of the linear number of outer
+iterations, we do a constant amount of
+work, so that gives us a running time of o
+of n for this part of the algorithm. So as
+I promised, analyzing the running time of
+this closest split pair subroutine was not
+challenging. We just , in a
+straightforward way, looked at all the
+operations. Again, because in the key
+linear scan, we only do constant work per
+index, the overall running time is big O
+of n, just as we wanted. So this does mean
+that our overall recursive algorithm will
+have running time o of n log n. What is
+totally not obvious and perhaps even
+unbelievable, is that this subroutine
+satifies the correctness requirements that
+we wanted. Remember, what we needed, we
+needed that whenever we're in the unlucky
+case, whenever, in fact, the closest pair
+of points in the whole point set is split,
+this subroutine better find it. So, but it
+does, and that's being precise in the
+following correctness claim. So let me
+rephrase the claim in terms of an
+arbitrary split pair, which has distance
+less than delta, not necessarily the
+closest such pair. So suppose, there
+exists, a p on the left, a point on the
+left side and a point on the right side so
+that is a split pair and suppose the
+distance of this pair is less than Q. Now,
+there may or may not be such a pair of
+points, PQ.. Don't forget what this
+parameter delta means. What delta is, by
+definition, is the minimum of d of p1q1,
+for p1q1 is the closest pair of points
+that lie entirely in the left half of the
+point set Q and d of p2q2, or similarly,
+p2Q2 is the closest pair of points that
+entirely on the right inside of R. So, if
+there's a split pair with distance less
+than delta, this is exactly the unlucky
+case of the algorithm. This is exactly
+where neither recursive call successfully
+identifies the closest pair of points,
+instead that closest pair is a split pair.
+On the other hand, if we are in the lucky
+case, then there will not be any split
+pairs with distance less than delta,
+because the closest pair lies either all
+on the left or on the right, and it's not
+split. But remember, we're interested in
+the case where there is a split pair that
+has a distance less than delta where there
+is a split pair that is the closest pair.
+So the claim has two parts. The first
+part, part A, says the following. It says
+that if there's a split pair p and, and q
+of this type, then p and q are members of
+Sy. And let me just sort of redraw the
+cartoon. So remember what Sy is. Sy is
+that vertical strip. And again, the way we
+got that is we drew a line through a
+median x coordinate and then we fattened
+it by delta on either side, and then, we
+focused only on points that lie in the
+vertical strip. Now, notice our counts
+split pair subroutine, if it ever returns
+a pair of points, it's going to return a
+pair of points pq that belong to Sy.
+First, it filters down to Sy, then it does
+a linear search through Sy. So if we want
+to believe that our subroutine identifies
+best split pairs of points, then, in
+particular, such split pairs of points
+better show up in Sy, they better survive
+the filtering step. So that's precisely
+what part A of the claim is. Here's part B
+of the claim and this is the more
+remarkable part of the claim, which is
+that p and q are almost next to each other
+in this sorted array, Sy. So they're not
+necessarily adjacent, but they're very
+close, they're within seven positions away
+from each other. So, this is really the
+remarkable part of the algorithm. This is
+really what's surprising and what makes
+the whole algorithm work. So, just to make
+sure that we're all clear on everything,
+let's show that if we prove this claim,
+then we're done, then we have a correct
+fast implementation of a closest pair
+algorithm. I certainly owe you the proof
+of the claim, that's what the next video
+is going to be all about, but let's show
+that if the claim is true, then, we're
+home-free. So if this claim is true, then
+so is the following corollary, which I'll
+call corollaryl 1. So corollary 1 says, if
+we're in the unlucky case that we
+discussed earlier, if we're in the case
+where the closest point and the whole
+points of p does not lie both on the left,
+does not lie both on the right, but rather
+has one point on the left and one on the
+right but as it's a split pair, th en in
+fact, the count split pair subroutine will
+correctly identify the closest split pair
+and therefore the closest pair overall.
+Why is this true? Well what does count
+split pair do? Okay, so it has this double
+for loop, and thereby, explicitly examines
+a bunch of pairs of points and it
+remembers the closest pair of all of the
+pairs of points that it examines. What
+does this, so what are the criteria that
+are necessary for count split pair to
+examine a pair point? Well, first of all,
+the points p and q both have to survive
+the filtering step and make it into the
+array Sy. Right? So count split pair only
+searches over the array Sy. Secondly, it
+only searches over pairs of points that
+are almost adjacent in Sy, that are only
+seven positions apart, but amongst pairs
+of points that satisfy those two criteria,
+counts but pair will certainly compute the
+closest such pair, right? It just
+explicitly remembers the best of them.
+Now, what's the content of the claim?
+Well, the claim is guaranteeing that every
+potentially interesting split pair of
+points and every split pair of points with
+distance less than delta meets both of the
+criteria which are necessary to be
+examined by the count split pair
+subroutine. So first of all, and this is
+the content of part A, if you have an
+interesting split pair of points with
+distance less than delta, then they'll
+both survive the filtering step. They'll
+both make it into the array Sy., part A
+says that. Part B says they're almost
+adjacent in Sy. So if you have an
+interesting split pair of points, meaning
+it has distance less than delta, then they
+will, in fact, be at most seven positions
+apart. Therefore, count split pair will
+examine all such split pairs, all split
+pairs with distance less than delta, and
+just by construction, it will compute the
+closest pair of all of them. So again, in
+the unlucky case where the best pair of
+points is a split pair, then this claim
+guarantees that the count split pair will
+compute the closest pair of points.
+Therefore, having h andled correctness, we
+can just combine that with our earlier
+observations about running time and
+corollary 2 just says, if we can prove the
+claim, then we have everything we wanted.
+We have a correct O of n log n
+implementation for the closest pair of
+points. So with further work and a lot
+more ingenuity, we've replicated the
+guarantee that we got just by sorting for
+the one-dimensional case. Now again, these
+corrollaries hold only if this claim is,
+in fact, true and I have given you no
+justification for this claim. And even the
+statement of the claim, I think, is a
+little bit shocking. So if I were you I
+would demand an explanation for why this
+claim is true, and that's what I'm going
+to give you in the next video.

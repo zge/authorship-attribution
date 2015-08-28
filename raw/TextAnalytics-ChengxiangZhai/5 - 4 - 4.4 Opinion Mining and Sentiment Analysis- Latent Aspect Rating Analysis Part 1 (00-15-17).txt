@@ -1,0 +1,365 @@
+[MUSIC]
+This lecture is about the Latent Aspect
+Rating Analysis for Opinion Mining and
+Sentiment Analysis.
+In this lecture,
+we're going to continue discussing
+Opinion Mining and Sentiment Analysis.
+In particular, we're going to introduce
+Latent Aspect Rating Analysis
+which allows us to perform detailed
+analysis of reviews with overall ratings.
+So, first is motivation.
+Here are two reviews that you often
+see in the net about the hotel.
+And you see some overall ratings.
+In this case,
+both reviewers have given five stars.
+And, of course,
+there are also reviews that are in text.
+Now, if you just look at these reviews,
+it's not very clear whether the hotel is
+good for its location or for its service.
+It's also unclear why
+a reviewer liked this hotel.
+What we want to do is to
+decompose this overall rating into
+ratings on different aspects such as
+value, rooms, location, and service.
+So, if we can decompose
+the overall ratings,
+the ratings on these different aspects,
+then, we
+can obtain a more detailed understanding
+of the reviewer's opinionsabout the hotel.
+And this would also allow us to rank
+hotels along different dimensions
+such as value or rooms.
+But, in general, such detailed
+understanding will reveal more information
+about the user's preferences,
+reviewer's preferences.
+And also, we can understand better
+how the reviewers view this
+hotel from different perspectives.
+Now, not only do we want to
+infer these aspect ratings,
+we also want to infer the aspect weights.
+So, some reviewers may care more about
+values as opposed to the service.
+And that would be a case.
+like what's shown on the left for
+the weight distribution,
+where you can see a lot of
+weight is places on value.
+But others care more for service.
+And therefore, they might place
+more weight on service than value.
+The reason why this is
+also important is because,
+do you think about a five star on value,
+it might still be very expensive if the
+reviewer cares a lot about service, right?
+For this kind of service,
+this price is good, so
+the reviewer might give it a five star.
+But if a reviewer really cares
+about the value of the hotel,
+then the five star, most likely,
+would mean really cheap prices.
+So, in order to interpret the ratings
+on different aspects accurately,
+we also need to know these aspect weights.
+When they're combined together,
+we can have a more detailed
+understanding of the opinion.
+So the task here is to get these reviews
+and their overall ratings as input,
+and then,
+generate both the aspect ratings,
+the compose aspect ratings, and
+the aspect rates as output.
+And this is a problem called
+Latent Aspect Rating Analysis.
+So the task, in general,
+is given a set of review articles about
+the topic with overall ratings, and
+we hope to generate three things.
+One is the major aspects
+commented on in the reviews.
+Second is ratings on each aspect,
+such as value and room service.
+And third is the relative weights placed
+on different aspects by the reviewers.
+And this task has a lot of applications,
+and if you can do this,
+and it will enable a lot of applications.
+I just listed some here.
+And later, I will show you some results.
+And, for example,
+we can do opinion based entity ranking.
+We can generate an aspect-level
+opinion summary.
+We can also analyze reviewers preferences,
+compare them or
+compare their preferences
+on different hotels.
+And we can do personalized
+recommendations of products.
+So, of course, the question is
+how can we solve this problem?
+Now, as in other cases of
+these advanced topics,
+we won’t have time to really
+cover the technique in detail.
+But I’m going to give you a brisk,
+basic introduction to the technique
+development for this problem.
+So, first step, we’re going to talk about
+how to solve the problem in two stages.
+Later, we’re going to also mention that
+we can do this in the unified model.
+Now, take this review with
+the overall rating as input.
+What we want to do is, first,
+we're going to segment the aspects.
+So we're going to pick out what words
+are talking about location, and
+what words are talking
+about room condition, etc.
+So with this, we would be able
+to obtain aspect segments.
+In particular, we're going to
+obtain the counts of all the words
+in each segment, and
+this is denoted by C sub I of W and D.
+Now this can be done by using seed
+words like location and room or
+price to retrieve
+the [INAUDIBLE] in the segments.
+And then, from those segments,
+we can further mine correlated
+words with these seed words and
+that would allow us to segmented
+the text into segments,
+discussing different aspects.
+But, of course,
+later, as we will see, we can also use
+[INAUDIBLE] models to do the segmentation.
+But anyway, that's the first stage,
+where the obtain the council
+of words in each segment.
+In the second stage,
+which is called Latent Rating Regression,
+we're going to use these words and
+their frequencies in different
+aspects to predict the overall rate.
+And this predicting happens in two stages.
+In the first stage,
+we're going to use the [INAUDIBLE] and
+the weights of these words in each
+aspect to predict the aspect rating.
+So, for example, if in your discussion
+of location, you see a word like,
+amazing, mentioned many times,
+and it has a high weight.
+For example, here, 3.9.
+Then, it will increase
+the Aspect Rating for location.
+But, another word like, far,
+which is an acted weight,
+if it's mentioned many times,
+and it will decrease the rating.
+So the aspect ratings, assume that it
+will be a weighted combination of these
+word frequencies where the weights
+are the sentiment weights of the words.
+Of course, these sentimental weights
+might be different for different aspects.
+So we have, for each aspect, a set of
+term sentiment weights as shown here.
+And that's in order by beta sub I and W.
+In the second stage or second step,
+we're going to assume that the overall
+rating is simply a weighted
+combination of these aspect ratings.
+So we're going to assume we have aspect
+weights to the [INAUDIBLE] sub i of d,
+and this will be used to take a weighted
+average of the aspect ratings,
+which are denoted by r sub i of d.
+And we're going to assume the overall
+rating is simply a weighted
+average of these aspect ratings.
+So this set up allows us to predict
+the overall rating based on
+the observable frequencies.
+So on the left side,
+you will see all these observed
+information, the r sub d and the count.
+But on the right side,
+you see all the information in
+that range is actually latent.
+So, we hope to discover that.
+Now, this is a typical case of
+a generating model where would embed
+the interesting variables
+in the generated model.
+And then, we're going to set up
+a generation probability for
+the overall rating given
+the observed words.
+And then, of course, we can adjust these
+parameter values including betas Rs and
+alpha Is in order to maximize
+the probability of the data.
+In this case, the conditional probability
+of the observed rating given the document.
+So we have seen such cases before in, for
+example, PISA,
+where we predict a text data.
+But here, we're predicting the rating,
+and the parameters,
+of course, are very different.
+But we can see, if we can uncover
+these parameters, it would be nice,
+because r sub i of d is precise as
+the ratings that we want to get.
+And these are the composer
+ratings on different aspects.
+[INAUDIBLE] sub I D is precisely
+the aspect weights that we
+hope to get as a byproduct,
+that we also get the beta factor, and
+these are the [INAUDIBLE] factor,
+the sentiment weights of words.
+So more formally,
+the data we are modeling here is a set of
+review documents with overall ratings.
+And each review document denote by a d,
+and the overall ratings denote by r sub d.
+And d pre-segments turn
+into k aspect segments.
+And we're going to use ci(w,d) to denote
+the count of word w in aspect segment i.
+Of course, it's zero if the word
+doesn't occur in the segment.
+Now, the model is going to
+predict the rating based on d.
+So, we're interested in the provisional
+problem of r sub-d given d.
+And this model is set up as follows.
+So r sub-d is assumed the two
+follow a normal distribution
+doesn't mean that denotes
+actually await the average
+of the aspect of ratings r
+Sub I of d as shown here.
+This normal distribution is
+a variance of data squared.
+Now, of course,
+this is just our assumption.
+The actual rating is not necessarily
+anything thing this way.
+But as always, when we make this
+assumption, we have a formal way to
+model the problem and that allows us
+to compute the interest in quantities.
+In this case, the aspect ratings and
+the aspect weights.
+Now, the aspect rating as
+you see on the [INAUDIBLE]
+is assuming that will be
+a weight of sum of these weights.
+Where the weight is just
+the [INAUDIBLE] of the weight.
+So as I said,
+the overall rating is assumed to be
+a weighted average of aspect ratings.
+Now, these other values, r for
+sub I of D, or denoted together
+by other vector that depends on D is
+that the token of specific weights.
+And we’re going to assume that
+this vector itself is drawn
+from another Multivariate Gaussian
+distribution,
+with mean denoted by a Mu factor,
+and covariance metrics sigma here.
+Now, so this means, when we generate our
+overall rating, we're going to first draw
+a set of other values from this
+Multivariate Gaussian Prior distribution.
+And once we get these other values,
+we're going to use then the weighted
+average of aspect ratings as
+the mean here to use the normal
+distribution to generate
+the overall rating.
+Now, the aspect rating, as I just said,
+is the sum of the sentiment weights of
+words in aspect, note that here the
+sentiment weights are specific to aspect.
+So, beta is indexed by i,
+and that's for aspect.
+And that gives us a way to model
+different segment of a word.
+This is neither because
+the same word might have
+positive sentiment for another aspect.
+It's also used for see what parameters
+we have here beta sub i and
+w gives us the aspect-specific
+sentiment of w.
+So, obviously,
+that's one of the important parameters.
+But, in general, we can see we have these
+parameters, beta values, the delta,
+and the Mu, and sigma.
+So, next, the question is, how can
+we estimate these parameters and, so
+we collectively denote all
+the parameters by lambda here.
+Now, we can, as usual,
+use the maximum likelihood estimate, and
+this will give us the settings
+of these parameters,
+that with a maximized observed ratings
+condition of their respective reviews.
+And of, course,
+this would then give us all the useful
+variables that we
+are interested in computing.
+So, more specifically, we can now,
+once we estimate the parameters,
+we can easily compute the aspect rating,
+for aspect the i or sub i of d.
+And that's simply to take all of the words
+that occurred in the segment, i,
+and then take their counts and
+then multiply that by the center of
+the weight of each word and take a sum.
+So, of course, this time would be zero for
+words that are not occurring in and
+that's why were going to take the sum
+of all the words in the vocabulary.
+Now what about the s factor weights?
+Alpha sub i of d, well,
+it's not part of our parameter.
+Right?
+So we have to use that to compute it.
+And in this case, we can use the Maximum
+a Posteriori to compute this alpha value.
+Basically, we're going to maximize the
+product of the prior of alpha according
+to our assumed Multivariate Gaussian
+Distribution and the likelihood.
+In this case,
+the likelihood rate is the probability of
+generating this observed overall rating
+given this particular alpha value and
+some other parameters, as you see here.
+So for more details about this model,
+you can read this paper cited here.
+[MUSIC]
+

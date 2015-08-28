@@ -1,0 +1,400 @@
+Welcome back.
+In this segment, we will look into some of
+the details of JPEG.
+JPEG has been a very successful standard
+established over 20 years ago in 1991.
+It has proliferated widely.
+It can be found, for example, in almost
+every digital camera.
+The acquired image is JPEG by default by
+the, one of the camera electronics.
+And the high end cameras allow access to
+raw data.
+JPEG like any compression scheme consists
+of three basic building blocks.
+The first one performing redundancy
+reduction.
+The second one performing quantization,
+and the third one, entropy encoding.
+This idea is used for transforming each
+and
+every eight by eight block of the image.
+Quantization is performed by using uniform
+quantizers.
+WIth different step sizes based on the
+frequency location of the coefficient.
+So in general, fine uniform quantizers are
+used for
+the low frequencies, and coarse quantizers
+for the high frequencies.
+[BLANK_AUDIO].
+The part which is terribly innovative in
+JPEG is the application of entropy
+encoding.
+The DC and AC coefficients are encoded
+differently.
+Differential encoding is utilized for the
+DC coefficients by finding the difference
+of the DC in the current block from that
+in the neighboring block.
+For the entropy encoding of the AC
+coefficients,
+the block is first vectorized by zig-zag
+scan.
+And then, since, after quantization we
+have a
+number of zero coefficients, the run of
+the
+zeros preceding the value to be encoded is
+encoded, followed by the value of the
+coefficient.
+It is really a great demonstration of how
+the source samples can be modified before
+entropy encoding.
+So, let us proceed with the coverage of
+this successful standard.
+In this segment, we will discuss the JPEG
+compression standard.
+It stands for Joint Photographic Experts
+Group.
+So JPEG is a working group which was
+formed in 86 by ISO and CCITT.
+It became a international standard, JPEG,
+in 1991, more than 20 years ago.
+It covers compression ratios 10 to 50, or
+resulting bits per pixel 0.5 to 2.
+The objective of JPEG is the digital
+compression and
+coding of continuous-tone still images,
+both grayscale and color.
+It's clearly a highly proliferated
+standard.
+It can be found, for example, in any
+digital camera.
+The JPEG encoding actually takes place on
+the camera, and it's
+probably an option of not JPEG-ing the
+image, only for high end cameras.
+We saw that each and every compression
+scheme has three building blocks.
+So, it's a transform based, approach.
+But we discussed in the previous segment
+that the transformation used is the DCT.
+We see how quantization is done in JPEG.
+And, more importantly, we'll see the
+inventive
+ways that are applied towards entropy
+encoding.
+The image to be encoded is first divided
+into 8 by 8 blocks.
+The blocks are zero-shifted, so they range
+from minus
+128 to 127, for an 8-bit per pixel image.
+Then the discrete cosine transform is
+taken of each and every block.
+So here are the DCT coefficients.
+The zero zero coefficient is referred to
+as the DC coefficient, while the rest are
+referred to as AC coefficients from direct
+current and alternating current.
+So, in this direction, the horizontal
+frequencies increase,
+while in this direction the vertical
+frequencies increase.
+After the DCT coefficients are quantized,
+they're zig-zag scanned.
+The reason for that is to convert the two
+dimensional 8
+by 8 array into an one dimensional 64 by 1
+vector.
+And the reason for that is that we want to
+generate
+long runs of zeros that will be utilized
+during entropy coding.
+So the idea of zig-zag scan is to visit
+the, visit
+the coefficients along this path here, in
+the orbit indicated by this.
+So the DC coefficient goes first, then
+this coefficient is the second one.
+The third, fourth, fifth, sixth, and so
+on.
+Entropy encoding in JPEG is performed in a
+very inventive, I would even say,
+ingenious way, and provides a lot of
+the power, the compression power for the
+standard.
+The DC coefficients are encoded
+differently from the AC coefficients.
+When comes to the DC coefficients, they're
+encoded
+differentially from the DC coefficient in
+the neighboring block.
+The main idea clearly is that neighboring
+blocks with have similar DC
+coefficients and therefore the difference
+is going to be a small number.
+This difference is encoded by the size
+first.
+So there is a table here that encodes the
+different size is shown here.
+By codes of different lengths, and here
+are the actual code words.
+These are Huffman codes that are built on,
+on the value sizes.
+So, for size 2, we use a 3 length code,
+and this is the specific code.
+After that, the amplitude itself is sent.
+So, if we look at the second table.
+Size 2 encodes this for different
+amplitudes.
+So this is the code for 2, the code for 3,
+and the code for minus 2, and minus 3.
+When it comes to the encoding of the AC
+coefficients,
+the first zig-zag scan as was explained in
+the previous slide.
+And then each non-zero coefficient is
+first called in as Run followed by Size.
+So there is yet another table.
+Table three, that provides the Huffman
+codes for
+this combination of Runs of zeroes
+followed by Size.
+So, here's a Run of 0, 0's followed by
+size 2, the
+length of this code is 2, and this is the
+actual code word.
+Then, based on this Size here, part of
+this code word
+will go back to table two and encode the
+amplitude value.
+So, here is another great example that
+when we perform Huffman encoding, we don't
+have to utilize the original symbols of
+the source, the, these are the
+coefficients themselves.
+But we invent new symbols for the DC again
+coefficient.
+It's differentially encoded, and then we
+need the
+two code words of Size followed by
+Amplitude.
+While for the AC coefficients, after the
+zigzag scanning, we're looking
+for runs of zeros, followed by the size,
+followed by the Amplitude.
+Let us now walk through a JPEG encoding
+example.
+Here is the image, we'd like to JPEG.
+So we divide it into blocks, and to look
+specifically at this block over here.
+And these are the values in this block.
+The DCT of this block is computed, and
+here are the actual DCT values.
+The DCT coefficients are quantized.
+The way quantization is done in JPEG is
+shown here.
+So, there are quantization tables like the
+one shown here.
+What these numbers indicate is the step of
+a
+uniform quantizer that is applied to this
+particular frequency.
+So, we see by enlarge that fine
+quantization is applied
+to lower frequencies, smaller quantizer
+step sizes.
+While coarse quantization is applied to
+the high-frequency coefficients.
+So then, the way quantization is done, is
+to find the ratio between the
+coefficient and the corresponding entry in
+this
+quantizer table, and perform the round
+operation.
+So for example, if we look at this
+coefficient, the step
+size of the uniform quantizer
+corresponding
+to that figure's location is 51.
+So 57 divided by 51, taking the round
+operation will result in a 1.
+Similarly, if we quantize this
+coefficient, minus 29 is
+divided by 103 and the quantized value is
+0.
+So we see that again, this table has
+spectral shape,
+a lot of work has gone into designing such
+tables.
+Quantization tables by also taking into
+account properties of the human visual
+system.
+So looking at the quantized, values what
+we see
+is that there are now a good number of
+0's.
+And this is the motivation that we want to
+zigzag scan
+these coefficients, and then encode them
+by looking at runs of zeros.
+The other comment I would like to make
+here
+is that what's sent to the decoder are
+these values.
+And therefore during the construction,
+this value needs to be multiplied by the
+corresponding step size to give us
+the reconstructed value of the DCT
+coefficient.
+After quantization, the DCT coefficients
+are vectorized or
+zigzag scanned to form this one
+dimensional array.
+Then this one dimensional vector will be
+input to the Huffman encoding step.
+The DC coefficient is entropy encoded
+first.
+So, the coefficient is 90, then this
+operation is performed due
+to the fact that the mean was subtracted
+by, from the block.
+And therefore the value of this DC
+coefficient is minus 38.
+If we assume that the value of the
+previous DC coefficient was minus 46.
+The difference is going to give us the
+value of 8.
+So we need to encode this difference of 8.
+We look at table T1 and see that 8 is here
+in
+Size 4 and the Codeword for Size 4 is 101.
+Then, we need to encode the actual value
+of 8, the amplitude.
+So, if we look at table two, eight
+is represented by this codeword, and
+therefore this is
+the code, the codeword that would be sent
+to
+the decoder to represent the
+differentially encoded DC coefficient.
+Regarding the encoding of the AC
+coefficient, let us
+assume we want to encode this coefficient
+of value 24.
+If this was before quantization, first it
+would be quantized.
+So the Quantizer is 12.
+Therefore, the value is 2.
+We look at the runs of zeros, and there
+are no preceding zeros.
+Therefore the Size is 2, because 24
+divided by 2 is equal to 2.
+So we go to table T3 and look for Run,
+Size, Codeword.
+So Run 0, Size 2 this is the actual
+codeword from table T3.
+Then for Size 2, we go to table T2, and
+you see that the codeword for 2 is 10,
+therefore, this particular value 24 is
+represented by the codeword 01, 10.
+After entropy decoding and inverse
+quantization, the inverse-DCT is obtained.
+So for this particular block, here are the
+values of
+the inverse DCT that brings us back to the
+spatial domain.
+Then the image is assembled from these 8
+by 8 blocks, so this particular
+8 by 8 block is placed back to its
+location in the image.
+And for this particular block the
+compression error is shown here, that we
+hear the exact values and here's a
+compression error for the whole image.
+As expected the error is concentrated at
+the edges, at the areas of high spatial
+activity, because if you think of a whole
+process the high frequencies that are
+coarsely quantized.
+And therefore thrown away this information
+at high frequencies and
+therefore the arrow is going to have this
+high frequency appearance.
+Here are some general observations
+regarding the performance of JPEG.
+The performance is a function of the
+special resolution of the image,
+so when you consider here a small format
+CGA 320 by 240.
+Then, compression ratios at half a bit per
+pixel produce poor-quality results.
+But if the resolution increases to VGA,
+the quality becomes fair.
+And for Super VGA the performance becomes
+good.
+Similar observations can be made for the
+other bit rates 2-bits per pixel.
+Good, excellent, excellent.
+This is actually a three circumstance that
+people could play at times, they
+would propose a compression algorithm
+tested at higher resolution images.
+Such high resolution images have
+considerably
+more correlated data, and therefore more
+can be gained during compression, or we
+can compress the data more.
+The perceptually lossless results are
+obtained at bit rates
+one and a half to 2 bits per pixel.
+We show here some results using JPEG at
+various bit rates.
+So, cameraman at one and a half bits per
+pixel.
+We see no distortion, it seems very, very
+close to the original image.
+At one bit per pixel, the quality is still
+very good.
+You start seeing some artifacts around the
+edges, here.
+At half a bit per pixel, then, these
+ringing type of artifacts are quite
+pronounced, and also you see blocking
+artifacts
+in the smooth regions of the image.
+And if we go further down to 0.2 bits per
+pixel, then you see plenty of this
+contouring, the artificial contouring and
+the edges are all distorted.
+However it's still impressive that with
+only 0.2 bits per pixel on
+the average we see, we have some good idea
+of what is in the picture.
+There's quite a bit of work in the
+literature, actually, as
+I mentioned when we covered recovery, in
+removing these blotting arifacts.
+There's a recovery problem.
+And for the post-processing step after
+JPEG or any
+compression approach for that matter, we
+tried to remove
+some of the artifacts that were introduced
+due to
+compression and therefore improve the
+visual quality of the image.
+For this example, a standard quantization
+table
+was used like the one I showed earlier.
+One could modify that table and use a flat
+table for example.
+Or use a table that would perform fine
+quantization
+at high frequencies and coarse
+quantization at low frequencies.
+You can experiment with all these things
+using, for example, the VCDemo software
+package.
+

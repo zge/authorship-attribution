@@ -1,0 +1,833 @@
+[MUSIC]
+Hi, and welcome to lesson six, Loops.
+This week, we'll be talking about
+a powerful programming concept, looping.
+A loop is a new control construct that
+makes it possible to repeat a block
+of code a number of times.
+So far, every statement and every
+function has been executed exactly once,
+or if some condition was false,
+not at all.
+While this is useful, it doesn't exploit
+the real power of a computer which is
+the ability to execute millions or
+billions of instructions per second.
+With what we've learned so far, to get our
+computer to execute a billion statements,
+we'd have to type a billion statements,
+and we'd be typing for
+many centuries just to get
+a program to run for one second.
+Fortunately, we can avoid all those
+centuries of work by using loops.
+In fact, we've already been using loops
+in MATLAB without even knowing it.
+To carry out the command n
+equals 1 colon 5 for example,
+MATLAB uses a loop internally to
+create the vector 1, 2, 3, 4, 5.
+And to carry out the command
+total equal sum of n,
+it uses a loop to add
+all those five numbers.
+These are implicit loops because we didn't
+use any explicit loop control constructs.
+Let's compute the sum of 1 through 5
+without using the built-in sum function.
+We'll use a loop.
+And we need to design an algorithm
+that includes the loop.
+An algorithm is just
+a computer science term for
+a step-by-step procedure
+that solves a problem.
+And this figure, shows a very simple
+algorithm that will solve our problem.
+It uses a variable called total to
+store our sum as we compute it.
+And it starts by
+initializing total to zero.
+The large light blue box
+represents the loop.
+It specifies that
+the statement add in the total
+be executed repeatedly as n takes
+on the values 1 to 5, one by one.
+So the add n to total statement
+will be executed five times.
+After the fifth time, the loop ends and
+the program continues to the next
+statement after the loop.
+That statement prints out
+the value of the variable total,
+which is a result we wanted.
+Note the curved line
+with the arrows on it.
+It shows that after add n to total is ex,
+executed, control circles back and
+does it again, and it shows why this
+control construct is called a loop.
+That little circle looks like a loop.
+Let's look at the execution in detail.
+Warning, this part is really boring.
+We start by setting total to 0.
+This step is called initialization and
+it happens outside the loop.
+Now we enter the loop.
+Since the loop must repeat in, for
+n equal to each item in the list,
+1, 2, 3, 4, and 5, the first thing that
+happens when the loop is entered is
+that n is set to the first item, one.
+Then n is added to the total.
+Since total is 0, n is 1.
+Total equals 0 plus 1 which equals 1.
+That completes the first
+repetition of the loop.
+A repetition is called an iteration, and
+now it's time for the second iteration.
+This time, n is set to the second value
+on the list, which happens to be 2.
+Again, n is added to total.
+Now, total equals 1, and n equals 2, so,
+total equals 1 plus 2 which equals 3.
+That completes the second
+iteration of the loop.
+Bored yet?
+Me too.
+Don't say I didn't warn you.
+But we need to go through this for
+at least one loop.
+Okay, for the third iteration,
+n is set to 3.
+Again, n is added to total.
+Total equals 3, n equals 3,
+so total equals 6.
+That completes the third
+iteration of the loop.
+For the fourth iteration n is set to 4.
+And as in every iteration
+n is added to the total.
+Now total equals 6, n equals 4,
+so total 6 plus 4 equals 10.
+And that's the end of
+the fourth iteration.
+For the fifth iteration n is set to 5,
+again n is added to the total.
+Now total equals 10,
+n equals 5 so total becomes 15.
+That's the end of the fifth iteration and
+we've hit the end of the list of
+values for n, so that loop ends.
+And finally, we get to the statement
+after the loop, which prints 15,
+and our algorithm is done.
+You may say this was a complicated way
+to add five integers, and you're right.
+Sure, typing 1 plus 2 plus 3 plus
+4 plus 5 would have been simpler.
+Suppose we wanted to add
+the first 5,000 numbers.
+Using a loop,
+we can just change the five to 5,000 and
+it will add them all up in an eye-blink.
+Now we're ready to see how we can
+implement this algorithm in MATLAB.
+The most frequently used loop construct
+in MATLAB is called the for-loop.
+And that's what we need.
+Let's see how we can use
+it to add one through five.
+We start by initializing
+the variable total to 0
+just like we did in our algorithm.
+Then comes our for-loop.
+It starts with the keyword for, and
+to the right of that is what looks
+like an ordinary assignment statement,
+but it's not.
+Its left, its left hand side is
+a variable called the loop index.
+In this case the loop index is n.
+On its right hand side is a vector.
+But here's where the difference from
+an ordinary assignment statement comes in.
+The vector will not be assigned to n.
+Instead, the meaning of this special
+assignment statement is that the index n
+will take on the elements
+of the vector one by one.
+At each iteration of the loop,
+n will get the next element of the vector,
+stopping with the last one.
+That's exactly what we want here.
+N will be equal to 1, then 2,
+then 3, then 4, then 5.
+At each iteration,
+n is added to the current value of total.
+So, just as for our algorithm,
+total keeps accumulating with sum,
+becoming equal to 1, then 3,
+then 6, then 10, and finally 15.
+Once the last element of the vector
+is assigned to the loop index, and
+used in the block of code inside the loop,
+the loop ends.
+And then fprintf prints the value
+the total, which is 15.
+Okay, let's see this
+example inside MATLAB.
+Here's our summing algorithm
+inside a function called sumintup.
+But instead of adding
+the integers from 1 to 5 we add
+up from 1 to n where n
+is the input argument.
+If we run it like this.
+We get 15, as we've just seen.
+The good thing with a function, though,
+is that it's easy to run our
+loop with different numbers.
+Let's try 10.
+Summing from 1 to 10 gives 55.
+What about 100?
+That gives 5,050 and so on.
+Lets runs the function with five again.
+First, let's set a break point right here.
+On the second line,
+I just clicked the little dash here, and
+the red circle shows me
+that my break point is set.
+Then we can use the debugger
+to step through.
+Okay lets run it with five as the input.
+The green arrow here means that
+execution has been suspended right
+where we put the break point and
+that we're ready to execute line two here.
+At this point,
+we have not executed this line yet.
+So the variable total is not yet
+appeared in the workspace.
+But there's already a capital N there,
+and it's equal to five.
+Remember, that's our input argument.
+And it gets its value from
+the function collar down here.
+And it comes into existence when
+its assigned the input value,
+which in this case is five.
+And that happens before
+line two is executed.
+Let's execute line two by
+clicking the step button.
+To get that button to show up,
+click the editor tab.
+That tab contains all the debugging tools.
+Here's the step button right here.
+Before I click it, you may remember from
+our introduction to the debugger that you
+can also take one step by clicking
+the function key F7 on a Macbook
+or F10 if you're using Windows.
+Okay, as I click step, watch in
+the workspace to see the variable total
+appear with the value
+we're assigning to it.
+Which is zero.
+There.
+Now we're at the beginning of the for
+loop.
+Okay, I'm going to execute
+the first line of the for loop.
+Clicking step executes that line.
+There.
+The workspace shows that we now have
+the variable lowercase n here, and
+it's been assigned the value one.
+Which is the first element of
+the vector one colon n here.
+This is a key concept for the for
+loop, so it's worth repeating.
+A loop index is assigned the first
+element of the vector produced by one
+colon n, not the entire vector,
+at least on the first iteration.
+On subsequent iterations, it will receive
+subsequent elements of the vector.
+Now we're ready to execute
+the body of the for loop here.
+With the loop index set to one.
+The body comprises just line four and
+that line adds n to total.
+The workspace shows their
+values before we take the step.
+Zero and one.
+Okay.
+I'll click step now, and
+we see the total has changed to one.
+Clicking step again here at the end
+statement results in Matlab taking
+the next element of the original one to
+five vector and assigning it to little n.
+We'll see that happen right now, there.
+Note that we did not see the green
+arrow go back up to the for
+line at the top of the loop.
+That will never happen again
+through the entire iteration.
+That line is actually executed only
+once at the beginning of the loop.
+It calculates the vector values,
+in this case, one, two, three, four, five,
+and it sets the loop index to its first
+value, which is one in this case.
+Then, after the first iteration,
+the next index is actually set
+at the bottom of the loop, it’s the same
+as if it were set at the top but
+that’s why you won’t see control
+jump back to the for line.
+Anyway, now were ready to
+execute the next addition.
+Total is equal to one and
+n is equal to two so
+after executing this line
+the total will be equal to three.
+And three it is.
+As we continue clicking the button
+to step through the code,
+we can watch the workspace to see how
+n goes through all the values to five.
+And how total reaches 15.
+Now let's do that.
+Click, now n is equal to three.
+Click, total is equal to six.
+Click.
+N is equal to four.
+Click total is equal to ten.
+Click, n is equal to five.
+Click total is equal to 15.
+And we take one more step,
+and we're out of the loop.
+The next step, will print
+the result in the command window.
+Let's do that.
+Click, and we see the result show
+up in the command window down here.
+Take another step.
+You see this arrow pointing down,
+means we're about to leave the function.
+The function ends.
+The step button disappears and we're done.
+Let's look at this example one more time.
+The expression with the for
+keyword is called the control statement.
+This is where the index
+variable is defined and
+it's subsequent values are specified, and
+it doesn't need a semicolon at the end.
+The block of code between
+the control statement and
+the n keyword closing loop,
+is the body of the loop.
+It's the body that gets
+executed repeatedly
+using successive values of the loop index.
+Here the body's a single statement but
+in general there can be any number
+of statements in the body of a loop.
+Most of the time the vector to
+the right of the equal sign and
+the control statement will be formed
+with a colon operator as it is here.
+But it doesn't have to be.
+Here is another example.
+Instead of a colon operator,
+here we simply use another variable
+that already contains a vector.
+In this case,
+it's a vector of five random numbers.
+This is perfectly fine.
+The loop index will be assigned
+the elements of this vector one by one.
+The body of this loop is a single if,
+else statement.
+It prints out one of two
+messages depending on whether or
+not the current value of the loop index,
+which is one of those five random numbers,
+is greater than one-half.
+We ran this program and
+this was the result.
+Note that depending on when and
+how the pseudo-random number generator
+was initialized, you may get a different
+random number set when you try.
+And unlike Myth Busters,
+we do encourage you to try this at home.
+Consider this slightly variation,
+slight variation of the previous example.
+We eliminated the variable name list.
+Because you can call a rand function or
+any other function for
+that matter,
+right in the control statement itself.
+In fact, any valid expression can go
+to the right side of that equals sign.
+The values assigned to the loop
+index don't have to be integers,
+they don't have to be regularly spaced,
+or even assigned in increasing order.
+In fact,
+they don't even have to be scalars.
+The general rule is that the loop
+index will be assigned the columns of
+the array generated by
+the expression on the right.
+Of the equal sign.
+If that array is vector,
+then those columns will be scalars.
+As for the body of the for-loop,
+any control construct can be used.
+If statements, other loops, and so
+forth are just lists of statements.
+Let's see the second
+example in the editor.
+And let's use the debugger
+again to watch it work.
+Place a breakpoint right here
+on line 2 and call the function.
+[SOUND] Well, we've stopped at line 2.
+Nothing's really happened yet,
+there's nothing in the workspace.
+So, let's take a step.
+Now we see N is equal to 5 over here.
+That happened right there on line 2.
+Now, we've gotten a set of numbers
+into list by calling rand 1,
+5, because N is equal to 5.
+And here's our list numbers.
+There.
+One, two, three, four, five numbers.
+Let's enter the body of the for-loop.
+x gets the first number.
+Body of the loop consists of
+a single if-else statement.
+See what happens,
+let's see a, ahead of time.
+x is greater than 0.5, right?
+So that means the if branch will be
+executed instead of the else branch.
+And we're in that branch.
+And the fprintf executes and
+says that it's large.
+Now we're down at the end statement.
+When we click on that,
+x we'll get the next value, 0.9058.
+So let's do that.
+Now, we see x has the next value.
+That's also greater than 0.5, so
+this statement will execute again.
+And there we have it.
+The next step,
+set x equal to the next element, 0.1270.
+x is not greater than 0.5, so
+we'll be in the else branch.
+And there we are.
+Now we're in the body of the else branch.
+We'll carry out this fprintf,
+which says that this number is small.
+And we'll keep going in that way.
+You can see x going
+progressively though the list.
+Now it's on the last one.
+That's also large.
+So, it just so happened that in this
+position in the pseudorandom sequence,
+we had four large numbers and
+one small one.
+Another step gets us out of the for-loop.
+And one more gets us out of the function.
+By the way, before we started,
+the pseudorandom number sequence was
+initialized to the state
+it has when MATLAB starts.
+So, if you call rng of 0
+before you call rand_check,
+like this,
+then you'll get the same numbers.
+Otherwise, you'll get
+a different sequence.
+An interesting question arises when the
+loop index is assigned a value explicitly
+by a statement within
+the body of the loop.
+The question is this.
+What's the value of the index
+on the next iteration?
+The answer is that it's
+the next value in the list of
+values given in the control statement,
+up here.
+Assignments to the loop index inside
+the body of the loop are temporary,
+they last only during the iteration
+which they take place.
+There's no effect on the original
+list of values given on
+the if line at the top of the loop, or
+on the next value to be assigned in
+the loop index for the next iteration.
+Let's see an example that
+illustrates this point.
+A modified sum int up function
+that we've named loop_test.
+Inside the loop,
+we first display the current value of n,
+then we add 1 to n, and
+then we add n to total.
+Let's run it.
+Why don't we give it the value 5.
+So what do we learn?
+The function printed
+the originally intended values for
+n, as given by 1 to n here,
+a 1:5 expression.
+We changed the value of n from 1 to 2.
+But at the next iteration,
+we got the originally intended
+next value from here, which was 2.
+As we said, changing the value
+of the loop index is temporary.
+It applies only to the current iteration.
+There was an effect of adding 1 each time,
+though,
+you can see in the total down here,
+which is 20.
+We added an extra 1 to n each
+time through the loop, so
+the total should be 5 more than the sum
+of the first five integers, which is 15.
+And we did get 20.
+This rule is ironclad.
+At the beginning of the nth iteration for
+every for-loop,
+loop's control statement will assign
+the loop index the nth term in its
+list of values, regardless of any
+value that may have been assigned to
+the loop index within the body of
+the loop during the previous iteration.
+Finally, a word of caution.
+Don't change it.
+Don't change the loop index inside
+the loop if at all possible.
+It'll just cause confusion when
+you read your code later, or
+when someone else reads it.
+There's very rarely a need to do so,
+and even then you'll be better off
+using an additional variable than
+messing with the loop index.
+Let's talk a little bit about
+handling vectors with loops.
+Let's look at this example.
+Here, MATLAB handled the subtraction
+of the element 5 from
+the element 5 and got 0.
+It handled the subtraction of
+the element 4 minus 5, got minus 1.
+8 minus 7 gave 1.
+8 minus 8.
+It handled every one of these
+subtractions element by element.
+Well, it did that with a loop.
+Loops behind the scenes.
+We didn't write the loop, so
+we call it an implicit loop.
+MATLAB does that a lot of times.
+But we can do it too, out here,
+in front of the scenes.
+Let's do it.
+As soon as I hit Return, my work is done,
+and the results are the same.
+The for-loop does exactly the same thing
+that the array subtraction operation did.
+We visit every element
+using the for-loop index,
+which indexes into u, and
+indexes into v, and indexes into w.
+We get the same result.
+We had to use the length function here.
+To find out how far to carry the loop.
+In this case, there's really no reason at
+all to use an explicit loop instead of
+the implicit loop.
+Implicit looping runs faster in general,
+it's easier to program in general,
+and it attracts fewer bugs in general.
+You should use it wherever you can.
+But, explicit looping is much more
+versatile than implicit looping.
+In addition to being able to
+do everything that array and
+matrix operations can do, for loops,
+loops in general can do many things that
+array and matrix operations can't do.
+Since we often need to do
+these additional things,
+MATLAB includes explicit loops
+as part of its language.
+As an example where we must use an
+explicit loop instead of an implicit one,
+consider the Fibonacci series.
+It's defined as a series where
+the first two elements are one, and
+all successive elements are the sum
+of the previous two elements.
+We got a function here that
+creates the first n elements for
+Fibonacci series called fibo.
+Let's see how it works.
+First of all, we do some error checking
+to make sure that the user has passed
+in a scalar,
+a number that's greater than or
+equal to 1, and
+a number that's an integer.
+In other words, a positive integer.
+We've done that before.
+And down here, we set the first element
+to 1 and the second element to 1.
+You'll remember the definition of
+Fibonacci series is the first two elements
+are equal to one and
+the successive elements are each equal
+to the sum of the two previous elements.
+Well now we enter a for-loop that
+goes from 3 to n, n is the input.
+Why 3?
+Well we've already done 1 and 2.
+And as you can see on the left
+side of this assignment statement,
+we're doing f3 and then f4 and
+then f5 and so on.
+On the right side let's
+say we're at three.
+3 minus 2 is 1, 3 minus 1 is 2.
+So this is element f1.
+This is element f2.
+So f1 plus f2 gives f3.
+Let's do one more.
+Double i, the index, becomes 4.
+So f of 4 is equal to 4 minus 2, that's 2.
+And f of 4 minus 1, that's 3.
+So f of 4 is equal to 2 plus f of 3.
+And so it goes.
+Here we had to use an explicit loop
+since there's no built in operator or
+function that could have
+done what we needed,
+summing up the preceding elements of
+the vector to compute the current one.
+So the Fibonacci series serves as a simple
+example of why we need explicit looping.
+The body of a loop can contain
+any valid MATLAB statements, and
+that means that a loop
+can contain another loop.
+In other words, we can nest for-loops.
+That's in fact what we need to do if we
+want to perform an operation on every
+element of a matrix instead of a vector.
+Let's do this.
+There we got some random numbers and
+a, all integers.
+And let's do this.
+Of course you know what's happened here,
+we've used the array
+multiplication operation,
+so every element in a has been multiplied
+by the corresponding element in a.
+MATLAB did this with implicit looping.
+Just as with vectors,
+however, we can write equivalent code
+to do the same thing with loops.
+I've got an example right
+here in a file called mul.m.
+Let's see it.
+There.
+This is a script, by the way.
+You'll remember us talking about
+scripts at the end of lesson three.
+A script is a file that contains just
+a list of commands instead of a function.
+You can run it by giving its name as a
+command in the Command window, and you can
+also run it by clicking this Run button
+up here, with the great big green arrow.
+Let's click the arrow.
+There it shows that mul is carried out in
+the command window as if we'd typed it in
+there ourselves.
+Well, let's see what value it gave to p.
+Good, same as the array operation
+did with its implicit looping.
+We didn't make an error in our
+script up here, that's good.
+But let's look at
+the commands in the script.
+First we use the size function up
+here to find out the dimensions of a,
+and we put those dimensions in row and
+col.
+So row has the number of rows and
+a, col has the number of columns.
+Then we enter a for-loop here,
+whose index r would suggest row
+goes from one to row, so
+it scans through all the rows of a.
+Well you can have, as we mentioned,
+any MATLAB command, in the body of
+the for-loop, and so we have,
+a for-loop in the body of this for-loop.
+This inner for-loop is said to
+be nested in the outer for-loop.
+This for-loop's index c,
+which suggests columns, scans all
+the legitimate column indices in A.
+The actual calculation is done
+in the body of this inner loop,
+and that body consists of
+just this one statement.
+It's a multiplication, and multiplies
+element r, c of a by element r, c of a.
+When we exit this for-loop, we've
+done all the columns for a given row.
+We repeat by changing
+the row index by one and
+carrying out this loop again, for
+all the columns, of that new row index.
+And we repeat again, for
+a new value of r, and we carry
+out this inner loop for all these values
+of c for that given value of r, and so on.
+When we exit the outer loop,
+we're done with the script.
+Note that we've carried out
+the outer loop row times, and for
+each one of those we carried
+out the inner loop call times.
+So this body here,
+the single statement was executed
+the number of times it's
+equals to row times call.
+And that's the same number of elements
+that there are in the matrix A.
+So that's all there is to it.
+Or I should say, there's a lot to it.
+I say that because this script
+is a lot more complicated.
+In a dot star a.
+If we want to follow the order in
+which the elements are multiplied,
+we can insert a line right
+after the multiplication,
+like this, that prints things out.
+It'll print the row and
+the column in parentheses,
+using the percent D format
+with a space between them, and
+then it'll skip to a new line.
+Let's try it.
+And I'm going to need more room than this
+I think I'll sacrifice my workspace.
+So I'll close that and
+then move the command window over here
+beside the editor window.
+There.
+So let's try it again.
+This time,
+I'll type mul in the command window.
+There you can clearly
+follow what happened.
+Remember the first element is the row.
+So we did row 1 column 1,
+row 1 column 2, 1, 3, 1, 4.
+We're done with row 1.
+Now we move to row 2 and
+do columns 1, 2, 3, 4.
+Then we move to row 3 and
+do columns 1, 2, 3, 4.
+When we're doing these columns,
+we're staying inside this inner for-loop.
+When we're done with the inner loop we
+go to a new row in the outer loop and
+then repeat the inner loop.
+And we do that over and over and over.
+While we're at it, we could also insert
+another fprintf statement right here.
+Like this.
+It'll print working on row, space, and
+then it will print the row number r,
+using the %d format, dot, dot,
+dot, go to a new line and
+then print all this stuff out.
+Let's try that.
+There.
+Working on row 1.
+Well 1, 1, 1, 1, that’s row 1, 2,
+2, 2, 2, 3, 3, 3, 3, and so on.
+This makes it nice and clear.
+This is called row major order,
+it means that you visit every element
+of the first row,
+then every element of the second row, etc.
+You can't do this sort of thing to look
+inside an implicit loop that MATLAB
+provides.
+But as a matter of fact, for implicit
+looping MATLAB uses column major order.
+Let's consider another example for
+nested for-loops.
+I've got an example right over here in
+a file called asterisks, there it is.
+Let's run it and see what we get.
+Well what we get is a pretty little
+half of a tree depicted in asterisks.
+In the first line,
+see that we get one asterisk.
+The next line two, then three,
+then four, then so
+on until we get to seven
+asterisks on the last line.
+Well over here in the code,
+there's nested for-loops here.
+And in the inside loop,
+we see that it prints one asterisk
+each time through the loop.
+Its index goes from one to mm,
+and as mm gets bigger,
+it prints longer and
+longer lines of asterisks.
+You can see the outer loop changes mm from
+1 to N which happens to be set equal to 7,
+which is why we get seven lines with
+seven asterisks on the last line.
+And you'll notice that after each
+of the inner loops is finished,
+this fprintf takes us back to
+the beginning of the next line.
+The trick here was that we used
+the value of the outer loop index,
+to control behavior of
+the inner nested loop
+which gave us these longer and
+longer rows of asterisks.
+This again is something that we
+cannot do with implicit loops.
+[MUSIC]
+>> [APPLAUSE]
+

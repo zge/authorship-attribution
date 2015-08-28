@@ -1,0 +1,224 @@
+[music].
+We're having massive scaling problems
+today.
+Trying to join together the very
+information centric web model, with the
+very host centric TCP/IP model.
+If you look at how the net has evolved it,
+It started as a telephone system for
+computers.
+The, the model was, computers wanted to
+exchange data people wanted their
+computers to be able to exchange data.
+The model we had for communication for 140
+years, years had been the phone system.
+So he said, okay, they want to have a
+conversation, because communication is
+conversation over long distances.
+And so, let's make protocols and
+infrastructure that allows computers to
+have a conversation.
+First cut of that, things like the
+ARPANET.
+Networks that would handle different
+bandwidths they didn't require all of the
+global clock distribution of a tel,
+telephony network.
+Instead, they substituted buffering and
+one crucial thing coming out of Paul Baran
+was unlike the phone system where
+communication was all about building a
+wire.
+You know, hop by hop, link by link between
+the two endpoints, basically instructing
+the switching system on how to make one
+long wire.
+Paul said, don't do it that way.
+Just identify the endpoints and let the
+network take care of getting the data
+there.
+Okay, so, this is great.
+It is, just completely changed the world.
+But the bulk of that change was, didn't
+happen in the 70s, and 80s, and early 90s
+when the net was first growing out.
+It happened in the late 90s and the 2000s,
+when the web took off, and it had nothing
+whatsoever to do with computers having a
+conversation model.
+It had to do with people creating and
+consuming content and it, the web sort of
+showed us for the first time what happens
+if we leave behind this 18th century model
+of telephony and instead we start to look
+at, not the wires, but the information in
+the wires.
+And, and the web gave us this structure
+where you could name information, not the
+process of getting it but the information
+itself.
+Say I want this webpage, I want this
+YouTube video, I want this Amazon personal
+page and you will get back a set of
+content, somet hing that represented that
+name that you gave.
+What if we recast the way we think about
+the low level infrastructure?
+Not, don't say the web is an overlay on
+top of TCP/IP, which is the way it's
+implemented today.
+But say, if 99% plus of what we do is
+web-like stuff, is there a model that lets
+us do the same stuff at the packet level?
+Could we make it the basis of our
+communication, rather than say it has to
+be an overlay?
+See, you can create videos, you can put
+them on your own website and you have to
+pray that they never get popular.
+Because, if they get popular, your ISP is
+almost immediately going to shut you down,
+because your link will be completely
+saturated.
+You know, what we used to call a Slashdot
+effect.
+That's intrinsic to the conversational
+model, right?
+We don't do broadcast TV by making phone
+calls to a TV station.
+If you want to put media distribution over
+TCP/IP you have to figure out some way to
+lie to the network so that YouTube.com,
+which TCP thinks is a location is
+identified by an IP address.
+You gotta make sure that it's not a
+location, that it's spread across the
+entire planet.
+So while we spent most of the 90s growing
+the Internet and having the protocols work
+for us.
+Now, if you look at YouTube, Google,
+Amazon, Facebook, Twitter, all of these
+very heavily-used services.
+That manifest themselves to the net as an
+IP address, looks like a single location.
+But if they're a single location with
+hundreds of millions of users, the traffic
+in a conversational model always scales
+like the popularity.
+It scales like the number of consumers and
+you're doing Twitter update or a video
+that wants to be seen by millions.
+You, you can't deploy it in a
+conversational model and we spend all our
+time fooling the net.
+Information that's sort of qualitatively
+the same as all naming or identity
+information, but it's spread randomly
+across the whole damn packet.
+So we've got source and destination
+addresses that can eventually, we think of
+as layer three, so it's up at front to be
+used as by the network layer.
+Then we've got ports that are a layer
+four, and so, they're a little deeper in,
+because they're supposed to be used by the
+end node [foreign] to a particular
+application.
+Then, inside of that, we've got sequence
+numbers which are being used when you get
+to the application for it to reassemble
+the larger unit.
+And, inside of that, we've got URLs, which
+are used by a entire level part of the
+application than on transport part of the
+application.
+You've just got all of this information.
+It's all fundamentally name information.
+It's, what do these bits mean?
+Well, if you pull together the source
+addresses, the ports, the sequence
+numbers, the URLs, the all give you
+context for the information, they're all
+the name of the information.
+What if, rather than having, you know,
+Amazons load balancer, which is trying to
+figure out, alright, which of my 50,000
+unused machines is currently handling this
+customers request.
+So I, I have to look at the addresses, I
+have to look at the ports, I have to look
+at the sequence numbers, I have to look at
+the cookies, in order to dispatch this
+sucker, to where it's going.
+What if I say packets have a name on the
+front and all of that information just
+gets collected to the name.
+And at any point in the network you look
+at as much of that name as you need to
+look at to do your job.
+If just the front part will work, because
+all you're doing is gross level stirring,
+just look at the front.
+If you need to look at more of it, it, we
+don't have layers, what we have is a
+center-structured information.
+There's, we know that we're going to be
+looking at different parts of it for
+different reasons, so we put topologically
+sensitive information like Amazon.com,
+stick that at the front cause you can use
+that to make scalable writing tables.
+But when it gets there, we don't want to
+say there's a transport protocol and, you
+know, various layers.
+Just say, yeah, there's a job that I'm
+doing when I get to Amazon.com and it
+requires me to look at this much.
+If you don't care where you're getting the
+data, if all that matters to you is what
+the data is, not where it comes from.
+Then all of this memory that has to be in
+the network as buffering in order to, to
+manage the multiplexion of the network.
+Suddenly that becomes a viable source of
+data.
+You know, the way it happens today is
+you're watching a YouTube video, that
+means the bits leave some server at
+YouTube.
+They go into the downstream gateway's
+memory.
+They get pulled out of that memory, put
+into a wire, go into the next hop
+gateway's memory, and they're going,
+bouncing memory to memory through all
+these interconnecting wires till they get
+to you.
+If the two of us are watching the same
+video, then, the immediate upstream
+gateway gets one copy of the video going
+to me, and another separate copy of
+exactly the same video going to you.
+They both went through that gateway's
+memory.
+It, because of this conversational
+extraction we're putting on because the
+gateway doesn't know that we're consuming
+the same content, what it sees is two
+different conversations.
+It can't look in its memory, and say, oh,
+I've got that, I can give it to you.
+You have to fetch a new copy and you have
+to fetch it all the way from YouTube.
+I mean, that's what giving us the abysmal
+scaling is the, the, having the load scale
+like the popularity is strictly a function
+of, the data can only originate at one
+place.
+And if you just cared about the data, just
+start going towards that place.
+And as soon as you run into the data,
+okay, now you've got a copy, you're done
+with your distribution.
+[music]

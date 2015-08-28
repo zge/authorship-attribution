@@ -1,0 +1,454 @@
+So, in this video, we're going to discuss
+Bloom filters which is a data structure
+developed appropriately enough by Burton
+Bloom back in 1970. Bloom filters are
+variant on hash tables, you'll recognize a
+lot of the ideas from our hash table
+discussion. The win that you get in Bloom
+filters is that they are more space
+efficient than run of the mill hash
+tables and they're going to handle, they
+do allow for errors, there is a non zero
+false positive probability when you do
+look ups but that's still a win for some
+applications. So, it's a very cool idea,
+very cool data structure. You do see it
+used quite a bit in practice so let's
+start talking about it. So, we'll go
+through the usual topics that we do
+whenever we discuss a new data structure.
+So first, I want to tell you what
+operations they support and what kind of
+performance you're going to expect from
+those operations, in other words, what is
+the API corresponding to the data
+structure. Secondly, I'm going to talk a
+little bit about what it's good for. So,
+what are some potential application and
+then we'll take a peek under the hood.
+I'll tell you some of the implementation
+details with an emphasis on explaining why
+you get the kinds of performance trade
+offs that you do with Bloom filters. So,
+to first order, the raison d'être of
+Bloom filters is exactly the same as a
+hash table. It supports super fast
+inserts, super fast look ups. You can put
+stuff in there and you can remember what
+you put in earlier. Now, of course, what
+you should be wondering is what we already
+know what data structure that supports
+super fast in certain look ups, a hash
+table. Why am I bothering to tell you
+about yet another data structure with
+exactly those same operations? So, let me
+tell you about the pros and cons of Bloom
+filters relative to run off the mill hash
+tables as we've already discussed. The big
+win is that Bloom filters are more space
+efficient than hash tables. No matter
+whether they are implemented with chaining
+or with open addressing, you can store
+much less space per objects. In fact, as
+we'll see, less space than that of an
+object itself using a Bloom filter. As
+far as the cons, well, first of all, this
+is really for applications where you just
+want to remember what kind of values you
+see. You are not trying to store pointers
+to the objects themselves and just trying
+to remember values. So, the first drawback
+of the Bloom filter is that because we
+want to be so space efficient, we don't
+even want to remember the object itself
+just whether or not we've seen it before.
+We're not going to be able to store the
+objects or even pointers to the objects in
+a Bloom filter. We're just going to
+remember what we've seen and what we
+haven't. So, some of you might know the
+terminology hash set for this kind of
+variant of a hash table as opposed to a
+full blown hash table or hash map. The
+second con is at least in the vanilla
+implementation of Bloom filters that I'm
+going to describe here, deletions are not
+allowed. You can only insert, you can't
+delete. The situation with deletions is
+very much similar to hash tables
+implemented with open addressing. It's not
+that you can't have a Bloom filter that
+accommodates deletion, you can, there are very
+instances of it but that requires
+significantly more work and we're not
+going to discuss it here. So, the first
+order at least for vanilla Bloom filters,
+you want to think of them as suitable for
+applications or deletions or not a first
+order of operation. Now, the third con and
+this is a drawback that we have not see
+previously using any data structures is
+Bloom filters can actually make mistakes.
+Now, what kind of mistake could this kind
+of data structure possibly make when all
+you're really doing is looking something
+up. Well, one of mistake would be a false
+negative and that means you have inserted
+something previously then you look it up
+and the hash table or the Bloom filter
+says, it's not there. So, Bloom filters
+will not have false negatives of this
+form. You've insert something, you look it
+up later, it's definitely going to
+confirm that you inserted it in the past.
+But Bloom filters will have false
+positives, that means that despite the
+fact you have never inserted say, a given
+IP address into the, into the Bloom
+filter, if you look it up later, it will
+say that you have. So, there will
+sometimes be in some sense phantom objects
+in Bloom filters, objects which it thinks
+have been inserted even though they
+haven't been. So, given that, I am now
+showing you two data structures with
+essentially the same functionality, hash
+tables and Bloom filters, at least, if we
+ignore the deletion issue. You might want
+to wonder which one is more appropriate,
+which one is more useful. And because
+there is these trade offs between the two,
+the answer as you expect is, it depends on
+the application, right? So, if it's an
+application where space is really at a
+premium, you might want to turn to Bloom
+filters especially if a small chance of a
+false positive is not deal breaker. If you
+have some kind of application where false
+positives are absolutely out of the
+question, of course, you should not use a
+Bloom filter and you want to think about a
+hash table. So, what are some situations
+where people actually do use Bloom filters
+where you either really care about space
+and/or you don't really care about this
+false positive probability. For one of the
+earliest applications of Bloom filters,
+this is not long time ago, this is
+something like 40 years ago, was the spell
+checkers. So, how would you implement a
+spell checker using a Bloom filter? Well,
+first you have this insert phase where you
+basically just go through the entire
+dictionary word-by-word and you insert
+every valid word into the Bloom filter.
+Then, afterwards, when you're presented
+with a new document that somebody has
+written, you're going to go through the
+document word-by-word for each word, you
+say, is this in the Bloom filter? That is,
+is this one of the legitimate word from
+the dictionary which is previously
+inserted? If the Bloom filters says yes,
+this word is in the dictionary as in we've
+stored and seen that before, then you
+treat is as a correctly spelled word and
+if it's not in the Bloom filters, then you
+treat it as incorrectly spelled word. Now,
+the false positive probability means this
+isn't a perfect spell checker. I mean
+sometimes, you're going to look up a
+misspelled word and the Bloom filter won't
+catch it and it willl actually say yes,
+with small probability, we'll say, this is
+a legitimate word. So, you know, it's not
+ideal but, you know, the, the English
+language is pretty big and space was
+definitely at a premium, 40 plus years
+ago. So, it was a win for that application
+at that time, to use Bloom filters to
+implement a spell checker. Another
+application which, you know, remains
+relevant today is to keep track of a list
+of forbidden passwords. Now, why would you
+have forbidden passwords? Well, maybe, you
+want to keep track of password which are
+too weak or too easy to guess or too
+common. You may, yourself, have used the
+piece of software or website at some point
+where it asked you for a password and if
+you typed in something which is too simple
+or too easy, rejected it and asked you to
+type in another one. So, one way to
+implement a list of forbidden passwords is
+just with the Bloom filter and the idea is
+similar to the spell checker. You first,
+insert into the Bloom filter all of the
+passwords that you don't want anybody to
+use for whatever reason. Then, when a
+client comes and tries to type in a new
+password, you look it up in the Bloom
+filter and if you get a positive look up,
+then you tell the user, no, that's no
+good, you can't use that password, choose
+another one. And this is an application
+where you really don't care about the
+errors, you really don't care about the
+fact that there's a false positive rate.
+Let's assume that the error rate is
+something like one percent or 0.1%. So,
+what would that means in context, that
+would just mean once in a while, one in a
+hundred clients or one in a thousand
+clients actually types in a perfectly
+strong password that gets rejected by the
+Bloom filter and they have to type in a
+second one. Okay, but big deal and if
+space is at the, the premium, this is
+definitely a win to use this super
+lightweight data structure to keep track
+of these blocked passwords. These days
+certainly one the killer applications of
+Bloom filters is in software deployed on
+network routers. So, the machinery out in
+the Internet which is responsible for
+transmitting packets from one place to
+another. So, what are the reasons why
+Bloom filters have found fertile 
+application in network routers? Well,
+first of all, you do have a budget on
+space, typically on network routers.
+There's a lot of things that you got to do
+and you don't want to waste that much of
+it on some random data structure to do
+one's specific task. So, you do have a
+budget on space and also, you need super,
+super fast data structures, right? Since
+these packets are coming in at this
+torrential rate which you can't even
+imagine and you want to process these
+packets in real time, sending them off to
+the next top. Bloom filters are the work
+force behind a lot of different tasks that
+is done in the network router. You can
+imagine wanting to keep track of blocked
+IP addresses, you can imagine keeping
+track of the contents of some cache so you
+don't do spurious look ups. You can imagine
+maintaining statistics to check for denial
+of service attacks and so on and so forth.
+So, summarizing as a expert programmer,
+what is it that you should remember about
+Bloom filters, what purpose does this
+tool serve in your tool box? Well, as far
+as the operation supported which is the
+same as a hash table, the point is to have
+super fast inserts, super fast look ups.
+But Bloom filters are more lightweight
+version of a hash table. So, they are more
+space efficient but they do have this
+drawback of having a small error
+probability. So, those are the key
+features you should remember when deciding
+whether or not you are working on an
+application that could make good use of
+this data structure. So, having discussed
+one of th e operations and what these data
+structures are good for, let's take it to
+the next level, let's peer under the hood
+and see how they are actually implemented.
+Cuz this is really a quite simple, quite
+cool idea. So, like hash tables, Bloom
+filters have essentially two ingredients.
+First of all, there's an array and second
+of all, there's a hash function or in
+fact, several hash functions. So, we're
+going to have a random access array
+except, instead of having n buckets or
+n slots as we've been calling them, each
+entry in this array is just going to be a
+single bit. Each entry in this array can
+only take on two values, zero or one. And
+the way they think about the space
+occupied by Bloom filters is in terms of
+the number of bits per object that has
+been inserted into the Bloom filter. So,
+if you have inserted the data set capital
+S, then the total number of bits is n, the
+number of objects that have been inserted
+is cardinality of s. So, n / |s| is the
+number of bits in this data structure that
+you are using per entry in the data set.
+Now, you can tune a Bloom filter so this
+ratio is any number of different
+quantities but for now, I encourage you to
+think of this ratio as being eight, that
+is for each object stored in the Bloom
+Filter, you are using only eight bits of
+memory. That will help you appreciate just
+how amazing this data structures are,
+right, cuz maybe our data set is something
+like IP addresses which is 32 bits so what
+I'm saying here, if this is eight, I'm
+saying we are not, definitely not actually
+storing the IP address. So, we have this
+32-bit object we are inserting and we are
+only using eight bits of memory. This is
+how we are going to remember whether its
+there or whether its not. And again,
+certainly, eight bits per object is way
+less than keeping a pointer to some
+associated memory somewhere. So, this is a
+really impressive minimal use of space to
+keep track of what we've seen and what we
+haven't. And secondly, we need mappings of
+given an object to say, given the IP
+address, what are the relevant bits for
+seeing if we've seen this IP address
+before or not? So, in a Bloom filter, its
+important to have not one hash function,
+but several hash functions. So, k is going
+to denote the number of hash functions in
+the Bloom filter which you think of k is
+some small constant somewhere, you know,
+three, four, five, or something like that.
+So, obviously it's a little bit more
+complicated to use multiple hash functions
+as supposed to just one hash function. But
+it's really not that big of deal. So, we'll
+call from our discussion of say, universal
+hashing, we have identified the entire
+families of hash functions which will work
+well on average. So, instead of choosing
+just using one hash function at random
+from universal family, you gave me k
+independent random choices from universal
+family. In fact, in practice, it seems to
+typically be enough to just use two
+different hash functions and then generate
+k different linear combinations of those
+two hash functions. But for the purposes
+of this video, let's just assume that
+we've done enough work to come up with k,
+different good hash functions and that's
+what we're going to be using in our Bloom
+filter. So, the code for both insert
+and delete is very elegant. So, let's
+start by insertion. So, suppose we have
+some new IP address and we want to stick
+into these Bloom filter, what we do? Well,
+we'll just evaluate each of our k hash
+functions on this new object. Each of
+those tells us an index into our array of
+bits and we'll just set those k bits equal
+to one. And when we do this insert, we
+don't even bother to look at what the
+previous values of these bits were.. So,
+zero or one, we don't care. We'll just
+blithely go in and set this k bits equal
+to one, whatever they were before. So,
+what about looking up? How are we going to
+implement that? Well, all you have to do
+is check for the footprint that was
+inevitably left by a prior insertion. So,
+if we're looking up an IP address and we
+know was inserted sometime in the past,
+what happened when we evaluated the k hash
+functions, we went t o appropriate
+positions in the array and we set all of
+those bits to one. So now, I'll just check
+that, that indeed happened, that is when
+we get a new IP address, we're looking it
+up. We evaluate the hash functions, all k
+of them. We look at the corresponding k
+positions and we verified that indeed
+those k bits have been set to one. So,
+what I hope is clear fairly quickly from
+inspecting this very elegant code is that
+we will not ever have false negatives,
+yet, we might have false positives. So,
+let's discuss those one other time. So,
+remember, a false negative would mean that
+the Bloom filter says, something isn't
+there when in fact, it is, that is we
+insert something and we'll look it up
+later and the Bloom filter rejects us.
+Well, that's not going to happen. Cuz when
+we insert something, we set the relevant k
+bits to one. Notice when a bit is one, it
+remains one forevermore. That bits are
+never reset back to zero. So, if anything
+was ever inserted in the subs when we look
+it up, definitely we well confirm that all
+those bits are one. So, we're never going
+to be rejected by something we inserted
+before. On the other hand, it is totally
+possible that we will have a false
+positive. It's totally possible that
+there will be a phantom object and we'll
+do a look up and the Bloom filter will
+turn yes when we never inserted that
+object. Suppose for example, the k =
+three. So, we're using three different
+hash functions. Consider some IP address,
+fixed IP address, maybe the three hash
+functions tell us the relevant bits are
+seventeen, 23, and 36. Maybe we never
+inserted this IP address, but we have
+inserted IP address number two and in its
+insertion, the seventeenth bit got set to
+one. We inserted some other IP address, IP
+address number three and the twenty-third
+bit got set to one. And then we inserted
+IP address number four and the 36th bit
+got set to one. So, three different IP
+addresses were responsible for setting
+these three different bits but whatever,
+its not like we are remembering that. And
+that once, once we look up this IP address
+we really care about, what do we do, we
+just inspect bit seventeen, its one.
+Inspect the 23, its one. We inspect the
+36, its also one. For all we know, this
+thing really was inserted and the Bloom
+filter is going to say, yes, it's in the
+table. So, that's how we have false
+positives. All of the bits that are
+indicating whether or not a given object
+are in, are in the Bloom filter were
+previously set by insertions from other
+objects. So, there are two points that I
+hope are clear at this stage of the
+discussion. First of all, that this Bloom
+filter, the idea does suggests a
+possibility of a super space efficient
+variant of a hash table, right. So, we've
+been talking about setting the number of
+bits to be say roughly eight
+times the number of objects that you're
+storing so you're only using eight bits
+per object and for most objects, that's
+going to be radically smaller than just
+the simple array, storing the objects
+themselves. Again, if their IP addresses we're only have 25 percent much space as
+we actually stored those IP address in
+just an array with no extra bells and
+whistles. The second point is that we're
+inevitably going to have errors in a
+Bloom filter, we will have false
+positives or we look something up and it
+says, its there when in fact, its not. So,
+those two points I hope are clear. What's
+actually not clear is the bottom line. Is
+this actually a useful idea? For this to
+be useful, it'd better be the case that
+the error probability can be quite small
+even while the space per object is quite
+small. If we can't get those two things
+small simultaneously, this is a bad idea
+and we should always just use a hash table
+instead. So, to evaluate the quality of
+this idea, we're going to have to do
+little bit of mathematical analysis.
+That's what I'm going to show you in the
+next couple of slides.

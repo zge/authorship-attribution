@@ -1,0 +1,335 @@
+In this lecture, I'll introduce belief
+nets.
+One of the reason I abandoned back
+propagation in the 1990's is because it
+required too many labels.
+Back then, we just didn't have data sets
+with sufficient numbers of labels.
+I was also influenced by the fact that
+people managed to learn with very few
+explicit labels.
+However, I didn't want to abandon the
+advantages of doing gradient descend
+learning to learn a whole bunch of
+weights.
+So the issue was, was there another
+objective function that we could do
+grading decentive?
+The obvious place to look was generative
+models where the objective function is to
+model the input data rather than
+predicting a label.
+This meshed nicely with a major movement
+in statistics and artificial intelligence
+called the graphical models.
+The idea of graphical models was to
+combine discrete graph structures for
+representing how variables depended on one
+another.
+With real valued computations that
+inferred the probability of one variable,
+given the observed values of other
+variables.
+Boltzmann Machines were actually a very
+early example of a graphical model,
+But they were undirected graphical models.
+In 1992, Radford Neal pointed out that
+using the same kinds of units as we used
+in Boltzmann machines, we could make
+directed graphical models which he called
+Sigmoid Belief Nets.
+And the issue then became, how can we
+learn Sigmoid belief nets?
+The second problem is that for deep
+networks, the learning time does not scale
+well.
+When there's multiple hidden layers, the
+learning was very slow.
+You might ask why this was,
+And we now know that one of the reasons
+was we did not initialize the weights in a
+sensible way.
+Yet, another problem is the back
+propagation can get stuck in poor local
+optima.
+These are often quite good, so back
+propagation is useful.
+But we can now show that for deep nets,
+the local optima you get stuck in, if you
+start with small random weights are
+typically far from optimal.
+There is the possibility of retreating to
+simpler models that allow convex
+optimization.
+But, I don't think this is a good idea.
+Mathematicians like to do that because
+they can prove things.
+But in practice, you're just running away
+from the complexity of real data.
+So, one way to overcome the limits of back
+propagation is by using unsupervised
+learning.
+The idea is that we want to keep the
+efficiency and simplicity of using a
+gradient method and stochastic mini batch
+descent for adjusting weights.
+But, we're going to use that method for
+modeling the structure of the sensory
+input, not for modeling the relation
+between input and output.
+So the idea is, the weights are going to
+be adjusted to maximize the probability
+that a generative model would have
+generated the sensory input.
+We already saw that in learning Boltzmann
+machines.
+And one way to think about it is, if you
+want to do computer vision, you should
+first learn to do computer graphics.
+To first order, computer graphics works
+and computer vision doesn't.
+The learning objective for a generative
+model, as we saw with Boltzmann machines,
+is to maximize the probability of the
+observed data not to maximize the
+probability of labels given inputs.
+Then the question arises, what kind of
+generative model should we learn?
+We might learn an energy based model like
+the Boltzmann machine,
+Or we might learn a causal model made of
+idealized neurons, and that's what we'll
+look at first.
+Well finally, we might learn some kind of
+hybrid of the two, and that's where we'll
+end up.
+So, before I go into causal belief nets
+made of neurons, I want to give you a
+little bit of background about artificial
+intelligence and probability.
+In the 1970's and early 1980's, people in
+artificial intelligence were unbelievably
+anti-probability.
+When I was a graduate student, if you
+mentioned probability, it was assigned
+that you were stupid and that you just
+hadn't got it.
+Computers were all about discrete single
+processing, and if you'd introduce any
+probabilities they would just infect
+everything.
+It's hard to conceive of how much people
+are against probability, so here's a quote
+to help you.
+I'll read it out.
+Many ancient Greeks supported Socrates
+opinion that deep, inexplicable thoughts
+came from the gods.
+Today's equivelant to those gods is the
+erratic, even probabilistic neuron.
+It is more likely that increased
+randomness of neural behavior is the
+problem of the epileptic and the drunk,
+not the advantage of the brilliant.
+That was in Patrick Henry Winston's first
+AI textbook, in the first edition.
+And it was the general opinion at the
+time.
+Winston was to become the leader of the
+MIT AI Lab.
+Here's an alternative view.
+All of this will lead to theories of
+computation which are much less rigidly of
+an all-or-none nature than past and
+present formal logic.
+There are numerous indications to make us
+believe that this new system of formal
+logic will move closer to another
+discipline which has been little linked in
+the past with logic.
+This is thermodynamics, primarily in the
+form it was received from Boltzmann.
+That was written by John von Neumann in
+1957, and was part of the unfinished
+manuscript he left behind for what was to
+be his crowning achievement,
+His book on The Computer and the Brain.
+I think if von Neumann had lived, the
+history of artificial intelligence might
+have been somewhat different.
+So, probabilities eventually found their
+way into AI by something called graphical
+models,
+Which are a marriage of graph theory and
+probability theory.
+In the 1980's, there was a lot of work on
+expert systems in AI that use bags of
+rules for tasks such as, medical diagnosis
+or exploring for minerals.
+Now, these were practical problems so they
+had to deal with uncertainty.
+They couldn't just use toy examples where
+everything was certain.
+People in AI dislike probability so much
+that even when they were dealing with
+uncertainty, they didn't want to use
+probabilities.
+So, they made up their own ways of dealing
+with uncertainties that did not involve
+probabilities.
+You can actually prove that this is a bad
+bet.
+Graphical models were introduced by Pearl,
+Heckman, Lauritz and many others who
+shared that probabilities actually worked
+better than the ad hoc methods developed
+by people doing expert systems.
+Discrete graphs were good for representing
+what variable dependent on what other
+variables.
+But once you have those graphs, you then
+needed to do real value computations that
+respected the rules of probability so that
+you could compute the expected values of
+some nodes in the graph, given the
+observed states of other nodes.
+Belief nets is the name that people in
+graphical models give to a particular
+subset of graphs which are directed
+acyclic graphs.
+And typically, they use sparsely connected
+ones.
+And if those graphs are sparsely
+connected, they have clever inference
+algorithms that can compute the
+probabilities of unobserved nodes
+efficiently.
+But, these clever of algorithms are
+exponential in the number of nodes that
+influence each node, so they won't work
+for densely connected nodes.
+So, belief net is directed acyclic graph
+composed of stochastic variables,
+And here's a picture of one.
+In general, you might observe any of the
+variables.
+I'm going to restrict myself to nets in
+which you only observe the leaf nodes.
+So, we imagine is these unobserved hidden
+causes, and they may be lead,
+And they eventually give rise to some
+observed effects.
+Once we observe some variables, there's
+two problems we'd like to solve.
+The first is what I call the inference
+problem, and that's to infer the states of
+unobserved variables.
+Of course, we can't infer them with
+certainty, so what we're after is the
+probability distributions of unobserved
+variables.
+And if unobserved variables are not
+independent of one another, given the
+observed variables, there is probability
+distributions are likely to be big
+cumbersome things with an exponential
+number of terms in.
+The second problem is the learning
+problem.
+That is, given a training set composed of
+observed vectors of states of all of the
+leaf nodes,
+How do we adjust the interactions between
+variables to make the network more likely
+to generate that training data?
+So, adjusting the interactions would
+involve both deciding which node is
+affected by which other node,
+And also deciding on the strength of that
+effect.
+So, let me just say a little bit about the
+relationship between graphical models and
+neural networks.
+The early graphical models used experts to
+define the graph structure and also the
+conditional probabilities.
+They would typically take a medical expert
+and ask him how likely is this to cause
+that, and then they would make a graph in
+which the nodes had meanings.
+And they typically had conditional
+probability tables that described how a
+set of values for the parents of a node
+would determine the distribution of values
+for the node.
+Their graph was sparsely connected.
+And the initial problem they focused on
+was how to do correct inference.
+Initially, they weren't interested in
+learning because the knowledge came from
+the experts.
+By contrast, for neural nets, learning was
+always a central issue and hand wiring the
+knowledge was regarded as not cool.
+Although, of course, wiring in some basic
+properties, as in convolutional nets, was
+a very sensible thing to do.
+But basically, the knowledge in the net
+came from learning the training data, not
+from experts.
+Neural networks didn't aim to have
+interpretability or sparse connectivity to
+make the inference easy.
+Nevertheless, there are neural network
+versions of belief nets.
+So, if we think about how to make
+generative models out of idealized
+neurons,
+There's basically two types of generative
+model you can make.
+This energy based models, where you
+connect binary stochastic neurons using
+symmetric connections, and then you get a
+Boltzmann machine.
+A Boltzmann machine, as we've seen, is
+hard to learn.
+But if we restrict the connectivity, then
+it's easy to learn a restricted Boltzmann
+machine.
+However, when we do that, we've only
+learned one hidden layer.
+And so, we're giving up on a lot of the
+power of neural nets with multiple hidden
+layers in order to make learning easy.
+The other kind of model you can make is a
+causal model.
+That is a directed acyclic graph composed
+of binary stochastic neurons.
+And when you do that, you get a sigmoid
+belief net.
+In 1992, Neal introduced models like this
+and compared them with Boltzmann machines
+and showed that Sigmoid belief nets were
+slightly easier to learn.
+So, a Sigmoid belief net is just a belief
+net in which all of the variables are
+binary stochastic neurons.
+To generate data from this model, you take
+the neurons in the top layer.
+You determine whether they should be ones
+or zeros based on their biases,
+So you determine out stochastically.
+And then, given the states of the neurons
+in the top layer, you'd make stochastic
+decisions about what the neurons in the
+middle layer should be doing.
+And then, given their binary states, you
+make decisions about what the visible
+effect should be.
+And by doing that sequence of operations,
+a causal sequence from layer to layer,
+You would get an unbiased sample of the
+kinds of vectors of visible values that
+your neural network believes in.
+So, in a causal model, unlike a Boltzmann
+machine, it's easy to generate samples.

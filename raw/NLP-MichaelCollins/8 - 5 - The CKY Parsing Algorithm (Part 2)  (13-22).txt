@@ -1,0 +1,278 @@
+So, let's now describe the Dynamic 
+Programming Algorithm, which will take a 
+PCFG in Chomsky normal form. 
+And also a sentence, s, or some sentence 
+like the dog saw the cat. 
+So, those, those are going to be the two 
+inputs to the algorithm and it's going to 
+return the highest score for highest 
+probability for any tree under the 
+grammar. 
+So, for now, I'll focus on this problem. 
+This is the problem of simply computing 
+the highest probability for any tree 
+under the grammar for this particular 
+sentence. 
+Remember, T of is the set of possible 
+parse trees for our input sentence. 
+Of course, what we really want to 
+calculate is the arg max, which is the 
+tree, that actually achieves this max. 
+We'll come back to that later. 
+First, we'll just considered this problem 
+of computing the maximum probability for 
+any tree. 
+Okay, so I'm going to use n to refer to 
+the number of words in the sentence. 
+I'll refer to Wi to be i-th word in the 
+sentence. 
+So, I have W1, W2, right the way up to 
+Wn, that's the input sentence. 
+I have N as the set of non-terminals in 
+the grammars before, and I have some 
+start symbol S in the grammar. 
+Okay, so we're again, going to make use 
+of dynamic programming, and I'll again 
+use pi to refer to a dynamic programming 
+table. 
+And pi is going to have three indices. 
+So, X is a non-terminal. 
+i is going to be a first index in the 
+range 1, 2, up to n. 
+And j is also going to be some value in 
+this field 1, 2 up to n. 
+And we always have i less than or equal 
+to j, okay? 
+So, we only consider entries pi ijX, 
+where i is listening to j. 
+We'll see why in just a second. 
+So, this, and I'll give you an example in 
+a moment, but let me give the definition. 
+This is going to be defined as the 
+maximum probability of a constituent with 
+non-terminal X spanning words i to j 
+invclusive. 
+Okay, so say I have some sentence W1, W2, 
+W3, W4, W5, W6, and I look at pi of 2 5 
+NP. 
+What does that correspond to? 
+So, if I think about the symbol NP. 
+There are going to be many, many 
+different ways, potentially, that an NP 
+can have a parse tree underneath it which 
+spans words 2 through 5 inclusive. 
+Every one of those parse trees will have 
+a probability, which is simply the 
+product of the rule probabilities within 
+that parse tree. 
+And pi 2, 5, NP is going to be the 
+highest probability for any parse tree 
+with NP spanning those words 2 through 5. 
+given that definition, remember that this 
+is our goal, is to find the highest score 
+for any parse tree. 
+Well then, by this definition, pi 1 NS is 
+going to be the highest scoring parse 
+tree with s at its root spanning words 1 
+through n inclusive. 
+And so, if we can calculate this value, 
+we have essentially solved the problem. 
+So, what we're going to see is that we 
+can actually calculate these pi values 
+very efficiently using a dynamic 
+programming method, and critically using 
+a recursive definition of these pi 
+values. 
+Where we initially build up the pi values 
+for small segments in the sentence, and 
+we gradually get bigger and bigger until 
+we have the pi value for the entire 
+sentence. 
+So again, just to re-emphasize what this 
+definition means, here's a concrete 
+example. 
+So, if I have 1, 2, 3, 4, 5, 6, 7, 8 and 
+we just number the, the words in the 
+sentence here. 
+let's say I have pi 3, 8, VP. 
+So, that means I'm going to consider all 
+VPs, which span words 3 to 8 inclusive. 
+And in particular, there might be at 
+least a couple of VPs here. 
+One where the telescope is modifying saw, 
+instead of the telescope is being used to 
+see the man, and one where the man has 
+the telescope. 
+Those, those will, in general, correspond 
+to two different parse trees. 
+And pi 3, 8, VP is going to be the 
+highest probability for any of those 
+different ways for reaching VP, spanning 
+these different words. 
+Okay, so next, we're going to consider 
+the recursive definitions of these pi 
+values which will actually drive the 
+dynamic programming algorithm. 
+Okay, so first of all, the base case of 
+this recursion. 
+So for any i in the range 1 to n, for any 
+non-terminal X, I can define pi i, i, X 
+to simply be the parameter q of X goes to 
+Wi where I define q of X goes to Wi 
+equals 0, if this rule is not seen in the 
+grammar. 
+So, let me give you a concrete example. 
+So, if we have the dog laughs, for 
+example. 
+And I want to compute pi, so this is word 
+1, 2, 3. 
+I want to compute pi of 2, 2 NN. 
+This is going to be the highest 
+probability of any parse tree with and N, 
+as its root, spanning words 2 to 2 
+inclusive. 
+There's only one way of doing this, 
+there's only one possible parse tree, 
+that is the parse tree with a single 
+rule. 
+And N goes to dog, so this is going to 
+add value with the probability of NN goes 
+to dog. 
+So, that's a very simple case. 
+And if there is no such rule in the 
+grammar, we just define this be equal to 
+zero, reflecting the fact that the 
+maximum probability is then zero of any, 
+of any tree spanning the single word dog 
+with NN as its root. 
+So, that's the base case of the dynamic 
+program. 
+The recursive definition is more 
+involved, and I'll first give the 
+definition. 
+And then on the next slide, I'll give, an 
+example of, and try to describe why this 
+recursive definition is correct. 
+Okay, so this is for any case where we 
+have i in the range 1 to n, and j in the 
+range i plus 1 to n, and we have some 
+non-terminal X. 
+Actually, this should really be n minus 
+1. 
+Sorry about that. 
+so here we have the case where i is 
+strictly less than j. 
+So, we have some span, for example in 
+this particular sentence, we might have 
+pi of 1 to NP, for example. 
+Okay. 
+so here's the definition. 
+So, I have a max. 
+I'm going to have a max firstly over all 
+the ways of rewriting X in the grammar. 
+So, this is a max over all productions of 
+the form X goes to YZ in the rule set. 
+Remember, our grammar is in Chomsky 
+normal form, so we can just consider 
+rules which are binary where we have two 
+children. 
+And then, we have some variable s, which 
+can take any value in the range i through 
+to j minus 1. 
+This is what would be called the split 
+point. 
+We will see why shortly. 
+And so, I'm going to search over these 
+two choices, the choice of rule and the 
+choice of the value for s. 
+And then, I'm going to multiply in q, 
+this is the probability for this rule 
+that I have chosen, and then I have pi of 
+i, s, Y, and Y is here, and by s plus 1, 
+j, z. 
+Z is here. 
+And so, this definition is recursive 
+because this value of pi is calculated 
+based on other values of pi. 
+In particular, it's based on values of pi 
+which are based on shorter segments. 
+So, the length form i to s or from s plus 
+1 to j is smaller than the length from i 
+to j. 
+Okay, so that's rather abstract. 
+Let me give you an example illustrating 
+why this definition is actually correct. 
+So, here's the example. 
+Let's just number these words. 
+And let's say, for the sake of argument, 
+we want to calculate pi 3, 8, VP. 
+So, that's going to be the maximum 
+probability for any tree with VP, at 
+it's, at it's root, spanning words 3 to 8 
+inclusive. 
+So firstly, I'm going to write down how 
+this definition plays out, and then we'll 
+justify it. 
+let's say for the sake of argument, I 
+have two rules expanding VP in my 
+grammar. 
+One of them is VP goes to Vt NP. 
+And the, other one is VP goes to VP 
+propositional phrase, say for the sake of 
+argument, these have probabilities 0.4 
+and 0.6 respectively. 
+So I'm going to search over two different 
+things, I'm going to search over all 
+possible rules in the grammar. 
+Now, I'm going to search over all values 
+for this value of s, and that actually 
+means I'm going to to search over s in 
+the range. 
+So, i is 3 in this point 3, 4, 5, up to j 
+minus 1. 
+j is 8, so that's going to be up to 7. 
+So let's go through these options so I 
+can compute q of VP goes to Vt, NP times 
+pi 3, 3, Vt times pi 4, 8, NP. 
+So, that's one option, so I can calculate 
+this value. 
+so this is the case where I choose this 
+rule here. 
+And I choose the split point equal to 3, 
+and so pi is i,s 3, 3, Vt, and pi s plus 
+1,j is 4,8 and z is NP. 
+Another option is q VP goes to Vt NP 
+times pi 3,4 Vt times pi 5,8 NP, and so 
+on and so on. 
+Finally, up to q, VP goes to Vt NP times 
+pi 3, 7, Vt times pi 8, 8, NP. 
+So, here I've fixed this rule and I've 
+searched through all these values for s. 
+And then, I can do a similar thing where 
+I have q of VP goes to VP times pi 3, 3 
+VP times pi 4, 8, prepositional phrase. 
+So, that's where I've chosen this rule. 
+The split point is 3 right the way 
+through to q of VP goes to VP PP times pi 
+of 3, 7, VP times pi 8, 8, prepositional 
+phrase. 
+Okay, so I'm going to search through all 
+of these different possibilities. 
+I'm going to search over all possible 
+rule choices expanding VP. 
+And I'm also going to search through all 
+possible split points. 
+So, each of these products is going to 
+have a different value, and I'll simply 
+take my final value of pi of 3, 8, VP as 
+the max of all these different values. 
+And as we will see when we actually 
+implement this algorithm, we're going to 
+have to be careful in terms of the order 
+in which we calculate these pi values. 
+We'll calculate pi values bottom up, 
+i.e., for smaller segments, before we get 
+to larger segments, which will ensure 
+that these pi values at lower levels are 
+calculated before this final pi value. 
+

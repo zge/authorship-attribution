@@ -1,0 +1,187 @@
+Hello, in this section, I'm going to
+introduce the important idea of a term
+document matrix. But also, I'm going to
+explain why it isn't actually a practical
+data structure for an information
+retrieval system. We'll take, as our
+example, doing information retrieval over
+the works of William Shakespeare. So let's
+suppose we have this concrete question.
+Which plays of Shakespeare contain the
+words Brutus, and Caesar, but not
+Calpurnia? Well, if you're starting from a
+very basic level of text searching
+commands, the first way that you'd think
+about to solve this problem is by using,
+searching through the text of the
+documents exhaustively, What's known in
+the Unix world as grepping. And so we
+could kind of, first of all, grep for
+plays that contain Brutus and Caesar. And
+then, if you know your grep command well,
+you can give a flag for files that do not
+match. And you can get out the ones that
+don't contain Calpurnia. Now these days,
+the works of the size of William
+Shakespeare, for this kind of query,
+grepping is a perfectly satisfactory
+solution. Our disk drives and
+computers sufficiently fast that you could
+use this method and it takes no time at
+all to find the answer. But nevertheless,
+that isn't a good answer for the full
+information retrieval problem. It falls
+flat in a number of ways. Once your corpus
+becomes large, and so that means something
+like everything on your hard disk or even
+more so, the world wide web, we can't
+afford to will linear scan through all
+our documents every time we have a query.
+Then some parts of it, like the not part,
+become less trivial to implement than just
+finding things. But even more so than the
+not part, we'll have more complex queries,
+like finding uses of the word Romans near
+countrymen, and we can't do that with a
+grep command. But even more than that, the
+big thing that's happening in information
+retrieval, is the idea of ranking, finding
+the best documents to return for a query,
+and that's something that we just can't
+get out of the linear scan model of
+finding things that match. And we'll talk
+about all of these issues and the way
+they're handled in modern information
+retrieval systems in later lectures. But
+let's first go to this idea of a term
+document matrix. So what we do in a term
+document matrix is that we have the rows
+of the matrix are our words or often they're
+also called in information retrieval the
+terms. And then the columns of the matrix
+are our documents. And what we're doing
+here is a very simple thing, we're simply
+saying let's fill in every cell in this
+Boolean matrix by whether the word
+appears in the play or not. So, Antony
+appears in Antony and Cleopatra but
+Calpurnia does not appear in Antony and
+Cleopatra. So this matrix represents the
+appearance of words and documents, and if
+we have this matrix, it's straightforward
+to then answer Boolean queries such as our
+example before: queries for documents that
+contain Brutus and Caesar but not
+Calpurnia. Let's just go through
+concretely how we do that. So what we're
+going to do is we're going to take the
+vectors for the terms in the query and
+then we're going to put them together with
+Boolean operations. So first of all we
+can take out the row that is referring to
+Brutus, which goes up here. Then we can
+take the row for Caeser and AND it there.
+And then finally, we can take the row
+for Calpurnia, complement it, and then
+stick it down here, so Calpurnia only
+appears in Julius Caesar, and so we
+complement it to a vector where everything
+is one apart from Julius Caesar. And at
+that point, we can just AND those three
+vectors together, and our answer is. This
+one of 100100, and so we've been able to
+do information retrieval successfully, and
+can tell that these, this query is
+satisfied by the documents, Antony and
+Cleopatra and Hamlet. And indeed we can
+then go off to the document collection and
+confirm that, that is the case. So here we
+are. So in Antony and Cleopatra, when
+Antony found Julius Caesar dead, he cried
+almost to roaring and he wept when at
+Philippi, he found Brutus slain. And
+similarly we find both words occurring in
+Hamlet. Okay. So that suggests that we
+could do information retrieval simply by
+working with this term document matrix. So
+an important thing to realize is that
+doesn't really work once we go to sensible
+size collections. And so let's just go
+through that for a minute. Let's go
+through a sensible size but still small
+collection. So suppose that we have
+1,000,000 documents, and we'll often use N
+to refer to the number of documents, each
+of which is on average a 1,000 words long.
+Okay, so what does that mean in terms of
+the size of our document collection, and
+in terms of the size of our matrix? So, if
+we have an average of six bytes per word,
+including spaces and punctuation, the
+amount of data we're talking about here is
+six gigabytes. So, that's a teeny
+fraction of one modern hard disk in your
+laptop. But let us then suppose we try
+and work out how many distinct terms they
+are in our document collection. And we
+need to know the number of distinct terms
+because that corresponds to the number of
+columns in our matrix. And let's suppose
+there are about 500,000 that'll be a
+typical number for a 1,000,000 documents
+and so I'll often refer to this number of
+different terms as M. Well what does that
+mean, well, What it means is that even
+with that size document collection, we
+can't build this term document matrix,
+because you'll have 500,000 rows and a
+million columns. And that's half a
+trillion 0's and 1's, it's already huge
+and probably bigger than we have space to
+store. And as the document collection gets
+bigger than a million documents, things
+are just gonna get worse. But this is
+a really important observation, which is
+although the matrix here had a half a
+trillion zeros and ones in it, that
+actually, almost all of the entries are
+zero. That the document has at most one
+billion 1s. And it would be good for you
+guys to stop and think for a fraction of a
+second why is it that there are at most
+one billion 1's. And the answer to that
+is, well if we have one million documents
+and the average document is a thousand
+words long, as we said last time, then the
+actual number of word tokens is only
+1,000,000,000. So even if we assume that
+every word in every document were
+different, we could only have at most
+1,000,000,001 entries, and most likely we
+have far less than that, cause we'll have
+common words like the, a, of, and to
+occurring many, many times in each
+document. And so therefore, the key
+observation is the matrix we're dealing
+with is very, very, very sparse, and so
+the central question in the design of
+information retrieval data structures is
+taking advantage of that sparcity and
+coming up with a better data
+representation. And the secret of doing
+that and having an efficient storage
+mechanism is we want to only record the
+positions that hold a one and not the
+positions that hold a zero. Okay, so I
+hope that's given you an understanding of
+the term document matrix. It's an
+important conceptual data structure, that
+we keep on coming back to again and again
+when we talk about various kinds of
+algorithms. We think about them in terms
+of that matrix as you'll see. But, when we
+actually come to doing storage in
+computer systems, we can also see that we
+never want to actually store documents and
+their information retrieval representation
+in that form.

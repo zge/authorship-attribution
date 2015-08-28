@@ -1,0 +1,157 @@
+In this video, I'm going to talk about the
+back propagation through time algorithm.
+It's the standard way to train or
+recurrence your own network.
+The algorithm is really quite simple once
+you have seen the equivalents between a
+recurrent neural network and a feed
+forward neural network that has one layer
+for each time step.
+I'll also talk about ways of providing
+input, and desired outputs, to recurrent
+neural networks.
+So the diagram shows a simple recurrent
+net with three interconnected neurons.
+We're going to assume there's a time delay
+of one in using each of those connections
+and that the network runs in discrete
+time, so the clock that has integer ticks.
+The key to understanding how to train a
+recurrent network is to see that a
+recurrent network is really just the same
+as a feed forward network, where you've
+expanded the recurrent network in time.
+So the recurrent network starts off in
+some initial state.
+Shown at the bottom there, times zero.
+And then uses the way some of these
+connections to get a new state, shown at
+time one.
+You then uses the same weights again to
+get another new state, and it uses the
+same weights again to get another new
+state and so on.
+So it's really just a lead feed forward
+network, where the weight is a constraint
+to be the same at every layer.
+Now backprop is good at learning when
+there are weight constraints.
+We saw this for convolutional nets and
+just to remind you, we can actually
+incorporate any linear constraint quite
+easily in backprop. So we compute the
+gradients as usual, as if the weights were
+not constrained.
+And then we modify the gradients, so that
+we maintain the constraints.
+So if we want W1 to equal W2, we start off
+with an equal and then we need to make
+sure that the changing W1 is equal to the
+changing W2.
+And we do that by simply taking the
+derivative of the area with respect to W1,
+the derivative with respect to W2, and
+adding or averaging them, and then
+applying the same quantity for updating
+both W1 and W2.
+So if the weights started off satisfying
+the constraints they'll continue to
+satisfy the constraints.
+The backpropagation through time algorithm
+is just the name for what happens when you
+think of a recurrent net as a lead feet
+forward net with shared weights, and you
+train it with backpropagation.
+So, we can think of that algorithm in the
+time domain.
+The forward pass builds up a stack of
+activities at each time slice.
+And the backward pass peels activities off
+that stack and computes error derivatives
+each time step backwards.
+That's why it's called back propagation
+through time.
+After the backward pass we can add
+together the derivatives at all the
+different time step for each particular
+weight.
+And then change all the copies of that
+weight by the same amount which is
+proportional to the sum or average of all
+those derivatives.
+There is an irritating extra issue.
+If we don't specify the initial state of
+the all the units, for example, if some of
+them are hidden or output units, then we
+have to start them off in some particular
+state.
+We could just fix those initial states to
+have some default value like 0.5, but that
+might make the system work not quite as
+well as it would otherwise work if it had
+some more sensible initial value.
+So we can actually learn the initial
+states.
+We treat them like parameters rather than
+activities and we learn them the same way
+as learned the weights.
+We start off with an initial random guess
+for the initial states.
+That is the initial states of all the
+units that aren't input units And then at
+the end of each training sequence we back
+propagate through time all the way back to
+the initial states.
+And that gives us the gradient of the
+error function with respects to the
+initial state.
+We then just, adjust the initial states by
+following, that gradient.
+We go downhill in the gradient, and that
+gives us new initial states that are
+slightly different.
+There's many ways in which we can provide
+the input to a recurrent neural net.
+We could, for example, specify the initial
+state of all the units.
+That's the most natural thing to do when
+we think of a recurrent net, like a feed
+forward net with constrained weights.
+We could specify the initial state of just
+a subset of the units or we can specify
+the states at every time stamp of the
+subset of the units and that's probably
+the most natural way to input sequential
+data.
+Similarly, there's many way we can specify
+targets for a recurrent network.
+When we think of it as feed forward
+network with constrained weights, the
+natural thing to do is to specify the
+desired final states for all of the units.
+If we're trying to train it to settle to
+some attractor, we might want to specify
+the desired states not just for the final
+time steps but for several time steps.
+That will cause it to actually settle down
+there, rather than passing through some
+state and going off somewhere else.
+So by specifying several states of the
+end, we can force it to learn attractors
+and it's quite easy as we back propagate
+to add in derivatives that we get from
+each time stamp.
+So the back propegation starts at the top,
+with the derivatives for the final time
+stamp.
+And then as we go back through the line
+before the top we add in the derivatives
+for that man, and so on.
+So it's really very little extra effort to
+have derivatives at many different layers.
+Or we could specify the design activity of
+a subset of units which we might think of
+as output units.
+And that's a very natural way to train a
+recurrent neural network that is meant to
+be providing a continuous output.

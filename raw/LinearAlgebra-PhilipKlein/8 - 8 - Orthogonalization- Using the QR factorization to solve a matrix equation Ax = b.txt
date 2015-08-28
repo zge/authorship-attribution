@@ -1,0 +1,294 @@
+
+We can use the QR factorization to solve 
+a matrix vector equation Ax equals b, in 
+the case when A is square and its columns 
+linearly independent. 
+In this case, A is an invertible matrix. 
+So, we know there exists exactly one 
+solution, because we can write it as A 
+inverse times b. 
+And here's the algorithm we can use in 
+this case. 
+First, we find the QR factorization. 
+A pair of matrices, Q and R, such that A 
+equals the product of Q and R. 
+Q is column-orthogonal and R is 
+triangular. 
+Next, we compute the vector c by 
+multiplying Q transposed times b. 
+And finally, we solve Rx equals c and we 
+can do that since R is a triangular 
+matrix. 
+So, we can use backward substitution and 
+return the solution to that. 
+Why is that the correct solution? 
+Let x hat be the vector returned by this 
+algorithm. 
+Now, because we solve this equation, we 
+have that R times x hat equals Q 
+transposed times b. 
+Let's take this equation, multiply both 
+side by Q. 
+So, we get Q times R times x-hat equals Q 
+times Q transpose times b. 
+Now, we can rewrite this using 
+associativity of matrix multiplication. 
+So, Q times R times x hat equals Q times 
+Q transpose times b. 
+Now, QR is equal to A. 
+So, we have A times x hat equals Q times 
+Q transpose times b. 
+But Q and Q transposed are inverses of 
+each other so Q times Q transpose is the 
+identity matrix. 
+So, we get Ax hat equals the identity 
+matrix times b. 
+In other words, A times x hat is b and 
+we've solved the system. 
+We've seen how to solve a matrix vector 
+equation Ax equals b where A is square 
+and its columns are linearly independent. 
+What if the columns are not linearly 
+independent? 
+Here's an example. 
+Let's say the matrix A consisted of the 
+columns v1, v2, v3, v4, and these were 
+linearly dependent vectors. 
+Well, then there's a basis consisting of 
+a subset of these. 
+Let's say, a basis consisting of v1, v2, 
+and v4. 
+We're trying to find a vector A times x 
+that's equal to b. 
+We're, we're trying to find a vector of 
+this form. 
+But the set of all vectors of this form, A 
+times x, is the same as the set where we 
+omit the vector v3. 
+Because v1, v2, and v4 span the same 
+space as v1, v2, v3, and v4. 
+So, if we want to solve a matrix vector 
+equation but the, but the columns don't 
+happen to be linearly independent, get 
+rid of some of them. 
+So, you have a basis as your column set. 
+And then, solve that system instead. 
+So now, we're going to assume that A is 
+an m by n matrix, and its columns are 
+linearly independent. 
+Let's consider this example. 
+It's a 3 by 5 matrix. 
+Now, we're assuming that the columns are 
+linearly independent. 
+Each of these columns is a three-vector. 
+It lives in R3. 
+The dimension of R3 is only 3 and we have 
+five vectors. 
+So, these can't possibly be linearly 
+independent so we don't have to worry 
+about this case. 
+We've shown that the number of columns 
+has to be less than or equal to the 
+number of rows. 
+What if it's strictly less than? 
+Let's take this example. 
+This is a 4 by 3 matrix. 
+The input is a three-vector, the output 
+is a four-vector. 
+But the dimension of the image is 3 
+because the image is the vector space 
+spanned by the three columns. 
+The dimension of the output space is 4. 
+So, not every vector in the output space, 
+in the co-domain is in the image. 
+That means that it's not the case that 
+for every vector b, there's some vector 
+x, such that A times x equals b. 
+More generally, given a matrix A, that's 
+m by n, define the function that goes 
+from Rn to Rm by f(x) equals A times x. 
+The dimension of the image is the number 
+of columns, n. 
+The dimension of the co-domain is the 
+number of rows, m and we're looking at 
+the case where n is less than m, in that 
+case the function f is not onto. 
+So, not every vector b has a 
+corresponding solution x. 
+So, we have to lower our standards. 
+Instead of looking for an algorithm that 
+will solve a matrix-vector equation Ax 
+equals b. 
+Given such an equation, we'll try, we'll 
+look for an algorithm that finds the 
+vector x hat that minimizes the norm of 
+the difference between the target vector 
+b and the vector we get, A times x hat. 
+And the algorithm that we're going to use 
+to solve this is exactly the same 
+algorithm as we used in the case when A 
+was square. 
+Although the analysis is somewhat more 
+difficult. 
+Recall the High-Dimensional Fire Engine 
+Lemma. 
+It's stated that the point in a vector 
+space big V, that was closest to a vector 
+b is b parallel. 
+The projection of b onto the space big V. 
+And the distance is the norm of b 
+perpendicular. 
+That is the projection of b orthogonal 
+to the space big V. 
+Given the matrix vector equation Ax equals 
+b, let big V be the column space of A. 
+We need to show that our algorithm will 
+return a vector x hat, such that Ax hat 
+is as close as possible to b while still 
+lying in the column space of A. 
+That is, that Ax hat equals b parallel. 
+Now, let Q be a column orthogonal matrix, such as we get from Qr factorization. 
+And let b be a vector. 
+Write b in terms of its parallel and 
+perpendicular parts. 
+b equals b paralleled plus b 
+perpendicular, where b parallel is the 
+projection of b onto the column space of 
+Q. 
+And b perpendicular is the projection of 
+b orthogonal to the column space of Q. 
+And let u be the vector that's the 
+coordinate representation of b parallel 
+in terms of the columns of Q. 
+By the linear combinations definition of 
+matrix vector multiplication, the vector 
+we're representing, b parallel, is the 
+matrix Q times the coordinate 
+representation u. 
+Let's take this equation and multiply 
+both sides on the left by Q transpose. 
+We get this equation. 
+Q transpose times b parallel equals Q 
+transpose times Q times u. 
+Now, we know that Q transpose times Q is 
+the identity matrix. 
+So, we get the Q transposed times b 
+parallel equals the identity matrix times 
+u, that is u itself. 
+So, we've seen that Q transpose times b 
+parallel is u, the coordinate 
+representation of b parallel in terms of 
+the columns of Q. 
+But now, let's look at b perpendicular, 
+the projection of b orthogonal to the 
+columns of Q. 
+For every column, say Qi, of the matrix 
+Q, qi, dotted with b perpendicular is 0 
+because they're orthogonal. 
+Therefore, by the dot product definition 
+of matrix vector multiplication, when we 
+multiply Q transpose times b 
+perpendicular. 
+Since the rows of Q transpose are exactly 
+the columns of Q, we get zeros for every 
+row. 
+So, we've seen that Q transpose times b 
+perpendicular is the zero vector. 
+Now let's put these together. 
+Q transpose times b, well, b is the sum 
+of b parallel and b perpendicular. 
+So, this is Q transpose times b parallel 
+plus b perpendicular. 
+Now, we can use an algebraic property of 
+matrix vector multiplication to rewrite 
+this as Q transposed times b parallel 
+plus Q transposed times b perpendicular. 
+Well, Q transpose times b perpendicular 
+is 0. 
+So, we're left with Q transpose times b 
+parallel which is u. 
+The coordinate representation of b 
+parallel in terms of the columns of u. 
+Now, to go from the coordinate 
+representation u to b parallel itself, we 
+simply multiply by Q, using a linear 
+combinations definition of matrix vector 
+multiplication. 
+So, Q times the coordinate representation 
+u is b parallel. 
+So, putting these together, Q times Q 
+transpose times b is b parallel. 
+So, here's what we found out, Q times Q 
+transposed times b is b parallel. 
+Now let's use this. 
+We're going to here's the proposed 
+algorithm for solving the least-squares 
+problem, that is finding the vector x 
+such that Ax best approximates the vector 
+b. 
+Here's the algorithm. 
+Find matrices Q and R such that A is the 
+product of Q and R. 
+And Q is a column orthogonal matrix and R 
+is upper triangular. 
+Then, compute c, the product of Q 
+transpose times b. 
+And then, solve the matrix vector 
+equation Rx equals c, using backwards 
+substitution since R is an upper 
+triangular matrix. 
+Return the solution which we'll call x 
+hat. 
+We want to show that this algorithm is 
+correct, that it finds the best solution. 
+Well, every vector of the form A times x 
+is a linear combination of the columns of 
+A. 
+And therefore, lies in the column space 
+of A. 
+The column space of A equals the column 
+space of Q. 
+Now, by the high dimensional fire engine 
+Lemma, the vector in the column space of 
+A closest to b is b parallel. 
+The projection of b onto the column space 
+of A. 
+The solution x hat, given by this 
+algorithm, satisfies the equation R times 
+x hat equals Q transpose times b because, 
+because that's how we got it. 
+We multiply this equation by Q, we get Q 
+times R times x hat, equals Q times Q 
+transpose times b. 
+Well, on the left Q times R is the matrix 
+A. 
+And Q times Q transpose times b is the 
+vector b parallel. 
+So, we find that this particular x hat 
+satisfies that A times x hat is b 
+parallel, which is the vector that's 
+closest to b in the span of the columns 
+of A. 
+So, we're given one algorithm for solving 
+the least squares problem where we want 
+to approximate B as A times x. 
+But there are other ways to find such 
+solutions. 
+It's not hard to show that A transpose 
+times A is an invertible matrix in the 
+case where A is a matrix with linearly 
+independent columns. 
+And that the solution to this equation is 
+also the solution that we want, it's 
+exactly the same solution. 
+This is a matrix-vector equation with a 
+square and, in fact, invertible matrix. 
+So, you can solve this equation this 
+equation using other methods such as 
+Gaussian elimination. 
+And the equations making up this matrix 
+vector equation are called the normal 
+equations. 
+For a long time, this was the way to find 
+a solution to least squares. 
+

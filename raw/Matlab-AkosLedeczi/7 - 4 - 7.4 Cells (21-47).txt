@@ -1,0 +1,525 @@
+[MUSIC]
+How would you store a page of text?
+As we've seen, two-dimensional
+arrays are not a good way to do it,
+because each row, that is each line,
+would have to be the same length.
+Storing it in a single string is not
+appealing either because you can't easily
+access individual lines.
+We could store each line
+in a separate string but
+then how can we group
+these lines together?
+Wouldn't it be great if we could create
+a vector of special objects that would
+link somehow to each one of these strings?
+Well it turns out that we can.
+But what are these special objects?
+Well, they're called pointers.
+To understand what pointers are,
+we have to take a step back.
+Each variable be it a scalar,
+a vector, an array, a struct or
+anything else is stored in
+the memory of the computer.
+And each memory location
+has a unique address.
+You can think of a computer
+memory as a very,
+very long vector of memory cells, and
+you address the cell as the index, that
+is a positive integer starting with one.
+Consecutive addresses indicate
+neighboring memory cells.
+And a pointer is simply a variable
+that stores a cell's address.
+To make it just a tad bit more confusing
+though, MATLAB calls a pointer a cell.
+And MATLAB doesn't allow you to
+treat a cell as if it were a number.
+There are strict rules on what you can and
+can not do with cells.
+But those rules are for your own good,
+because it would be very easy to shoot
+yourself in the foot with pointers
+repeatedly and painfully,
+if you could say, do arithmetic on them or
+whatever you wanted to do with them.
+Nevertheless, the cell is a very
+powerful and very useful data type.
+Because cell arrays like structs, let's
+you group heterogeneous data together,
+which is what we wanted to do
+with strings from a page of text.
+But unlike structs, cell arrays can be
+indexed with numbers and partly because of
+that, while they're a bit trickier,
+they're used more frequently than structs.
+Since cells is a new concept,
+it shouldn't be surprising that
+there are new syntax rules.
+To access the object
+that a cell points to,
+you need to use braces, also called
+curly braces or curly brackets.
+To actually use cells, let's solve
+our original problem by using them
+to create a variable that
+stores multiple lines of text.
+Okay, I've got a script over
+here named cells of text.
+It'll give us what we want.
+This script is divided into two sections.
+This is the first section,
+says The Ultimate Legend of Big John.
+And let's see what it does.
+First line sets the first element of page
+to the string You could find him
+on the field almost any day.
+These braces here tell you that
+this is going to be a cell, so
+this value will now be pointed
+at by the first element of page.
+Second one set to the string, Tall,
+dark hair, and eyes of steel gray.
+The third one, They say he pulled
+a frisbee about half a mile.
+You see this pair of single quotes
+here and you'll remember that
+two single quotes together inside
+a string translate into one single quote.
+On the fourth and the fifth line you
+see another one of those pairs, And
+when he'd stick it in the corner you
+could almost catch a smile on Big John.
+Hm, must be quite a guy.
+Anyway, let's run the first section.
+Course you remember how to do that,
+you just click Run Section.
+Don't see anything happen because every
+single one of these assignment statements
+has a semicolon at the end of it.
+But something must have happened and
+I think page should have gotten the value,
+let's check that out
+with the function whos.
+Sure enough, it's a one by five array,
+in other words a vector,
+a row vector of type cell.
+We can access individual
+elements of page by using braces.
+There's the first element.
+You could find him on
+the field almost any day.
+Let's look at the fifth one.
+What's in five, well it's pointing
+at the string On Big John.
+And to double check whos, let's get
+the type of page with the class function.
+So this of course means that each
+element of page is of type cell.
+But as we said, each element of page
+points at something else that can
+be of varying size and or type.
+In this case the sizes of
+the elements are different.
+Let's look at a couple of them.
+Let's look at the first one.
+Notice I've put the braces here.
+That means we're going to access the thing
+that the first element
+of page is pointing at.
+And it's type is char.
+Of course, we knew that.
+It's a string.
+Let's look at the size of it.
+Well it's a 47 element row vector.
+Fourth element also points to a char.
+And the size of that char is 1 by 65.
+It's a 65 element row vector.
+So we managed to put lines of
+text of different lengths into
+one homogenous array of cells,
+which is what we set out to do.
+The second section up here,
+this one, shows
+you how you might use this cell array
+to print out the lines using fprintf.
+It goes to a new line here.
+Then it loops through the five
+indices of page here, and
+prints each element here using
+the percent s format, and
+putting a new line after each one.
+And then it ends with an extra new line.
+Let's run it.
+I click anywhere in it.
+Turns it yellow.
+And I come up here and
+I click Run Section.
+And here's what we see.
+You could find him on
+the field almost any day.
+Tall, dark hair, and eyes,
+all the way down to Big John,
+with a space above and below.
+As you might have guessed,
+cells are not just for strings.
+Let’s create a cell array that
+refers to truly heterogeneous data.
+First we call the cell function to
+create a blank two by three cell array,
+where blank means that each element
+contains the address of the empty array.
+Each element is said to point to the empty
+array as indicated by the arrows.
+In this next assignment statement, the use
+of braces instead of parentheses for
+indexing the array element indicates that
+the address of the object on your right
+is assigned to that element
+instead of the object itself.
+In this case,
+the function pi produced that object.
+The scalar,
+which was then stored by MATLAB in
+a newly allocated memory location.
+The address of that location is
+then assigned to the element
+2,1 of the cell array p,
+thus element 2,1 now points at pi.
+It's important to take a minute here
+to emphasize that even though p now
+refers to heterogeneous data Namely,
+an empty array and a scalar,
+which are of two different types.
+The array p itself is still homogeneous.
+The MATLAB cell array model allows
+individual elements to point at different
+types, but the elements themselves are all
+of the same type, and that type is cell.
+The next command is p, left brace, 1, 1,
+right brace, equals int8 minus 17.
+Again, following the cell model,
+as with the previous assignment statement,
+the braces on the left mean that
+the address of the object on the right
+is copied in to the element 1,1,
+not the object itself.
+And as before, the address refers to
+a newly allocated location in memory.
+In this case, MATLAB has stored minus 17
+at that location, encoded as an int8.
+And we can do more than empty arrays
+that double in an eight bit integer.
+Here MATLAB allocates a new location in
+memory to hold the string Awesome and
+then makes the element of p on
+row 2 column 2 point to it.
+We show the pointer directed at
+the first character of Awesome because
+the address used for a vector or a ray or
+anything that occupies multiple cells
+in memory is that of its first element.
+Next we create a three by
+two array of doubles and
+assign its address to the element 2,
+3 of p.
+Again, we show the pointer aimed
+at the first element, element 1,1.
+But, in fact, it makes no difference what
+element it points at, because MATLAB
+doesn't allow you either to look at
+the numeric address or to change it.
+As we mentioned earlier, MATLAB maintains
+strict control over its pointers.
+In this statement,
+braces are used differently.
+When they're not on the left side of an
+assignment statement, braces indicate that
+the object pointed at by the element is
+to be retrieved instead of its address.
+Thus in this case, p {2,3},
+retrieves the 3 by 2 array
+pointed at by element 2,3 of p.
+That arrays then input to sum.
+And sum does what it does
+with any array it receives.
+It adds up each of the array's columns and
+returns the sums in a vector.
+From this point forward,
+the process is the same as for
+the other assignment statements above.
+MATLAB allocates a new memory location
+to store the vector from sum, and
+the address of that location is
+copied into the element 1,3 of p.
+Notice that we use braces twice in
+this last assignment statement.
+On the right,
+we use them to retrieve a value.
+And on the left,
+we use them to store a pointer.
+All of these uses of braces are necessary.
+If we were to try using parentheses,
+MATLAB would complain you know,
+in red letters.
+The lone cell that still points to
+the empty array is changed next.
+We create an inf of type
+double by dividing 1 by 0.
+MATLAB stores the result in memory, and
+then braces are used to
+point element 1,2 at it.
+With that we have a nice little cell array
+that refers to two types of scalars,
+one string, a double vector,
+and a double array.
+And it might show more clearly how it
+can be possible in MATLAB to construct
+an array that refers to a set
+of data of multiple types,
+despite the fact that MATLAB,
+like almost all other languages,
+supports only arrays whose
+elements all have the same type.
+And what is the type of p's elements?
+Well, we can call the class
+function to answer that question.
+And the answer is cell as expected.
+But if we use braces to retrieve the
+object pointed at by one of p's elements,
+in this case element 1,2,
+then the class function tells us
+the type of that retrieved object.
+In this case, the object is the scalar
+inf, which happens to be of type double.
+But if we use normal parentheses when
+indexing that same element of the cell
+array, then we're referring to the cell
+itself and not the data that it points to.
+So the class function returns cell.
+That's the difference
+between using parentheses and
+braces when it comes to cells.
+Well, here's a tricky one, we use both
+braces and parentheses, but it's all good.
+First p {2,3} retrieves
+the object that the cell
+at index 2,3 of the cell array points to.
+And that object happens to
+be an array of doubles.
+In the parentheses with the indices 3 and
+2 inside them are used to
+index into that array.
+In this array indexing
+works as it normally would.
+It retrieves a second element on
+the third row which is 12 as shown
+in the figure, nice.
+Now let's see some more examples.
+Most important concept to remember is
+the distinction between a cell and
+the object it points to.
+MATLAB uses various notations
+to indicate that the elements
+of the cell array are not actually arrays,
+but are instead pointers to arrays.
+For example, it encloses all numeric
+arrays in square brackets and
+it encloses a string in single quotes.
+That notation is supposed
+to say to their user,
+these are pointers to respective objects,
+not the objects themselves.
+For example,
+let's create a cell array of two cells.
+[SOUND] The first element
+of c points to a scalar,
+3.1416, which is just a one by one array.
+And to remind us that the first element is
+a pointer instead of a one by one array.
+It puts that one by one
+array inside brackets.
+The second element points to a string and
+reminds us that the second element of c is
+a pointer to this string and
+not the string itself.
+It puts the string in quotes.
+Now instead of assigning a value.
+Let's just look at
+the values in these cells.
+Once again, we use these braces here,
+sometimes called curly braces, to look at
+the object that the given cell points to
+instead of to set the object that
+it points to that we did up here.
+And so
+we get the object that it points to.
+Here it's the number, here it's a string.
+If we use regular parentheses on the other
+hand, we get something different.
+You notice the difference?
+Here we got the brackets saying yes,
+we're looking at a pointer here.
+Here we got the quotes saying
+this is a pointer to a string.
+But up here with the braces, we got the
+sort of thing we ordinarily get when we
+look at a number,
+just the number with no brackets.
+We get the same sort of response
+when we look at a string.
+It's not indented and
+there's no quotes around it.
+But when you use regular
+parentheses with a cell element,
+you're asking to look at
+the cell's pointer, and as above,
+MATLAB indicates this with brackets for
+numbers here and quotes for strings.
+So when you see no quotes,
+you're looking at a string.
+And when you see quotes, you're not.
+Feels like we're in bizarro world here.
+But anyway, that's how MATLAB shows
+you that the object that you've
+requested is a cell pointer.
+It's subtle, now you know what
+it means and how it works.
+Another subtle detail about cells is that
+MATLAB doesn't allow two cells to point
+to the same object.
+Let's look at a simple example here.
+Its consists of two elements, each
+pointing to a 1x2 array of type double.
+C1 itself, of course, is a cell.
+Now consider the following statement.
+It looks like a simple
+assignment operation, so
+we might assume that the pointers in c2
+are now the same as the pointers in c1.
+That would mean that they both
+point to the same objects.
+In fact, that's how it appears
+if we look at these objects.
+What happens if we change
+one of these objects?
+Let's change the object at
+which c1 1,1 is pointing.
+The first element of c1 is now pointing
+at some nice fresh strawberries.
+And we know it's a pointer
+because there's quotes around it.
+If c2 1,1 contains the same
+pointer as c1 1,1 then when we ask
+MATLAB to show us what it's pointing at,
+we should find those same strawberries.
+Let's try it.
+Instead, we find the object pointed at
+by c2 1,1 is the same as it was before.
+The strawberries are missing and
+I know they were there before.
+I can prove it beyond a shadow
+of a doubt with geometric logic.
+But wait, let me check c1 again.
+Now the strawberries are there.
+So am I losing my mind?
+Well, I may be.
+But there's a logical explanation for
+what's behind these strawberries.
+The culprit here is MATLAB's
+cell pointer model.
+That model doesn't allow c2 to
+point to the same objects as c1,
+in fact no two cell pointers
+can point at the same object.
+Instead, in MATLAB's version
+of cell pointer assignments,
+what happens when MATLAB carries out
+the assignment c2 equals c1 up here,
+is that it first copies all
+the objects pointed at by c1,
+then makes c2 point to the copies.
+So we put the strawberries
+in the original.
+But the copy pointed out
+by c2 was left as it was.
+And because no two cell pointers can
+point at the same object, it's impossible
+to change an object pointed at by one
+cell by manipulating it via another cell.
+This is a strict limitation.
+But you need to keep in mind
+when working with cells.
+For example if you pass a cell
+as an argument to a function,
+any changes the function makes to
+the objects that the cell points at
+will not change the objects that
+the original cell points too.
+MATLAB will simply copy the cell
+into the input argument.
+And that input argument will point to
+copies of the objects that the original
+cell points to.
+The function can only
+change the new objects.
+Unless the objects or the cell pointing
+to them is returned from the function as
+an output argument,
+these changes will be lost.
+And the original cell that was
+passed in as an input object,
+it won't be changed with or
+without an output argument,
+until something's assigned to it,
+nor will the objects it points to.
+This ironclad rule against two cell
+pointers pointing at the same object is
+not enforced by most languages,
+including C, C++, and Java.
+And as a result their pointers are far
+more flexible than MATLAB's cell pointers.
+There are multiple pros and cons and
+advantages and pitfalls associated
+with both types of pointers.
+And hours of vigorous debate have been
+expended on them by people who care about
+such things.
+But if you hear someone say that MATLAB
+is a weak language because of this rule,
+don't believe them.
+It just means they don't know that MATLAB
+supports two types of pointers, and
+its second type works like
+the pointers of C, C++ and
+Java, with all the rights and privileges
+and pitfalls thereunto appertaining.
+They're part of the less well known
+object-oriented structures in MATLAB.
+They're rarely used because they're
+rarely needed for numerical applications.
+But they're there,
+if you want to learn how to use them.
+They're taught in chapter
+three of the textbook.
+Here's some built in functions that
+are useful for working with cells.
+To understand them you really
+need to try them out on your own.
+And I encourage you to do that.
+And in conclusion, let me just say that
+cells and cell arrays are essential in
+many real world problems that you
+may run across in the future.
+It'd be wise to invest the time you
+need to learn the concept well.
+And a wise investment now will
+pay dividends in the future.
+And with that programming and financial
+advice, we'll conclude lesson seven.
+[MUSIC]
+[APPLAUSE]
+

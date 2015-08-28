@@ -1,0 +1,281 @@
+Now that we have the preliminaries out the
+way, we can get back to the central issue,
+which is how to learn multiple layers of
+features.
+So in this video, I'm finally going to
+describe the back propagation algorithm
+which was the main advance in the 1980s
+that led to an explosion of interest in
+neural networks.
+Before I describe back propagation, I'm
+going to describe another very obvious
+algorithm that does not work nearly as
+well, but is something that many people
+think of.
+Now that we know how to learn the weights
+of the logistic units, we're going to
+return to the central issue, which is how
+to learn the weights of hidden units.
+If you have neural networks without hidden
+units, they are very limited in the
+mappings they can model.
+If you add a layer of hand coded features
+as in a perceptron, you make the net much
+more powerful but the difficult bit for a
+new task is designing the features.
+The learning won't solve the hard problem;
+you have to solve it by hand.
+What we'd like is a way of finding good
+features without requiring insights into
+the tasks or repeated trial and error,
+where we guess some features and see how
+well they work.
+In effect, what we need to do is automate
+the loop of designing features for a task
+and seeing how well they work.
+We'd like the computer to do that loop,
+instead of having a person in that loop.
+So the thing that occurs to everybody who
+knows about evolution is to learn by
+perturbing the weights.
+You randomly perturb one weight.
+So that's meant to be like a mutation, and
+you see if it improves performance.
+And if it improves performance of the net,
+you save that change in the weight.
+You can think of this as a form of
+reinforcement learning.
+Your action consists of making a small
+change.
+And then you check whether that pays off,
+and if it does, you decide to perform that
+action.
+The problem is it's very inefficient.
+Just to decide whether to change one
+weight, we need to do multiple forward
+passes on a representative set of training
+cases.
+We have to see if changing that weight
+improves things, and you can't judge that
+by one training case alone.
+Relative to this method of randomly
+changing weight, and seeing if it helps,
+back propagation is much more efficient.
+It's actually more efficient by a factor
+of the number of weights in the network,
+which could be millions.
+An additional problem with randomly
+changing weights and seeing if it helps is
+that towards the end of learning, any
+large change in weight will nearly always
+make things worse, because the weights
+have to have the right relative values to
+work properly.
+So towards the end of learning not only do
+you have to do a lot of work to decide
+whether each of these changes helps but
+the changes themselves have to be very
+small.
+There are slightly better ways of using
+perturbations in order to learn.
+One thing we might try is to perturb all
+the weights in parallel and then correlate
+the performance gain with the weight
+changes.
+That actually doesn't really help at all.
+The problem is that we need to do lots and
+lots of trials with different random
+perturbation of all the weights, in order
+to see the effect of changing one weight,
+through the noise created by changing all
+the other weights.
+So it doesn't help to do it all in
+parallel.
+Something that does help, is to randomly
+perturb the activities of the hidden
+units, instead of perturbing the weight.
+Once you've decided that perturbing the
+activity of a hidden unit on a particular
+training case is going to make things
+better.
+You can then compute how to change the
+weights.
+Since there's many fewer activities than
+weights, there's less things that you're
+randomly exploring.
+And this makes the algorithm more
+efficient.
+But it's still much less efficient than
+backpropagation.
+Backpropagation still wins by a factor of
+the number of neurons.
+So the idea behind back propagation is
+that we don't know what the hidden units
+ought to be doing.
+They're called hidden units because
+nobody's telling us what their states
+ought to be.
+But we can compute how fast the error
+changes as we change a hidden activity on
+a particular training case.
+So instead of using activities of the
+hidden units as our desired states, we use
+the error derivatives with respect to our
+activities.
+Since each hidden unit can affect many
+different output units, it can have many
+different effects on the overall error if
+we have many output units.
+These affects have to be combined.
+And we can do that efficiently.
+So that allows us to compute error
+derivatives for all of the hidden units
+efficiently at the same time.
+Once we've got those error derivatives for
+the hidden units, that is, we know how
+fast the error changes as we changed the
+hidden activity on that particular
+training case, it's easy to convert those
+error derivatives for the activities into
+error derivatives for the weights coming
+into a hidden unit.
+So here's a sketch of how backpropagation
+works, for a single training case.
+First we have to define the error, and
+here we'll use the error being the square
+difference between the target values of
+the output unit J and the actual value
+that the net produces for the output unit
+J.
+And we're gonna imagine there are several
+output units in this case.
+We differentiate that, and we get a
+familiar expression for how the error
+changes as you change the activity of an
+output unit J.
+And I'll use a notation here where the
+index on a unit will tell you which layer
+it's in.
+So the output layer has a typical index of
+J, and the layer in front of that, the
+hidden layer below it in the diagram, will
+have a typical index of I.
+And I won't bother to say which layer
+we're in because the index will tell you.
+So once we've got the aeroderivative with
+respect to the output of one of these
+output units, we then want to use all
+those aeroderivatives in the output layer
+to compute the same quantity in the hidden
+layer that comes before the output layer.
+So back propagation, the core of back
+propagation is taking error derivatives in
+one layer and from them computing the
+error derivatives in the layer that comes
+before that.
+So we want to compute DE by DY, I.
+Now obviously, when we change the output
+of unit I, it'll change the activities of
+all three of those output units, and so we
+have to sum up all those effects.
+So we're going to have an algorithm that
+takes error derivatives we've already
+computed for the top layer here.
+And combines them using the same weights
+as we use in the forward pass to get error
+derivatives in the layer below.
+So, this slide is going to explain the
+backpropagation algorithm.
+And you really need to understand this
+slide.
+And the first time you see it, you may
+have to study it for a long time.
+This is how you backpropagate the error
+derivative with respect to the output of a
+unit.
+So we'll consider an output unit J on a
+hidden unit I.
+The output of the hidden unit I will be
+YI.
+The output of the output unit J will be
+YJ.
+And the total input received by the output
+unit J will be ZJ.
+The first thing we need to do is convert
+the error derivative with respect to Y J,
+into an error derivative with respect to Z
+J.
+To do that we use the chain rule.
+So we say DE by DZJ, equals DYJ by DZJ,
+times DE by DYJ.
+And af, as we've seen before, when we were
+looking at logistic units, that's just YJ
+into one minus YJ times the error
+derivative with respect to the output of
+unit J.
+So now we've got the error derivative with
+respect to the total input received by
+unit J.
+Now we can compute the error derivative
+with respect to the output of unit I.
+It's going to be the sum over all of the
+three outgoing connections of unit I, of
+this quantity, DZJ by DYI times DE by DZJ.
+So the first term there is how the total
+input to unit J changes as we change the
+output of unit I.
+And then we have to multiply that by how
+the error root of changes as we change the
+total input to unit J which we computed on
+the line above.
+And as we saw before when studying the
+logistic unit dzj by dyi is just the
+weight on the connection wij.
+So what we get is that the error
+derivative.
+We respect to the output of unit I is the
+sum over all the outgoing connections to
+the layer above of the weight wij on that
+connection times a quantity we would have
+already computed which is de by dzj for
+the layer above.
+And so you can see the computation looks
+very like what we do on the forward pass,
+but we're going in the other direction.
+What we do for each unit in that hidden
+layer that contains I, is we compute the
+sum of a quantity in the layer above the
+weights on the connections.
+Once we've got to E by DZJ, which we
+computed on the first line here, it's very
+easy to get the error derivatives for all
+the weights coming into unit J.
+To E by DWIJ is simply D, E, by DZJ, which
+we computed already, times how ZJ changes.
+As we change the weight on the connection.
+And that's simply the activity of the unit
+in the layer below YI.
+So the rule for changing the weight is
+just you multiply, this quantity you've
+computed at a unit, to E by DZJ, by the
+activity coming in from the layer below.
+And that gives you the error of derivative
+with respect to weight.
+So on this slide we have seen how we can
+stop with DE by DYJ and back propagate to
+get DE by DYI we'll come backwards through
+one layer and computed the same quantity
+the derivative of the error with respect
+to the output in the previous layer.
+So we can clearly do that for as many
+layers as we like.
+And after we've done that for all these
+layers, we can compute how the error
+changes as you change the weights on the
+connections.
+That's the backpropagation algorithm.
+It's an algorithm for taking one training
+case, and computing, efficiently, for
+every weight in the network, how the error
+will change as, on that particular
+training case, as you change the weight.

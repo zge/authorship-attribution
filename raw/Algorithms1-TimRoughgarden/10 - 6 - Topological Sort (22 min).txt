@@ -1,0 +1,568 @@
+So let me begin by telling you what
+a topological ordering of a directed
+graph is. Essentially, it's an ordering of
+the vertices of the graph so that all of
+the arcs, the directed edges of the graph,
+only go forward in the ordering. So, let
+me encode an ordering by a labeling of the
+vertices with the numbers one through N.
+This is just to encode the position of
+each vertex in this ordering. So formally
+there's gonna be a function which takes
+vertices of G and maps things to integers
+between one and N. Each of the numbers one
+through N should be taken on by exactly
+one vertex. Here N is the number of
+vertices of G. So that's just the way to
+encode an ordering and then here's really
+the important property that every directed
+edge of G goes forward in the ordering.
+That is, if UV is a directed edge of the
+directed graph G, then it should be that.
+The F value of the tail is less than the F
+value of the head. That is, this directed
+edge has a higher F value as you, as you
+traverse it in the correct direction. Let
+me give you an example just to make this
+more clear. So suppose we have this very
+simple directed graph with four vertices.
+Let me show you two different,
+totally legitimate topological
+orderings of this graph. So the first
+thing you could do is you could label S1,
+V2, W3 and T4. Another option would
+be to label them the same way except you
+can swap the labels of, V and W. So if you
+want you can label V three and W two. So
+again what these labeling meant to encode
+is an ordering of the vertices. So the
+blue labeling you can think of as encoding
+the ordering in which we put S first, then
+V, then W and then T. Whereas the green
+labeling can be thought of as the same
+ordering of the nodes, except with W
+coming before V. What's important is that
+the pattern of the edge is exactly the
+same in both cases, and in particular, all
+of the edges go forward in this ordering.
+So, in either case, we have S with edges
+from S to V and S to W. So that looks the
+same way pictorially. Whichever order V
+and W are in. And then symmetrically,
+there are edges from V and W to T. So
+you'll notice that no matter which order
+we put V and W in, all four of these edges
+go forward in each of these orderings.
+Now, if you're trying to put. V before S,
+it wouldn't work because the edge from S
+to V would be going backward, if V
+preceded S. Similarly, if you put T
+anywhere other than the final position,
+you would not have a topological ordering.
+So in fact, these are the only two
+topological orderings of this directed
+graph. I encourage you to convince
+yourself of that. Now who cares about
+topological orderings? Well this is
+actually a, a very useful subroutine this
+has been, come up in all kinds of
+applications. Really whenever you want a
+sequence, a bunch of tasks, when there's
+precedents constraints amongst them. By
+precedents constraints I mean one task has
+to finished before another. You can think,
+for example, about the courses in some
+kind of undergraduate major, like
+computer science major. Here the vertices
+are going to correspond to all of the
+courses and there's a directed edge from
+course A to course B, if course A's a
+prerequisite for course B, if you have to
+take it first. So then, of course, you'd
+like to know a sequence in which you can
+take these courses so that you always take
+a course after you've taken its
+prerequisites. And that's exactly what a
+topological ordering will accomplish. So,
+it's reasonable to ask the question, when
+does the directed graph have a topological
+ordering and when a graph does have such
+an ordering, how do we get our grubby
+little hands on it? Well there's a very
+clear, necessary condition for a graph to
+have a topological ordering, which is, it
+had better be acyclic. Put differently,
+if a directed graph has a directed cycle
+then there's certainly no way there's
+going to be a topological ordering. So, I
+hope the reason for this is fairly clear.
+Consider any directed graph which does
+have a directed cycle and consider any
+purported way of ordering the vertices.
+Well now just traverse the edges of the
+cycle one by one. So you start somewhere
+on the cycle. And if the first edge goes
+backwards, well you're already screwed.
+You already know that this ordering is not
+topological; no way it just can go
+backwards. So evidently the first edge of
+this cycle has to go forward, but now you
+have to traverse the rest of the edges on
+this cycle, and eventually you come back
+to where you started. So if you started
+out by going forward, at some point you
+have to go backward. So that edge goes
+backward in the ordering, violating the
+property of the topological ordering.
+That's true for every ordering, so
+directed cycles exclude the possibility
+of topological orderings. Now the question
+is, well what if you don't have a cycle?
+Is that a strong enough condition that
+you're guaranteed to have a topological
+ordering. Is the only obstruction to
+sequencing jobs without conflicts, the
+obvious one of having circular precedence
+constraints? So it turns out that only is
+the answer yes as long as you don't have any
+directed cycles, you're guaranteed a
+topological ordering, but we can even compute
+one in linear time no less, via depth-first
+search. So before I show you this super
+slick and super efficient reduction of
+computing topological orderings to depth
+first search, let me first go over a pretty
+good but slightly less slick and slightly
+less efficient solution to help build up
+your intuition about directed acyclic
+graphs and their topological orderings. So
+for the straightforward solution we're
+going to begin with a simple observation.
+Every directed acyclic graph has what I'm
+gonna call a sink vertex. That is a vertex
+without any outgoing arcs. So in the four
+node, directed acyclic graph we were
+exploring on the last slide, there is
+exactly one source vertex and that's,
+excuse me, sink vertex, that's this right
+most vertex here. Right? That has no
+outgoing arcs; the other three vertices
+all have at least one outgoing arc. Now,
+why is it the case that a directed acyclic
+graph has to have a sink vertex? Well
+suppose it didn't. Suppose it had no sink
+vertex. That would mean every single
+vertex has at least one outgoing arc. So
+what can we do if every vertex has one
+outgoing arc? Well we can start in an
+arbitrary node. We know it's not a sink
+vertex cause we're assuming there aren't
+any. So there's an outgoing arc so let's
+follow it. We get to some other node, by
+assumption there's no sink vertex so this
+isn't a sink vertex. So there's an
+outgoing arc. So let's follow it, we get
+to some other node. That also has an
+outgoing arc, let's follow that, and so
+on. So we just keep following outgoing
+arcs. And we do this as long as we want,
+because every vertex has at least one
+outgoing arc. Well, there's a finite
+number of vertices. Right? This graph has,
+say, N vertices. So, if we follow N arcs,
+we're gonna see N plus one vertices. So,
+by the pigeon hold principle, we're gonna
+have to see a repeat. Right? So, if N plus
+one vertices has only N distinct vertices,
+we're gonna see some vertex twice. So, for
+example, maybe after I take the outgoing
+arc from this vertex. I get back to this
+one that I saw previously. Well, what have
+we done? What happens when we get a
+repeated vertex? By tracing these out
+going arcs and repeating a vertex we have
+exhibited a directed cycle. And that's
+exactly what we're assuming doesn't exist.
+We're talking about directed acyclic graphs.
+So, put differently, we just proved that a
+vertex with no sink vertex has to have a
+directed cycle. So a directed acyclic
+graph therefore has to have at least one
+sink vertex. So, here's how we use this
+very simple observation now to compute a
+topological order of a directed acyclic graph.
+Well let's do a little thought experiment.
+Suppose in fact this graph did have a
+topological ordering. Let's think about the
+vertex that goes last in this topological
+ordering. Remember, any arc which goes
+backward in the ordering is a violation.
+So we have to avoid that. We have to make
+sure that every arc goes forward in the
+ordering. Now, any vertex which has an
+outgoing arc, we better put somewhere
+other than in the final position, all
+right? So the node that we put in the
+final position, all of its arcs are gonna
+wind up to all of its outgoing arcs are
+gonna wind up going backward in the
+topological ordering. There's nowhere else
+they can go. This vertex is last. So in
+other words, if we're plan this to
+successfully compute topological ordering,
+the only candidate vertices for that final
+position in the ordering are the sink
+vertices, that's all that's gonna work. If
+we put another non-sink vertex there
+we're toast, that's not gonna happen.
+Fortunately, if it's directed acyclic we
+know there is a sink vertex, so at V, be a
+sink vertex of G, if there's many sink
+vertices we pick one arbitrarily, we set
+V's label to be the maximum possible.
+So there's N vertices, we're gonna put that
+in the Nth position. And now we just
+recurse on the rest of the graph, which has
+only N minus one vertices. So how would
+this work in the example on the right?
+Well in the first iteration, or the first
+outermost recursive call, the only key, the only sink
+vertex is this right's most circled in
+green. So there's four vertices, we're gonna
+give that the label four. So then having
+labeled that four, we delete that vertex
+and all the edges incident to it, and we
+recurse on what's left of the graph. So
+that will be the left most three vertices
+plus the left most two edges. Now, this
+graph has two sink vertices after we've
+deleted four and everything from it. So
+both this top vertex and this bottom
+vertex are sinks in the residual graph. So
+now in the next recursive call, we can
+choose either of those as our sink vertex.
+Because we have two choices, that
+generates two topological orderings. Those
+are exactly the ones we saw in the
+example. But if, for example, we choose
+this one to be our sink vertex, then
+that gets the label three. Then we recurse
+just on the northwestern most two edges.
+This vertex is the unique sink in that
+graph. That gets the label two. And then
+we recurse on the one node graph and that
+gets the, the label one. So
+why does this algorithm work? Well
+there's, there's two quick observations we
+need. So first of all, we need to argue
+that it makes sense, that in every
+iteration or in every recursive call, we
+can indeed find a sink vertex that we
+can assign in the final position that's
+still unfilled. And the reason for that,
+is just, if you take a directed acyclic
+graph, and you delete one or more vertices
+from it, you're still gonna have a
+directed acyclic graph. Alright, you can't
+create cycles by just getting rid of
+stuff. You can only destroy cycles. And we
+started with no cycles. So through all the
+intermediate recursive calls, we have no
+cycles. By our first observation, there's
+always a sink. So the second thing we have
+to argue is that we really do produce a
+topological ordering. So remember what
+that means. That means that for every edge
+of the graph, it goes forward in the
+ordering. That is, the head of the arc is
+given a position later than the tail of
+the arc. And this simply follows because
+we always use sink vertices. So
+consider the vertex V, which is assigned
+to the position I, this means then when
+we're down to a graph that has only I
+vertices remaining, V is a sink vertex. So
+if I is, if V is a sink vertex for, when
+only the first I vertices remain, what
+property does it have in the original
+graph? Well it means all of the outgoing
+arcs that it has; have to go to vertices
+that were already deleted and assigned
+higher positions. So for every vertex, by
+the time it actually gets assigned a
+position, it's a sink. And it only has
+incoming arcs from the as yet unassigned
+vertices. Its outgoing arcs all go
+forward to vertices that were already
+assigned higher positions, and got deleted
+previously from the graph. So now we have
+under our belt a pretty reasonable
+solution for computing a topological ordering
+of a directed acyclic graph. In particular,
+remember we observed that if a graph does
+have a directed cycle, then of course
+there is no way there's a topological ordering.
+However you order the vertices, some edge of
+the cycle is going to have to go backward.
+And the solution on the previous slide
+shows that as long as you don't have a
+cycle, it guarantees a topological
+ordering does indeed exist and in fact
+it's a constructive proof, a constructive
+argument that gives an algorithm. What you
+do is you just keep plucking off sinks,
+sink vertices one at a time and populating
+the ordering from right to left as you
+keep peeling off these sinks. So that's a
+pretty good algorithm, it's not too slow.
+And actually, if you implement it just so,
+you can even get it to run in linear time.
+But I wanna conclude this video with an
+application of depth first search, which
+is a very slick, very efficient
+computation of a topological ordering of a
+directed acyclic graph. So we're just
+going to make two really quite minor
+modifications to our previous depth first
+search subroutine. The first thing is we
+have to embed it in a for loop just like
+we did with breadth first search when we
+were computing the connected components of
+an undirected graph. That's because in
+computing a topological ordering, we'd
+better give every single vertex a label,
+we better look at every vertex at least
+once. So to do that, we'll just make sure
+there's an outer for loop and then if we
+have multiple components, we'll just make
+sure to invoke DFS as often as we need to.
+The second thing we'll do is we'll add a
+little bit of bookkeeping and this will
+make sure that every node gets a label. And in
+fact, these labels will define the
+topological order. So let's not forget the
+code for depth first search. This is where
+you're given a graph G; in this case we're assuming
+a directed acyclic graph and you're given a
+start vertex S. And what you do is you, as soon as
+you get to S, you very aggressively start
+trying to explore its neighbors. Of
+course, you don't visit any vertex you've
+already been to; you keep track of who
+you've visited. And if you find any vertex
+that you haven't seen before, you
+immediately start recursing on that node.
+So I said the first modification we need
+is to embed this into an outer for loop to
+ensure that every single node gets labeled
+so I'm gonna call that subroutine DFS-loop.
+It does not take a start vertex.
+Initialization all nodes start out
+unexplored of course. And we're also going
+to keep track of a global variable which
+I'll call current label. This is going to
+be initialized to N and we're gonna
+count down each time we finish exploring a
+new node. And these will be precisely the
+F values. These will be exactly the
+positions of the vertices in the
+topological ordering that we output. In
+the main, in the main loop we're gonna
+iterate over all of the nodes of the
+graph. So, for example, we just do a scan
+through the node array. As usual, we don't
+wanna do any work twice, so for a, if a
+vertex has already been explored in some
+previous indication of DFS, we don't, we
+don't search from it. This should all be
+familiar from our embedding a
+breadth-first search in a for loop when we
+computed the connected components of an
+undirected graph, and if we get to a
+vertex V of the graph that we haven't
+explored yet, then we just invoke DFS
+in the graph with that vertex as the
+starting point. So, the final thing I need
+to add is I need to tell you what the F
+values are with the actually assignments
+of vertices to positions are. And as I
+foreshadowed we're going to use this global
+current label variable and that will have
+us assign vertices to positions from
+right to the left. Very much mimicking
+what was going on our recursive solution
+where we plucked off sink vertices one at a
+time. So when's the right time to assign a
+vertex its position? Well, it turns out
+the right time is when we've completely
+finished with that vertex. So we're about
+to pop the recursive call from the stack
+corresponding to that vertex. So after
+we've gone through the for loop of all
+the edges outgoing from a given vertex,
+we set F of S equal to whatever the
+current label is and then we decrement the
+current label. And that's it. That is the
+entire algorithm. So, the claim is going
+to be that the F values produced, which
+you'll notice, are going to be the
+integers between N through one, because
+DFS will be called eventually once on
+every vertex and it will get some integer
+assignment at the end. And everybody's
+gonna get a distinct value and the largest
+one is N and the smallest one is one. The
+claim is that is a topological ordering.
+Clearly this algorithm is just as
+blazingly fast as DFS itself, with just a
+trivial amount of extra bookkeeping. Let's
+see how it works on our running example.
+So let's just say we have this four node
+directed graph, which we're getting quite
+used to. So this has four vertices. So we
+initialize the current label variable to be equal to four.
+So let's say that, in the outer DFS loop, let's stay we
+start somewhere like the vertex V. So
+notice, in this outer for loop, we wind
+up considering the vertices in a
+totally arbitrary order. So let's say we
+first call DFS from this vertex V. So
+what happens? Well, the only place you can
+go from V is to T and then at T there's
+nowhere to go. So we recursively call
+DFS of T. There's no edges to go through.
+We finish the for loop and so T is
+going to be assigned an F value equal to
+the current label, which is N and here N
+is the number of vertices which is four.
+So F of T is going to get. Sorry T is
+going to get the assignment the label
+four. So then now we're done with T we
+back track back to V. We decrement the
+current label as we finish up with T. We
+get to V, and now there's no more outgoing
+arcs to explore, so its for loop is
+finished. So we're done with it, with
+depth-first search. So it gets what's the new
+current label, which is now three. And
+again having finished with V we decrement
+the current label which is now down to
+two. So now we go back to the outer
+for loop. Maybe the next vertex we
+consider is the vertex T. But we've
+already been there so don't bother to DFS
+on T. Then maybe after that we tried it on
+S. So, maybe S is the third vertex that
+the for loop considers. We haven't seen S
+yet so invoked DSF starting from vertex S.
+From S there's two arcs to explore the one
+with V. V we've already seen nothing is
+gonna happen with arc SV. But on the other hand
+the arc SW will cause us to recursively
+call DFS on W. From W we try to look at
+the arc from W to T, but we've already
+been to T so we don't do anything, that
+finishes up with W so depth-first search then
+finishes up at the vertex W, W gets the
+assignment of the current label, so F of
+W equals two. We decrement current
+label, now its value is one, now we
+backtrack to S, we've already considered
+all of S's outgoing arcs so we're done
+with S, it gets the current label which is
+one. And this is indeed one of the two
+topological orderings of this graph that
+we exhibited, a couple slides ago. So
+that's the full description of the
+algorithm and how it works on a concrete
+example. Let's just discuss what are its
+key properties, its running time and its
+correctness. So as far as the running
+time of this algorithm, the running time
+is linear; it's exactly what you'd want it
+to be. And the reason the running time is
+linear is for the usual reasons that these
+graph search algorithms have run a linear
+time, you're explicitly keeping track of
+which nodes you've been to so that you
+don't visit them twice. So you only do
+a constant amount of work for each of
+the N nodes and each edge in a directed
+graph, you actually only look at each edge
+once when you visit the tail of that edge.
+So you only do a constant amount of work
+per edge as well. Of course the other key
+property is correctness. That is we need
+to show that you all are guaranteed to get
+a topological ordering. So what does that
+mean? That means every edge. Every arc
+travels forward in the ordering. So if UV
+is in edge, then F of U, the label
+assigned to U, in this algorithm is
+less than the label assigned to V. The
+proof of correctness splits into two cases
+depending on which of the vertices U or V
+is visited first by depth-first search.
+Because of our for loop, which iterates
+over all of the vertices of the graph
+G, depth-first search is going to be
+invoked exactly once from each of the
+vertices. Either U or V could be first,
+both are possible. So, first, let's assume
+that U is visited by DFS before V. So then
+what happens? Well, remember what
+depth-first search does when you invoke it
+from a node, it's going to find everything
+findable from that node. So, if U is
+visited before V, that means V doesn't get
+explored so it's a candidate for being
+discovered. Moreover, there's an arc
+straight from U to V. So, certainly, DFS
+invoked at U is going to discover V.
+Furthermore, the recursive call
+corresponding to the node V, is going to
+finish, is going to get popped off the
+program stack before that of U. The
+easiest way to see this is just to think
+about the recursive structure of
+depth-first search. So when you call
+depth-first search from U, that recursive
+call, that's gonna make further recursive
+calls to all of the relevant neighbors
+including V and U's call is not gonna get
+popped off the stack until V's does
+beforehand, that's because of the last in first out
+nature of a stack or of a recursive algorithm.
+So, because V's recursive call finishes
+before that of U, that means it will be
+assigned a larger label than U.
+Remember, the labels keep decreasing as
+more and more recursive calls get popped
+off the stack. So that's exactly what we
+wanted. Now, what's up in the second case,
+case two? So this is where V is visited
+before U. And here's where we use the
+fact that the graph has no cycles. So
+there's a direct arc from U to V. That
+means there cannot be any directed path
+from V all the way back to U. That would
+create a directed cycle. Therefore, DFS,
+invoked from V, is not going to discover
+U. There's no directed path from V to U,
+again, if there was, there would be a
+directed cycle, so it doesn't find U at
+all. So the recursive call of V, again, is
+going to get popped before U's is even
+pushed onto the stack. So we're totally
+done with V before we even start to
+consider U. So therefore for the same
+reasons, since V's recursive call finishes
+first, its label is going to be larger,
+which is exactly what we wanted to prove.
+So that concludes the first quite
+interesting application of depth-first
+search. In the next video we'll look at an
+even more interesting one, which computes
+the strongly connected components of a
+directed graph. This time we can't do it
+in one depth for search, we'll need two.

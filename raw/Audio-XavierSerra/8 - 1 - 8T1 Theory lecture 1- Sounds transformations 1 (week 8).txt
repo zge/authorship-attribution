@@ -1,0 +1,385 @@
+Welcome back to the course on Audio
+Signal Processing for Music Applications.
+Until now we have been presenting
+different techniques for analyzing and
+synthesizing sounds.
+It's time to put that in practice and
+to make use of it in
+actual music applications.
+So this week we'll be talking
+about sound transformations,
+about how to transform the representations
+we have been talking about and
+then re-synthesize a sound that is
+a modified version of the input sound.
+We'll be talking in this first
+theory lecture about the short time
+Fourier transform and about two types
+of manipulation, or transformations,
+filtering and morphing, and also we'll be
+talking about the sinusoidal model and
+how we can use it for frequency scaling
+and time scaling a particular sound.
+Let's start with the Short-time Fourier
+transform. This is the block diagram that
+we saw, in which the frame by frame we
+are selecting a fragment of a sound
+windowing it, computing the spectrum,
+obtaining a magnitude and phase.
+And now what we are introducing
+is a transformation block
+after this spectral analysis.
+From this transformation we
+obtain a new magnitude and
+phase spectrum that can be inverted and
+we can
+obtain a new sound that is a modified
+version of the input sound.
+Let's first talk about filtering.
+We talked about filtering
+in this course before.
+And the idea is that filtering
+can be implemented in the time
+domain using convolution or in the
+frequency domain using multiplication.
+So this is what we are using here,
+the Short-time Fourier transform for
+applying the filtering in the spectrum,
+by multiplying the magnitude and
+phase spectrum of the input
+sound with the magnitude and
+phase spectrum of the filter.
+Strictly speaking what we're doing
+is, if we have the magnitude and
+phase separate, we're going to be
+summing the phase spectrum and
+multiplying the magnitude spectrum, okay?
+So, the filter is expressed by its
+frequency response that has a magnitude
+and a phase, and the phases are added and
+the magnitudes are multiplied, okay?
+And the equation below,
+shows these ideas.
+So the complex spectrum of the
+output is equal to the product of the two
+magnitude spectrum, of the magnitude
+spectrum of the filter with one frame
+of the magnitude spectrum
+of the input sound.
+And the phases are summed, but
+again is the whole phase spectrum
+of the filter with one frame
+of the input sound and
+then we can perform the inverse FFT and
+obtain an output sound.
+So, let's see that in practice.
+So here we have on top left
+a fragment of an orchestral sound,
+a very short fragment, of which we
+compute the magnitude and phase spectrum.
+So below that we have the red line
+is the magnitude spectrum and
+below is the phase spectrum.
+And then we have the magnitude
+spectrum of a filter, okay.
+A filter can be zero phase, so
+it's normally the important aspect
+of the filter is the magnitude of it.
+And in many situations we basically can
+discard a phase because it has no effect.
+So in here what we're going to do is
+multiplying the magnitude spectrum
+of the filter with the magnitude
+spectrum of the input sound.
+However, since we are in a log
+scale in DB we add the two together,
+so we'll be adding these two
+shapes that we see here.
+And the shape on the right is
+the added result of these 2 shapes.
+So, it's a modified version
+of the input spectrum, okay,
+and the phases
+basically are untouched, and
+then we obtain the output sound y,
+by performing the inverse FFT of that.
+Let's actually see these for
+a complete sound, so
+on top we see the spectrogram of
+the complete orchestral sound we have
+heard before, but
+let's listen to it again,
+[MUSIC],
+okay.
+And now, in the middle,
+we have the shape of
+the filter that we are applying,
+the magnitude of it, okay?
+And then what we are doing is
+multiplying this shape, but
+every single one of the frames of the
+input sound in the magnetic spectrum, and
+we obtain, the spectrogram below.
+So let's listen this resulting sound.
+[SOUND] Clearly much softer because we
+have attenuated most of the frequencies.
+We have only let pass,
+so this is a band pass filter,
+the frequencies around a 1,000 and
+something hertz, and
+the rest are very much attenuated, okay?
+And these ones
+we have even boosted them a little bit.
+But of course, energy wise we have
+reduced the energy quite a bit.
+Let's now use the Short-time Fourier
+transform for
+another type of transformation,
+what we call Morphing.
+In Morphing, we start from a sound,
+x1, in which what
+we're doing is basically the Short-time
+Fourier transform analysis re-synthesis.
+And at every frame we are multiplying
+its magnitude spectrum by a magnitude
+spectrum of another sound that
+is also changing in time, okay?
+So what we're doing is we're
+taking another sound, x2,
+we are doing a similar Short-time Fourier
+transform process, and at every frame,
+So basically it's a parallel process,
+we are only using its magnitude spectrum,
+and then
+what we're doing is
+smoothing it, because we are
+the idea is that we are applying
+the general shape of x2 into x1, okay?
+And if we see the equation below,
+basically
+what we're doing is similar
+to the concept of filtering.
+But now the x2 is time varying,
+so it has an l,
+it has a frame, and we're multiplying
+these two magnitude spectrum of x2 and
+x1 at frame l, and
+the phase spectrum is only the one of x1.
+So let's see that in practice.
+This again is the same sound
+that we played before,
+the orchestral sound, and below it is
+again the magnitude and phase spectrum.
+But now what we are doing
+is, this black line
+is a smooth magnitude spectrum
+of another sound, but
+this one will keep changing, the same way
+that keeps changing the orchestral sound.
+And we'll be adding these
+two spectrum again,
+because it's in a logarithmic scale.
+And we will be creating a new set of
+spectra from which we do the inverse FFT.
+Let's do this for the time varying sound.
+So on top we have the orchestra.
+We already have heard about it and
+let's now listen to the other sound the x2
+sound which is the speech male sound.
+>> Do you hear me, they don't lie at all.
+And the spectrogram we see in
+the middle is the smooth version of
+this x2 sound.
+So it does not have the detail of x2,
+it just has the general shape.
+And these are the two spectrograms
+that we are summing, frame by
+frame, to obtain the lower spectrogram mY,
+okay?
+In which we are definitely seeing that
+is not X, and it's not X2.
+It's a modified version of the two,
+let's listen to this
+modified version
+>> Can you hear me, they don't lie at all.
+Okay so, it clearly has
+aspects of the orchestra, and
+basically, we can understand
+the speech because the general shape of
+the magnitude spectrogram is
+the one of the speech.
+Maybe one way of understanding this
+sound is as if the orchestra was
+playing through the vocal track of
+this male and
+therefore reproducing the phonetic
+kind of textures of the speech sound.
+Okay, now let's go to the sinusoidal
+model that we already have seen.
+So we have again the analysis
+of the sinusoidal model with
+the peak detection and
+sinusoidal tracking.
+And now what we going to be doing is
+modifying the resulting sinusoidal values.
+But there is a small change here,
+we are not going to take the phase values.
+The phase values are very sensitive and
+if we want to make any transformations,
+it's very difficult to
+take care of them so
+what we are doing is regenerating the
+phase values from the frequency values.
+So we'll be modifying amplitude and
+frequencies and then we will be generating
+the phase values after the transformations
+and this is the input for
+the synthesis and it's the same synthesis
+that we have been doing until now.
+These are the particular operations
+we are doing on the output of
+the sinusoidal analysis, so
+that new frequencies and new amplitudes
+are the result of applying some scaling
+factor, sf, to the input frequency
+and also the reading of the input
+frequencies are controlled by some
+scaling time factor which allows us to
+move inside the kind of input array,
+input signal, so that we can slow down or
+speed up the reading of the sound.
+And we do that for both amplitude and
+frequency, the amplitude, since
+is done in the dB scale,
+we sum the scaling amplitude factor
+with the amplitude of the input signal.
+Okay, and the phases are regenerated,
+they are not from the original sound.
+And they are generated by
+starting from the previous phase.
+And therefore we need an initial phase
+at the beginning, which can be zero or
+can be a random value.
+And then at every frame
+we add the frequency, the new
+frequency that we are generating, so
+that the phases automatically unwrap and
+generated from the frequency values.
+So these would be for
+example a scaling envelope, so
+the scaling factor, applied to a particular
+sound and therefore would be an envelope
+in which we'll read from the input time, so
+the horizontal axis is the input time,
+and it will assign an output
+time to every input time.
+So, changing the reading position of the
+input time and modifying its length.
+So let's see a particular
+example of this time scaling
+effect, in which we start
+from a mridangam sound,
+Okay, and we are analyzing
+that with sinusoidal model, so
+on the spectrogram on top what we
+are seeing is the original signal and
+the synthesized one,
+the trajectories of the sinusoids.
+And let's listen to this sound first.
+[SOUND] Okay, and then below it
+is the transformed spectrogram,
+both the transformed sinusoids, so
+these are the modified sinusoids in
+which we have spaced them differently.
+So, we have been reading them
+at a different speed.
+And if you look at the horizontal axis,
+the time axis is very different.
+So the original sound was
+two seconds long and now
+this output sound is
+basically three seconds long.
+So it has beeb stretched by a factor of 1.5,
+okay?
+So what we are seeing here is
+the output sound but
+of course with a new time information.
+So in terms of frames,
+there are many more frames because the
+length of the frame will remain the same.
+So let's listen to
+the re-synthesized modified sound.
+[MUSIC]
+Okay, so we have changed the duration,
+not in a constant scale,
+in fact we basically made all the onsets
+at the same sort of distance.
+Okay so we basically warped 
+the time information in a way to generate
+the times in a different position
+and making the sound a little bit longer.
+Of course the number of
+possibilities here is enormous and
+we can just play around with
+this mapping in any way we want.
+And in terms of the other transformation,
+the frequency scaling, applied to
+the sinusoids, well we also need
+a scaling envelope, in which
+it’s time varying, and so
+here we have on the horizontal axis time,
+and the vertical axis is the scaling
+factor, so that means basically that at
+beginning of time we are multiplying all
+the frequencies of the sinusoids by 0.8,
+and by the end of the sound we're
+multiplying all the frequencies by 1.2.
+So the frequency will start lower and
+end up higher.
+So let's see that in a particular sound.
+So this is the orchestral sound
+that we have already heard.
+And we see here the sinusoidal
+analysis of it, in the spectrogram,
+where we see the original spectrogram and
+the sinusoidal track, and then below it
+is the transformed sinusoids from
+that curve that we just showed.
+So here we see that at the very beginning
+the sinusoids are more compact so
+they are lower frequencies.
+And at the end
+they are higher because we have
+multiplied them by 1.2.
+So let's listen to this
+modified orchestral sound.
+[MUSIC]
+Okay, of course it doesn't sound natural
+because this is not something that you
+normally would do, and there is some
+distortion, but it can be refined and
+obtain some good results by
+applying this type of techniques.
+There is not much information
+about the details of how to apply
+this type of transformations
+on sounds.
+But, if you look in Wikipedia
+you can have some pointers and
+some initial references for
+sound effects, equalization, and
+how to apply time scaling and
+pitch modifications to sounds.
+That's all I wanted to say in
+this first theory lecture.
+So we have gone over some
+particular transformations using
+the Short-term Fourier transform and
+the sinusoidal model.
+And then in the next theory lecture
+we will continue with the other
+models we have presented and using them
+in some other type of transformations.
+So I hope to see you next lecture.
+Bye-bye.
+

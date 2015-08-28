@@ -1,0 +1,487 @@
+So in this video, we'll start talking
+about the heap data structure. So in this
+video I want to be very clear on what are
+the operations supported by heap, what
+running time guarantees you can expect
+from [inaudible] limitations and I want
+you to get a feel for what kinds of
+problems they're useful for. In a separate
+video, we'll take a peek under the hood
+and talk a little bit about how heaps
+actually get implemented. But for now,
+let's just focus on how to use them as a
+client. So the number one thing you should
+remember about a given data structure is
+what operations it supports, and what is
+the running time you can expect from those
+operations. So basically, a heap supports
+two operations. There's some bells and
+whistles you can throw on. But the two
+things you gotta now is insertion and
+extract min. And so the first thing I have
+to say about a heap is that it's a
+container for a bunch of objects. And each
+of these objects should have a key, like a
+number so that for any given objects you
+can compare their keys and say one key is
+bigger than the other key. So for example,
+maybe the objects are employee records and
+the key is social security numbers, maybe
+the objects are the edges of a network and
+the keys are something like the length or
+the weight of an edge, maybe each object
+indicates an event and the key is the time
+at which that event is meant to occur. Now
+the number one thing you should remember
+about a given data structure is, first of
+all what are the operations that it
+supports? And second of all, what is the
+running time you can expect from those
+operations? For a heap, essentially
+there's two basic operations. Insert and
+extract the object that has the minimum
+key value. So in our discussion of heaps,
+we're going to allow ties that are pretty
+much equal to easy with or without ties.
+So, when you extract men from a heap they
+may have duplicate key values then there's
+no specification about which one you get.
+You just get one of the objects that has a
+tie for the minimum key value. Now, of
+course, there's no special reason that I
+chose to extract the minimum rather than
+the maximum. You either you can have a
+second notion of a heap, which is a max
+heap, which always returns the object of
+the maximum key value. Or if all you have
+at your disposal is one of these extract
+min-type heaps, you can just, negate the
+sign of all of the key values before you
+insert them, And then extract min will
+actually extract, the max key value. So,
+just to be clear, I'm not proposing here a
+data structure that supports
+simultaneously an extract-min operation
+and an extract-max operation. If you
+wanted both of those operations, there'd
+be data structures that would give it to
+you; probably a binary search tree is the
+first thing you'd want to consider. So,
+I'm just saying, you can have a heap of
+one off two flavors. Either the heap
+supports extract-min and not extract-max
+or the heap will support extract-max and
+not extract-min. So I mentioned that you
+should remember not just the supported
+operations of a data structure, but what
+is the running time of those operations.
+Now, for the heap, the way it's
+canonically implemented, the running time
+you should expect is logarithmic in the
+number of items in the heap. And its log
+base two, with quite good constants. So
+when you think about heaps, you should
+absolutely remember these two operations.
+Optionally, there's a couple other things
+about heaps that are, might be worth
+remembering Some additional operations
+that they can support. So the first is an
+operation called heapify. Like a lot of
+the other stuff about heaps, it has a few
+other names as well. But I'm going to call
+it heapify, one standard name. And the
+point of heapify is to initialize a heap
+in linear time. Now, if you have N things
+and you want to put them all in a heap,
+obviously you could just invoke insert
+once per each object. If you have N
+objects, it seems like that would take N
+times log N time, log N for each of the N
+inserts. But there's a slick way to do
+them in a batch, which takes only linear
+time. So tha t's the heapify operation,
+And another operation which can be
+implemented, although there are some
+subtleties. Is you can delete not just the
+minimum, but you can delete an ar-,
+arbitrary element from the middle of a
+heap, again, in logarithmic time. I
+mention this here primarily cuz we're
+gonna use this operation when we use heaps
+to speed up Dijkstra's Algorithm. So that's
+the gist of a heap. You maintain objects
+that have keys you can insert in
+logarithmic time, and you can find the one
+with the minimum key in logarithmic time.
+So let's turn to applications, I'll give
+you several. But before I dive into any
+one application let me just say; what's
+the general principle? What should
+[inaudible] you to think that maybe you
+want to use a heap data structure in some
+task? So the most common reason to use a
+heap is if you notice that your program is
+doing repeated minimum computations.
+Especially via exhaustive search, Most of
+the applications that we go through will
+have this flavor. It will be, there will
+be a naive program which does a bunch of
+repeated minimums using just brute force
+search and we'll see that a very simple
+application of a heap will allow us to
+speed it up tremendously. So let's start
+by returning to the mother of all
+computational problems, sorting and
+unsorted array. Now, a sorting algorithm
+which is sort of so obvious and suboptimal
+that I didn't even really bother to talk
+about it at any other point in the course
+is selection-sort. What do you do? In
+selection sort, you do a scan through the
+unsorted array. You find the minimum
+element; you put that in the first
+position. You scan through the other N-1
+elements; you find the minimum among them.
+You put that in the second position. You
+scan through the remaining N-2 unsorted
+elements. You find the minimum; you put
+that in the third position, and so on. So
+evidently, this [inaudible] sorting
+algorithm does a linear number of linear
+scans through this array. So this is
+definitely a quadratic time algorithm.
+That's why I didn't bother to tell you
+about it earlier. So this certainly fits
+the bill as being a bunch of repeated
+minimum computations. Or for each
+computation, we're doing exhaustive
+search. So this, we should just, a light
+bulb should go off, and say, aha! Can we
+do better using a heap data structure? And
+we can, and the sorting algorithm that we
+get is called heap sort. And given a heap
+data structure, this sorting algorithm is
+totally trivial. We just insert all of the
+elements from the array into the heap.
+Then we extract the minimum one by one.
+From the first extraction, we get the
+minimum of all N elements. The second
+extraction gives us the minimum of the
+remaining N-1 elements, and so on. So when
+we extract min one by one, we can just
+populate a sorted array from left to
+right. Boom, we're done. What is the
+running time of heap sort? Well, we insert
+each element once and we extract each
+element once so that's 2n heap operations
+and what I promised you is that you can
+count on heaps being implemented so that
+every operation takes logarithmic time. So
+we have a linear number of logarithmic
+time operations for running time of n log
+n. So let's take a step back and
+appreciate what just happened. We took the
+least imaginative sorting algorithm
+possible. Selection sort, which is
+evidently quadratic Time. We recognize
+the pattern of repeated minimum
+computations. We swapped in the Heap Data
+structure and boom we get an NlogN sorting
+algorithm, which is just two trivial
+lines. And remember, N log N is a pretty
+good running time for a sorting algorithm.
+This is exactly the running time we had
+for merge sort; this was exactly the
+average running time we got for randomized
+quick sort. Moreover, Heap Sort is a
+comparison based sorting algorithm. We
+don't use any data about the key elements
+we just used as a totally [inaudible] set.
+And, as some of you may have seen in an
+optional video, there does not exist a
+comparison-based sorting algorithm with
+running time better than N log N. So for
+the question, can we do better? The answer
+is no, if we use a comparison based
+sorting algorithm like heap sort. So
+that's pretty amazing, all we do is swap
+in a Heap and a running time drops from really quite unsatisfactory quadratic
+to the optimal N log N. Moreover, HeapSort is a pretty practical sorting algorithm:
+when you run this it's gonna go really fast. Is it as good as quick
+sort? Hm, maybe not quite but its close
+it's getting into the same [inaudible]. So
+let's talk of another application which frankly in some sense is almost trivial
+but this is also a canonical way in which heaps are used. And in this application it
+will be natural to call a heap by a
+synonymous name, a priority queue. So what
+I want you to think about for this example
+is that you've been tasked with writing
+software that performs a simulation of the
+physical world. So you might pretend, for
+example, that you're helping write a video
+game which is for basketball. Now why
+would a heap come up in a simulation
+context? Well, the objects in this
+application are going to be events
+records. So an event might be for example
+that the ball will reach the hoop at a
+particular time and that would be because
+a player shot it a couple of seconds ago.
+When if for example the ball hits the rim,
+that could trigger another event to be
+scheduled for the near future which is
+that a couple players are going to vie for
+the rebound. That event in turn could
+trigger the scheduling of another event,
+which is one of these players? commits, an
+over the back foul on the other one and
+knocks them to the ground. That in turn
+could trigger another event which is the
+player that got knocked on the ground gets
+up and argues that a foul call, and so on.
+So when you have event records like this,
+there's a very natural key, which is just
+the timestamp, the time at which this
+event in the future is scheduled to occur.
+Now clearly a problem which has to get
+solved over and over and over again in
+this kind of simulation is you have to
+figure out what's the next event that's
+going to occur. You have to know what
+other events to schedule; you have to
+update the screen and so on. So that's a
+minimum computation. So a very silly thing
+you could do is just maintain an unordered
+list of all of the events that have ever
+been scheduled and do a linear path
+through them and compute the minimum. But
+you're gonna be computing minimums over
+and over and over again, so again that
+light bulb should go on. And you could say
+maybe a heap is just what I need for this
+problem. And indeed it is. So, if you're
+storing these event records in a heap.
+With the key being the time stamps then
+when you extract them in the hands for you
+on a silver platter using logarithmic time
+exactly which algorithm is going to occur
+next. So let's move on to a less obvious
+application of heaps, which is a problem
+I'm going to call median maintenance. The
+way this is gonna work is that you and I
+are gonna play a little game. So on my
+side, what I'm going to do is I'm going to
+pass you index cards, one at a time, where
+there's a number written on each index
+card. Your responsibility is to tell me at
+each time step the median of the number
+that I've passed you so far. So, after
+I've given you the first eleven numbers
+you should tell me as quickly as possible
+the sixth smallest after I've given you
+thirteen numbers you should tell me the
+seventh smallest and so on. Moreover, we
+know how to compute the median in linear
+time but the last thing I want is for you
+to be doing a linear time computation
+every single time step. [inaudible] I only
+give you one new number? Do you really
+have to do linear time just to re-compute
+the median? If I just gave you one new
+number. So to make sure that you don't run
+a linear time selection algorithm every
+time I give you one new number, I'm going
+to put a budget on the amount of time that
+you can use on each time step to tell me
+the median. And it's going to be
+logarithmic in the number of numbers I've
+passed you so far. So I encourage you to
+pause the video at this point and spend
+some time thinking about how you would
+solve this problem. Alright, so hopefully
+you've thoug ht about this problem a
+little bit. So let me give you a hint.
+What if you use two heaps, do you see a
+good way to solve this problem then.
+Alright, so let me show you a solution to
+this problem that makes use of two heaps.
+The first heap we'll call H low. This
+equal supports extract max. Remember we
+discussed that a heap, you could pick
+whether it supports extract min or extract
+max. You don't get both, but you can get
+either one, it doesn't matter. And then
+we'll have another heap H high which
+supports extract min. And the key idea is
+to maintain the invariant that the
+smallest half of the numbers that you've
+seen so far are all in the low heap. And
+the largest half of the numbers that
+you've seen so far are all in the high
+heap. So, for example, after you've seen
+the first ten elements, the smallest five
+of them should reside in H low, and the
+biggest five of them should reside in H
+high. After you've seen twenty elements
+then the bottom ten, the smallest ten,
+should, should reside in H low, and the
+largest ten should reside in H high. If
+you've seen an odd number, either one can
+be bigger, it doesn't matter. So if you
+have 21 you have the smallest ten in the
+one and the biggest eleven in the other,
+or vice-versa. It's not, not important.
+Now given this key idea of splitting the
+elements in half, according to the two
+heaps. You need two realizations, which
+I'll leave for you to check. So first of
+all, you have to prove you can actually
+maintain this invariant with only O of log
+I work in step I. Second of all, you have
+to realize this invariant allows you to
+solve the desired problem. So let me just
+quickly talk through both of these points,
+and then you can think about it in more
+detail, on your own time. So let's start
+with the first one. How can we maintain
+this invariant, using only log I work and
+time step I, and this is a little tricky.
+So let's suppose we've already processed
+the first twenty numbers, and the smallest
+ten of them we've all worked hard to, to
+put only in H low. And the biggest ten of
+th ''em we've worked hard to put only in H
+high. Now, here's a preliminary
+observation. What's true, so what do we
+know about the maximum element in h low?
+Well these are the tenth smallest overall
+and the maximum then is the biggest of the
+tenth smallest. So that would be a tenth
+order statistic, so the tenth order
+overall. Now what about in the, the hi
+key? What s its minimum value? Well those
+are the biggest ten values. So the minimum
+of, of the ten biggest values would be the
+eleventh order statistic. Okay, so the
+maximum of H low is the tenth order
+statistic. The minimum of H high Is the
+[inaudible] statistic, they're right next
+to each other; these are in fact the two
+medians Right now So When this new element
+comes in, the twenty-first element comes
+in, we need to know which heap to insert
+it into and well it just, if it's smaller
+than the tenth order statistic then it's
+still gonna be in the bottom, then it's in
+the bottom half of the elements and needs
+to go in the low heap. If it's bigger than
+the eleventh order statistic, if it's
+bigger than the minimum value of the high
+heap then that's where it belongs, in the
+high heap. If it's wedged in between the
+tenth and eleventh order of statistics, it
+doesn't matter. We can put it in either
+one. This is the new median anyways. Now,
+we're not done yet with this first point,
+because there's a problem with potential
+imbalance. So imagine that the
+twenty-first element comes up and it's
+less than the maximum of the low heap, so
+we stick it in the low heap and now that
+has a population of eleven. And now
+imagine the twenty-second number comes up
+and that again is less than the maximum
+element in the low heap, so again we have
+to insert it in the low heap. Now we have
+twelve elements in the low heap, but we
+only have ten in the right heap. So we
+don't have a 50. 50, 50 split of the
+numbers but we could easily re-balance we
+just extract the max from the low heap and
+we insert it into the high heap. And boom.
+Now they both have eleven, and the low
+heap has the smallest el even, and the
+high heap has the biggest eleven. So
+that's how you maintain, the invariant
+that you have this 50/50 split in terms of
+the small and the high, and between the
+two heaps. You check Where it lies with
+respect to the max of the low heap and the
+mid of the high heap. You put it in the
+appropriate place. And whenever you need
+to do some re-balancing, you do some
+re-balancing. Now, this uses only a
+constant number of heap operations when a
+new number shows up. So that's log I work.
+So now given this discussion, it's easy to
+see the second point given that this
+invariant is true at each time step. How
+do we compute the median? Well, it's going
+to be either the maximum of the low heap
+and/or the minimum of the high heap
+depending on whether I is even or odd. If
+it's even, both of those are medians. If I
+is odd, then it's just whichever heap has
+one more element than the other one. So
+the final application we'll talk about in
+detail in a different video. A video
+concerned with the running time of
+Dijkstra's shortest path algorithm. But I
+do wanna mention it here as well just to
+reiterate the point of how careful use of
+data structures can speed up algorithms.
+Especially when you're doing things like
+minimum computations in an inner loop. So
+Dijkstra's shortest path algorithm,
+hopefully, many of you have watched that
+video at this point. But basically, what
+it does is it has a central wild loop. And
+so it operates once per vertex of the
+graph. And at least naively, it seems like
+what each iteration of the wild loop does
+is an exhaustive search through the edges
+of the graph, computing a minimum. So if
+we think about the work performed in this
+naive implementation, it's exactly in the
+wheel-house of a heap, right. So what we
+do in each of these loop iterations is do
+an exhaustive search computing a minimum.
+You see repeated minimum computations, a
+light bulb should go off and you should
+think maybe a heap can help. And a heap
+can help in Dijkstra's algorithm. The
+details are a bit subtle, and they're
+discussed i n a separate video, but the
+upshot is, we get a tremendous improvement
+in the running time. So we're calling that
+M denotes the number of edges. And N
+denotes the number of vertices of a graph.
+With a careful deployment of heaps in
+Dijkstra's algorithm, the run time drops
+from this really rather large polynomial.
+The product of the number of vertices and
+the number of edges. Down to something
+which is almost linear time. Anyway, o of
+m log n. Where m is the number of edges
+and n is the number of vertices. So the
+linear time here would be o of m. The
+liner of the number of edges we're picking
+up an extra log factor but still this is
+basically as good as sorting. So this is a
+fantastically fast shortest path
+algorithm. Certainly, way, way better that
+what you get if you don't use heaps and do
+just repeated exhaustive searches for the
+minimum. So that, that's wraps up our
+discussion of what I think you really want
+to know about heaps. Namely, what are the
+key operations that it supports? What is
+the running time you can expect from those
+operations? What are the types of problems
+that the data structure will yield speed
+ups for? And a suite of applications. For
+those of you that want to take it to the
+next level and see a little bit about the
+guts of the implementation, there is a
+separate optional video that talks a bit
+about that.

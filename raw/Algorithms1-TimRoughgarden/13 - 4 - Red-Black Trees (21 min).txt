@@ -1,0 +1,664 @@
+So, in this video, we'll graduate beyond
+the domain of just vanilla binary search
+trees, like we've been talking about
+before, and we'll start talking about
+balanced binary search trees.
+These are the search trees you'd really
+want to use when you want to have real
+time guarantees on your operation time.
+Cuz they're search trees which are
+guaranteed to stay balanced, which means
+the height is guaranteed to stay
+logarithmic, which means all of the
+operations search trees support that we
+know and love, will also be a logarithmic
+in the number of keys that they're
+storing.
+So, let's just quickly recap.
+What is the basic structure tree property?
+It should be the case that at every single
+node of your search tree, if you go to the
+left, you'll only see keys that are
+smaller than where you started and if you
+go to the right you only see keys that
+are bigger than where you started.
+And a really important observation, which
+is that, given a set of keys, there's
+going to be lot and lots of legitimate,
+valid, binary search trees with those
+keys.
+So, we've been having these running
+examples where the keys one, two, three,
+four, five.
+On the one hand, you can have a nice and
+balanced search tree that has height only
+two, with the keys one through five.
+On the other hand, you can also have these
+crazy chains, basically devolved to link
+lists where the heights for, and elements
+could be as high as N - 1.
+So, in general, you could have an
+exponential difference in the height.
+It can be as small, in the best case, as
+logarithmic and as big, in the worst case,
+as linear.
+So, this obviously motivates search trees
+that have the additional property that you
+never have to worry about their height.
+You know they're going to be well
+balanced.
+You know they're going to have height
+logarithmic.
+You're never worried about them having
+this really lousy linear height.
+Remember, why it's so important to have a
+small height?
+It's because the running time of all of
+the operations of search trees depends on
+the height.
+You want to do search, you want to
+insertions, you want to find predecessors
+or whatever, the height is going to be
+what governs the running time of all those
+properties.
+So, the high level idea behind balanced search
+trees is really exactly what you think,
+which is that, you know, because the
+height can't be any better than
+logarithmic in the number of things you're
+storing, that's because the trees are
+binary so the number of nodes can only
+double each level so you need a
+logarithmic number of levels to
+accommodate everything that you are
+storing.
+But it's got to be logarithmic, lets make
+sure it stays logarithmic all the time,
+even as we do insertions and deletions.
+If we can do that, then we get a very rich
+collection of supported operations all
+running in logarithmic time.
+As usual, n denotes, the number of
+keys being stored in the tree.
+There are many, many, many different
+balanced search trees.
+They're not super, most of them are not
+super different from each other.
+I'm going to talk about one of the more
+popular ones which are called Red Black
+Trees.
+So, these were invented back in the '70s.
+These were not the first balanced binary
+search tree data structures, that honor
+belongs to AVL trees, which again are not
+very different from red black trees,
+though the invariants are slightly
+different.
+Another thing you might want to look up
+and read about is a very cool data
+structure called splay trees, due to
+Sleator and Tarjan,
+These, unlike red black trees and AVL
+trees, which only are modified on
+insertions and deletions, which, if you
+think about it, is sort of what you'd
+expect.
+Splay trees modify themselves, even when
+you're doing look ups, even when you're
+doing searches.
+So, they're sometimes called
+self-adjusting trees for that reason.
+And it's super simple, but they still have
+kind of amazing guarantees.
+And then finally, going beyond the, just
+the binary tree paradigm many of you might
+want to look up examples of B trees or
+also B+ trees.
+These are very relevant for implementing
+databases.
+Here what the idea is, in a given node
+you're going to have not just one key but
+many keys and from a node, you have
+multiple branches that you can take
+depending where you're searching for falls
+with respect to the multiple keys that are
+at that node.
+The motivation in a database context for
+going beyond the binary paradigm, is to
+have a better match up with the memory
+hierarchy.
+So, that's also very important, although a
+little bit out of the scope here.
+That said, what we discuss about red-black
+trees, much of the intuition will
+translate to all of these other balance
+tree data structures, if you ever find
+yourself in a position where you need to
+learn more about them.
+So, red black trees are just the same as
+binary search trees, except they also
+always maintain a number of additional
+invariants.
+And so, what I'm going to focus on in this
+video is, first of all, what the
+invariants are, and then how the
+invariants guarantee that the height will
+be logarithmic.
+Time permitting, at some point, there will
+be optional videos more about the guts,
+more about the implementations of red
+black trees namely how do you maintain
+these invariants under insertions and
+deletions.
+That's quite a bit more complicated, so
+that's appropriate for, for optional
+material.
+But understanding what the invariants are
+and what role they play in controlling the
+height is very accessible, and it's
+something I think every programmer should
+know.
+So, there, I'm going to write down four
+invariants and really, the bite comes from
+the second two, okay, from the third and
+the fourth invariant.
+The first two invariants you know, are
+just really cosmetic.
+So, the first one we're going to store one
+bit of information additionally at each
+node, beyond just the key and we're going
+call this bit as indicating whether it's a
+red or a black node.
+You might be wondering, you know, why red
+black?
+Well, I asked my colleague, Leo Guibas
+about that a few years ago.
+And he told me that when he and Professor
+Sedgewick were writing up this article the
+journals were, just had access to a
+certain kind of new printing technology
+that allowed very limited color in the
+printed copies of the journals.
+And so, they were eager to use it, and so
+they named the data structure red black,
+so they could have these nice red and
+black pictures in the journal article.
+Unfortunately, there was then some snafu,
+and at the end of the day, that technology
+wasn't actually available, so it wasn't
+actually printed the way they were
+envisioning it but the name has stuck.
+So, that's the rather idiosyncratic reason
+why these data structures got the name
+that they did, red black trees.
+So, secondly we're going to maintain the
+invariant that the roots of the search
+tree is always black, it can never be red.
+Okay.
+So, with the superficial pair of
+invariants out of the way, let's go to the
+two main ones.
+So, first of all, we're never going to
+allow two reds in a row.
+By which, I mean, if you have a red node
+in the search tree, then its children must
+be black.
+If you think about for a second, you
+realize this also implies that if a notice
+red, and it has a parent, then that
+parent has to be a black node.
+So, in that sense, there are no two red
+nodes in a row anywhere in the tree.
+And the final invariant which is also
+rather severe is that every path you might
+take from a root to a null pointer, passes
+through exactly the same number of black
+nodes.
+So, to be clear on what I mean by a root
+null path, what you should think about is an
+unsuccessful search, right?
+So, what happens in an unsuccessful
+search, you start at the root depending on
+whether you need to go smaller or bigger,
+you go left or right respectably.
+You keep going left right as appropriate
+until eventually you hit a null pointer.
+So, I want you to think about the process
+that which you start at the root and then,
+eventually, fall off the end of the tree.
+In doing so, you traverse some number of
+nodes.
+Some of those nodes will be black some of
+those nodes will be red.
+And I want you to keep track of the number
+of black nodes and the constraints that a
+red black tree, by definition, must
+satisfy, is that no matter what path you
+take through the tree starting from the
+root terminating at a null pointer, the
+number of black nodes traversed, has to be
+exactly the same.
+It cannot depend on the path, it has to be
+exactly the same on every single root null path.
+Let's move on to some examples.
+So, here's a claim.
+And this is meant to, kind of, whet your
+appetite for the idea that red black trees
+must be pretty balanced.
+They have to have height, basically
+logarithmic.
+So, remember, what's the most unbalanced
+search tree?
+Well, that's these chains.
+So, the claim is, even a chain with three
+nodes can not be a red black tree.
+So, what's the proof?
+Well, consider such a search tree.
+So, maybe, with the key values one, two and three.
+So, the question that we're asking is, is
+there a way to color the node, these three
+nodes, red and black so that all four of
+the invariants are satisfied.
+So, we need to color each red or black.
+Remember, variant two says, the root, the
+one has to be black.
+So, we have four possibilities for how to
+use the color two and three.
+But really, because of the third
+invariant, we only have three possibilities.
+We can't color two and three both red, cuz
+then we'd have two reds in a row.
+So, we can either make two red, three
+black, two black, three red, or both two
+and three black.
+And all of the cases are the same.
+Just to give one example, suppose that we
+colored the node two, red, and one and
+three are black.
+The claim is invariant four has been
+broken and invariant four is going to be
+broken no matter how we try to color two
+and three red and black.
+What is invariant four says?
+It says, really on any unsuccessful
+search, you pass through the same number
+of black nodes.
+And so, one unsuccessful search would be,
+you search for zero.
+And if you search for a zero, you go to
+the root, you immediately go left to hit a
+null pointer.
+So, you see exactly one black node.
+Namely one.
+On the other hand, suppose you searched
+for four, then you'd start at the root,
+and you'd go right, and you go to two,
+you'd go right, and you go to three, you'd
+go right again, and only then will you get
+a null pointer.
+And on that, unsuccessful search, you'd
+encounter two black nodes, both the one
+and the three.
+So, it's a violation of the fourth
+invariant, therefore, this would not be a
+red black tree.
+I'll leave that for you to check, that no
+matter how you try to code two and three
+red or black, you're going to break one of
+the invariants.
+If they're both red, you'd break the third
+invariant.
+If at most one is red, you'd break the
+fourth invariant.
+So, that's a non-example of a red-black tree.
+So, let's look at an example of a red-black tree.
+One, a search tree where you can actually
+color the nodes red or black so that all
+four invariants are maintained.
+So, one search tree which is very easy to
+make red black is a perfectly balanced one.
+So, for example, let's consider this three
+nodes search tree has the keys three,
+five, and seven and let's suppose the five
+is the root.
+So, it has one child on each side, the
+three and the seven.
+So, can this be made a red black tree?
+So, remember what that question really
+means.
+It's asking can we color theses three
+nodes some combination of red and black so
+that all four of the invariants are
+satisfied?
+If you think about it a little bit, you
+realize, yeah, you can definitely color
+these nodes red or black to make and
+satisfy for the invariants.
+In particular, suppose we color all three
+of the nodes, black.
+We've satisfied variant number one, we've
+colored all the nodes.
+We've satisfied variant number two, and
+particularly, the root is black.
+We've satisfied invariant number three.
+There's no reds at all, so there's
+certainly no two reds in a row.
+And, if you think about it, we've
+satisfied invariant four because this tree
+is perfectly balanced.
+No matter what you unsuccessfully search
+for, you're going to encounter two black
+nodes.
+If you search for, say, one, you're going
+to encounter three and five.
+If you search for, say, six, you're going
+to encounter five and seven.
+So, all root null paths have exactly
+two black nodes and variant number four is
+also satisfied.
+So, that's great.
+But, of course, the whole point of having
+a binary search tree data structure is you
+want to be dynamic.
+You want to accommodate insertions and
+deletions.
+Every time you have an insertion or a
+deletion into a red black tree, you get a
+new node.
+Let's say, an insertion, you get a new
+node, you have to color it something.
+And now, all of a sudden, you got to worry
+about breaking one of these four
+invariants.
+So, let me just show you some easy cases
+where you can accommodate insertions
+without too much work.
+Time permitting we will include some
+optional videos with the notion of
+rotations which do more fundamental
+restructuring of search trees so that they
+can maintain the four invariants, and stay
+nearly perfectly balanced.
+So, if we have this red black tree where
+everything's black, and we insert, say,
+six, that's going to get inserted down
+here.
+Now, if we try to color it black, it's no
+longer going to be a red black tree.
+And that's because, if we do an
+unsuccessful search now for, say, 5.5,
+we're going to encounter three black
+nodes, where if we do an unsuccessful
+search for one, we only encounter two
+black nodes.
+So, that's not going to work.
+But the way we can fix it is instead of
+coloring the six black, we color it red.
+And now, this six is basically invisible
+to invariant number four.
+It doesn't show up in any root null
+paths.
+So, because you have two black nodes in
+all roots in all paths before, before the
+six was there, that's still true now that
+you have this red six.
+So, all four invariants are satisfied once
+you insert the six and color it red.
+If we then insert, say, an eight, we can
+pull exactly the same trick, we can call
+it an eight red.
+Again, it doesn't participate in invariant
+four at all so we haven't broken it.
+Moreover, we still don't have two reds in
+a row, so we haven't broken invariant
+number three either.
+So, this is yet another red black tree.
+In fact, this is not the unique way to
+color the nodes of this search tree, so
+that it satisfies all four of the
+invariants.
+If we, instead, recolor six and eight
+black, but at the same time, recolor the
+node seven, red, we're also golden.
+Clearly, the first three invariants are
+all satisfied.
+But also, in pushing the red upward,
+consolidating the red at six and eight,
+and putting it at seven instead, we
+haven't changed the number of black nodes
+on any given path.
+Any black, any path that previously went
+through six, went through seven, anything
+that went through eight, went through
+seven so there's exactly the same number
+of red and black nodes on each such path
+as there was before.
+So, all paths still have equal number of
+black nodes and invariant four remains
+satisfied.
+As I said, I've shown you here only simple
+examples, where you don't have to do much
+work on an insertion to retain the red
+black properties.
+In general, if you keep inserting more and
+more stuff and certainly if you do the
+deletions, you have to work much harder to
+maintain those four invariants.
+Time permitting, we'll cover just a taste
+of it in some optional videos.
+So, what's the point of these seemingly
+arbitrary four invariants of a red black
+tree?
+Well, the whole point is that if you
+satisfy these four invariants in your
+search tree, then your height is going to
+be small.
+And because your height's going to be
+small, all your operations are going to be
+fast.
+So, let me give you a proof that if a
+search tree satisfies the four invariants,
+then it has super small height.
+In fact, no more than double the absolute
+minimum that we conceivably have, almost
+two times log base two of N.
+So, the formal claim, is that every
+red-black tree with N nodes, has height O
+of log N, were precisely in those two
+times log base two of N + 1.
+So, here's the proof.
+And what's clear about this proof is it's
+very obvious the role played by this
+invariants three and four.
+Essentially, what the invariants guarantee
+is that, a red black tree has to look like
+a perfectly balanced tree with at most a
+sort of factor two inflation.
+So, let's see exactly what I mean.
+So, let's begin with an observation.
+And this, this has nothing to do with red
+black trees.
+Forget about the colors for a moment, and
+just think about the structure of binary
+trees.
+And let's suppose we have a lower bound on
+how long root null paths are in the tree.
+So, for some parameter k, and go ahead and
+think of k as, like, ten if you want.
+Suppose we have a tree where if you start
+from the root, and no matter how it is you
+navigate left and right, child pointers
+until you terminate in a null pointer.
+No matter how you do it, you have no
+choice but to see at least k nodes along
+the way.
+If that hypothesis is satisfied, then if
+you think about it, the top of this tree
+has to be totally filled in.
+So, the top of this tree has to include a
+perfectly balanced search tree, binary
+tree of depth k - 1.
+So, let me draw a picture here of the case
+of k = three.
+So, if no matter how you go from the root
+to a null pointer, you have to see at
+least three nodes along the way.
+That means the top three levels of this
+tree have to be full.
+So, you have to have the root.
+It has to have both of its children.
+It has to have all four of its
+grandchildren.
+The proof of this observation is by
+contradiction.
+If, in fact, you were missing some nodes
+in any of these top k levels.
+We'll that would give you a way of hitting
+a null pointer seeing less then k nodes.
+So, what's the point is, the point is this
+gives us a lower bound on the population
+of a search tree as a function of the
+lengths of its root null paths.
+So, the size N of the tree must include at
+least the number of nodes in a perfectly
+balanced tree of depth k - 1 which is
+2^k - 1, So, for example,
+when k = 3, it's 2^3 (two cubed) - 1,
+or 7  that's just a basic fact about trees,
+nothing about red black trees.
+So, let's now combine that with a red
+black tree invariant to see why red black
+trees have to have small height.
+So again, to recap where we got to on the
+previous slide.
+The size N, the number of nodes in a tree,
+is at least 2^k - 1, where k is
+the fewest number of nodes you will ever
+see on a root null path.
+So, let's rewrite this a little bit and
+let's actually say, instead of having a
+lower bound on N in terms of k, let's have
+an upper bound on k in terms of N.
+So, the length of every root null path,
+the minimum length of every root null
+path is bounded above by log base two of
+quantity N + 1.
+This is just adding one to both sides and
+taking the logarithm base two.
+So, what does this buy us?
+Well, now, let's start thinking about red
+black trees.
+So now, red black tree with N nodes.
+What does this say?
+This says that the number of nodes, forget
+about red or black, just the number of
+nodes on some root null path has to be the
+most log base two of N + 1.
+In the best case, all of those are black.
+Maybe some of them are red, but in the,
+in, the maximum case, all of them are
+black.
+So, we can write in a red black tree with
+N nodes, there is a root null path with at
+most log base two of N + 1, black nodes.
+This is an even weaker statement than what
+we just proved.
+We proved that it have some, somehow must
+have at most log based two, n + 1 total
+nodes.
+So, certainly, that path has the most log
+base two of N + 1 black nodes.
+Now, let's, now let's apply the two
+knockout punches of our two invariants.
+Alright, so fundamentally, what is the
+fourth invariant telling us?
+It's telling us that if we look at a path
+in our red black tree, we go from the
+root, we think about, let's say, that's an
+unsuccessful search, we go down to a null
+pointer.
+It says, if we think of the red nodes as
+invisible, if we don't count them in our
+tally, then we're only going to see log,
+basically a logarithmic number of nodes.
+But when we care about the height of the
+red black tree, of course, we care about
+all of the nodes, the red nodes and the
+black nodes.
+So, so far we know, that if we only count
+black nodes then we're good, We only have
+log base two of N + 1 nodes that we need
+to count.
+So, here's where the third invariant comes
+in.
+It says, well actually, black nodes are a
+majority of nodes in the tree.
+In a strong sense, there are no two reds
+in a row, on any path.
+So, if we know the number of black nodes
+is small, then because you can't have two
+reds in a row, the number of total nodes
+on the path is at most twice as large.
+In the worst case, you have a black route,
+then red, then black, then red, then
+black, then red, then black, et cetera.
+At the worst case, the number of red nodes
+is equal to the number of black nodes,
+which doubles the length of the path once
+you start counting the red nodes as well.
+And this is exactly what it means for a
+tree to have a logarithmic depth.
+So, this, in fact, proves the claim, if
+the search trees satisfies the invariants
+one through four, in particular if there's
+no two reds in a row and all root null
+paths have an equal number of black nodes,
+then, knowing nothing else about this
+search tree, it's got to be almost
+balanced.
+It's perfectly balanced up to a factor of
+two.
+And again, the point then is that
+operations in a search tree and the search
+trees are going to run in logarithmic
+time, because the height is what governs
+the running time of those operations.
+Now, in some sense, I've only told you the
+easy part which is if it just so happens
+that your search tree satisfies these
+four invariants, then you're good.
+The height is guaranteed to be small so
+the operations are guaranteed to be fast.
+Clearly that's exactly what you want from
+this data structure.
+But for the poor soul who has to actually
+implement this data structure, the hard
+work is maintaining these invariants even
+as the data structure changes.
+Remember, the point here is to be dynamic,
+to accommodate insertions and deletions.
+And searches and deletions can disrupt
+these four invariants and then one has to
+actually change the code to make sure
+they're satisfied again, so that the tree
+stays balanced, has low height, even under
+arbitrary sequences of insertions and
+deletions.
+So, we're not going to cover that in this
+video.
+It can be done, without significantly
+slowing down any of the operations.
+It's pretty tricky, takes some nice ideas.
+There's a couple well-known algorithms
+textbooks that cover those details.
+Or if you look at open source and
+limitations of balanced search trees, you
+can look at code that does that
+implementations.
+But, because it can be done in a practical
+way and because Red Black Tree supports
+such an original array of operations,
+that's why you will find them used in a
+number practical applications.
+That's why balanced search trees should be
+part of your programmer tool box.

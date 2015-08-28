@@ -1,0 +1,176 @@
+[SOUND] In this session we
+are going to introduce you
+an interesting extension of
+hierarchical clustering method,
+called BIRCH: A Micro-Clustering
+Based Approach.
+BIRCH is an abbreviation of
+Balance Iterative Reducing and
+Clustering Using Hierarchies.
+It was developed by a group of researchers
+in University of Wisconsin in 1996.
+The general philosophy is,
+it incrementally constructs
+a CF tree, or
+called a Clustering Feature tree,
+which is a hierarchical data structure for
+multiphase clustering.
+For phase 1, essentially,
+it scans the database to construct
+an initial in-memory CF tree.
+Which is a multi-level
+compression of the data that
+tries to preserve the inherent
+clustering structure of the data.
+Then at Phase 2, it uses an arbitrary
+clustering algorithm to cluster
+the leaf nodes of the CF-tree.
+The key idea is multilevel clustering.
+The low level it does micro-clustering,
+therefore reduces the complexity,
+and increases scalability.
+At the high level,
+it does macro-clustering.
+It leaves enough flexibility for
+high level clustering using
+different clustering methodologies.
+The BIRCH methods scales linearly.
+That means you, it finds a good
+clustering with a single scan, and
+then improves the quality
+with a few additional scans.
+The clustering feature we first
+introduce is the CF vector in BIRCH.
+The BIRCH Clustering Feature essentially
+is suppose you get these five
+points into one cluster.
+okay?
+Then suppose these are the five points,
+their positions, okay?
+Then the CF vector
+contains three components.
+One is the number of data points.
+The second is a linear sum of
+the points in the cluster.
+The third one is square
+sum of the N points.
+Okay.
+So you probably can see the,
+the first one, 5 means there are 5 points.
+The second one acts as a linear
+sum of each dimension.
+Okay.
+The third one actually is
+the squared sum of each dimension.
+So the Clustering Feature essentially
+is the summary of the statistics of
+a given sub-cluster, which you can
+consider the number is the zeroth,
+the first one is the linear,
+the second one is the second moments
+of the sub-cluster from
+the statistic point of view.
+That means it will register
+the crucial measurements of the, for
+computing cluster and
+utilizes storage quite efficiently.
+So we can look at the,
+the general concepts of centroid,
+radius, and diameter.
+Okay.
+The centroid essentially is
+the center of the cluster, okay?
+Then, suppose we have a vector
+of N dimensions, x sub i.
+Okay.
+Then, the centroid is essentially
+computed by the sum of
+all the points in this cluster divided
+by the number of points in the cluster,
+so that what we get is
+a centroid of the cluster.
+Okay.
+Then the radius actually is
+the average distance from the member
+objects to the centroid.
+That essentially is every one you
+get a difference with the centroid,
+then we use the sum of
+their square distance.
+Divide by the number of
+points in the cluster.
+Take their square root.
+Essentially it's the square
+root of the average distance
+from any point of
+the cluster to its centroid.
+What is diameter?
+Diameter essentially is average
+pairwise distance within the cluster.
+That means if x i and x j is within the
+same cluster, so essentially what we want,
+we will find is there are total
+n times n minus 1 pairs and
+we sum up all these pairwise distance
+then you get the square root.
+That's the diameter.
+Then we look at CF Tree
+structure in BIRCH.
+The CF Tree Structure essentially
+is very much like a, B+-tree.
+We can do incremental
+insertion of the new points.
+That means when the new points come,
+okay, we can find the closest leaf entry.
+Start from the root.
+Okay, then we try,
+traverse we find the closest entry,
+we can add points to the leaf entry and
+update the Clustering Feature, CF.
+If this entry diameter is greater
+than the maximum diameter,
+then we'll split the leaf and
+if it's possibly we
+even will be able to split parents
+based on the B+-tree algorithm.
+A CF tree has two parameters,
+one called branching factor.
+That means the maximum number of children.
+Another is maximum diameter of
+sub-clusters stored at the leaf nodes.
+Then a CF tree essentially is
+height-balanced tree that stores
+the clustering features.
+The non-leaf nodes store the sums of
+clustering features of their children.
+So we can see BIRCH is an interesting
+algorithm, because it, it is
+an integration of agglomerative clustering
+with other flexible clustering methods.
+The low level we do micro-clustering.
+We explore the CF feature and
+BIRCH tree structure.
+It preserves the inherent
+clustering structure of the data.
+At the high level we do macro-clustering.
+It provides sufficient flexibility for
+integration with other clustering methods.
+So this method act, impact to
+many other clustering methods and
+applications for large data sets.
+There are some concerns.
+One is the,
+the BIRCH tree is still sensitive to
+the insertion order of the data points.
+Another is,
+since the leaf nodes has a fixed size,
+the clustering obtained
+may not be as natural.
+And also, the clusters tend to be
+spherical given the radius and
+diameter measure as the major parameters.
+Still, it is pretty
+interesting algorithm and
+it can generate quite effective clusters.
+[MUSIC]
+

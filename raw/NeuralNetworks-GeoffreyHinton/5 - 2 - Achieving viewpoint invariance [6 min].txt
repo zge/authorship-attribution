@@ -1,0 +1,159 @@
+In this video I'm going to talk about the
+issue of viewpoint invariance.
+Each time we look at an object in the
+seen, we typically have a different view
+point.
+So the object shares up on different
+pixel.
+This makes okay recognition very unlike
+most machine learning tasks and I'm going
+to talk about various ways of trying to do
+with that issue.
+And number of different ways have been
+suggested for coping with view point
+variations.
+We're so good at it that we don't really
+appreciate how difficult it is.
+It's one of the main difficulties in
+making computers perceive, and there still
+aren't generally accepted solutions,
+either in engineering or in psychology.
+The first approach is to use redundant
+invariant features.
+The second approach is to put a box round
+the object so that you can normalize the
+pixels.
+The third approach is to use replicated
+features, and pool them.
+This is called convolutional neural nets.
+I'll go to that in great detail.
+And the first approach we shall talk about
+at the end of the lecture is to use a
+hierarchy of parts and to explicitly
+represent the places of the parts relative
+to the camera or retina.
+So, the invariant feature approach says
+you should extract a large and redundant
+set of features.
+And they should be features that are
+invariant under the transformations like
+translation and rotational scaling.
+So here's an example of an invariant
+feature.
+It's a pair of roughly parallel lines,
+with a red dot between them.
+That's actually being suggested as the
+feature the baby herring gulls use for
+knowing what to peck for food.
+If you paint that feature on a piece of
+wood, they'll peck at the appropriate
+place on the piece of wood.
+With enough invariant features, there's
+only one way to assemble them into an
+object or an image.
+You don't actually need to represent the
+relationships between features directly
+because those relationships are captured
+by other features.
+This has been pointed out for strings of
+letters by psychologist called Wayne
+[UNKNOWN] it's been pointed out in vision
+by Shimon Ullman.
+And, it's a sort of acute point that all
+we need is a big bag of features, because
+with overlapping and redundant features.
+One feature will tell you how two other
+features are related.
+Unfortunately, if you're doing
+recognition, you're going to get a whole
+bunch of features that are composed of
+parts of different objects.
+And they'll be very misleading for
+recognition.
+So you'd like to avoid forming features
+from parts of different objects.
+A second approach is what I call judicious
+normalization.
+So if you look at that upside down capital
+letter R on the right, I put a box around
+it.
+Not very well, in fact.
+And I've labeled a top and a front for
+that box.
+And relative to that box, the R has for
+example a vertical stroke at the back, and
+it has a loop facing forwards at the top.
+So if we describe features of the r
+relative to that box, they're going to be
+invariant.
+This is assuming it's a rigid shape.
+Putting a box around a rigid shape solves
+the dimension hopping problem.
+It gets rid of the effect of changes in
+viewpoint.
+If we choose the box correctly, the same
+part of an object would always occur on
+the same normalized pixels.
+It doesn't have to be a rectangular box.
+We can provide invariance to not only
+translation and rotation scale but also
+things like sheer and stretch.
+Unfortunately, choosing the box is
+difficult.
+It's difficult because we might have
+segmentation errors.
+We might have occlusion so you can't just
+shrink a box around things.
+We might have unusual orientations.
+That example of the upside down R makes it
+clear that we have to use our knowledge of
+what the shape is to help us decide what
+the box is.
+If, for example, we had a character that
+was like a lowercase D, but with an extra
+stroke coming out of the loop of the D.
+We would see that as an upright one of
+those characters.
+So it's a chicken and egg problem.
+In order to get the box right, we need to
+recognize the shape.
+In order to recognize the shape, we need
+to get the box right.
+An aside here for psychologists.
+Many psychologists think we do mental
+rotation to deal with shapes that aren't
+oriented right.
+This is complete nonsense.
+That capital letter R you recognize
+perfectly well before you do any mental
+rotation.
+Indeed, you need to recognize that it's an
+R and it's upside down, in order to know
+how to rotate it.
+You use mental rotation for dealing with
+judgments like handedness.
+That is, is it a correct R or mirror image
+R?
+You can't tell that without doing mental
+rotation.
+The mental rotation is not used for
+dealing with the fact that it's upside
+down when we want to recognize it.
+The brute force normalization approach
+works like this.
+You use well segmented, upright images
+that you can judiciously put a box around
+when you train the recognizer, and then at
+test time, when you have to deal with
+cluttered images, you try all possible
+boxes in a whole range of positions and
+scales.
+This approach is widely used in computer
+vision.
+Particularly for detecting upright things
+like faces or house numbers in unsegmented
+images.
+It's much more efficient if they recognize
+they can cope with some variation in the
+position and scale so that we can use a
+course grid when trying on possible boxes.

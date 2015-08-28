@@ -1,0 +1,432 @@
+In the last video, we discussed the
+performance of hash tables that are
+implemented using chaining, using one link
+list per bucket. In fact, we proved
+mathematically that if you use a hash
+function chosen uniformly at random from a
+universal family, and if you keep the
+buckets, number of buckets, comparable to
+the size of your data set, then in fact,
+you're guaranteed constant time expected
+performance But, recall that chaining is
+not the only implementation of hash
+tables. There's a second paradigm which is
+also very important called open
+addressing. This is where you're only
+allowed to store one object in each slot,
+and you keep searching for an empty slot
+When you need to insert a new object into
+your hash table. Now it turns out it's
+much harder to mathematically analyze hash
+tables implemented using open addressing
+But, I do want to say a few words about it
+to give you the gist of what kind of
+performance you might hope to expect from
+those sorts of hash tables. So recall how
+open addressing works. We're only
+permitted to store one object in each slot
+So this is unlike the case with chaining
+where we can have an arbitrarily long list
+in a given bucket of the hash table. With
+at most one object per slot, obviously
+open addressing only makes sense when the
+load factor alpha is less than one. When
+the number of objects you're storing in
+your table is less than the number of
+slots available Because of this
+requirement we have at most one object per
+slot we need to demand more of our hash
+function. Our hash function might ask us
+to put a given object, say with some IP
+address into say bucket number seventeen
+but bucket number seventeen might already
+be full, might already be populated. In
+that case, we go back to our hash function
+and ask it where to look for an empty slot
+next. So maybe it tells us to next look in
+bucket 41. If 41 is full it tells us to
+look in bucket number seven and so on Two
+specific strategies for producing a probe
+sequence that we mentioned earlier were
+double hashing and linear probing. D ouble
+hashing is where you use two different
+hash functions, h1 and h2. H1 tells you
+which slot in which to search first and
+then every time you find a full slot you
+add an increment which is specified by the
+second hash functions h2. Linear probing
+is even simpler you just have one hash
+function that tells you where to search
+first and then you just add one to the
+slot until you find an empty slot As I
+mentioned at the beginning, it is quite
+nontrivial to Mathematically analyze the
+performance of hash tables, using these
+various open addressing strategies. It's
+not impossible. There is some quite
+beautiful and quite informative
+theoretical work. That does tell us how
+hash tables perform But that's well
+outside the scope, of this course. So
+instead what I wanna do is I want to give
+you a quick and dirty calculation. That
+suggests, at least in an idealized world.
+What kind of performance we should expect
+from a hash table with open addressing If
+it's well implemented As a function of the
+load factor, alpha. Precisely, I'm going
+to introduce a heuristic assumption. It's
+certainly not true but we'll do it just
+for a quick and dirty calculation, that
+we're using a hash function in which each
+of the n-factorial possible probe
+sequences is equally likely. Now, no hash
+function you're ever going to use is
+actually going to satisfy this assumption,
+and if you think about it for a little
+bit, you realize that if you use double
+hashing or linear programming, you're
+certainly not going to be satisfying that
+assumption. So this will still give us a
+kind of best case scenario against to
+which you can compare the performance of
+your own hash table implementations. So if
+you [inaudible] hash table, and you're
+seeing performance as good, as what's
+suggested by this idealized [inaudible]
+analysis, then you're home free. You know
+your hash table is performing great. So
+what is the line in the sand that gets
+drawn, under this heuristic assumption?
+What is this idealized, idealized hash
+function performance? As a function of the
+lo ad alpha Well here it is. What I'm
+gonna argue next is that under this
+heuristic assumption, the expected amount
+of time to insert a new object into the
+hash table, is going to be essentially one
+over one minus alpha, where alpha is the
+load. Remember the load is the number of
+objects in the hash table divided by the
+number of available slots. So if the hash
+table is half full, then alpha's going to
+be.5. If it's 75 percent full then alpha's
+going to be three-fourths. So what this
+means is that, in this idealized scenario,
+if you keep the load pretty under control.
+So, say if the load is 50%, then the
+insertion time is gonna be great, right?
+If alpha's.5 And 1/ (1-alpha) =two, so you
+expect just two probes before the
+successful insert of the new object And of
+course, if you're thinking about lookup,
+that's going to be at least as good as
+insert, so if you're lucky a lookup might
+terminate early if you find what you are
+looking for. In the worst case you go all
+the way until an empty slot in an
+unsuccessful search, and that's gonna be
+the same as insertion. So if alpha is
+small bounded away from one, you're
+getting constant time performance. On the
+other hand, as the hash table gets full,
+as alpha gets close to one, this operation
+time is blowing up; it's such a going to
+infinity as alpha gets close to one. So if
+you need to have a nice. 90 percent full
+hash table with open addressing. You're
+gonna start seeing, ten probes. So, you
+really wanna keep hash tables with open
+addressing. You wanna keep the load under
+control Certainly no more than probably.7.
+Maybe even less than that To refresh your
+memory, with chaining, hash tables are
+perfectly well-defined even with loads
+factors bigger than one. What we derived
+is that under universal hashing, under a
+weaker assumption, we had an operation
+time of one plus alpha, for a load of
+alpha. So with chaining, you just gotta
+keep alpha, you know, at most, some
+reasonably small constant with open
+address, and you really got to keep it
+well bounded a way below one. So next
+let's understand why this observation is
+true. Why under the assumption that every
+probe sequence is equally likely do we
+expect a one over one minus alpha running
+time for hash tables with open addressing?
+So, the reason is pretty simple. And we
+can derive it by analogy with a simple
+coin flipping experiment. So, to motivate
+the experiment, think just about the very
+first probe that we do. Okay, so we get
+some new objects, some new IP address that
+we want to insert into our hash table.
+Let's say our hash table's currently 70
+percent full. Say there's 100 slots, 70
+are already taken by objects. Well, when
+we look at this first probe, by assumption
+it's equally likely to be any one of the
+100 slots. 70 of which are full, 30 which
+are empty So, with probability of one
+minus alpha, or in the case, 30%, our
+first Probe will, luckily, find an empty
+slot and we'll be done. We'll just insert
+the new object into that slot If we get
+unlucky with a probability, 70%. We find a
+slot that's already occupied and then we
+have to try again. So we try a new slot,
+drawn at random And we again check is it
+full, or is it not full? And again, with
+30 percent probability, essentially it's
+going to be empty and we can stop And if
+it's already full. Then we try, yet again.
+So Doing random probes, looking for an
+empty slot, is tantamount to flipping a
+coin with the probability of heads
+1-alpha, or, in this example, 30 Percent
+And the number of probes you need until
+you successfully insert is just the number
+of times you flip this last coin until you
+see a heads. In fact this biased coin
+flipping experiment slightly overestimates
+the expected time for insertions and the
+heuristics assumptions and that's because
+in the insertion time whenever we're never
+going to try the same slot twice. We're
+going to try all end buckets in some order
+with each of the impact [inaudible]
+ordering equally likely So back to our
+example, where we have a hash table with
+100 slots, 70 of which are full. The first
+probe indeed, we have a 30 in 100 chance
+of ge tting an empty slot. If that one
+fails then we're not going to try the same
+slot again. So there is only 99 residual
+possibilities. Again, 30 of which are
+empty. The one we checked last time was
+full. So we actually have a 30 over 99
+percent chance of getting an empty slot on
+the second try. Like 30 over 98 on the
+third try, if the second one fails, and so
+on But, a valid upper bond is just to
+assume a 30 percent success probability
+with every single probe, and that's
+precisely, what this coin flipping
+experiment will get us. So the next quiz
+will ask you to actually compute the
+expected value of capital N, the number of
+coin flips, needed to get heads when you
+have a probability of heads of one minus
+alpha. As a hint, we actually analyzed
+this exact same coin flipping experiment
+when alpha equals a half, back when we
+discussed the expected running time of
+randomized linear time selection. Alright,
+so the correct answer is the first one.
+One over 1-alpha So to see why, let's
+return to our derivation, where we reduced
+analyzing the expected insertion time to
+this random variable. The expected number
+of coin flips until we see a heads. So,
+I'm gonna solve this exactly the same way
+that we did it back when we analyzed a
+randomized, selection algorithm. And it's
+quite a sneaky way, but very effective.
+What we're going to do is we're going to
+express the expected value of capital N,
+in terms of itself, and then solve. So how
+do we do that? Well on the left hand side
+let's write the expected number of coin
+flips, the expected value of capital N,
+and then let's just notice that there's
+two different cases, either the first coin
+flip is a heads or it's not. So in any
+case you're certainly going to have one
+coin flip so let's separate that out and
+count it separately. With probability
+alpha, the first coin flip is gonna be
+tails and then you start all over again
+And because it's a memory less process,
+the expected number of further coin flips
+one requires, given that the first coin
+flip was tails, is just the same as the
+expected number of coin flips in the first
+place. So now it's a simple matter to
+solve this one linear equation for the
+expected value of N, and we find that it
+is indeed one over one minus alpha, as
+claimed. Summarizing, under our idealized
+heuristic assumption, that every single
+probe sequence is equally likely, the
+expected insertion time is upper bounded
+by the expected number of coin flips,
+which by this argument is, at most, one
+over one minus alpha. So, as long as your
+load, alpha, is well bounded below one,
+you're good. At least in this idealized
+analysis, you're hash table will, will
+work extremely quickly. Now I hope you're
+regarding this idealized analysis with a
+bit of skepticism. Right, from a false
+hypothesis you can literally derive
+anything you want. And we started with
+this assumption which is not satisfied, by
+hash functions you're actually going to
+use in practice. This heuristic
+assumption, that all probe sequences are
+equally likely. So, should you expect this
+one over one minus alpha bound to hold in
+practice or not? Well, that depends to
+some extent. It depends on what open
+addressing strategy you're using. It
+depends on, how good a hash function
+you're using. It depends on whether the
+data is pathological or not. So, just to
+give course rules of thumb If you're Using
+double hashing and you have
+non-pathological data, I would go ahead
+and look for this 1/1-alpha bound in
+practice. So implement your hash table,
+check its performance as a function of the
+load factor alpha and shoot for the
+1/1-alpha curve. That's really what you'd
+like to see. With linear probing, on the
+other hand, you should not expect to see
+this performance guarantee of 1/1-alpha
+even in a totally idealized scenario.
+Remember, linear probing is the strategy
+where your initial probe, the hash
+function, tells you where to look first,
+and then you just skim linearly through
+the hash table until you find what you're
+looking for, an empty slot, the. That
+you're looking up or whatever So a linear
+probing, even in a best case scenario,
+it's going to be subject to clumping.
+You're going to have contiguous Groups of
+slots which are all full, and that's
+because of the linear probing strategy.
+Now I encourage you to do some experiments
+with implementations to see this for
+yourself. So because of clumping with
+linear probing, even in the idealized
+scenario, you're not going to see one over
+one minus alpha. However, you're going to
+see something worse, but still in
+idealized situations. Quite reasonable so
+that's the last thing I want to tell you
+about In this video. Now needless to say,
+with linear probing the heuristic
+assumption is badly false. The heuristic
+assumption is pretty much always false to
+no matter what hashing strategy you're
+using, but with linear programming it's
+quote on quote really false. So to see
+that, the heuristic assumption, say that
+all in factorial probe sequences are
+equally likely. So your next probe is
+going to be uniform or random amongst
+everything you haven't probed so far but
+when you're probing, it's totally the
+opposite. Right once you know the first
+slot that you're looking into say bucket
+seventeen, slot a7 is gonna be the first
+slot, you know the rest of the sequence
+because it's a linear [inaudible] cancel
+the table. So it's kind of [inaudible] the
+opposite from each successive probe being
+independent from the previous ones except
+not exploring things twice. So to state a
+conjectured or idealized performance
+guarantee for hash tables with linear
+probing, we're going to place, replace the
+blatant false heuristic assumption by a
+still false, but more heuristic reasonable
+assumption. So what do we know? We know
+that the initial probe with linear probing
+determines the rest of the sequence. So
+let's assume that these initial probes are
+uniform at random, and independent for
+different keys. Of course, once you have
+the initial probe, you know everything
+else, but let's assume independence and
+uniformity amongst The initial probes.
+Now, this is a strong assumption. This is
+way stronger than assuming you ha ve a
+universal family of hash functions. This
+assumption is not satisfied Practice, but
+Performance guarantees we can derive under
+this assumption are typically satisfied in
+practice by well implemented hash tables
+that use linear probing. So, the
+assumption is still useful for deriving
+the correct, idealized performance of this
+type of hash table. So what is that
+performance? Well this is an utterly
+classic result from exactly 50 years ago
+From 1962 And this is a result by my
+colleague, the living legend, Don Canuth,
+author of Art of Computer Programming. At
+what can proved is, was that is that under
+this weaker [inaudible] assumptions,
+suitable for linear probing. The expected
+time to insert an object into a hash table
+with a load factor alpha, when you're
+using linear probing is worse than one
+over one minus alpha, but. It is still a
+function of the load alpha only and not a
+function of the number of objects in the
+hash table. That is with linear
+programming you will not get as good a
+performance guarantee, but it is still the
+case that if you keep the load factor
+bounded away from one. If you make sure
+the hash table doesn't get too full you
+will enjoy constant time operations on
+average so for example if with linear
+probing your hash table is 50 percent full
+then you are going to get an expected
+insertion time of roughly four probes.
+Note however this quantity does approach
+does blow up pretty rapidly as the hash
+table grows full. If it is 90 percent full
+this is already going to be something like
+a hundred probes on average. So you really
+don't wanna let hash tables get too full
+when you are using linear probing. You
+might well wonder if it's ever worth,
+implementing linear probing, given that it
+has the worst performance curve, one over
+one minus alpha squared. Then the
+performance curve you'd hope from
+something like double hashing, one over
+one, minus alpha. And it's a tricky cost
+benefit analysis between linear probing
+and more complicated but better performing
+strategies. That really depends on the ap
+plication. There are reasons that you do
+want to use linear probing sometimes, it
+is actually quite Common in practice For
+example, it's often interacts very well
+with memory hierarchies So again, as with
+all of this hash and discussion. You know
+the costs and benefits Are, are very
+subtle trade-offs between the different
+approaches. If you have mission critical
+code that's using a hash table and you
+really want to optimize it. Try a bunch of
+prototypes, and just test. Figure out
+which one is the best, for your particular
+type of application. Let me conclude the
+video with a quote from Canuck himself
+where he talks about the rapture of
+proving this one of our one man is half a
+square theorem and how it was life
+changing. He says I first formulated the
+following derivation, meaning, the proof
+of that last theorem in 1962. Ever since
+that day, the analysis of algorithms has,
+in fact, been one of the major themes in
+my life.

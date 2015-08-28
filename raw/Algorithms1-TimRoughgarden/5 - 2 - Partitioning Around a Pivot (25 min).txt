@@ -1,0 +1,638 @@
+The goal of this video is to provide more
+details about the implementation of the
+QuickSort algorithm and, in particular,
+if you're ever going to drill down on the
+key Partition subroutine, just let me
+remind you what the job of the Partition
+subroutine is in the context of sorting an
+array. So recall that key idea in QuickSort
+is to partition the input array around a
+pivot element. So this has two steps.
+First, you somehow choose a pivot element,
+and in this video, we're not going to worry
+about how you choose the pivot element.
+For concreteness, you might just want to
+think about you pick the first element
+in the array to serve as
+your pivot. So in this example array, the
+first element happens to be 3, so we
+can choose 3 as the pivot element.
+Now, there's a key rearrangement step. So
+you rearrange the array so that it has the
+following properties. Any entries
+that are to the left of the pivot element
+should be less than the pivot element.
+Whereas any entries, which are to the
+right of the pivot element, should be
+greater than the pivot element. So, for
+example, in this, version of, the second
+version of the array, we see to the left
+of the 3 is the 2 and the 1.
+They're in reverse order, but that's okay.
+Both the 2 and the 1 are to the left
+of the 3, and they're both less than 3.
+And the five elements to the right
+of the 3, they're jumbled up, but
+they're all bigger than the pivot element.
+So, this is a legitimate rearrangement
+that satisfies the partitioning property.
+And, again, recall that this definitely
+makes partial progress toward having a
+sorted array. The pivot element winds up
+in its rightful position. It winds up
+where it's supposed to be in the final
+sorted array, to the right of everything
+less than it, to the left of everything
+bigger than it. Moreover, we've correctly
+bucketed the other N-1 elements to
+the left and to the right of the pivot
+according to where they should wind up in
+the final sorted array. So that's the job,
+that the Partition subroutine is
+responsible for. Now what's cool is we'll
+be able to implement this Partition
+subroutine in linear time. Even better,
+we'll be able to implement it so that all
+it does, really, is swaps in the array.
+That is, it works in-place. It needs no
+additional, essentially constant
+additional memory, to rearrange the array
+according to those properties. And then,
+as we saw on the high-level description of
+the QuickSort algorithm, what partitioning
+does is, it enables a divide-and-conquer
+approach. It reduces the problem size.
+After you've partitioned the array around
+the pivot, all you gotta do is recurse on
+the left side, recurse on the right side,
+and you're done. So, what I owe you is
+this implementation. How do you actually
+satisfy the partitioning property, stuff
+to the left of the pivot is smaller than
+it, stuff to the right of the pivot is
+bigger than it, in linear time, and in-
+place. Well, first, let's observe that, if
+we didn't care about the in-place
+requirement, if we were happy to just
+allocate a second array and copy stuff
+over, it would actually be pretty easy to
+implement a Partition subroutine in
+linear time. That is, using O(N) extra
+memory, it's easy to partition around a
+pivot element in O(N) time. And as
+usual, you know, probably I should be more precise
+and write theta of N, are used in cases that would
+be the more accurate stronger statement,
+but I'm going to be sloppy and I'm just
+going to write the weaker but still
+correct statement, using Big-Oh, okay? So
+O(N) time using linear extra memory.
+So how would you do this? Well let
+me just sort of illustrate by example. I
+think you'll get the idea. So let's go
+back to our running example of an input
+array. Well, if we're allowed to use
+linear extra space, we can just
+preallocate another array of length N.
+Then we can just do a simple scan through
+the input array, bucketing elements
+according to whether they are bigger than
+or less than the pivot. And, so for
+example, we can fill in the additional
+array both from the left and the right,
+using elements that are less than or
+bigger than the pivot respectively. So for
+example we start with the 8, we know
+that the 8 is bigger than the pivot,
+so you put that at the end of the output
+array. Then we get to the 2. The 2 is
+less than the pivot, so that should go on
+the left hand side of the output array.
+When you get to the 5, it should go on the
+right-hand side, and the 1 should go on
+the left-hand side, and so on. When we
+complete our scan through the input array,
+there'll be one hole left, and that's
+exactly where the pivot belongs, to the
+right of everything less than it, to the
+left of everything bigger than it. So,
+what's really interesting, then, is to
+have an implementation of Partition, which
+is not merely linear time, but also uses
+essentially no additional space. It
+doesn't re-sort to this cop-out of
+pre-allocating an extra array of
+length N. So, let's turn to how that
+works. First, starting at a high-level,
+then filling in the details. So I'm
+gonna describe the Partition subroutine
+only for the case where the pivot is in
+fact the first element. But really this is
+without loss of generality. If, instead,
+you want to use some pivot from the middle
+of the array, you can just have a
+preprocessing step that swaps the first
+element of the array with the given pivot,
+and then run the subroutine that I'm about
+to describe, okay. So with constant time
+preprocessing, the case of a general pivot
+reduces to the case of when the pivot is
+the first element. So here's the high-level
+idea, and it's very cool. The idea is,
+we're gonna be able to able to get
+away with just a single linear scan of the
+input array. So in any given moment in
+this scan, there's just gonna be a single
+for-Loop, we'll be keeping track of both
+the part of the array we've looked at so
+far, and the part that we haven't looked at
+so far. So there's gonna be two groups,
+what we've seen, what we haven't seen.
+Then within the group we've seen, we're
+gonna have definitely split further, according
+to the elements that are less than the
+pivot and those that are bigger than the
+pivot. So we're gonna leave the pivot
+element just hanging out in the first
+element of the array until the very end of
+the algorithm, when we correct its
+position with a swap. And at any given
+snapshot of this algorithm, we will have
+some stuff that we've already looked at,
+and some stuff that we haven't yet looked
+at in our linear scan. Of course, we have
+no idea what's up with the elements that
+we haven't looked at yet, who knows
+what they are, and whether they're bigger
+or less than the pivot. But, we're gonna
+implement the algorithm, so, among the
+stuff that we've already seen, it will be
+partitioned, in the sense that all
+elements less than the pivot come first,
+all elements bigger than the pivot come
+last. And, as usual, we don't care about
+the relative order, amongst elements less
+than the pivot, or amongst elements bigger
+than the pivot. So summarizing, we do a
+single scan through the input array. And
+the trick will be to maintain the
+following invariant throughout the linear
+scan. But basically, everything we have
+looked at the input array is partitioned.
+Everything less than the pivot comes
+before everything bigger than the pivot.
+And, we wanna maintain that invariant,
+doing only constant work, and no
+additional storage, with each step of our
+linear scan.
+So, here's what I'm gonna do next. I'm
+gonna go through an example, and execute
+the Partition subroutine on a concrete
+array, the same input array we've been
+using as an example, thus far. Now, maybe
+it seems weird to give an example before
+I've actually given you the algorithm,
+before I've given you the code. But, doing
+it this way, I think you'll see the gist
+of what's going on in the example, and
+then when I present the code, it'll be
+very clear what's going on. Whereas, if I
+presented the code first, it may seem a
+little opaque when I first show you the
+algorithm. So, let's start with an
+example. Throughout the example, we wanna
+keep in mind the high-level picture that
+we discussed in the previous slide. The
+goal is that, at any time in the Partition
+subroutine, we've got the pivot hanging
+out in the first entry. Then, we've got
+stuff that we haven't looked at. So, of
+course, who knows whether
+those elements are bigger than or less
+than the pivot? And then, for the stuff
+we've looked at so far, everything less
+than the pivot comes before everything
+bigger than the pivot. This is the picture
+we wanna retain, as we go through the
+linear scan. As this high-level picture
+would suggest, there is two boundaries
+that we're gonna need to keep track of
+throughout the algorithm. We're gonna need
+to keep track of the boundary between what
+we've looked at so far, and what we
+haven't looked at yet. So, that's going to
+be, we're going to use the index  "j" to keep
+track of that boundary. And then, we also
+need a second boundary, for amongst the
+stuff that we've seen, where is the split
+between those less than the pivot and
+those bigger than the pivot. So, that's
+gonna be "i". So, let's use our running
+example array. >> So stuff is pretty
+simple when we're starting out. We haven't
+looked at anything. So all of this stuff
+is unpartitioned. And "i" and  "j" both point
+to the boundary between the pivot and all
+the stuff that we haven't seen yet. Now to
+get a running time reaches linear, we
+want to make sure that at each step we
+advance  "j", we look at one new element.
+That way in a linear number of steps, we'll
+have looked at everything, and hopefully
+we'll be done, and we'll have a partitioned
+array. So, in the next step, we're going to
+advance  "j". So the region of the array
+which is, which we haven't looked at,
+which is unpartitioned, is one smaller
+than before. We've now looked at the
+8, the first element after the pivot.
+Now the 8 itself is indeed a
+partitioned array. Everything less than
+the pivot comes before, everything after
+the pivot turns out there's nothing less
+than the pivot. So vacuously this is
+indeed partitioned. So  "j" records
+delineates the boundary between what we've
+looked at and what we haven't looked at, "i"
+delineates amongst the stuff we've looked
+at, where is the boundary between what's
+bigger than and what's less than the
+pivot. So the 8 is bigger than the pivot,
+so "i" should be right here. Okay, because we
+want "i" to be just to the left of all the
+stuff bigger than the pivot. Now, what's
+gonna happen in the next iteration? This
+is where things get interesting. Suppose
+we advance  "j" one further. Now the part of
+the array that we've seen is an 8
+followed by a 2. Now an 8 and a 2
+is not a partitioned subarray. Remember
+what it means to be a partitioned
+subarray? All the stuff less
+than the pivot, all the stuff less than
+3, should come before everything
+bigger than 3. So (8, 2) obviously
+fails that property. 2 is less than the
+pivot, but it comes after the 8, which
+is bigger than the pivot. So, to correct
+this, we're going to need to do a swap.
+We're going to swap the 2 and the 8.
+That gives us the following version of the
+original array. So now the stuff that we
+have not yet looked at is one smaller than
+before. We've advanced  "j". So all other
+stuff is unpartitioned. Who knows what's
+going on with that stuff?  "j" is one further
+entry to the right than it was before, and
+at least after we have done this swap, we
+do indeed have a partitioned array. So
+post-swap, the 2 and the 8, are
+indeed partitioned. Now remember, "I"
+delineates the boundary between amongst
+what we've seen so far, the stuff less
+than the pivot, less than 3 in this
+case, and that bigger than 3, so "I" is
+going to be wedged in between the 2 and
+the 8. In the next iteration, our life
+is pretty easy. So, in this case, in
+advancing  "j", we uncover an element which
+is bigger than the pivot. So, this is what
+happened in the first iteration, when we
+uncovered the 8. It's different than
+what happened in the last iteration when
+we uncovered the 2. And so, this case,
+this third iteration is gonna be more
+similar to the first iteration than the
+second iteration. In particular, we won't
+need to swap. We won't need to advance "i".
+We just advance  "j", and we're done. So,
+let's see why that's true. So, we've
+advanced  "j". We've done one more iteration.
+So, now the stuff we haven't seen yet is
+only the last four elements. So, who knows
+what's up with, the stuff we haven't seen
+yet? But if you look at the stuff we have
+seen, the 2, the 8, and the 5,
+this is, in fact, partitioned, right? All
+the numbers that are bigger than 3
+succeed, come after, all the numbers
+smaller than three. So the "j",
+the boundary between what we've seen and
+what we haven't is between the 5 and
+the 1; and the "i", the boundary between
+the stuff less than the pivot and bigger
+than the pivot is between the 2 and the
+8, just like it was before. Adding a
+5 to the end didn't change anything. So
+let's wrap up this example in the next
+slide. So first, let's just remember where
+we left off from the previous slide. So
+I'm just gonna redraw that same step after
+three iterations of the algorithm. And
+notice, in the next generation, we're going
+to, again, have to make some modifications
+to the array, if we want preserve our
+variant. The reason is that when we
+advance  "j", when we scan this 1, now
+again we're scanning in a new element
+which is less than the pivot, and what
+that means is that, the partitioned
+region, or the region that we've looked at
+so far, will not be partitioned. We'll
+have 2851. Remember we need everything
+less than 3 to precede everything
+bigger than 3, and this 1
+at end is not going to cut it. So we're
+going to have to make a swap. Now what are
+we going to swap? We're going to swap the
+1 and the 8. So, why do we swap the
+1 and the 8? Well, clearly, we have
+to swap the 1 with something. And, what
+makes sense? What makes sense is the
+left-most array entry, which is currently
+bigger than the pivot. And, that's exactly
+the 8. Okay, that's the first,
+left-most entry bigger than 3, so if
+we swap the 1 with it, then the 1 will
+become the right-most entry smaller than
+3. So after the swap, we're gonna have
+the following array. The stuff we haven't
+seen is the 4, the 7, and the 6.
+So the  "j" will be between the 8 and the
+4. The stuff we have seen is the 2,
+1, 5, and 8. And notice, that
+this is indeed partitioned. All the
+elements, which are less than 3, the
+2 and the 1, precede all of the
+entries, which are bigger than 3, the
+5 and the 8. "i", remember, is
+supposed to split, be the boundary
+between those less than 3 and those
+bigger than 3. So, that's gonna lie
+between the 1 and the 5. That is one
+further to the right than it was in the
+previous iteration. Okay, so the, because
+the rest of the unseen elements, the 4,
+the 7, and the 6, are all bigger
+than the pivot, the last three iterations
+are easy. No further swaps are necessary.
+No increments to "i" are necessary.  "j" is just
+going to get incremented until we fall off
+the array. And then, fast forwarding, the
+Partition subroutine, or this main linear
+scan, will terminate with the following
+situation. So at this point, all of the
+elements have been seen, all the elements
+are partitioned.  "j" in effect has fallen
+off the end of the array, and "i", the boundary
+between those less than and bigger than
+the pivot, still lies between the 1 and
+the 5. Now, we're not quite done,
+because the pivot element 3 is not in
+the correct place. Remember, what we're
+aiming for is an array where everything
+less than the pivot is to the left of it,
+and everything bigger than the pivot is to
+the right. But right now, the pivot still
+is hanging out in the first element. So,
+we just have to swap that into the correct
+place. Where's the correct place? Well,
+it's going to be the right-most element,
+which is smaller than the pivot. So, in
+this case, the 1. So the subroutine will
+terminate with the following array,
+12358476. And, indeed, as desired,
+everything to the left of the pivot
+is less than the pivot, and everything to
+the right of the pivot is bigger than the
+pivot. The 1 and 2 happen to be in
+sorted order, but that was just sorta an
+accident. And the 4, 5, 6 and
+7 and 8, you'll notice, are jumbled
+up. They're not in sorted order. So
+hopefully from this example you have a
+gist of how the Partition subroutine is
+going to work in general. But, just to
+make sure the details are clear, let me
+now describe the pseudocode for the
+Partition subroutine. So the way I'm going
+to denote it is, there's going to be an
+input array A. But rather than being told
+some explicit link, what's going to be
+passed to the subroutine are two array
+indices. The leftmost index, which
+delineates this part of the separator
+you're supposed to work on, and the
+rightmost index. The reason I'm writing it
+this way is because Partition is going to
+be called recursively from within a QuickSort
+algorithm. So any point in QuickSort,
+we're going to be recursing on some
+subset, contiguous subset of the original
+input array. "l(el)" and "r" meant to denote
+what the left boundary and the right
+boundary of that subarray are. So, let's
+not lose sight of the high-level picture
+of the invariant that the algorithm is
+meant to maintain. So, as we discussed,
+we're assuming the pivot element is the
+first element, although that's really
+without loss of generality. At any given
+time, there's gonna be stuff we haven't
+seen yet. Who knows what's up with that?
+And, amongst the stuff we've seen, we're
+gonna maintain the invariant that all the
+stuff less than the pivot comes before all
+the stuff bigger than the pivot. And  "j" and
+I denote the boundaries, between the seen
+and the unseen, and between the small
+elements and the large elements,
+respectively. So back to the pseudocode,
+we initialize the pivot to be the first
+entry in the array. And again remember, l
+denotes the leftmost index that we're
+responsible for looking at. Initial value
+of "i", should be just to the right of the
+pivot so that's gonna be el+1.
+That's also the initial value of  "j", which
+will be assigned in the main for-Loop. So this
+for-Loop with "j", taking on all values from
+el+1 to the rightmost index "r",
+denotes the linear scan through the input array. And,
+what we saw in the example is that there
+were two cases, depending on, for the
+newly seen element, whether it's bigger
+than the pivot, or less than the pivot.
+The easy case is when it's bigger than the
+pivot. Then we essentially don't have to
+do anything. Remember, we didn't do any
+swaps, we didn't change "i", the boundary
+didn't change. It was when the new element
+was less than the pivot that we had to do
+some work. So, we're gonna check that, is
+the newly seen element, A[j], less than "p".
+And if it's not, we actually don't have to do
+anything. So let me just put as a
+comment. If the new element is bigger than
+the pivot, we do nothing. Of course at the
+end of the for-Loop, the value of  "j" will
+get in command so that's the only thing
+that changes from iteration to iteration,
+when we're sucking up new elements that
+happen to be bigger than "p". So what do we
+do in the example, when we suck up our new
+element less than p? Well we have to do
+two things. So, in the event that the
+newly seen element is less than "p", I'll
+circle that here in pink. We need to do a
+rearrangement, so we, again, have a
+partitioned, sub-array amongst those
+elements we've seen so far. And, the best
+way to do that is to swap this new element
+with the left-most element that's bigger
+than the pivot. And because we have an
+index "i", which is keeping track of the
+boundary between the elements less than
+the pivot and bigger than the pivot, we can
+immediately access the leftmost element
+bigger than the pivot.
+That's just the "i"th
+entry in the array. Now I am
+doing something a little sneaky here,
+I should be honest about. Which is there is
+the case where you haven't yet seen any
+elements bigger than the pivot, and then
+you don't actually have a leftmost
+element bigger than the pivot to swap
+with. Turns out this code still works,
+I'll let you verify that, but it does do
+some redundant swaps. Really, you don't
+need to do any swaps until you first see
+some elements bigger than the pivot, and
+then see some elements less than the
+pivot. So, you can imagine a different
+limitation of this, where you
+actually keep track of whether or not
+that's happened to avoid the redundant
+swaps. I'm just gonna give you the
+simple pseudocode. And again, for
+intuition, you wanna think about the case
+just like, in the picture here in blue,
+where we've already seen some elements
+that are bigger than the pivot, and the
+next newly seen element is less than the
+pivot. That's really sort of the key case
+here. Now the other thing we have to do
+after one of these swaps is, now the
+boundary, between where the array elements
+less than the pivot and
+those bigger than the pivot, has moved.
+It's moved one to the right, so
+we have to increment "i". So, that's the
+main linear scan. Once this concludes,  "j"
+will have fallen off the end of the array.
+And, everything that we've seen the final
+elements, except for the pivot, will be
+arranged so that those less than "p" are
+first, those bigger than "p" will be last.
+The final thing we have to do is just swap
+the pivot into its rightful position. And,
+recall for that, we just swap it with the
+right-most element less than it. So, that
+is it. That is the Partition subroutine.
+There's a number of variants of partition.
+This is certainly not the unique
+implementation. If you look on the web, or
+if you look in certain textbooks, you'll
+find some other implementations as well as
+discussion of the various merits. But, I
+hope this gives you, I mean, this is a
+canonical implementation, and I hope it
+gives you a clear picture of how you
+rearrange the array using in-place swaps
+to get the desired property, that all the
+stuff before the pivot comes first, all
+the stuff after the pivot comes last.
+Let me just add a few details about why
+this pseudocode I just gave you does,
+indeed, have the properties required. The
+running time is O(N), really theta of N,
+but again, I'll be sloppy and write
+O(N). Where N is the number of array
+elements that we have to look at. So, N is
+r-el+1, which is the length of
+the sub-array that this Partition
+subroutine is invoked upon. And why is
+this true? Well if you just go inspect the
+pseudocode, you can just count it up
+naively and you'll find that this is true.
+We just do a linear scan through the array
+and all we do is basically a comparison
+and possibly a swap and an increment for
+each array entry that we see. Also, if you
+inspect the code, it is evident that it
+works in-place. We do not allocate some
+second copy of an array to populate, like
+we did in the naive Partition
+subroutine. All we do is repeated swaps.
+Correctness of the subroutine follows by
+induction, so in particular the best way
+to argue it is by invariant. So I'll state
+the invariant here, but mostly leave it
+for you to check that indeed, every
+iteration of the for-Loop maintains this
+invariant. So first of all, all of the
+stuff to the right of the pivot element,
+to the right of the leftmost entry and up
+to the index "i", is indeed less than the
+pivot element, as suggested by the
+picture. And also suggested by the
+picture, everything beginning with the "i"th
+entry, leading just up before the "j"th entry,
+is bigger than the pivot. And I'll
+leave it as a good exercise for you to
+check that this holds by induction.
+The invariant holds initially,
+when both "i" and  "j" are equal to el+1,
+because both of these sets are vacuous, okay?
+So, there are no such elements, so they're
+trivially satisfied these properties. And
+then, every time we advance  "j", well, in
+one case it's very easy, where the new
+element is bigger than the pivot. It's
+clear that, if the invariant held before,
+it also holds at, at the next iteration.
+And then, if you think about it carefully,
+this swap in this increment of "i" that we
+do, in the case where the new element is
+less than the pivot. After the swap, once
+the fold is complete, again if this
+invariant was true at the beginning of it,
+it's also true at the end. So what good is
+that? Well, by this claim, at the
+conclusion of the linear scan at which
+point "j" has fallen off the end of the
+array, the array must look like this. At
+the end of the for-Loop, the question
+mark part of the array has vanished, so
+everything other than the pivot has been
+organized so that all this stuff less than
+the pivot comes before everything after
+the pivot, and that means once you do the
+final swap, once you swap the pivot
+element from its first and left most
+entry, with the right most entry less than
+the pivot, you're done. Okay? You've got
+the desired property that everything to
+the left of the pivot is less than, and
+everything to the right of the pivot is
+bigger than. So now that given a pivot
+element we understand how to very quickly
+rearrange the array so that it's
+partitioned around that pivot element,
+let's move on to understanding how that
+pivot element should be chosen and how,
+given suitable choices of that pivot
+element, we can implement the QuickSort
+algorithm, to run very quickly, in
+particular, on average in O(N) log time.

@@ -1,0 +1,140 @@
+How do we deal with bi-grams with zero
+probability. The simplest idea is called
+add-one smoothing. And let's look at a
+picture that gives us the intuition of
+smoothing in general from Dan Klein. So
+suppose in our training data we saw denied
+the allegations, denied the reports,
+denied the claims, denied the request. And
+so we've computed probabilities. There was
+seven total things following denied the
+and we can get our probabilities of
+everything, of each of these things. But
+we would like to say denied the effort
+might occur, denied the outcome might
+occur. So we'd like to steal some
+probability mass and save it for things we
+might not see later. So this is our
+training data. And this is the maximum
+likelihood count, so these things occurred
+after [inaudible]. These never occurred.
+We'd like to steal a little, a little
+probability mask from each of these words
+and put that probability mask on to all
+other possible words or some set of words,
+so that the zeros go away. And the
+simplest way of doing this is called Add
+One Estimation or Leplas Smoothing. And
+the idea is very simple. We pretend we saw
+each word one more time than we actually
+did. We just add one to all the counts. So
+if our maximum likelihood estimate. Is the
+count of the bigram divided by the count
+of the count of the unigram. Or add one
+estimate is the count of the bigram plus
+one over the count of the unigram plus v
+We have to add V here in the denominator,
+because we're adding one to every word
+that follows word I minus one. So, our
+denominator is increased, not just by the
+total count of times that something
+happened to I minus one, wasn't the
+previous things that followed it, but each
+one of those got incremented by one, and
+there were V of them, so we have to add V
+to the denominator. This is the add one,
+estimator, probability estimator. I keep
+using the term maximum likelihood
+estimate, and let's just remind you what
+that means. The maximum likelihood
+estimate of some parameter of some model
+from a training set is the one that
+maximizes the likelihood of the training
+set, given the model. So we have some
+training set, and we're gonna, a maximum
+likelihood estimator that lets us learn a
+model from a training set, is the one that
+makes that training set most likely. What
+do we mean by this? Suppose the word bagel
+occurs 400 times in the corpus of a
+million words. And. I ask. What's the
+probability that a random word from some
+other text will be bagels? Well, the
+maximum [inaudible] estimator from our
+corpus is 400 over 1,000,000, or.004. Now
+this could be a bad estimate for that
+other corpus. Who knows what of the other
+corpus bagel occurs 400 times per
+1,000,000 or some other probability. But
+this estimate is the one that makes it
+most likely the bagel will occur 400 times
+in 1,000,000 word corpus, which is what it
+did occur in our training corpus. So we're
+maximizing the likelihood of our training
+data. So an add one smoothing and any kind
+of smoothing is a non-maximum likelihood
+estimator, because we're changing the
+counts from what they occurred in our
+training data to hope to generalize
+better. So if we go back to our Berkley
+Restaurant project and we add one to all
+of our accounts, here's our La Plaz smooth
+bigram count and with all those 0's that
+we had have become 1's and everything else
+has one added to it. So now we can compute
+the bi-gram probabilities from those
+counts and just using the Laplace add one
+smoothing equation that we saw earlier and
+now we got all of our Laplace, their add
+one smooth bi-grams. So we have again the
+probability of two given one that is.26
+and now all of those zeros have turned
+into iii.0042, .0026 and so on. Now we can
+also take those probabilities and
+reconstitute the counts as if we had seen
+things the number of times that we would
+have to see to get those add one
+probabilities naturally. So we take our
+probabilities and we re-estimate the
+original counts as if they were the
+numbers that would have given us these
+probabilities. And we ask, what are those
+reconstituted counts look like. How much
+of my, has our add one smoothing changed
+our probabilities? So, here's
+reconstituted counts. So, we have I wa.
+It's followed by want 327 times or Chinese
+is followed by food 8.2 times. These are
+reconstituted counts. And let's compare
+them to the original counts. So, up here,
+here on the top we have the original
+counts and here we have our reconstituted
+counts, and I want you to notice that
+there's a huge change. So in our original
+count, two followed want 608 times. In our
+smoothed counts, two follows one only 238
+times. So it's, it's, almost a third sma-,
+a third the si-, th-, smaller. Three times
+smaller. Or, Chinese food occurs 82 times
+in our original counts and only 8.2, in
+our reconstituted counts. So, that the,
+Add One Smoothing has made massive changes
+to our accounts. And sometimes changing a
+factor of ten, the original counts, in
+order to steal that original probability
+mass to give to all those massive number
+of zeros that had to be assigned
+probabilities. In other words add one
+estimation is a very blunt instrument.
+It's, it makes very big changes in the
+counts in order to get these probability
+mast to assign to this massive number of
+0's. And so in practice we don't actually
+use add-one smoothing for n grams. We have
+better methods. We do use add-one
+smoothings for other kinds of natural
+language processing models. So add-one
+smoothing for example is used in text
+classification or in similar kinds of
+domain where the number of 0's isn't so
+enormous.

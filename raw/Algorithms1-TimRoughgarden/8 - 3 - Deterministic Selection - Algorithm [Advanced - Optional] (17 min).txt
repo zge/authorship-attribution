@@ -1,0 +1,480 @@
+Previous videos covered an outstanding
+algorithm for the selection problem, the
+problem of computing the Ith statistic of
+a given array. That algorithm which we
+called the R select algorithm was
+excellent in two senses. First its super
+practical, runs blazingly fast in
+practice. But also it enjoys a satisfying
+theoretical guarantee. For every input
+array of length N at the expected running
+time of R select is big O of N, where the
+expectation is over the random choices of
+the pivots that R select makes during
+execution, now in this optional video
+I'm going to teach you yet
+another algorithm for the selection
+problem. Well why bother given that our
+select is so good? Well frankly, I just
+can't help myself. The ideas of this
+algorithm are just too cool not to tell
+you about, at least in optional video like
+this one. The selection algorithm
+, we cover here is deterministic.
+That is, it uses no randomization
+whatsoever. And it's still gonna run in
+linear time, big O of N time. But now, in
+the worst case for every single input
+array. Thus, the same way Merge Short gets
+the same asymptotic running time, big O
+of N log N, as quick sorts gets on
+average. This deterministic algorithm will
+get the same running time O of N, as the R
+select algorithm does on average. That
+said, the algorithm we're gonna cover
+here, well, it's not slow. It's not as
+fast as R select in practice, both because
+the hidden constants in it are larger. And
+also because it doesn't' operate in place.
+For those of you who are feeling keen, you
+might wanna try coding up both the
+randomized and the deterministic selection
+algorithms, and make your own measurements
+about how much better the randomized one
+seems to be. But if you have an
+appreciation for Boolean algorithms, I
+think you'll enjoy these lectures
+nonetheless. So let me remind of the
+problem. This is the i-th order
+statistic problem. So we're given an
+array, it has N distinct entries. Again,
+the distinctness is for simplicity. And
+you're given a number I between one and N.
+You're responsible for finding the
+i-th smallest number, which we call
+the i-th order statistic. For
+example, if I is something like N over
+two, then we're looking for the median. So
+let's briefly review the randomized
+selection algorithm. We can think of the
+deterministic algorithm covered here as a
+modification of the randomized algorithm,
+the R select algorithm. So when that
+algorithm is passed in array with length
+N, and when you're looking for the
+i-th order statistic, as usual,
+there's a trivial base case. But when
+you're not in the base case, just like in
+Quick Sort, what you do is you're gonna
+partition the array around pivot element
+P. Now, how are you gonna choose P? Well,
+just like Quick Sort, in the randomized
+algorithm, you choose it uniformly at
+random. So each of the N elements of the
+input array are equally likely to be
+chosen. As the pivot. So, call that pivot
+p. Now, do the partitioning. Remember
+partitioning puts all of the elements less
+than the pivot to the left of the pivot.
+We call that the first part of the
+partitioned array. Anything big, bigger
+than the pivot gets moved to the right of
+the pivot. We call that the second part of
+the array. And let j denote the position
+of the pivot in this partitioned array.
+Equivalently, let j be what order
+statistic that the pivot winds up
+happening to be. Right? So, we happen to
+choose the minimum element then J's gonna
+be equal to one. If we happen to choose
+the maximum element, J's gonna be equal to
+n. And so on. So, there's always the lucky
+case, chance one in N, that we happen to
+choose the Ith order statistic as our
+pivot. So, we're going to find that out
+when we notice that J equals I. In that
+super lucky case, we just return the pivot
+and we're done. That's what we're looking
+for in the first place. Of course, that's
+so rare it's not worth worrying about, so
+really the two main cases depend on
+whether the pivot that we randomly choose
+is bigger than what we are looking for or
+if it's less than what we are looking for.
+So, if it's bigger than what we are
+looking for, that means J is bigger than
+I, we're looking for the Ith smallest, we
+randomly chose the J'th smallest. Then
+remember we know that the Ith smallest
+element has to lie to the left of the
+pivot. Good element in that first part of
+the partition array. So we recurs there.
+It's an array that has J-1 elements in it,
+everything less than the pivot. And we're
+still looking for the Ith smallest among
+them. In the other case, this was the case
+covered in a quiz a couple videos back, if
+we guess a pivot element that is less than
+what we're looking for, well then we
+should discard everything less than the
+pivot and the pivot itself. So we should
+recurs on the second part of A, stuff
+bigger than the pivot. We know that's
+where what we're looking for lies. And
+having thrown away J elements, the
+smallest ones at that. We're rehearsing on
+a ray of [inaudible] and minus J, I'm
+looking for the [inaudible] smallest
+element in that second part. So, that was
+the randomized selection algorithm, and
+you'll recall the intuition for why this
+works is random pivot should usually give
+pretty good splits. So the way the
+analysis went is we should. Each
+iteration, each recursive call, with 50
+percent probability, we get a 25/75 split
+or better. Therefore, on average, every
+two recursive calls, we are pretty
+aggressively shrinking the size of the
+recursive call. And for that reason, we
+should get, something like a linear time
+bound. We do almost as well as if we
+picked the median in every single call,
+just because random pivots are a good
+enough proxy of best case pivots, of. The
+median. So now the big question is:
+suppose we weren't permitted to make use
+of randomizations. Suppose this
+choose-a-random-pivot trick was not in our
+tool box. What could we do? How are we
+going to deterministically choose a good
+pivot? Let's just remember quickly what it
+means to be a good pivot. A good pivot is
+one that gives us a balanced split, after
+we do the partitioning of the array. That
+is, we want as close to a 50/50 split
+between the first and the second parts of
+the partitioned array as possible. Now,
+what pivot would give us the perfect 50/50
+split? Well, in fact, that would be the
+median. Well, that seems like a totally
+ridiculous observation, because we
+canonically, are trying to find the
+median. So previously we were able to be
+lazy, and we just picked a random pivot,
+and used that as a pretty good proxy for
+the best case pivot. But now, we have to
+have some subroutine that
+deterministically finds us a pretty good
+approximation of the median. And the big
+idea in this linear time selection
+algorithm, is to use what's called the
+median of medians as a proxy for the true
+meaning of the input array. So when I say
+median of medians, you're not supposed to
+know what I'm talking about. You're just
+supposed to be intrigued. Now, let me
+explain a little bit further. Here's the
+plan, we're gonna have our new
+implementation of chose pivot and it's
+gonna be deterministic. You will see no
+randomization on this slide, I promise. So
+the high-level strategy is gonna be we're
+gonna think about the elements of this
+array like sports teams, and we're gonna
+run a tournament, a 2-round. Knockout
+tournament, and the winner of this
+tournament is going to be who we return as
+the proposed pivot element. Then we'll
+have to prove that this is a pretty good
+pivot element. So there's gonna be two
+rounds in this tournament. Each element,
+each team is gonna first participate in a
+world group, if you will. So they'll be,
+small groups of five teams each, five
+elements each. And to win your first
+round, you have to be the middle element
+out of those five. So that'll give us N
+over five first round winners. And then
+the winner of that second round is going
+to the med-, be the median of those N over
+five winners from the first round. Here
+are the details. The first step isn't
+really something you actually do in the
+program, it's just conceptually. So
+logically, we're going to take this array
+capital A, which has N elements, and we're
+gonna think of it as comprising N over
+five groups with five elements each. So if
+N is not a multiple of five, obviously,
+there'll be one extra group that has size
+between one and four. Now for each of
+these groups of five, we're going to
+compute the median, so the middle element
+of those five. Now for five elements, we
+may as well just invoke a reduction to
+sorting; we're just gonna sort each group
+separately, and then use the middle
+element, which is the median. It doesn't
+really how you do the sorting. Because
+after all, there's only five elements. But
+you know, let's use [inaudible] sort, what
+the heck. Now what we're going to do is
+we're going to take our first round
+winners and we're gonna copy them over
+into their own private array. Now this
+next step is the one that's going to seem
+dangerously like cheating, dangerously
+like I'm doing something circular and not
+actually defining a proper algorithm, so c
+you'll notice has linked over n over five.
+We started with an array of link n. This
+is a smaller input. So let's recursively
+compute the median of this array capital
+c. That is the second round of our
+tournament amongst the n over five
+first-round winners, the n over five
+middle elements of the sorted groups. We
+recursively compute the median, that's our
+final winner, and that's what we return as
+the pivot element from this subroutine.
+Now I realize it's very hard to keep track
+of both what's happening internal to this
+juice pivot subroutine and what's
+happening in the calling function of our
+deterministic selection algorithm. So let
+me put them both together and show them to
+you, cleaned up, on a single slide. So,
+here is the proposed deterministic,
+selection algorithm. So, this algorithm
+uses no randomization. Previously, the
+only randomization was in choosing the
+pivot. Now we have a deterministic
+subroutine for choosing the pivot, and so
+there's no randomization at all. I've
+taken the liberty of in-lining true's
+pivot subroutine. So that is exactly what
+lines one, two, and three are. I haven't
+written down the base case just to save
+space I'm sure you can remember it, so if
+you're not in the base case. What did we
+do before? The first thing we do is choose
+a random pivot. What do we do now? Well,
+we have steps one through three. We do
+something much more clever to choose a
+pivot. And this is exactly what we said on
+the last slide. We break the array into
+groups of five. We sort each group, for
+example, using merge sort. We copy over
+the middle element of each of the n over
+five groups into their own array capital
+c. And, then, we recursively compute the
+median of c. So, when we recurs on select
+that we pass the input c. C has n over
+five elements so that's the new link.
+That's a smaller link than what we start
+with so it's a legitimate recursive call
+refining the median of n over five
+element. So, that's gonna be the n over
+tenth order statistic. As usual. Well to
+keep things clear I'm ignoring stuff like
+fractions, in your real implementation
+you'd just round it up or down. As
+appropriate. So steps one through three
+are the new [inaudible] step routine that
+replaces the randomized selection that we
+had before. Steps four through seven are
+exactly the same as before. We've changed
+nothing. All we have done is ripped out
+that one line where we chose the pivot
+randomly and pasted in these lines one
+through three. That is the only change to
+the randomized selection algorithm. So,
+the next quiz is a standard check that you
+understand this algorithm, at least, not
+necessarily why it?s fast; but, at least,
+just how it actually works. And I only ask
+you to identify how many recursive calls
+there are, each time. So, for example in
+[inaudible] there's two recursive calls,
+in quick-sort there's two recursive calls,
+in r-select there's one recursive call.
+How many recursive calls do you have each
+time, outside of the base case in the
+d-select algorithm? All right, so the
+correct answer is two. There are two
+recursive calls in deselect, and maybe the
+easiest way to answer this question is not
+to think too hard about it and literally
+just inspect the code and count, right
+namely there's one recursive call in line
+three, and there's one recursive call in
+either six or seven, so quite literally,
+you know there's seven lines of code, and
+two of the ones that get executed have a
+recursive call so the answer is two. Now
+what's confusing is that in the random, a
+couple things, first in the randomized
+selection algorithm, we only have one
+recursive call. We have the recursive
+call. In line six or seven, we didn't have
+this in line three. That one in line three
+is new compared to the randomized
+procedure. So we're kind of used to
+thinking of one recursive call using the
+divide and conquer approach to selection,
+here we have two. Moreover. Conceptually.
+The roll of these two recursive calls are
+different. So the one in line six or seven
+is the one we're used to. That's after
+you've done the partitioning so you have a
+smaller sub-problem and then you just
+recursively find the residual or statistic
+in the residual array. That's sort of the
+standard divide and conquer approach.
+What's sort all crazy. Is this second use
+of a recursive call which is part of
+identifying a good pivot element for this
+outer recursive call and this is so
+counter-intuitive, many students in my
+experience don't even think that this
+algorithm will hold, sort of, they sort of
+expect it to go into an infinite loop. But
+again, that sort of over thinking it. So
+let's just compare this to an algorithm
+like merge sort. What does merge sort do?
+Well it does two recursive calls and it
+does some other stuff. Okay. It does
+linear work. That's what it does to merge.
+And then there are two recursive calls on
+smaller sub problems, right? No issue. We
+definitely feel confident that merge
+[inaudible] is gonna terminate because the
+sub problems keep getting smaller. What
+does deselect do, if you squint? So don't
+think about the details just [inaudible]
+high level. What is the work done in
+deselect? Well. There are two recursive
+calls, there's [inaudible] one's in line
+three, one's in line six or seven, but
+there's two recursive calls on sm, smaller
+sub problem sizes. And there's some other
+stuff. There's some stuff in steps one and
+two and four, but whatever. Those are
+recursive calls. It does some work. Two
+recurs have caused the smaller
+sub-problems, TI's got to terminate. We
+don't know what the run time is, but it's
+got to terminate, okay? So if you're
+worried about this terminating, forget
+about the fact that the two recurs of
+cause have different semantics and just
+remember, if ever, you only recurs on
+smaller sub-problems, you're definitely
+going to terminate. Now, of course who
+knows what the running time is? I owe you
+an argument on why it would be anything
+reasonable, that's going to come later. In
+fact what I'm gonna prove to you is not
+only does this selection algorithm
+terminate, run in finite time, it actually
+runs in linear time. No matter what the
+input array is. So where as with R select,
+we could only discuss its expected running
+time being linear. We showed that with
+disastrously bad choices for pivots, R
+selects can actually take quadratic time.
+Under no circumstances will deselect ever
+take, ever take quadratic time. So for
+every input array it's big O of N time.
+There's no randomization because we don't
+randomly do anything in choose pivot, so
+there's no need to talk about average
+running time; just the worst case running
+time over all inputs is O of N. That said,
+I want to reiterate the warning I gave you
+at the very beginning of this video which
+is, if you actually need to implement a
+selection algorithm, you know, this one
+wouldn't be a disaster. But it is not the
+method of choice, so I don't want you to
+be misled. As I said there are two reasons
+for this. The first is that the constants
+hidden in the begon notation are larger
+for V select than for R select. That will
+be somewhat evident from the analyses that
+we give for the two algorithms. The second
+reason is, recall we made a big deal about
+how partitioning works in place and
+therefore quicksort and r select also work
+in place, that is, with no real additional
+memory storage. But in this deselect
+algorithm we do need this extra array c to
+copy over the middle elements, the first
+round winners. And so the extra memory, as
+usual, slows down the practical
+performance. One final comment. So for
+many of the algorithms that we cover, I
+hope I explain them clearly enough that
+their elegance shines through and that for
+many of them you feel like you could have
+up with it yourself, if only you'd been in
+the right place at the right time. I think
+that's a great way to feel and a great way
+to appreciate some of these very cool
+algorithms. That said, linear time
+selection, I don't blame you if it, if you
+feel like you never might have come up
+with this algorithm. I think that's a
+totally reasonable way to feel after you
+see this code. If it makes you feel
+better, let me tell you about who came up
+with this algorithm. It's quite old at
+this point, about 40 years, from 1973. And
+the authors, there are five of them and at
+the time this was very unusual. So, Manuel
+Blum. Bob Floyd. Vaughn Pratt. Ron Rivest.
+And Bob Targen. And this is a pretty heavy
+weight line up, so as we've discussed in
+the past, the highest award in computer
+science is the ACM Turing award given once
+each year. And I like to ask my algorithms
+classes how many of these authors do they
+think, have been awarded a Turing award.
+I've asked him many times. The favorite
+answer anyone's ever given me has been.
+Six, which I think is in spirit should be
+correct. Strictly speaking the answer is
+four. So, the only one of these five
+authors that doesn't have a Touring award
+is Von Pratt, although he's done
+remarkable things spanning the gambit from
+co-founding Sun Systems to having very
+famous theorems about, for example,
+testing primality. But the other four have
+all been awarded the Touring award at some
+point. So in chronological order, so the
+late Bob Floyd who was a professor here at
+Stanford. Was awarded the 1978 [inaudible]
+award, both for contributions to
+algorithms but also to program languages
+and compilers. So Bob Targen who, as we
+speak, is here as a visitor at Stanford
+and has spent his Ph. D here and has been
+here as a faculty at times, was awarded it
+for contributions to graph algorithms and
+data structures. We'll talk some more
+about some of his other contributions in
+future courses. Manuel Blum was awarded
+the Turing award in'95 largely for
+contributions in cryptography, and many of
+you probably know Ron Rivest as the R in
+the RSA cryptosystem. So he, won the,
+Turing award along with Shamir and Adleman
+back in'02. So in summary, if this
+algorithm seems like one that might have
+alluded you even on your most creative
+days, I wouldn't feel bad about it. This
+is a, this is a quite clever algorithm. So
+let's now turn to the analysis and explain
+why it runs in linear time in the worst

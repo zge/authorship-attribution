@@ -1,0 +1,185 @@
+In this video, I'm going to talk about the
+exploding and vanishing gradients problem,
+which is what makes it difficult to train
+recurrent neural networks.
+For many years, researchers in URL
+networks thought they would never be able
+to train these networks to model
+dependencies over long time periods.
+But at the end of this video, I can
+describe four different ways in which that
+can now be done.
+To understand why it's so difficult to
+train recurrent neural networks, we have
+to understand a very important difference
+between the forward and backward passes in
+a recurrent neural net.
+In the forward pass, we used squashing
+functions, like the logistic, to prevent
+the activity vectors from exploding.
+So, if you look at the picture on the
+right, each neuron is using a logistic
+unit shown by that blue curve and it can't
+output any value greater than one or less
+than zero,
+So that stops explosions.
+The backward pass, however, is completely
+linear.
+Most people find this very surprising.
+If you double the error derivatives is it
+the final layers of this net, all the
+error derivatives will double when you
+back propagate.
+So, if you look at the red dots that I put
+on the blue curves,
+We'll suppose those are the activity
+levels of the neurons on the forward pass.
+And so, when you back propagate, you're
+using the gradients of the blue curves at
+those red dots.
+So the red lines are meant to throw the
+tangents to the blue curves at the red
+dots.
+And, once you finish the forward pass, the
+slope of that tangent is fixed.
+You now back propagate and the back
+propagation is like going forwards though
+a linear system in which the slope of the
+non-linearity has been fixed.
+Of course, each time you back propagate,
+the slopes will be different because they
+were determined by the forward pass.
+But during the back propagation, it's a
+linear system and so it suffers from a
+problem of linear systems, which is when
+you iterate, they tend to either explode
+or die.
+So when we backpropagate through many
+layers if the weights are small the
+gradients will shrink and become
+exponentially small. And that means that
+when you backpropagate through time
+gradients that are many steps earlier than
+the targets arrive will be tiny.
+Similarly, if the weights are big, the
+gradients will explode.
+And that means when you back propagate
+through time, the gradients will get huge
+and wipe out all your knowledge.
+In a feed-forward neural net, unless it's
+very deep, these problems aren't nearly as
+bad because we typically only have a few
+hidden layers.
+But as soon as we have a recurrent neural
+network trained on a long sequence, for
+example 100 time steps, then if the
+gradients are growing as we back
+propagate, we'll get whatever that growth
+rate is to the power of 100 and if they're
+dying, we'll get whatever that decay is to
+the power of 100 and, so, they'll either
+explode or vanish.
+We might be able to initialize the weights
+very carefully to avoid this and more
+recent work, shows that indeed careful
+initialization of the weights does make
+things work much better.
+But even with good initial weights, it's
+hard to detect the dependency of the
+current output or an input from many
+time-steps ago.
+So it's hard to make the output depend on
+things that happened a long time ago.
+Rnn's have difficulty dealing with
+long-range dependencies.
+Here's an example of exploding and dying
+gradients for a system that's trying to
+learn attractors.
+So suppose we try and train a recurrent
+neural network,
+So that whatever state we started in, it
+ends up in one of these two attractor
+states.
+So we're going a learn blue basin of
+attraction and a pink basin of attraction.
+And if we start anywhere within the blue
+basin of attraction, we will end up at the
+same point.
+What that means is that, small differences
+in our initial state make no difference to
+where we end up.
+So the derivative of the final state with
+respect to changes in the initial state,
+is zero.
+That's vanishing gradients.
+When we back propagate through the
+dynamics of this system we will discover
+there's no gradience from where you start,
+and the same with the pink basin of
+attraction.
+If however, we start very close to the
+boundary between the two attractors.
+Then, a tiny difference in where we start,
+that's the other side of the watershed,
+makes the huge difference to where we end
+up, that's the explosion gradient problem.
+And so whenever your trying to use a
+recurrent neural network to learn
+attractors like this, you're bound to get
+vanishing or exploding gradients.
+It turns out, there's at least four
+effective ways to learn a recurrent neural
+network.
+The first is a method called long short
+term memory and I'll talk about that more
+in this lecture.
+The idea is we actually change the
+architecture of the neural network to make
+it good at remembering things.
+The second method is to use a much better
+optimizer that can deal with very small
+gradients.
+I'll talk about that in the next lecture.
+The real problem in optimization is to
+detect small gradients that have an even
+smaller curvature.
+Heissan-free Optimization, tailored to
+your own apps is good at doing that.
+The third method really kind of evades the
+problem.
+What we do is we carefully initialize the
+input to hidden weights and we very
+carefully initialize the hidden to hidden
+weights, and also feedback weights from
+the outputs to the hidden units.
+And the idea of this careful
+initialization is to make sure that the
+hidden state has a huge reservoir of
+weakly coupled oscillators.
+So if you hit it with an input sequence,
+it will reverberate for a long time and
+those reverberations are remembering what
+happened in the input sequence You then
+try and couple those reverberations to the
+output you want and so the only thing that
+learns in an Echo State Network is the
+connections between the hidden units and
+the outputs.
+And if the output units are linear, that's
+very easy to train.
+So this hasn't really learned the
+recurrent. It's used a fixed random
+recurrent bit, but a carefully chosen one
+and then just learned the hidden tripod
+connections.
+And the final method is to use momentum,
+but to use momentum with the kind of
+initialization that was being used for
+Echo State Networks and that makes them
+work even better.
+So it was very clever to find out how to
+initialize these recurrent networks so
+they'll have interesting dynamics, but
+they work even better if you now modify
+that dynamic slightly in that direction
+that will help with the task at hand.

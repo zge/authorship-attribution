@@ -1,0 +1,292 @@
+In this segment I'm gonna talk about where
+the huge number of parses for human
+languages, sentences comes from, and how
+we might go about solving it in our
+statistical parsing systems. So a key part
+of doing parsing for human language
+sentences is this problem of what's called
+attachment from the psychological
+literature. It's, for various kinds of
+phrases, how do we decide what they
+modify? So any time we have prepositional
+phrases, adverbial or participial phrases,
+infinitives, coordinations, and things like
+that, we have this attachment decision of
+working out what is, what are they
+modifying? Let's work through an
+example to get an idea of that problem. So
+here we have a sentence. The board
+approved its acquisition by Royal Trust
+Co. Limited, of Toronto for $27 a share
+at its monthly meeting. And if we look at
+this sentence, well what do we find? We
+find, that well, we have here the subject,
+the board, then a verb approved and an
+object its acquisition. But then if we
+look after that, what we find is that
+there are actually four prepositional
+phrases in a row: by Royal Trust Co Ltd
+of Toronto for 27 cents a share at its
+monthly meeting. And for each of those what
+we need to do is decide, what are they
+modifying. So in general a prepositional
+phrase can modify a verb, it can modify a
+preceding noun phrase. So it's got these
+two targets. But actually each of these
+prepositional phrases actually includes
+in it a noun phrase. So once we get to
+the later prepositional phrases, there'll
+be more things that each one can choose to
+modify. Okay let's go through each one in
+turn. Right so for by Royal Trust Co.,
+that's modifying the acquisition, not the
+approval. So, its acquisition by Royal
+Trust Co. So that's in dependency format we
+have that relationship. Okay, of Toronto,
+this is not modifying the approval or the
+acquisition. Rather it's Royal Trust Co.
+Limited of Toronto. So this prepositional
+phrase is modifying Royal Trust Co.
+Limited. Okay, so then if we go on to the
+third one, for 27 cents a share, that's
+not modifying Toronto or Royal Trust Co.,
+it's modifying the acquisition. So this
+is an acquisition for 27 cents a share and
+then for the last prepositional phrase, at its
+monthly meeting, that's presumably not
+referring to an acquisition at its monthly
+meeting or any of these other things, but
+rather its approval at its monthly
+meeting. So this prepositional phrase
+modifies the first verb. Okay, that was
+kind of complex, though as human beings we
+just read the sentence and understand what
+it means and do these attachment decisions
+without any apparent effort most of the
+time. How, but the thing to--, we want to
+think about for a moment now is how
+many possible attachments there are. Well
+if you just sort of think there are, you
+know, one, two, three, four things here
+and each of them could attach to a bunch
+of points and each one can be chosen
+completely freely, it should be fairly
+clear that, well we're going to get an
+exponential number of possibilities,
+exponential in the number of prepositional
+phrases. And it's precisely from that
+cause is where these huge number of parses
+that we saw previously, like having 600
+parses for a sentence came from. That
+really, you are making a number of
+decisions for things like category and
+attachment, and a lot of them can fairly
+freely combine. So you multiply out these
+ambiguities, and you get a huge number.
+However, it's not the case in examples
+like this that you're completely free to
+attach anything anywhere. So, when we did
+by Royal Trust Co., it could certainly
+choose to attach either to the preceding
+noun or the verb. And then, syntactically,
+when we attached of Toronto, it had three
+choices. It could attach to Royal Trust
+Co., or to the preceding noun phrase, or
+to the preceding verb phrase. And all of
+those were syntactically possible. But
+once you've made some higher attachments,
+that means earlier in the sentence, things
+become more restricted. So in particular,
+once we decided to attach for $27 a share
+as a modifier of its acquisition, that
+restricts the attachments that are
+possible for this prepositional phrase. It
+could still attach to a share or it
+could attach to an, an acquisition, or it
+could attach to approved. But these ones
+here that are kind of hidden behind the
+attachment of for $27 a share to an
+acquisition. These ones become not
+possible anymore. So that leaves a kind of
+a little puzzle of well, as you add on
+prepositional phrase attachments to a
+sentence how many possible attachments are
+there that observe this constraint, which
+corresponds to dependencies not crossing
+or for there being a tree structure to a
+sentence in a phrase structure grammar.
+Well it turns out that the answer to that
+question is a well worked out piece of
+math. The answer can be found in the
+series of Catalan numbers which is a
+sequence that turns up in a lot of places,
+wherever you've got a kind of tree-like
+context. For example it even turns up in
+probabilistic graphical models and the
+important thing to know from our purposes
+is that the growth of the Catalan
+numbers is still an exponential sequence,
+we get an exponential number of parses.
+Unless you're a math geek, working through
+the factorials there probably isn't the
+most useful thing to do, but rather it's
+probably much more valuable linguistically
+to actually look at what are the possible
+structures for a simple sentence and get a
+sense of how many there are there and so
+that's what we'll ask you to do in the
+quiz question that follows this.
+Okay. You hopefully worked out in the quiz that
+the answer to, once you have two prepositional
+phrases, the number of possible structures
+is five. But rather than focusing on that
+number now, what I wanted to start doing
+is focusing on the two problems that come
+from having this exponential possible
+number of parses for even quite
+simple sentences. So problem number one
+is that if we parse naively, and that
+means that we use the simple kinds of top
+down or bottom up parses that are normally
+used in contexts like, in programming
+languages, where they're used with less
+ambiguous languages, that that
+would mean that our parses end up doing an
+exponential amount of work themselves. And
+that's no good if we'd like our parses to
+parse quickly. So where does that
+exponential amount of work come from?
+Well, the thing to notice is
+that we're generating this exponential
+number of trees, and that comes about
+from having a small number of basic
+ambiguities. So, in this silly example we
+have the two PP's with cats and with
+claws. We're choosing where to attach each
+of those. So there're really only two
+decisions, but we're then multiplying that
+out into an exponential number of parses.
+And in the course of doing that what
+happens is that we do a lot of repeated
+work. So if you look at these parse
+structures you can see that we keep on
+building the same piece of structure
+over and over again. So here's a little PP
+of with claws, and we build it in this parse, 
+we build it in that parse, we build it in that parse,
+we build it in every parse. We're always
+going to have that PP. But if we just generate
+all the structures we're building it over and
+over again. And the same is true with
+larger bits of structure. So here's a
+bigger PP, with cats with claws. It also
+appears in this parse. And so we're doing,
+completely duplicated work there. And that
+goes on. So here's a verb phrase of
+scratch people, and we generate it in that
+parse, and we generate it in that parse.
+And there are other places in which we
+build other pieces of structure that get
+repeated over. So here's a noun phrase of
+people with cats, and here's the same
+piece of noun phrase of people with cats.
+Here is a verb phrase of scratch people with
+cats. And here's again the verb phrase
+scratch people with cats being generated a
+second time. So this is just a lot of
+repeated work. And so the secret to
+building efficient parsers and getting
+away from doing an exponential amount of
+work is to avoid doing the same work
+twice. We only want to find possible
+pieces of structure for a sentence
+precisely once. And then we'll be able to
+turn parsing from an exponential problem
+into a polynomial time problem. Problem is
+then how to choose the correct parse or
+several likely parses out of the many,
+many possible parses for a sentence. How
+can we do that? Well let's look at this
+simple example. So this is again the
+classic, here's a verb with an object noun
+phrase, and a prepositional phrase
+attachment following it. So it could be
+that this modifies the verb. So she is
+looking through a telescope, and she saw
+the man with a telescope. Or it could be
+that this modifies the noun. So this is a
+man with a telescope and she saw that
+person. Well which of those is correct?
+Well the answer is that it could be
+either. So this is what's commonly
+referred to as an AI complete problem,
+knowing which is correct could depend on
+arbitrary knowledge about the world
+situation that's being observed or the
+prior discourse context in really complex
+ways and it can be really hard to tell. Well
+that's true, but it turns out that in a
+lot of cases, you can be pretty sure
+what's correct without understanding a lot.
+That just looking at the words that are
+involved, the nouns, the verbs, and the
+prepositions, you can get a really good
+idea of which attachment is correct
+even without having anything like full
+understanding of the sentence. Let's look
+at a couple of examples that illustrate
+this. Okay, so here is now some more
+real text examples. They have exactly the
+same structure, so we've got a verb,
+a noun phrase, and our prepositional
+phrase. Moscow sent more than 100,000
+soldiers into Afghanistan. So one
+possibility is that the sending is into
+Afghanistan, the verb attachment, And the
+other possibility is it's soldiers into
+Afghanistan. Now, syntactically, either of
+these is possible. So soldiers into
+Afghanistan would have the same structure
+as a phrase like, whatever, students into
+Lady Gaga or something like that. It's a
+possible syntactic structure, but it's
+just really, really unlikely. You're just
+very unlikely to have soldiers into
+Afghanistan and so almost certainly the
+structure that we want to choose is with
+into Afghanistan modifying sent and that's
+a very common idiom that you send
+something into some environment. And so we
+should choose this parse.
+Then let's look at this next example. So in this
+example, the same structure again. And we can
+have the PP with New South Wales head
+being a dependent of breached, breached
+with New South Wales Health, or it can be
+a dependent of the agreement; agreement
+with New South Wales head. Well again,
+breaching with New South Wales head just
+isn't very likely. You just don't say I
+breached with my friend. Doesn't
+sound very good. On the other hand, an
+agreement with New South Wales Health,
+that's really common and normal sounding,
+'cause you make agreements with somebody.
+And so this is the attachment that we
+should choose. So that then, didn't look
+that hard. And that's exactly what we'll
+do. Now, statistical parsers will try and
+exploit such statistics about word
+combination, which kind of preposition is
+likely to with which nouns and which
+verbs, to be able to choose the correct
+parses of sentences without having full
+understanding of them. Okay. I hope that's
+given a sense of how parsing human
+language sentences can just be a really
+bad problem, but also some idea of how we
+can start developing methods that will
+solve both the problem of there being an
+exponential number of parses, not causing
+an exponential amount of work, and how we
+choose the most likely parses for sentences.

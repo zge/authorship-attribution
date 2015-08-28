@@ -1,0 +1,206 @@
+In this video, I'm gonna talk about
+perceptrons.
+These were investigated in the early
+1960's, and initially they looked very
+promising as learning devices.
+But then they fell into disfavor because
+Minsky and Papert showed they were rather
+restricted in what they could learn to do.
+In statistical pattern recognition,
+there's a statistical way to recognize
+patterns.
+We first take the raw input, and we
+convert it into a set or vector feature
+activations.
+We do this using hand written programs
+which are based on common sense.
+So that part of the system does not learn.
+We look at the problem we decide what the
+good features should be.
+We try some features to see if they work
+or don't work we try some more features
+and eventually set of features that allow
+us to solve the problem by using a
+subsequent learning stage.
+What we learn is how to weight each of the
+feature activations, in order to get a
+single scalar quantity.
+So the weights on the features represent
+how much evidence the feature gives you,
+in favor or against the hypothesis that
+the current input is an example of the
+kind of pattern you want to recognize.
+And when we add up all the weighted
+features, we get a sort of total evidence
+in favor of the hypothesis that this is
+the kind of pattern we want to recognize.
+And if that evidence is above some
+threshold, we decide that the input vector
+is a positive example of the class of
+patterns we're trying to recognize.
+A perceptron is a particular example of a
+statistical pattern recognition system.
+So there are actually many different kinds
+of perceptrons, but the standard kind,
+which Rosenblatt called an alpha
+perceptron, consists of some inputs which
+are then converted into future activities.
+They might be converted by things that
+look a bit like neurons, but that stage of
+the system does not learn.
+Once you've got the activities of the
+features, you then learn some weights, so
+that you can take the feature activities
+times the weights and you decide whether
+or not it's an example of the class you're
+interested in by seeing whether that sum
+of feature activities times learned
+weights is greater than a threshold.
+Perceptrons have an interesting history.
+They were popularized in the early 1960s
+by Frank Rosenblatt.
+He wrote a great big book called
+Principles of Neurodynamics, in which he
+described many different kinds of
+perceptrons, and that book was full of
+ideas.
+The most important thing in the book was a
+very powerful learning algorithm, or
+something that appeared to be a very
+powerful learning algorithm.
+A lot of grand claims were made for what
+perceptrons could do using this learning
+algorithm.
+For example, people claimed they could
+tell the difference between pictures of
+tanks and pictures of trucks, even if the
+tanks and trucks were sort of partially
+obscured in a forest.
+Now some of those claims turned out to be
+false.
+In the case of the tanks and the trucks,
+it turned out the pictures of the tanks
+were taken on a sunny day, and the
+pictures of the trucks were taken on a
+cloudy day.
+All the perceptron was doing was measuring
+the total intensity of all the pixels.
+That's something we humans are fairly
+insensitive to.
+We notice the things in the picture.
+But a perceptron can easily learn to add
+up the total intensity.
+That's the kind of thing that gives an
+algorithm a bad name.
+In 1969, Minsky and Papert published a
+book called Perceptrons that analyzed what
+perceptrons could do and showed their
+limitations.
+Many people thought those limitations
+applied to all neural network models.
+And the general feeling within artificial
+intelligence was that Minsky and Papert
+had shown that neural network models were
+nonsense or that they couldn't learn
+difficult things.
+Minsky and Papert themselves knew that
+they hadn't shown that.
+They'd just shown that perceptrons of the
+kind for which the powerful learning
+algorithm applied could not do a lot of
+things, or rather they couldn't do them by
+learning.
+They could do them if you sort of
+hand-wired the answer in the inputs, but
+not by learning.
+But that result got wildly
+overgeneralized, and when I started
+working on neural network models in the
+1970s, people in artificial intelligence
+kept telling me that Minsky and Papert
+have proved that these models were no
+good.
+Actually, the perceptron convergence
+procedure, which we'll see in a minute, is
+still widely used today for tasks that
+have very big feature vectors.
+So, Google, for example, uses it to
+predict things from very big vectors of
+features.
+So, the decision unit in a perceptron is a
+binary threshold neuron.
+We've seen this before and just to re-,
+refresh you on those.
+They compute a weighted sum of inputs they
+get from other neurons.
+They add on a bias to get their total
+input.
+And then they give an output of one if
+that sum exceeds zero, and they give an
+output of zero otherwise.
+We don't want to have to have a separate
+learning rule for learning biases, and it
+turns out we can treat biases just like
+weights.
+If we take every input vector and we stick
+a one on the front of it, and we treat the
+bias as like the weight on that first
+feature that always has a value of one.
+So the bias is just the negative of the
+threshold.
+And using this trick, we don't need a
+separate learning rule for the bias.
+It's exactly equivalent to learning a
+weight on this extra input line.
+So here's the very powerful learning
+procedure for perceptrons, and it's a
+learning procedure that's guaranteed to
+work, which is a nice property to have.
+Of course you have to look at the small
+print later, about why that guarantee
+isn't quite as good as you think it is.
+So we first had this extra component with
+a value of one to every input vector.
+Now we can forget about the biases.
+And then we keep picking training cases,
+using any policy we like, as long as we
+ensure that every training case gets
+picked without waiting too long.
+I'm not gonna define precisely what I mean
+by that.
+If you're a mathematician, you could think
+about what might be a good definition.
+Now, having picked a training case, you
+look to see if the output's correct.
+If it is correct, you don't change the
+weights.
+If the output unit outputs a zero when it
+should've output a one, in other words, it
+said it's not an instance of the pattern
+we're trying to recognize, when it really
+is, then all we do is we add the input
+vector to the weight vector of the
+perceptron.
+Conversely, if the output unit, outputs a
+one, when is should have output a zero, we
+subract the input vector, from the weight
+vector of the [inaudible].
+And what's surprising is that, that simple
+learning procedure is guaranteed to find
+you a set of weights that will get a right
+answer for every training case.
+The proviso is that it can only do it if
+it is such a set of weights and for many
+interesting problems there is no such set
+of weights.
+Whether or not a set of weights exist
+depends very much on what features you
+use.
+So it turns out for many problems the
+difficult bit is deciding what features to
+use.
+If you're using the appropriate features
+learning then may become easy.
+If you're not using the right features
+learning becomes impossible and all the
+work is deciding the features.

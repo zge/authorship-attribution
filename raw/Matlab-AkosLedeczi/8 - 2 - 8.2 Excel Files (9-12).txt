@@ -1,0 +1,216 @@
+[MUSIC]
+Microsoft Excel is a widely used tool for
+analyzing data.
+That's why so many programs support
+the reading and writing of Excel files.
+And MATLAB does too, with two built-in
+functions called xlsread and xlswrite.
+Here we see a spreadsheet open in Excel.
+It contains monthly weather data for
+Nashville, Tennessee.
+As you can see, it contains not only
+numerical data, but also various labels
+for month names and weather data,
+such as temperature and precipitation.
+Assuming this data is saved in a file
+called Nashville_climate.xlsx,
+we can easily load it into MATLAB.
+We do that by calling
+the xlsread function with three
+output arguments, num, txt, and raw.
+The only input argument here is a string.
+It's the name of the file.
+You may be wondering,
+why are there three different outputs?
+Well, MATLAB's nice enough to separate
+the numbers from the text for us.
+Numbers in the Excel file are collected
+and returned in the first output argument.
+Text is returned in the second
+output argument, and finally,
+the third argument contains everything.
+Depending on what you need,
+you can use any or all of these outputs.
+Let's look at the first argument, num.
+Num is a matrix of doubles,
+no surprise there.
+But an interesting aspect
+of num is it's size,
+which is smaller than
+the size of the spreadsheet.
+What MATLAB does here is find the smallest
+rectangle of cells in the spreadsheet that
+contains all the numbers.
+That rectangle may be only a subset
+of all the cells in the spreadsheet,
+as it is here in this example.
+In this case it makes up 14 rows and
+3 columns, so that's the size of num.
+But there's a hitch with this plan.
+MATLAB picks up all the cells
+from this rectangular area, and
+some of those cells may not
+contain numerical data,
+like this two by three non-numerical
+array in the middle of our example.
+It contains three empty cells
+In three cells with text,
+none of which is numerical data.
+For these cells, MATLAB assigns
+a special value in the output argument,
+NaN, which means not a number.
+So in this example, it puts a two
+by three array of NaN, or nans,
+in the middle of the output argument.
+Text is returned in a similar fashion.
+This time, the smallest rectangular area
+is selected that contains
+all the text cells.
+The type of this second output argument,
+TXT, is a cell array instead
+of an array of characters.
+That's the only way to return text.
+Because there can be different
+numbers of characters in the cell, so
+it's not possible to return it as
+a rectangular character array.
+Now numbers turn into empty strings.
+But what about those
+strange looking entries,
+1 by 30 char and
+1 by 40 char at the top left?
+With eight corresponding strings,
+they're simply too long to print
+conveniently in the command window.
+So MATLAB just prints the type,
+the dimensions plus the element type.
+But don't worry,
+all those data are there in those cells.
+Finally, if we need everything
+from the spreadsheet in one array,
+we get that in the third argument.
+It's a cell array, that's the union
+of the previous two arrays.
+All the data are here in one cell array,
+containing doubles and strings.
+And this time,
+it's the smallest rectangle that
+contains everything in the spreadsheet.
+Okay.
+Let's try this out in MATLAB.
+Well, it's easy to implement pretty
+much anything in PowerPoint.
+But et me show you that it's really this
+easy to handle Excel files in MATLAB.
+First, let's make sure we have
+the data we need in this directory.
+What I want is this
+Nashville climate data.
+There it is right there.
+It's an Excel file with
+the ending xlsx here.
+So first thing I want to do is
+just read the numbers in the file.
+To do that, we'll give just one
+output argument instead of all three.
+And there's our function.
+Gee, that's a lot to type, and I'm lazy.
+So what I'm going to do is just copy.
+And paste.
+There.
+There's all our data.
+How cool is that?
+A single command, and
+we have all the numeric data in the Excel
+spreadsheet loaded into a MATLAB variable.
+If we want both numerical and
+textual data, we can do this.
+There are the numbers,
+there are the strings.
+With these empty strings,
+where there are no strings.
+So, that's how you get both of them.
+If you're not interested in
+the numerical data at all and
+you just want the textual data,
+you can do that, too.
+There's a new syntax we
+haven't mentioned before,
+that allows you to skip
+an output argument.
+Looks like this.
+Instead of temps here,
+I put a tilde and a comma.
+You got to have the comma if
+you're going to use a tilde.
+And so this time,
+we didn't get the numerical data,
+just the second set of data.
+And this works with any function
+that has multiple output arguments.
+And if all we care about is the entire
+file, that last argument, we can do this.
+Two tildes.
+We don't want the numerical,
+we don't want the text,
+we want everything and
+there is everything in that format,
+where not a number is an empty cell, and
+here is numbers over here and
+here is strings and so on.
+Often, we want to read from a specified
+area within an Excel workbook.
+Here's how to do that.
+Here we read the data
+from just a single cell.
+The second argument here
+specifies the sheet.
+You can use the number, just like I
+did here, one for f, the first sheet,
+two for the second, and so on.
+Or you can specify the name of the sheet
+using a string in the second argument.
+The third argument is
+the name of the cell.
+And you can specify
+an area using this syntax.
+Here we use Excel's own notation in the
+third argument for a rectangle of cells.
+Note that that colon right here
+is not MATLAB's colon operator,
+it's just a character in the string.
+It indicates that T15 is the upper
+left hand corner of the rectangular
+array we want, and
+E17 is the lower right hand corner.
+We can also write data tech cell
+files using the xlswrite function,
+at least on Windows we can.
+On a Mac, MATLAB provides
+a somewhat limited alternative,
+xlswrite, writes text files
+instead of Excel files.
+Only numeric arrays can be written.
+And each row is written
+on a separate line,
+and the numbers on a row
+are separated by commas.
+This format, which is called the comma
+separated value format or CSV,
+is written and
+read by many applications including Excel.
+Because of this limitation,
+we're not going to cover xlswrite here.
+But the function is just as easy
+to use as the xlsread function.
+Only thing to keep in mind is that
+you can overwrite the contents of
+an existing file.
+You won't get any warning.
+The good news, however, is that you only
+modify the cells that you actually write.
+The other cells will not be affected.
+Try Help xlswrite, or
+read the book for more details.
+[MUSIC]
+

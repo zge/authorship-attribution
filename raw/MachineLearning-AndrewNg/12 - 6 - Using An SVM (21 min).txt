@@ -1,0 +1,620 @@
+So far we've been talking about
+SVMs in a fairly abstract level.
+In this video I'd like to
+talk about what you actually need
+to do in order to run or to use an SVM.
+The support vector machine algorithm
+poses a particular optimization problem.
+But as I briefly mentioned in
+an earlier video, I really
+do not recommend writing your
+own software to solve for the parameter's theta yourself.
+So just as today, very
+few of us, or maybe almost essentially
+none of us would think of
+writing code ourselves to invert a matrix
+or take a square root of a number, and so on.
+We just, you know, call some library function to do that.
+In the same way, the
+software for solving the SVM
+optimization problem is very
+complex, and there have
+been researchers that have been
+doing essentially numerical optimization research for many years.
+So you come up with good
+software libraries and good software
+packages to do this.
+And then strongly recommend just using
+one of the highly optimized software
+libraries rather than trying to implement something yourself.
+And there are lots of good software libraries out there.
+The two that I happen to
+use the most often are the
+linear SVM but there are really
+lots of good software libraries for
+doing this that you know, you can
+link to many of the
+major programming languages that you
+may be using to code up learning algorithm.
+Even though you shouldn't be writing
+your own SVM optimization software,
+there are a few things you need to do, though.
+First is to come up
+with with some choice of the
+parameter's C. We talked a
+little bit of the bias/variance properties of
+this in the earlier video.
+Second, you also need to
+choose the kernel or the
+similarity function that you want to use.
+So one choice might
+be if we decide not to use any kernel.
+And the idea of no kernel
+is also called a linear kernel.
+So if someone says, I use
+an SVM with a linear kernel,
+what that means is you know, they use
+an SVM without using without
+using a kernel and it
+was a version of the SVM
+that just uses theta transpose X, right,
+that predicts 1 theta 0
+plus theta 1 X1
+plus so on plus theta
+N, X N is greater than equals 0.
+This term linear kernel, you
+can think of this as you know this
+is the version of the SVM
+that just gives you a standard linear classifier.
+So that would be one
+reasonable choice for some problems,
+and you know, there would be many software
+libraries, like linear, was
+one example, out of many,
+one example of a software library
+that can train an SVM
+without using a kernel, also
+called a linear kernel.
+So, why would you want to do this?
+If you have a large number of
+features, if N is
+large, and M the
+number of training examples is
+small, then you know
+you have a huge number of
+features that if X, this is
+an X is an Rn, Rn +1.
+So if you have a
+huge number of features already, with
+a small training set, you know, maybe you
+want to just fit a linear
+decision boundary and not try
+to fit a very complicated nonlinear
+function, because might not have enough data.
+And you might risk overfitting, if
+you're trying to fit a very complicated function
+in a very high dimensional feature space,
+but if your training set sample
+is small. So this
+would be one reasonable setting where
+you might decide to just
+not use a kernel, or
+equivalents to use what's called a linear kernel.
+A second choice for the kernel that
+you might make, is this Gaussian
+kernel, and this is what we had previously.
+And if you do this, then the
+other choice you need to make
+is to choose this parameter sigma squared
+when we also talk a little bit about the bias variance tradeoffs
+of how, if sigma squared is
+large, then you tend
+to have a higher bias, lower
+variance classifier, but if
+sigma squared is small, then you
+have a higher variance, lower bias classifier.
+So when would you choose a Gaussian kernel?
+Well, if your omission
+of features X, I mean
+Rn, and if N
+is small, and, ideally, you know,
+if n is large, right,
+so that's if, you know, we have
+say, a two-dimensional training set,
+like the example I drew earlier.
+So n is equal to 2, but we have a pretty large training set.
+So, you know, I've drawn in a
+fairly large number of training examples,
+then maybe you want to use
+a kernel to fit a more
+complex nonlinear decision boundary,
+and the Gaussian kernel would be a fine way to do this.
+I'll say more towards the end
+of the video, a little bit
+more about when you might choose a
+linear kernel, a Gaussian kernel and so on.
+But if concretely, if you
+decide to use a Gaussian
+kernel, then here's what you need to do.
+Depending on what support vector machine
+software package you use, it
+may ask you to implement a
+kernel function, or to implement
+the similarity function.
+So if you're using an
+octave or MATLAB implementation of
+an SVM, it may ask you
+to provide a function to
+compute a particular feature of the kernel.
+So this is really computing f
+subscript i for one
+particular value of i, where
+f here is just a
+single real number, so maybe
+I should move this better written
+f(i), but what you
+need to do is to write a kernel
+function that takes this input, you know,
+a training example or a
+test example whatever it takes
+in some vector X and takes
+as input one of the
+landmarks and but
+only I've come down X1 and
+X2 here, because the
+landmarks are really training examples as well.
+But what you
+need to do is write software that
+takes this input, you know, X1, X2
+and computes this sort
+of similarity function between them
+and return a real number.
+And so what some support vector machine
+packages do is expect
+you to provide this kernel function
+that take this input you know, X1, X2 and returns a real number.
+And then it will take it from there
+and it will automatically generate all the features, and
+so automatically take X and
+map it to f1,
+f2, down to f(m) using
+this function that you write, and
+generate all the features and
+train the support vector machine from there.
+But sometimes you do need to
+provide this function yourself.
+Other if you are using the Gaussian kernel, some SVM implementations will also include the Gaussian kernel
+and a
+few other kernels as well, since
+the Gaussian kernel is probably the most common kernel.
+Gaussian and linear kernels are
+really the two most popular kernels by far.
+Just one implementational note.
+If you have features of very
+different scales, it is important
+to perform feature scaling before
+using the Gaussian kernel.
+And here's why.
+If you imagine the computing
+the norm between X and
+l, right, so this term here,
+and the numerator term over there.
+What this is doing, the norm
+between X and l, that's really
+saying, you know, let's compute the vector
+V, which is equal to
+X minus l. And then
+let's compute the norm does
+vector V, which is the
+difference between X. So the
+norm of V is really
+equal to V1 squared
+plus V2 squared plus
+dot dot dot, plus Vn squared.
+Because here X is in
+Rn, or Rn
+plus 1, but I'm going to ignore, you know, X0.
+So, let's pretend X is
+an Rn, square on
+the left side is what makes this correct.
+So this is equal
+to that, right?
+And so written differently, this is
+going to be X1 minus l1
+squared, plus x2
+minus l2 squared, plus
+dot dot dot plus Xn minus
+ln squared.
+And now if your features
+take on very different ranges of value.
+So take a housing
+prediction, for example, if
+your data is some data about houses.
+And if X is in the
+range of thousands of square
+feet, for the
+first feature, X1.
+But if your second feature, X2 is the number of bedrooms.
+So if this is in the
+range of one to five bedrooms, then
+X1 minus l1 is going to be huge.
+This could be like a thousand squared,
+whereas X2 minus l2
+is going to be much smaller and if
+that's the case, then in this term,
+those distances will be almost
+essentially dominated by the
+sizes of the houses
+and the number of bathrooms would be largely ignored.
+As so as, to avoid this in
+order to make a machine work
+well, do perform future scaling.
+And that will sure that the SVM
+gives, you know, comparable amount of attention
+to all of your different features,
+and not just to in
+this example to size of
+houses were big movement here the features.
+When you try a support vector
+machines chances are by
+far the two most common
+kernels you use will
+be the linear kernel, meaning no
+kernel, or the Gaussian kernel that we talked about.
+And just one note of warning
+which is that not all similarity
+functions you might come up
+with are valid kernels.
+And the Gaussian kernel and the linear
+kernel and other kernels that you
+sometimes others will use, all
+of them need to satisfy a technical condition.
+It's called Mercer's Theorem and
+the reason you need to this
+is because support vector machine
+algorithms or implementations of the
+SVM have lots of clever
+numerical optimization tricks.
+In order to solve for the
+parameter's theta efficiently and
+in the original design envisaged,
+those are decision made to restrict
+our attention only to kernels
+that satisfy this technical condition called Mercer's Theorem.
+And what that does is, that
+makes sure that all of these
+SVM packages, all of these SVM
+software packages can use the
+large class of optimizations and
+get the parameter theta very quickly.
+So, what most people end up doing
+is using either the linear
+or Gaussian kernel, but there
+are a few other kernels that also
+satisfy Mercer's theorem and
+that you may run across other
+people using, although I personally
+end up using other kernels you know, very, very rarely, if at all.
+Just to mention some of the other kernels that you may run across.
+One is the polynomial kernel.
+And for that the similarity between
+X and l is
+defined as, there are
+a lot of options, you can
+take X transpose l squared.
+So, here's one measure of how similar X and l are.
+If X and l are very close with
+each other, then the inner product will tend to be large.
+And so, you know, this is a slightly
+unusual kernel.
+That is not used that often, but
+you may run across some people using it.
+This is one version of a polynomial kernel.
+Another is X transpose l cubed.
+These are all examples of the polynomial kernel.
+X transpose l plus 1 cubed.
+X transpose l plus maybe
+a number different then one 5
+and, you know, to the power of 4 and
+so the polynomial kernel actually has two parameters.
+One is, what number do you add over here?
+It could be 0.
+This is really plus 0 over there, as well as what's the degree of the polynomial over there.
+So the degree power and these numbers.
+And the more general form of the
+polynomial kernel is X
+transpose l, plus some
+constant and then
+to some degree in the
+X1 and so both
+of these are parameters for the polynomial kernel.
+So the polynomial kernel almost always
+or usually performs worse.
+And the Gaussian kernel does not
+use that much, but this is just something that you may run across.
+Usually it is used only for
+data where X and l
+are all strictly non negative,
+and so that ensures that these
+inner products are never negative.
+And this captures the intuition that
+X and l are very similar
+to each other, then maybe the inter product between them will be large.
+They have some other properties as well
+but people tend not to use it much.
+And then, depending on what you're
+doing, there are other, sort of more
+esoteric kernels as well, that you may come across.
+You know, there's a string kernel, this
+is sometimes used if your
+input data is text strings or other types of strings.
+There are things like the
+chi-square kernel, the histogram intersection kernel, and so on.
+There are sort of more esoteric kernels that
+you can use to measure similarity
+between different objects.
+So for example, if you're trying to
+do some sort of text classification
+problem, where the input
+x is a string then
+maybe we want to find the
+similarity between two strings
+using the string kernel, but I
+personally you know end up very rarely,
+if at all, using these more esoteric kernels.
+I
+think I might have use the chi-square
+kernel, may be once in
+my life and the histogram kernel,
+may be once or twice in my life. I've
+actually never used the string kernel myself. But in
+case you've run across this in other applications. You know, if
+you do a quick web
+search we do a quick Google
+search or quick Bing search
+you should have found definitions that these are the kernels as well.
+So
+just two last details I want to talk about in this video. One in multiclass classification. So, you
+have four classes or more generally
+3 classes output some appropriate
+decision bounday between your multiple classes. Most SVM, many SVM
+packages already have built-in
+multiclass classification functionality. So
+if your using a pattern like
+that, you just use the
+both that functionality and that
+should work fine. Otherwise,
+one way to do this
+is to use the one
+versus all method that we
+talked about when we are developing logistic regression. So
+what you do is you trade
+kSVM's if you have
+k classes, one to distinguish
+each of the classes from the rest.
+And this would give you k parameter
+vectors, so this will
+give you, upi lmpw. theta 1, which
+is trying to distinguish class y equals
+one from all of
+the other classes, then you
+get the second parameter, vector
+theta 2, which is what
+you get when you, you know, have
+y equals 2 as the positive class
+and all the others as negative class
+and so on up to
+a parameter vector theta k,
+which is the parameter vector for
+distinguishing the final class
+key from anything else, and
+then lastly, this is exactly
+the same as the one versus
+all method we have for logistic regression.
+Where we you just predict the class
+i with the largest theta
+transpose X.  So let's multiclass classification designate.
+For the more common cases
+that there is a good
+chance that whatever software package
+you use, you know, there will be
+a reasonable chance that are already
+have built in multiclass classification functionality,
+and so you don't need to worry about this result.
+Finally, we developed support vector
+machines starting off with logistic
+regression and then modifying the cost function a little bit.
+The last thing we want to do in this video is, just say a little bit about.
+when you will use one of
+these two algorithms, so let's
+say n is the number
+of features and m is the number of training examples.
+So, when should we use one algorithm versus the other?
+Well, if n is larger
+relative to your training set
+size, so for example,
+if you take a business
+with a number of features this is
+much larger than m and this
+might be, for example, if you
+have a text classification problem, where
+you know, the dimension of the feature
+vector is I don't know, maybe, 10 thousand.
+And if your training
+set size is maybe 10
+you know, maybe, up to 1000.
+So, imagine a spam
+classification problem, where email
+spam, where you have 10,000
+features corresponding to 10,000 words
+but you have, you know, maybe 10
+training examples or maybe up to 1,000 examples.
+So if n is large relative to
+m, then what I
+would usually do is use logistic
+regression or use it
+as the m without a kernel or
+use it with a linear kernel.
+Because, if you have so many
+features with smaller training sets, you know,
+a linear function will probably
+do fine, and you don't have
+really enough data to
+fit a very complicated nonlinear function.
+Now if is n is
+small and m is
+intermediate what I mean
+by this is n is
+maybe anywhere from 1 - 1000, 1 would be very small.
+But maybe up to 1000
+features and if
+the number of training
+examples is maybe anywhere from
+10, you know, 10 to maybe up to 10,000 examples.
+Maybe up to 50,000 examples.
+If m is pretty big like maybe 10,000 but not a million.
+Right? So if m is an
+intermediate size then often
+an SVM with a linear kernel will work well.
+We talked about this early as
+well, with the one concrete example,
+this would be if you have
+a two dimensional training set. So, if n
+is equal to 2 where you
+have, you know, drawing in a pretty large number of training examples.
+So Gaussian kernel will do
+a pretty good job separating positive and negative classes.
+One third setting that's of
+interest is if n is
+small but m is large.
+So if n is you know, again maybe
+1 to 1000, could be larger.
+But if m was, maybe
+50,000 and greater to millions.
+So, 50,000, a 100,000, million, trillion.
+You have very very large training set sizes, right.
+So if this is the case,
+then a SVM of the
+Gaussian Kernel will be somewhat slow to run.
+Today's SVM packages, if you're
+using a Gaussian Kernel, tend to struggle a bit.
+If you have, you know, maybe 50
+thousands okay, but if you
+have a million training examples, maybe
+or even a 100,000 with a
+massive value of m. Today's
+SVM packages are very good,
+but they can still struggle
+a little bit when you have a
+massive, massive trainings that size when using a Gaussian Kernel.
+So in that case, what I
+would usually do is try to just
+manually create have more
+features and then use
+logistic regression or an SVM
+without the Kernel.
+And in case you look at this
+slide and you see logistic regression
+or SVM without a kernel.
+In both of these places, I
+kind of paired them together. There's
+a reason for that, is that
+logistic regression and SVM without
+the kernel, those are really pretty
+similar algorithms and, you know, either
+logistic regression or SVM
+without a kernel will usually do
+pretty similar things and give
+pretty similar performance, but depending
+on your implementational details, one may be more efficient than the other.
+But, where one of
+these algorithms applies, logistic
+regression where SVM without a
+kernel, the other one is to likely
+to work pretty well as well.
+But along with the power of
+the SVM is when you
+use different kernels to learn
+complex nonlinear functions.
+And this regime, you know, when you
+have maybe up to 10,000 examples, maybe up to 50,000.
+And your number of features,
+this is reasonably large.
+That's a very common regime
+and maybe that's a regime
+where a support vector machine with a kernel kernel will shine.
+You can do things that are much
+harder to do that will need logistic regression.
+And finally, where do neural networks fit in?
+Well for all of these
+problems, for all of
+these different regimes, a well
+designed neural network is likely to work well as well.
+The one disadvantage, or the one
+reason that might not sometimes use
+the neural network is that,
+for some of these problems, the
+neural network might be slow to train.
+But if you have a very good
+SVM implementation package, that
+could run faster, quite a bit faster than your neural network.
+And, although we didn't show this
+earlier, it turns out that
+the optimization problem that the
+SVM has is a convex
+optimization problem and so the
+good SVM optimization software
+packages will always find
+the global minimum or something close to it.
+And so for the SVM you don't need to worry about local optima.
+In practice local optima aren't
+a huge problem for neural networks
+but they all solve, so this
+is one less thing to worry about if you're using an SVM.
+And depending on your problem, the neural
+network may be slower, especially
+in this sort of regime than the SVM.
+In case the guidelines they gave
+here, seem a little bit vague
+and if you're looking at some problems, you know,
+the guidelines are a bit
+vague, I'm still not entirely
+sure, should I use this
+algorithm or that algorithm, that's actually okay.
+When I face a machine learning
+problem, you know, sometimes its actually
+just not clear whether that's the
+best algorithm to use, but as
+you saw in the earlier videos, really,
+you know, the algorithm does
+matter, but what often matters
+even more is things like, how much data do you have.
+And how skilled are you, how
+good are you at doing error
+analysis and debugging learning
+algorithms, figuring out how
+to design new features and
+figuring out what other features to give you learning algorithms and so on.
+And often those things will matter
+more than what you are
+using logistic regression or an SVM.
+But having said that,
+the SVM is still widely
+perceived as one of
+the most powerful learning algorithms, and
+there is this regime of when there's
+a very effective way to learn complex non linear functions.
+And so I actually, together with
+logistic regressions, neural networks, SVM's,
+using those to speed
+learning algorithms you're I think
+very well positioned to build
+state of the art you know,
+machine learning systems for a wide
+region for applications and this
+is another very powerful tool to have in your arsenal.
+One that is used all
+over the place in Silicon Valley,
+or in industry and in
+the Academia, to build many
+high performance machine learning system.

@@ -1,0 +1,634 @@
+Welcome back.
+Noise in an image can originate from
+the acquisition, processing, transmission,
+and storage steps.
+Removing noise from an image is a
+desirable objective encountered almost
+everywhere images are used.
+Without using an explicit model for the
+noise other
+than it is additive and broadband, we can
+use linear.
+And also often special invariant filters
+to remove it.
+Noise removal is an important topic which
+can be cast either
+as an enhancement problem, as we will do
+in this segment.
+Or as a recovery problem, as we will do in
+week six and seven.
+Treating it as an enhancement problem, we
+are
+not providing neither a model for the
+noise.
+Nor an explicit metric of optimality,
+based on which a filter is derived.
+So, in this segment, we'll make use of
+the material we covered in weeks two and
+three.
+And describe and analyze linear and
+spatial
+invariant filters suitable for removing
+noise in images.
+We'll also show a number of experimental
+results demonstrating the efficiency of
+such filters.
+We will also discuss an example of
+especially varying noise moving filter.
+So with that, let us proceed with this
+very important and useful material.
+We'll move next to spatial filtering
+approaches toward enhancement.
+Starting with the use of both linear and
+non linear filters for noise muting.
+Under the heading of smoothing special
+filters, we consider techniques for
+enhancing an image by reducing the noise
+that might be present.
+We assume that the noise is additive.
+But since these are enhancement
+techniques, no
+modeling of the noise is taking place.
+Other than the basic knowledge that the
+noise might be broadband
+or, and the salt and pepper type of noise.
+Which is special cases of impulsive noise.
+In some applications, the noise depends on
+the image intensity
+as is the case for example in nuclear
+medical imaging.
+But this is not something that we'll
+consider here right now.
+We will be revisiting noise filtering when
+we also talk about recovery.
+So, we'll study next both linear space
+invariant, as well as nonlinear spatial
+smoothing filters.
+Let us look first at the use linear
+and special invariant systems for
+performing noise smoothing.
+The underlying model is that the original
+image x is
+corrupted by additive noise w to give rise
+to the observed data y.
+This model, however, is not explicitly
+used in
+choosing the filters that we will be
+talking about.
+So we want to use an LSI system to feed
+the noise.
+The system will accept y the noisy images
+input and
+will provide an estimate of the original
+image x had in it's output.
+So h, n1, n2 is part of a system and based
+on what we have learned.
+The output is simply the convolution of
+the
+input with a impulse response of the
+system.
+[BLANK_AUDIO]
+We also know by now that this operations
+can be taken to the discrete frequency
+domain.
+In other words, Hk1.k2 is the DFT of the
+input process of the system.
+Similarly, this is the DFT of the input.
+And the DFT of the output here can be
+formed by multiplying the corresponding
+DFTs as shown here.
+So convolution becomes multiplication.
+We also know, of course, that if I
+multiply
+DFTs they have to be of the same size.
+What happens in the space shuttle domain
+is not the linear convolution here.
+But the secular convolution between the
+input
+and the impulse response of the system.
+We also have learned that if we take the
+appropriate size DFTs of all the
+quantities involved here.
+The result of the linear and secular
+convolution will be the same.
+So, in my conclusion, we have all
+the knowledge to perform these filtering
+operations.
+Either, in the spatial domain or in the
+discrete frequency domain, correctly
+choosing the appropriate size DFTs.
+Now if we derive the form the impulses
+response here, H
+n1 and 2, based on the optimization of an
+objective criterion.
+Then we're solving a restoration problem.
+If on the other hand, we try values Forms
+of H n1 and 2 based on
+our intuition and decide which of those
+provided with the best results.
+Then clearly you are solving an
+enhancement problem.
+At this point we are approaching the
+noise smoothing problem as an enhancement
+problem.
+So, therefore we'll be looking at various
+filters at various types
+of H n1 and 2 that can provide us with
+meaningful answers.
+Let us first explain with some, simple
+drawings what takes place in the frequency
+domain.
+When we are performing noise smoothing
+with a linear and special invariant
+system.
+Let us assume here that the signal of
+interest is the spectrum that looks like
+this.
+So I just show one period of the spectrum
+I show continous here.
+Of the signal, I show it in one be its
+easier to draw.
+Then, noise is added to this signal and
+the spectral density of the noise.
+[BLANK_AUDIO]
+Looks like this.
+So it's, it's flat from minus pi to pi.
+And this is referred to as white noise.
+All frequencies are equally represented
+inside a signal.
+So the noise is added to the signal.
+And, therefore, the resulting observed
+noisy signal image
+has a shape like this.
+We take the spectrum and it's kind of put
+on pedestal.
+[BLANK_AUDIO]
+So clearly the objective is to work on
+this spectrum here, and recover
+as much as possible from the original
+spectrum of the image, of the signal.
+However, clearly the noise has been
+embedded now in the
+signal so, therefore, we cannot just pull
+out the noise only.
+So what we do with this noise smoothing
+filters is to
+utilize some shape, some low-pass filter
+in nature.
+That will again, allow us to go from here
+to here or as close as possible.
+So as we'll see, depending on what filter
+we use, the magnitude
+of the frequency response of the filter
+are low pass filter looks like this.
+It might have some simple lobes, so this
+is minus pi, pi.
+And that this is typically 1, no gain or
+loss.
+So when I filter, I multiply this spectrum
+here with this
+frequency response of, of the system.
+So, if I multiply the two, then, at low
+frequencies, I
+will preserve the shape of the signal as
+much as possible.
+At high frequencies, I will bring the
+signal closer to 0
+to just look as close as possible to the
+original one.
+But, by and large there's a trade off.
+I just remove some noise but, the same
+time, I smooth the signal out.
+So, it would be hard to draw freehand
+here,
+how exactly the spectrum is going to look
+like.
+But it's, let's say, going to look
+something like this.
+So this is the spectrum of the estimated,
+signal.
+Which is the result of the multiplication
+here of the spectrum
+of the observed signal with the frequency
+response of the signal.
+So let's see now in reality how this
+spectra look like when I use a specific
+image.
+And examples of this low pass filters here
+to smooth out the noise.
+And again, since this is an enhancement
+problem, I do
+not derive the shape of the low pass
+filter here.
+Based on any specific modelling and
+optimization.
+But I just use trial and error.
+I try this filter and look at the result.
+If I don't like it, I try a different
+filter and look at the result.
+Again, by trial and error I try to
+converge as
+to what the best possible enhancement is
+for my purposes.
+Let us look now at the noise filtering
+example with a real limit image.
+The cameraman image is shown here.
+It's a 256 by 256, 8-bit per pixel image.
+The spectrum of the signal is shown here.
+So this is a discrete Fourier transform of
+the image.
+We show that 10 log 10 of the magnitude of
+the spectrum of the vertical axis.
+While the other axes show that continues
+frequency here from minus pi to pi.
+So we show the basic period of the DFT.
+We also show a slice through this fully
+transform,
+a slice going through here at omega 2
+equal 0.
+And the main characteristic as already
+mentioned
+that is that this is the gain spectrum.
+The maximum values found here at 0.
+And do we see that here at high
+frequencies there are almost four orders
+of magnitude difference.
+Let's look now at at the similar situation
+with a noisy image.
+So noise has been added to the camera man
+image
+as shown here, and the corresponding
+quantities are show here.
+So if I go back and forward between these
+two
+slides, you'll see that indeed the
+spectrum is kind of lifted.
+It's sitting on the pedestal created by
+this white noise.
+So, the objective is to operate on this
+noise
+image and obtain an estimate of the
+original one.
+But again, we don't pose here in, in the
+optimality criteria We just are going
+to try different low pass in nature
+filters
+and see what are the results we're
+obtaining.
+For the purpose of this example, we're
+going to look at flat filters.
+They're called so because all the values
+in
+the inputs supports of the filter are
+equal.
+So here we see a three by three such
+filter.
+So that's the support, three by three, and
+then again,
+each value is the same, is equal to 1 9th.
+So actually there is no gain or loss when
+this filter is used.
+We can look how this filter looks in the
+frequency domains.
+So we can take the fully transform of h1
+and h2
+and I've done quite a few examples like
+that at earlier point.
+So the frequency response is 1 9th due to
+this term in the middle.
+Plus these two terms, the first here comes
+from the combination of these two samples.
+The one is, will, will give rise to minus
+j omega 1.
+The other into the plus into the j omega
+1.
+I combine them.
+I can get the cosine.
+Then the second term is due to these
+two samples, and then there are two more
+terms.
+That result from the combination like this
+one.
+If it considers these diagonal samples,
+this and this, and so on.
+Again this is something at this point you
+should be able to derive
+with not too much effort because we
+studied this again in an earlier point.
+Actually there's no surprise that the
+frequency response h omega
+1 omega 2 are the fully trans formative of
+H n 1 and 2 is real.
+Because H n 1 and 2 is symmetric.
+We also see that H 0 0 here is equal to 1.
+Since all the cosigns of 0 are equal to 1.
+And then I add up all these terms 2 9 plus
+2
+9 plus 2 9 plus 1 9 will give me equal to
+1.
+So lets see how this and other flat
+filters with different regions of support.
+And what they look like and what the
+results we'll be obtaining by
+utilizing them in smoothing out the noise
+of the image you started with.
+[BLANK_AUDIO]
+We show here the magnitude of the
+frequency response of three flat
+filters three by three, Five by five and
+seven by seven filter.
+And at the bottom, we show the slice of
+this
+transference through the omega 2 equals 0
+position.
+At 0 they're all equal to 1.
+The log is equal to 0.
+And then we also see that as the
+support increases, the width of the main
+log decreases.
+So it becomes more and more low pass, but
+qualitatively speaking, as the support of
+the figure increases.
+We show here the filtered image by the
+three by three flat filter.
+The noise as been reduced, but also the
+image has undergone some bleeding.
+This is the spectrum of the image and this
+is
+the slice of the spectrum at omega 2
+equals 0.
+So the DC value here's not changed,
+however the higher frequencies have been
+reduced here.
+But also there has been some change in the
+spectrum at lower frequencies.
+To better understand exactly what's
+happening,
+let's look at the frequency domain.
+So we have here the spectrum of the noisy
+image and the corresponding slice.
+The frequency responsible for the filter
+and the corresponding slice.
+The same location.
+In the frequency domain, I multiply these
+two spectra.
+And what I obtain is the spectrum of the
+filtered image.
+Again, this is equal to 1.
+Its log is equal to 0.
+So this value has not changed.
+But if you look at the higher frequencies
+of the noise
+image they have been reduced due to the
+operation of the filter.
+And the mid-frequencies here have been
+altered due to the shape of the filter.
+So if this is the frequency domain
+operation of, of, of the filter.
+However this does not imply that the
+implementation of the
+filter should be done or is done in the
+frequency domain.
+As a matter of fact, since this is a three
+by three filter here.
+Relatively modest support it makes more
+sense if I
+implement this filter through convolution
+in this spatial domain.
+This is the result of the five by five
+flat filter.
+The noise has been further reduced, but
+the image is also altered altered is
+blurred.
+The corresponding spectrum, the
+corresponding slice, now the energy
+or the values at high frequencies are
+further reduced.
+This is the result of the seven by seven
+filter.
+The image now looks rather blurry.
+Its spectrum is here, the slice is here.
+At the very low frequencies, the signal is
+preserved,
+but certainly has been out of the mid
+frequencies.
+And has been out of considerably at higher
+frequencies.
+[BLANK_AUDIO]
+We show here all the filtered image here
+on the same slide for easier comparison.
+So this is the original image the noise
+image and the three filter version,
+and three by three, five by five, and
+seven by seven flat filter.
+So it should be clear that support of the
+filter increases it becomes more low pass,
+qual, qualitatively speaking.
+Which means that the noise is reduced as
+we move again along this axis here.
+But also the image becomes more blurry.
+So, if one were to choose from this
+experiment the
+image to use, the image that provides the
+better resolve.
+Then maybe the one in the middle here
+would be a good choice.
+But, maybe this one would be fine, as
+well.
+because, indeed, the image looks the
+sharpest here, of course.
+But not this one since the image is rather
+plain.
+So this again summarizes this enhancement
+noise moving approach.
+The noise is broadband.
+I do not have any particular description
+about its characteristics
+about its probability density function
+other than that it is broadband.
+And therefore, a low pass in nature filter
+is going to reject
+the noise, especially at high frequencies,
+where it dominates over the signal.
+And then the steps are to try various
+filters.
+And simply choose the image that is more
+suitable.
+More useful when someone looks at it or
+provides this as input in another
+processing step such as classification
+recognition and so on.
+We've shown in previous examples that
+while using the noise a desirable effect.
+We were at the same time blending the
+image and undesirable effect.
+A way to address this is introducing
+spatial adaptability to the filter.
+So now the filter is not processing each
+and every pixel the
+same way, but it adapts to the local
+behavior of the image.
+So it changes and has a different
+processing, lets say
+at the edges than in the flat regions of
+the image.
+So an example of an especially adaptive
+filter is shown here.
+X is an input, the noise image, and y is
+the output, the noise to reduce the image.
+X bar here, denotes the mean value
+or the average value, or the result of
+applying the flat filter.
+All these are synonyms, they express
+exactly the same thing.
+Sigma squared of n is the noise variance,
+while sigma squared of x l is the local
+image variance.
+How is this evaluated?
+We can find the local variance by
+processing the
+image, so for n 1 n 2 in a neighborhood.
+[BLANK_AUDIO]
+We've performed this.
+Where the mean again, we know the
+expression.
+But I'll write it again here is over 1
+over the number
+of pixels in the neighborhood or the
+cardinality of n.
+[SOUND].
+So again this is the flat filter or, the
+mean filter
+and the examples we had like if I had a
+three by three region.
+Then, this cardinology over the number of
+pixels here is 9.
+So, for the example, for it right to solve
+a three by three flat filter.
+So it's 1 over 9, the sum of the big
+[INAUDIBLE] in it.
+I can compute the local image variance,
+sigma of x l squared.
+And they assume that I know the noise
+variance.
+And of course, the ways to evaluate that
+as well you can
+go to the flat region and the mean is due
+to the image.
+And then we can find the variance of the
+noise that way, for example.
+So let's see what this filter is doing by
+looking at two situations.
+If I'm at an edge, if I'm in an edge
+neighborhood, then
+clearly the local signal variance is much
+larger noise variance.
+Which means that this ratio is very
+small, goes to 0 and in that case
+we see that the filtered image.
+It's simply the input image.
+So we did nothing to a pixel that belongs
+to an edge because we don't want to smooth
+out averages.
+We don't want to smooth the image.
+And actually this agrees with properties
+of the human visual system According to
+which, noise is masked by high frequency
+elements of the image.
+Edges present high spatial frequencies and
+therefore, noise is not
+visible at the edges, while it's visible
+in the flat regions.
+Now if, if I'm in the flat area of
+an image, of the image, then the reverse
+is true.
+But the signal variants the image, the
+image variants is smaller than the noise
+variants.
+In that case, I have to constrain that
+this
+ratio does not go does not greater than 1.
+So we just have to constrain it to be so,
+put this equal to 1.
+And in that case, the output of the image
+is just the local mean.
+So this spatially adaptive filter, it goes
+from the
+two extreme cases at the edges is the
+identity filter.
+It does nothing to those pixels going
+through the edges.
+While, at the flat regions, it performs
+average in, local average in.
+And, of course, in between, it's a
+combination of a mean filter
+and the identity filter with the gain here
+in the, in the front.
+So conceptually, what this filter does
+again,
+it removes noise in the flat regions.
+While it let, it let's high frequency
+information, let's the edge
+pixels go unchanged from the input to the
+output of this filter.
+So let's see how a filter like this
+performs on a real image.
+Here's a noisy image you would like to
+enhance by smoothing the noise.
+We see that the noise is visible,
+especially in the
+flat regions, such as the clouds here, or
+the sky.
+If I apply a three by three flat filter,
+this is the result we obtain.
+The noise has been reduced.
+If we look again at the same flat regions
+here.
+However, at the same time, if we look at
+an
+area like this, or at the antenna here of
+this building.
+It's clear that the image is blurred or
+the resolution has been decreased.
+If I, if we now apply the specialty
+adaptive filter This is the result we
+obtain.
+The mean filter in this spatially adaptive
+flat
+filter was still a three by three filter.
+We found the variance of the noise in
+implementing the special adaptive
+filter by finding the variance of a flat
+region in the noisy image.
+Like this area for example since the
+signal is flat, the noise is additive.
+The variance I measure is the variance due
+to noise.
+So here, we have managed to accomplish
+both objectives.
+One, to reduce the noise.
+If we looks again at the flat regions,
+it's reduced with respect to the noise
+image.
+But at the same time, we have managed to
+preserve the sharpness of the image.
+By looking again at this region or this
+regions it's clear that
+the image, this image is not blurred
+anymore like this processed image.
+And it reflects very closely the
+originally, we might just have to do it.
+The spatially adapted filter can be
+adapted in the straightforward way.
+It does not increase the computation
+considerably.
+Certainly, we have to evaluate the local
+variance, which is the extra computation
+we performed
+>> However, by looking at this it is out,
+it's definitely worthwhile since
+the result of the adaptive processing is
+considerably improved.
+Considerably better than the result on the
+non-adaptive processing.
+

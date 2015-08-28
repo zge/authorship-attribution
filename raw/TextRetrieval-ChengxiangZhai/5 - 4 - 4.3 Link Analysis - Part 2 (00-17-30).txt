@@ -1,0 +1,408 @@
+[SOUND].
+So let's take a look at this in detail.
+So in this random surfing model.
+And any page would assume random surfer
+would choose the next page to visit.
+So this is a small graph here.
+That's, of course an oversimplification
+of the complicate it well.
+But let's say there
+are four documents here.
+Right, D1, D2, D3 and D4.
+And let's assume that a random surfer or
+random walker can be any of these pages.
+And then the random surfer could decide
+to just randomly jump into any page.
+Or follow a link and
+then visit the next page.
+So if the random server is at d1.
+Then, you know, with some probability
+that random surfer will follow the links.
+Now there two outlinks here.
+One is pointing to this D3.
+The other is pointing to D4.
+So the random surfer could pick any
+of these two to reach e3 and d4.
+But it also assumes that the random
+surfer might, get bored sometimes.
+So the random surfer would decide
+to ignore the actual links, and
+simply randomly jump to
+any page on the web.
+So, if it does that, eh,
+it would be able to reach
+any of the other pages even though there
+is no link directly from to that page.
+So this is the assume the randoms of.
+Imagine a random server is
+really doing surfing like this,
+then we can ask the question.
+How likely on average
+the server would actually reach
+a particular page d1, or d2, or d3.
+That's the average probability
+of visiting a particular page.
+And this probability is precisely
+what page rank computes.
+So the page rank score of the document
+is the average probability
+that the surfer visits a particular page.
+Now, intuitively this will basically
+kept you the [INAUDIBLE] link account.
+Why?
+Because if a page has
+a lot of in-links then
+it would have a higher chance of being
+visited, because there will be more
+opportunities of having the surfer to
+follow a link to come to this page.
+And this is why
+the random surfing model actually captures
+the idea of counting the in links.
+Note that is also considers
+the indirect in links.
+Why?
+Because if the pages that point to you
+have themselves a lot of in links,
+that would mean the random server
+would very likely reach one of them.
+And therefore it increases
+the chance of visiting you.
+So this is a nice way to capture
+both indirect and direct links.
+So mathematically, how can we compute
+this problem enough to see that we need
+to take a look at how this
+problem [INAUDIBLE] in computing.
+So first let's take a look at
+the transition matching sphere.
+And this is just a matrix with
+values indicating how likely a rand,
+the random surfer will go
+from one page to another.
+So each rule stands for a starting page.
+For example,
+rule one would indicate the probability
+of going to any other four pages from e1.
+And here we see there are only
+non two non zero entries.
+Each is 1 over 2, a half.
+So this is because if you look at
+the graph, d1 is pointing to d3 and d4.
+There's no link from d1 to d1 server or
+d2,
+so we've got 0s for
+the first two columns and
+0.5 for d3 and d4.
+In general, the M in this matrix
+M sub i j is the probability
+of going from d, i, to d, j.
+And obviously for each rule,
+the values should sum to one,
+because the surfer will have to go to
+precisely one of these other pages.
+Right?
+So this is a transition matrix.
+Now how can we compute the probability
+of a server visiting a page?
+Well if you look at the,
+the server model, then basically
+we can compute the probability
+of reaching a page as follows.
+So, here on the left-hand side,
+you see it's the probability of
+visiting page DJ at time t plus 1
+because it's the next time cont.
+On the right hand side, you can see
+the question involves the probability
+of, at page ei at time t.
+So you can see the subsequent index t,
+here.
+And that indicates that's the probability
+that the server was at
+a document at time t.
+So the equation basically captures
+the two possibilities of
+reaching at d j at time t plus 1.
+What are these two possibilities?
+Well one is through random surfing, and
+one is through following
+a link as we just explained.
+So the first part captures the probability
+that the random server would reach
+this page by following a link.
+And you can see, and
+the random surfer chooses this
+strategy was probably
+the [INAUDIBLE] as we assumed.
+And so
+there is a factor of one minus alpha here.
+But the main part is really
+sum over all the possible
+pages that the server could
+have been at time t, right?
+There were N pages, so
+it's a sum over all the possible N pages.
+Inside the sum is the product
+of two probabilities.
+One is the probability that
+the server was at d i at time t.
+That's p sub t of d i.
+The other is the transition
+probability from di to dj.
+And so in order to reach this dj page,
+the surfer must first be at di at time t.
+And then also would have to follow
+the link to go from di to dj,
+so the probability is the probability
+of being at di at time t, not divide by
+the probability of, going from that
+page to the top of the page dj here.
+The second part is a similar sum.
+The only difference is that now
+the transition probability is uniform,
+transition probability.
+1 over n.
+And this part captures the probability of
+reaching this page,
+through random jumping.
+Right.
+So, the form is exactly the same.
+And in, in, this also allows us to see
+why PageRank essentially assumes
+smoothing of the transition matrix.
+If you think about this 1 over N as
+coming from another transition matrix
+that has all the elements being 1 over N,
+the uniform matrix.
+Then you can see very clearly
+essentially we can merge the two parts.
+Because they are of the same form,
+we can imagine there's a difference of
+metrics that's a combination of this m and
+that uniform matrix where
+every element is 1 over n.
+In this sense,
+page one uses this idea of smoothing and
+ensuring that there's no 0,
+entry in such a transition matrix.
+Of course this is, time depend,
+calculation of probabilities.
+Now, we can imagine if we want to
+compute average probabilities,
+the average probabilities probably
+would satisfy this equation
+without considering the time index.
+So let's drop the time index and
+just assume that they would be equal.
+Now this would give us N equations.
+Because for
+each page we have such a equation.
+And if you look at the what variables
+we have in these equations,
+there are also precisely N variables,
+right?
+So this basically means
+we now have a system of
+n equations with n variables,
+and these are linear equations.
+So basically, now the problem boils down
+to solve this system of equations and
+here I also show that
+the equations in the metric form.
+It's the vector P here equals a metrics or
+the transports of the metrics here.
+And multiply it by the vector again.
+Now if you still remember some knowledge
+that you learned from linear algebra and
+then you will realize this is precisely
+the equation for item vector.
+Right?
+When [INAUDIBLE] metrics by this method
+you get the same value as this method.
+And this can solved by using
+an iterative algorithm.
+So is it, because she's here, on the ball,
+easily taken from the previous, slide.
+So you see the, relationship between the,
+the page source of different pages.
+And in this iterative approach or
+power approach
+we simply start with, randomly the p.
+And then we repeatedly just
+updated this p by multiplying.
+The metrics here by this P-Vector.
+So I also show a concrete example here.
+So you can see this now, if we assume.
+How far is point two.
+Then with the example that
+we show here on this slide
+we have the original
+transition metrics here.
+Right?
+That encodes, that encodes the graph.
+The actual links.
+And we have this smoothing
+transition metrics,
+uniform transition metrics,
+representing random jumping.
+And we can combine them together with
+interpolation to form another
+metrics that would be like this.
+So essentially we can
+imagine now the looks.
+Like this can be captured by that.
+There are virtual links
+between all the pages now.
+So the page rank algorithm will
+just initialize the p vector first,
+and then just computed
+the updating of this p vector
+by using this, metrics multiplication.
+Now if you rewrite this metrics multi,
+multiplication
+in terms of just a,
+an individual equations, you'll see this.
+And this is a, basically,
+the updating formula for
+this particular page is a,
+page ranking score.
+So you can also see, even if you
+want to compute the value of this
+updated score for d1,
+you basically multiple this rule.
+Right?
+By this column, I will take
+the total product of the two, right?
+And that will give us the value for
+this value.
+So this is how we updated the vector.
+We started with some initial values for
+these guys.
+For, for this, and then,
+we just revise the scores which
+generate a new set of scores.
+And the updated formula is this one.
+So we just repeatedly apply this,
+and here it converges.
+And when the metrics is like this.
+Where there is no zero values and
+it can be guaranteed to converge.
+And at that point we will just, have
+the PageRank scores for all the pages.
+Now we typically set the initial
+values just to 1 over n.
+So interestingly, this update
+formula can be also interpreted as
+propagating scores on the graph.
+All right.
+Can you see why?
+Well if you look at this formula and
+then compare that with this graph,
+and can you imagine how we
+might be able to interpret this
+as essentially propagating
+scores over the graph.
+I hope you will see that indeed
+we can imagine we have values
+initialized on each of these page.
+All right, so we can have values here
+that say, that's one over four for each.
+And then welcome to use these
+matrix to update this, the scores.
+And if you look at the equation here,
+this one, basically we're
+going to combine the scores
+of the pages that possible would lead to,
+reaching this page.
+So we'll look at all the pages
+that are pointing to this page.
+And then combine their scores and
+the propagated score,
+the sum of the scores to this document D1.
+We look after the, the scores
+that represented the probability
+that the random server would be visiting
+the other pages before it reaches the D1.
+And then just do the propagation
+to simulate the probability
+of reaching this, this page D 1.
+So there are two interpretations here.
+One is just the matrix multiplication.
+And we repeated that.
+Multiply the vector by this metrics.
+The other is to just think of it as
+propagating the scores repeatedly
+on the web.
+So in practice the composition of PageRank
+score is actually efficient because
+the metrices are sparse and there are some
+ways to transform the equation so
+you avoid actually literally computing
+the values of all of those elements.
+Sometimes you may also
+normalize the equation, and
+that will give you a somewhat
+different form of the equation,
+but then the ranking of
+pages will not change.
+The results of this potential
+problem of zero out link problem.
+In that case if the page does not have
+any outlook, then the probability of
+these pages will, will not sum to 1.
+Basically, the probability of
+reaching the next page from this
+page will not sum to 1.
+Mainly because we have lost some
+probability mass when we assume that
+there's some probability that
+the server will try to follow links but
+then there's no link to follow, right?
+And one possible solution is simply to
+use page specific damping factor and
+that, that could easily fix this.
+Basically that's to say, how far do we
+want from zero for a page with no outlink.
+In that case the server would just have to
+render them [INAUDIBLE] to another page
+instead of trying to follow the link.
+So there are many extensions of page rank.
+One extension is to do
+top-specific page rank.
+Note that page rank doesn't really
+use the query format machine, right?
+So, [INAUDIBLE] so we can make page rank,
+appear specific, however.
+So, for example,
+in the topic specific page rank,
+we can simply assume when the surfer,
+is bored.
+The surfer is not going to randomly
+jump into any page on the web.
+Instead, it's going to jump,
+to only those pages that are to a query.
+For example, if the query is about sports
+then we could assume that when it's
+doing random jumping, it's going
+to randomly jump to a sports page.
+By doing this then we canbuy
+a PageRank to topic align with sports.
+And then if you know the current query
+is about sports then you can use this
+specialized PageRank score
+to rank the options.
+That would be better than if you
+use a generic PageRank score.
+PageRank is also general algorithm
+that can be used in many other.
+Locations for network analysis, particular
+for example for social networks.
+We can imagine if you compute their
+PageRank scores for social network,
+where a link might indicate
+friendship relation,
+you'll get some meaningful scores for
+people.
+[MUSIC]
+

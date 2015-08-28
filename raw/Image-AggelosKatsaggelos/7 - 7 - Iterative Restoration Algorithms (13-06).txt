@@ -1,0 +1,336 @@
+Hello.
+Iterative algorithms provide solutions to
+non-linear, but
+very often to linear optimization problems
+as well.
+Examples of such algorithms that you might
+be familiar with are
+the gradient descent, or the ascent
+algorithm and the Newton iteration.
+They're typically covered comprehensively
+in any optimization course.
+It is however outside the scope of this
+class to cover such iterative algorithms.
+Although we'll say a few more things on
+the topic during the last week of classes.
+In this segment, we discuss the potential
+advantages of iterative image restoration.
+We'll then describe a simple iterative
+algorithm, we
+refer to it as the successive
+approximation algorithm.
+Which can be used in a straightforward way
+in image restoration.
+The formulation also allows for the use of
+constraints during the iteration process.
+Which incorporate prior information about
+the
+original image into the solution process.
+Using a straightforward analysis, we also
+derive a
+sufficient condition for the convergence
+of the algorithm.
+Continuing in some sense with a iterative
+algorithm of projecting onto convex sets
+we just
+discussed let us look at other iterative
+algorithms that can be used for image
+restoration.
+Before we proceed, let's discuss some of
+the advantages, in general, of iterative
+algorithms.
+The first one is that clearly, we are not
+implementing
+the inverse directly but instead in an
+iterative fashion, step-by-step.
+The
+process can be monitored as it progresses,
+and therefore, we
+can use the number of iterations as a
+means of regularization.
+In other words, we can terminate the
+algorithm at
+any point that the result is satisfactory
+for our purposes.
+Coupled with the above is that the effect
+of noise can be controlled.
+The more iterations, the higher the noise
+amplification, therefore, terminating
+at, at some desirable point, the noise
+amplification is controlled that way.
+And finally, iterative algorithms can in
+general be applied to cases that the
+degradation is especially varying or
+nonlinear, and also when we
+do blind restoration we have to resort to
+an iterative algorithm.
+There are a number of available iterative
+algorithms, typically covered in any
+optimization course.
+Algorithms such as the gradient descent,
+or the various Newton methods.
+We will talk here about the simple form of
+an iterative algorithm.
+That has found applications, has proven to
+be effective in image restoration.
+But also other image processing problems,
+such as
+the face only or magnitude only
+reconstruction problem.
+So, we start by formulating the problem of
+interest as
+that of finding the roots of a function
+phi of f.
+So f is, the image represented as a vector
+and phi
+is, is a function that I want to find its
+roots.
+So according to the successive
+approximations iteration, shown here,
+I start with an f of 0 equals 0.
+And then at the k plus 1 iteration step,
+the image is equal to the image that we
+obtained at the previous iteration step k,
+plus beta,
+a relaxation parameter, this phi of f of
+k.
+And the com, combine everything into this
+function psi of f of k.
+This intuitively should make sense.
+If I have an f of k for which the phi f of
+k is equal to 0,
+then clearly f of k plus 1 equals f of k
+plus beta phi f of k.
+And since this is 0, this is f of k.
+So we see that this f of k is a stationary
+point.
+I cannot move away from it at the
+next iteration step, I find exactly the
+same answer.
+Of course this does not prove that, even
+if phi has a
+root, that I'm guaranteed to find it by
+using this iterative algorithm.
+Because this algorithm may or may not
+converge.
+And indeed, finding the sufficient
+conditions for convergence
+of any iterative algorithm is one very
+important element.
+So we're not going to discuss the, in
+general, the convergence of an algorithm
+like this.
+There are notions such as contraction
+mapping, so
+if psi, for example, is a contraction
+mapping,
+then I'm guaranteed to find a unique
+solution
+of this optimization, in essence, that I'm
+performing.
+But we are going to look at the
+convergence property of an
+algorithm like this when it takes a
+specific case of interest.
+When I started image restoration.
+The algorithm can also incorporate
+additional knowledge you
+might have about the image we are
+restoring.
+And this can be done with a form
+here of a constraint operator or a
+projection operator.
+So, again, we start f of 0 equals 0, then
+the f
+tilde at the k'th iteration step is the
+result of taking the image
+that you obtained at the previous
+iteration step and projecting it into
+the set of signals that have
+this desirable property or imposing this
+constraint.
+And then the f at k plus 1, I use here the
+f tilde, the constraint signal that I
+obtained at the previous iteration step.
+So in essence here I have this, now
+function, psi, that accepts
+as input the C f of k, the constrained f
+of k.
+And here I show for one constraint
+operator,
+but you can concatenate multiple such
+constraint operators.
+Some examples of this operator is the
+positivity constraint.
+Or can think a set of signals that are
+non-negative, and then I project into that
+set, or an operator that does, half,
+rectification, it
+clips all the negative values of, of a
+signal, or imposes some
+finite support constraints, or some
+amplitude
+constraints, and so on and so forth.
+These constraints by and large are
+non-expansive mappings.
+So we want to, start the primary this
+iteration.
+And then I'll show an example later.
+With this iteration we'll see is the
+positivity constraint.
+For the image restoration problem we are
+working with,
+here is the degradation equation we've
+been using all along.
+So the simplest possible way to try to
+find an f here, is
+to form a phi of f that equals y minus Hf.
+So we want to find the root, we want to
+find an f so that Hf is equal to y.
+The successful approximations iteration
+takes the form shown here.
+It's a rather straightforward iteration to
+implement.
+This is independent of the iteration, so
+is this matrix.
+So at each iteration, I find the restored
+image f of k, multiplied with this
+matrix, add beta y, and this gives me the
+result of the next iteration step.
+This is a consideration here, without
+taking into account any properties of H.
+H can have any structure.
+We know by now that if the system
+is linear, especially invariant, then H is
+a block
+circulant matrix, and therefore, I can
+take this
+iteration to the discrete frequency domain
+as shown here.
+So all the corresponding quanti,
+quantities are the
+DFTs of the signals shown in this
+equation.
+I should mention here that in implementing
+an iteration like this, the implementation
+could
+take place in the discrete frequency
+domain,
+or in terms of matrices and vectors.
+Or, if it's indeed, an LSI system, I can
+carry out convolutions in the
+spatial domain, or use any other
+implementation
+tricks, you might say, that make this
+efficient.
+We would like now to look at this
+frequency domain
+iteration and obtain sufficient conditions
+for the convergence of the algorithm.
+We would like now to start in the
+frequency domain iteration we showed in
+the previous slide.
+We would like to write the restored image
+at the k'th iteration step at
+discrete frequencies u, v as the product
+of the restoration filter at the
+k'th iteration step with the DFT of the
+observed noise in blurred image.
+So, if we follow the steps here of the
+iteration, we start with
+an f of 0 equal 0, I drop here the u, v's
+for simplicity.
+Then F1, will be simply beta y.
+F2
+is equal to beta y plus 1 minus beta H F1.
+And clearly equal to beta y plus 1 minus
+beta H beta y.
+And F3 can be easily found to be equal to
+this, plus 1 minus beta H beta Y plus 1
+minus
+beta H squared beta y.
+So it's like solving a first order
+difference equation, and this is
+indeed a first order difference equation
+with respect to the index k.
+So we can easily see that the restoration
+filter
+is the k'th iteration step is equal to
+this.
+Since k will go to infinity, for this
+infinite sum to converge, I have
+to have that the magnitude of this term
+here should be strictly less than 1.
+So this is indeed a sufficient condition
+for convergence.
+H here is complex, so if I write H as its
+real plus j imaginary part and
+find the magnitude, I see that H should we
+have values inside the circle here, the
+shaded circle.
+It's a circle at center 1 over beta and
+radius 1 over beta.
+So this is equal to 2 over beta.
+If H is real and non-negative, then this
+condition becomes
+that beta is bounded by this 0, and 2 over
+H max.
+Actually, H max is equal to 1, typically,
+because the degradation is normalized.
+On
+the other hand, it's clear that if H,
+let's say it is real, but it goes
+negative.
+As is the case, for example, for the
+frequency response
+of the filter that introduces the one
+dimensional motion blur.
+It's a sync function therefore it goes
+negative.
+This quantity cannot be satisfied.
+If I look at the limiting pos, limiting
+value
+of the filter, then, as shown here, again,
+when
+k goes to infinity, this term here will go
+to 0, because its magnitude is strictly
+less than 1.
+And then I have for those frequencies that
+H is different than 0, I obtain the
+inverse filter, while if H is equal to 0,
+I obtain k times beta.
+With a generalized inverse, this is 0.
+This, but therefore, this is one of
+the differences with the generalized
+inverse filter.
+[BLANK_AUDIO].
+A point I would like to make here is
+that this restoration takes place per
+frequency component independently.
+So it is conceivable that the algorithm
+converges
+for some frequency, and maybe not for
+others.
+In any case, this is a sufficient
+condition for
+convergence, which tells us that, if
+satisfied, I'm guaranteed convergence.
+If it's not satisfied, we do not know what
+will happen.
+So, again, the restoration takes place per
+frequency component.
+For those frequencies that this term 1
+minus beta
+H is small, they will, the convergence
+will be fast.
+And for those frequencies that this term
+is large, the convergence will be slow.
+So for those frequencies that H is small,
+I will have slow convergence.
+These are the high frequencies.
+And for those frequencies that H is large,
+low, low frequencies, I'm going to have
+fast convergence.
+So low frequencies will be restored faster
+than high frequencies.
+

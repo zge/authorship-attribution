@@ -1,0 +1,296 @@
+Welcome back to the course on audio
+signal processing for music applications.
+In this week,
+we are talking about the DFT
+and in this programming lecture
+we're going to learn how to program it,
+how to implement the DFT
+equations in Python.
+In particular, we're going to
+talk both about the DFT equation,
+the direct version of the DFT and
+the inverse of DFT.
+In the DFT we will basically,
+we'll be computing all the X of k,
+so we will be computing all
+the spectral values present in a given
+signal x of n, so we'll iterating
+over all k and computing this sum.
+And in the inverse
+we'll be iterating over all time,
+over all n, and for
+each n we'll be computing this sum.
+So let's start,
+let's go to text editor and
+we'll start by implementing the DFT.
+So the first thing we need
+to do is to import numpy,
+that's our package for
+array processing.
+Now we have to initialize our
+output array of spectral samples.
+So we will create an empty array,
+capital X,
+and we'll be
+now iterating over all frequency samples.
+So, what we do is use
+the function range that
+basically creates values
+from zero to N minus one,
+so k now goes from zero to N minus one,
+and now we have to
+create the complex exponential at
+every frequency at every k.
+So we'll create a complex exponential,
+times 2 pi,
+multiplied by the frequency we want and
+we need to divide by capital N,
+and then we need to create for
+all N, so we will create an array of
+time samples, of indexes, that will
+go from 0 to N minus 1, 
+and that's a complex
+exponential at frequency k.
+And now we can compute
+the output spectrum
+and we will do that by appending
+to the existing spectrum,
+whatever it was from
+the previous computation,
+and we will compute the sum
+of the input signal x, by
+multiply by the conjugate,
+okay of our complex exponentials.
+So this is the inner product
+that we talked about in theory.
+And that's it,
+that's our DFT implementation.
+We can save it in a file
+let's call it DFT.py.
+And so
+this is a script that will run that.
+In order to see if it works, well
+we need to put an input signal,
+So let's, before the code of the DFT,
+let's start using a particular signal.
+Let's define a signal of size N,
+that will be equal to 64,
+and let's have a frequency that
+could be, for example, seven, 
+And now we can declare
+the time signal as let's
+say a complex exponential and
+we will have a complex exponential
+that will be again 1j
+multiplied by two times pi.
+Maybe I left here
+also the numpy package.
+Okay, 2 pi, and
+then we multiply by our frequency k0,
+Our frequency index, we divide by N,
+and again we need to
+create an array of values, so that we can
+compute N values of an input signal and
+that's it.
+Now we compute the DFT and
+we just, in order to see if it
+did anything, we just plot the result.
+In order to plot, we need to
+import the matplotlib.pyplot,
+okay pyplot, and we will call it plt.
+Okay and now in the plotting
+we will again do a time index
+being np.arange capital N, and
+the spectrum, it's a complex signal,
+so we'll just plot the absolute
+value of it, and that should do it.
+And then we will have some axis,
+so that they will go from zero to N minus 1,
+and
+the horizontal axis
+will go from zero to N.
+And that should do it.
+Now we just show it, and if we save it and
+we go to the terminal, and
+we just type python dft.py.
+Okay, there is a problem,
+matplotlib., and there is a typo here,
+at pyplot, okay, that's better, matplotlib.
+Oh, okay here another typo, import,
+Eh, another typo,
+Okay, I made another
+mistake here, minus one.
+And okay, that's it so that's the DFT of
+a complex signal and
+we see here that it's
+64 at the location of 7 and
+the rest is 0.
+So the
+the analysis has proven that our
+input signal really was
+a complex sinusoid of value 7.
+Okay, now let's do it with real signals,
+so instead of having this complex
+sinewave, let's go to a real signal.
+So most of the code will be the same,
+so the only thing we have to do is
+change our input signal to be
+a cosine instead of being a complex
+exponential which is the cosine and
+we don't have the j and that should work.
+So this is our complex, our real signal.
+And we just save it, and
+we compute it again.
+Okay and now instead of having one peak
+it has two.
+So a real signal has
+two complex exponential
+results, is the sum of two complex
+exponentials and we can visualize it here.
+Here the issue is that the axis are not so
+intuitive now, because it gives 7 and
+then this other value which is not,
+it should be minus 7.
+So, a better way to implement
+this is instead of dealing with
+time index and frequency index
+going from zero to N minus one,
+it's good to go from minus
+N over 2 to N over 2.
+So, to do that
+what we'll be doing is create
+some array that will be quite used for
+different things.
+It will be np.arange and
+this will be going from minus N
+over 2, to N over 2.
+Okay, and these our time indexes and
+also we will have frequency indexes
+that will be our k indexes.
+So now instead of computing
+from from zero to N,
+we will be computing in
+the DFT from minus N over 2
+to N over 2,
+so we iterate over kv
+and in here again,
+we will be in our time index,
+we will be nv, and
+hopefully that should work, and
+then of course in the axis we will have as
+output axis, minus N over 2,
+to N over two minus one.
+And in here the plotting again
+will be over kv.
+Okay so now, well
+there is another mistake here.
+In here, I missed the over 2,
+over 2, okay?
+And now, okay, this is better, so
+now we have centered around 0 and
+we have the minus 7 frequency and
+the 7 frequency.
+Okay, what happens if we do not have
+an integer value frequency, instead of 7
+we will have let's say 7.5,
+okay we save it,
+we run it and
+well, clearly is very different.
+Now, the projection of our input
+signal into the complex sinusoids of the
+DFT does not return a single value,
+but is positive values for
+all complex exponentials.
+So that means the projection has
+positive values for all the spectrum.
+Okay, and
+we explained this in the theory class.
+Okay now we can do the inverse DFT,
+the equation we also talked about and
+we showed in the slide.
+So now we will be implementing
+the inverse DFT equation.
+So we will need to go over all
+samples of N and compute all these
+equations, so how do we do that?
+So it's quite similar to the DFT,
+so what we'll be doing is,
+once we get the DFT analysis out,
+we will now create the inverse DFT code.
+So we'll first again, initialize
+the output signal y, with an array
+that will be an empty array okay, and
+we will be now doing a loop but over n.
+Okay so we'll be doing over n in nv,
+and we will have to compute the complex
+exponentials but they're going to be
+a little bit different, because now here
+the complex exponentials is 1j
+multiplied by 2 by np.pi.
+And in here instead of
+multiplying by all, for
+every k, we will do it for
+every n, divided by N.
+And here,
+we will have array of frequencies, of kv.
+So, this way, this basically s is the sum
+of all complex exponentials of all
+possible frequencies at the given sample.
+And now, the output will be again we will,
+keep appending the output samples, and
+we will be appending to the y sample,
+the sum of the spectrum X by
+the s,
+which are the complex exponentials.
+And that should do it,
+this should compute the inverse DFT.
+Well, we are missing something,
+there was, 1 over N and
+multiply, which is the normalization
+factor of the inverse DFT.
+And now to plot, what we're going to plot, we are going to plot for all samples,
+we're going to plot
+the output signal y and
+axis will go again from minus
+N over 2 to N over 2 minus 1.
+But being a time signal,
+it's going to go from minus 1 to 1.
+And that should do it.
+hopefully, if we execute this,
+okay there is a problem of k
+here we typed kn, which is kv.
+Okay and now we will run it.
+Okay this is the output signal y.
+So, at time zero is a cosine,
+so this was a cosine function.
+And it has 7.5 periods of our signal.
+That's the input signal we had and
+this is exactly the same that the
+the output signal we have computed.
+And that's all.
+That's all I wanted to say.
+So basically in this class we have
+implemented the DFT and
+the inverse DFT equations.
+So please make sure that you
+understand those equations.
+And of course,
+we have been using complex sinewaves,
+the DFT sinewaves to implement that.
+And in the coding we
+needed two packages, the numpy and
+the and matplotlib.
+And that's it, so we have hopefully
+completed the DFT explanation.
+We talked about the theory part,
+we made some demonstrations and
+now in this programming class, we have
+been able to actually implement it.
+And of course this is not all,
+this is just the very beginning, it's
+going to get a little more complicated.
+But please hang on and
+hopefully I will see you next
+week with more advanced topics.
+Thank you very much.
+

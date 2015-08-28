@@ -1,0 +1,426 @@
+In this segment we cover one of the
+earliest applications of Huffman encoding.
+Which is the transition of scan printed
+material over telephone
+lines which is referred to as facsimile or
+fax application.
+The printed text to be submitted is
+scanned and converted into a binary image.
+Since these 0s and 1s representing the
+text are not randomly scattered over the
+image.
+But instead, we have structure.
+This structure is exploited.
+The structure results in a number of
+consecutive 0s or 1s in a row,
+so-called runs, to be encoded instead of
+the individual 0s and 1s.
+This results in the so called run length
+encoding.
+It is a demonstration of a theme that will
+appear
+in various forms over these three weeks we
+cover compression.
+Some of the ingenuity in an existing
+algorithm standards.
+Comes from this reinvention of the symbols
+of the source.
+The symbols do not have to be the original
+pixel values.
+But innovative combinations of them.
+As in rounding through or in triplets,
+which combines
+various properties of the image, as we'll
+see next week.
+A lot of compression power comes from
+this.
+So let us proceed with the material for
+the assignment.
+Facsimile encoding can be applied directly
+to the lossless compression of images.
+For an eight-bit per pixel image, for
+example,.
+The source alphabet contains 256 symbols
+from 0 to 255 intensities of an image.
+In this case, compression ratios between
+one and two are achieved.
+It can also be applied to the compression
+of text, although
+we'll talk about dictionary techniques
+which are more suitable for that purpose.
+One of the earliest applications of
+lossless compression
+has been the compression of facsimile or
+fax.
+In fax transmission a page is scanned and
+converted into a binary image.
+A sequence of black or white pixels.
+Then, this image is compressed, is sent
+over the network.
+And, at the destination, is decompressed
+and printed, typically.
+The requirements of how fast an A4
+document must
+be transmitted, have changed over the last
+two decades.
+[UNKNOWN] Dimension of the A4 document.
+And here is some of the recommendations of
+the pixel and line resolution.
+There's then the [UNKNOWN] body CCITT.
+The current
+name is actually ITU-T.
+Has issued a number of recommendations
+based
+on the speed requirement at any given
+time.
+The CCITT classifies the apparatus for fax
+transmission into four groups, G1 to G4.
+So we're going to look at some of the
+techniques that
+are used to encode this binary image that
+results during fax encoding.
+We mentioned here some of the
+characteristics
+of group three and group four fax
+standards.
+They were establish for the compression of
+text documents and
+therefore either tables, and charts, and
+half tone images involved.
+And they don't work as well.
+G3 is for the digital operation with
+analog modems.
+And the very important concept here, that
+of run length
+coding is used, both in one dimension and
+two dimension.
+So we'll spend a few minutes after that
+discussing run, length and coding.
+Then, based on these run lengths, of 0s
+and 1s static Huffman tables are utilized.
+When 2D run length is used then, in
+addition
+to the current line, the previous line is
+considered.
+And in G3, we have a combination of 1D
+and 2D run length coding to prevent error
+propagation.
+G4 is an all digital for digital network
+such as ISDN
+and in this case only a two dimensional
+run length is utilized.
+So, we will look into run length and then
+show some static
+Huffman tables that are utilized in these
+fax standards.
+Run length coding is another
+straightforward concept.
+If we look at the binary image
+which results from this scanning over text
+document.
+Then what we see is sequences or runs of
+white and black pixels.
+So when a black symbol of, of text is
+scanned, then it generates a run of 0s.
+So it scales Z a round of three 0s, and
+when the
+white background, the white pages scan,
+then we see rounds of white pixels.
+And here we see a round of nine white
+pixels.
+So the very basic idea is that instead of
+encoding
+0s and 1s, black and white pixels
+directly.
+Instead we code the runs, how many black
+pixels I have in
+a row, how many white pixels do we have in
+a row.
+So this becomes now the symbols of the
+source.
+And this is a concept we'll be
+encountering over, and over again.
+When we talk here about compression.
+So, we don't have to stick to a source
+that generates 0 and 1s,
+but now we have this new source that emits
+runs of 0s and runs of 1s.
+A two-state Markov model, shown here.
+Gives rise to run length coding.
+The states sw
+and sb correspond to, like sw for example
+corresponds to the case
+where the pixel that has just been encoded
+is a white pixel, and similarly for sb.
+The transition probabilities and the
+probabilities of
+being in its state, completely specify
+this model.
+So, for fax images, these probabilities
+are not uniform, but they're instead
+skewed.
+Which means that, once a pixel takes a
+particular color, black or white.
+Then it's highly likely that the following
+pixel will also be of the same color.
+So therefore, instead of encoding each
+color separately, we encode the runs.
+We can actually compute the entropy
+of this two state Markov model as the
+probability of being in state y times the
+entropy of the y state, plus s b, hsb.
+So knowing the transitional, transition
+probabilities,
+again this is a transitional probability.
+Probability of going to the black state or
+having
+a black pixel given that the previous
+pixel was wide.
+And this is the probability of, the.
+Current pixel being wide, given the
+previous one was wide.
+[INAUDIBLE] staying in the, in the same
+state.
+As we discussed, in encoding a scanned
+document.
+It makes a lot of sense not to encode the
+0s and 1s.
+directly the black and white pixels
+directly, but instead to encode the
+strands.
+How many black pixels in a row and white
+pixels in a row we have.
+So now we can build Huffman codes for the
+runs of 0s and runs of 1s.
+These are one dimensionally the sense of
+you're looking at one scan line
+at a time without considering the
+correlation with neighboring lines.
+In order build the Huffman codes, we need
+to estimate the
+probabilities of runs of white pixels and
+runs of black pixels.
+So based on a large volume of documents,
+one can go and compute such probabilities.
+And then, following the procedural steps
+that we
+described earlier we can build two Huffman
+codes.
+One for the runs of 0s and one for the
+runs of 1s.
+Now this is not exactly what is happening
+within fax standard,
+but instead the modified Huffman code is
+utilized.
+The modification comes from the fact that
+we
+want to constrain the number of possible
+lengths.
+For an A4 document the largest trunk can
+be 1728 pixels.
+Therefore, we need to build two Huffman
+codes each of
+which would have a size of the alphabet
+equal 17, 28.
+So these are huge codes, huge tables.
+So to address this, issue.
+The [INAUDIBLE] length is computed modular
+64, so rl is the
+the run length of zeros or ones, black or
+white pixels.
+And it's here decomposed that a multiple
+of 64 plus t.
+And here is the range of values for t, and
+the range values of m.
+So, with this modulo 60 40 composition, we
+build one
+Huffman table for m and these are called
+the make-up codes.
+And one Huffman table for t, and these are
+called the terminating codes.
+So we have two codes per color, therefore
+four such codes in total.
+As I already mentioned for an A4 size
+document this
+is the maximum length of, of pixel or of a
+run.
+But if we want to deal with wider
+documents then
+the standard provides optional codes to be
+able to do so.
+So here are the Huffman Codes used by both
+G3 and G4 standards.
+I'm not sure if you are able to read
+the letters and numbers clearly, they are
+rather small.
+These codes are present in any fax machine
+that is compliant with the standard.
+Clearly the codes are both needed for both
+encoding and decoding a scanned document.
+Recorded encoding of the run length is
+done
+modular 64, so R L equals 64 times m plus
+t.
+So here are the terminating codes.
+They encode t and this is for the white
+run length and here is for the black run
+length.
+As one would expect, the probabilities of
+the various runs differ.
+So runs of two and three black pixels here
+occur frequently, right?
+The smaller the code word, the higher the
+probability of the symbol.
+Similarly, the runs here of two to seven
+white pixels are frequently encountered.
+They have small codewords.
+Here you see the makeup codes.
+So this codes in codes that multiples of
+64.
+Actually I joke sometimes when I teach
+this class here.
+[UNKNOWN] And tell the students that they
+have to memorize these codes
+in order to be able to find out the grade
+in the class.
+We see here that we have runs of 0 white
+pixels and runs of 0 black pixels.
+And the question is, why do we need to
+indicate 0 runs?
+One reason for the 0 white run.
+Is that the first run in the line is
+always a white run.
+So if the first pixel in the line is a
+black pixel, then we have first
+to encode a 0 white run and then the runs
+of the black pixels.
+Also, after a make-up code is used, we
+expect, to receive a termination code.
+So if we have run that is exactly in the
+integer multiple of 64, then
+t is equal, t equals 0 and therefore we
+need a code word for that.
+We also notice that there is an end of
+line.
+Code here for both the white runs and the
+black runs.
+And this is needed to synchronize the
+operation of the decoder with that
+encoder.
+So here we have a run of 64 there for m
+equals 1, the first line.
+Then, in this particular table we go to m
+equals 40.
+So 40 times 64 equals 2560, shown here.
+And 27 core response to
+1728 so m equals 27 here.
+So let's say now we want to encode a run
+length [SOUND].
+Of, let's say, 12 white pixels.
+[SOUND]
+Then, since 12 is less than 64.
+We're looking at the terminating code
+here.
+So.
+12 white pixels corresponds here.
+So this is the codeword for this
+particular symbol, the run of 12 white
+pixels.
+If there's another example, we have a run
+length of let's say, 140 black pixels.
+This is greater than 64.
+And 140 is equal to 2 times 64 plus 12.
+So 2 times 64, this is 128.
+So I go to the make-up code
+and this is the black run length, so 128.
+So the codeword is this long one.
+I could have chosen a simpler one, I
+guess.
+One, two, three, four, 1,1,0, two, three
+and then
+here's kind of the residual so I need to
+terminating code.
+So this is we go now to the other
+table so this is the code for 12.
+A run of 12 black pixels.
+So to this we add that code which is
+0000111.
+So this is the code
+that is used for 100, for a run of 140
+black pixels.
+In two dimensional codes, instead of
+reporting their run lengths.
+Which, in terms of our Markov model, is
+the
+length of the time we remain in one state.
+We report, instead, the transition times,
+when
+we move from one state to another state.
+So if we look at this figure, we can
+encode it in two ways.
+The one, the one we just described in
+previous slides.
+So if we encode the first stroke,
+then if you recall we assume that the
+first
+pixel white so there's 0 run of white
+pixels.
+Then a run of two of black pixels.
+A run of three, a run of tnree.
+And then on of eight.
+Similarly, for the second row, [SOUND],
+utilizing the way of
+the previous [UNKNOWN], is, again, a, 0
+run of white pixels.
+A run of one black pixels.
+A run of eight, a run of three, a run of
+four.
+Alternatively, we can encode the
+positions.
+When a transition takes place, either from
+a white to
+a black pixel or from a black to a white
+pixel.
+The first pixel, it's an imaginary white
+pixel to the
+left of the first pixel, so there's a
+white pixel here.
+Therefore, the location of the transition
+actually is indicated by this dots.
+So for the first row, there's a transition
+here.
+The first peaks of occasion.
+The second transition is here.
+The third pixel location, the six, nine
+pixel location and the nine pixel
+location.
+Similar for the first row.
+[SOUND] We go from white to black in the
+first pixel location.
+Again, a transition at two, a transition
+at ten over here.
+And a transition
+at 15.
+Now, since the rows are correlated, it
+would be easier
+to encode these transition points in
+reference to the previous line.
+Or its distance from the previous
+transition point.
+Instead of in terms of its absolute
+location, this location, as we just did.
+And this exactly the idea behind this
+scheme.
+This so-called READ scheme, relative,
+element, address, designate.
+And, actually within the standard is a
+modification
+of these, so it's refered to as modified
+READ.
+As, I already mentioned, READ exploits the
+correlation of image rows.
+And then, it codes this transition points
+in reference to either the previous line.
+Or the distance from the previous point in
+the same line.
+

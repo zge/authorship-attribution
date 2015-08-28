@@ -1,0 +1,628 @@
+[MUSIC]
+Text is another important kind of data
+that computer programs need to manipulate,
+and in computer programming,
+we call any segment of text a string.
+We've used strings before.
+For example, the format string of
+the built-in function fprintf is,
+as its name implies, a string.
+And we've just used the intmax function,
+where the argument was
+the name of the data type that we're
+interested in, and that's a string.
+So, what is a string in MATLAB really?
+Well, it's a vector of characters.
+In other words, it's a vector
+whose elementary type is char.
+We saw this when we used the class
+function earlier in this lesson, so
+it shouldn't come as a surprise.
+What will be surprising though,
+is that char is a numerical data type.
+A char is actually a number, and
+behind the scenes, there's an encoding,
+decoding scheme that specifies what
+number represents what character.
+The oldest such character encoding scheme
+is called A-S-C-I-I, pronounced ASCII.
+ASCII stands for
+American Standard Code for
+Information Interchange, and
+it was developed in the 1960s.
+An ASCII character code
+is seven bits long, so
+it can encode a set of 128 characters.
+As you can see in the table,
+the ASCII set includes the Latin alphabet,
+the digits zero to nine, punctuation
+marks and some special characters.
+For example, 36 is the dollar
+sign while 97 is the lowercase a.
+Of the special characters,
+we care about the new line
+character abbreviated nl, and
+having the code 10 in the space
+marked sp and encoded is 32.
+128 characters seemed like plenty
+in America in the 1960s, but
+nowadays, well, we need more.
+Just think of all the characters
+in all the world's languages, and
+most importantly, all the emojis
+that we just can't live without.
+So, over the years,
+many other schemes with far more
+characters have been developed.
+The good news is that little old ASCII
+is a subset of pretty much all of them.
+Let's dig a little
+deeper into this subset.
+Here's a function that prints out all
+the visible characters in the ASCII table.
+It uses a for loop with a loop index
+that starts at 33 and ends at 126.
+33 is the encoded value of the first
+visible character in the ASCII table,
+which happens to be the exclamation mark,
+and
+126 is the value of the last visible
+character, which is the tilde.
+Inside the loop,
+one character is printed at a time
+using fprintf with a %s format string.
+You may remember that %s expects a string.
+So, the second argument of fprintf
+is the value of the loop index
+converted to a character by
+the char conversion function.
+After the loop, we print a new line as
+usual, and that's all there is to it.
+Okay, let's see how this thing works.
+I got it right over here in a temp file.
+And there it is in the editor.
+I'll just run it.
+And it works as advertised.
+Here at the beginning, is the exclamation
+point that we get from ASCII code 33.
+And over here at the end,
+is the tilde, whose code is 126.
+With all the other printable
+characters arrayed here in between.
+As it turns out,
+we can make it even simpler.
+As I said,
+the %s in the format string of the fprintf
+function tells the function
+to expect a string argument.
+More exactly, what it tells the function,
+is that whatever argument it gets,
+should be converted into a char.
+So, we don't need to use
+the conversion function char here.
+We can simply use ii.
+And the %s will treat it
+as if it were a char.
+Let's try that.
+Same result.
+And, if we want to look like a wizard, we
+can even change the last line like this.
+Which says to fprintf, print
+the number 10 as if it were a string.
+10 happens to be the code for
+the new line character.
+So, if we tell fprintf to expect
+a string and then give it the number 10,
+it will convert to a char with the value
+10, which is just a new line character.
+And we get the same result again.
+This time, we're magically getting
+characters out of nothing but
+numbers up here.
+Well, what does character mean, exactly?
+Well, these so-called characters
+that we're looking at here,
+ones that are being printed to the screen,
+are actually just arrangements
+of tiny black, white, and
+gray pixels that look to our eyes like
+familiar symbols, whose meanings we know.
+Let me turn on my magnifier here,
+show you what's really there.
+There.
+See those little grey pixels, and
+white pixels, and black pixels, and
+so on, look like a 1.
+They look like a 2, a 3, a 4, and so on.
+Well, here's a D, an E, et cetera.
+So, we give MATLAB a number,
+tell it to treat it as a character, and
+it produces a pixel pattern that
+symbolizes something to us.
+Okay, we peeked behind the curtain and
+found that there's no wizardry and
+strings at all, just ordinary numbers,
+a conversion table, and some pixels.
+The rest of it's all in our heads.
+Let's play some more with strings.
+This was Plan B if the title computer
+program with MATLAB didn't work out.
+Now, I'm going to treat this
+string just like a vector,
+just to prove there really is one.
+[SOUND].
+There, you can check its lengths,
+like up here you can index into it.
+Here's a number one index.
+You can use a colon operator
+to give it multiple ND's and
+use the end and so on,
+just like you can with any vector.
+Those are advantages, but
+there are disadvantages too.
+Because they're vectors,
+comparing two strings is not as
+easy as comparing two scalers.
+So let's see.
+You cannot just compare two arrays
+with the double equals operator,
+if they don't happen to
+have exactly the same size.
+It violates the rules of array operations.
+And even when our two
+strings are the same length,
+the result of the comparison
+is probably not what we want.
+Let's illustrate that
+with the word MATLAB,
+which we'll pluck out of this title again.
+Hm.
+You ever ask yourself what MATLAB spelled
+backwards is?
+It's BALTAM.
+As in, that stupid bug showed up out of
+the blue, it was just totally BALTAM.
+Anyway, MATLAB and BALTAM are the same
+length so we can use them as operands for
+the double equals operator.
+So let's try it out.
+We get a vector of logicals,
+which is what you get for
+any element wise comparison of vectors,
+with a relational operator.
+Instead of the answer we want like,
+you know, these strings are not the same,
+we get one answer for
+each pair of chars in these two strings.
+And since, as it happens,
+only the A's match up, the second and
+the fifth elements are the only true
+values in the resulting vector,
+the rest of them are false.
+In a minute I'll show you a helpful
+function for comparing strings,
+it'll give us the answer we want.
+But for now I'm going to show you how
+to have some fun in converting chars
+to doubles.
+Okay.
+We started with a string,
+we converted it to a double,
+and our code is just a vector of doubles.
+Lets tweak the values in code,
+just a little bit,
+and then the code back to a char.
+So we're adding three to every element
+of code, then we convert it from
+a double to a char, and we put the result
+in secret and see what it looks like.
+Will you look at that?
+We've encrypted our message,
+we can send this to our friend now.
+Even if it's intercepted by the teacher,
+he won't have any idea what it says.
+But our friend is a MATLAB programmer too,
+so she can decode the message easily.
+Here's how she'd do it.
+All she has to do is know the secret
+tweak, which was to add three.
+And she just undoes that
+by subtracting three.
+Told you it was going to be fun.
+We found another advantage of
+the fact that a string is a vector.
+We can send secret messages.
+And on the subject of the string being
+a vector, a vector in MATLAB is just
+a one dimensional array, so we've,
+in fact, got an array of chars here.
+So, can we have a two
+dimensional array of chars?
+Yes, of course.
+Bill is an array.
+Well it's a one dimensional array, so
+it's a vector, and it's the first row.
+Mary is the vector of the second row,
+John's the third row, and
+so there's our array.
+It's a two dimensional array of char.
+Let's try another one.
+So that works great too.
+So, so
+far we've got a three by four array, and
+now we've got this two by eight array.
+Hm, let's do an array
+operation on this array.
+We'll do a transpose.
+We're on a roll here.
+Let's get a little more ambitious.
+Oh no,
+what just
+happened?
+What kind of an animal
+is a vertcat anyway?
+Well, vertcat is a built-in function,
+not a feline.
+Matlab uses vertcat internally for
+vertically concatenating
+the two vectors we provided,
+into matrix, but it didn't work here.
+Can you guess why?
+You know, I can not hear your answer for
+some reason, but
+I'll give you the benefit of the doubt.
+Yes, that's right.
+We were trying to create a matrix
+in which the two rows, this one and
+this one, had different lengths.
+You'll see this error message quite often,
+because there are lots
+of times when you'll accidentally try to
+give the rows in array different lengths.
+To help you remember what vertcat means,
+it might be worth pointing
+out that vertcat is a contraction
+of vertically catenate.
+Because catenate and
+concatenate mean the same thing,
+just like inflammable and flammable.
+In this case, MATLAB complained because
+the first line of the text had 28
+characters, tiger,
+tiger burning bright, while the second,
+in the forest of the night, had only 27.
+Oops.
+That's a big no-no in MATLAB.
+So you have to be very careful.
+In fact, typically you shouldn't
+try to store strings in matrices,
+because they are rarely
+of the same length.
+We'll show you how to store
+strings the right way, and
+how to compare strings the right way too.
+These tasks and others that deal with
+strings require a little finesse.
+But fortunately,
+MATLAB provides specialized functions, and
+additional data types,
+that'll make it easier.
+MATLAB provides a set of very
+useful built-in functions,
+to help us deal with strings.
+We'll recommend a few of
+the most useful ones,
+which can help us with five
+common tasks involving strings.
+First, searching for a substring inside
+a string is made easy with the function
+named findstr, which means find string.
+Second, comes conversion of a number to or
+from a string.
+Now that we've learned about strings,
+we know that a double, with the value 123,
+is not the same as a string
+of characters 1, 2, 3.
+They look the same, but
+they're fundamentally different.
+One's a floating point number, and
+the other's a vector of three chars.
+However, you can convert
+by contort between them,
+using num2str, for number to string.
+And str2num for string to number.
+Third, when we need to
+compare two strings,
+we've seen that the double equals
+operator does not really do what we want.
+Well the strcmp function does, and
+it's name, in fact, means string compare.
+Fourth, it's often necessary to change
+between upper and lowercase letters.
+For that,
+we can use a function named lower,
+to convert a string to all lowercase,
+and upper to do the opposite.
+Fifth and finally, sometimes we need to
+print with fancy formatting into a string,
+instead of into the command window,
+or into a file.
+For that, we have the sprintf function
+which means string print formatted,
+it's often pronounced, print F.
+It's a snap to learn, because the only
+difference from fprintf is that sprintf
+puts its result into its output argument.
+Okay, let's try these functions out.
+Let's try searching first.
+So what does the four mean?
+It's the index of the first
+letter of the first occurrence,
+the sub string in the string.
+Okay, now let me try that in English.
+We're looking for LAB, and we found it.
+The first time we found it, in this case,
+the only time we encountered it,
+is position four in the string, one,
+two, three, four, character four.
+That's where the first
+character of the string LAB
+occurs in the string MATLAB for Smarties.
+It's the first place, second argument,
+occurred in the first argument.
+Remember these strings are case sensitive,
+let's try this.
+[SOUND] This time we get the empty matrix.
+MATLAB, in the title up here,
+is in all caps, so
+there is no lowercase lab in this string.
+So there's no index to return this time,
+that's why we get the empty array.
+I'm sure you've heard it said
+that there's no i in team.
+Well, let's check.
+Yeah, that proves it,
+i is definitely not in there.
+So, no, I am, no, anyway, so
+far we've either not found
+the substring we were looking for,
+or we'd found it once.
+Let's do one more example in which we see
+what it looks like when we find something
+more than once.
+[SOUND] Substring r, right here,
+shows up in two places in MOOC title.
+Let's see, MOOC title was MATLAB for
+Smarties, and
+there's an r right here at the end of
+the word four, that's character ten,
+and, there's an r in Smarties,
+which is the fifteenth character.
+So, string find returns the vector ten,
+fifteen.
+Okay, that's it for searching strings,
+now it's time to compare strings again.
+Remember the trouble we had before when
+we tried to do that with a double equals
+operator?
+Well, now we're better equipped to
+tackle this problem because we know
+about the string compare function, strcmp.
+[SOUND] [NOISE] Okay,
+let's review what
+happened here.
+First of all, we reminded ourselves
+what was in MOOC title, MATLAB for
+Smarties, then we defined this
+variable lang by setting it equal to
+the string MATLAB, then we compared
+MATLAB for Smarties with MATLAB.
+Well, MATLAB for
+Smarties is not the same as MATLAB.
+MATLAB is a substring of it, but they
+are not the same, so we get a zero, or
+false, meaning they are not the same.
+Next thing we did was just take
+the first six characters in MATLAB for
+Smarties right here, compared that
+with lang, now they're the same.
+So we get true or one.
+Couldn't be any easier.
+It returns true or
+false depending on whether the strings in
+the two arguments are the same or not.
+Case sensitivity applies here, too,
+but if we don't care about that,
+we can use strcmpi, which stands for
+string compare ignoring case.
+Let's try that.
+[SOUND]
+Well,
+we get true.
+Clearly, Matlab is not the same
+string as the first six
+characters of MATLAB for
+Smarties because this isn't all caps,
+but this little i here,
+in strcmpi, means ignoring case.
+Ignoring case, they are the same,
+so we get a one.
+This ignoring case has nothing
+to do with anything other than
+characters that are letters, doesn't
+affect punctuation, doesn't affect digits.
+By the way, if you ever need to
+convert a string to lowercase or
+to uppercase, check out the built
+in functions lower and upper.
+Let me emphasize again, how different
+strings containing
+digits are from numbers.
+[SOUND] The only difference here is
+I put quotes around the three point
+one four one six down here,
+but that makes this a string.
+These two variables have values
+that are completely different.
+This is a number, this is a string.
+We know that because we just typed
+them in, but MATLAB doesn't put quotes
+around the string here, so
+it is easy to confuse these two sometimes.
+There is one subtle hint,
+numbers are indented, strings are not.
+Let's see how different they are.
+First they have different dimensions.
+[SOUND] One by one, it's a scalar.
+[SOUND] One by six,
+it's a row vector of six characters.
+And speaking of characters,
+they have different types.
+[SOUND] And look what happens if
+you try to use them in arithmetic.
+[SOUND] No surprise there, four point one
+four one six is three point
+one four one six plus one.
+Look at this.
+[SOUND] What is this?
+Well, what's happened here is that
+we've done mixed mode arithmetic.
+We've added one value, that's a char,
+to another value,
+here the one, that's a double.
+A bit earlier in this lesson,
+we mentioned that the rules for
+mixed mode arithmetic, mixed mode
+meaning mixed types of operands,
+are complicated enough that we're leaving
+it to you to look them up in the textbook.
+But I'll explain what happened here.
+The rule for mixing chars and
+doubles is that before the addition,
+the char is converted to a double.
+So it's as if we did this.
+[SOUND] We get the same result.
+We look at the term on the left
+converted to a double.
+[SOUND] It all makes sense.
+The 51 became a 52 and we added one to it,
+a 46 to a 47, and so on.
+It's just array addition with a vector and
+a scalar.
+It makes sense, but
+it's not something we want to do,
+unless we're encoding
+secret messages again.
+What we might want to do is convert
+the string three point one four one
+six way up here to the number three
+point one four one six and then add one.
+You'll sometimes find, for a example, that
+your program must read a string of digits
+that a user typed in, or that's in a file.
+And then it has to convert it to
+a number and do arithmetic on it.
+Well by now you're probably tired of me.
+Well I could probably just stop right
+there, you are probably tired of me.
+I'm tired of me, for goodness sakes.
+What I was going to say was,
+tired of me posing a problem, just so
+I can have an excuse to introduce just
+the perfect built-in function to solve it.
+Okay.
+But be that as it may there
+is just the perfect built-in
+function that'll solve this problem.
+It's call s-t-r the digit two num
+which means string to number.
+Let me write it out here, and
+I'll give it pi digits and convert it.
+Notice that it's indented over here,
+that's a little hint that this is
+actually not a string, but a number.
+Now let's prove it's
+a number by adding 1 to it.
+There, 4.1416.
+And you probably won't be surprised
+to learn that you can go in the other
+direction, number to string.
+And notice that this is an indented,
+lets try to add 1 to it,
+and there we go,
+its deja vu all over again.
+Okay, there's just one more string
+function that I want to show you.
+Remember earlier when we were saying that
+there was this function sprintf, and
+it's a snap to learn, because how
+similar it is to fprintf and so on?
+No?
+Well that's okay, all you need is
+one example and you've got it.
+It's easy, don't worry.
+Let's see, it'll get a variable r12 and
+we want to use fprintf first,
+to print something
+to the command window involving r,
+here it goes.
+Okay, that's straightforward.
+We've got this format string here,
+with the format specifiers,
+escape, symbols, and so on.
+And the first argument, r,
+is printed .2f, two decimal places.
+Then pi*r^2, printed the same way.
+And we put a little exclamation
+point there and that's it.
+Now I'm going to repeat this command by
+using the up arrow key on my keyboard,
+but I'm going to come over here and
+change one character.
+I'm going to change this f to an s,
+and see what happens.
+Okay?
+Here we go.
+Nothing.
+This is sprintf.
+Everything is the same, everything you've
+learned about fprintf is the same, but
+where'd the output go?
+Well instead of printing to the screen,
+sprintf puts the text
+into an output argument.
+We didn't see anything,
+because we put the semicolon here.
+Let's give it an output argument
+that it can stick things into,
+I'm going to hit the up arrow key again,
+and come over here.
+And I'm going to give it an output
+argument, str, for string.
+There.
+Still don't see anything because we
+still have a semicolon, but now we know
+there's something in str, or at least
+we hope so, let's have a look at it.
+There we go.
+The area of a circle
+with radius 12 is 452.39.
+Same exclamation point,
+everything's the same.
+Even that line feed showed up here,
+that's why there's a space.
+So you can see that sprintf constructs
+a string using a format string,
+using arguments after the format string,
+just in exactly the same way that
+fprintf does, except it puts
+the result into an output argument.
+And what's the type of
+the output argument?
+It's a string.
+It's elements of type char.
+Well that's it for sprintf, and
+that is all I have to say about strings.
+[MUSIC]
+[APPLAUSE]
+

@@ -1,0 +1,330 @@
+Welcome back.
+We can now use this valuable tool, the DFT
+and its fast implementations.
+To bring signals and the operations of LSI
+systems in the discrete frequency domain.
+This is really one of the main practical
+objectives.
+Performing the filtering of an image in
+the discrete frequency domain with a user
+FFT.
+We saw when we talked about the Fourier
+transform, that convolution
+in the spatial domain results in
+multiplication in the frequency domain.
+It seems that too should be done, but
+there is a small glitch.
+Since the multiplication of the DFT
+signals results in the
+circular and not the linear convolution in
+the special domain.
+We therefore explain in the segment how
+the two circular and linear convolutions
+are related.
+And most importantly what are the steps
+that we need to take so that
+the results of the linear and circular
+convolutions of to the signals are
+identical.
+Often, I use the term signal instead of
+the module to the signal.
+To indicate that all these results we
+are obtaining here are extensions of 1D
+processing.
+And similarly, these results can be
+extended in
+a straightforward way to dimensions higher
+than two.
+Visualizing, however, dimensions higher
+than two in the special
+temporal or frequency domains, it's not
+always a straightforward task.
+So let's proceed with the material of this
+segment.
+Now that we have a computable transform,
+the DFT, to
+take us sufficiently through an FFT
+through the frequency domain.
+Would like to use this tool to implement
+field data in the frequency domain.
+So let's see what are the steps to
+accomplish this.
+So we start with LSI system, shown here,
+hn1
+and 2 is impulse as part of the system.
+X is input, the output I denoted by y of
+l.
+And we know by now, that y of l and n1 and
+2 is
+equal to the convolution of the two
+dimensional, linear convolution of x with
+age.
+I now find the DFT of impulse response,
+that's the frequency's response.
+I do the same for the input.
+I find the DFT of the input.
+And I form the output of the system by
+multiplying the corresponding DFT.
+So Y k 1, k 2, the DFT of the output
+equals the
+DFT of the input times the DFT of the
+impulse response of the system.
+A side note here is that in order to be
+able perform this
+multiplication I have to have all the DFTs
+being of the same size.
+So, otherwise the multiplication does not
+really make sense.
+So, if the support of x and h is,
+different, I have to part them with 0s to
+bring them to an appropriate size.
+I want to bring now this equation back to
+the spatial domain.
+I would expect that the quantities I get
+by
+coming back to the spatial domain should
+be related.
+And actually our intuition tells us that
+the inverse DFT of Y k1,k2 should
+be the convolution of the inverse DFT of X
+k1, k2 with the inverse DFT of H k1, k2.
+We are partially correct, in the sense
+that, what
+we obtain is not the linear convolution,
+or the convolution.
+But instead, the circular convolution of x
+with h.
+One way to think of the circular
+convolution
+is to follow the steps of the linear
+convolution.
+But now all the shifts and deflections are
+circular and not linear.
+Another way to think of the circular
+convolution, maybe a more
+useful way, is through the linear
+convolution as shown by this expression.
+So according to this, I first find the
+linear
+convolution, y of l, up here, of x with h.
+And then I periodically extend it with
+periods n1 and n2.
+R1, r2 range from minus infinitive to
+infinitive.
+And then after I do that I keep just the
+base period.
+So n one is from 0 to n 1 minus 1 and n 2
+from 0 to n 2 minus 1.
+It should be noted here that in order to
+perform
+circular convolution the two signals who
+have the same support And
+the result of the circular resolution
+gives me an image
+with the same support with the two images
+I'm circularly convolving.
+So what you've seen here is I that I can
+utilize
+the efficiency of the DFT to perform
+filtering in the frequency domain.
+However what I obtain by multiplying the
+corresponding the x's in
+the fitness domain is the circular
+convolution of the two signals.
+They input with the impulse response.
+LSI systems perform linear convolutions.
+So, the key question that arises is, under
+what conditions should
+the result of the linear and circular
+convolutions be the same.
+We'll, we'll look into this, into some
+detail next.
+Although, one might already have the
+answer.
+As long as there is no aliasing in
+performing this periodic extension
+the two results, result of the cycle of
+the linear convolution will be the same.
+Let me refresh you memory here.
+This is something we covered at an earlier
+point.
+If I'm convolving two signals.
+Let's say this is my x n1 and 2 signal.
+This is my h n1 and 2 signal.
+[INAUDIBLE] result of the convolution y of
+l n 1 and 2.
+Then if the support of the first signal is
+as shown here, this is n1 by n2.
+While the support of the second one is m1
+by m2.
+Then the support of, the result of the
+convolution is going to
+be as shown here, l1 which is equal to n1
+plus m1 minus 1.
+And by l2, which is equal to n2 plus n2
+minus 1.
+This is another straightforward result to
+show
+just by following the steps of the
+convolution.
+So, clearly, the, the result of the
+convolution The output signal has
+greater support than any of the individual
+signals I'm, I'm, I'm convolving.
+Now, if I want to perform linear
+convolution through the use of, of a DFT,
+I should utilize DFTs of sizel1 by l2.
+So, I should take the input signal and
+increase its size to
+l1 by l2, by padding it with 0.
+I should do the same for the second signal
+I'm convolving with.
+So this is L2, this is L1.
+And here I padded it with 0s.
+I take the DFTs, I multiply them in the
+discrete frequency domain, and
+I take the inverse DFT, and I come back to
+the spatial domain.
+And as I mentioned earlier side, slide,
+the result then is the circular
+convolution.
+Which is formed by the periodic extension
+of the linear convolution shown here.
+But since the periodic extension is going
+to be
+with respect to l1, l2 would clearly see
+here.
+That there is not going to be another lab
+between the replicas of this signal yl.
+And therefore, the result of the secular
+linear convolutions is going to be
+identical.
+[SOUND].
+We show here the periodic extension of the
+result of the
+linear convolution with periods L1, L2, as
+explained in the previous slide.
+So in this particular case, there's no
+aliasing L1, L2 are chosen appropriately.
+If instead I choose an L 1 prime which is
+less than L 1 and
+L 2 prime which is less than L2 performing
+the periodic extension.
+And L 1, L 2 prime by the way, are the
+size of the DFTs.
+Then clearly aliasing is going to take
+place so the resulting image.
+Which has size L 2 prime L 1 prime is
+going to have
+the, so many first rows and columns
+aliased.
+And the number of the aliased rows here.
+This is L 1 minus L 1 prime.
+And the number of the columns that are
+aliased is L2 minus L2 prime.
+The rest of the image, of course, the one
+shown
+here, the result of a circular and linear
+convolution are identical.
+Let's recap what we've learned so far.
+And I also want to make an additional
+point.
+So, we're given this eight by eight image.
+And we're going to convolve it with a
+system that has this three by three
+impulses points.
+First of all, we know that the result of
+the convolution is going to
+be a signal that is going to have 8 plus 3
+minus 1 equals 10.
+In the n1 direction and 10 in the n2
+direction.
+The [UNKNOWN] is going to be a ten by ten
+image.
+So the steps I have to follow are the
+following.
+I'll take the original image, and turn it
+from an
+eight by eight image to a ten by ten
+image.
+So I'm going to pad it appropriately with
+0s as shown here.
+Now as far as the impulses part of the
+filter
+goes, we see here that it is centered at
+0.
+When I talk about DFTs, the range of
+values are
+from 0 to n1 minus 1, 0 to n2 minus 1.
+So it cannot accommodate the negative n1
+n2 values of the signal.
+So in order to handle that I will
+periodically extend
+this three by three signal with period ten
+in both dimensions.
+And then I'm going to pull out the base
+period from 0
+to nine and then one, and zero to nine and
+then two.
+So, what's in this red dotted rectangle is
+a ten by ten image.
+I will part it with 0s so now I have two
+ten by ten images in the spacial domain.
+I will take the corresponding DFTs.
+I'll bring them to the frequency domain,
+ten by ten DFTs.
+I'll multiply them, take the result of the
+multiplication and
+bring it back to the spatial domain
+through an inverse DFT.
+And that will give me the linear
+convolution of the two signals I started
+with.
+One of the advantages of frequency domain
+filtering, in addition
+to fast implementation is that they can
+process each frequency individually.
+So one can selectively allow certain
+frequencies of
+the input signal, go through the filter
+unchanged.
+Or with some gain, or with some loss, or
+some of them will be completely rejected.
+So as a simple, but hopefully
+representative, example We show here
+the 400 by 400 image with a sinusoid
+superimposed underneath.
+Such an example can possibly result
+situations where
+the periodic noise is added to an image.
+Which might resolve from electrical
+or electromechanical interference viewing
+acquisition.
+So in this particular case, the observe
+image, if I call it y, n1
+and 2 equals original
+image x n1 and 2 plus
+cosine 0.1 pi n2.
+Sinusoid has frequency 0.1 pi.
+So such a sinusoidal signal is represented
+in the
+frequency domain by two deltas at plus
+minus 0.1 pi.
+So if one can estimate the frequency of
+this
+sinusoid, we can design a notch filter, as
+it's called.
+That will allow all frequencies of the
+image to pass through the filter
+unchanged.
+Except that the frequencies where the
+sinusoid is located which will be
+rejected.
+The total rejects is minus 0.1 pi plus 0.1
+pi frequency in the omega two dimension.
+So, we do that and come back to the
+spatial domain and the resulting image is
+this one.
+So, we see that the little guy who was
+behind bars now has been freed.
+

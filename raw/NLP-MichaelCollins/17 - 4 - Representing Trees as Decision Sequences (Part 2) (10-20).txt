@@ -1,0 +1,259 @@
+So, we've now seen these first two layers 
+of structure. 
+Firstly, the part of speech tags for the 
+sentence and secondly, the sequence of 
+chunking decisions. 
+We're now going to see the third layer of 
+structure, where the remaining parts of 
+the parse tree are built. 
+And again the game here is to encode 
+those remaining parts of the parse tree, 
+as a sequence of decisions. 
+So the decisions we'll see are Join, or 
+Start or Check. 
+And, so we're going to alternate between 
+two classes of actions. 
+First we'll choose either Join X or Start 
+X, where X is some label. 
+For example, N, P, S, V, P and so on. 
+And after each point where we've chosen 
+Join or Start, we then choose Check 
+equals Yes or Check equals NO . 
+I'm going to illustrate this with our 
+example tree over the next few slides, so 
+this will at first appear rather 
+abstract, but hopefully as I go through 
+the example, things will become more 
+clear. 
+At a high level, here's the meaning of 
+these actions. 
+So, Start X is going to be an action that 
+starts a new constituent with label X. 
+For example, we can start a new NP, we 
+can start a new S, we can start a new VP, 
+and so on. 
+And it always acts on the leftmost 
+constituent, which has no Start or Join 
+label above it. 
+Join x is similar, except it continues a 
+consitiuent with label x. 
+And again, it always acts on the leftmost 
+contituent with no Start or Join label 
+above it. 
+So, inuitively the first thing we'll do, 
+is choose to either start a new 
+constiuent, or to continue an existing 
+constituent. 
+And then we'lll apply this check 
+operation. 
+So Ccheck equals No, that means we do 
+nothing essentially. 
+But if we say Check equals Yes, then as 
+we'll see this will take the previous 
+drawing or start action, and convert that 
+into a completed constituent. 
+Okay, so that's the abstract description, 
+now let's see how this pans out for this 
+particular example. 
+So, here's the state we've reached after 
+the first two levels of decisions. 
+Namely, the part of speech tagging 
+decisions, this layer here, and secondly 
+the chunking decisions, which we'll 
+choose this chunk, this chunk, and this 
+chunk. 
+So this is the structure we've built in 
+the first two N decisions, where N is the 
+length of the sentence. 
+The next thing I'm going to do is pick 
+the left most constituent, which has no 
+join or start annotation above it. 
+That's that, this NP in this case, and 
+I'm going to choose either to start or 
+join a constituent here. 
+In fact Start is really the only option 
+because I can't continue constituent. 
+No constituants have been built at this 
+point. 
+And in fact, for the parse tree that we 
+saw for this sentence, this decision will 
+be to start an S. 
+Because if you remember we actually have 
+something like this in the structure of 
+the tree. 
+So this is the lawyer. 
+The nonterminal above this NP was an S 
+and this is basically making the choice 
+to stop that S. 
+The next thing we do is a check 
+operation. 
+And so there are two possibilities, check 
+equals YES and check equals NO. 
+So if I choose and check equal S, yes, 
+that means I would have actually said, 
+"okay, this S constituents has complete. 
+I just want to start it and then I would 
+have build this S, and said, Okay, that's 
+a complete constituent. 
+For the past three, I've showed you for 
+the sentence, this S has more than one 
+child. 
+And so we definitely don't want to say 
+Check equals Yes and complete the 
+constuent term at this point. 
+So Check equals No and basically that 
+means we leave this structure unchanged. 
+The next operation is to look again, we 
+look at the left most non terminal that 
+doesn't have any structure above it. 
+Or rather, it doesn't have start or join 
+above it, that rules out this structure, 
+here, so we look at this first part of 
+speech, here. 
+And we could either choose to start a new 
+constituent or we could choose to join S, 
+which would mean we'd continue this S 
+constituent. 
+In this case we choose Start VP because 
+if you think about the structure in the 
+tree, the correct parse tree in this case 
+has a VP started at this point. 
+And that's what this decision here 
+reflects. 
+The next thing is again a Check 
+operation. 
+We say Check equals No, if it was Yes, we 
+would've completed this VP. 
+And we would have this structure here, 
+but that is actually incorrect for this 
+sentence, for this parse tree, I've shown 
+you. 
+And so, Check equal No, we leave this VP 
+uncompleted. 
+Next step, again. 
+We go through this process of finding the 
+leftmost nonterminal, which doesn't have 
+any structure above it. 
+That's this NP in this case because this 
+has structure, this has structure. 
+And we can choose to start a new 
+constituent, or we could choose to join 
+an existing constituent. 
+In this particular case, we're going to 
+choose Join VP, which means that this 
+noun phrase is actually going to be the 
+second constituent on this particular VP. 
+We go through a check operation. 
+We could say Check equals No or Check 
+equals Yes. 
+And for this particular parse tree, I 
+actually have three children. 
+I had a VT. 
+I had an NP. 
+I had a prepositional phrase coming up, 
+which is going to be built over here. 
+So in this case, we're going to say Check 
+equals No. 
+Otherwise, I would have immediately 
+completed this constituent VP with these 
+two children underneath it. 
+And that would not be correct for this 
+particular parse tree. 
+Next step, you're hopefully getting the 
+idea now, we pick the less most sub tree 
+that doesn't have any structure above it. 
+That's this preposition here. 
+we could choose to join the previous 
+constituent or start a new one. 
+We say Start PP, in this case the 
+prepositional phrase isn't complete. 
+So we say Check equals No. 
+Again we go back to the left most 
+constituent that isn't completed, or 
+doesn't have structure above it, that's 
+the NP. 
+We could start a new constituent, we 
+could choose to join the previous one. 
+In this case, we choose to join the 
+prepositional phrase. 
+And now, finally, something interesting 
+happens with respect to the check 
+operation. 
+So, let me go back to the previous state. 
+So, this is the, the position I've 
+reached and now I'm going to do a check, 
+which is basically going to say, is this 
+constituent. 
+This prepositional phrase, this most 
+recent constituent that I've built. 
+Is this now complete? 
+Now, in this case it is complete, there's 
+nothing more to the right. 
+There's no way we can build any 
+additional structure, and so in this case 
+we say check equals yes. 
+And notice that we've now built this 
+prepositional phrase. 
+Okay? 
+So we've now converted that start joint 
+structure to this prepositional phrase 
+structure. 
+And then we continue, where again we're 
+going to pick the leftmost structure 
+which has no Join or Start label above 
+it, that's this prepositional phrase. 
+We can choose to start a new 
+contradiction or join a previous one. 
+We choose to join VP in this case. 
+That means we're going to extend this, 
+this verb phrase that we've been 
+building. 
+And again, we're going to follow this 
+with a check. 
+And in fact, if we think about this, the 
+only thing we can really do here, because 
+there are no more structures to our 
+right, is say, Check equals Yes, and 
+complete this verb phrase. 
+And that, indeed, is what happens. 
+So Check equals Yes, and also I now have 
+VP with these three children underneath 
+it. 
+I pick the leftmost structure, I choose 
+in this case Join S as my decision. 
+I now have these two structures in 
+sequence, so I'm going to do a check 
+operation. 
+The check in this case equals Yes. 
+And at that point, I've actually 
+completed the tree. 
+So, that's a sketch of the sequence of 
+decisions for this particular parse tree. 
+So let's just go back to what we're 
+trying to acheive here. 
+Remember the game is, to try to come up 
+with a sequence of M decisions, which 
+describes how the parse tree is 
+constructed. 
+The first end descisions are level one. 
+Those are the part of speech tagging 
+decisions for each individual word. 
+The second end decisions are level two. 
+They correspond to the chunking decisions 
+in the particular parse tree. 
+And the four remaining decisions are 
+level three are the start and check 
+operations that build the remaining 
+structure. 
+And notice again that we alternate. 
+We always have Start Check or Join Check 
+until the final structure the complete 
+parse tree is built. 
+But anyway, to summarize, this is the way 
+that Ratna Parkey chose to represent 
+parse trees as sequences of decisions. 
+Firstly in part of speech tags, secondly 
+in chunks and finally in the start, join 
+and check operations that build the high 
+levels of structure. 
+

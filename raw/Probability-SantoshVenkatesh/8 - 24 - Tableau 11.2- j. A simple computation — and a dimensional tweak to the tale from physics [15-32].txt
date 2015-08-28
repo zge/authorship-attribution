@@ -1,0 +1,407 @@
+Our next application of the Law of
+Large Numbers is going to take you back,
+way back to elementary calculus, and
+I'm going to articulate for you a simple
+little problem that you have assuredly
+seen before, but this problem is going
+to have a little kick in the tail.
+And this particular kick in
+the tale is going to come
+from statistical physics in the immediate
+aftermath of the Second World War.
+So, without further ado,
+here is a problem in integration.
+The setting?
+Suppose we are given a function f in
+one or more variables for definiteness.
+Think of it as a function
+of one variable f of x.
+And let's say this function is
+defined on the unit interval.
+To make sure things are well behaved,
+let's suppose the function is
+bounded in absolute value.
+In other words, the absolute value
+of f is no more than 1 everywhere.
+And our problem, our objective, is to
+evaluate the integral of that function.
+A picture as always,
+is worth 1,000 words, so
+let me draw a generic function for
+you in one dimension.
+So, let's think of a function, f of x,
+defined on the unit interval
+as I've sketched for you.
+Our objective is to evaluate J,
+the integral of that
+function over the interval.
+And of course you remember from your basic
+calculus classes that this just stands for
+the area under the curve of the function.
+Now we've seen in our basic calculus
+several examples of integration when
+the functions are well behaved.
+We know how to integrate trigonometric
+functions, exponential functions,
+logarithms and so on.
+But of course if one is
+given a generic function f,
+then one doesn't really have,
+in principle, a,
+an explicit closed form answer for
+what the area under the curve is.
+And so then we are now in the domain
+of numerical integration.
+How does one proceed to go ahead and
+numerically.
+Estimate the area under
+the curve of a generic function.
+Now what I'm going to
+give you in principle
+is a description of a function f.
+And what you will be able to do in
+principle is, given any value x for
+the argument.
+You will be able to look up or
+compute the value of the function
+f of x at that point.
+So, this is the information given to us.
+The ability to construct or
+compute the value of the function
+at any desired point.
+Our objective is to determine an estimate
+for the area under the curve,
+the integral of that function.
+Natural enough for
+a numerical integration, we start by
+sampling the function at given points.
+And the simplest such idea might
+be to sample the function at
+three regular points.
+Let's say at x equal to 0, at x equal
+to one-half, and at x equal to 1.
+Now we have three values for
+the function that we're going to
+read out through our lookup tables.
+So this is going to cost us
+three lookups of the table.
+We now know the values f of 0,
+f of one-half, f of 1.
+How do we combine them?
+Well we're simply going to add them
+up with suitable weighting factors.
+Now, what are the right weighting factors?
+Well, it depends upon the particular
+approximation strategy that you use.
+You might, for example, have been exposed
+to something called a trapezoidal rule.
+The particular approximation I've
+shown you is called Simpson's rule.
+We won't derive it here, but.
+It is occasioned by trying to fit
+a parabola around the function points,
+and then figuring out what the area
+of the parabola should be.
+And that will give you
+an approximation for
+the area under the curve
+of the target function.
+Of course this is a very
+crude approximation.
+We just looked at three values of
+the function and added them up suitably.
+Of course, Simpson's rule tells us how
+to go about this more generally by
+sampling the function more frequently,
+at more and more points.
+And of course, the more you sample the
+function, the better the approximation.
+That might well be satisfied,
+but a very crude approximation.
+Let's just take these three values, add
+them up according to Simpson's Rule, and
+Bob's your uncle, here is your estimate
+for the function, admittedly crude.
+Now, with this as background,
+now let's see what happens when we have
+more than one variable for the function.
+So, we want to look at how this
+problem scales with dimensionality.
+Of course we could think of two
+dimensions, three dimensions and so
+on, and we'll immediately
+jump to an abstract setting.
+Let's say we are given
+a function f of D variables.
+D, of course, stands for dimensionality.
+We are going to call the variables,
+naturally, x 1, x 2, x 3 through x sub D.
+Let's say the function is
+suitably well-behaved.
+In absolute value it is
+bounded by 1 everywhere.
+And so what we are interested in
+is the integral of this function
+as each of the variables
+varies in the unit integral.
+And we're going to call this J.
+Our objective is to estimate J.
+Again, if f is well-behaved,
+it's very regular,
+then we might hope to actually explicitly
+iteratively evaluate this integral.
+But in general, for a generic function,
+that is hopeless, and
+we are back to numerical computation.
+Well let's see what Simpson's rule
+says in a D-dimensional setting.
+Let's start with our
+lessons from one dimension.
+In one dimension, we just sample
+the variable at three points,
+0, one-half and 1.
+What will you do if you have
+two variables, x 1 and x 2?
+Well, naturally, we'll want to sample the
+function with our first variable ranging
+across three values,
+0, one-half, and 1, and
+the second variable ranging across
+three values, 0, one-half, and 1.
+And so,
+we'll end up sampling the function at,
+on a three by three grid
+in the unit square.
+And that's where the function is defined.
+Excellent.
+How do we do it for three dimensions?
+Well, no problem.
+We're now going to look at x
+1 ranging with three values,
+x 2 ranging over three values,
+x 3 ranging with three values.
+In other words, we want.
+To look at a function defined inside
+the unit cube, we're going to
+sample the values of a function at
+regularly spaced lattice points.
+Three per dimension.
+And once you evaluate the function,
+we're just going to add up
+these values suitably weighted.
+Okay and if you do all of this,
+you're going to get, oh,
+well this is a horrible
+expression isn't it?
+And messy looking expression.
+But it is not too unintelligible because
+if you look at what it is saying,
+what we are going to do is the following.
+Let each coordinate variable range
+over three values, 0, one-half and 1.
+For each selection of
+the coordinate variables,
+evaluate the value of
+the function at a lattice point.
+Now you've got a whole bunch of lattice
+points at which you've evaluated
+the function.
+Weight them properly, and
+Simpson's rule or the trapezoidal rule, or
+whatever you want to use will tell
+you what the proper weight should be.
+These weights, well, of course,
+depend upon the lattice point.
+You saw, for example, in one dimension,
+the weights were one-sixth at 0,
+four-sixths at one-half and
+one-sixth at 1.
+Similarly, you're going
+to get different weights
+at each of the lattice points at which
+you're going to evaluate the function.
+Call these weights a.
+And identify the lattice
+point of the subscript, x1,
+x 2 through x D at which you've
+evaluated that function.
+Weight the function, scale by their weight
+and add up over the lattice points.
+And Bob's your uncle, this is it.
+And, of course, one doesn't want to
+do this by hand in more than one or
+two dimensions.
+And of, but of course it's easy
+enough to put into a computer today.
+And very quickly churn out a sum and
+out comes an answer, which is a crude
+approximation to the desired integral.
+Now, my objective here is to take a look
+at how the demands on a computation.
+Are scaling as the variables increase
+from one, two, three, and so on.
+So, I'd want to take a look at
+the dimensionality, D, of the problem.
+And how many computations I have
+to do in this simple approximation
+via Simpson's rule.
+Well, it's easy enough,
+let's start with the simplest case,
+where we have one dimension.
+D is equal to one.
+And as we saw, we need three lookups.
+So let's identify a computation with
+a lookup of the value of the function.
+Okay?
+Of course there are also going
+to be things like addition.
+But I'm going to have
+a similar number of additions.
+And so forth.
+So.
+In one dimension, for
+the crudest approximation for
+the area under the curve,
+I'm going to need to evaluate the function
+at three points, three computations.
+What happens in two dimensions?
+Well in two dimensions
+I've got now a square and
+grid points, three per dimension.
+In other words, I have 3 times 3 or
+9 places in the unit square where I
+have to evaluate the target function.
+In three dimensions, again, in each
+dimension I have to have three points.
+3 times 3 times 3 gives me 27 lattice
+points inside the three-dimensional cube.
+And now we begin to see a pattern.
+How does it work in D dimensions?
+In each dimension, we want to evaluate
+the coordinates at three possibilities so
+there are 3 times 3 times 3 and so forth.
+Number of possibilities or
+3 to the power D lattice points and
+therefore we need 3 to the power D.
+Evaluations of the function
+in D dimensions.
+So far so good.
+It seems very reasonable,
+very elementary and of course it
+is a very simple thing to program into
+a modern computer if one so desired.
+Now, just to get a feeling for
+the scaling, numerically.
+Let's see what, what happens if we
+are dealing with, at a whim, say,
+D is equal to 200 dimensions.
+If D is 200 then we're dealing with,
+3 to the power 200 lookups of
+the values of the function.
+Now what is 3 to the power 200.
+Now if you translate it,
+it comes out to be a little bit
+more than 10 to the power 95.
+Pause for a moment to absorb this.
+This is a mind bogglingly large number.
+To put this in context.
+Some estimates of the number
+of atoms in the known universe
+put the number of these particles
+at about 10 to the power 70.
+Eh, suppose you imagine that there are 10
+to the power 70 atoms in the universe.
+Suppose somehow we could
+cajole each individual atom
+to do a function evaluation for you.
+And let's say each atom does one billion
+function evaluations for you every second.
+And each of 10 of the power
+70 atoms of the universe
+do one million evaluations for you.
+And you put them all to
+work at the same time.
+Even so.
+The number of evaluations you need,
+10 to the power 95,
+even working at this rate will require
+more time than the entire universe
+has existed up til point.
+The moral of the story is that.
+When the dimensionality grows,
+even the simplest computation to
+try to evaluate that integral.
+It seems so simple, so trite, so benign.
+But even the simplest computation
+is effectively impossible.
+Even very crudely, very approximately.
+It is impossible not because I say so, or
+it is impossible not because we have not
+been clever enough in trying to find sums.
+It is impossible because the universe
+does not have enough resources
+to be able to compute this problem
+in a reasonable amount of time.
+Now, this is.
+A little disquieting.
+And you see the numerical integration
+we're doing was so elementary, so simple.
+Which is adding up values of the function
+at a few places, apparently.
+But, the few places blows up,
+even in a modest number of dimensions,
+say 200 dimensions.
+At this point a student might well feel,
+oh well okay, so that's a bit weird.
+But.
+What do I care?
+Well, problems like these arise
+naturally in statistical physics.
+Immediately after the Second World War,
+it became clear that
+physical understanding of the universe,
+especially an atomic understanding, was
+going to become the key enterprise in the
+middle to latter part of the 20th century.
+And there's perhaps no other domain
+of in science or mathematics,
+where integrals in very large
+numbers of dimensions crop up so
+readily as in statistical physics.
+And so, it beco, it became imperative.
+For people to try to estimate integrals
+like these in large dimensions.
+Now, the fact that it appears
+to be physically impossible
+to find even approximations
+through the desired integral,
+doesn't mean that
+the problem has gone away.
+We still have an integral
+left to evaluate.
+The question then is,
+what can one do, if anything?
+Now, this was a setting, as I pointed out,
+immediately after the Second World War.
+And a consortium of three individuals,
+Enrico Fermi,
+the noted physicist, John von Neumann.
+The mathematician at the Institute for
+Advanced Study in Princeton,
+and [INAUDIBLE] yet
+another mathematician, got together and
+came up with a bewildering idea,
+a truly bewildering idea.
+The idea was to try to
+estimate this integral
+J via a chance-driven computation.
+Say that again?
+A chance-driven computation?
+What does that mean?
+I mean, isn't a computation
+something very precise?
+2 plus 2 is always inevitably 4.
+Where is that chance in this game?
+Oh, bear with me.
+This is the next part of our story.
+

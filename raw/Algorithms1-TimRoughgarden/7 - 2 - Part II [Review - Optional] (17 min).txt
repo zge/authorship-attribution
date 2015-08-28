@@ -1,0 +1,421 @@
+So welcome to part two of our probability
+review. This video assumes you've already
+watched part one or at least are familiar
+with concepts covered in part one. Namely
+sample spaces, events, random variables,
+expectation and linearity of expectation.
+In this part of the review we're going to
+be covering just two topics. Conditional
+probability and the closer related topic
+of independence. Both between events and
+between random variables. I want to remind
+you that this is by no means the only
+source you can or should use to learn this
+material. A couple of other sources free
+that I recommend are lecture notes that
+you can find online by Eric. And also
+there's a wiki book on discrete
+probability. So, conditional probability,
+I hope you're not surprised to hear, is
+fundamental to understanding randomized
+algorithms. That said, in the five weeks
+we have here, we'll probably only use it
+once. And that's in analyzing the
+correctness of the random contraction
+algorithm for computing the minimum cut of
+an undirected graph. So, just to make sure
+we're all on the same page, here's some
+stuff you should have learned, from part
+one of the probability review. You should
+know what a sample space is. This
+represents all of the different outcomes
+of the random coin flips, all of the
+different things that could happen. Often
+in randomized algorithm analysis, this is
+just all of the possible random choices
+that the algorithm might make. Each
+outcome has some known probability
+[inaudible]. By and, of course, the sum of
+the probabilities equal one and remember
+that event is nothing more than a subset
+of omega. Omega is everything that could
+possibly happen. S is some subset of
+things that might happen and, of course,
+the probability of event is just the
+probability of, of all the outcomes that
+the event contains. So, let's talk about
+conditional probability. So one discusses
+the conditional probability of one event
+given a second event. So, let X and Y
+denote two events, subsets of the same
+sample space. You might want to think
+about these two events X and Y in terms of
+an event diagram. So we could draw a box,
+representing everything that could
+conceivably happen. So that's Omega. Then
+we can draw a blob corresponding to the
+event X. So that's some stuff. Might or
+might not happen, who knows. And then the
+other event Y is some other stuff which
+might or might not happen. And in general
+these two events could be disjoint, that
+is they could have no intersection. Or
+they might have a non-trivial
+intersection. X intersect Y. Similarly
+they need not cover omega. It's possible
+that nothing X nor Y happens. So what's
+we're looking to define is the probability
+of the event X given the even Y. So we
+write probability of X bar Y, phrased X
+given Y. And the definition is, I think,
+pretty intuitive. So given Y means we
+assume that something in Y happened.
+Originally anything in omega could have
+happened. We didn't know what. Now we're
+being told that whatever happened that
+lies somewhere in Y. So we zoom in on the
+part of the picture that, in which
+contains Y. So that's gonna be our
+denominator. So, our new world is the
+stuff in Y. That's what we know happened.
+And now we're interested in the proportion
+of Y that is filled up with X. So, we're
+interested in what fraction of Y's area is
+occupied by stuff in X. So X intersect Y,
+divided by the probability of Y. That is
+by definition the conditional probability
+of X given Y. Let?s turn to a quiz, using
+our familiar example of rolling two dice.
+To make sure that the definition of
+conditional probability makes sense to
+you. Okay, so the correct answer to this
+quiz is the third answer. So let's see why
+that is. So what are the two events that
+we care about? We want to know the
+probability of X given Y, where X is the
+event that at least one die is a one. And
+Y is the events that the sum of the two
+dice is seven. Now, the easiest way to
+explain this is let's zoom in, let's drill
+down on the Y. Let's figure out exactly
+which outcomes Y comprises. So the sum of
+the two dice, being seven, we saw in the
+first part of the review, there's exactly
+six outcomes which give rise to the sum
+seven, namely the ordered pairs one, six.
+Two five, three four, four three, five
+two, and six one. Now, remember that the
+probability. Of x given y is by definition
+the probability of x intersect y divided
+by the probability of y. Now, what you
+notice from this formula is we actually
+don't care about the probability of x per
+se or even about the event x per se, just
+about x intersect y. So, let's just fig,
+so, now we know why there has to be six
+outcomes. Which of those also belong to x?
+Well, x is those where at least one die is
+one. So, x intersect y is just going to be
+the one, six and the six, one. Now the
+probability of each of the 36 possible
+outcomes is equally likely. So each one is
+one over 36. So since X intersects Y, has
+only two outcomes. That's gonna give us
+two over 36 in the numerator. Since Y has
+six outcomes, that gives us a six over 36
+in the denominator. When you cancel
+everything out, you're left with a one
+third. So just applying the definition of
+conditional probability to the correct
+definition of the two relevant events, we
+find that indeed a third of the time is
+when you have a one condition on the sum
+of the two being seven. Let's move on to
+the independence of two events. So. Again
+we consider two events, x and y. By
+definition, the events are dependent if
+and only if the following equation holds.
+The probability that both of them happen.
+That is the probability of x intersect y
+is exactly equal to the probability that x
+happens times the probability that y
+happens. So that's a simple innocuous
+looking definition. Let me re phrase it in
+a way that it's even more intuitive. So
+I'll you check this, it's just a some
+trivial algebra. This equation holds, for
+the events X and Y, if and only if, this
+is just using the definition of
+conditional probability we had on the last
+slide, if and only if the probability of X
+given Y, Is exactly the same thing as the
+probability of x. So, intuitively, knowing
+that y happens, gives you no information
+about the probability that x happens.
+That's the sense in which x and y are
+independent. And, you should also check
+that this holds if and only if, the
+probability of y, given x, equals the
+probability of y. So, symmetrically,
+knowing that X has occurs gives you no
+information, no new information about
+whether or not Y has occurred. The
+probability of Y is unaffected by
+conditioning on X. So at this juncture I
+feel compelled to issue a warning. Which
+is, you may feel like you have a good
+grasp of independence. But, in all
+likelihood, you do not. For example I
+rarely feel confident that I have a keen
+grasp on independence. Of course I use it
+all the time in my own research and my own
+work, but it's a very subtle concept. Your
+intuition about independence is very often
+wrong, even if you do this for a living. I
+know of no other source that's created so
+many bugs in proofs by professional
+mathematicians and professional computer
+science researchers as misunderstandings
+of independence and using intuition
+instead of the formal definition. So, for
+those of you without much practice with
+independence, here's my rule of thumb for
+whether or not you treat random variables
+as independent. If things are independent
+by construction, like, for example, you
+define it in your algorithm, so the two
+different things are independent. Then you
+can proceed with the analysis under the
+assumption that they're independent. If
+there's any doubt, if it's not obvious the
+two things are independent, you might want
+to, as a rule of thumb, assume that
+they're dependent until further notice. So
+the slide after next will give you a new
+example showing you things which are
+independent and things which are not
+independent. But before I do that I wanna
+talk about independence of random
+variables rather than just independence of
+events. So you'll recall a random variable
+is from the first video on probability
+review. It's just a real value function
+from the sample space to the real numbers.
+So once you know what happens you have
+some number. The random variable evaluates
+to some real number. Now, what does it
+mean for two random variables to be
+independent? It means the events of the
+two variables taking on any given pair of
+values are independent events. So
+informally, knowing the value taken on by
+one of the random variables tells you
+nothing about what value is taken on by
+the other random variable. Recalling the
+definition of what it means for two events
+to be independent, this just means that,
+the probability that A takes on value
+little a, B takes on value little b. The
+probability that both of those happen is
+just the product of the probabilities that
+each happens individually. So what's
+useful about independence of events is
+that probabilities just multiply. What's
+useful about independence of random
+variables is that expectations just
+multiply. So, we're going to get an analog
+of linear expectation where we can take,
+we can interchange an expectation in the
+product freely, but I want to emphasize
+this, this interchange of the expectation
+of the product is valid only for
+independent random variables and not in
+general, unlike linear expectations. And
+we'll see a non example. We'll see how
+this fails on the next slide for non
+independent random variables. So, I'll
+just state it for two random variables,
+but the same thing holds by induction for
+any number of random variables. If two
+random variables are independent, then the
+expectation of their product. Equals the
+product of their expectations. And again,
+do not forget that we need a hypothesis.
+Remember, linearity of expectations did
+not have a hypothesis for this statement
+about products. We do have a hypothesis of
+them being independent. So why is this
+true? Well, it's just a straight forward
+derivation where you follow your nose or
+write it out here for completeness, but,
+but I really don't think it's that
+important. So you start with the
+expectation of the product. This is just
+the average value of A times B, of course
+weighted by the probability of, of any
+particular value. So the way we're gonna
+group that sum is we're going to sum over
+all possible combinations of values, A and
+B, that capital A and capital B might take
+on, so that's gonna give us a value of A
+times B. Times the probability of that big
+A takes on the value of little a and
+capital B takes on the value of little b.
+So that's just by definition where this is
+the value of the random variable, capital
+A times capital B and this is the
+probability that it takes on that value
+with the values A and B. Now because A and
+B are independent, this probability
+factors into the product of the two
+probabilities. This would not be true if
+they were not independent. It's true
+because they're independent. So same sum
+where all possible joint values of all A
+and B. You still have A times B. But now
+we have times the probability that A takes
+on the value of A times the probability
+that B takes on the value of B. So now we
+just need to regroup these terms. So let's
+first sum over A. Let's yank out all the
+terms that depend on little a. Notice none
+of those depend on little b. So we can
+yank it out in front of the sum over
+little b. So I have an A times the
+probability that big A takes on the value
+of little a. And then the stuff that we
+haven't yanked out is the sum over b, of b
+times, little b times the probability that
+capital B takes on the value little b. And
+what's here inside the quantity? This is
+just the definition of the expectation of
+b. And then what remains after we have
+factored out the expectation of b? Just
+this other sum which is the definition of
+the expectation of a. So, indeed four
+independents random variables, the
+expected value of the product is equal to
+the product of the expectations. Let's now
+wrap up by tying these concepts together
+in an example, a simple example that
+nevertheless illustrates how it can be
+tricky to figure out what's independent
+and what's not. So here's the set up.
+We're going to consider three random
+variables. X1, X2 and X3. X1 and X2 we
+choose randomly, so they're equally likely
+to be zero or one. But X3 is completely
+determined by X1 and X2. So it's gonna be
+the XOR of X1 and X2. So XOR stands for
+exclusive or. So what that means is that
+if both of the operands are zero, or if
+both of them are one, then the output is
+zero. And if exactly one of them is one,
+exactly one of them is zero, then the
+output is one. So it's like the logical or
+function, except that both of the inputs
+are true, then you output false, okay? So
+that's exclusive or. Now this is a little
+hand wavy, when we start talking about
+probabilities, if we want to be honest
+about it, we should be explicit about the
+sample space. So what I mean by this, is
+that X1 and X2 take on all values, they're
+equally likely. So we could have a zero,
+zero or a one zero or a zero one or a one,
+one and in each of these four cases, X3 is
+determined by the first two, as the X or,
+so you get a zero here, a one here, a one
+here and a zero there. And each of these
+four outcomes is equally likely. So let me
+now give you an example of two random
+variables, which are independent, and a
+non example. I'll give you two random
+variables which are not independent. So
+first, I claim that, if you think that X1
+and X3, then they're independent random
+variables. I'll leave this for you to
+check [sound]. This may or may not seem
+counter-intuitive to you. Remember X3 is
+derived in part from X1. Never the less,
+X1 and X3, are indeed independent. And why
+is that true? Well, if you innumerate over
+the four possible outcomes, you'll notice
+that all four possible two byte strings
+occur as values for one and three. So here
+they're both zero, here they're both one,
+here you have a zero and one, and here you
+have a one and zero. So you've got all
+four of the combinations of probability
+one over four. So it's just as if X1 and
+X3 were independent fair coin flips. So
+that's basically why the claim is true.
+Now. That's a perhaps counterintuitive
+example of independent random variables.
+Let me give you a perhaps counterintuitive
+example of dependent random variables.
+Needless to say, this example just
+scratches the surface and you can find
+much more devious examples of both
+independent and non-independents if you
+look in, say, any good book on discrete
+probability. So now let?s consider the
+random variable X1 product X3. And X two
+and the claim is these are not
+independent. So this'll give you a formal
+proof for. The way I'm going to prove this
+could be slightly sneaky. I'm not going to
+go back to the definition. I'm not gonna
+contradict the consequence of the
+definition. So it's proved that they're
+not independent all I need to do, is show
+that the product of the expectations is
+not the same as the expectations to the
+products. Remember if they were
+independent, then we would have that
+equality. [inaudible] Product of
+expectations will equal the expectation to
+products. So if that's false than there's
+no way these random variables are
+independent. So the expectation of the
+product of these two random variables is
+just the expected value of the product of
+all three. And then on the other side, we
+look at The product of the expected value
+of X1 and X3. And the expected value of
+X2. So let's start with the expected value
+of X2. That's pretty easy to see. That is
+zero half the time and that is one half
+the time. So the expected value of X2 is
+going to be one-half. How about the
+expected value of X1 and X3? Well, from
+the first claim, we know that X1 and X3
+are independent random variables.
+Therefore, the expected value of their
+product is just the product of their
+expectations. Equal this expectations
+equal to the expected value of X1 times
+the expected value of X2, excuse me, of
+X3. And again, X1 is equally likely to be
+zero or one. So its expected value is a
+half. X3 is equally likely to be zero or
+one so its expected value is a half. So
+the product of their expectations is
+one-fourth. So the right-hand side here is
+one-eighth; one-half times one-fourth, so
+that's an eighth. What about the left-hand
+side, the expected value of X1 times X3
+times X2? Well, let's go back to the
+sample space. What is the value of the
+product in the first outcome? Zero. What
+is the value of the product in the second
+outcome? Zero. Third outcome? Zero. Forth
+outcome? Zero. The product of all three
+random variables is always zero with
+probability one. Therefore, the expected
+value, of course, is gonna be zero. So
+indeed, the expected value of the product
+of X1, X3 and X2 zero does not equal to
+the product of the corresponding
+expectations. So this shows that X1, X3
+and X2 are not independent.

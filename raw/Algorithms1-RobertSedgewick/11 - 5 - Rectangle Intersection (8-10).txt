@@ -1,0 +1,166 @@
+To finish up, we're going to look at the
+rectangle intersection problem that's got
+important practical applications and, uses
+the techniques that we've been studying so
+far. And it's a simple generalization of
+our line intersection problem. So now, we
+have a bunch of rectangles. They're all
+oriented horizontal or vertical. And what
+we need to do is find all the
+intersections in that set of rectangles.
+And again N could be huge in applications,
+as we'll talk about in a second. And the
+[cough] Naive Brute-Force Algorithm
+involves checking each pair of rectangles
+for intersection. And what we want is a
+more efficient algorithm than that as
+usual. And again, to keep the code simple
+we're going to assume that all the
+coordinates are distinct. We don't have
+any, any equal lines that we have to worry
+about whether we consider rectangles that
+touch to be intersecting, and so forth. So
+that's, that's the problem, rectangle
+intersection search. This is historically,
+an extremely, important problem. In the
+1970s, when we switched to very large
+scale integration for computers, we were
+switching from a situation where we were
+wiring physical devices together, to a
+situation where we were essentially
+drawing the computer. And there were
+machines that would take drawings and, and
+return, [cough] and from those drawings,
+like this, make, physical things that
+implemented computers with different
+layers and different, physical materials
+interacting, in different ways. Some
+things are wires, and some things are
+switches that, are used to, implement
+memory bits and computer logic. But the
+key point about it is that designing a
+computer became a geometric problem. And
+so, people, to design new computers,
+would, make huge drawings that just showed
+the lines that corresponded to the
+materials that had to be created to make
+the computer. Now, it was very expensive.
+You didn't want to have any bugs when
+you're making a chip. And, there were
+various rules about what you can do on
+these drawings. And basically, these rules
+had to do with doing this ortho,
+orthogonal rectangle intersection search.
+You, you can't have [cough] lines that
+come too close to other lines, certain
+types of lines can't intersect. Need
+spacing between certain types of wires
+and, you wanted to, before you tried to
+make the physical circuit to do this
+checking, which involved this orthogonal
+rectangle intersection sort. And it was
+actually the case that the progress of
+faster and faster processors with more and
+more components was slowed because people
+were using the naive quadratic algorithm
+to do this design rule checking. And its
+example of, of Moore's law. So, as we
+built a faster computer say, in 1970X, we
+needed to check in rectangles. But now,
+maybe a year and a half later, you have a
+computer that's two times faster but you
+also want to build a bigger computer so
+you have twice as many rectangles to
+check. So you have two end rectangles to
+check now, and your computer's twice as
+fast. So, we get to use the faster and
+bigger computer to build faster and bigger
+circuits but that doesn't help if you're
+using a quadratic algorithm. If you're
+using a quadratic algorithm and it takes
+you n days to check your design rules, and
+people were running these things on the
+order of days, then for the next computer,
+it would take 2n days, it would take twice
+as long. And so people that were using
+quadratic algorithms were definitely held
+back and, it was, Ed, Ed McCreight at
+Xerox Park who, discovered interval search
+trees and the logarithmic algorithm that
+allowed us to sustain Moore's law and keep
+building bigger and bigger computers. By
+changing this quadratic algorithm to a
+linear logarithmic algorithm, and let's
+see how it works. Really, it's a
+modification of the sweep line algorithm
+that we looked at for intersecting lines.
+But now we're going to use that for
+intersecting rectangles rather than using
+range search as our basic operation, we're
+going to use interval search. So now,
+every time the line sweep hits a
+rectangle, that corresponds to an
+interval. If it's the left part of a
+rectangle, then we put that interval into
+our interval search tree. So in this case
+we put on zero and then we put on one and
+then we put on two. And, and that will
+give us now three rectangles on our sweep
+line. And so now, the question is when we
+hit a, a new rectangle, we want to do an
+interval search to, if we're at the left
+to check which ones intersect and the
+interval search tree algorithm is going to
+tell us which intersections there are
+right away. When we reach the right then
+we remove intervals and so forth. But with
+the basic interval search tree algorithm
+and the sweep line process that we've
+talked about, you can get the orthogonal,
+orthogonal rectangle intersection search
+problem solved in time proportional to
+analog N log N + R log N, where R is the
+number of intersections. And typically, in
+design rule checking, you wouldn't expect
+too many intersections. So again, just as
+with, line intersection search, using a
+priority queue or a sort is only N log N
+for processing the X coordinates. And
+because the interval search trees take log
+N for every operation, the insert and
+delete intervals is N log N totaled and
+the searches is N log N + R log N. So, the
+bottom line is that the sweep line
+algorithm takes this rectangle
+intersection problem and reduces it to 1D
+interval search and we have an efficient
+algorithm for that problem and that
+enables us to solve the problem in linear
+rhythmic time instead of quadratic time.
+And that definitely enabled new progress
+in technology and it's a fine example of
+the importance of algorithmic technology.
+So here's our summary of applications of
+binary search trees for geometric
+problems. We started with one dimensional
+range search and just used regular binary
+search tree to compute ranks to get the
+answer. But that as the basis, we're able
+to solve the two dimensional line segment
+intersection search using the sweep line
+algorithm. Then we looked at range search
+and other operations using KD trees.
+Again, modification of binary search
+trees. And then the interval search tree
+to solve the one dimensional N over search
+problem and then how that corresponds to
+the basic algorithm that you get to if you
+use the sweep line algorithm to solve
+rectangle intersection. Many of these
+problems are the basis for geometric
+processing of huge amounts of data that we
+see all over the web. And our basic search
+tree mentality and APIs, and binary search
+tree data structure give us efficient
+solutions to these important practical
+problems.

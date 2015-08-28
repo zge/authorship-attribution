@@ -1,0 +1,320 @@
+Hello, welcome to the course on audio
+signal processing for music applications.
+In the previous demonstration class
+we analyzed the pitch,
+the fundamental frequency
+of several sounds.
+And that was the first step towards
+analyzing all the harmonics of a sound.
+And this is what we going
+to do in this lecture.
+We're going to be using the sms-tools
+interface, the harmonic model mainly,
+to analyze the harmonics
+of several sounds.
+So let's go to the interface.
+Okay.
+And, let's start with the DFT.
+the DFT is a good place to start,
+because then we can analyse one
+single spectrum of a sound and
+decide about the appropriate parameters
+for analyzing a single spectrum.
+And we will start also with the sound that
+we know the fundamental frequency of, and
+that is very stable.
+Like the sawtooth waveform.
+That we can analyze.
+And let's first listen to that.
+[SOUND] Okay, that's an electronic sound,
+very stable, and many harmonics.
+So we have to decide the window type,
+the window size and FFT size. For
+the window type,
+in this sound is not such a big deal.
+So lets start with, for
+example, the hamming window.
+That's a very good starting point.
+It's a window that has a decent main lobe
+with quite narrow, four bins.
+And the side lobes are quite low.
+It's lower than 40 decibels.
+So now we have to decide what is
+the window size that allows us to
+see the harmonics of this sound.
+So for that, basically,
+we have to take four periods of the sound.
+So we have to know the length
+of one period in sample, and for
+that we can just go to iPython and
+divide 44,100 by the frequency,
+its 440 hertz, okay?
+And that's 100 samples.
+And we need four times that,
+so we need 4 times 100, so
+400 samples would be a good choice
+and we want an odd size window, at least
+for the phase is a good practice 
+to do that, so 401 samples, and
+for the FFT size, well,
+we will need quite a bit of zero
+padding, especially once we detect
+the fundamental and
+the harmonics, so
+lets just put 2048 as the FFT size.
+And let's analyze kind of in the middle.
+.0, okay.
+So we can compute.
+Okay, so this is the four periods that we
+started with of the sawtooth waveform.
+And the harmonics look very nice,
+we see these main lobes of the
+window, of the hamming window, quite well
+separated, the phase also looks
+quite appropriate, looks 
+very flat at every main lobe,
+and of course the synthesized
+is distorted by the analysis window that
+we used, which was the hamming window.
+Okay, so this is a starting point.
+So lets now go to the sinusoidal model,
+to check how the sinusoids would
+look in this sound, again lets take
+the sawtooth, lets choose the hamming window,
+lets choose this 401
+Samples, 2048, maybe let's even do more.
+Let's do 4096,
+so that we have even more zero padding and
+the interpolation works better.
+The magnitude threshold,
+the truth is that 
+these sinusoids
+don't go very much down.
+So minus 80 is plenty.
+And all these parameters look okay,
+we don't need that many sinusoids.
+Let's put 100, it's plenty of sinusoids.
+And in terms of the deviation
+from one frame to the next well,
+10 hertz might be too little because
+of the measuring possible errors,
+so let's maybe, let's put around 20
+hertz at the very beginning and
+this keeps getting larger as it
+goes up according to this slope.
+Okay, so let's compute that.
+Okay, and this is what we get.
+So, well we're seeing very
+clearly the horizontal
+lines corresponding to the harmonics, but
+we also see some lines here at the bottom.
+Which correspond, I guess,
+to some side lobes.
+And we see some kind of oscillations and
+some gaps in some of the,
+of the sinusoids.
+That means that maybe we didn't
+have enough resolution to
+control this allowed deviation
+from one frame to the next.
+So maybe let's
+increase the window size, so to
+have more samples, lets see, maybe 600.
+And lets allow this deviation
+to be even larger, okay, and
+now lets see what happens.
+Okay, now we definitely see the, some
+very straight line, so very nice,
+but we are seeing some kind
+other lines in between,
+out of the sinusoidal tracks.
+Clearly they come from the side lobes.
+So, this is one the reasons why
+the harmonic model will be in handy.
+So, let's use the same kind of
+parameters but on the harmonic model.
+Okay.
+So let's open the sound.
+The sawtooth.
+Okay.
+And now let's use the same hamming window,
+601 samples, 4096.
+And the magnitude threshold, we don't
+need that much, minus 80 is plenty, and
+here we have some parameters that
+relate to, like the number of
+harmonics, clearly with 440 that
+will not be more than 50 harmonics,
+within the range going from zero
+to half the sampling rate,
+and we have to allow the range
+of fundamental frequencies to be
+enough for the 440 to be detected.
+So clearly 
+we need to put let's say 1000 hertz
+as the maximum fundamental frequency.
+And let's just leave
+the rest as they are.
+This is an error threshold for the
+detection algorithm that we are using,
+which is the two way missmatch, and
+some deviation of the harmonic
+tracks that we allow.
+anyway.
+So let's just use these values and
+see what happens.
+Okay, this is better than
+the previous one, because we clearly
+only accepted the harmonics
+of the fundamental detected.
+So, it identified
+the fundamental frequency and
+then it just choose the peaks that are
+multiples of this fundamental frequency.
+The, the synthesize sound.
+Let's listen to that.
+[SOUND].
+Well, and let's listen to the original.
+>> [SOUND].
+>> Well, it has some distortion
+because basically we are not
+able to synthesize all the harmonics
+of the sawtooth. In fact if we zoom in,
+we're going to see that
+it is not like a pure sawtooth because
+We have less number of 
+all the harmonics that are possible in 
+a sawtooth. which would be
+up to half of the sampling rate.
+So this is why we don't see as nice a the
+sawtooth that we started with
+that is basically perfect.
+But anyway, that's pretty good for
+an analysis and
+a digital reconstruction
+of an electronic sound.
+Now let's look.
+Let's close all these, and
+let's look the analysis of a real signal.
+Okay, so then we can see how
+to work with real sounds so,
+we'll start again with the DFT,
+and lets start with the violin
+sound that we have around here,
+is a violin and is a note B3.
+Okay, we can listen to that.
+[NOISE] This is a lower pitch.
+So again we have to know
+the number of samples of a period.
+B3, the number of hertz of
+this frequency is around 246 hertz.
+So the number of samples in a period
+would be again divide 44,100
+divide by 246 hertz.
+That would give us the number
+of samples of one period.
+And if we still use
+the hamming window,
+we would need to multiply by four.
+But maybe let's use another window.
+Let's use the Blackman window,
+which will allow us to get rid
+of side lobes a lot better.
+And we will need a bigger window,
+because we will need six periods.
+So the number of bins of
+the Blackman window is six.
+So we need to multiply by six.
+So we need at least 1075 samples.
+Okay, so in here, we'll need 1075 samples.
+That's good, that's an odd size.
+And for the FFT again, we, it's good
+to have a lot of zero padding.
+So let's have 4096.
+And well the middle of the sound,
+that would be okay, point five.
+And okay, let's analyze this 'Kay,
+so this is the violin sound.
+Well interesting enough here that 
+the period in the time event is not so
+easy to identify, but in fact it's
+like two bumps for oscillation.
+So there is some like the, the higher
+harmonics are very loud, so
+the first periodicity is not as clear.
+But anyway, we see quite clearly the,
+in the frequency domain, the harmonics,
+even though some are not so clear.
+Maybe even a bigger
+window would be better.
+Okay, so let's go to the harmonic model
+and maybe choose even a bigger window.
+Let's open again the violin sound.
+And instead of 1075, let me use
+maybe 1041 so quite a bit more.
+And again let's use the Blackman window.
+And for 4096 is fine.
+The magnitude threshold,
+minus 80, that should be okay.
+The, duration of,
+the minimum duration of the track's 0.1.
+The number of harmonics,
+50, that should be fine.
+We have to, again,
+have a range that allows for
+the harmonic, the fundamental
+frequency to be within that.
+So, minus 130 to a 1000 is fine.
+And this error, maximum error
+used in the two way mismatch,
+let's try it, see what happens.
+Okay, so let's compute that.
+And that's okay, that's pretty good.
+This is the original sound.
+The harmonics are quite well detected.
+Of course, in the end and
+some of the higher, [COUGH] are a little
+bit irregular because, of course,
+the harmonics are not so stable.
+And the synthesize,
+let's listen the synthesize of
+it [NOISE] Sounds pretty good.
+And as an exercise to see how
+it really tracks the harmonics,
+let's change the number of harmonics.
+For example let's just use five harmonics.
+So you'll only analyze
+the first five harmonics.
+And let's see what it does.
+Okay, so
+it only found the first five harmonics.
+And we can listen to that.
+[NOISE] Yeah, okay, so
+it's much closer to a sinusoid,
+because there is much fewer sinusoids.
+And of course you can play
+around with these parameters to
+get a different controls and
+to set different compromises.
+But that's about it what I wanted to say,
+so lets go back to the slides, and
+basically in this lecture we
+went over the, the sms-tools interface
+to analyze an electronic sound as
+sawtooth sound and violin sound.
+So hopefully that gave you an idea
+of this harmonic analysis and
+what you can do with that.
+And, in the next class,
+we will work with more complex sound.
+WIth a harmonic sound
+that changes in time.
+So we will be able to go a little bit
+more deeply into this harmonic model
+and the sms-tools, to really analyze
+a sound that varies in time and
+that maybe can take advantage
+of this model even more.
+So thank you very much, and
+I hope to see you next class.
+

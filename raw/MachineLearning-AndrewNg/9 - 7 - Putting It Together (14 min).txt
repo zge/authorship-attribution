@@ -1,0 +1,396 @@
+So, it's taken us a
+lot of videos to get through
+the neural network learning algorithm.
+In this video, what I'd like
+to do is try to
+put all the pieces together, to
+give a overall summary or
+a bigger picture view, of how
+all the pieces fit together and
+of the overall process of how
+to implement a neural network learning algorithm.
+When training a neural network, the
+first thing you need to do
+is pick some network architecture
+and by architecture I just
+mean connectivity pattern between the neurons.
+So, you know, we might choose
+between say, a neural network
+with three input units
+and five hidden units and
+four output units versus one
+of 3, 5 hidden, 5
+hidden, 4 output and
+here are 3, 5,
+5, 5 units in each
+of three hidden layers and four
+open units, and so these
+choices of how many hidden
+units in each layer
+and how many hidden layers, those
+are architecture choices.
+So, how do you make these choices?
+Well first, the number
+of input units well that's pretty well defined.
+And once you decides on the fix
+set of features x the
+number of input units will just be, you know, the
+dimension of your features x(i)
+would be determined by that.
+And if you are doing multiclass
+classifications the number of
+output of this will be
+determined by the number
+of classes in your classification problem.
+And just a reminder if you have
+a multiclass classification where y
+takes on say values between
+1 and 10, so that
+you have ten possible classes.
+Then remember to right, your
+output y as these were the vectors.
+So instead of clause one, you
+recode it as a vector
+like that, or for
+the second class you recode it as a vector like that.
+So if one of these
+apples takes on
+the fifth class, you know, y equals 5, then
+what you're showing to your neural
+network is not actually a value
+of y equals 5, instead here
+at the upper layer which would
+have ten output units, you
+will instead feed to the
+vector which you know
+with one in the fifth
+position and a bunch of zeros down here.
+So the choice of number
+of input units and number of output units
+is maybe somewhat reasonably straightforward.
+And as for the number
+of hidden units and the
+number of hidden layers, a
+reasonable default is to
+use a single hidden layer
+and so this type of
+neural network shown on the left with
+just one hidden layer is probably the most common.
+Or if you use more
+than one hidden layer, again the
+reasonable default will be to
+have the same number of
+hidden units in every single layer.
+So here we have two
+hidden layers and each
+of these hidden layers have the
+same number five of hidden
+units and here we have, you know,
+three hidden layers and
+each of them has the same
+number, that is five hidden units.
+Rather than doing this sort
+of network architecture on the left would be a perfect ably reasonable default.
+And as for the number
+of hidden units - usually, the
+more hidden units the better;
+it's just that if you have
+a lot of hidden units, it
+can become more computationally expensive, but
+very often, having more hidden units is a good thing.
+And usually the number of hidden
+units in each layer will be maybe
+comparable to the dimension
+of x, comparable to the
+number of features, or it could
+be any where from same number
+of hidden units of input features to
+maybe so that three or four times of that.
+So having the number of hidden units is comparable.
+You know, several times, or
+some what bigger than the number
+of input features is often
+a useful thing to do So,
+hopefully this gives you one
+reasonable set of default choices
+for neural architecture and and
+if you follow these guidelines, you
+will probably get something that works
+well, but in a
+later set of videos where
+I will talk specifically about
+advice for how to apply
+algorithms, I will actually
+say a lot more about how to choose a neural network architecture.
+Or actually have quite
+a lot I want to
+say later to make good choices
+for the number of hidden units, the number of hidden layers, and so on.
+Next, here's what we
+need to implement in order to
+trade in neural network, there are
+actually six steps that I
+have; I have four on this
+slide and two more steps
+on the next slide.
+First step is to set up the neural
+network and to randomly
+initialize the values of the weights.
+And we usually initialize the
+weights to small values near zero.
+Then we implement forward propagation
+so that we can input
+any excellent neural network and
+compute h of x which is this
+output vector of the y values.
+We then also implement code to
+compute this cost function j of theta.
+And next we implement
+back-prop, or the back-propagation
+algorithm, to compute these
+partial derivatives terms, partial
+derivatives of j of theta
+with respect to the parameters. Concretely, to implement back prop.
+Usually we will do that
+with a fore loop over the training examples.
+Some of you may have heard of
+advanced, and frankly very
+advanced factorization methods where you
+don't have a four-loop over
+the m-training examples, that the
+first time you're implementing back prop
+there should almost certainly the four
+loop in your code,
+where you're iterating over the examples,
+you know, x1, y1, then so
+you do forward prop and
+back prop on the first
+example, and then in
+the second iteration of the
+four-loop, you do forward propagation
+and back propagation on the second example, and so on.
+Until you get through the final example.
+So there should be
+a four-loop in your implementation
+of back prop, at least the first time implementing it.
+And then there are frankly
+somewhat complicated ways to do
+this without a four-loop, but
+I definitely do not recommend
+trying to do that much more
+complicated version the first time you try to implement back prop.
+So concretely, we have a
+four-loop over my m-training examples
+and inside the four-loop we're
+going to perform fore prop
+and back prop using just this one example.
+And what that means is that
+we're going to take x(i), and
+feed that to my input layer,
+perform forward-prop, perform back-prop
+and that will if all of
+these activations and all of
+these delta terms for all
+of the layers of all my
+units in the neural
+network then still
+inside this four-loop, let
+me draw some curly braces
+just to show the scope with
+the four-loop, this is in
+octave code of course, but it's more a sequence Java
+code, and a four-loop encompasses all this.
+We're going to compute those delta
+terms, which are is the formula that we gave earlier.
+Plus, you know, delta l plus one times
+a, l transpose of the code.
+And then finally, outside the
+having computed these delta
+terms, these accumulation terms, we
+would then have some other
+code and then that will
+allow us to compute these partial derivative terms.
+Right and these partial derivative
+terms have to take
+into account the regularization term lambda as well.
+And so, those formulas were given in the earlier video.
+So, how do you done that
+you now hopefully have code to
+compute these partial derivative terms.
+Next is step five, what I
+do is then use gradient
+checking to compare these partial
+derivative terms that were computed. So, I've
+compared the versions computed using
+back propagation versus the
+partial derivatives computed using the numerical
+estimates as using numerical estimates of the derivatives.
+So, I do gradient checking to make
+sure that both of these give you very similar values.
+Having done gradient checking just now reassures
+us that our implementation of back
+propagation is correct, and is
+then very important that we disable
+gradient checking, because the gradient
+checking code is computationally very slow.
+And finally, we then
+use an optimization algorithm such
+as gradient descent, or one of
+the advanced optimization methods such
+as LB of GS, contract gradient has
+embodied into fminunc or other  optimization methods.
+We use these together with
+back propagation, so back
+propagation is the thing
+that computes these partial derivatives for us.
+And so, we know how to
+compute the cost function, we know
+how to compute the partial derivatives using
+back propagation, so we
+can use one of these optimization methods
+to try to minimize j of
+theta as a function of the parameters theta.
+And by the way, for
+neural networks, this cost function
+j of theta is non-convex,
+or is not convex and so
+it can theoretically be susceptible
+to local minima, and in
+fact algorithms like gradient descent and
+the advance optimization methods can,
+in theory, get stuck in local
+optima, but it turns out
+that in practice this is
+not usually a huge problem
+and even though we can't guarantee
+that these algorithms will find a
+global optimum, usually algorithms like
+gradient descent will do a
+very good job minimizing this
+cost function j of
+theta and get a
+very good local minimum, even
+if it doesn't get to the global optimum.
+Finally, gradient descents for
+a neural network might still seem a little bit magical.
+So, let me just show one
+more figure to try to get
+that intuition about what gradient descent for a neural network is doing.
+This was actually similar to the
+figure that I was using earlier to explain gradient descent.
+So, we have some cost
+function, and we have
+a number of parameters in our neural network. Right
+here I've just written down two of the parameter values.
+In reality, of course, in
+the neural network, we can have lots of parameters with these.
+Theta one, theta two--all of these are matrices, right?
+So we can have very high dimensional
+parameters but because of
+the limitations the source of
+parts we can draw. I'm pretending
+that we have only two parameters in this neural network.
+Although obviously we have a lot more in practice.
+Now, this cost function j of
+theta measures how well
+the neural network fits the training data.
+So, if you take a point
+like this one, down here,
+that's a point where j
+of theta is pretty low,
+and so this corresponds to a setting of the parameters.
+There's a setting of the parameters
+theta, where, you know, for most
+of the training examples, the output
+of my hypothesis, that may
+be pretty close to y(i)
+and if this is
+true than that's what causes my cost function to be pretty low.
+Whereas in contrast, if you were
+to take a value like that, a
+point like that corresponds to,
+where for many training examples,
+the output of my neural
+network is far from
+the actual value y(i)
+that was observed in the training set.
+So points like this on the
+line correspond to where the
+hypothesis, where the neural
+network is outputting values
+on the training set that are
+far from y(i). So, it's not
+fitting the training set well, whereas
+points like this with low
+values of the cost function corresponds
+to where j of theta
+is low, and therefore corresponds
+to where the neural network happens
+to be fitting my training set
+well, because I mean this is what's
+needed to be true in order for j of theta to be small.
+So what gradient descent does is
+we'll start from some random
+initial point like that
+one over there, and it will repeatedly go downhill.
+And so what back propagation is
+doing is computing the direction
+of the gradient, and what
+gradient descent is doing is
+it's taking little steps downhill
+until hopefully it gets to,
+in this case, a pretty good local optimum.
+So, when you implement back
+propagation and use gradient
+descent or one of the
+advanced optimization methods, this picture
+sort of explains what the algorithm is doing.
+It's trying to find a value
+of the parameters where the
+output values in the neural
+network closely matches the
+values of the y(i)'s
+observed in your training set.
+So, hopefully this gives you
+a better sense of how
+the many different pieces of
+neural network learning fit together.
+In case even after this video, in
+case you still feel like there
+are, like, a lot of different pieces
+and it's not entirely clear what
+some of them do or how all
+of these pieces come together, that's actually okay.
+Neural network learning and back propagation is a complicated algorithm.
+And even though I've seen
+the math behind back propagation
+for many years and I've used
+back propagation, I think very
+successfully, for many years, even
+today I still feel like I
+don't always have a great
+grasp of exactly what back propagation is doing sometimes.
+And what the optimization process
+looks like of minimizing j if theta.
+Much this is a much harder algorithm
+to feel like I have a
+much less good handle on
+exactly what this is doing
+compared to say, linear regression or logistic regression.
+Which were mathematically and conceptually
+much simpler and much cleaner algorithms.
+But so in case if you feel the
+same way, you know, that's actually perfectly
+okay, but if you
+do implement back propagation, hopefully
+what you find is that this
+is one of the most powerful
+learning algorithms and if you
+implement this algorithm, implement back propagation,
+implement one of these optimization
+methods, you find that
+back propagation will be able
+to fit very complex, powerful, non-linear
+functions to your data,
+and this is one of the
+most effective learning algorithms we have today.

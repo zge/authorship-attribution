@@ -1,0 +1,173 @@
+In this video, we're going to look at the
+soft max output function.
+This is a way of forcing the outputs of a
+neural network to sum to one so they can
+represent a probability distribution
+across discreet mutually exclusive
+alternatives.
+Before we get back to the issue of how we
+learn feature vectors to represent words,
+we're gonna have one more digression, this
+time it's a technical diversion.
+So far I talked about using a square area
+measure for training a neural net and for
+linear neurons it's a sensible thing to
+do.
+But the squared error measure has some
+drawbacks.
+If for example the design acuities are
+one, so you have a target of one, and the
+actual output of a neuron is one
+billionth, then there's almost no gradient
+to allow a logistic unit to change.
+It's way out on a plateau where the slope
+is almost exactly horizantal.
+And so, it will take a very, very long
+time to change its weights, even though
+it's making almost as big an error as it's
+possible to make.
+Also, if we're trying to assign
+probabilities to mutually exclusive class
+labels, we know that the output should sum
+to one.
+Any answer in which we say, the
+probability this is A is three quarters
+and the probability that it's a B is also
+three quarters is just a crazy answer.
+And we ought to tell the network that
+information, we shouldn't deprive it of
+the knowledge that these are mutually
+exclusive answers.
+So the question is, is there a different
+cost function that will work better?
+Is there a way of telling it that these
+are mutually exclusive and then using a,
+an appropriate cost function?
+The answer, of course is, that there is.
+What we need to do is force the outputs of
+the neural net to represent a probability
+distribution across discrete alternatives,
+if that's what we plan to use them for.
+The way we do this is by using something
+called a soft-max.
+It's a kind of soft continuous version of
+the maximum function.
+So the way the units in a soft-max group
+work is that they each receive some total
+input they've accumulated from the layer
+below.
+That's Zi for the i-th unit, and that's
+called the logit.
+And then they give an output Yi that
+doesn't just depend on their own Zi.
+It depends on the Zs accumulated by their
+rivals as well.
+So we say that the output of the i-th
+neuron is E to the Zi divided by the sum
+of that same quantity for all the
+different neurons in the softmax group.
+And because the bottom line of that
+equation is the sum of the top line over
+all possibilities, we know that when you
+add over all possibilities you'll get one.
+That is, the sum of all the Yi's must come
+to one.
+What's more, the Yi's have to lie between
+zero and one.
+So we force the Yi to represent a
+probability distribution over mutually
+exclusive alternatives just by using that
+soft max equation.
+The soft max equation has a nice simple
+derivative.
+If you ask about how the YI changes as you
+change the Zi, that obviously depends on,
+all the other Zs.
+But then the Yi itself depends on all the
+other Zs.
+And it turns out, that you get a nice
+simple form, just like you do for the
+majestic unit, where the derivative of the
+output with respect to the input, for an
+individual neuron in a softmax group, is
+just Yi times one minus Yi.
+It's not totally trivial to derive that.
+If you tried differentiating the equation
+above, you must remember that things turn
+up in that normalization term on the
+bottom row.
+It's very easy to forget those terms and
+get the wrong answer.
+Now the question is, if we're using a soft
+max group for the outputs, what's the
+right cost function?
+And the answer, as usual, is that the most
+appropriate cost function is the negative
+log probability of the correct answer.
+That is, we want to maximize the log
+probability of getting the answer right.
+So if one of the target values is a one
+and the remaining ones are zero, then we
+simply sum of all possible answers.
+We put zeros in front of all the wrong
+answers.
+And we put one in front of the right
+answer and that gets us the negative log
+probability of the correct answer, as you
+can see in the equation.
+That's called the cross entropy cost
+function.
+It has a nice property that it has a very
+big gradient when the target value is one
+and the output is almost zero.
+You can see that by considering a couple
+of cases.
+So value of one in a million is much
+better than a value of one in a billion,
+even though it differs by less than a
+millionth.
+So when you make the output value, you
+increase by less than one millionth.
+The value of C improves by a lot.
+That means it's a very, very steep
+gradient for C.
+One way of seeing why a value of one in a
+million is much better than a value of one
+in a billion, if the correct answer is one
+is that if you believe the one in a
+million, you'd be willing to bet but odds
+of one in a million, then you'd lose $one
+million.
+If you thought the answer was one in a one
+billion you'd, you'd lose $one billion
+making the same bet.
+So we get a nice property that.
+That cost function, C has a very steep
+derivative when the answer is very wrong
+and that exactly bounces the fact that the
+way which the advert changes is to change
+the import, the Y or the Z is very flat
+when the once is very wrong.
+And when you multiply the two together to
+get the derivative of cross entropy with
+respect to the logic going into i put unit
+i.
+You use the chain rule so that derivative
+is how fast the cost function changes as
+you change the output of the unit times
+how fast the output of the unit changes as
+you change Zi.
+And notice we need to add up across all
+the Js, because when you change the i, the
+output of all the different units changes.
+The result is just the actual output minus
+the target output.
+And you can see that when the actual
+target outputs are very different, that
+has a slope of one or -one.
+And the slope is never bigger than one or
+-one.
+But the slope never gets small until the
+two things are pretty much the same.
+In other words, you're getting pretty much
+the right answer.

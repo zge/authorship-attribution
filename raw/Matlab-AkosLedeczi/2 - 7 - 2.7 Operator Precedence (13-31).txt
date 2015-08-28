@@ -1,0 +1,317 @@
+[MUSIC]
+We've seen many of MATLAB's operators now, but
+we haven't yet
+seen how to determine the order in
+which they're applied in an expression.
+Well, the order is determined by two sets
+of rules: precedence and associativity.
+We'll look at precedence first.
+We ran into precedence earlier in this
+lesson when we used both transposition and
+the colon operator in the same expression.
+We had a surprise then.
+You may remember it.
+The transposition operator, which was
+written after the colon operator,
+was actually applied
+before the colon operator.
+It just transposed the 5,
+which did nothing.
+Transposition went first, because it
+ranks higher than the colon operator.
+To make the colon go first,
+we had to add parenthesis, like this.
+Those parenthesis force the colon
+operator to make the row vector first, so
+the transposition operator could
+then make it into a column vector.
+Well let's look at a more familiar
+example, one involving arithmetic.
+Here the multiplication operator is
+written after the addition operator, but
+it's applied before the addition operator.
+So 3 is multiplied times
+4 first to get 12.
+And then 2 is added to get 14.
+It's not the left to right
+order shown on the right,
+which would result in 5 times 4 equals 20.
+Here again, the non-left to right order
+happens because the operator on the right
+outranks the one on the left.
+This time it's multiplication,
+which is ranked higher than addition,
+and it goes first.
+In programming,
+we call this ranking “precedence” and
+we say that multiplication has
+a higher precedence than addition.
+Having multiplication go before addition
+seems like the obvious thing to do because
+that's the way we've always done it.
+With other operators,
+it's not always so obvious.
+So, how do we find out the order?
+Well, we use a precedence table.
+This is a precedence table for all the
+other operators that we've covered so far.
+Starting in the top, we find the
+parentheses, which have a precedence of 0.
+Next we have exponentiation and
+transposition, which both
+have a precedence of 1.
+Before we look further, it's
+important to note that lower numbers
+actually mean higher precedence.
+So parentheses with their
+0 precedence always
+operate before all the other
+operators in an expression.
+Coming in at 3, both multiplication and
+division come before addition and
+subtraction, which are at 4.
+Down at the very bottom is
+the poor old colon operator,
+which explains why it
+came after the transpose.
+At the number 2 position,
+you may be wondering what “unary plus” and
+“unary minus” are.
+Well “unary” means that the operation
+involves only one operand.
+Here's some examples of unary operators,
+up there at the top.
+Plus 2, -x, and H transpose.
+Unary operators tend to rank high
+in any programming language, and
+in MATLAB they're at positions 1 and 2.
+But the more common operators
+are the binary operators,
+which means that they take two operands,
+and here you see some examples.
+3 minus 4, X dot star Y, which, you
+will remember, is array multiplication.
+X star Y,
+which is matrix multiplication, and
+A to the 3rd power,
+which is exponentiation.
+The binary operators rank below the unary
+operators with the notable exception of
+exponentiation which is way up there at 1.
+Well we've seen how precedence works.
+And we've seen that unary operators
+tend to come before binary operators.
+But there's one other determinate
+of order of operations.
+Associativity.
+Associativity is simpler
+than precedence, and
+we'll start with a very simple example:
+6 plus 2 plus 3.
+A computer can carry out only
+one operation at a time, so
+it adds the 6 to the 2 to get 8, and
+then it adds the 3 to 8 to get 11.
+The order is left to right, simple.
+But what about this, 6 minus 2 plus 3.
+Which goes first?
+The minus or the plus?
+We need to know because the results
+will be different, 7 or 1.
+Well, maybe the precedence
+table will give us the answer.
+Hm, no help.
+They both have the same precedence, 4, so
+here comes associativity to the rescue.
+In programming,
+the order in which operators of the same
+precedents are executed
+is called “associativity”.
+In MATLAB, it is always left-to-right.
+So we say that MATLAB uses
+left-to-right associativity.
+As a matter of fact, so
+most all other languages do.
+So this expression evaluates to 7.
+Here are a couple of other examples.
+6 divided by 2 equals 3.
+3 times 3 gives 9.
+Both of these operators
+have a precedence of 3.
+In the last expression,
+6 to the 2 power is 36,
+and 36 to the 3 power, well,
+we'll have to ask MATLAB.
+Whatever it is, I'm sure it's a pretty
+big number, so let's do that, in fact.
+Let's ask MATLAB to evaluate some
+expressions that require it to use
+these rules.
+Okay, let's start with the first
+example we did to illustrate precedence.
+2 plus 3 times 4.
+As promised,
+multiplication has the higher precedence,
+so the actual order is like this.
+[CLICKING] The redundant parentheses
+show that 3 times 4 goes first.
+That gives 12, and
+we add 2 to 12 and get 14.
+And if we force addition to
+go first with parentheses,
+[CLICKING] we get a different result.
+2 plus 3 equals 5, and 5 times 4 gives 20.
+As I've mentioned before, we're used
+to carrying out multiplication before
+addition, even when addition is
+written first in the expression.
+Let's look at something that's not so
+familiar, the colon
+operator with addition.
+So I'm going to type 1 colon 3 plus 10.
+Surprised?
+Well, remember that the plural colon
+operator has a lower precedence than all
+of the arithmetic operators.
+To be specific, the colon is at 5 while
+addition and subtraction are at 4.
+And smaller numbers go first.
+So, this is what we did.
+[CLICKING] The 3 plus 10 went first,
+so we're given the colon
+operator 1 colon 13.
+If you want to add the 10 after the colon
+operator has made its row vector,
+you need to force it with
+parentheses like this.
+[CLICKING] There, we got 1, 2, 3, and
+then we added 10 to each element,
+and got 11, 12, 13.
+And by the way, note that we're
+adding a scaler to a row vector.
+So this is an example of
+a scalar being added to a matrix.
+In this case, the matrix has just one row.
+But as for any matrix, the scalar
+is added to each of its elements.
+If you don't know which operator
+goes first, you have three options.
+One, use parenthesis to force the order.
+Two, try an example and learn the order.
+Or three, look at MATLAB's
+precedence table and read the order.
+So, where is this precedence table?
+Well, it's right at your fingertips.
+Just type help precedence.
+[CLICKING] And
+there's MATLAB's precedence table.
+You'll note that there's
+no parenthesis here.
+Well MATLAB just figures it's easy for
+you to remember that
+parenthesis always go first.
+We showed that they always go first
+by giving them a precedence of 0.
+You'll also note that there are some
+operators here that we haven't
+looked at yet.
+Well, we'll get into
+them in later lessons.
+Now, let's look at some
+examples of associativity.
+Once again, we'll start with the same
+example that we used when we introduced
+the subject: 6 plus 2 plus 3.
+The actual order is like this,
+6 plus 2 in parenthesis plus 3.
+Because as we've seen,
+MATLAB always evaluates from
+left to right when the operators
+have the same precedence.
+And of course, since we have two pluses,
+they have to have the same precedence.
+But you can't tell with addition,
+if we force right to left order
+with parenthesis like this,
+[CLICKING] we get the same result,
+as you knew we would.
+When the right-to-left order gives the
+same result as the left-to-right order,
+the operator is said to be “associative” in
+both mathematics and computer science.
+So addition is associative.
+[CLICKING].
+But what about this?
+[CLICKING]
+The actual
+order [CLICKING]
+is like this.
+The 6 minus 2 goes first,
+because at the risk of being boring, or
+perhaps I should say even more boring,
+MATLAB always evaluates
+from left to right when the operators
+have the same precedence.
+If we force right-to-left order
+with parentheses like this,
+[CLICKING].
+the result is different.
+So subtraction is not
+an associative operation.
+And when we mix subtraction and addition,
+which have the same precedence, like this,
+[CLICKING] since they have
+the same precedence,
+the order is, well, you know.
+I just can't bear to say it again.
+Now let's look at multiplication and
+division
+with this example, which we've seen before.
+[CLICKING] And let's use a pair of redundant
+parenthesis to make the order explicit.
+[CLICKING] This one sometimes
+surprises people because
+it might look like
+multiplication should go first.
+It doesn't.
+That's because division and
+multiplication have the same precedence.
+So the order is determined by MATLAB's
+left to right associativity rule.
+Oops, said it again.
+If we force right to left
+order with the parenthesis,
+[CLICKING] the result is of course, different.
+And finally, I sense that you are burning
+with curiosity to find out what 6 to
+the 2 to the 3 equals.
+Well, as promised,
+I'm going to ask MATLAB right now.
+6 to the 2 to the 3.
+[CLICKING] Since the left hand carat goes
+first, this is 36 to the 3rd power.
+And as I guessed before,
+it's a pretty big number.
+46,656.
+But just out of curiosity,
+what would the answer be if the 2 were
+raised to the 3 power first and
+then 6 were raised to that power?
+Well, we'll have to use
+parentheses to find out.
+6 to the 2 to the 3 power.
+[CLICKING] The result is different,
+which shows that exponentiation
+is not associative, and
+the result is a really big number.
+Let's say, that's 1,679,616.
+Kind of amazing you can get such a big
+number with just a 6, a 2, and a 3.
+Well, I guess I'd have to say
+that's the power of exponentiation.
+Get it?
+The power of exponentiation.
+Well, on that hilarious note,
+we've reached the end of lesson two.
+[MUSIC]
+

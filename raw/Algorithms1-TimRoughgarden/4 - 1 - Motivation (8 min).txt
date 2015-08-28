@@ -1,0 +1,214 @@
+In this series of videos, we'll study the
+master method, which is a general
+mathematical tool for analyzing the
+running time of divide-and-conquer
+algorithms. We'll begin, in this video,
+motivating the method, then we'll give its
+formal description. That'll be followed by
+a video working through six examples.
+Finally, we'll conclude with three videos
+that discuss proof of the master method,
+with a particular emphasis on the
+conceptual interpretation of the master
+method's three cases. So, lemme say at the
+outset that this lecture's a little bit
+more mathematical than the previous two,
+but it's certainly not just math for
+math's sake. We'll be rewarded for our
+work with this powerful tool, the master
+method, which has a lot of. The power it
+will give us good advice on which divide
+and conquer algorithms are likely to run
+quickly and which ones are likely to run
+less quickly, indeed it's sort of a
+general truism that. Novel algorithmic
+ideas often require mathematical analyis
+to properly evaluate. This lecture will be
+one example of that truism. As a
+motivating example, consider the
+computational problem of multiplying two
+n-digit numbers. Recall from our first set
+of lectures that we all learned the
+iterative grade school multiplication
+algorithm, and that, that requires a
+number of basic operations, additions and
+multiplications between single digits,
+which grows quadratically with the number
+of digits n. On the other hand, we also
+discussed an interesting recursive
+approach using the divide and conquer
+paradigm. So recall divide and conquer
+necessitates identifying smaller
+subproblems. So for integer
+multiplication, we need to identify
+smaller numbers that we wanna multiply. So
+we proceeded in the obvious way, breaking
+each of the two numbers into its left half
+of the digits, and its right half of the
+digits. For convenience, I'm assuming that
+the number of digits N is even, but it
+really doesn't matter. Having decomposed X
+and Y in this way, we can now expand the
+product and see what we get. So let's put
+a box around this expression, and call it
+star. So we began with the sort of obvious
+recursive algorithm, where we just
+evaluate the expression star in the
+straightforward way. That is, star
+contains four products involving N over
+two digit numbers. A, C, A, D, V, C, and
+B, D. So we make four recursive calls to
+compute them, and then we complete the
+evaluation in the natural way. Namely, we
+append zeros as necessary, and add up
+these three terms to get the final result.
+The way wereason about the running time of
+recursive algorithms like this one is
+using what's called a recurrence. So to
+intrduce a recurrence let me first make
+some notation. T of N. This is going to be
+the quantity that we really care about,
+the quantity that we want to upward boun.
+Namely this will be the worse case number
+of operations that this recursive
+algorithm requires to multiply two end
+digit numbers. A recurrence, then, is
+simply a way to express T of N in terms of
+T of smaller numbers. That is, the running
+time of an algorithm in terms of the work
+done by its recursive calls. So every
+recurrence has two ingredients. First of
+all, it has a base case describing the
+running time when there's no further
+recursion. And in this integer
+multiplication algorithm, like in most
+divide and conquer algorithms, the base
+case is easy. Once you get down to a small
+input, in this case, two one digit
+numbers, then the running time in just
+constant. All you do is multiply the two
+digits and return the result. So I'm gonna
+express that by just declaring the T of
+one, the time needed to multiply one digit
+numbers, is bounded above by a constant.
+I'm not gonna bother to specify what this
+constant is. You can think of it as one or
+two if you like. It's not gonna matter for
+what's to follow. The second ingredient in
+a recurrence is the important one and it's
+what happens in the general case, when
+you're not in the base case and you make
+recursive calls. And all you do is write
+down the running time in terms of two
+pieces. First of all, the work done by the
+recursive calls and second of all, the
+work that's done right here, now. Work
+done outside of the recursive calls. So on
+the left hand side of this general case we
+just write T of N and then we want
+upper bound on T of N in terms of the work
+done in recursive goals and the work done
+outside of recursive goals. And I hope
+it's self evident what the recurrence
+should be in this recursive algorithm for
+integer multiplication, as we discussed
+there's exactly four recursive calls and
+each is invoked on a pair of N over two
+digit numbers so that gives four times the
+time needed to multiply ten over two digit
+numbers. So what do we do outside of the
+recursive call well we've had the
+recursive calls with a bunch of zero's and
+we add them up. And I'll leave it to you
+to verify that grade school addition, in
+fact runs in time linear in the number of
+digits. So putting it all together the
+amount of work we do outside of the
+recursive calls is linear. That is it's
+big O. Of N. Let's move on to the second,
+more clever, recursive algorithm for
+integer multiplication which dates back to
+Gas. Gauss's insight was to realize that,
+in the expression, star, that we're trying
+to evaluate, there's really only three
+fundamental quantities that we care about,
+the coefficients for each of the three
+terms in the expression. So, this leads us
+to hope that, perhaps, we can compute
+these three quantities using only three
+recursive calls, rather than four. And,
+indeed, we can. So what we do is we
+recursively compute A times C, like
+before, and B times D like before. But
+then we compute the product of A plus B
+with C plus D. And the very cute fact. Is
+if we number these three products one two
+and three that's the final quantity that
+we care about the coefficients of the ten
+to the N over two term namely AD plus BC.
+Is nothing more than the third product
+minus each of the first two. So that's the
+new algorithm, what's the new occurrence?
+The base case obviously is exactly the
+same as before. So the question then is,
+how does the general case change, and,
+I'll let you answer this in the following
+quiz. So the correct response for this
+quiz is the second one. Namely, the only
+thing that changes with respect to the
+first recurrence, is that the number of
+recursive calls drops from four down to
+three. A coupla quick comments. So, first
+of all, I'm being a little bit sloppy when
+I say there's three recursive calls, each
+on digits, each on numbers with n over two
+digits. When you take the sums a plus b
+and c plus d, those might well have n over
+two plus one digits. Amongst friends,
+let's ignore that, let's just call it n
+over two digits and each did recursive
+calls. As usual, the extra plus one is not
+gonna matter in the final analysis.
+Secondly, I'm ignoring exactly. What the
+constant factor is in the linear work done
+outside of the recursive calls. Indeed,
+it's a little bit bigger in Gaus's
+algorithm than it is in the naive
+algorithm with four recursive calls. But
+it's only a constant factor and that's
+gonna be supressed in the big O notation.
+So let's look at this occurance and
+compare it to two other recurrences, one
+bigger, one smaller. So first of all, as
+we noted, it differs from the previous
+recurrence of the naive recursive
+algorithm in having one fewer recursive
+calls. So we have no idea what the running
+time is of either of these two recursive
+algorithms but we should be confident that
+this one's. Certainly can only be better,
+that's for sure. Another point of contrast
+is Merge Short. So think about what the
+recurrence would look like for the Merge
+Short algorithm. It would be almost
+identical to this one, except instead of a
+three, we'd have a two, right? Merge Short
+makes two recursive calls, each on an
+array of half the size. And outside of the
+recursive calls, it does linear work,
+mainly for the merged subroutine. We know
+the running time of Merge Short. It's N
+log n. So this algorithm, Gaus's
+algorithm is gonna be worse, but we don't
+know by how much. So while we have a
+couple clues about what the running time
+of this algorithm might be more or less
+than, honestly, we have no idea what the
+running time of Gaus's recursive
+algorithm for integer multiplication
+really is. It is not obvious, we currently
+have no intuition for it. We don't know
+what the solution to this recurrence is.
+But it will be one super special case of
+the general master method, which we'll
+tackle next.

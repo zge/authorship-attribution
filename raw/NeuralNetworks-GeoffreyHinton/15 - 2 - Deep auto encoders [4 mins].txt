@@ -1,0 +1,109 @@
+In this video, we're going to look at the 
+issue of training deep autoencoders. 
+People thought of these a long time ago, 
+in the mid 1980s. 
+But they simply couldn't train them well 
+enough for them to do significantly 
+better than principal components 
+analysis. 
+There were various papers published about 
+them, but no good demonstrations of 
+impressive performance. 
+After we developed methods of 
+pre-training deep networks one layer at a 
+time. 
+Russ Salakhutdinov and I applied these 
+methods to pretraining deep autoencoders, 
+and for the first time, we got much 
+better representations out of deep 
+autoencoders than we could get from 
+principal components analysis. 
+Deep autoencoders always seemed like a 
+really nice way to do dimensionality 
+reduction because it seemed like they 
+should work much better than principal 
+components analysis. 
+They provide flexible mappings in both 
+directions, and the mappings can be 
+non-linear. 
+Their learning time should be linear or 
+better in the number of training cases. 
+And after they've been learned, the 
+encoding part of the network is fairly 
+fast because it's just a matrix 
+multiplier for each layer. 
+Unfortunately, it was very difficult to 
+optimize deep autoencoders using back 
+propagation. 
+Typically people try small initial 
+weights, and then the back propagated 
+gradient died, so for deep network, they 
+never got off the ground. 
+But now we have much better way to 
+optimize them. 
+We can use unsupervised layer by layer 
+pre-training, 
+or we can simply initialize the weight 
+sensibly, as an echo statement it works. 
+The first really successful deep water 
+encoders were learned by Russ 
+Salakhutdinov and I in 2006. 
+We applied them to the N-ness digits. 
+So we started with images with 784 
+pixels. 
+And we then encoded those via three 
+hidden layers, into 30 real valued 
+activities in a central code layer. 
+We then decoded those 30 real valued 
+activities, 
+back to 784 reconstructed pixels. 
+We used a stack of restricted Boltzmann 
+machine to initialize the weights used 
+for encoding, 
+and we then took the transposers of those 
+weights and initialized the decoding 
+network with them. 
+So initially, the 784 pixels were 
+reconstructed, using a weight matrix that 
+was just the transpose of the weight 
+matrix used for encoding them. 
+But after the four restricted Boltzmann 
+machines have being trained and unrolled 
+to give the transposes for decoding, 
+we then applied back propagation to 
+minimize the reconstruction error of the 
+784 pixels. 
+In this case we were using a 
+cross-entropy error, because the pixels 
+were represented by logistic units. 
+So that error was back propagated through 
+this whole deep net. 
+And we once started back propagating the 
+error, 
+the weights used for reconstructing the 
+pixels became different from the weights 
+used for encoding the pixels. 
+Although they, typically stayed fairly 
+similar. 
+This worked very well. 
+So if you look at the first row, that's 
+one random sample from each digit class. 
+If you look at the second row, that's the 
+reconstruction of the random sample by 
+the deep autoencoder that uses 30 linear 
+hidden units in its central layer. 
+So the data has been compressed to 30 
+real numbers and then reconstructed. 
+If you look at the eight, you can see 
+that the reconstruction is actually 
+better than the eight. 
+It's got rid of the little defect in the 
+eight because it doesn't have the 
+capacity to encode it. 
+If you compare that with linear principal 
+commands analysis, you can see it's much 
+better. 
+A linear mapping to 30 real numbers 
+cannot do nearly as good a job of 
+representing the data. 
+

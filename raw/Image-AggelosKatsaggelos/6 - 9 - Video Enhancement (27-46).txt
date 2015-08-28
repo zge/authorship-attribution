@@ -1,0 +1,649 @@
+Welcome back.
+In this segment, we'll address some basic
+concepts of video enhancement.
+Clearly, when we deal with videos, we can
+always treat each and every frame
+of the video independently, and apply a
+two-dimensional enhancement, or processing
+in general, technique.
+However, in doing so, the temporal
+correlation of the video is ignored.
+Taking this correlation into account, one
+can typically obtain improved results.
+One of the ways for us to take this
+correlation into
+account is through the use of the motion
+in the video sequence.
+We describe in this segment some of the
+basic
+ideas in performing noise smoothing in a
+video sequence.
+We describe three dimensional spacial
+temporal
+filters, which either ignore the motion or
+take the motion into account explicitly or
+take the motion into account implicitly.
+We know from last week that motion
+estimation's a challenging task.
+It's clearly exacerbated due to the
+presence of noise.
+Ideally, a preferred solution would be one
+which takes the motion estimation
+error into account when performing
+intensity
+estimation and the other way around.
+We also put some of these ideas to
+test with video animation from the movie
+Fantasia.
+Due to the process that was followed for
+filming ani,animation early on, there's a
+plethora of artifacts, in addition to
+noise,
+such as scratches and blotches and
+flickering.
+We demonstrate how some of these simple
+ideas
+can considerably improve the visual
+quality of the video.
+So, let us proceed with this exciting
+topic.
+First of all, any of the image enhancement
+techniques we've covered so
+far can be applied to video if we process
+each frame independently.
+In many cases, the results will be
+satisfactory.
+However, with such an approach, the inter
+frame correlations or
+the temporal correlations in the video are
+not taken into account.
+By considering such correlations, improved
+results can be typically obtained.
+In some other cases, a two-dimensional
+enhancement technique can be extended to
+3D.
+We can, for example, consider a group of
+consecutive frames
+and perform histogram equalization in the
+resulting 3D volume of pixels.
+We'll discuss some basic concepts for the
+problem of noise filtering.
+Again, we can filter each frame
+independently using
+a two dimensional spatial filter, or we
+can
+look at each and every pixel over time
+and filter the resulting one dimensional
+time signal.
+So,
+if we look at a set on consecutive frames.
+[SOUND] Frame k, k minus 1, k plus
+1, k plus 2, I can consider
+the pixel at the same location.
+And then t, a time domain, one dimensional
+signal results this way.
+So, both of these approaches to the
+spatial filtering or
+1D temporal filtering were tried first in
+filtering noise in video.
+We will discuss here three dimensional
+spatial temporal filters
+which have a as special cases 2D spatial
+and 1D temporal filters.
+Such filters can be classified into three
+groups, the ones that completely ignore
+motion, the
+ones which take motion into account
+implicitly and
+the ones which take motion into account
+explicitly.
+As a specific case, we will look at an
+example from animation video.
+In addition to noise, other artifacts are
+present which need to be removed as well.
+Similar problems are encountered in
+processing digitized motion pictures in
+general.
+The degradation model assuming additive
+noise is shown here.
+So, we want to operate on the observed
+video g, i, j, k.
+And obtain an estimate f hat of the
+original video f i, j, k.
+In doing so, we can ignore the motion,
+take it into account
+implicitly, or explicitly estimated as
+shown here.
+For estimating the motion, down here, the
+noisy
+blurred frames can be used coming from
+this direction.
+But also the noise smoothed ones can be
+used coming from the output here.
+So, the past noise smooth frames can be
+used and the current noisy frame can
+be used this way to estimate the motion,
+which will be utilized by the intensity
+filter.
+A desired solution is if the estimation of
+the noise smooth intensity signal
+and motion are done simultaneously instead
+of sequentially or independently.
+By taking the motion estimation error into
+account
+when finding an estimate of the intensity
+values.
+And the other way around, by taking the
+error
+in estimating the intensity into account
+when estimating the motion.
+We show here the form of
+a three-dimensional finite impulse
+response FIR filter.
+A neighborhood S is defined.
+Which can contain only past values of the
+current pixel but also future values.
+Then, the filtered value at location i, j,
+k,
+is the weighted sum, based on the weights
+provided by the values of the filter,
+the weights w p, q, l of the pixel values
+in the neighborhood S.
+A prime example of this is the three
+dimensional flat filter or
+the average filter, in this case all big
+source can equal weights double.
+Another example, is the three dimensional
+Wiener filter.
+We will be talking about the Wiener filter
+in week seven, for two-dimensional images.
+The main idea is that the weights will be
+defined based on the three-dimensional
+auto-correlation function of the video.
+We have also not talked about
+auto-correlation, we'll do so in week
+seven.
+With such approaches, the motion in the
+video is not taken into account.
+This clearly will result in smooth
+temporal edges.
+The motion can be indirectly taken into
+account by making the weights
+a function of the temporal activity or
+edges due to the moving objects.
+So, for example, after the temporal edges
+are detected, the
+pixels belonging to them are not
+considered by the FIR filter.
+Another class of non-motion-compensated
+spatio-temporal filters
+are infinite impulse response IIR filters.
+They have the form shown here.
+The filtered value f hat is the convex
+combination
+of a prediction, f hat of b, which is
+carried
+out based on processed values belonging to
+the past
+of the pixel being processed, and the
+noisy observation g.
+This convex combination is determined by
+the coefficient alpha.
+An example of a prediction is shown here.
+The important point is that this
+neighborhood S includes only past pixel
+values.
+That is, the filter structure allows
+recursive computation of the result.
+So, if I consider here the current frame
+k and the previous frame k minus 1,
+consider the pixel here at location i, j.
+I'm interest in finding the filtered value
+of the pixel i, j here denote by x.
+So, if I consider this neighborhood or the
+current frame
+and this can be this neighborhood for the
+previous frame
+then this shaded region forms these two
+regions.
+The union of them forms the region S here
+based
+on which the prediction would be carried
+out and again
+all the pixels values in these shaded
+regions have already
+been computed and therefore this is a
+recursively computable structure.
+The three-dimensional Kalman filter,
+here's the form shown
+here, where specific expressions exist for
+the gain alpha.
+Another form of spacio-temporal filters
+are order statistic filters.
+We talked about them for two dimensional
+signals during this week in an earlier
+segment.
+The expression for a multi stage medium
+filter is shown here.
+It consists of four unidirectional medium
+filters in the spatial domain.
+And one, along the temporal direction.
+So m1, 2, 3, 4 are the outputs
+of the unidirectional filters in the
+spatial domain.
+While m5 is the output of
+this unidirectional median in the temporal
+direction.
+So, the final result here is the median of
+the maximum
+of these five outputs, the minimum of the
+five outputs, and the observation, g.
+The FIR version of the motion compensated
+filter is shown here.
+The motion is now taken explicitly into
+account, one can use any of the
+techniques we covered last week in
+estimating
+the motion in carrying out this
+spatio-temporal filtering.
+So, the region here, S, that tells us
+which
+pixels we should utilize to carry out this
+filtering operation
+is not fixed, is not rigid like a
+parallelogram in the three-dimensional
+space, but it changes shape based on the
+motion parameters.
+So, for example, if I consider here the
+current frame and
+the previous in time frame k minus 1, I'm
+interested
+in finding the filtered value at location
+i, j.
+And if I consider the values p equals 0, q
+equals 0, and l equals 1.
+So, I'm looking at the i, j, location of
+previous frame.
+In, in finding this filter value, I will
+not
+consider this pixel here, but instead, its
+motion compensated version.
+So, in the i direction, we will use the
+vector d
+hat x k, k minus 1.
+So, this is the x component of the
+estimated motion
+vector, while in the y direction I'll use
+the estimated
+motion vector, d hat y, k, k minus 1.
+So, the two of them will give us the
+compensated location of this pixel.
+So, it is this pixel that will be
+multiplied by the weight 0,0,1, according
+to this.
+And will contribute towards the estimation
+of the pixel, i, j, at the current frame.
+The IIR version of the motion compensated
+spatio-temporal filter is shown here.
+This expression is identical to the
+non-motion compensated IIR filter.
+However, the, the diction now is done
+along the motion projector.
+So, the neighborhood here decides that it
+allows the case computability, gamma are
+the
+weights but again, I utilize their
+compensation
+in the x direction according to this
+vector,
+the y direction according to this vector
+and therefore this neighborhood that I
+utilized
+to carry out the prediction is, again,
+changing, according to the shape of the
+motion.
+We show here a specific application.
+We'll show a few frames from the Walt
+Disney animation, Fantasia.
+A number of anomalies are observed in this
+short video.
+In addition to noise, flickering is
+present, flickering is defined as this
+unnatural temporal fluctuation of
+intensity that
+does not originate from the original
+scene.
+You can also see, on the upper left
+corner, there
+a, a blotch or two blotches due to dust
+particles.
+In other parts of the video, there are
+scratches and fingerprints, and
+these all originate from the way that
+animation was filmed early on.
+So, the animated scenes were painted onto
+clear sheets of polyester called cells.
+Which then were placed on a, an animation
+stand and photographed three time.
+Each time using a red, green or blue
+filter, an innovation by Walt Disney
+produce the
+effect of dimensionality or depth by
+laying cells
+on top of another and photographing them
+then together.
+Each cell contained a different picture
+element and the glass
+plate was then used to hold these cells in
+place.
+However, these plates often contain
+particles of dust
+or dirt, which was then captured onto the
+film.
+As already mentioned, different amounts of
+light
+intensity caused a flickering effect
+between frames.
+And for duplicated frames and severe
+illumination
+changes are often characteristics of
+animation films.
+So, it's therefore highly desirable before
+the re-release of, of
+movies, animation alike to remove this
+artifacts and enhance the video.
+In dealing with the enhancement of motion
+pictures, we deal with a number of
+artifacts.
+The first one is our dimension that has
+the genetic name of blotches.
+And they're due to dirt, sparkle, film
+abrasion, scratches and fingerprints.
+There's also the intensity flicker,
+referred to also as boiling effect, as
+it was clearly demonstrated in the short
+animation video I just showed.
+And finally, there's another artifact due
+to the so-called vinegar syndrome.
+So, for content that was stored
+on acetate-based film rolls, they
+progressively deteriorate
+and these rolls can be affected by a
+number of artifacts, or film artifacts.
+One of the major problems of all film
+archives is this vinegar syndrome.
+The syndrome appears when, in the course
+of the chemical breakdown, the acetate
+based
+film bases start to release acetic acid,
+which actually gives the characteristic
+vinegar smell.
+The vinegar syndrome has various
+appearances.
+It may show up as a partial loss of color,
+bright
+or dark, tree-like branches, non uniform
+bled images and so on.
+Some of the animation characteristics are
+mentioned here.
+The image sizes are large.
+So, for Fantasia, for example, each frame
+is 2,000 by 1,200
+pixels and each color is 12 bits,
+therefore 36 bits per pixel.
+To do that, we are interested
+clearly in simper and computationally
+efficient algorithms.
+In animation, there is typically unnatural
+motion.
+The constraints that dynamics of natural
+objects
+are subjected to do not apply to
+animation.
+And we have arbitrarily large and
+complicated elastic motions taking place
+and
+therefore, when motion estimation is
+performed,
+additional care needs to be paid.
+We mentioned that these artifacts are
+present in
+older animation in the way they were
+generated.
+This is not the case, let's say today,
+since animation is done digitally.
+And finally, the, the issue of duplicate
+frames, which might be
+due to frame of conversation and severe
+illumination changes.
+We outline here a blotch detection
+algorithm
+that we utilized for the Fantasia
+animation movie.
+The assumption is that the blotches appear
+only in one frame.
+So the blotches are on the frame f of k.
+And an estimate of the frame f of k is
+obtained through g
+of k, which is clearly the average of the
+next and the previous frame, the f of k.
+Then the difference between the estimate g
+of k
+and the actual frame is found, and that's
+d1.
+So, those regions with high d1 compared to
+the
+noise variance, are classified as
+belonging to an artifact.
+However, moving edges will also be
+detected by this test.
+Therefore, more tests are needed to filter
+out, in some sense, these moving edges.
+By finding d2, the absolute difference
+between the previous and the next frame,
+the moving edges as well as the anomaly
+will be detected between these two frames.
+Similarly, by finding d3, the difference
+between the next and, or
+the current and the next frame, edges and
+anomalies will be detected.
+Now, given these three different frames,
+d1, d2, d3, a binary mask,
+indicating the presence of the anomaly, is
+obtained in the following manner.
+For each of these differences, the mean mu
+and the variance sigma squared are found.
+And based on these, these threshold tau of
+i are
+estimated, which are based from this
+parameter eta of i.
+Eta of i is an integer and controls the
+number of pixels which are classified as
+an artifact.
+The higher it's value the fewer pixels
+will be classified as an anomaly.
+So, one this, once this fresh coats have
+been
+found, a binary mask is obtained according
+to this formula.
+A pixel at a location m, n is classified
+as an anomaly if b of i is equal
+to 1 for all three values called b1, b2,
+and b3.
+So, the inclusion of b2 and b3 effectively
+accounts for the presence of motion
+because moving regions will show up in
+either b2 or b3 but not in both of them.
+So, here's the frame of the Fantasia video
+here
+is the, the blotch or the artifact
+that we want to pull out, and according
+to the algorithm that I just described,
+here is the detected
+blotch or the three values of parameter
+eta, but it utilized
+to set the threshold based on which the
+bino, binary mass is created.
+After the blotch is detected, based on the
+algorithm I
+just described, then we utilize an
+algorithm to remove the blotch.
+The algorithm distinguish between two
+cases, whether the blotch
+belongs to a moving area or a non moving
+area.
+In the former case, a simple averaging
+along time, utilizing
+the next and the previous frame is taking
+place, while if the blotch belongs
+to a moving area, then a motion
+compensated averaging is taking place,
+following the principles that we have
+covered already in this particular
+segment.
+So, utilizing such a blotch removal
+algorithm, here is the result.
+Clearly the blotch here has completely
+disappeared and blended with the
+background.
+For the removal of noise for Fantasia, any
+of the
+filters that we covered in this segment
+can be utilized.
+A form of the filter is shown here.
+So, they predicted the filtered value
+rather of
+the intensity at frame k at location m, n
+is given by this expression.
+So, this is the observed value and this is
+the mean.
+It's a spatio-temporal mean which can
+be motion compensated or non motion
+compensated.
+An important factor is alpha here, which
+is a function of the mask.
+A mask that can distinguish between moving
+regions and non-moving regions.
+Using some technique similar to the ones
+we
+used for the blotch detection, we can
+obtain
+a mask, such as this one, so white
+it shows moving pixels and black
+non-moving pixels.
+Actually if a pixel is moving but it is
+detected that as non-moving then bursting
+so-called artifacts appear,
+so it's in many cases advantages to
+increase the
+size of the mask, so this is an expanded
+mask.
+So, for cases, for regions that there is
+no motion,
+alpha is set equal to 1.
+So in this case, really, we performed some
+spatio-temporal smoothing
+treat here through this averaging
+operator, since the first term drops out.
+And for the region that there is motion,
+alpha is set equal to 0,
+in which case, we just rely on the actual
+observation.
+So, here we show the enhanced version of
+our Fantasia.
+It should be apparent that the flickering
+has been considerably reduced and also the
+blotch that had appeared in the earlier
+version of the video is also completely
+removed.
+But we show them now, actually side
+by side, so these differences are crystal
+clear.
+So, here is a side-by-side comparison.
+Clearly, some of the claims that were made
+can be substantiated.
+The flickering is reduced.
+The blotches are removed.
+Noise is also filtered out.
+It should be clear, by and large, that the
+enhanced video is an improved version of
+the original one.
+This has been actually a quite successful
+project because also special
+attention was paid so that the resulting
+algorithms are computationally efficient.
+This brings us to the end of week five.
+We learned quite a few things this week.
+We learned how to manipulate each and
+every
+pixel in an image independently from its
+neighbors.
+We defined a function, or a mapping, that
+will take the density of each pixel in the
+input image and map it into an enhanced
+intensity at the same location in the
+output image.
+This mapping can be linear or non-linear.
+We defined this mapping by looking at the
+image and assessing its quality.
+Of course, we can change the parameters
+that define the mapping or
+try a different mapping altogether until
+we are happy with the results.
+We also learned about the histogram
+manipulation
+approaches, in this case, our enhancement
+objective is
+defined in terms of the histogram of the
+image, a term that we defined in class.
+We desire our enhanced image to have a
+specific histogram.
+Such a requirement will then define the
+mapping we need
+to apply to each individual cell in the
+input image.
+We also learned how we can reduce various
+types of noise
+in the image using both linear and
+non-linear systems or techniques.
+If the linear system is also spatially
+invariant,
+then we have already learned how to
+describe
+and implement such systems, both in the
+spatial
+and frequency domains, but in weeks two
+and three.
+We also learned how to make an image look
+sharp or
+how to decrease the dynamic range, while
+increasing the local contrast.
+Finally, we saw that adding color to a
+black and white image can increase
+its appeal or help resolve some
+interesting questions in our applications.
+We dedicated the last segment on video
+enhancement.
+A considerable amount of the material we
+covered so
+far can be extended to three or higher
+dimensions.
+So, even though we do not explicitly
+address video,
+implicitly we've covered quite a bit of
+material about it.
+Of course, now that we have covered motion
+estimation techniques in week four, we
+are in a better position to address,
+for example, motion compensated
+spatio-temporal filtering techniques.
+We also discussed a fun application, that
+of enhancing the animation video of
+Fantasia.
+Starting next week and for two weeks, we
+will focus
+on another fun topic, the cousin of
+enhancement you might say.
+That of image and video recovery, so I'm
+looking forward to seeing you next week.
+

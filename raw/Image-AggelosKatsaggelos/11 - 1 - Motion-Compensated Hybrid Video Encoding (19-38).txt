@@ -1,0 +1,513 @@
+Welcome to week ten.
+This is the beginning of the third and
+last week
+covered in this exciting topic of image
+and video compression.
+Based on the material we covered during
+the first
+two weeks, everything should make perfect
+sense by now.
+When comes to video, we first still need
+to either
+perform a prediction, or the decorrelate
+the data, or do both.
+Then quantization takes place and finally
+entropy encoding.
+The dominant approach in video compression
+is
+to first perform temporal prediction
+through motion.
+The estimated motion, a topic we covered
+in week
+four, is used to carry out this temporal
+prediction.
+This results in the so called hybrid
+motion compensated video encoding.
+We will, we will describe this in detail
+in this first segment.
+This hybrid motion compensation we're
+doing encoder is
+the scheme of choice for all video
+compression standards.
+So after we understand this model, we
+have really understood all video
+compression standards.
+However, although there are major
+similarities among standards,
+there are also important differences that
+allow the next
+generation video compression standard to
+achieve the same quality
+with the previous generation one at half
+the bitrate.
+We will see whether the factors
+contributed to this improvement in
+performance.
+So, with this is mind, let us proceed with
+the last week on compression.
+We will talk this week about video
+compression.
+We see here the block diagram that applies
+to any data compression system.
+I showed the same diagram last week when I
+talked about image compression.
+I show it again to exactly make the point
+that no matter what
+data we're compressing, image, video,
+speech and
+so on, these same three blocks apply.
+So with the first block the redundancy is
+removed.
+Entropy is reduced by the second block and
+lossless coding is the last block inside
+the system.
+As we saw from last week for redundancy to
+move
+over to dominant approaches use of a
+predictor and/or a transfer.
+This week we'll see that indeed we use
+both, we use a temporal
+predictor and we're going to use a special
+conformation of the prediction error.
+Requantization is used for entropy
+reduction.
+And finally for lossless coding one can
+pick from the
+number of approaches we have covered in
+back in week eight.
+One could use Huffman LZW or arithmetic
+encoding.
+So, although we covered each and every of
+these elements here,
+we talked about prediction,
+transformation,
+requantization, as well as lossless
+coding.
+We will see next how, all these things are
+combined when we try to compress video.
+The outline of the materials we covered
+this week here is as follows.
+We will briefly describe some applications
+which require and benefit from video
+compression.
+Then we'll describe in some detail the
+operations
+of the hybrid motion compensated video
+encoder and decoder.
+It represents the dominant approach
+towards video encoding, and it's
+adopted by all video compression
+standards, which you will also discuss.
+As already mentioned, video compression is
+the
+enabling technology behind the multimedia
+revolution we're experiencing.
+It is necessary for a number of
+applications
+where digital video is acquired, stored,
+and transmitted.
+Some examples are shown here.
+It is needed for video content acquisition
+and editing.
+For storing this style video, in DVDs or
+Blu-ray discs.
+Broadcasting TV signals over either
+satellite, cable, or terrestrial
+transmission systems.
+For sending video over mobile and internet
+networks, wired and wireless.
+For real time conversation applications
+such as video chat, video conferences and
+telepresence systems, security
+applications where leaders
+acquire start compressed as made it.
+And the more recent applications where we
+want to
+capture, display, and transmit stereo and
+multi-view video, in general.
+We show here the block diagram of the
+hybrid motion compensated video encoder.
+As we'll see in detail, it's a prediction
+system.
+Some of you actually might have already
+recognized it.
+Like the one we discussed in week eight,
+when we covered lossless compression.
+And the DPCM system we discussed last
+week.
+We'll see it performs redundancy reduction
+by both
+temporal prediction and the use of a
+transfer.
+This is the actually applied on the
+unpredictable part
+of the prediction the so called displace
+frame difference.
+Actually if the operations of this system
+become crystal clear to you
+then we are done with video compression at
+least at the conceptual level.
+Only the fine details will need to be
+worked out.
+So let us work through this system.
+The video frame to be encoded arrives at
+the input of the system.
+Assume for the time being that we have a
+mechanism to predict
+the current frame from the past already
+encoded frames, and here's the prediction.
+We then form the difference and this is
+the unpredictable part of the predictor,
+the prediction error.
+This error is also called the spacial
+indifference which has a
+good number of zeroes or small values when
+the prediction is good.
+These are the grey values in the image,
+and is typically nonzero
+when the prediction, which is based on
+motion as we will see, fails.
+As we discussed a couple of times in
+the previous weeks, this is the signal the
+image,
+which represents the unpredictable part of
+the predictor,
+and that needs to be sent to the decoder.
+Says that there are still correlations in
+this image in processing it
+will follow the steps of transform posing
+that we discussed last week.
+First lead images for instance with jpg.
+So the DCT is taken.
+And the DCT values are quantized.
+And then these DCT values are enter
+encoded over
+here and are sent to the decoder or to the
+channel.
+Now let's look at this other here
+we have the predicted frame come in this
+direction.
+And from this direction here we have
+the quantized DCT coefficient of the
+prediction error.
+After inverse quantization which means
+again that
+we multiple values by the step size
+of the quantizer and inverseticity here we
+have the error in the spatial domain.
+So prediction plus correction results in
+the constructed frame current frame.
+The only piece left is to see how
+prediction is done.
+Well, prediction is done through motion,
+or
+the motion vectors, or the motion field.
+The underlying assumption here is that we
+are co, we are encoding the dynamic scene.
+And the objects can be tracked over time
+or that you can find out
+where each and every pixel went when going
+from one frame to the next.
+We cover motion estimation in detail
+during week 4.
+You could probably go back and have if you
+can review the material.
+We saw, then, that we can only estimate
+the optical flow, which, however, gives
+us most, in most cases a good estimate of
+the motion in the scene.
+And actually, what we estimate is the two
+dimensional projection of the scene on the
+camera plane.
+We also discussed that the underlying
+assumption with commonly
+using estimation algorithms motion
+estimated algorithms, be block based or
+region based matching or optical flow
+based is that
+the brightness in the scene remains the,
+remains the same.
+That's the constant brightness constraint.
+And that the objects are rigid.
+So one can use the favorite algorithm to
+perform motion estimation.
+In doing so we need at least two frames.
+The current frame come in this direction
+and
+the previously reconstructed frame that
+comes from this direction.
+The estimated motion will be used to carry
+out the prediction
+of the current frame from the previously
+in time reconstructed frame.
+This is referred to, typically, as motion
+compensation.
+Instead of motion prediction, since the
+motion vectors
+face backwards in time, instead of forward
+in time.
+So, in other words, we're not asking the
+question where
+a block in the previous frame ended up in
+the current
+frame, but instead, we're asking the
+question, where did a
+block in the current frame come from in
+the previous frame.
+The prediction question would not result
+in a practical system since it would
+have multiple predictions for some pixels
+in the current frame and zero for others.
+I have asked this question before and I'm
+asking
+it now again why don't to use the original
+car
+in then previous frames to carry out
+motion estimation
+compensation since then called the has the
+original frames available.
+Actually I can not tell how many of you
+know the answer but hopefully quite a few.
+The answer is that the decoder does not
+have the original frames,
+and therefore if we were to use the
+original frames for motion
+compensation at the encoder, encoder and
+decoder would be using different data
+to carry out motion compensation and
+therefore the results would, would differ.
+And this would result in what's referred
+to as error drift.
+Of course motion estimation is only taking
+place in the
+encoder so it would estimate the motion
+using the original frame.
+But then since the prediction is now using
+the reconstructed frames that would not
+make sense either.
+In other words we would be minimizing the
+prediction error between
+regional frames but then the actual
+prediction error could be different.
+Larger, most probably, since we are
+predicting from the reconstructed frames.
+So as in all predictive models, the
+parameters of the model need
+to be sent to the decoder, and these
+parameters are the motion vectors.
+So the motion vectors are entropy encoded.
+They're not quantized, clearly.
+And threaded to the bit stream.
+As was mentioned before, the decoder is
+part of the encoder in this predictive
+scheme.
+So, here is the decoder, it will accept
+this input here that quantize DCT values.
+Of the display frame difference, as well
+as
+the motion vectors when performing for
+quantization in DCT.
+Over here, we'll do prediction plus
+correction,
+and this would be the reconstructed
+values.
+Of course, the decoder would not perform
+motion
+estimation, just compensation using the
+transmitted motion vectors.
+Now, I've been deferring in this light to
+frames, in the generic term.
+Since typically the video frame is broken
+down into micro blocks or blocks
+or agents in performing the operations
+of motion estimation, compensation, and
+transfer quality.
+So what they have described here applies
+equally to the whole frame
+or to any smaller part of the frame, a
+block or a region.
+What I just described, actually, is
+referred to as inter-frame coding
+because the correlation between frames is
+taken into account.
+The question that arises is what happens
+if we cannot
+carry out meaningful predictions, and
+that's what we will examine next.
+So let us examine the case when we cannot
+carry out meaningful predictions.
+This happens for example at the frame
+level if we have a scene cut.
+Suppose you're watching the nightly news
+and the
+program switches from the news to a
+commercial.
+Is absolutely no correlation was probably
+between the last frame
+of the news to the first frame of the
+commercial.
+Similarly a new object might enter the
+scene
+and therefore cannot be predicted from the
+previous frame.
+In cases like this we are referring to
+intra-frame coding or intra-coding.
+So here we show exactly the same block
+diagram as in the previous slide.
+But now we have these two color switches.
+And this switch is operating
+synchronization, in sync.
+In other words, they're either both open
+or both closed.
+So again, a frame is a damper of encoded,
+needs to be encoded.
+And in case like this that no prediction
+can be carried out then
+both figures are open which means this
+frame appears at that location as well.
+So these frames have traded their still
+frames so
+a jpeg like procedure would be applied to
+them.
+So the DCT is applied, and then
+quantization, and then entropy
+encoding over here, and the zeros and ones
+will be sent to the decoder.
+This inter-encoded frames or blocks will
+also come down here,
+come this directions, so in this
+quantization and with DCT.
+They go around there they so they are
+stored here in memory so that they
+are utilised for future estimation, motion
+estimation and compensation.
+So no motion estimation compensation takes
+place and therefore no motion
+vectors are sent to the decoder for this
+macroblock or cold frame.
+Although in general the decoder needs to
+be informed that inter-encoding has taken
+place.
+So all these lines are dotted here since
+no operation or signal is travelling
+through these lines.
+I should mention here that inter-encoding
+at both frame and micro-block level.
+It's also performed for other reasons such
+as top
+being error propagation when video is
+transmitted over a channel.
+So these intra macroblocks intra frames
+they can be de, decoded by themselves.
+They don't have temporal dependencies, so
+therefore
+robustness is built into the bit stream.
+And they can also be used for easy access
+of the bitstream.
+Finally in every video code there's an
+important and necessary block, the
+rate controller which represents in some
+sense the brains of the system.
+It controls the output rate of the encoded
+bitstream.
+Which can be constant or can be varying.
+The function of the rate controller is to
+make
+all the decisions that need to be made and
+set
+all the parameters that need to be set at
+every
+time instance, or for every macroblock or
+for every frame.
+So for example the rate controller would
+decide whether a
+macroblock or a frame should be intra or
+inter encoded.
+We'll set the step size of the uniform
+quantizer in performing quantization.
+Which of course directly affects the
+bitrate.
+And also, it might have some effect on the
+context that is used
+when for example, a context adaptive
+binary automatic encoder, a CABAC is used.
+Clearly, the rate controller is utilizing
+as input the
+actual rate that is generated at every
+time instance.
+And make decisions so that the, this
+bitrate is shaped.
+If the rate for example is too high,
+then the quantizer step size should become
+larger.
+We should perform coarser quantization.
+And or maybe fewer inter-blocks should be
+coded since they require more bits than
+inter-blocks.
+So this block diagram represents a
+complete high level
+block diagram of the so-called hybrid
+motion compensated video encoder.
+There are actually two more blocks, a pre
+and post processor that I will mention
+later.
+Again, if the operations of this system
+are clear to you, then you know how
+each and every video compression standard
+works, and
+a lot of other algorithms in the
+literature.
+As already mentioned the decoder which is
+shown here is part of the encoder.
+Let us look first at inter-decoding.
+The entropy encoded bit stream is the
+input to the decoder.
+And after entropy decoding, what becomes
+available are
+the quantized DCT coefficient of the
+prediction error and the motion factors.
+The, this is the coefficient, are
+inversely
+quantized, the inverselity is taken and
+this
+brings the prediction error or the motion
+compensated motion difference back to the
+spacial domain.
+The motion vectors connect the current
+frame to be reconstructed with the
+previous already reconstructed frames,
+which are
+sitting at the memory of the decoder.
+They/re used to predict the current frame
+from the previously reconstructed frames.
+This is the
+function here of the motion compensation.
+Clearly the expensive motion estimation
+part is not needed here at decoding.
+So the prediction is added here to the
+correction, to give rise to the
+reconstructed frame.
+The reconstructed frame is also fed back
+into
+the memory here, to be used for future
+predictions.
+We show here the operations for the
+intra-decoding of a block or a frame.
+After entropy decoding where it becomes
+available are the quantized
+DCT coefficients or the intensities of
+that block or frame.
+So after inverse quantization and inverse
+DCT in
+the spatial domain we have available now
+the reconstructed intensity.
+They would go through all the way and form
+the output of the decoder.
+These blocks or frames will be fed back
+into the memory here.
+So that they can be used for future
+predictions.
+Clearly no motion vectors are fed this way
+and therefore no motion compensation is
+taking place.
+

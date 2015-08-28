@@ -1,0 +1,204 @@
+Okay, so in the final part of this lecture
+we are going to describe a second
+estimation technique.
+This is what's often called a discounting
+method.
+And this will build on many of the same
+intuitions as linear interpolation.
+But as we'll see it's a slightly different
+way of doing things.
+And it's also very often used in practice.
+Okay, so, to understand discounting
+methods let's first start with an
+intuition illustrated by the example I've
+shown here.
+So, what I've shown is the counts for
+biagrams where the first word in the
+biagram is the word the.
+So, for example the followed by dog is
+seen 15 times.
+The followed by woman is seen 11 times and
+so on and so on.
+And I'll assume in this example that in
+this list I've shown all bigrams whose
+count is greater than zero.
+So I have the full list of words which are
+seen one or more times following the word
+the, there are about ten of, ten of these
+words in total.
+And so, the number of times I've seen the
+word the is going to be the sum of these
+counts.
+It's actually 48, in this case.
+So now, if we consider the maximum
+likelihood estimates in this case, there
+are going to be for example, 15 divided by
+48, for the probability of dog finder.
+11 out of 48 probability of woman
+following, falling there and so on and so
+on.
+Just the ratio of this count to the number
+of times I've seen the word, the.
+Now, one thing to observe here is that, in
+general these estimates are going to be
+systematically high.
+Particularly in cases where we have a
+large vocabulary.
+Remember, we might have a few thousand or,
+or tens of thousands of possible words
+forming the word there but we've only seen
+the word the, 48 times.
+And so, it's just a lucky few words which
+were actually seen after the word, the.
+And that's a rather informal description,
+but you can actually show rather more
+formally that these estimates are going to
+be systematically high.
+That's particularly true for these low
+count estimates.
+For example the probability of street
+falling the being 1 over 48 is going to be
+a rather high estimate in this case.
+So discounting methods build on that
+intuition in the following way.
+We're going to define these new discounted
+counts.
+I'll use count star to refer to a
+discounted count.
+As simply count of x minus 0.5.
+For any bigram x who's count is 1 or more.
+So looking back at this example.
+If the count here is 15, for example.
+The discounted count is going to be 14.5.
+Similarly, an original count of 11
+translates to a discounted count, 10.5.
+And for all of these cases where the count
+is one.
+The discounted count is 0.5.
+And we can again, define estimates now
+based on the ratio of the discounted count
+to the number of times we've seen the word
+there.
+So for example we now have 14.5 out of 48
+as the estimate for probability of dog
+given there or 0.5 out of 48, to the
+probability of country given there.
+So notice we have essentially lowered each
+of these estimates, through these
+discounting methods.
+Now, once we've done this we'll see that
+there is actually, some missing or left
+over probability mass.
+What do I mean by that?
+Well if we sum each of these terms we end
+up with an expression something like 14.5
+out of 48.
+Plus 10.5 out of 48.
+And so on and so on.
+Finally we have plus 5 times 0.5 out of
+48.
+That's actually a value which is 43 out of
+48 if you do the calculation.
+And this is actually less than 1.
+So we have a series of probabilities which
+sum to less than 1.
+And that leaves some so called missing
+probability mass whose value is 1 minus 43
+Over 48, this is equal to 5 over 48.
+This, is in a sense, the probability mass
+that we have left over after this
+discounting method.
+Now, the basic idea in discounting
+methods, is going to be to Take this
+missing probability mass and divide it
+between other words in the vocabulary
+which aren't in this list.
+Ie words where the count following the
+word the is equal to 0.
+Those unlucky words which were never seen
+in a bigram with the as the first word.
+So a little bit more formally we'll define
+for any word wi minus 1 alpha of wi minus
+1 to be this missing probability mass, and
+this is defined as 1 minus here I have a
+sum of a w.
+Count star of w I minus 1 w, divided by
+count of wi minus 1.
+So in the particular example I just showed
+you, you can verify that this missing
+probability mass, is in fact 5 out of 48.
+So let's see how we can derive the final
+estimate based on this discounting method.
+Following this idea of dividing the
+missing mass between the words whose
+counts is 0 for a particular contextual
+word.
+And this is a method going back to Katz so
+it's often called a Katz Back-off model.
+And here we're deriving a bigram
+estimator, because q of Bo, this is going
+to be the backed off estimate of wi, this
+is conditioned on wi minus 1 is going to
+condition just on the previous word In a
+moment we'll see how to define a trigram
+estimator in a similar way, but first of
+all we'll consider the bigram case.
+Okay, so for a particular word wi minus 1,
+I'll define 2 sets.
+So big A of wi minus 1 is the set of words
+whose bigram count is greater than 0.
+So for example, for the word there it
+would be the 10 words that I've shown you
+on the previous slide.
+In contrast, B of W i minus 1 is the set
+of words in which the count is equal to 0.
+So this the set of words which are never
+seen following the particular word we're
+interested in.
+As before I'm going to define the missing
+probability mass through this expression.
+This is going to be 1 minus.
+Here I have a sum of all the words whose
+count is greater than zero.
+Count star of w i minus 1 w, divided by
+count w minus 1.
+So this is the probability mass which is
+left over.
+Okay so given these definitions the
+back-off estimate takes two forms
+depending on whether a word is in the set
+a or if a word is in the set b.
+If we have a word in the set a, we simply
+take the discounted count.
+So this might for example be 0.5 divided
+by the number of times we've seen wi minus
+1.
+So this might be 48 for example.
+Conversely if the word is in the second
+set b that means this count is equal to 0.
+We do the following.
+So remember that alpha of wi minus one is
+this missing probability mass.
+I've said before we were somehow going to
+divide this between the different words
+and the set B.
+And we divide this in proportion to the
+maximum likelihood estimate at the unigram
+level.
+So QMLFWY is the unigram maximum likely
+estimate I showed you earlier so the
+numerator, that's what I have here.
+In the denominator I have a sum over all
+words and B and QML of that W.
+And so this is just a normalization turn
+which ensures that I'm splitting the
+alphas in proportion to these unigram
+maximum likely estimate.
+So you can see once we've defined these
+discounted counts, through for example
+subtracting a value like 0.5 from each
+count in your training data.
+It's really quite simple to derive this,
+this estimation method.
+And it works really quite well in
+practice.

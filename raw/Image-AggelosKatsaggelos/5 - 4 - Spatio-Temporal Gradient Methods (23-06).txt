@@ -1,0 +1,551 @@
+Welcome back.
+We describe in this segment motion
+estimation techniques which rely on the
+computation
+of both spatial gradients within a
+video frame, and temporal gradients across
+frames.
+They represent in some sense the
+confirmation that in order to be
+able to estimate the motion of an object
+across frames we need
+both strong spacial edges, that will
+define the object as well as
+temporal edges, that will indicate that
+there is indeed motion in the scene.
+Imagine an object of a solid color moving
+in a background of the
+same solid color, clearly no motion can be
+perceived or estimated in this case.
+We derive the optical flow equation, and
+discuss various forms for solving it.
+We see that we need the assumption that
+the
+pixels in the neighborhood are undergoing
+the same motion.
+An important assumption that we also made
+when we discussed block or region matching
+algorithms.
+We investigate two forms of the algorithm.
+The non-recursive, and the recursive
+version.
+With the second approach, in principle no
+motion vectors need to be
+transmitted from the encoder to the
+decoder in a video compression scenario.
+But instead, the coder would regenerate
+the
+motion vectors that were estimated by the
+encoder.
+Special temporal graded techniques are
+widely used,
+especially when advanced motion field is
+required.
+So, let us proceed with the coverage of
+this interesting and important material.
+Although all the methods we have been
+discussing so
+far are based on the estimation of the
+optical flow,
+we look here at another approach to
+estimate it,
+that is traditionally referred to as the
+optical flow equation.
+We start with the same assumption as
+before.
+That is, the brightness of a pixel or an
+object, it
+remains the same in going from one frame
+to another frame.
+So if I observe a certain intensity of a
+pixel at the current frame, at time
+tau, I expect to find the same intensity
+at the reference frame, at time zero.
+Translated, however by u in the one
+dimension, and v in the other dimension.
+So, this is the constant brightness
+constraint and the q translation
+assumptions.
+Without lack of generality I arbitrarily
+moved the time marks
+to the reference frame, so here I start at
+time zero.
+I also changed the visual notation so
+intensity's now denoted by i,
+and I used this three variables notation
+for the spatial and temporal coordinates.
+The objective clearly is to estimate the
+translational
+components, u and v.
+So the steps I take are to expand the
+intensity
+at the current frame around the point x y
+in the reference frame.
+And here I show that Taylor series
+expansion using only
+the first order terms, while omitting here
+the higher order terms.
+Since this two terms are equal, due to the
+constant brightness constraint, they
+cancel out, and therefore what I'm left
+with is this equation, where I have
+substituted the partial
+derivative in the x direction by Ix, the
+partial in the y
+direction by Iy and the temporal partial
+by It.
+If I divide everything by tau, then I end
+up with this form of the optical
+flow equation, where now V of x and Vy
+denote veloc, velocities.
+So this is a special temporal gradient
+equation.
+It relates, spatial derivatives, Ix and
+Iy, to a temporal derivative.
+And the objective, again, is to solve for
+Vx now and Vy.
+I have two unknowns and one equation.
+And therefore I have infinitely many
+solutions in general.
+So I need to take an additional step to
+be able to find a meaning, a meaningful
+solution.
+In order to avoid the problem I just
+mentioned,
+which is having two unknowns and only one
+equation.
+I do a similar thing to what we did
+when we talked about the block matching,
+original matching.
+That is, we assume that there is a
+neighborhood of pixels.
+That they all undergo the same motion.
+So the pixel location is indicated here by
+q1, q2, qn.
+So little n pixels in this neighborhood.
+Then for each pixel location I write
+optical flow equation.
+So this is the spatial delivery at the x
+direction at the pixel location q1.
+Spacial derivative of the intense
+derivatives in
+the y direction again at pixel q1.
+And this is the temporal derivative at
+pixel location q1.
+So I do this same thing.
+These are the optical flow equations for
+the location
+q 2, all the way to the location q n.
+If n is equal 2, then I have two equations
+in two unknowns.
+And if n is greater than 2, I have an
+undetermined system of equations.
+Typically I choose n greater than 2 so
+that I accommodate
+noise issues and I get the more robust
+solution that way.
+I can write this system of equations in
+matrix
+vector form, that is I can stuck here.
+The spatial index of q1, spatial index
+direction of q2, spatial index direction
+of
+qn, spatial in the y direction q1, y
+direction
+q2, y direction qn, so this is the matrix.
+It's an n by 2 matrix that will multiply
+the unknowns vx, vy, and this is
+equal to the temple derivatives,
+q1, q2, all the way to qn.
+So n by 2, 2 by 1, and this embre 1.
+So if I call the matrix of special
+derivatives A the vector
+unknowns x, and the vector of temporal
+derivative is b.
+I have the equation Ax equals b.
+This is a standard inverse problem.
+We know A.
+We know b.
+And try to find x, or, inverse problem in
+the sense that, I
+have a system that described by A, x is
+the input, b is the output.
+And knowing the output I try to invert the
+process and go back and find the input.
+So it is a problem that has been studied
+extensively in the literature, and
+we will be studying it also in quite some
+detail when we cover image restoration.
+So for example, one solution to this
+problem is the minimum norm least squares
+solution.
+Also called normal equations if A
+transpose A is an invertible matrix
+then I can find my solution, the
+displacement vector field as x
+equals A transpose A inverse, A transpose
+b.
+If not invertible I can then use the
+generalized inverse.
+If A transpose A is not invertible we add
+this
+term here, lambda C transposed C, this is
+referred to as a regularized solution.
+And the net result is that now this whole
+matrix is invertible.
+[SOUND]
+So therefore this a solution.
+And another way to look at it is
+that through this regularization we pose a
+smoothness constraint.
+On the vector filter on the solution we
+are after.
+This is, if this is not clear at this
+point don't worry we are going
+to spend quite some time analyzing this
+constrained
+square solution when we talk about image
+restoration.
+I'd like also to mention here that if we
+are in a flat region and try to
+estimate the motion, then these spatial
+derivatives are going
+to be zero, as well as these temporal
+derivatives.
+So in flat regions the matrix A and the
+vector b are 0, very close to 0,
+and therefore it's hard to find a
+solution, any
+solution would satisfy the A x equals b
+equation.
+Therefore it's very important when you do
+motion estimation that edges, are present
+and edges means that the special
+derivatives
+are definitely not going to be 0.
+And this is the same comment can be
+made actually when we talked about block
+matching.
+In matching two perfectly flat regions
+that
+can be matched everywhere they are seen.
+And strong gauge is there for a very
+important, for motion estimation.
+There are different versions of the so
+called pel-recursive algorithms.
+Let us discuss one version of them here.
+They also use the optical flow equation
+and therefore,
+spatial temporal derivatives are computed
+as you'll see, right away.
+The notation we use here in this light
+is slightly different than the one I used
+before.
+The main characteristic of this algorithm
+is that they have a prediction
+and a correction part of the displacement
+vector field that I'm after.
+So start again with a constant brightness
+constraint,
+that is, the ambient lighting has not
+changed.
+And therefore a pixel of a given intensity
+can be found in both frames under
+consideration.
+So at time t, I'm considering a pixel here
+at this location r.
+The intensity of this pixel is i r t.
+And I tried to find the location of this
+pixel, at the previous frame.
+The frame at times t minus 1.
+And the location of this pixel is going to
+be at r minus d as shown here.
+So the pixel denoted by x at fry, at frame
+t can
+be found at frame t minus 1, it's also
+denoted by x.
+And it's this vector d that I'm interested
+in finding, because it will, again,
+tell me exactly where this pixel can be
+found at, at the previous frame.
+I will denote
+r minus d, by r bar here, and therefore
+the equation is going to look like this.
+So r, I of r t, is going to be equal to I
+of r bar t minus 1.
+We assume that we have an initial estimate
+of, of
+the displacement field which we'll denote
+by d of i.
+And this is shown here.
+So somebody gave us this initial estimate,
+and of
+course we'll discuss how we can find this
+initial estimate.
+And then, since I have d of i the
+objective now is to find the correction.
+The difference between the true d and my
+initial estimate, which I denote by u
+here.
+Because if I know u, I can go from my
+initial estimate, I can correct.
+It is a correction term, u, that will
+allow me
+to go from my initial estimate to the true
+solution d.
+[BLANK_AUDIO]
+So we have converted the initial problem
+of solving for d
+here, to the problem of solving for the
+correction term u,
+that will correct my initial estimate d of
+i, and bring
+me again to the true displacement which we
+denote here by d.
+We form now the displaced frame difference
+delta, which is a function of r.
+This is the point at which you are
+interested in finding the motion vector,
+and u, this correction term, based on the
+initial estimate of the motion d of i.
+So the displaced frame difference is the
+temporal derivative between the intensity
+at this point,
+and the point over here, which is denoted
+like this.
+And it's based on the initial estimate of
+the motion vector d of i.
+So the displaced frame difference again,
+is the temporal derivative along
+the motion trajectory, based on the
+initial estimate of the motion.
+We perform now a taylor series expansion
+of this point
+we just indicated around this point, which
+is indicated like this.
+Here the first order terms and the high
+order terms are modeled as an arrow term.
+Now since u is smaller than d, based
+on a good initial estimate of the motion
+vector,
+then by keeping just the first order of
+time
+here, I provide the better approximation
+to this intensity.
+As compared to the case we covered when we
+discussed about the
+optical flow, that the Taylor series
+expansion was done with respect to d.
+Based on the constant brightness
+constraint, this
+term here is equal to I r, t.
+And then if we look at the Displaced Frame
+Difference which equals this if I combine
+these two terms.
+Take the difference.
+This will give me the displaced frame
+difference.
+We end up therefore with this form of the
+optical flow equation.
+Here is again is the temporal derivative
+along the predicted motion trajectory.
+These are the special derivatives and this
+is again the arrow term.
+So as discussed previously when you're
+deriving the optical
+flow equations I have here one equation
+and two unknowns.
+And therefore I need to use additional
+equations in order to be
+able to provide an estimate for the
+unknowns the, the vector field.
+As done previously The way to address this
+is to assume that the pixels
+in the neighborhood of the pixel under
+consideration are undergoing exactly the
+same motion.
+So I can therefore derive this equation
+here, optical
+flow equation for all the pixels in this
+neighborhood.
+In this case, however, the neighborhood
+I'm considering contains only past pixels.
+Pixels for which I have estimated already
+their motion,
+based on a particular order to, to scanned
+image.
+So, if I assume that I used a raster scan
+of the image, I go one row then I return.
+I cover the second row, and so on.
+Then the neighborhood I use, heres an
+example of this neighborhood is shown
+here.
+This is referred to as a non-symmetric
+half plane.
+Clearly again, assuming a raster scan of
+the image, for these pixels here
+shown as solid dots, I have already
+estimated their motion vectors.
+So we can assume that that's how the
+motion
+vectors that I have estimated for these
+pixels look like.
+So using these already estimated motion
+vectors, I can provide an accurate initial
+estimate for the motion vector for the
+pixel under consideration at location r.
+For example, I can use the average of the
+motion vectors in this neighborhood to
+find d of I.
+Or I can use a weighted average, or
+a model based, an auto-regressive model
+that models
+these vectors and provides a good initial
+estimate,
+of the motion vector for the location r.
+So there are two important differences in
+deriving this form of
+the optical flow equation as compared to
+the one we derived a few slides earlier.
+The first one is that the neighborhood
+that a modeling to be undergoing
+the same motion now, allows a recursive,
+here's the shape, it's such a shape that
+it allows the recursive
+computability, of the motion vectors.
+And, an example is shown here through
+this, we call it nonsymmetric half-plane.
+And this allows me to obtain a good
+initial estimate d
+of i of a vector field, which then
+forms an optical flow equation here that
+will solve
+for the update u of the, of the vector
+field.
+And clearly, we see from the equation here
+[BLANK_AUDIO]
+That u equals d minus d of i.
+Such a Pel-recursive algorithm is useful
+in
+cases such as video compression when the
+motion field, needs to be encoded and
+transmitted from the encoder to the
+decoder.
+Clearly, if a Pel-recursive algorithm is,
+is used, the decoder can
+perform the same operations in estimating
+the motions as the encoder does.
+And therefore, the motion vectors do not
+need to
+be encoded and transmitted from the
+encoder to the decoder.
+[BLANK_AUDIO]
+We
+show here on the left, the frame
+difference.
+[BLANK_AUDIO]
+For this sequence that's in effect with
+the treble white sequence.
+And to the right we show the displaced
+frame
+difference obtained, with a pel-recursive
+algorithm we just described.
+Again, since the frame difference, or the
+displaced
+frame difference have doubled the dynamic
+range of
+the original image, 0 is repres,
+represents minus
+255, gray represents 0 and wide represents
+cluster 55.
+So we see that the displays frame
+difference most values are gray therefore
+equal
+to zero, except for the boundaries of
+moving objects or these are the temporal
+edges.
+Which represent the difficult part in any
+motion estimation.
+That's were the model of assuming that all
+the
+pixels in the neighborhood is moving the
+same is violated.
+This however a very good result because
+again this DFD is very close to zero.
+We show here two different versions of the
+dense motion field.
+That was obtained using the pel-recursive
+algorithm, and this motion field was used
+to generate the display strain difference
+that was shown in the previous slide.
+So this is dense, which means there's one
+vector per pixel.
+And the general observation here is that
+the, the motion vectors on the right,
+by and large are smoother than the motion
+vectors shown on this image on the left.
+We also see that these motion vectors
+capture well.
+They see, again this is the zoomed version
+so here
+is the, the head, part of the head of
+[UNKNOWN].
+Here are the shoulders.
+And we see that the motion vectors
+clearly, clearly delineate the,
+the motion boundaries, the background is
+stationary, so these vectors should
+all be, out here should be ideally exact
+equal to 0.
+While the torso and the head of the person
+is moving and therefore we have
+non-zero motion vectors.
+The strategy with feature based methods is
+to concentrate the computation
+on areas of the image, where it's possible
+to get good correspondence.
+And then from this, an initial estimate of
+a camera geometry is obtained.
+This geometry is then used to guide
+correspondence in
+regions of the image where there is less
+information.
+So here's an example of two images.
+The motion between the views is a rotation
+about the camera center.
+So features are extracted, shown here in
+yellow.
+And they're used to compute the image
+mat-, matching relations.
+These relations are due to the camera
+motion
+alone, not due to motion in the scene.
+So about 500 feature points are detected
+in each of these two images.
+There is considerable work in the
+literature
+on extracting good feature points in an
+image.
+We want feature points that are of low
+dimensionality,
+informative, robust transformations, such
+as translation, rotation and degradations.
+Harris corners,
+are one type of feature point, and these
+are the ones that we will use for the
+example shown here but also SIFT, SURF are
+some of the other names of feature points.
+Features are also used for the image
+query-based retrieval.
+Where an image is presented to a database,
+and the problem becomes either the
+determination of whether the image is in
+the database or the retrieval of similar
+images.
+So, finally here you the established
+correspondences between these two images.
+But about half the feature points that
+were extracted in this image,
+about 260 points out of the 500 feature
+points that were extracted.
+

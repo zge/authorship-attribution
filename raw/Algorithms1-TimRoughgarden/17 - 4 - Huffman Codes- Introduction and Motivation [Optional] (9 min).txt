@@ -1,0 +1,283 @@
+So, this set of lectures will be the 
+final application of the Greedy algorithm 
+design paradigm. 
+It's going to be to an application in 
+compression. 
+Specifically, I'll show you a Greedy 
+algorithm for constructing a certain kind 
+of prefix free binary codes known as 
+Huffman codes. 
+So, we're going to spend this video sort 
+of setting the stage. 
+So, let's begin by just defining a binary 
+code. 
+So, a binary code is just a way to write 
+down symbols from gen, some general 
+alphabet in a manner that can computers 
+can understand that is just a function 
+mapping each symbol from an alphabet 
+capital sigma to a binary string, a 
+sequence of 0's and 1's. 
+So this alphabet capital sigma could be 
+any number of things but you know its a 
+simple example you could imagine its the 
+letters a through z's in lower case plus 
+may be the space, character and some 
+punctuation. 
+So may be for a set of size 32 overall. 
+And if you have 32 symbols you need to 
+encode in binary, well an obvious way to 
+do it is that happens to be 32 different 
+binary strings of length 5, so why not 
+just use one of each of those for your 
+symbol. 
+Symbols. 
+So this would be a fixed length code in 
+the sense we're using exactly the same 
+number of bits, namely five to encode 
+each of the symbols in our alphabet. 
+This is pretty similar to what's going on 
+with ASCII codes. 
+And of course it's a mantra of this class 
+to ask when can we do better than the 
+obvious solution. 
+So in this context, when can we do better 
+than fixed-length codes. 
+Sometimes we can in the important case 
+when some symbols are much more likely to 
+appear than others. 
+In that case, we can encode information. 
+Using fewer bits by deploying variable 
+length codes. 
+And this is, in fact, a very practical 
+idea. 
+The variable length codes are used all 
+the time in practice. 
+One example is in encoding mp3 audio 
+files. 
+So if you look at the standard for mp3 
+encoding, there's this initial phase in 
+which you do analog to digital conversion 
+but then once you're in the digital 
+domain you do apply Huffman codes. 
+What I'm going to teach you in this video 
+to compress the length of the files even 
+further. 
+And as you know compression, especially 
+loss less compression like Huffman codes, 
+is a good thing. 
+You want to download a file, you want it 
+to happen as fast as possible or you want 
+to make file as small as possible. 
+So a new issue arises when you pass from 
+fixed length codes to variable length 
+codes. 
+So let me illustrate that with a simple 
+example. 
+Suppose our alphabet sigma is just four 
+characters A, B, C, D So the obvious 
+fixed length encoding of these characters 
+would just be 00, 01, 10, and 11. 
+Well suppose we wanted to use fewer bits 
+and we wanted to use a variable length 
+encoding. 
+An obvious idea would be to try to get 
+away with only 1 bit for a couple of 
+these characters. 
+So suppose instead of using a 00 for A 
+just use a single 0 and instead of using 
+a double 1 for D we just use a single 1. 
+So, that's only fewer bits, and it seems 
+like that can only get getter. 
+But now, here's the question. Suppose 
+someone handed you and encoded 
+transmission consisting of the digits 
+001. 
+What would have been the original 
+sequence of symbols that led to that 
+encoded version? Alright so the answer is 
+D, 
+there is not enough information to know 
+what 001 was supposed to be an encoding 
+of. 
+The reason is, is that having passed to a 
+variable length encoding there is now 
+ambiguity. 
+There is more than one sequence of 
+original symbols that could of lead under 
+this encoding to the output 001. 
+Specifically, answers A and C would both 
+lead to 001. 
+The letter A would give you a 0, the 
+letter B would give you a 01, so that 
+would give you 001. 
+On the other hand, AAD would also give 
+you 001, 
+so there's no way to know. 
+Contrast this with fixed length encoding, 
+if you're given a sequence of bits with a 
+fixed length code. Of course, you know 
+where one letter ends and the next one 
+begins. 
+For example, if every symbol was encoded 
+with 5 bits, you would just read 5 bits, 
+you'd know which symbol it was. 
+You'd read the next 5 bits, and so on 
+with variable length codes. 
+Without further precautions it's unclear 
+where one symbol starts and the next one 
+begins. 
+So that's an additional in issue we have 
+to make sure we take care of with 
+variable length codes. 
+So to solve this problem that with 
+variable length codes and without further 
+precautions it's unclear where one symbol 
+ends and where the next one begins. 
+We're going to insist that our variable 
+length codes are prefix free. 
+So what this means is when we encode a 
+bunch of symbols we're going to make sure 
+that for each pair of symbols i and j 
+from the original alphabet sigma. 
+The corresponding encoding's will have 
+the property that neither one is a prefix 
+of the other. 
+So going back to the previous slide, 
+you'll see that that example was not 
+prefix free. 
+For example, we used 0 was a prefix of 
+01. 
+That led to ambiguity. 
+Similarly 1, the encoding for D was a 
+prefix of 10, the encoding for C, 
+and that also leads to an ambiguity. 
+So if you don't have prefixes for each 
+other. 
+And we'll develop this more shortly. 
+Then there's no ambiguity. 
+Then there's a unique way to decode, to 
+reconstruct what the original sequence of 
+symbols was given just the zeros and 
+ones. 
+So lest you think this is too strong a 
+property, certainly interesting and 
+useful variable-length codes exist that 
+satisfy the prefix-free property. 
+So one simple example again, just encode 
+the letters A, B, C, D. 
+We can get away with encoding the symbol 
+a, just using a single bit, just using a 
+zero. 
+Now, o course to be prefix-free, it 
+better be the case that our encodings of 
+b and c and d all start with the bit one. 
+Otherwise we don't, we're not 
+prefix-free. 
+But, we can get away with that so let's 
+encode a b with one and then an zero. 
+And now both C and D, better have the 
+property that they start neither with 
+zero, nor with 10. 
+That is they better start with 11, but 
+lets just encode C using 110 and D using 
+111. 
+So that would be a variable length code, 
+the number of bits varies between 1 and 
+3, but it is prefix free. 
+And again, the reason we might want to do 
+this, the reason we might want to use a 
+variable link in coding, is to take 
+advantage of non-uniform frequencies of 
+symbols from a given alphabet. 
+So, let me show you a concrete example of 
+the benefits you can get from these kinds 
+of codes, on the next slide. 
+So let's continue with just our four 
+symbol alphabet A, B, C, and D. 
+And let's suppose we have good statistics 
+in our application domain, about exactly 
+how frequent each of these symbols are. 
+So in particular, let's assume we know 
+that A is by far the most likely symbol, 
+let's say 60% of the symbols are going to 
+be As. 
+Whereas 25% are Bs, 10% are Cs, and 5% 
+are Ds. 
+So, why would you know these statistics? 
+Well, some, in some domains, you're just 
+going to have a lot of expertise. 
+In genomics, you're going to know the 
+usual frequencies of As, Cs, Gs, and Ts. 
+For something like an mp3 file, well, you 
+can literally just take an intermediate 
+version of the file, after you've done 
+the analog to digital transformation, and 
+just count the number of occurrences of 
+each of the symbols. 
+So then you know exact frequencies and 
+you're good to go. 
+So let's compare the performance of the, 
+just sort of obvious fixed-length code 
+where you use two bits for each of the 
+four characters with that of the variable 
+length code that's also prefix free that 
+we mentioned on the previous slide. 
+And we're going to measure the 
+performance of these codes by looking, on 
+average, how many bits do you need to 
+encode a character? 
+Where the average is over the frequencies 
+of the four different symbols. 
+So for the fixed length encoding, of 
+course, it's two bits per symbol. 
+We don't even need the average, just 
+whatever the symbol is it uses exactly 
+two bits. 
+So, what about the variable length 
+encoding that's shown on the right in 
+pink? How many bits, on average, for an 
+average character given these frequencies 
+the differnet symbols are needed to 
+encode a character of the alphabet sigma. 
+Okay, so the correct answer is the second 
+one. 
+It's on average, 1.55 bits per character. 
+So what's the computation? Well, 60% of 
+the time, it's going to use only 1 bit. 
+And that's where the big savings comes 
+from. 
+1 bit is all that's needed whenever we 
+see an A, 
+and most of the characters are A's. 
+We don't do to bad when we see a B either 
+which is 25% of the time, we're only 
+using 2 bits for each B. 
+Now it is true that C's and D's were 
+paying the price, we're having to use 3 
+bits for each of those, but their aren't 
+very many only 10% of the time is it a C, 
+and only 5% of the time is it a D. 
+And if you added the result that's taking 
+the average over the simple frequencies 
+we get the result of 1.55. 
+So, this example draws our attention to a 
+very neat algorithmic like opportunity. 
+So, namely given a offer that and 
+frequencies of the symbols which in 
+general not uniform. 
+We now know that the obvious solution 
+fixed length codes need not be optimal. 
+We can improve upon them using variable 
+length. 
+The prefix free codes. 
+So the computational problem you want to 
+solve is which one is the best. 
+How do we get optimal compression? Which 
+variable length code gives us the minimum 
+average encoding length of a symbol from 
+this alphabet. So Huffman codes are the 
+solution to that problem. 
+We'll start developing them in the next 
+video. 
+

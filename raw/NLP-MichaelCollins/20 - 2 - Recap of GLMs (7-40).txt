@@ -1,0 +1,195 @@
+So to start, let me give a recap of how 
+global linear models work. 
+And remember there were three components 
+to a global linear model. 
+A feature vector f, this function GEN, 
+and a parameter vector v. 
+So let me remind you what these are. 
+So, f is a function that maps any 
+input/output pair to a feature vector. 
+So let's take pausing as an example. 
+So in that case we might have x equals 
+some sentence, that's going to be the 
+input, y is going to be some parse tree 
+for that sentence. 
+And remember, f is going to map an entire 
+x,y pair to a feature vector. 
+So you might, for example, have this 
+feature vector for this particular parse 
+tree in conjunction with this particular 
+sentence. 
+GEN is a function that takes some input 
+[SOUND] and maps it to some set of 
+candidate structures. 
+So again, x, for example, could be a 
+sentence like, the dog barks. 
+[SOUND]. 
+GEN x is now going to be some set of 
+parse trees. 
+Again, assuming that we're looking at the 
+parsing problem. 
+And as we saw last time, there are 
+various ways you might define GEN of x. 
+You might, for example, define GEN of x 
+to be the set of all possible parse trees 
+under a context free grammar. 
+That is under a particular context free 
+grammar. 
+Finally v is a parameter vector. 
+So v is going to be some sort of 
+parameters of the same dimensionality as 
+f. 
+So if we have five features here, we 
+would have five parameter values in the, 
+so v, for example, could be this. 
+And if we take the inner product between 
+v and f, we get some score, which, as we 
+said in the last lecture can be 
+interpreted as a measure of how plausible 
+this particular structure y is, when 
+conjoined with this particular input x. 
+So as we saw last time the way we put 
+these three components together is as 
+follows. 
+we have some set of possible inputs for 
+example a set of possible sentences in a 
+language. 
+This, this is the set x. 
+I use y to refer to the set of possible 
+outputs, for example, the set of all 
+possible parse trees. 
+Our goal is to learn a function, capital 
+F, that takes an input x and maps it to 
+some output y. 
+So, this function is defined through the 
+three components GEN of f and v as 
+follows. 
+So for a given x, I enumerate every one 
+of the candidate structures. 
+So I do an arg max over all members y of 
+gen x. 
+For each such structure y, I calculate 
+its score through this inner product. 
+And then I return the highest scoring 
+structure, that's what this arg max does. 
+So it's very in-, intuitive in a sense. 
+You enumerate each of the candidates, in 
+turn, you calculate their score under 
+this inner product and return the high 
+scoring candidate. 
+A critical question, of course is given a 
+set of training examples, examples of 
+input/output pairs, how do we actually 
+set these parameters v? 
+And we solved a perceptron algorithm for 
+that. 
+I'll give a recap of that algorithm in a 
+second. 
+But first, let's just [COUGH] look at 
+this schematically again. 
+This is a figure I showed in last week's 
+lecture. 
+You can view this whole process as 
+follows. 
+You have some input sentence, the 
+function GEN enumerates a set of possible 
+structures. 
+In this case we have one, two, three, 
+four, five, six possible trees. 
+Each of those structures is mapped 
+through this feature vector mapping f to 
+some feature vector. 
+So we have six feature vectors, one for 
+each of these trees in this case. 
+And then we can calculate a score for 
+each structure through the inner product 
+between f and v. 
+And so for example, this first tree might 
+get score 13.6, the second tree score 
+12.2, the third one 12.1 and so on. 
+And then finally, we select the highest 
+scoring tree, which is this first one, in 
+this case because that, that has a score 
+13.6. 
+And that is the final output for the 
+model. 
+So again, you can see, as these 
+parameters v are varied, we will put 
+different weights, either positive or 
+negative, on the different features in 
+the model. 
+And these scores will change, and so in 
+training the parameters of this model. 
+Intuitively, we're going to try to look 
+for values of v that correctly recover 
+the correct paths on most of our training 
+examples. 
+So as we saw last time, a very simple, 
+yet effective, algorithm for parameter 
+estimation in global linear models is 
+this variant, the perceptron algorithm. 
+So let's look at this again. 
+So the training set is a set of examples, 
+xi,yi. 
+For i equals 1 to n. 
+So, for example, I might have sentences 
+paired with trees. 
+[SOUND]. 
+You might have a few hundred or few 
+thousand or maybe even a few tens of 
+thousands of examples like this. 
+Initially, we set all of our parameters 
+equal to 0 and throughout this algorithm, 
+I'm going to, I'm going to define capital 
+F of x in exactly the same way as before 
+this arg max function. 
+So, capital T specifies the number of 
+iterations of the perceptron. 
+It might be typically 5, 10, 20 or 30, 
+maybe iterations. 
+so that is going to specify how many 
+passes we actually make over the training 
+data. 
+So, we make big T passes over the 
+training data. 
+For each pass, we cycle over the examples 
+from 1 to n. 
+We calculate the output of the model on 
+the i for example. 
+So z sub i is going to be some parse tree 
+which is the, the current highest scoring 
+tree under the model. 
+And if zi is equal to the, the truth, the 
+yi, we leave the parameters unchanged. 
+Remember, if it's, if it's not broken, 
+don't try to fix it. 
+So if we don't make a mistake, we leave 
+the parameters unchanged. 
+On the other hand, if zi is not equal to 
+yi, we perform these very similar simple 
+parameter updates. 
+We say, the new value of v is the old 
+value of v plus, and here I have the 
+feature vector, the xi together with the 
+yi. 
+And then I subtract the feature of vector 
+for xi in conjunction with zi. 
+Remember all of these vectors are in D 
+dimensional space. 
+And so, while, initially it might look 
+odd to add parameter and feature vectors, 
+it's a perfectly legitimate operation 
+because these are vectors in the same 
+dimensionality and space. 
+Intuitively, this is going to increase 
+the weight for any features seen in the 
+truth structure yi, and decrease the 
+weight for any features seen in the 
+incorrectly proposed structure zi. 
+So that's the perceptron. 
+As I said, it's a very simple algorithm 
+and yet, it's a very effective algorithm. 
+And in this lecture, we're going to see 
+how to extend this basic approach to the 
+problem of tagging. 
+

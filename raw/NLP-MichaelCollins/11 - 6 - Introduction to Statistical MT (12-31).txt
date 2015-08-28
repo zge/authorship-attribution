@@ -1,0 +1,308 @@
+So in this final segment, I want to make a
+brief introduction to statistical methods
+to machine translation.
+And statistical methods will be the focus
+of the next few lectures of this class.
+So, here's the basic idea.
+A key observation is that so-called
+parallel corpora are available in many
+language pairs.
+So, a parallel corpus, let's say for
+English and French, consists of a set of
+example translations.
+So, each elements of the corpus is an
+English sentence paired with some French
+sentence.
+So, we have sentence pairs where each of
+these sentences in English has the
+associated translation in French.
+So, we're basically going to treat
+translation as a supervised learning
+problem where we have e, f examples.
+Here's an English sentence, and f is a
+French sentence.
+Assuming we're trying to build a
+translation system from English to French
+or from French to English and we might
+have many thousands of example
+translations.
+So, it turns that these kind of corpora
+exist across many language pairs.
+So, one classic example is from early work
+at IBM.
+Really disseminal work in this area of
+translation.
+They used corpus called the Canadian
+Hansards.
+So, these are proceedings of the Canadian
+Parliament.
+So, anything which is said in the Canadian
+Parliament is written down in both English
+and French.
+And so, actually, we have millions of
+example translations between English and
+French.
+But many other language pairs have these
+resources.
+For example, the Europarl corpus is a
+corpus drawn from a European parliament
+and it contains, I think, 15 or 20
+European languages where again, we have
+translations into all of these different
+languages simultaneously.
+So, the first statistical machine
+translation systems came about in the
+early 1990s, largely due to these
+researchers at IBM.
+And as I said, the basic idea is to take
+some examples that are translations and
+then to try learn a statistical model
+which given a new sentence in say, French
+will translate it into English.
+This, on the surface, is sort of a radical
+and rather preposterous view.
+It's completely different from the rule
+based approaches which have been developed
+prior to the early 1990s.
+But it actually has been a highly
+successful approach.
+And over the last 10 or 20 years, there's
+been huge amount of research on
+statistical machine translation and it's
+gotten to the point where commercial
+system such as Google Translate used
+precisely this technology.
+The idea actually is an old one.
+It goes back to Warren Weaver just after
+the Second World War, who suggested
+applying statistical and methods from
+cryptography to translation.
+Actually, if we go to the next slide, here
+is a quote.
+So, here's a quote from Warren Weaver in
+1949 in a letter to Norbert Wiener.
+So, he was spurred on by great successes
+in the Second World War where statistical
+methods had been used to decrypt encrypted
+messages.
+And so he says the following.
+One naturally wonders if the problem of
+translation could conceivably be treated
+as a problem in, in cryptography.
+When I look at an article in Russian, I
+say, this is really written in English,
+but it's been coded in some strange
+symbols.
+I will now proceed to decode.
+And so, Warren Weaver sort of had this
+preposterous idea of using statistical
+cryptographic methods to try to perform
+translation.
+So, let's talk a little bit about how the
+IBM researchers actually envisioned this
+translation process.
+And their idea was to apply the noisy
+channel model, which we saw in the
+lectures on tagging models.
+So, their idea was to apply the noisy
+channel model to translation.
+So by convention, let's just assume that
+our goal is to build a translation system
+from French into English .
+So, we want something that maps some
+French sentence s, to some English
+sentence e.
+And, you know, a natural way to try to do
+this is to try to build a conditional
+model pe given f.
+So, we have, with some French sentence f.
+If we consider every possible sentence in
+English in turn, a very large set of
+course, an infinite set of sentences, we
+assume that each of these sentences has a
+probability e of f, which is the
+conditional probability given that I'm
+translating f that e will be the output.
+Now, in a noisy channel model, we're again
+going to use a generative model.
+And we're going to use Bayes' Rule to kind
+of flip this problem around.
+So, here's how this goes.
+A noisy channel model in for translation
+is going to have two components.
+So, p of e is a language model.
+So, this will assign probabilities to
+sentences.
+For example, like the dog laughs.
+Stop.
+And this, for example, might very well be
+a trigram language model exactly as we saw
+in the very first week of the class.
+Okay, so this is a model that we can learn
+from very large amounts of English data
+alone.
+The second part of the model is what's
+called the translation model.
+And this is a model of p of f given e.
+Notice that this is reversed from the
+direction here.
+This is what we often see with the Noisy
+Channel Model.
+So, pf given e for any English sentence,
+for example, the dog laughs.
+We consider all possible French sentences.
+So gain, an infinite set.
+We're going to have model pf given e for
+each French sentence conditioned on the
+English sentence.
+Okay, this model is going to be estimated
+from a set of translation examples.
+Okay, so this is going to be estimated
+from our bilingual corpus, parallel
+corpus.
+Okay, as we saw before with the noisy
+channel model, if we have these two
+models, we can actually derive p given f
+using Bayes' rule.
+So, by the usual rules of probability,
+this is pef of f, and this is pe times p
+of f given, divided by, and here I have a
+sum of all English sentences p times p of
+f given e.
+Okay, so given a new French sentence f, we
+are going to output the most likely
+translation under the model.
+And so, that means we're going to search
+for sentence e that maximizes this
+condition probability.
+And now, I can plug this formula in here.
+And notice that this denominator, it's
+constant with respect to the English
+sentence we're searching over.
+And so, this constant term isn't needed
+when we're considering the argmax.
+We saw exactly the same trick when we saw
+noisy channel model for hidden alcohol
+earlier in this class.
+So, we end up with the following problem.
+So remember, again, our problem is to take
+some French sentence f and to produce some
+translation e.
+To do this, we're going to search for the
+sentence e that maximizes the product of
+two terms.
+This term is a language model term.
+It's the prior probability of the English
+sentence e, and the second term is a
+conditional probability, the probability
+of the French sentence f given the English
+sentence e.
+Of course, we've seen how we can build a
+language model using a trigram model.
+Of the next few lectures, we'll see how we
+can build models pf given e, these
+translation model.
+That's going to be the critical new
+component of these translation systems.
+So, a few more notes about the noisy
+channel model.
+So as I said, this language model can be
+estimated from any data.
+And actually, we don't need a parallel
+corpus to estimate the parameters of the
+language model.
+So that means we can actually leverage
+potentially very, very large quantities of
+text in English alone.
+This translation model is trained from a
+parallel corpus consisting of French,
+English sentence pairs.
+Notice that even though our goal is to
+translate from f French to English,
+because we've used the noisy channel
+model, we estimate p of f given e.
+Okay, so things are flipped.
+The translation model is in a sense
+backwards.
+One big advantage of this is that we now
+have a model that makes use of a language
+model of English sentences.
+And this gives us a very strong source of
+information about which sentences are
+likely or grammatical or fluent.
+On the English side, and that can make up
+for a lot of difficiencies in the
+translation model.
+Next in this class, we'll talk about how
+to build this model of f given e.
+And finally, we're going to be left with
+this problem of, for a given French
+sentence f, finding the English sentence
+that maximizes the product of these terms.
+This is also a very challenging problem.
+We're set, searching over a very large set
+of possible translations.
+And so, we'll talk a lot about this
+problem a little later in the class.
+So, here's an example of the noisy channel
+approach from a tutorial by Philip Cohen
+and Kevin Knight.
+And so, imagine we're trying to translate
+in this case from Spanish into English.
+There are many, many possible
+translations, many possible English
+sentences.
+And what we've shown here is a few
+possibilities.
+And in each case, we've shown the
+conditional probability of the Spanish
+given the English under the translation
+model.
+Okay, so we might get these various terms
+here, and notice again that we have ps
+given e here.
+We do not have pe given s.
+Okay, so this part of the, the translation
+model is actually backwards from what we
+really need.
+And so that's one component of the model.
+When I evaluate the probability of these
+different translations, this is one
+component that I take into account, p of s
+given e.
+And notice that if we just use this part
+of the model alone, we actually come out
+with this translation which is a pretty
+bad translation.
+But here's the full model.
+And notice that now to evaluate the
+probability of each of these endless
+alternatives.
+I actually take the product of two terms p
+of sq and e times p of e.
+So, this is now the model under a trigram
+language model, of the English sentence.
+So, for each of these English sentences, I
+can calculate its probability under a
+trigram language model.
+And some of these sentences, of course,
+are much more likely than others in
+particular.
+This sentence here is much more likely
+than these other sentences.
+And when we multiply together these two
+terms, you'll find out the highest
+probability translation is actually this
+one.
+So the, at a high level, the important
+part here is to evaluate the plausibility
+of each of these examples as a translation
+of this input.
+We multiply two things, firstly p of e,
+which is the prior probability under a
+language model of seeing this sentence in
+English.
+And secondly, p of s given e, which is the
+probability of seeing this Spanish
+sentence given that we have this English
+sentence underlying the process.

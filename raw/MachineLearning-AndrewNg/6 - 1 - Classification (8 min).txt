@@ -1,0 +1,234 @@
+In this and the next
+few videos, I want to
+start to talk about classification problems,
+where the variable y that
+you want to predict is discreet
+valued. We'll develop an
+algorithm called logistic regression,
+which is one of the
+most popular and most widely used learning algorithms today.
+Here are some examples of classification problems.
+Earlier, we talked about emails,
+spam classification as an
+example of a classification problem.
+Another example would be classifying online transactions.
+So, if you have a website
+that sells stuff and if you
+want to know if a physical
+transaction is fraudulent or
+not, whether someone has, you
+know, is using a stolen credit card
+or has stolen the user's password.
+That's another classification problem, and
+earlier we also talked about
+the example of classifying tumors
+as a cancerous malignant or as benign tumors.
+In all of these problems,
+the variable that we're trying
+to predict is a variable
+Y that we can think
+of as taking on two values,
+either zero or one, either
+a spam or not spam, fraudulent
+or not fraudulent, malignant or benign.
+Another name for the class
+that we denote with 0 is
+the negative class, and another
+name for the class that we
+denote with 1 is the positive class.
+So 0 may denote the
+benign tumor and 1
+positive class may denote a malignant tumor.
+The assignment of the 2
+classes, you know, spam,
+no spam, and so on -
+the assignment of the 2
+classes to positive and negative,
+to 0 and 1 is somewhat
+arbitrary and it doesn't really matter.
+But often there is this
+intuition that the negative
+class is conveying the
+absence of something, like the absence
+of a malignant tumor, whereas one,
+the positive class, is conveying
+the presence of something that we may be looking for.
+But the definition of which
+is negative and which is positive
+is somewhat arbitrary and it doesn't matter that much.
+For now, we're going to start
+with classification problems with just
+two classes; zero and one.
+Later on, we'll talk about multi-class
+problems as well, whether variable
+Y may take on say,
+for value zero, one, two and three.
+This is called a multi-class classification problem,
+but for the next few
+videos, let's start with the
+two class or the binary classification problem.
+and we'll worry about the multi-class setting later.
+So, how do we develop a classification algorithm?
+Here's an example of a
+training set for a classification
+task for classifying a tumor
+as malignant or benign and
+notice that malignancy takes on
+only two values zero or
+no or one or one or yes.
+So, one thing we could
+do given this training set
+is to apply the algorithm
+that we already know, linear regression to this data set
+and just try to fit the straight line to the data.
+So, if you take this training
+set and fill a straight
+line to it, maybe you get
+hypothesis that looks like that.
+Alright, so that's my hypothesis, h of
+x equals theta transpose
+x.
+If you want
+to make predictions, one thing
+you could try doing is then
+threshold the classifier outputs at 0.5.
+That is at the vertical access value 0.5.
+And if the hypothesis outputs
+a value that's greater than
+equal to 0.5 you predict y equals one.
+If it's less than 0.5, you predict y equals zero.
+Let's see what happens when we do that.
+So, let's take 0.5, and
+so, you know, that's where the threshold is.
+And thus, using linear regression this way.
+Everything to the right
+of this point, we will end
+up predicting as the positive
+class because of the output
+values are greater than 0.5
+on the vertical axis and
+everything to the left
+of that point we will end
+up predicting as a negative value.
+In this particular example, it
+looks like linear regression is actually
+doing something reasonable even though
+this is a classification task we're
+interested in.
+But now let's try changing problem a bit.
+Let me extend out the horizontal
+axis of orbit and let's
+say we got one more training
+example way out there on the right.
+Notice that that additional training
+example, this one out
+here, it doesn't actually change anything, right?
+Looking at the training set, it
+is pretty clear what a good hypothesis is.
+Well, everything to the right of
+somewhere around here to the
+right of this we should predict
+as positive, and everything to
+the left we should probably predict
+as negative because from this
+training set it looks like
+all the tumors larger than, you
+know, a certain value around here
+are malignant, and all the
+tumors smaller than that are
+not malignant, at least for this training set.
+But once we've added
+that extra example out here,
+if you now run linear regression,
+you instead get a straight line fit to the data.
+That might maybe look like this, and
+if you now threshold this hypothesis
+at 0.5, you end up with
+a threshold that's around here
+so that everything to the right
+of this point you predict as
+positive, and everything to the left of that point you predict as negative.
+And this seems a pretty
+bad thing for linear regression to have done, right?
+Because, you know, these are
+our positive examples, these are our negative examples.
+It's pretty clear, we should
+really be separating the two classes
+somewhere around there, but somehow
+by adding one example way
+out here to the right, this
+example really isn't giving us any new information.
+I mean, it should be no
+surprise to the learning out of
+that the example way out here turns out to be malignant.
+But somehow adding that example
+out there caused linear regression
+to change in straight line fit
+to the data from this
+magenta line out here
+to this blue line over here,
+and caused it to give us a worse hypothesis.
+So, applying linear regression
+to a classification problem usually
+isn't, often isn't a great idea.
+In the first instance, in the
+first example before I added
+this extra training example,
+previously linear regression was
+just getting lucky and it
+got us a hypothesis that, you
+know, worked well for that particular
+example, but usually apply
+linear regression to a data set,
+you know, you might get lucky but
+often it isn't a good
+idea, so I wouldn't use
+linear regression for classification problems.
+Here is one other funny thing
+about what would happen if
+we were to use linear regression for a classification problem.
+For classification, we know that
+Y is either zero or one,
+but if you are using
+linear regression, well the hypothesis
+can output values much larger
+than one or less than
+zero, even if all
+of good the training examples have labels
+Y equals zero or one,
+and it seems kind of strange
+that even though we
+know that the label should
+be zero one, it seems
+kind of strange if the
+algorithm can offer values much
+larger than one or much smaller than zero.
+So what we'll do in the
+next few videos is develop
+an algorithm called logistic regression
+which has the property that the
+output, the predictions of logistic
+regression are always between zero
+and one, and doesn't become
+bigger than one or become less
+than zero and by
+the way, logistic regression is
+and we will use it as
+a classification algorithm in some,
+maybe sometimes confusing that
+the term regression appears in
+his name, even though logistic regression
+is actually a classification algorithm.
+But that's just the name it
+was given for historical reasons so don't be confused by that.
+Logistic Regression is actually a
+classification algorithm that we
+apply to settings where the
+label Y is discreet valued. The 1001.
+So hopefully you now
+know why if you
+have a causation problem using
+linear regression isn't a good idea .
+In the next video we'll
+start working out the details
+of the logistic regression algorithm.

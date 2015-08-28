@@ -1,0 +1,257 @@
+[SOUND]
+So
+this is indeed a general idea of
+the Expectation-Maximization, or EM,
+Algorithm.
+So in all the EM algorithms we
+introduce a hidden variable
+to help us solve the problem more easily.
+In our case the hidden variable
+is a binary variable for
+each occurrence of a word.
+And this binary variable would
+indicate whether the word has
+been generated from 0 sub d or 0 sub p.
+And here we show some possible
+values of these variables.
+For example, for the it's from background,
+the z value is one.
+And text on the other hand.
+Is from the topic then it's zero for
+z, etc.
+Now, of course, we don't observe these z
+values, we just imagine they're all such.
+Values of z attaching to other words.
+And that's why we call
+these hidden variables.
+Now, the idea that we
+talked about before for
+predicting the word distribution that
+has been used when we generate the word
+is it a predictor,
+the value of this hidden variable?
+And, so, the EM algorithm then,
+would work as follows.
+First, we'll initialize all
+the parameters with random values.
+In our case,
+the parameters are mainly the probability.
+of a word, given by theta sub d.
+So this is an initial addition stage.
+These initialized values would allow
+us to use base roll to take a guess
+of these z values, so
+we'd guess these values.
+We can't say for sure whether
+textt is from background or not.
+But we can have our guess.
+This is given by this formula.
+It's called an E-step.
+And so the algorithm would then try to
+use the E-step to guess these z values.
+After that, it would then invoke
+another that's called M-step.
+In this step we simply take advantage
+of the inferred z values and
+then just group words that are in
+the same distribution like these
+from that ground including this as well.
+We can then normalize the count
+to estimate the probabilities or
+to revise our estimate of the parameters.
+So let me also illustrate
+that we can group the words
+that are believed to have
+come from zero sub d, and
+that's text, mining algorithm,
+for example, and clustering.
+And we group them together to help us
+re-estimate the parameters
+that we're interested in.
+So these will help us
+estimate these parameters.
+Note that before we just set
+these parameter values randomly.
+But with this guess, we will have
+somewhat improved estimate of this.
+Of course, we don't know exactly
+whether it's zero or one.
+So we're not going to really
+do the split in a hard way.
+But rather we're going to
+do a softer split.
+And this is what happened here.
+So we're going to adjust the count by
+the probability that would believe
+this word has been generated
+by using the theta sub d.
+And you can see this,
+where does this come from?
+Well, this has come from here, right?
+From the E-step.
+So the EM Algorithm would
+iteratively improve uur initial
+estimate of parameters by using
+E-step first and then M-step.
+The E-step is to augment the data
+with additional information, like z.
+And the M-step is to take advantage
+of the additional information
+to separate the data.
+To split the data accounts and
+then collect the right data accounts to
+re-estimate our parameter.
+And then once we have a new generation of
+parameter, we're going to repeat this.
+We are going the E-step again.
+To improve our estimate
+of the hidden variables.
+And then that would lead to another
+generation of re-estimated parameters.
+For the word distribution
+that we are interested in.
+Okay, so, as I said,
+the bridge between the two
+is really the variable z, hidden variable,
+which indicates how likely
+this water is from the top water
+distribution, theta sub p.
+So, this slide has a lot of content and
+you may need to.
+Pause the reader to digest it.
+But this basically captures
+the essence of EM Algorithm.
+Start with initial values that
+are often random themself.
+And then we invoke E-step followed
+by M-step to get an improved
+setting of parameters.
+And then we repeated this, so
+this a Hill-Climbing algorithm
+that would gradually improve
+the estimate of parameters.
+As I will explain later
+there is some guarantee for
+reaching a local maximum of
+the log-likelihood function.
+So lets take a look at the computation for
+a specific case, so
+these formulas are the EM.
+Formulas that you see before, and
+you can also see there are superscripts,
+here, like here, n,
+to indicate the generation of parameters.
+Like here for example we have n plus one.
+That means we have improved.
+From here to here we have an improvement.
+So in this setting we have assumed the two
+numerals have equal probabilities and
+the background model is null.
+So what are the relevance
+of the statistics?
+Well these are the word counts.
+So assume we have just four words,
+and their counts are like this.
+And this is our background model that
+assigns high probabilities to common
+words like the.
+And in the first iteration,
+you can picture what will happen.
+Well first we initialize all the values.
+So here, this probability that we're
+interested in is normalized into a uniform
+distribution of all the words.
+And then the E-step would give us a guess
+of the distribution that has been used.
+That will generate each word.
+We can see we have different
+probabilities for different words.
+Why?
+Well, that's because these words have
+different probabilities in the background.
+So even though the two
+distributions are equally likely.
+And then our initial audition say uniform
+distribution because of the difference
+in the background of the distribution,
+we have different guess the probability.
+So these words are believed to
+be more likely from the topic.
+These on the other hand are less likely.
+Probably from background.
+So once we have these z values,
+we know in the M-step these probabilities
+will be used to adjust the counts.
+So four must be multiplied by this 0.33
+in order to get the allocated
+accounts toward the topic.
+And this is done by this multiplication.
+Note that if our guess says this
+is 100% If this is one point zero,
+then we just get the full count
+of this word for this topic.
+In general it's not going
+to be one point zero.
+So we're just going to get some percentage
+of this counts toward this topic.
+Then we simply normalize these counts
+to have a new generation
+of parameters estimate.
+So you can see, compare this with
+the older one, which is here.
+So compare this with this one and
+we'll see the probability is different.
+Not only that, we also see some
+words that are believed to have come from
+the topic will have a higher probability.
+Like this one, text.
+And of course, this new generation of
+parameters would allow us to further
+adjust the inferred latent variable or
+hidden variable values.
+So we have a new generation of values,
+because of the E-step based on
+the new generation of parameters.
+And these new inferred values
+of Zs will give us then
+another generation of the estimate
+of probabilities of the word.
+And so on and so forth so this is what
+would actually happen when we compute
+these probabilities
+using the EM Algorithm.
+As you can see in the last row
+where we show the log-likelihood,
+and the likelihood is increasing
+as we do the iteration.
+And note that these log-likelihood is
+negative because the probability is
+between 0 and 1 when you take a logarithm,
+it becomes a negative value.
+Now what's also interesting is,
+you'll note the last column.
+And these are the inverted word split.
+And these are the probabilities
+that a word is believed to
+have come from one distribution, in this
+case the topical distribution, all right.
+And you might wonder whether
+this would be also useful.
+Because our main goal is to
+estimate these word distributions.
+So this is our primary goal.
+We hope to have a more discriminative
+order of distribution.
+But the last column is also bi-product.
+This also can actually be very useful.
+You can think about that.
+We want to use, is to for
+example is to estimate to what extent this
+document has covered background words.
+And this, when we add this up or
+take the average we will kind of know to
+what extent it has covered background
+versus content was that are not
+explained well by the background.
+[MUSIC]
+

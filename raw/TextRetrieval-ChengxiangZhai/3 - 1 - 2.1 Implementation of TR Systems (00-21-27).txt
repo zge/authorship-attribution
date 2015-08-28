@@ -1,0 +1,526 @@
+[SOUND] This lecture is about
+the implementation of
+text retrieval systems.
+In this lecture, we will discuss how we
+can implement a text retrieval method
+to build a search engine.
+The main challenge is to
+manage a lot of text data and
+to enable a query to be answered very
+quickly and to respond to many queries.
+This is a typical text
+retrieval system architecture.
+We can see the documents
+are first processed by a tokenizer
+to get tokenizer units, for example words.
+And then these words or
+tokens would be processed by
+an indexer that would create an index,
+which is a data structure for the search
+engine to use to quickly answer a query.
+And the query will be going
+through a similar processing step.
+So, the tokenizer will be
+apprised to query as well so
+that the text can be
+processed in the same way.
+The same units will be
+matched with each other.
+And the query's representation
+will then be given to the scorer.
+Which would use a index to
+quickly answer a user's query by
+scoring the documents and
+then ranking them.
+The results will be given to the user.
+And then the user can look at the results
+and and provide some feedback that can be
+expressed judgements about which documents
+are good, which documents are bad,
+or implicit feedback such as pixels so the
+user doesn't have to any, anything extra.
+The user will just look at the results and
+skip some and
+click on some results to view.
+So these interaction signals can be used
+by the system to improve the ranking
+accuracy by assuming that viewed documents
+are better than the skipped ones.
+So, a search engine system then
+can be divided into three parts.
+The first part is the indexer, and
+the second part is the scorer,
+that responds to the user's query.
+And the third part is
+the feedback mechanism.
+Now typically, the indexer is done in
+the offline manner so you can pre-process
+the correct data and to build the inverter
+index which we will introduce in a moment.
+And this data structure can then be used
+by the online module which is a scorer
+to process a user's query dynamically and
+quickly generate search results.
+The feedback mechanism can be done online
+or offline depending on the method.
+The implementation of the index and
+the, the scorer is fairly standard,
+and this is the main topic of this
+lecture and the next few lectures.
+The feedback mechanism,
+on the other hand has variations.
+It depends on what method is used.
+So that is usually done in
+a algorithm-specific way.
+Let's first talk about the tokenize.
+Tokenization is a normalize lexical
+units into the same form so
+that semantically similar words
+can be matched with each other.
+Now in the language of English
+stemming is often used and
+this what map all the inflectional
+forms of words into the same root form.
+So for example, computer computation and
+computing can all be matched
+to the root form compute.
+This way, all these different forms of
+computing can be matched with each other.
+Normally this is a good idea to increase
+the coverage of documents that
+are matched with this query.
+But it's also not always beneficial
+because sometimes the subtlest
+difference between computer and
+computation might still suggest the
+difference in the coverage of the content.
+But in most cases,
+stemming seems to be beneficial.
+When we tokenize the text in some other
+languages, for example Chinese, we might
+face some special challenges in segmenting
+the text to find the word boundaries.
+Because it's not ob,
+obvious where the boundary is as
+there's no space separating them.
+So, here, of course,
+we have to use some language-specific
+natural language processing techniques.
+Once we do tokenization, then we would
+index the text documents, and that it
+will convert the documents into some data
+structure that can enable fast search.
+The basic idea is to precompute
+as much as we can, basically.
+So the most commonly used index
+is called a inverted index.
+And this has been used, to,
+in many search engines to
+support basic search algorithms.
+Sometimes other indices, for
+example a document index,
+might be needed in order to support a,
+a feedback.
+Like I said, this, this kind of
+techniques are not really standard
+in that they vary a lot according
+to the feedback methods.
+To understand why we
+are using inverted index.
+It will be useful for you to think
+about how you would respond to
+a single term query quickly.
+So if you want to use more time to
+think about that, pause the video.
+So think about how you can
+preprocess the text data so
+that you can quickly respond
+to a query with just one word.
+Well, if you have thought about question,
+you might realize that where the best is
+to simply create a list of documents
+that match every term in the vocabulary.
+In this way, you can basically
+pre-construct the answers.
+So when you see a term,
+you can simply just fetch
+the ranked list of documents for
+that term and return the list to the user.
+So that's the fastest way to
+respond to single term query.
+Now the idea of invert index is
+actually basically like that.
+We can do, pre-construct such a index.
+That would allow us to quickly find the,
+all the documents that
+match a particular term.
+So let's take a look at this example.
+We have three documents here, and
+these are the documents that you
+have seen in some previous lectures.
+Suppose we want to create invert index for
+these documents, then we will
+need to maintain a dictionary.
+In the dictionary we'll have one entry for
+each term.
+And we're going to store some
+basic statistics about the term.
+For example, the number of
+documents that match the term or
+the total number of, fre,
+total frequency of the term,
+which means we would encounter
+duplicated occurrences of the term.
+And so, for example, news.
+This term occurred in
+all the three documents.
+So the count of documents is three.
+And you might also realize we needed
+this count of documents or document
+frequency for computing some statistics
+to be used in the vector space model.
+Can you think of that?
+So, what waiting heuristic
+would need this count?
+Well, that's the IDF, right,
+inverse document frequency.
+So IDF is a property of the term,
+and we can compute it right here.
+So with the document account here,
+it's easy to compute the IDF either at
+this time or when we build an index or.
+At running time when we see a query.
+Now in addition to these
+basic statistics we also
+saw all the documents that matched news.
+And these entries are stored
+in a file called a Postings.
+So in this case it matched 3 documents and
+we store Information about
+these 3 documents here.
+This is the document id,
+document 1, and the frequency is 1.
+The TF is 1 for news.
+In the second document it's also 1, etc.
+So from this list that we can get all
+the documents that match the term news.
+And we can also know the frequency
+of news in these documents.
+So, if the query has just one word,
+news, and
+we can easily look up in this
+table to find the entry and
+go quickly to the postings to fetch
+all the documents that match news.
+So, let's take a look at another term.
+Now this time let's take a look
+at the word presidential.
+All right, this word occurred
+in only 1 document, document 3.
+So, the document frequency is 1, but
+it occurred twice in this document.
+And so the frequency count is 2, and
+the frequency count is used for,
+in some other retrieval method
+where we might use the frequency
+to assess the popularity of a,
+a term in the collection.
+And similarly, we'll have a pointer
+to the postings, right here.
+And in this case there is
+only one entry here because
+the term occurred in just one document.
+And that's here.
+The document id is 3,
+and it occurred twice.
+So this is the basic
+idea of inverted index.
+It's actually pretty simple, right?
+With this structure we can easily fetch
+all the documents that match a term.
+And this will be the basis for
+storing documents for our query.
+Now sometimes we also want to store
+the positions of these terms.
+So, in many of these
+cases the term occurred
+just once in the document so there's only
+one position, for example in this case.
+But in this case the term occurred
+twice so it would store two positions.
+Now the position information is
+very useful for checking whether
+the matching of query terms is actually
+within a small window of, let's say,
+five words, or ten words,
+or whether the matching of,
+the two query terms,
+is in fact a phrase of two words.
+This can all be checked quickly by
+using the position information.
+So why is inverted index good for
+faster search?
+Well we just talked about the possibility
+of using the two ends
+of a single-word query.
+And that's very easy.
+What about a multiple-term queries?
+Well, let's look at the,
+some special cases of the Boolean query.
+A Boolean query is basically
+a Boolean expression, like this.
+So I want the relevant document
+to match both term A AND term B.
+All right, so
+that's one conjunctive query.
+Or, I want the relevant documents
+to match term A OR term B.
+That's a disjunctive query.
+Now how can we answer such
+a query by using inverted index?
+Well if you think a, a bit about it,
+it would be obvious.
+Because we have simply to fetch all
+the documents that match term A and
+also fetch all the documents
+that match term B.
+And then just take the intersection
+to answer a query like A and B.
+Or to take the union to
+answer the query A or B.
+So this is all very easy to answer.
+It's going to be very quick.
+Now what about the multi-term
+keyword query?
+We talked about the vector space model for
+example.
+And we would match such a query with
+a document and generate a score.
+And the score is based on
+aggregated term weights.
+So in this case it's not a Boolean query,
+but
+the scoring can be actually
+done in a similar way.
+Basically it's similar to
+disjunctive Boolean query.
+Basically It's like A OR B.
+We take the union of all the, documents
+that matched at least one query term,
+and then we would
+aggregate the term weights.
+So this is a, a, a basic idea of
+using inverted index for
+scoring documents in general.
+And we're going to talk about
+this in more detail later.
+But for now,
+let's just look at the question,
+why is inverted index, a good idea?
+Basically, why is it more efficient than
+sequentially just scanning documents?
+Right?
+This is, the obvious approach.
+You can just compute the score for
+each document, and
+then you can score them,
+sorry, you can then sort them.
+This is a, a straightforward method.
+But this is going to be very slow.
+Imagine the web.
+It has a lot of documents.
+If you do this, then it will take
+a long time to answer your query.
+So the question now is, why would the in,
+the inverted index be much faster?
+Well it has to do with
+the word distribution in text.
+So, here's some common phenomenon
+of word distribution in text.
+There are some language-in, independent
+patterns that seem to be stable.
+And these patterns are basically
+characterized by the following pattern.
+A few words like the common words
+like the a, or we, occur very,
+very frequently in text.
+So they account for
+a large percent of occurrences of words.
+But most word would occur just rarely.
+There are many words that occur just once,
+let's say, in a document,
+or once in the collection.
+And there are many such single terms.
+It's also true that the most
+frequent words in one corpus
+may actually be rare in another.
+That means, although the general
+phenomenon is applicable or
+is observed in many cases,
+the exact words that are common
+may vary from context to context.
+So this phenomena is characterized
+by what's called a Zipf's Law.
+This law says that the rank
+of a word multiplied by,
+the frequency of the word
+is roughly constant.
+So formally if we use F of
+w to denote the, frequency,
+r of w to denote the rank of a word,
+then this is the formula.
+It basically says the same thing,
+just mathematical term, where C is,
+basically a constant, right, so as, so.
+And there is also
+parameter alpha that might,
+be adjusted to better fit
+any empirical observations.
+So if I plot the word
+frequencies in sorted order,
+then you can see this more easily.
+The x-axis is basically the word rank.
+And this is r of w.
+And the y-axis is the word frequency,
+or F of w.
+Now, this curve basically shows
+that the product of the two
+is roughly the constant.
+Now, if you look these words, we can see.
+They can be separated into three group2s.
+In the middle it's
+the immediate frequency words.
+These words tend to occur in
+quite a few documents, right?
+But they're not like those
+most frequent words.
+And they are also not very rare.
+So they tend to be often used in in,
+in queries.
+And they also tend to have high TFI
+diff weights in these intermediate
+frequency words.
+But if you look at the left
+part of the curve.
+These are the highest frequency words.
+They occur very frequently.
+They are usually stopper words,
+the, we, of, et cetera.
+Those words are very, very frequently.
+They are, in fact,
+a too frequently to be discriminated.
+And they generally are not very
+useful for, for retrieval.
+So, they are often removed, and
+this is called a stop words removal.
+So you can use pretty much just the count
+of words in the collection to kind
+of infer what words might be stop words.
+Those are basically
+the highest frequency words.
+And they also occupy a lot of
+space in the invert index.
+You can imagine the posting entries for
+such a word would be very long.
+And then therefore,
+if you can remove such words,
+you can save a lot of
+space in the invert index.
+We also show the tail part,
+which is, has a lot of rare words.
+Those words don't occur very frequently,
+and there are many such words.
+Those words are actually very useful for
+search,
+also, if a user happens to be
+interested in such a topic.
+But because they're rare it's
+often true that users are,
+aren't the necessary
+interest in those words.
+But retain them would allow us to
+match such a document accurately,
+and they generally have very high IDFs.
+So what kind of data structures should
+we use to to store inverted index?
+Well, it has two parts, right?
+If you recall we have a dictionary,
+and we also have postings.
+The dictionary has modest size,
+although for
+the web, it still wouldn't be very large.
+But compared with postings, it's modest.
+And we also need to have fast,
+random access to the entries
+because we want to look up
+the query term very quickly.
+So, therefore, we prefer to keep such
+a dictionary in memory if it's possible.
+Or, or, or if the connection is not
+very large, and this is visible.
+But if the connection is very large,
+then it's in general not possible.
+If the vocabulary size is very large,
+obviously we can't do that.
+So, but in general, that's our goal.
+So the data structures
+that we often use for
+storing dictionary would be direct access
+data structures, like a hash table or
+B-tree if we can't store everything
+in memory of the newest disk.
+And but to try to build a structure that
+would allow it to quickly look up our
+entries.
+Right.
+For postings, they're huge, you can see.
+And in general, we don't have to have
+direct access to a specific engine.
+We generally would just look up a,
+a sequence of document IDs and
+frequencies for all of the documents
+that match a query term.
+So we would read those
+entries sequentially.
+And therefore,
+because it's large and we generate,
+have store postings on disk,
+so they have to stay on disk.
+And they would contain information such
+as document IDs, term frequencies, or
+term positions, et cetera.
+Now because they're very large,
+compression is often desirable.
+Now this is not only
+to save disk space and
+this is of course,
+one benefit of compression.
+It's not going to occupy that much space.
+But it's also to help improving speed.
+Can you see why?
+Well, we know that input and
+output will cost a lot of time in
+comparison with the time taken by CPU.
+So CPU is much faster.
+But IO takes time.
+And so by compressing the inverted index,
+the posting files will become smaller.
+And the entries that we
+have to read into memory
+to process a query done,
+would would be smaller.
+And then so we, we can reduce
+the amount of traffic and IO.
+And that can save a lot of time.
+Of course, we have to then do
+more processing of the data
+when we uncompress the,
+the data in the memory.
+But as I said, CPU is fast, so
+overall, we can still save time.
+So compression here is both
+to save disk space and
+to speed up the loading
+of the inverted index.
+[MUSIC]
+

@@ -1,0 +1,834 @@
+[MUSIC]
+We've seen the power and
+flexibility of loops.
+Now, we're going to see another powerful
+feature, one that's unique to MATLAB.
+It's called logical indexing.
+Let's start with a problem and
+its traditional solution.
+Given a vector, v, of scalars,
+create a second vector, w, that contains
+only non-negative elements of v.
+Doesn't sound too complicated.
+In fact, though, there are a couple
+of subtle things in this problem
+that you might not get right
+the first time you try solve it.
+Here's a solution.
+Let's go through it line by line.
+First, we initialize w
+to be the empty array.
+We've got to do this because
+that's the answer we need
+if there are no non-negative
+elements in v at all.
+We don't initialize w, then for
+the no non-negative elements case
+w will end up being undefined
+at the end of our program.
+In the second line,
+we introduce a new variable called jj and
+set it to 0.
+Jj is necessary because, we'll need
+to add elements to w one by one.
+And we'll use jj to specify
+the position in w at which to add them.
+It can't be the same
+index that we used for
+v because they won't remain in sync as we
+copy some elements of v, but not others.
+So we've got to have two different
+indices for the two vectors.
+And we got a simple for loop, whose loop
+index ii can be used to index into v.
+We need to hit every element of v, so
+ii goes from 1 to the length of v.
+At each iteration of the loop,
+we need to check whether the current
+element of v is non-negative.
+In other words,
+whether it is greater than or equal to 0.
+We do that with an if statement.
+If v(ii) is non-negative,
+we need to insert it into w.
+We do that by first incrementing jj by 1.
+Remember, it started at 0.
+And we need to do that every time
+there's a new element to add.
+Then, we copy the number into
+w at the correct position.
+W(jj) equals v(ii).
+Again, notice how we use one index for
+w, and another one for v.
+And that's it.
+The remaining two lines are just the end
+keywords closing the if statement and
+the for loop.
+Handling jj is a little tricky.
+But it's not terribly complicated.
+And this is the way you do it with
+the typical programming language.
+But MATLAB is not a typical
+programming language.
+MATLAB provides a much more
+elegant intuitive solution.
+A solution that's more, well, MATLAB like.
+Let's start with the solution
+that we've come up with so far.
+Well, with MATLAB,
+we don't need to mess with jj at all.
+Let's get rid of that.
+There, jj's gone.
+And now we're assigning v(ii) to w.
+That's not we want.
+What we really want to do is stick
+v(ii) onto the end of w, like this.
+The hard work is done by the single
+expression on the right of the equal sign.
+It constructs a vector that has all of
+the elements that are currently in w.
+Followed by v(ii).
+Left bracket, w, v(ii), right bracket.
+And we assign this new vector back to w.
+It's much clearer here that we
+are appending v(ii) to the end of w
+than it was with the other version.
+Not to mention it's shorter.
+MATLAB is just so nice to work with.
+And folks, it gets even better.
+The ultimate MATLAB solution
+to this problem and
+many like it is one single line of code.
+In fact, it's less than ten characters.
+If I could have the drumroll, please.
+Really?
+Okay, we don't have the drum.
+Anyway, here it is.
+It's concise, it's elegant,
+and it solves the problem.
+If you don't believe me, just pause
+this video and try it out in MATLAB.
+I'll admit that this syntax
+looks a bit unusual.
+This is an example of logical indexing,
+and it definitely needs some explaining.
+What it says is that the elements of
+w are set equal to the elements of
+v wherever those elements
+are greater than or equal to 0.
+In order to understand
+how it works though,
+we first need to look at logical arrays.
+We've actually seen
+logical arrays already.
+We just didn't call them that.
+Last week, we saw that MATLAB considers
+everything that's non-zero as
+logically meaning true and
+zero as logically meaning false.
+And when we ask MATLAB to give
+a logical true value, it returns 1.
+The greater than operation
+was applied to each
+corresponding pair of
+elements in the two vectors.
+Like 4 and 5, 4 isn't greater than 5,
+so it gave 0 for false.
+Minus 1 is greater than minus 9, so
+we get a 1 for true, and so on.
+In effect, it goes through each pair,
+asserting that the left element of the
+pair is greater than the right element,
+and it returns 1 when the assertion
+is true, and 0 when it's false.
+The result is a vector of logical values.
+These are not just ordinary numbers.
+The ones and zeros that are output
+by the greater than operator or
+by any other relational
+operator are special.
+They belong to a special type of
+value called the logical value.
+We'll see later that there are lots
+of types of values in MATLAB.
+But for now, we'll just point out that
+we've seen ordinary numerical values
+like you get when you do arithmetic.
+We've seen characters and
+now we've seen logical values, like
+you get from the relational operators.
+And we just got a logical
+array in the form of a vector.
+Well, there are other ways to produce
+arrays of logical values too.
+Consider this command.
+So what happened here?
+The first element of this vector is true,
+2 is greater than 1.
+So, we return a 1 for true.
+Second element is false.
+So, here comes a zero.
+These are logical values.
+And what about the third one?
+Well, we've got 3 greater than 2,
+that's true.
+And 4 greater than 5, that's false.
+So, true anded with false gives false.
+But, then we apply the not operator here,
+symbolized by this tilde, to the false.
+And that turns is into true.
+[LAUGH] And well finally,
+we get a true here.
+Now, we knew that these results
+here were logical values
+because the relational
+operators give logical values.
+Well, now we'll tell you that
+the logical operators, in additional
+to the relational operators, return,
+well, of course, logical values also.
+So this is an array of logical values.
+It's a logical array.
+We can also create a logical
+array using a built-in function.
+Can you guess what its name is?
+Well this ought to give you a clue.
+No, the name isn't holmes.
+The name is logical.
+And it takes each one of
+these inputs in this vector.
+And it looks at every
+element in this vector.
+And every element that is non zero
+is turned into true as a one and
+the zeroes become logical zeroes.
+All of these are of the type logical.
+A very nice feature of MATLAB
+is that lets you index into
+an array using a logical
+array of the same size.
+Let's gin up a row vector with 3 elements,
+called A.
+Easy.
+Now we are going to index into A,
+using the logical vector of the same size.
+Namely C.
+So what does A, so what does A left
+parenthesis C right parenthesis mean?
+Well, to MATLAB,
+it means that it should select those and
+only those elements of A where
+C has logical value true.
+So it did that, and
+the result is a two-element
+vector consisting of the first and
+third elements of A.
+When an array of logical values,
+instead of ordinary numbers,
+is put in parentheses after the name of
+an array, this is always the way it works.
+The output is an array of values located
+at the positions where the logical
+values are true.
+The output array is usually smaller
+than the input array, as it was here.
+It's called logical indexing.
+Here the first and
+third elements of the vector C were true.
+First and third here.
+The second was false.
+So in this case,
+MATLAB returned a two-element row vector
+consisting of the first and
+third elements of A.
+Let's put holmes to work on another case.
+We got a random set of integers in r.
+And as usual I have initialized
+the pseudo random number generator
+to make it easier for
+you to reproduce what I'm doing.
+I'll do that every time.
+Let's look at holmes again, there.
+Two ones, two zeroes, two ones.
+And now, let's do this.
+As you can see the ones
+picked up the 9 here,
+the 10 here, the 7, and the 1.
+And the zeros cause the 2 and
+the 10 to be omitted.
+So the output is 9, 10, 7, 1.
+This sort of indexing can be
+quite a mystery at first, but
+once you see what holmes is actually doing
+here, it's not hard to understand at all.
+In fact, you might say it's elementary.
+And now we're ready to use logical
+indexing to do something useful.
+Suppose we've measured ten voltages and
+saved them in a vector v.
+Furthermore, suppose we know that if
+our measurement process were perfect,
+there wouldn't be any negative numbers.
+So we want to remove these two negative
+values here, minus 2 and minus 3.
+Well we could of course just remove
+them by hand from this little vector.
+But suppose that this is a really long
+vector, maybe thousands of elements.
+So we need a code that
+will do it automatically.
+Well, we can do it this way.
+First, we make a logical vector like this.
+Let's look at this statement carefully.
+We know this is an assignment
+statement because of this equals here.
+On the left is the variable keepers,
+on the right is the expression
+we're going to evaluate, and
+then assign the result to keepers.
+Well, that's v greater than or equal to 0.
+Well, the greater than or equal,
+I call the relational operators,
+is an array operator.
+So the zero is compared to every element,
+in turn, of v.
+And we get that the first one and
+the second one are greater or
+equal to zero, but the third one,
+as you can see, minus 2 here, is not.
+The fourth, fifth, sixth, seventh,
+we get to the eighth, that's the minus 3.
+It's not.
+And the other two are, so we've got
+all these ones and zeros representing
+the truth and falseness of the assertion
+that v is greater than or equal to 0,
+which means each element of v is asserted
+to be greater than or equal to 0.
+Now we can use keepers to do
+logical indexing on v like this.
+We're going to set the result into w.
+These two zeros, in other words, false,
+causes the corresponding elements in v,
+the minus 2 and the minus 3,
+to be omitted, and
+then this shorter vector is assigned to w.
+We did all this with just two commands.
+That's pretty good.
+But one command would be better.
+One line, one command, same result.
+It has to be the same result because we're
+doing exactly the same logical indexing.
+We just avoided the step of storing the
+logical array produced by the expression
+greater than or equal to 0 in keepers.
+And we used it directly in
+the logical indexing here.
+You should recognize this command,
+by the way, because it's the same command
+that I showed you on the slides that
+replaced eight lines of for loop code.
+This version is a lot easier to
+program than the for loop version, and
+it runs faster.
+Ten to 20 times faster.
+We'll show you how to time
+code in just a little bit.
+In this speedy little command, we use
+the vector v in relational expression here
+to construct a logical array that we
+use to index into the same vector, v.
+But the logical array doesn't have to
+be derived from the array indexes.
+For example, suppose that when
+the voltages in v were measured,
+there was a detector running that
+measured a confidence value for
+each measurement, and the values range,
+say, from 100 down to zero.
+Like this.
+We can use this vector to discard
+values in the vector v for
+which we have low confidence.
+Let's say we want to keep
+only the values in v for
+which the measurement
+confidence was at least 10.
+We can do that with this command.
+So what happened here,
+confidence was compared with 10.
+This is an array operation, so
+each element of confidence is checked to
+see if it's greater than or equal to 10.
+And if it is, we get true,
+otherwise, we get false.
+So we get true, true, true, true, true,
+true, false, false, and then a true.
+Well that's used to index into v.
+Everywhere there's a true,
+we get something out of v,
+when there's a false, well, it's omitted.
+And let's see what v looks like, here's v.
+So that's going to be true, true,
+true all the way till we get to these next
+to the last elements, these two here.
+And they are omitted,
+as you can see between the 30 and the 45,
+those elements are gone.
+If we wanted to keep, say, the ones with
+a confidence of 20 or more, like this,
+then fewer elements in V survive.
+So now you know how to use
+logical indexing to omit
+elements that are smaller
+than some threshold value.
+Now, of course, you could omit them if
+they were larger than the threshold, or
+if they were equal to some bad value,
+et cetera.
+But there's another way to
+select elements to omit.
+Let's look at this example.
+There, we have another ten
+element row vector called v0.
+Now look at this statement.
+Here we're using v and
+v0 in this relational operation here,
+to compare each element of v with
+the corresponding value in v0.
+We can think of v0 as a whole
+vector of threshold values, one for
+each element in v.
+And we'll get true only if v's element
+is greater than v0's for each element.
+Since we're using the resulting
+logical vector to index into v here,
+we get rid of each element in v that's not
+greater than its particular threshold.
+So if we look all the way back up
+here at v, first element of v,
+56, is greater than the first element in
+this threshold vector, so it gets kept.
+The next element, 34, is not greater
+than the threshold 35, so it disappears.
+The minus 2, now, it's bigger than
+minus 8, so it shows up, and so on.
+Okay, we've killed off a lot of elements
+with logical indexing, but it's important
+to point out that the vector that we've
+been indexing into has not changed.
+The omission takes place
+when the expression on the right
+of the equals sign is evaluated.
+So up here for example,
+v confidence greater than or
+equal to 10, that's evaluated.
+And we come up with some truths and
+falses.
+And that's applied to v, and
+the expression produces this vector.
+This vector is then assigned to V10.
+But v remains unchanged.
+Well, there is another way to use
+logical indexing that does affect
+the vector being indexed into.
+The effect is not to remove elements
+though, but to change their values.
+You do that by using logical indexing on
+the left side of the assignment statement.
+So suppose, for example,
+that you wanted to replace all
+the negative values of v with zeroes.
+First, let's remind ourselves what's in v.
+There.
+Now let's replace all
+the negative values with 0.
+That's these two,
+the minus 2 and the minus 3.
+We're going to replace those and
+here's how we do it.
+Sure enough, minus 2 is now 0.
+The minus 3 is a 0,
+everything else is untouched.
+So here,
+v minus 0 produces a logical array again,
+with true values only where the values
+of the elements are less than 0.
+And the meaning of this statement is
+that the value on the right side,
+the 0, is copied into those two elements,
+and only those two elements.
+Notice that no elements in v are lost.
+We still have a 10 element vector here,
+but some of their values are changed.
+Two of them, in this case.
+This might be a helpful summary of what's
+going on with these two different ways to
+use logical indexing.
+Logical indexing on the right, okay,
+over here, produces a subset of elements.
+Logical indexing on the left
+changes the subset of elements.
+In this case they were changed to zero.
+But you can also change each
+one to a different value.
+Let's see how to do that.
+Start with the same v again.
+Now let's assign 100 to
+the first negative element, and
+200 to the second one,
+using logical indexing.
+When you have a vector of two or more
+values on the right, as in this example,
+the link to the vector ha s to equal
+number of values that will be picked
+out on the left, which is two.
+And so what happened,
+this element was negative,
+and this element was negative, so
+they were picked out for assignment.
+And the first value here was assigned
+the first one, so the minus 2 became 100,
+and the second value was
+assigned to the second ones.
+So the minus 3 became 200.
+And now, let's do both left and
+right logical indexing in one command.
+First, let's get that
+original V back again.
+There it is.
+Now let's suppose you need to add 100 to
+each negative element for some reason.
+I don't know why.
+Here's how you do that
+with logical indexing.
+So what's happening here?
+Well first,
+the v indexed with v less than 0 here,
+on the right side,
+produces a two-element vector
+containing only the values minus 2 and
+minus 3.
+Second, 100 is added to that
+vector to get the two-element
+vector containing a 98 and a 97.
+Third, on the left side of the equal sign,
+logical indexing picks out only the two
+elements of v that have negative values,
+which happen to be the same elements that
+we looked at over here on the right.
+The minus 2 and the minus 3.
+The minus 2 is at position one,
+two, three.
+The minus 3 is position ten, nine, eight.
+Three and eight, elements three and eight.
+And fourth, it assigns the first value
+that it got over here, which was 98,
+to element three,
+the first one that was less then zero.
+And the second element that I got
+over here, which was a 97, to
+the next element that was less then zero,
+which was element eight minus three.
+And so now it's 97.
+None of the other values were touched.
+And that's how you use logical arrays on
+the left and right in the same command.
+So far, we keep saying logical arrays, but
+we keep using only
+logical vectors Vectors.
+Matrices and higher dimensional arrays
+work fine with logical indexing, but
+there's a big surprise coming.
+Let's clear the screen and
+get ready for it.
+[SOUND] We'll start by making
+a two by three array [SOUND] and
+now we'll use logical indexing to
+set a variable B equal to A but
+keeping only the elements of
+A that are greater than 2.
+Before I hit return, I'll point out that
+this is just a normal right-side logical
+indexing that we've seen before.
+A greater than two will return true at
+every element that's greater than two so,
+it'll return true here,
+here, here, here and
+it'll return false for elements one and
+two here on the first row.
+That logical array of trues and
+falses is then indexed
+Into A and it'll cause the one and
+the two to be omitted, and
+the three and the four and
+the five and six will come on through.
+So, let's hit return and see what happens.
+Surprise!
+What happened to our nice,
+two by three array?
+And where'd this column vector come from?
+Well, remember way back at
+the beginning at lesson two,
+what we'd first said about arrays?
+No?
+Well I guess I'm not surprised
+that was a long time ago.
+Okay, now I'll say it again.
+We said that an array is just a set of
+numbers arranged in a rectangular pattern.
+And that each row has to have the same
+number of elements as all the other rows.
+You know, like this.
+Well if we were to simply omit one and
+two on row one, and
+leave the rest of it the same.
+This row would just have
+this one element three.
+Row two would still have three elements.
+And three would be hanging out
+way over here on the right.
+It looks something like this.
+[SOUND] I'm not sure
+what you'd call that.
+It's sure not an array.
+Well, what Matlab does is give up on
+keeping a 2 x 3 shape that a has,
+it just makes a column vector by stacking
+up the columns of a, column one on top and
+column two and column three
+before it does its logical index.
+Well, let's see what that vector looks
+like first by using the single colon
+as an index.
+Do you remember that?
+We showed how to do that in Lesson three.
+So, A looks like this, and
+the column version Looks like this.
+[SOUND] There we've used that
+single colon to index into A and
+that gives us the column version of A.
+You can see that it starts
+with the first column and
+then the second column, and
+finally, the third column.
+This is called column major order and
+that's why we gave it that name.
+Now that it's converted
+A to a column vector,
+in column major order, Matlab applies
+the logical indexing to the column vector.
+Like this.
+And there's the result, just the same
+as what we got directly up here.
+This is a strict rule.
+When you use logical indexing to an array
+on the right side of an assignment,
+then if the array is not a simple vector,
+it will always be converted to
+a column vector in column major order.
+And by strict I mean, well,
+strict, no exceptions.
+Here not one single element of value
+was omitted by the logical indexing on
+the right here.
+They're all here.
+So there's not one single
+reason to change it's shape.
+Yet it's shape was changed
+to a column vector.
+Rules are rules.
+This is logical indexing.
+A is not a vector, so the results
+are column vector in column major order.
+Case dismissed.
+In MatLab's court there are no appeals.
+but wait If you use logical indexing
+on the left side of an assignment,
+none of this column
+vector business happens.
+Logical indexing on the left of
+an equal sign just changes the value,
+if you'll remember.
+It doesn't omit any elements, so
+the problem of keeping the array
+rectangular never even comes up.
+So there's never really any need to
+convert the array to a column vector and
+the array just keeps it's same dimensions.
+For example here's how to set all fo
+the negative elements of a 5 x 5 array
+to zero.
+I've used the random normal function here,
+which gives numbers distributed around
+zero, both positive and negative.
+Now let's get rid of those negative
+numbers, replace them with zeros.
+[NOISE] The eight negative values
+have been replaced by zero.
+And A is still a five by five array.
+And it can keep its same dimensions,
+because no elements are emitted
+by indexing on the left.
+And you can replace these eight values
+with eight different values, like this,
+for example.
+[NOISE] What MatLab does is take
+the eight values on the right,
+the 101 through 108, and
+assign them to the eight
+elements that were singled
+out by the logical indexing on the left.
+An important feature is revealed here.
+Logical indexing on the left assigns these
+values to the elements that were singled
+out in column major order.
+So it scans the first column up here,
+looking for a negative number.
+It finds one here on the third row,
+and it assigns the first value
+from the right, which was 101.
+So this becomes 101.
+It continues looking on that column for
+negative numbers, doesn't find any.
+Since it's doing column major order,
+it goes to the next column,
+finds one right up here at the top.
+It gives it the next value from
+the list on the right, which is 102.
+You see that shows up.
+Then it finds another one immediately,
+gives that 103.
+Finds nothing more on this column,
+goes to the next column and so on.
+Until it's replaced all eight
+negative values with all eight values
+from the right and it's done right here.
+It doesn't make any
+difference what the shape is,
+the array of values on the right,
+so long as there are eight of them.
+It could be a two by four array.
+Or an eight by one column vector.
+It works the same.
+In fact,
+let's do the column vector version.
+I'm tired of looking at a so
+I used a semicolon to
+suppress printing this time.
+A single quote Up here, transposed the row
+vector 101 to 108 to a column vector,
+but the result is exactly the same,
+as you can see by comparing here.
+But it makes a big difference if
+the number of elements on the right
+is different from the number of elements
+found by logical indexing on the left.
+That's just a non-starter.
+But if you get the numbers to match up,
+the assignment works,
+the numbers are assigned in column
+major order, and A retains its shape.
+So we've seen that MATLAB converts
+a non vector to a column vector and
+logical indexing happens on
+the right of the equals sign.
+And it leaves the shape the same, and
+logical indexing happens on the left.
+Wait.
+We saw a few minutes ago that you can
+have logical indexing on both sides in
+the same command.
+What happens then?
+You can't have it both ways.
+Looks like MATLAB has finally
+painted itself into a corner.
+Let's look at an example.
+Suppose our task now is to find
+the elements in A that are greater than
+0.1 and replace each one of
+them with its square root.
+First we'll get A back.
+Okay, here goes.
+So we've got logical indexing on the left,
+which means A retains its shape, and
+we got logical indexing on the right,
+which means A is changed
+into a column vector.
+Let's hit Return and
+see if smoke comes out of this computer.
+Ha.
+Rules are rules, huh?
+Well MATLAB, how do you explain this one?
+We've got logical indexing on the right,
+but the shape of A stayed the same.
+Well, as much as we might want to catch
+MATLAB in a contradiction, we haven't.
+It applies logical indexing on the right
+to omit all the elements of A that aren't
+greater than 0.1,
+which leaves 17 elements.
+And it puts those 17 elements into
+a column vector and column major order.
+We don't see it anywhere,
+but that's what's happened.
+It used that column vector as
+input to the square root function,
+which returned a column
+vector of 17 square roots.
+Then over here on the left, it used
+the same logical indexing that we used on
+the right and identified the same set of
+17 elements as needing to get new values.
+And then finally, it assigned those 17
+values in the same column major order
+that had generated them over here.
+It all works perfectly.
+MATLAB wins again.
+If you didn't know what's going on here,
+this command would be very cryptic,
+but a MATLAB programmer,
+like you, knows what's happening.
+And it's all self-consistent and logical.
+It is logical indexing, after all.
+If you were using C or Java, on the other
+hand, you'd have to write two nested for
+loops with an if statement in the body
+to get this thing accomplished.
+You can do that in MATLAB too, of course.
+Come to think of it,
+as an example you should implement
+the same thing without logical indexing.
+Well, we're done with our introduction
+to logical arrays except for
+one quick example.
+It's an example of multiple arrays all
+logically indexed in the same statement,
+just to show you that it works.
+There, we've got an array A and
+B, they're both the same size.
+Here each element in A that's larger than
+the corresponding element in B, so 89, for
+example, is larger than 34, is replaced by
+the difference between the two elements.
+So 89 minus 34 shows up here.
+11 doesn't change,
+because it's not greater than
+the corresponding element in B.
+It's still 11.
+If you spend a minute or two analyzing it,
+you'll see that the rule is applied, that
+the same number of elements is produced
+on the right and consumed on the left.
+Well, with this example we say
+goodbye to logical indexing.
+But don't forget it whenever
+you need to remove or
+change selected elements in arrays.
+Logical indexing is a powerful MATLAB
+feature that can save you from writing
+many loops.
+Use it wherever you can.
+[MUSIC]
+[APPLAUSE]
+

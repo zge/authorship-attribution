@@ -1,0 +1,280 @@
+Let's go through a few examples now that
+show how maximum entropy models behave.
+And in particular, we see how maximum
+entropy models don't double count features
+in the same way that the naive Bayes models 
+did. So, for these examples, we're assuming
+this teeny empirical data set here. So
+that there are two features, each of which
+can have two values. So there's little or
+big B and there's little or big A, and
+we've got this distribution of the six
+data points. And so these are the features
+that we're going to put in our models. So
+the first feature is to say that we have
+a probability distribution, and so once we
+put in that feature, the maximum entropy
+model is to say okay, give a quarter of
+the probability to each outcome.
+Now the second constraint we're going to 
+put in the model is that we're going to say,
+well, but wait a minute there are a lot of big
+A's in this data. So our second feature is
+this red feature. And the expectation of
+that red feature in the empirical data is
+two-thirds. So we add a parameter to the
+model that captures that. And so then the
+distribution that we get is that two-thirds 
+of the data has to be in this column,
+and so each of these cells is
+uniformly one-third, one-third.
+Well suppose what happens, is we just add 
+a second feature to the model which is
+actually looking at exactly the same
+thing and saying that the exp-,
+expectation of getting a big A must be
+two thirds. Well, we now have two
+parameter weights, lambda prime and lambda
+double prime. But what we're gonna
+optimize the model to do is to say, well,
+the sum of the expectations in this column
+must be two-thirds. And so, what is gonna
+happen, actually, is that the sum of
+lambda prime and lambda double prime is
+going to be the same as the value of the
+old lambda A. And we get exactly the same
+probability distribution right here.
+The effect of that in maximum entropy models 
+is that features that duplicate the evidence
+of other features tend to not get much
+weight. So, here's an example from our
+named entity model. So, what we're doing
+is predicting the named entity that goes
+on the next token here. So we're tagging
+along a word at a time and we're doing
+at Grace Road, and we've said that at is other,
+and we're going to want to give a named
+entity tag to Grace. And our two candidates 
+in these examples are person or location.
+So you could reasonably think that Grace 
+is a good, the word Grace is a good indicator
+of something being a person and should 
+therefore have a high weight for person.
+And if you look what's actually in the 
+model, well it does have a positive vote
+right here for Grace being a person. 
+But it's a fairly weak positive vote.
+And a lot of reason why it's a weak positive 
+vote is actually just knowing the letters,
+the word starts with G, is actually 
+a rather strong indicator that
+something is a person and so the current
+word feature is a special case of this
+more general feature, that the beginning
+of the word starts with G. And so most of
+the weight goes to there, and there's only
+a little bit of positive weight on knowing
+what the current word is. Okay, now let's
+look at a more interesting example, where
+we have features that overlap but aren't
+exactly the same. So this time,
+here's our empirical data that we want to 
+model these three points of empirical data.
+So, as before we start off by constraining the
+values to probabilities and then as before
+we put in this red feature whose
+expectation is still two-thirds in the
+empirical data and so that gives us the
+same distribution before with the same
+parameter weight lambda A. Okay, but 
+what now if we want to an extra constraint
+to our model to capture the fact that there's 
+data over here. Well the obvious thing to do
+is to notice that capital B also has an
+expectation of two-thirds in the observed
+data. So let's add in a feature that's
+true if a data point has a capital B.
+And let's add that to our model with a
+weight of lambda B. You might be hopeful
+that that would mean that we model the
+data perfectly, but actually we don't.
+The maximum entropy distribution is this one
+here where we get 1/9th chance of little b
+little a, so we've smoothed the model a
+little which is maybe good, but we don't
+get a uniform distribution over the other
+points. We get weights of 2/9ths in these
+two cells and 4/9ths in this cell. So
+you're expecting almost half the
+probability mass to got to get in big A
+big B. If you think about it in terms of
+the parameter weights down here it's kind
+of obvious what's happening. That for the
+case of Big A, Big B, both of our features
+fire and so the weight that goes into the
+maxent formulation is the sum of lambda
+A and lambda B, and therefore its
+probability has to be much higher than the
+probabilities that are assigned to just
+lambda A and lambda B alone. Now there's
+no weight over here so you might have
+thought that that should still be
+probability zero, but remember that we do
+have to be observing the empirical
+expectations of the model. So the
+constraints of our model are that the
+probabilities here should sum to 2/3 and
+the probabilities here should sum to 2/3.
+And then we've added in this constraint,
+that the probability of this cell should
+be double the probability of this cell and
+if you work through those constraints, the
+maximum likelihood solution is precisely
+the one that's shown here, with four-ninths, 
+two-ninths, two-ninths and one-ninth.
+So what that shows is that maximum 
+entropy models don't model for free
+what statisticians call interaction terms.
+That if we want to say something special
+about how the culmination of having big A
+and big B behaves, we have to do that
+by putting in extra features that model 
+that. So here we have the same data
+as before. And we start off with the same
+two features as before. One way we can fix
+our distribution is that we can add in a
+third feature, which is true if both A and
+B are capitalized. Well the expectation of
+that feature in the observed data is 1/3.
+And so, that feature then determines 
+that the probability of this cell
+must be one third. Well, given our other 
+feature constraints coming off these
+other columns, here and here, then what 
+we get is that the probabilities are
+one third in each cell and we exactly
+model the empirical distribution
+including of course now that we do get
+probability zero for the remaining cell.
+I mean of course, that's not the only way
+that this could have been achieved.
+We could have instead, assigned a different
+feature F4, which is true in any of
+the situations of big A big B,
+big A little B, or little A big B.
+So, any of those three situations, it has 
+the value one and zero otherwise.
+And we can make a model with this feature 
+alone, and it would also give exactly
+the right distribution. So in general the 
+thing to take away from here is that a lot
+of the time we want to put in features that 
+model interaction terms or that model
+sets of data. I mean in particular natural
+language contexts commonly what you want
+is to have features that model natural
+classes, so something like a feature
+for the character is a digit, or the
+character is upper case, or
+the character is the letter e, regardless 
+of whether lowercase or uppercase.
+That those kind of natural classes make good 
+features because they'll cause the model
+to generalize in good ways. How though do we
+find out which features we want to put in
+our model? So, inside statistics, when
+you're looking at logistic regression
+models, and. maximum entropy models are
+basically equivalent to multiclass
+logistic regression models. What it's
+standard to do is to do a greedy stepwise
+search over the space of all possible
+interaction terms. I mean, that is, you
+don't evaluate every possible subset of
+features. 'Cause that number of possible
+subsets of features is exponential. But
+you start with a null model, and you
+one by one, add in the feature that is the
+most useful out of all of the features
+that aren't yet in the model, until you
+find a good model. That works reasonably
+well on traditional statistics cases
+where you have maybe ten or twenty
+features but for the kind of cases that we
+do in natural language processing
+we commonly use templates to generate
+thousands and thousands of features.
+So, for instance, if we just have a, what is
+the current word, feature, that's a
+feature that might have 50,000 values over
+a typical training set. But we don't only
+want that feature. We want features like,
+what is the previous word, what is the
+next word and often we want higher order
+features like what is the word pair of the
+previous word and the current word. So
+very commonly we get models with millions
+of features and indeed it's those models
+with millions of features that optimize
+the performance of our system. And well,
+we have millions of features we just can't
+be affording to train millions upon
+millions of models to try and work out
+what's the roughly optimal set of features
+even doing it in a greedy fashion, And so,
+therefore, in NLP it's actually normal
+that which features are put into the model,
+which interaction terms are put into the
+model is just being determined by hand
+based on linguistic intuition. Not always,
+there has been some work that has
+been looking at automatic ways to find
+good feature interactions, though, even
+that work is having to do some fairly
+heuristic things to make up for the fact
+that the search space is so big in this
+case. Now here's an example showing
+feature interactions at work. Here we
+have again this same example with
+at Grace Road. And so we have, what is the
+previous class? And so in our example
+the previous class was other. And so, what
+this says is that, if the previous class
+was other, it's very unlikely that the
+next word is a named entity.
+Those are strongly negatively weighted 
+features. And that's just really because
+most words aren't named entities, and if 
+you've just seen what came before you
+wasn't a named entity, probably 
+the next word isn't a named entity either.
+On the other hand  if you see a word that 
+is capitalized, so this is done by these
+word shape signature features so it's a 
+capitalized word. Well capitalized words
+in English are just normally proper nouns 
+and proper nouns are normally entities.
+So that then has, this feature have very 
+positive weights for both person and location.
+Okay so those two features are banging 
+against each other and if you add up
+those terms well certainly in this case 
+just the sum of those weights is
+approximately zero and so you're not 
+actually getting any particular evidence
+that a capitalized word after something of 
+class Other, is going to be a named entity.
+But that's just wrong. And so to get the model 
+to work better, what we have to do is put in
+an interaction term that models the conjunction 
+of the previous state being other and
+it being a capitalized word. And then when 
+we do that, we find that this interaction term
+votes quite strongly for either the--, 
+for the word being either a person or
+a location. When features overlap it's 
+actually quite subtle the way the weighting
+of the features works, but it's something 
+that's important to get a sense of to
+understand how maxent models work. And 
+I hope these examples have helped with that.

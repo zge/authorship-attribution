@@ -1,0 +1,338 @@
+We're ready to talk now about advanced
+methods of smoothing. Remember the add one
+smoothing that we had earlier. In add one
+smoothing we add one to the numerator and
+V to the denominator. Then we saw a
+generalization of that, at K smoothing,
+where we added K to the numerator, and kV
+to the denominator. And we can modify that
+slightly, we can create a new version,
+where we simply replace, introduce a new
+term, a new variable m=KV. And now we have
+a new way of writing add k smoothing that
+is going to be a helpful way of writing
+it. And the reason is, let's see on the
+next slide, that when we write. Write it
+this way, we can that what we're doing is
+adding to every. By gram we are adding a
+constant that's related to one over
+the vocabulary size. And instead of doing
+that we could add a constant related to
+the uni gram probability of the word that
+are backing off to. So the uni gram prior
+smoothing algorithm is a is an extension to add K
+that says instead of using one over V as
+our... to add to every adding some function
+of one over V to every bigram
+count, let's add something about the unigram
+probability. So, really, unigram prior is
+a kind of interpolation. It's, it's a
+variant of interpolation where we're
+adding the count and, in some function of
+the unigram probability to the bigram
+count. Nonetheless, although unigram prior
+smoothing works well, it still doesn't
+work well enough to be used for language
+modeling. Instead, the intuition used by
+many smoothing algorithms, Good-Turing
+smoothing, Kneser-Ney smoothing, Witten-
+Bell smoothing, is to use the count of
+things we've seen once to estimate the
+count of things we've never seen. The goal
+of a smoothing algorithm is to replace
+those unseen zeroes with something else.
+And all these algorithms say, look at the
+things you've seen once. Things that you
+saw once before are just like things that
+you haven't seen yet. And then you're
+gonna seem them once in the test set. So
+to see how this intuition works, we're
+gonna introduce some notation. And we're
+gonna, the notation we're gonna introduce
+is, big N, sub C. And that will mean the
+frequency of frequency C, meaning how
+many things occurred with frequency C. How
+big is the bin of things that occurred
+with frequency C. And that's hard to, to,
+it's not very intuitive. So let's look at
+some intuitions. So let's take a little
+sentence. Sam I am, I am Sam. I do not
+eat. And let's just look at the unigram
+count in there. So we have I occuring
+three times, Sam occuring twice, and do,
+not, and eat occuring once each time. So
+what is N sub one? How many things occur
+one time? Well, here they are, there are
+three of them. Three different word types
+occur one time. So N sub one is
+three. How'bout, how many things occur two
+times? Well, there's two of those. So N
+sub two is two. And how'bout things that
+occur three times, well only one of those
+happens. So N sum three is one. Alright,
+so now that we have the intuition about
+how to think about frequencies of
+frequencies, let's apply this to get the
+intuition for Good-Turing smoothing.
+Imagine you're fishing, this is a scenario
+invented by Josh Goodman, and you've
+caught ten carp, three perch, two
+whitefish, one trout, one salmon, and one
+eel. I don't know what kind of river or
+stream or ocean this could be, but
+nonetheless, you've caught eighteen fish.
+And I, we want to estimate how likely is
+it the next species is trout. And this is
+like words. We have maybe a word that's occurred
+ten times or three, or two, or one. We
+want to know how likely are these 1s to
+occur again. Well, there's been eighteen
+fish. The trout's occurred one time out of
+eighteen. So, the probability ought to be
+one out of eighteen. But now, let's ask
+how likely is it that the next species is
+a new species, catfish or bass, some
+species that we haven't seen before.
+Something that occurred zero times. Well
+the Good-Turing intuition says let's use
+our estimate of things we saw once to
+estimate these new things we've never seen
+before. So what's our estimate of things
+once? Our estimate of things once is drawn
+from N sub one, how many things occurred
+once? Well, what's N sub one? N sub one is
+three. So out of the eighteen things we
+saw, three of them were new, were things
+that only occurred one time. So let's use
+three out of eighteen as our estimate for
+things that, that we've never seen before.
+We're going to use our estimate of things,
+our count of things that we've seen once
+as our estimate of things that we've never
+seen before. We're going to reserve some
+probability mass for all those unseen
+things. Well now, if we do that, if we use
+three out of eighteen as our estimate for
+all the unseen things we could possibly
+see, how likely is it the next species is
+trout? Well I already asked you that
+question. But before I said one over
+eighteen, but that can't be true anymore.
+It must be less than one over eighteen
+because we've used some of our probability
+mass for the, from the original eighteen
+fish. We've saved some of that for these
+new fish that we've never seen before.
+We've removed 3/18 of our probability mass
+and so we now have to, have to discount
+all of our probabilities for the other fish
+downward a little bit. How are we gonna
+estimate what this discount factor is? How
+much should we reduce all of these counts.
+Here's the, equation for Good-Turing.
+Here's the answer to that question. Good-Turing tells us that the probability for
+things that we've never seen before, p
+star for things with zero frequency, is
+exactly what we used on the previous
+slide. N sub one, the count of things that
+have occurred with frequency one, over N.
+So it's just a, that's, we saw three out
+of eighteen was our number. Well, then,
+what do you do with, with things that
+didn't occur with zero frequency and
+for that we use the second part of the
+Good-Turing equation, which says the new
+count, C star, the Good-Turing count, is
+going to be N sub-C plus one divided N
+sub-C, times C plus one. So, let's just
+work that out, and we'll, we'll, we'll,
+give you an intuition for why this is in a
+second, let's work out the, work it out in
+an example first. So, unseen fish, let's
+say it's bass or catfish we haven't seen
+before, in the training set, the maximum
+likelihood probability, estimated
+probability is zero. We didn't see this in
+the training set out of zero words, so
+it's zero out of eighteen or it's zero.
+But smoothed, we're gonna use the new good
+touring probability. And that says its' n1
+out of n, n1 is three. We saw three things
+once on a previous slide out of eighteen
+things. And so the new probability is
+going to be 3/18. What about for something
+we've seen once, like trout? How are we
+gonna re-estimate the trout? Well, the
+maximum likelihood estimate tells us that
+there was the count of one. And so the
+maximum likelihood probability is one over
+eighteen. But the new good touring formula
+here says the count of trout should be C,
+C is one, C+1, so two times N sub two over
+N sub one. And that's going to be two x
+one-third, because n sub two is one from
+the previous slide, and n sub one is
+three, and two x one-third, so two-thirds.
+So our Good-Turing probability takes our
+c star from trout. And, and, and divides
+it by the eighteen things we've seen so
+it's two thirds slash eighteen or 1/27.
+So instead of the count of things we saw
+once before we had one over eighteen and
+now we've dropped it to two thirds.
+Two-thirds over eighteen. So we've
+discounted our probability from 1/18 to
+only two-thirds of an eighteenth, and we've
+used that extra discounted probability
+mass to account for the zero things we've
+never seen before. [sound] Let's look at
+the nice intuition for Good-Turing
+development by Herman Ney and his
+colleagues. Imagine the training set, this
+is of size c, and this would be a training
+set with words in it. This is a word, this
+is another word, here's another word,
+here's another word. And now let's, we're
+going to hold out iteratively words from
+this training set. Let's first take one
+word, that first word there, the blue
+word, and we'll just write it over here.
+And now we'll think about the training set
+without that word. That's got c minus one
+words. And this one held out word over
+here, the blue word. And now let's do the
+same thing with a different word. Let's
+take out let's say the second word. So we
+still have c minus one, if we include this
+guy. C minus one words left in training
+and then one more word over here in the
+held out set. And we'll do this c times so
+each time we'll pull out one word. So we
+pulled out words one by one and what we've
+created is a held out set that's of size
+c, but each word in it was created from a
+training set that was missing that word, a
+training set of size c-1 minus that word. So
+imagine each of these words and their
+corresponding training sets. And we can
+look at a picture developed by Dan Klein
+to think about this intuition. And here
+we've just turned those held out and
+training sets on their side. So I still
+have of length C, but I've now written
+them vertically. And now let's, think
+about this intuition. I've got C training
+sets, each one of size C-1 and
+then I have a, each one has a held out set
+of size one. And let's try to answer the
+question, what fraction of held out words,
+are unseen in training. Well. These words
+N sub-zero, the words unseen in
+training. Each word that's unseen in
+training occurred one time in the
+original training set, before we removed,
+we took out each of our held out data. If
+there was a word that occurred once in
+training, so it's in N sub one. Occurred
+once in training, and we take it out of
+its training set, leaving C minus one
+words, then that word occurs zero times in
+its training set, the new training set
+without that word. So the word, the held
+out words, N subzero of them, those N
+subzero words, were the words that were N
+sub one in their original training set,
+before you removed them. So. If we wanna
+know how many words are unseen in training, it's the words that occurred
+one time in the original training set, or N
+one over C. Well correspondingly if we
+want to know, let me clear that up, what
+fraction of words are seen k times in
+training, let's pick a k, perhaps there
+will be two, so we pick n sub two, then
+the number of things that occur two times
+in our held out set is the number of
+things that occurred three times in the
+original training, before we removed one,
+one copy of each of those words, so now
+they occur only twice. So we need to think
+if we wanna know how many words occurred K
+times in training to estimate that, it's
+really the words that occur K+1 times
+in our original training set. And then
+we're gonna wanna we're gonna wanna
+multiply that by the number of words that
+occur, each of those words occurs in k
+plus one times so k plus one were
+occurrences of the N sub k plus one bin
+each of which has N sub k plus one words
+in it and we'll express it as a fraction
+out of the total words c, remember the
+total words were c. So that's the fraction
+of held out words seen k times in training.
+And, that means in the future, we expect
+K+1 times N sub K+1 over C of the words to
+be those with training count K. And since
+there're N sub K words with training count
+K, we wanna, this, this fraction, this
+probability, we wanna distribute that over
+N sub K words. So each of
+those N sub K words is gonna occur with
+probability K plus one times N sub K+1
+over C over N sub K, because we're
+distributing it over those words. And that
+means that the expected count would be
+multiplied back by C again to turn from a
+fraction back into a count. The expected
+count of words that occur with training
+count K, K sub star, is K plus one
+times the ratio of N sub K plus one
+over N. Sub K. So one thing we talked
+about. We always compute the count n sub k
+from n sub k plus one, but what do we do
+for words that are in fact the largest
+set, the k plus the largest number? Let's
+say that the word the is in fact the word
+that occured most frequently in the
+corpus. We don't have a more frequent word
+to estimate from. So for large k, this
+Good-Turing estimator doesn't work well
+because there are lots of words that may
+never have occured, let's say 4,418 times,
+or even 3,722 times. We're going to have
+some gaps and so we'll have some zeros. So
+maybe the word the. And this is some other
+word, of, and there's a missing word in
+here, and there's missing words here. So
+we can't always using the n+1 word to do
+the estimation. And a simple replacement
+for that, in fact an algorithm called
+Simple Good-Turing, is after the counts
+get unreliable, after the first, you know,
+first few counts, we just replace our
+estimator with some kind of a best fit power law. So we
+don't actually use Good-Turing with each
+of these higher order numbers. We just use
+them for the lower bins. So let's look at
+the resulting Good-Turing numbers from one
+example. So here's numbers from, a Church
+and Gale experiment, where they used 22
+million words of AP Newswire. Here's the,
+just to remind you, here's the Good-Turing equation. So the count C star is C+1
+times NC+1 over NC. So here's the original
+count, C. And here are all, here's the 0's
+now replaced by the Good-Turing estimator
+with a little extra probability mass from,
+from N sub one. Here's the 1's, The 1's
+all turned into.446. All the things that
+occurred with count two, now occur with
+count 1.26. All the things with count
+three occur with count 2.24. So each of
+our counts has been discounted. Each of
+these counts have been discounted to a lower number to leave some room
+for the things with zero count. And the
+last thing I'm gonna leave you on is
+asking you, what's the relationship
+between each of these counts, the original
+counts c and these counts c star. Do you
+notice any general relationship?

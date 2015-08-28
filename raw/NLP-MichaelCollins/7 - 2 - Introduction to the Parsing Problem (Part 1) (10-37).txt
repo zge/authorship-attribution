@@ -1,0 +1,248 @@
+So in this lecture I'm first going to give
+an introduction to the parsing problem.
+We'll then describe context-free grammars.
+I'll then give a very brief sketch of how
+we can apply context-free grammars to
+develop a model of the grammatical
+structures seen in English.
+And finally, I'll focus on ambiguity, and
+describe some examples of ambiguous
+structures.
+Ambiguity is an extremely prevalent
+problem, as we've seen.
+In general, in language processing.
+And it's certainly a very prevalent
+problem in natural language parsing.
+So here, in a nutshell, is a definition of
+the pausing problem.
+So as input we take a sentence, for
+example, Boeing is located in Seattle, and
+as output we are going to produce an
+object called a parse tree, and so the
+parse tree is a tree structure with the
+words in the sentence at the leaves of the
+tree.
+So Boeing is located in Seattle, you see
+the leaves here.
+And we see the tree has labels on these
+internal nodes such as NP, PP, VP, S and
+so on and very soon we'll describe exactly
+the role that these different labels play.
+But at a very high level, we now have some
+kind of hierarchical decompositoin, of the
+sentence into this assocative tree
+stucture.
+So the parsing problem has it's roots in
+theoritical linguistics.
+And it really goes back to the start of
+modern linguistics, largely due to Chomsky
+in the 1950s.
+And one book I highly recommend If you
+want to learn more about sort of the roots
+of modern linguistics is a book by
+Chomsky, I believe from 1957 called
+Syntactic Structures which is a hugely
+influential book, it's really a beautiful
+book.
+And since then, there has been an enormous
+amount of research and linguistic on
+syntactic structures of languages Looking
+at a wide range of formalisms, I've listed
+a few here, for example, lexical
+functional grammar, LFG, head-driven
+phrase-structure grammar, tree adjoining
+grammars, categorial grammars and the
+formalism we're going to concentrate on
+today is formalism of context Free
+grammars which are really fundamental and,
+in some sense, formed the basis for all
+these modern, modern formalisms.
+So as it turns out, we're again going to
+treat the parsing problem as a supervised
+machine learning problem.
+And so we're going to assume that we have
+training data consisting of sentences,
+paired with their underlying depository.
+So here, I actually have a depository.
+So, this is one example actually taken
+from a resource, called the Penn Wall
+Street Journal Treebank and I don't expect
+you to read every word of this.
+We have a sentence around 30 words in
+length.
+And we actually have a full syntactic
+structure for that sentence.
+So where did these syntactic structures
+come from in this training data?
+They've actually been annotated by hand.
+So, the Penn Wall Street Journal tree bank
+was one, a very early example of a
+resource.
+We call it a tree bank.
+Treebank is a collection of training data
+consisting of sentences paired with parse
+trees.
+And the Penn Treebank had around 50,000
+sentences.
+This is, think roughly, one million words
+of data.
+And this has been annotated by hand.
+So humans have actually gone through,
+sentence by sentence.
+They have an understanding of the
+underlying linguistic theory.
+And they have annotated these full parse/g
+structures for each of these sentences.
+Now that clearly is a very laborious task,
+but the net result is that we do have a
+large amount of training data from which
+we can train a supervised learning model.
+So, a usual setup, for example, is to take
+some portion of the entire data set as a
+training sample, maybe 40,000 sentences
+might be typical, and to take some portion
+as a test sample.
+And to somehow train a model that aims to
+take sentences as input.
+Output and produce parse structure as
+output, we trained that on the training
+examples, we can test the performance of
+model on this test examples so we can get
+an accurate measure of how well the model
+is actually performing So let's now give a
+sketch of the information that is
+represented by these parse tree
+structures.
+Again focusing on a very simple example,
+the sentence the burglar robbed the
+apartment.
+And again we will go through a number of
+levels of representation in these
+structures.
+Okay.
+So the very first level If we look at the
+level above each word in the tree, we see
+that we basically have the part of speech
+for each word.
+And so we have DT here for determiner, N
+here above burglar, the noun, V above
+robbed, for V, and so on and so on.
+So this very first level of the tree.
+Simply encodes the part of speech text
+sequence for the input sentence in exactly
+the same way as we saw with the part of
+the speech text sequences in the previous
+section of this course on part of speech
+checking.
+So that's the first level, if we look a
+little higher, we're going to start to see
+some hierarchal grouping of words into
+phrases or what are often called
+constituents.
+So if I take any node in this tree, take,
+for example, NP, Then N, NP node, here.
+It indirectly dominates a sequence of
+words.
+So, this dominates the two words there and
+burglar, in this case.
+And that means that this particular
+substring, the burglar has been identified
+as a constuant or phrase of type NP.
+Np actually stands for noun phrase.
+Later in this class we'll talk extensively
+about what these different categories are.
+But as you can see the main point here is
+that we get this, this heirachical
+grouping.
+This NP here, we have a second NP, again
+this interacting dominates a substring in
+the sentence.
+In this case, therefore followed by
+apartment.
+And so we identify the apartment as
+another NP.
+If we go a little higher in the tree, this
+VP Dominates the substring, robbed the
+apartment.
+And so we know that this substring is of
+type VP, that stands for something called
+a verb phrase.
+And then finally at the top level of the
+tree we have s, which stands for sentence.
+And That s node pin directly dominates the
+entire sub sequence so that dominates the
+burglar at the apartment so we know that
+this substring is an s.
+So finally, and in some sense, most
+importantly, these parse trees encode very
+important grammatical relationships within
+a sentence.
+So let me again come back to this example
+to illustrate this.
+So let's look at this little tree fragment
+I have up here.
+So this is in some sense a template.
+Whenever I see a structure like this so I
+have some word here with a V above it,
+with a VP above that, and an S here, and
+an NP off to the left.
+I can simply read off the fact that I have
+a subject under this node here.
+And I have the verb here and these two
+things stand in the subject verb
+relationship.
+So let's apply this to that tree we can
+apply this template and see that robbed is
+a verb and moreover the burglar is the
+subject of that verb.
+So these trees make this particular
+relationship subject verb completely
+transparent.
+If I can recover this Parse Tree I can
+simply read off or I can identify
+fragments of the tree where I see this
+template and read off relationships such
+as subject verb.
+Let me give you a second important
+relationship.
+So, whenever I see a substructure of the
+following form.
+So I have some word here, and I see an NP
+to the right under here.
+So, this is actually going to be a direct
+object.
+And this, sorry, is going to be the verb.
+And so whenever I see this configuration,
+I can read off a relationship between a
+verb and its direct object.
+So if I apply this to this particular
+example, I can see that the apartment is
+the direct object of this particular verb.
+And there're many other templates
+corresponding to many other grammatical
+relationships seen in English or the
+language that we're looking at.
+So in short, these syntactic structures
+allow us to read off different grammatic
+relationships.
+And that's crucial because it allows us to
+identify who did what to whom.
+If I want to identify who did the robbing,
+I need to find the subject.
+If I want to identify what was robbed, I
+need to find the direct object.
+Objects.
+Now in this example and many other
+examples in this lecture, I'm going to use
+really rather simple, short sentences and
+so this might almost look like a trivial
+problem to you.
+But what I want to emphasize is that when
+you get longer sentences, say 15, 20, 30,
+40 words in length, it is a very difficult
+job to recover these grammatic
+relationships.
+So these parse structures are invaluable
+in revealing grammatical relationship,
+such as subject, verb or verb, direct
+object.

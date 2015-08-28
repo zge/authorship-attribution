@@ -1,0 +1,156 @@
+So, I just showed you that empirically
+the likelihood will converge,
+but theoretically it can also
+be proved that EM algorithm will
+converge to a local maximum.
+So here's just an illustration of what
+happened and a detailed explanation.
+This required more knowledge about that,
+some of that inequalities,
+that we haven't really covered yet.
+So here what you see is on the X
+dimension, we have a c0 value.
+This is a parameter that we have.
+On the y axis we see
+the likelihood function.
+So this curve is the original
+likelihood function,
+and this is the one that
+we hope to maximize.
+And we hope to find a c0 value
+at this point to maximize this.
+But in the case of Mitsumoto we can
+not easily find an analytic solution
+to the problem.
+So, we have to resolve
+the numerical errors, and
+the EM algorithm is such an algorithm.
+It's a Hill-Climb algorithm.
+That would mean you start
+with some random guess.
+Let's say you start from here,
+that's your starting point.
+And then you try to improve
+this by moving this to
+another point where you can
+have a higher likelihood.
+So that's the ideal hill climbing.
+And in the EM algorithm, the way we
+achieve this is to do two things.
+First, we'll fix a lower
+bound of likelihood function.
+So this is the lower bound.
+See here.
+And once we fit the lower bound,
+we can then maximize the lower bound.
+And of course, the reason why this works,
+is because the lower bound
+is much easier to optimize.
+So we know our current guess is here.
+And by maximizing the lower bound,
+we'll move this point to the top.
+To here.
+Right?
+And we can then map to the original
+likelihood function, we find this point.
+Because it's a lower bound, we are
+guaranteed to improve this guess, right?
+Because we improve our lower bound and
+then the original likelihood
+curve which is above this lower bound
+will definitely be improved as well.
+So we already know it's
+improving the lower bound.
+So we definitely improve this
+original likelihood function,
+which is above this lower bound.
+So, in our example,
+the current guess is parameter value
+given by the current generation.
+And then the next guess is
+the re-estimated parameter values.
+From this illustration you
+can see the next guess
+is always better than the current guess.
+Unless it has reached the maximum,
+where it will be stuck there.
+So the two would be equal.
+So, the E-step is basically
+to compute this lower bound.
+We don't directly just compute
+this likelihood function but
+we compute the length of
+the variable values and
+these are basically a part
+of this lower bound.
+This helps determine the lower bound.
+The M-step on the other hand is
+to maximize the lower bound.
+It allows us to move
+parameters to a new point.
+And that's why EM algorithm is guaranteed
+to converge to a local maximum.
+Now, as you can imagine,
+when we have many local maxima,
+we also have to repeat the EM
+algorithm multiple times.
+In order to figure out which one
+is the actual global maximum.
+And this actually in general is a
+difficult problem in numeral optimization.
+So here for
+example had we started from here,
+then we gradually just
+climb up to this top.
+So, that's not optimal, and
+we'd like to climb up all the way to here,
+so the only way to climb up to this gear
+is to start from somewhere here or here.
+So, in the EM algorithm, we generally
+would have to start from different points
+or have some other way to determine
+a good initial starting point.
+To summarize in this lecture we
+introduced the EM algorithm.
+This is a general algorithm for computing
+maximum maximum likelihood estimate of all
+kinds of models, so
+not just for our simple model.
+And it's a hill-climbing algorithm, so it
+can only converge to a local maximum and
+it will depend on initial points.
+The general idea is that we will have
+two steps to improve the estimate of.
+In the E-step we roughly [INAUDIBLE]
+how many there are by predicting values
+of useful hidden variables that we
+would use to simplify the estimation.
+In our case, this is the distribution
+that has been used to generate the word.
+In the M-step then we would exploit
+such augmented data which would make
+it easier to estimate the distribution,
+to improve the estimate of parameters.
+Here improve is guaranteed in
+terms of the likelihood function.
+Note that it's not necessary that we
+will have a stable convergence of
+parameter value even though the likelihood
+function is ensured to increase.
+There are some properties that have to
+be satisfied in order for the parameters
+also to convert into some stable value.
+Now here data augmentation
+is done probabilistically.
+That means,
+we're not going to just say exactly
+what's the value of a hidden variable.
+But we're going to have a probability
+distribution over the possible values of
+these hidden variables.
+So this causes a split of counts
+of events probabilistically.
+And in our case we'll split the word
+counts between the two distributions.
+[MUSIC]
+

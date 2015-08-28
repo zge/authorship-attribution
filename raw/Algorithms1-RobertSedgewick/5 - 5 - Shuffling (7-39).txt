@@ -1,0 +1,142 @@
+Next we're going to look at an easy
+application of sorting to related problem
+called Shuffling. So, suppose you have a
+deck of cards. One of the things that you
+might want to try to do is to simply
+rearrange those cards into random order,
+that's called shuffling. Here's a way to
+get shuffling done using a sort and seems
+like the opposite. The idea is, just
+generate a random real number for every
+array entry and then sort using those
+random numbers as the keys. That's an
+effective way to get things shuffled. And
+it's possible to prove that, that produces
+a uniformly random permutation of the
+input if there's no duplicate values,
+assuming that you have a real numbers that
+are generated uniformly at random. And
+that's just means that it's well shuffled
+that every possible way of shuffling the
+deck appears with the equal probability.
+That's fine but it requires a sort and a
+sort seems like a lot of work for this
+problem and the question is, can we do
+better? Can we have a faster way to
+shuffle? Do we really need to pay the cost
+of a full sort? The answer to that
+question is, no. There's actually a very
+easy way to rearrange an array so that
+the result is a uniformly random
+permutation. It only require a linear time
+to get the job done. Let's look at the
+demo. The idea this to pass through the
+array from left to right with an index i
+as we've been doing but now we start with
+the array in order. And actually, it
+doesn't matter how we start the array and
+every time we pick an integer between
+0 and i uniformly at random and, and
+swap a[i] with that integer. So, let's
+look at the beginning, we don't do
+anything just swap it with itself. Now,
+with i = 2 or i pointing to the second
+card we generate a random integer in
+between 0 and i, in this case it's the
+one to the left and we swap those.
+Increment i, generate a random integer,
+this time it's going to be the first one
+again, swap them. Increment i, generate a
+random integer, swap them. Increment i,
+generate a random integer, swap them. And
+continue in that way. Swap. So for every
+i, we do exactly one swap. Now, card could
+be involved in more than one swap but
+that's not an issue. The point is that the
+cards to the left of i are shuffled there
+uniform, randomly shuffled. On this case,
+i and r are the same. There's no swap.
+Increment i, generate a random r, swap them.
+And at the end we have the deck shuffled.
+That's a linear time shuffling algorithm
+making use of randomness. It was proved
+through actually a long time ago even
+before computer implementations that if
+you do that, you get a uniformly random
+permutation and it only takes linear time.
+So, that's definitely a way to get a deck
+shuffled quite easily. Easy to implement.
+Now it's key that the uniform random
+number will be between 0 and i-1. You'll
+often see programmers thinking that
+they're implementing a shuffle and they
+just choose for every entry, they just
+choose random place in the array to
+exchange it with and that doesn't really
+work. You could do the items between i and
+n-1, the ones that you haven't seen
+yet and that would also work but doing a
+whole array doesn't give you a uniformly
+random result. So, with that one caveat,
+this code is almost trivial. And it's a
+method in our standard random class. Now
+if you're going to be using random methods
+that depend on randomness in real
+applications, you do have to be careful.
+So this is just an example about software
+security. There's a lot of difficult and
+deep issues to worry about and so for our
+security and we're not going to worry
+about all of them. But one thing that we
+can do is make sure that our algorithms
+work as advertised. So, here's an example
+of an implementation for online poker.
+Here's the code that you can find on the
+web for how to shuffle a deck of cards and
+that's pretty similar to our code but it's
+actually got a few bugs, more than a few
+bugs. So first one is the way that random
+works it's actually never gets to 52 which
+means that the last card just stays it can
+end up in the last place. So, it's
+definitely not shuffled because of that.
+Maybe that one's minor but it also is
+picking a random card from the whole deck
+as we just pointed out that's not uniform.
+Should be between 1 and i or between
+i+1 and 52. Another problem is in
+this implementation that the random uses
+just a 32 bit seed that if you do that,
+there's not enough possible shuffles. The
+number of possible shuffles is, is, is
+much more, if n, if n is 52, it's 52
+factorial which is a lot bigger than two
+to the 32nd. So, it's not close to a
+random or uniform. And the other thing is
+that, the seed is just a number of
+milliseconds since midnight and that cuts
+down the number of shuffles even more. And
+in fact, it didn't take that much hacking
+for someone to realize that after seeing
+five cards and figuring out what the
+server clock was doing, you could get all
+the future cards in a real time in a program.
+And that's a pretty tough thing to have
+happen if you're implementing online
+poker. You might want to make sure that if
+you're advertising that you're doing a
+random shuffle, that you go ahead and do
+so. And the famous quote in this many
+similar quotes, the generation of random
+numbers is too important to be left to
+chance. So, if your business does depend
+on shuffling people have looked at all
+sorts of options including using hardware
+random number generators and these
+various tests available to make sure that
+it's random and you'd better use good
+shuffling code that's our topic but the
+bottom line is don't think that it's easy
+to shuffle a deck of cards. So that's
+shuffling - our first non-trivial sorting
+application.

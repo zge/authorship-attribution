@@ -1,0 +1,208 @@
+Today we're gonna introduce the topic of
+language modeling, one of the most
+important topics in natural language
+processing. The goal of language modeling
+is to assign a probability to a sentence.
+Why would we want to assign a probability
+to a sentence? This comes up in all sorts
+of applications. In machine translation,
+for example, we'd like to be able to
+distinguish between good and bad
+translations by their probabilities. So,
+"high winds tonight" might be a better
+translation than "large winds tonight"
+because high and winds go together well.
+In spelling correction, we see a phrase
+like "fifteen minuets from my house". That's
+more likely to be a mistake from "minutes".
+And one piece of information that lets us
+decide that is that "fifteen minutes from"
+is a much more likely phrase than "fifteen
+minuets from". And in speech recognition, a
+phrase like "I saw a van" is much more
+likely than a phrase that sounds
+phonetically similar, "eyes awe of an". But
+it's much less likely to have that
+sequence of words. And it turns out
+language modelings play a role in
+summarization, and question answering,
+really everywhere. So the goal of a
+language model is to compute the
+probability of a sentence or a sequence of
+words. So given some sequence of words w1
+through wn, we're gonna compute their
+probability P of w, and we'll use capital W
+to mean a sequence from w1 to wn. Now, this is
+related to the task of computing the
+probability of an upcoming word, so P of w5
+given w1 through w4 is very related to the
+task of computing P(w1, w2, w3, w4, w5). A
+model that computes either of these
+things, either P(W), capital W, meaning a
+string, the joint probability of the whole
+string, or the conditional probability of
+the last word given the previous words,
+either of those, we call that a language
+model. Now it might have better to call
+this the grammar. I mean technically what
+this is, is telling us something about how
+good these words fit together. And we
+normally use the word grammar for that,
+but it turns out that the word "language
+model", and often we'll see the acronym LM,
+is standard, so we're gonna go with that.
+So, how are we going to compute this joint
+probability? We want to compute, let's say the
+probability of the phrase "its water is so
+transparent that", this little part of a
+sentence. And the intuition for how
+language modeling works is that you're
+going to rely on the chain rule of
+probability. And just to remind you about
+the chain rule of probability. Let's think
+about the definition of conditional
+probability. So P of A given B
+Equals P of A comma B over P of B.
+And we can rewrite that, so P of A
+given B times P of B 
+equals P of A comma B, or turning it
+around, P of A comma B equals P of A
+given B (I'll make sure it's a "given") times P
+of B. And then we could generalize this to
+more variables so the joint probability of
+a whole sequence A B C D is the
+probability of A, times B given A, times C
+conditioned on A and B, times D
+conditioned on A B C. So this is the chain
+rule. In a more general form of the chain
+rule we have here the probability of any,
+joint probability of any sequence of
+variables is the first, times the
+condition of the second and the first,
+times the third conditioned of the
+first two, up until the last conditioned
+on the first n minus one. Alright, the
+chain rule. So now, the chain rule can be
+applied to compute the joint probability
+of words in a sentence. So let's suppose
+we have our phrase, "its water is so
+transparent". By the chain rule, the
+probability of that sequence is the
+probability of "its" times the probability
+of "water" given "its", times the probability
+of "is" given "its water", times the
+probability of "so" given "its water is", and
+finally times the probability of
+"transparent" given "its water is so". Or, more
+formally, the probability, joint
+probability of a sequence of words is the
+product over all i of the probability of
+each word times the prefix up until that
+word. How are we gonna estimate these
+probabilities? Could we just count and
+divide? We often compute probabilities by
+counting and dividing. So, the probability
+of "the" given "its water is so transparent
+that", we could just count how many times
+"its water is so transparent that the"
+occurs and divide by the number of times
+"its water is so transparent" occurs. So we
+could divide this by this. And get a
+probability. We can't do that. And the
+reason we can't do that is there's just
+far too many possible sentences for us to
+ever estimate these. There's no way we could
+get enough data to see all the counts of
+all possible sentences of English. So what
+we do instead is, we apply a simplifying
+assumption called the Markov assumption,
+named for Andrei Markov. And the Markov
+Assumption suggest that we estimate the
+probability of "the" given "its water is so
+transparent that" just by computing instead
+the probability of "the" given the word "that",
+or-- The very last "that", "that" meaning the
+last word in the sequence. Or maybe we
+compute the probability of "the" given "its
+water is so transparent that" given just
+the last two words, so "the" given
+"transparent that". That's the Markov
+Assumption. Let's just look at the
+previous or maybe the couple previous
+words rather than in the entire context. More
+formally, the Markov Assumption says: The
+probability of a sequence of words is the
+product for each word of the
+conditional probability of that word,
+given some prefix of the last few words.
+So, in other words, in the chain rule
+product of all the probabilities we're
+multiplying together, we estimate the
+probability of wᵢ, given the entire prefix
+from one to i-1 by a simpler to
+compute probability: wᵢ given just the
+last few words. The simplest case of a
+Markov model is called the unigram model.
+In the unigram model, we simply estimate
+the probability of a whole sequence of
+words by the product of probabilities of
+individual words, "unigrams". And if we
+generated sentences by randomly picking
+words, you can see that it would look like
+a word salad. So here's some automatically
+generated sentences generated by Dan Klein,
+and you can see that the word "fifth", the
+word "an", the word "of" -- this doesn't look
+like a sentence at all. It's just a random
+sequence of words: "thrift, did, eighty,
+said". That's the properties of the unigram
+model. Words are independent in this
+model. Slightly more intelligent is a
+bi-gram model where we condition on the
+single previous word. So again, we
+estimate the probability of a word given
+the entire prefix from the beginning to
+the previous word, just by the previous
+word. So now if we use that and generate
+random sentences from a bigram model, the
+sentences look a little bit more like
+English. Still, something's wrong with
+them clearly. "outside, new, car", well, "new
+car" looks pretty good. "car parking" is
+pretty good. "parking lot". But together,
+"outside new car parking lot of the
+agreement reached": that's not English. So
+even the bigram model, by giving up this
+conditioning that English has, we're
+simplifying the ability to model, to model
+what's going on in a language. Now we
+can extend the n-gram model further to
+trigrams, that's 3-grams. Or 4-grams
+or 5-grams. But in general, it's
+clear that n-gram modeling is an
+insufficient model of language. And the
+reason is that language has long-distance
+dependencies. So if I want to, say, predict
+"The computer which I had just put into the
+machine room on the fifth floor", and I
+hadn't seen this next word, and I want to
+say, what's my likelihood of the next
+word? And I conditioned it just on the
+previous word, "floor", I'd be very unlucky
+to guess "crashed". But really, the "crashed" is
+the main verb of the sentence, and "computer"
+is the subject, the head of the subject
+noun phrase. So, if we know "computer" was
+the subject, we're much more likely to
+guess crashed. So, these kind of 
+long-distance dependencies mean that in the
+limit of really good model of predicting
+English words, we'll have to take into
+account lots of long-distance information.
+But it turns out that in practice, we can
+often get away with these n-gram models,
+because the local information, especially
+as we get up to trigrams and 4-grams,
+will turn out to be just constraining
+enough that it in most cases it'll solve
+our problems for us.

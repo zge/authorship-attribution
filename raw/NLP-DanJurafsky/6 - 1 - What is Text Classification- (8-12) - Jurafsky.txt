@@ -1,0 +1,178 @@
+In this lecture, we'll introduce the topic
+of text classification and the Naive Bayes
+algorithm which is one of the most
+important ways of doing text
+classification. Let's begin by looking at
+some examples of text classification
+applications. Here I've shown an email
+that I actually received the other day.
+How do I know that this email is spam?
+Take a look at the mail and think of some
+features you might automatically extract
+from this email that tells you that it's
+spam. You might notice the word greats. A
+mis, a misspelling of great, so we have a
+typo here. Maybe you might notice
+important notice and maybe an exclamation
+point. It's pretty rare that universities
+put exclamation points in their subject
+headers. You might notice that there's no,
+Dan here, it's not addressed to me in
+particular, and we have undisclosed
+recipients and there's no particular
+address. And the URL's a little funny
+here, that's not a Stanford URL. Maybe the
+word exciting. Each of these features can
+be combined in a classified give us some
+evidence that we got a piece of spam.
+Another important text classification
+class is authorship attribution. How do I
+know which author wrote which piece of
+text. One of the most famous examples of
+authorship attribution is the famous
+anonymous essays called the Federalist
+Papers that were written at the beginning
+of the history of our country in part to
+convince the state of New York to ratify
+the early constitution. And three authors
+wrote various numbers of the letters but
+twelve of the letters it wasn't clear
+which author wrote. And in 1960 the And in
+1963 Mosteller and Wallace show that
+Bayesian methods were able to distinguish
+which letters were written by Madison and
+which letters were written by Hamilton.
+And the Bayesian methods that they used in
+1963, gave rise to the naive base method
+that we're going to be talking about
+today. Another text classification task is
+gender identification. Determining if an
+author is male or female. Recent research
+in gender identification has shown that we
+can look at the number of pronouns and
+other features. The number of determiners,
+the number of noun phrases, are, subtlety
+indicative of the difference between male
+and female writers. Female writers tend to
+use more pronouns and male writers tend to
+use more facts and determiners in their
+noun phrases. And you can see from that,
+that, here we have a lot of pronouns. And
+here we have a lot of determiners and, and
+factual sentences with, with the copula
+verbs and so you might determine that this
+in fact a male and this is a female and
+that would be correct. This is the author
+Margaret Drabble and this is the author
+Anthony Grey. Another text classification
+task is sentiment analysis. And one of the
+classic sentiment analysis tasks is movie
+review identification. Given a review,
+whether it's a movie or a product, can I
+tell whether this review is positive or
+negative. And although I'm gonna show you
+an example here for movies, this can apply
+to any product review for any, any product
+or service you might find on the web. So
+this is actually a very important
+commercial application. So, suppose we saw
+a review that said unbelievably
+disappointing. Well, that's clearly a
+negative review. How'bout, full of zany
+characters and richly applied satire,
+positive. How'bout, this is the greatest
+screwball comedy ever filmed. We've got
+words like greatest, or greatest ever,
+that's very positive. How'bout, it was
+pathetic. The worst part about it was the
+boxing scenes. Here, we've got evidence
+like pathetic and worst, and so on, to
+tell us that this is, in fact, a negative
+review. Text classification often. We also
+apply text classification to scientific
+articles. For example, deciding what the
+topic of a particular article in a data
+base like [inaudible] line might be. For
+example, we might have to decide, you
+know, automatically indexing an article
+which of various subjects, antagonist or
+blood supply or drug therapy or
+epidemiology, apply to any particular
+article that's written that's in our data
+base. So, in summary text classification
+is the task of assigning any kind of topic
+category to any piece of text. And that
+could be subject categories in, in, in
+some kind of online data base. It could be
+detecting spam. It could be choosing an
+author from a set of authors, choosing
+their gender or maybe it's their age. You
+want to find the young writers or old
+writers. Telling if a language [inaudible]
+if a text was written in one language
+versus another language. And the important
+application of sentimentals. All of these
+are examples of text classification. Let's
+define the task of text classification. We
+have as input a document d, and then a
+fixed set of classes a set c with j
+classes c1, c2 up 'til cj. And our goal
+given this document in the set of classes
+is to predict a class c from that set of
+classes. Our job is to take a document and
+assign a class to that document. How do we
+do this? The simplest possible text
+classification method is to use hand
+return rules. So for example if we're
+doing spam detection, we might just have a
+list of, of bad email addresses or
+blacklists that these people are probably
+spammers. Or we might look for phrases
+like millions of dollars, or you have been
+selected. These are good indications that
+we have spam. And if these rules are
+carefully refined by an expert, you can
+get high accuracy from hand written rules.
+But in general, building and maintaining
+these rules is expensive. So, although
+hand coded rules are often used as part of
+a system of text classification we, we
+generally combine that with an important
+method for machine learning. This method
+in supervised machine learning. So in
+supervised machine learning. We have a
+document D, just as we did before and a
+fixed set of classes, as we did before,
+but we need one more thing now. We need a
+training set of some la. Some documents
+that have been hand labeled for their
+class. So we have for document one, we
+know that it's in class one. For document
+two it's in some other class. Maybe for
+document M we have a label for the class
+of document M. So given. The document, the
+set of classes and the fixed and the
+training set of hand labeled documents.
+The goal of machine learning is to produce
+a classifier and we'll be using gamma to
+refer to the classifier and gamma's a
+function that, given a new document will
+give us the class. So, given a set of
+training labels of documents and classes,
+we'll learn a classifier that maps a
+document to a class. There's lots of kinds
+of machine learning classifiers. We're
+going to talk today about naive Bayes, but
+we'll see, we'll look later, in the
+course, we'll talk about logistic
+regression and we'll touch on other kinds
+of classifiers, like support vector
+machines or so called SVMs, [inaudible]
+neighbors, lots of other classifiers. No
+matter which classifier we use, the task
+of text classification is to take a
+document, it's text, other kinds of
+features and extract features that
+represent the document and build the
+classifier that can tell us which class
+the document belongs to.

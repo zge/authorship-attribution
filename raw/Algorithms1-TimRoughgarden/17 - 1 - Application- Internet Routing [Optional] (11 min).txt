@@ -1,0 +1,351 @@
+The Design and Analysis of algorithms is 
+the interplay between on the one hand, 
+general principles and on the other hand, 
+extantiations of those principles to 
+solve specific problems. 
+While there's no silver bullet in 
+algorithm design and no one technique 
+that solves every computational problem 
+that's ever going to come up, there are 
+general design principles which have 
+Proving useful over and over again over 
+the decade for solving problems that 
+arise in different application domains. 
+Those, of course, are the principles that 
+we focus on in this class. 
+For example in part one we studied the 
+Divide and Conquer Algorithm Design 
+Paradigm and Principles of Graph Search, 
+amongst others. 
+On the other hand, we studied specific 
+instantiations of these techniques. 
+So in Part I, we studied Divide and 
+Conquer and how it applies to say. 
+Stresses matrix multiplication, merge 
+short, and quick sort. 
+In graph search we culminated with the 
+rightfully famous Dijkstra's algorithm 
+for computing shortest paths. 
+This of course is useful not just because 
+as any card carrying computer scientist 
+or programmer, you want to know about 
+what these algorithms are and what they 
+do. 
+But it also gives us a toolbox, a suite 
+of four free primitives which we can 
+apply to our own computational problems 
+as a building block in some larger 
+program. 
+Part II of the course, we'll continue 
+this narrative. 
+We'll learn very general algorithm design 
+paradigms like Greedy algorithms, Dynamic 
+Programming algorithms, and many 
+applications including a number of 
+algorithms for the greatest hits 
+compilation. 
+And in this video and the next, I want to 
+wet your appetite for what's to come. 
+By plucking out two of the applications 
+that we'll study in detail later in the 
+course, specificlaly in the dynamic 
+programming section of hte course. 
+First of all, for both of these 
+questions, I think their importance is 
+self-evident. 
+I don't think I'll have to really discuss 
+why these are interesting problems. 
+Why in some sense. 
+We really need to solve these two 
+problems. 
+Secondly, these are quite tricky 
+computational problems. 
+And I would expect that most of you do 
+not currently know good algorithms for 
+these problems. 
+And it would be challenging to design 
+one. 
+Third, by the end of this class you will 
+know efficient algorithms for both of 
+these problems. 
+In fact, you'll know something much 
+better. 
+You'll know general algorithm design 
+techniques, which solve as a special case 
+these two problems, and have the 
+potential to solve problems coming up in 
+your own projects This as well. 
+And 1 comment before we get started on 
+these 2 videos, they're both at a higher 
+level than most of the class by which I 
+mean, there won't be any equations or 
+math, there won't be any, concrete pseudo 
+code and I'll be glossing over lots of 
+the details. 
+The point is just to convey the spirit of 
+what we're going to be studying and to 
+illustrate the range of applications of 
+the techniques that we're going to learn. 
+So what I want to talk about first is 
+distributed shortest path routing and why 
+it's fundamental to how the internet 
+works. 
+So let me begin with a kind of very 
+non-mathematical claim. 
+I claim that we can usefully think of the 
+Internet as a graph, as a collection of 
+vertices and a collection of. 
+So this is clearly an ambiguous statement 
+as many things I might mean as will 
+discuss but here's the primary 
+interpretations I want you to have for 
+this particular video. 
+So to specify this the vertices I intend 
+to be the end hosts and the routers of 
+the internet so machines that generate 
+traffic, machines that consume traffic 
+and machines that help traffic get from 
+one place. 
+So the edges are going to be directed and 
+they're meant to represent physical or 
+wireless connections indicating that one 
+machine can talk directly to another one 
+via either a physical link between the 
+two or direct wireless. 
+Less connection. 
+So it's common that you'll have edges in 
+both directions so that machine A can 
+talk to machine B directly, then also 
+machine B can talk directly to machine A. 
+But you definitely want to allow the 
+possibility of asymmetric Metric 
+communication. 
+So for example imagine I send an e-mail 
+from my Stanford accounts to one of my 
+old mentor's at Cornell where I did my 
+graduate studies. 
+So this piece of data this e-mail has to 
+somehow migrate from my machine local at 
+Stanford to my mentor's machine over at 
+Cornell. 
+So how does that actually happen? Well 
+initially there's a phase of sort of 
+local transportation. 
+So this piece of data has to get from my 
+local machine to a place within the 
+Stanford network that can talk to the 
+rest of the world. 
+Just like if I was trying to travel to 
+Cornell I would have to first use local 
+transportation to get to San Francisco 
+airport and only from there could I take 
+an airplane. 
+So this machine from which data can 
+escape from the Stanford network to the 
+outside world is called the gateway 
+router. 
+The Stanford gateway router passes it on 
+to a networks, whose job is to cross the 
+country. 
+So last I checked, the commercial 
+internet service provider of Stanford was 
+Cogent. 
+So they, of course, have their own 
+gateway router, which can talk to the 
+Stanford one. 
+Everybody's versa. 
+And of course these 2 nodes and the edges 
+between them are just this tiny, tiny, 
+tiny piece embedded in this massive graph 
+comprising all the end hosts and routers 
+of the Internet. 
+So that's the main version of a graph 
+that we're going to talk about in this 
+video, but let me just pause to mention a 
+couple of other. 
+Graphs that are related to the internet, 
+and quite interesting in their own right. 
+So, one graph that has generated an 
+enormous amount of interest in study is 
+the graph induced by the web. 
+So here, the vertices are going to 
+represent webpages, and the edges, which 
+is certainly directed. 
+Represent hyperlinks, that one webpage 
+points to another one. 
+So, for example, my homepage is one node 
+in this massive, massive graph, and as 
+you might expect, there is a link from my 
+homepage to the course page for this 
+class. 
+It is of course essential to use directed 
+edges to faithfully model the web there 
+is for example no directed edge from this 
+courses home page to my own home page at 
+Stanford. 
+So the web really exploded around in the 
+mid 90's, late 90's. 
+So for the past 15 plus years there's 
+been lots of research about the web 
+graph. 
+I'm sure you won't be surprised to hear 
+that you around the mid of the last 
+decade people got extremely excited about 
+properties of social net. 
+Networks, those of course can also be 
+fruitfully thought of as graphs. 
+Here the vertices are going to be people 
+and the lengths are going to denote 
+relationships. 
+So for example, friend relationships on 
+Facebook or the following relationship on 
+Twitter. 
+So notice that different social networks 
+may correspond to undirected or directed 
+graphs. 
+Facebook for example, corresponding to an 
+undirected graph, Twitter corresponding 
+to a directed graph. 
+Graph. 
+So let's now return to the first 
+interpretation I wanted to focus on. 
+That where the vertices are in-hosted 
+routers. 
+And it just represent direct physical or 
+wireless connections, indicating that 2 
+machines can talk directly to each other. 
+So going back to that graph, let's go 
+back to the story where I'm sending an 
+email to somebody at Cornell, and this 
+data has to somehow travel from my local 
+machine to some local machine. 
+At Cornell. 
+So in particular, this piece of data has 
+to get from the Stanford gateway router 
+in affect of the airport for Stanford's 
+network to the Cornell gateway router, so 
+that the landing airport over on Cornell 
+site. 
+So it's not easy to figure out exactly 
+what the structure of the routes between 
+Stanford and Cornell look like. 
+But one thing I can promise you is 
+there's not a direct physical. 
+Equal length between the Stanford gateway 
+router and the Cornell gateway router. 
+Any route between the two is going to 
+comprise multiple hops. 
+It will have intermediate stops. 
+And there's not going to be a unique such 
+route. 
+So if you have the choice between taking 
+one route which stops in Houston and then 
+Atlanta and then in Washington DC, how 
+would you compare that to one which stops 
+in Salt Lake City and Chicago? Well 
+hopefully your first instinct, and a 
+perfectly good idea is, all else being 
+equal, prefer the path that is in some 
+sense the shortest. 
+Now in this context, shortest could mean 
+many things, and it's interesting to 
+think about different definitions. 
+But for simplicity, let's just focus on 
+the fewest number of hops. 
+Equivalently, the fewest number of 
+intermediate stops. 
+Well if we want to actually execute this 
+idea, we clearly need an algorithm that 
+given a source and a destination, 
+computes the shortest path between the 2. 
+So hopefully you feel well equipped to 
+discuss the problem because 1 of the 
+highlights of part 1 of this class was 
+the discussion of Dijkstra's shortest 
+path algorithm and a blazingly fast 
+implementation using Heaps, that runs in 
+almost linear time. 
+We did mention one caveat when we 
+discussed Dijkstra's algorithm, namely 
+that it requires all edge links to be 
+non-negative, but in the context of 
+internet routing, almost any medge, edge 
+metric you'd imagine using will satisfy 
+this non-negativity assumption. 
+There is however a serious issue with 
+trying to apply Dijkstra's shortest path 
+algorithm off the shelf to solve this 
+distributive internet routing problem. 
+And the issue is caused by the just 
+massive distributed sale of the modern 
+day internet. 
+You know, probably back in the 1960s when 
+you had the 12 note ARPANET. 
+You could get away with running 
+Dijkstra's shortest path algorithm but 
+not in the 21st century. 
+It's not feasible for this Stanford 
+gateway router to mainly locally, 
+reasonably accurate model of the entire 
+Internet graph. 
+So how can we elude this issue? Is it 
+fundamental that because the internet is 
+so massive it's impossible to run any 
+shortest path algorithm? 
+Well, the ray of hope would be if we 
+could have a shortest path algorithm. 
+That admitted and distributed 
+implementation, whereby a node could just 
+interact, perhaps iteratively with its 
+neighbors, with the machines to which its 
+directly connected and yet somehow 
+converge to having accurate shortest 
+paths to all of the destinations. 
+So perhaps, the firs thing you'd try 
+would be to seek out an implementation of 
+Dijkstrar's algorithm, where each vertex 
+uses only vocal computations. 
+That seems hard to do. 
+If you look at Pseudo code of Dijkstra, 
+it doesn't seem like a localizable 
+algorithm. 
+So instead, what we're going to do is 
+different. 
+Shortest-path algorithm. 
+It's also a classic, definitely on the 
+greatest hits compilation. 
+It's called the Bellman-Ford algorithm. 
+So the Bellman-Ford algorithm, as you'll 
+see, can be thought of as a dynamic 
+programming algorithm and indeed it 
+correctly computes shortest paths using 
+only local Local computation. 
+Each vertex only communicates in rounds 
+with the other vertices to which it's 
+directly connected. 
+As a bonus we'll see this algorithm also 
+handles negative edge lengths, which of 
+course Dijkstra's algorithm does not. 
+But don't think Dijkstra's algorithm is 
+obsolete. 
+It still has faster running time in 
+situations we can get away with 
+centralized computation. 
+Now, what's really kind of amazing here 
+is that the Bellman–Ford algorithm, it 
+dates back to the 1950s. 
+So that's not just pre-internet, that's 
+pre-ARPANET. 
+So that's before the internet was even a 
+glimmer in anybody's eye. 
+And yet it really is the foundation for 
+modern internet routing Protocols. 
+Needless to say there's a lot of really 
+hard engineering work and further ideas 
+required to translate the concepts from 
+Bellman-Ford to actually doing routing in 
+the very complex modern day internet. 
+But yet, those protocols, at their 
+foundation, go all the way back the the 
+Bellman-Ford Algorithm. 
+

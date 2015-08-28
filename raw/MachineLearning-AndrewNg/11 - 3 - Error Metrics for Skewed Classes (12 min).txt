@@ -1,0 +1,323 @@
+In the previous video, I talked
+about error analysis and the
+importance of having error
+metrics, that is of having
+a single real number evaluation metric
+for your learning algorithm to tell how well it's doing.
+In the context of evaluation
+and of error metrics, there is
+one important case, where it's
+particularly tricky to come
+up with an appropriate error metric,
+or evaluation metric, for your learning algorithm.
+That case is the case
+of what's called skewed classes.
+Let me tell you what that means.
+Consider the problem of cancer
+classification, where we have
+features of medical patients and
+we want to decide whether or not they have cancer.
+So this is like the malignant
+versus benign tumor classification
+example that we had earlier.
+So let's say y equals 1 if the
+patient has cancer and y equals 0
+if they do not.
+We have trained the progression
+classifier and let's say
+we test our classifier on
+a test set and find that we get 1 percent error.
+So, we're making 99% correct diagnosis.
+Seems like a really impressive result, right.
+We're correct 99% percent of the time.
+But now, let's say we find
+out that only 0.5 percent
+of patients in our
+training test sets actually have cancer.
+So only half a
+percent of the patients that
+come through our screening process have cancer.
+In this case, the 1%
+error no longer looks so impressive.
+And in particular, here's a piece
+of code, here's actually a piece
+of non learning code that takes
+this input of features x and it ignores it.
+It just sets y equals 0
+and always predicts, you
+know, nobody has cancer and this
+algorithm would actually get
+0.5 percent error.
+So this is even better than
+the 1% error that we were getting just now
+and this is a non
+learning algorithm that you know, it is just
+predicting y equals 0 all the time.
+So this setting of when
+the ratio of positive to
+negative examples is very close
+to one of two extremes, where,
+in this case, the number of
+positive examples is much,
+much smaller than the number
+of negative examples because y
+equals one so rarely, this
+is what we call the
+case of skewed classes.
+We just have a lot more
+of examples from one class
+than from the other class.
+And by just predicting y equals
+0 all the time, or maybe
+our predicting y equals 1
+all the time, an algorithm can do pretty well.
+So the problem with using
+classification error or classification
+accuracy as our evaluation metric is the following.
+Let's say you have one joining
+algorithm that's getting 99.2% accuracy.
+So, that's a 0.8% error.
+Let's say you
+make a change to your algorithm
+and you now are getting
+99.5% accuracy.
+That is 0.5% error.
+So, is this an improvement to the algorithm or not?
+One of the nice things
+about having a single real
+number evaluation metric is this
+helps us to quickly decide if
+we just need a good change to the algorithm or not.
+By going from 99.2% accuracy to 99.5% accuracy.
+You know, did we just do something
+useful or did we
+just replace our code with
+something that just predicts y equals
+zero more often?
+So, if you have very skewed classes
+it becomes much harder to use
+just classification accuracy, because you
+can get very high classification accuracies
+or very low errors, and
+it's not always clear if
+doing so is really improving
+the quality of your classifier
+because predicting y equals 0 all the
+time doesn't seem like
+a particularly good classifier.
+But just predicting y equals 0 more
+often can bring your error
+down to, you know, maybe as
+low as 0.5%.
+When we're faced with such
+a skewed classes therefore we
+would want to come up
+with a different error metric
+or a different evaluation metric.
+One such evaluation metric are
+what's called precision recall.
+Let me explain what that is.
+Let's say we are evaluating a classifier on the test set.
+For the examples in the
+test set the actual
+class of that example
+in the test set is going to
+be either one or zero, right,
+if there is a binary classification problem.
+And what our learning algorithm
+will do is it will, you know,
+predict some value for the
+class and our learning
+algorithm will predict the value
+for each example in my
+test set and the predicted value
+will also be either one or zero.
+So let me draw a two
+by two table as follows,
+depending on a full of these entries
+depending on what was the
+actual class and what was the predicted class.
+If we have an
+example where the actual class is
+one and the predicted class
+is one then that's called
+an example that's a true
+positive, meaning our algorithm
+predicted that it's positive
+and in reality the example is positive.
+If our learning algorithm predicted that
+something is negative, class zero,
+and the actual class is also
+class zero then that's what's called a true negative.
+We predicted zero and it actually is zero.
+To find the other two boxes,
+if our learning algorithm predicts that
+the class is one but the
+actual class is zero, then
+that's called a false positive.
+So that means our algorithm for
+the patient is cancelled out in
+reality if the patient does not.
+And finally, the last box is a zero, one.
+That's called a false negative
+because our algorithm predicted
+zero, but the actual class was one.
+And so, we
+have this little sort of two by
+two table based on
+what was the actual class and what was the predicted class.
+So here's a different way
+of evaluating the performance of
+our algorithm. We're
+going to compute two numbers.
+The first is called precision -
+and what that says is,
+of all the patients where we've
+predicted that they have cancer,
+what fraction of them actually have cancer?
+So let me write this down,
+the precision of a classifier
+is the number of true
+positives divided by
+the number that we predicted
+as positive, right?
+So of all the patients that
+we went to those patients and we told them, "We think you have cancer."
+Of all those patients, what
+fraction of them actually have cancer?
+So that's called precision.
+And another way to write this
+would be true positives and
+then in the denominator is the
+number of predicted positives, and
+so that would be the
+sum of the, you know, entries
+in this first row of the table.
+So it would be true positives divided by true positives.
+I'm going to abbreviate positive
+as POS and then
+plus false positives, again
+abbreviating positive using POS.
+So that's called precision, and as you
+can tell high precision would be good.
+That means that all the patients
+that we went to and we said, "You know, we're very sorry.
+We think you have cancer," high precision
+means that of that group
+of patients most of them
+we had actually made accurate
+predictions on them and they do have cancer.
+The second number we're going to compute
+is called recall, and what
+recall say is, if all
+the patients in, let's say,
+in the test set or the
+cross-validation set, but if
+all the patients in the data
+set that actually have cancer,
+what fraction of them that
+we correctly detect as having cancer.
+So if all the patients have
+cancer, how many of them
+did we actually go to them
+and you know, correctly told them that we think they need treatment.
+So, writing this down,
+recall is defined as the
+number of positives, the number
+of true positives,
+meaning the number of people
+that have cancer and that
+we correctly predicted have cancer
+and we take that and divide
+that by, divide that by
+the number of actual positives,
+so this is the right
+number of actual positives of all the people that do have cancer.
+What fraction do we directly
+flag and you know, send the treatment.
+So, to rewrite this in
+a different form, the denominator would
+be the number of actual
+positives as you know, is the sum
+of the entries in this first column over here.
+And so writing things out differently,
+this is therefore, the number of
+true positives, divided by
+the number of true positives
+plus the number of
+false negatives.
+And so once again, having a high recall would be a good thing.
+So by computing precision and
+recall this will usually
+give us a better sense of
+how well our classifier is doing.
+And in particular if we have
+a learning algorithm that predicts
+y equals zero all
+the time, if it predicts no
+one has cancer, then this
+classifier will have a
+recall equal to zero,
+because there won't be any
+true positives and so that's
+a quick way for us to
+recognize that, you know, a
+classifier that predicts y equals 0 all the time,
+just isn't a very good classifier.
+And more generally,
+even for settings where we
+have very skewed classes, it's
+not possible for an
+algorithm to sort of "cheat"
+and somehow get a very
+high precision and a
+very high recall by doing
+some simple thing like predicting
+y equals 0 all the time or
+predicting y equals 1 all the time.
+And so we're much
+more sure that a classifier
+of a high precision or high recall
+actually is a good classifier,
+and this gives us a
+more useful evaluation metric that
+is a more direct way to
+actually understand whether, you know, our algorithm may be doing well.
+So one final note in
+the definition of precision and
+recall, that we would define
+precision and recall, usually we
+use the convention that y is equal to 1, in
+the presence of the more rare class.
+So if we are trying to detect.
+rare conditions such as cancer,
+hopefully that's a rare condition,
+precision and recall are
+defined setting y equals
+1, rather than y
+equals 0, to be sort of
+that the presence of that rare
+class that we're trying to detect.
+And by using precision and recall,
+we find, what happens is
+that even if we have
+very skewed classes, it's not
+possible for an algorithm to
+you know, "cheat" and predict
+y equals 1 all the time,
+or predict y equals 0 all
+the time, and get high precision and recall.
+And in particular, if a classifier
+is getting high precision and high
+recall, then we are
+actually confident that the algorithm
+has to be doing well, even
+if we have very skewed classes.
+So for the problem of skewed classes precision
+recall gives us more
+direct insight into how
+the learning algorithm is doing
+and this is often a much
+better way to evaluate our learning algorithms,
+than looking at classification error
+or classification accuracy, when the classes are very skewed.

@@ -1,0 +1,270 @@
+Okay.
+So in this next segment of the course we
+are going to describe tagging problems.
+Tagging problems are a fundamental
+importance in natural language processing.
+And we will look at hidden Markov Models,
+which are a widely applied type of model
+for this class of problem.
+So I'll first describe the tagging
+problem, and I'll give a couple of key
+examples from natural language processing
+of tagging problems.
+We'll then describe a very important
+paradigm for thinking about supervised
+learning problems.
+This is the paradigm of generative models,
+or the noisy channel model.
+It's a widely applied methodology for
+developing methods for supervised
+learning.
+And, we'll see it applied again and again
+in this course.
+Finally, I'll describe hidden Markov Model
+taggers which are one instance of
+generative models.
+We'll give basic definitions.
+We'll describe parameters estimation
+methods.
+And, we'll describe the Viterbi algorithm.
+Which is an algorithm of great importance
+in a hidden Markov Models..
+So this slide shows a tagging problem
+called part of speech tagging.
+Which is a very important problem in
+natural language processing.
+And is actually one of the very earliest
+problems considered in statistical or
+machine learning approaches to NLP.
+Statistical models for this problem go
+back to the late 1980s.
+So the problem is as follows.
+As input, to the model we have some
+sentence.
+Some sequence of words.
+And as output, we have a tag sequence.
+What I mean by that is that in this output
+from the model each word in now given an
+associated tag so profits, for example has
+a tag n which if we look at the key stands
+for noun.
+Soared has the tag V which from the key
+means verb.
+At is a preposition.
+That's a P and so on and so on.
+So the task is to take the sentence's
+input and to word by word assign a part of
+speech to each word in that input.
+So why is this, in any sense, a
+challenging problem?
+Well, it turns out that ambiguity is going
+to play a crucial role in this problem, as
+it does in many other problems in natural
+language processing.
+So, let's look through the words in the
+sentence.
+If we take prophets, for example.
+It's certainly a noun in this context, but
+profits can, of course, also be a verb in
+English.
+So if I say, the company profits from its
+endeavors profits is a verb in that
+context.
+Let's look for some others topping is a
+verb in this particular sentence but it
+can also be a noun.
+If I say, for example, the topping on the
+cake.
+Forecasts is a noun in this sentence but
+it can also be a verb.
+Quarter is a noun but it has a much less
+frequent usage where it can also be a
+verb.
+Results is a noun, it can also be a verb.
+And so on and so on.
+So as a rough estimate you might find the
+words in English on average can take 2 or
+3 possible parts of speech.
+And this isn't only true of English.
+It, it's true in many other languages,
+probably most languages.
+In addition to English.
+So here is a second example of a tagging
+problem.
+And this is the problem of named entity.
+[inaudible] recognition.
+Again, this is a very important problem in
+NLP.
+And actually, in the first programming
+assignment for this course, you will build
+a complete name density recognizer.
+So you'll build a model for this task.
+So what is the name density recognition
+problem?
+The problem, in this case, is to take,
+again, a sentence.
+A sequence of words as input.
+And now in the output, we're going to
+identify named entities in the input
+sentence.
+So a named entity might be a company, or a
+location, or a person.
+Those are three very common entity types.
+And in this output we've identified Boeing
+Co.
+As a company.
+Wall Street as a location.
+And Alan Mulally as a person.
+So basic problem.
+Taking sentences input and mark up all the
+entities in that sentence in the output.
+So again, this is a very basic problem
+in[INAUDIBLE] and it's useful in, in a
+wide range of applications.
+You can imagine all kinds of cases where
+identifying entities would be a useful.
+Task.
+Now at first glance, this doesn't look
+like a tagging problem, because a tagging
+problem needs to assign a tag to each word
+in the input, and here we already have a
+segmentation, an identification of
+subsegments of the sentence.
+But on the next slide, I'll show you how
+we can map this problem very directly to,
+To a tagging problem.
+So how does this work?
+What I've basically shown you here is the
+same example again.
+But where I've represented the
+segmentation I showed you on the previous
+slide, has a word by word tag.
+So we have various tags, NA stands for
+something that is not part of an entity.
+So, if you notice, we have again, we've
+tagged every word in the sentence in turn.
+And several of these words are NAs,
+they're not part of an entity.
+And then for the company entity type.
+I have tags corresponding to the start of
+a company and the continuation of the
+company.
+So if we look at Boeing Co.
+Here.
+We've tagged Boeing as the start as the
+start of a compnay and CC as the
+continuation of the company.
+And similarly we have Wall Street, which
+is a location.
+Wall is the start of a location; Street is
+the continuation.
+Alan Mulally; the same thing happens
+again.
+So what I've basically shown you here is
+that we can take the named entity
+recognition problem and map it directly to
+a tagging problem, where we are going to
+tag each word in turn in the input
+sequence.
+[inaudible].
+So a goal is going to be the following.
+We're going to treat this as a machine
+learning problem.
+And so we'll assume that we have some
+training set.
+Some set of training examples.
+And so, this is actually a set of
+sentences taken from one very commonly
+used resource, called the Wall Street
+Journal tree bank.
+And here we actually have close to 40,000
+training sentences.
+Where each training sentence consists of a
+full input sentence, together with the
+unlerlying part of speech tags.
+And these training samples have actually
+been annotated by hand.
+So human annotators have gone through and
+sentence by sentence marked these kind of
+annotations.
+So that's a quite laborious job, but it
+does have the benefit that we have a
+readily available sort of training
+examples for this problem.
+Problem.
+So, the Wall Street Journal tree bank was
+a very early example of a corpus of this
+form and now there are many, many other
+copera across many languages and many
+different genres.
+So, given this training set our problem is
+going to be the following, we learn a
+function or algorithm that will take a new
+sentences input and map that sentence to a
+tax sequence.
+So we're going to treat this whole problem
+as a supervised learning problem.
+To develop a little bit more intuition for
+how we might develop a model for this
+problem, or what kind of information might
+be useful in developing a model.
+I want to talk about two different types
+of constraints that play a role in the
+part of speech tagging problem or actually
+any tagging problem.
+So and I'll call these different type of
+constraints local versus contextual.
+So, local constraints take the following
+form.
+If we look at a particular word of English
+for example can, and again we're
+considering the part of speech tagging
+problem here, can has a preference to be a
+modal verb.
+Okay so it's, it's much more often seen as
+a verb in English but it can also see, be
+seen as a noun.
+So a priority can has a bias to have one
+part of speech over another part of speech
+and we'll refer to that as a kind of local
+preference.
+The local preference of words to take one
+part of speech over another.
+But we have to balance these local
+constraints against what are called
+contextual constraints.
+Which are that some part of speech
+sequences are much more likely than
+others.
+So as one example a noun is much more
+likely than a verb to follow a determiner.
+Okay.
+So if I have a determiner.
+The tag is DT.
+This is a word like the or a.
+After a determiner, I'm very likely to see
+a noun.
+And on this noun, I'm much like to see a
+verb.
+Okay so there is some contextual
+information sound text equal to is a much
+more likely than others.
+And we'll have to balance these two types
+of constraints when we both tagging models
+and its worth remembering that these
+preferences is sometimes in conflict.
+So if I take this sentence here, the trash
+can is in the garage.
+And if I consider this word can, then can
+has a local preference to be a modal verb,
+but is clearly a noun in this particular
+context.
+And that's because the surrounding words,
+the surrounding syntactic structure,
+dictate that this really has to be a noun
+in this context.
+So, two course two sources of constraints,
+local versus contextual.
+And we'll see that we can build a model
+which actually balances these two types of
+constraints.

@@ -1,0 +1,282 @@
+>> Now we'll look at an application of
+sorting from the field of computational
+geometry for an interesting computation.
+If you have a set of N points in a
+plane. There's a geometric object called
+the Convex Hull which is the smallest
+polygon that encloses all the points.
+There's the Convex Hull for that set of
+points. [cough] There's a lot of
+equivalent definitions of this. Some of
+them very mathematical, that extend the
+higher dimensions. It's the smallest
+convex set that contain all the points,
+the smallest area of convex polygon
+enclosing the points. It's a convex
+polygon that encloses the points whose
+vertices points in the set and those are
+all equivalent definitions. And what we
+want to do is given the set of points,
+we're going to have a program that can
+give us the convex hull. Now, which should
+the output of such a program, such a
+method be? Well, in order to be able to
+work with the result, it should be a
+sequence of vertices that gives us that
+polygon if we follow it. If we've got some
+points that are on the boundary but aren't
+really vertices they shouldn't be
+included. This points out examples of how
+difficult computational geometry can
+sometimes be because degenerate cases
+like these are difficult to deal with in
+code. We're not going to spend a lot of
+time on this, in this lecture. But it's
+something always to be aware of when
+trying to [cough] apply simple algorithms
+in situations like these that turn out to
+be maybe more sophisticated than we might
+think.
+>> [inaudible] the large screen.
+>> Oh yeah, got you. Mm-hm. Well, there's
+actually a way to compute the convex hull
+just mechanically if you put the nails
+around the points and put a rubber band
+around it, that gives you the convex hull.
+Now, we're not going to be able to really
+implement that in a computer program but
+it's surprising how well we can do. Here's
+an application where people want to
+compute the convex hull. Suppose you have
+a robot that wants to get from s to t and
+there's an obstacle that's defined by some
+polygon. You wanted be able to go around
+the obstacle and it turns out that the
+shortest path, either it's a straight line
+from s to t or it's part of the convex
+hull and is not hard to see why that might
+be true. And there's plenty of other
+applications where people want to be able
+to compute the convex hull. Here's another
+application. If you want to find the pair
+of points that are the farthest apart in
+the set of points in the plane, this is
+sometimes important in statistical
+calculation or other applications. They're
+on the convex hull. If you have the convex
+hull, this computation is easy. [cough]
+They're, they're going to be extreme
+points on the convex hull. So, there's a
+lot of geometric properties of the convex
+hull that we can take advantage of to
+develop an algorithm. In here two
+properties. Now, these are the things that
+have to be proven and we're not going to
+get into the details of geometric proof
+but they're intuitive and certainly have
+no trouble accepting that these things are
+true. One thing is, that you can traverse
+the convex hull by making only counter
+clockwise turns or left turns if you're
+looking at the screen here. And the other
+thing is that, so if we travel from p to
+point 1 then we make a left turn to go
+to point 5 or counterclockwise turn and
+then from there, we go to point 9 and
+12 and then we eventually get back to
+the start point. The other thing is, if
+you take the point with the lowest y
+coordinate. And then if you look at the
+polar angle with respect for every other
+point with the respect to that one, so the
+angle you get from of the x-axis through p up to
+the point, then the vertices appear in
+increasing order of that angle. And again,
+that's not, not difficult to see that
+that's a fact. And the algorithm that
+we're going to look at, called the Graham
+scan is based on those two facts. It's,
+the idea is to start with point p, the
+one with the smallest y coordinate. Sort
+the points by polar angle with p where
+that is we're just going to consider in
+that order. And then we'll just throw away
+the ones that do not create a
+counterclockwise turn and you'll see how
+that works when we look at the demo. So we
+start at point p. Sort the points by polar
+angle with p so that is if we take a, a
+vertical line and sweep it in a
+counterclockwise direction, what order
+that we hit the points? The first thing we
+hit is 0, 1, and then we sweep
+counterclockwise, we get the 2 and then
+3 and 4 and so forth. So, that's
+the ordering of those points. And so now
+we'll just consider those points in order
+and then take them for the convex hull. At
+the beginning, 0->1 is a line that's
+on the convex hull. So, the point with the
+lowest y coordinates on the convex hull
+and shows the one that is the smallest
+polar angle that creates with the x-axis.
+So now what about this one - 2? Is that on
+the convex hull? Well, as far as we know
+at this point, it could be, it could be
+that the thing is a triangle and 0 is
+the last point in which case it would be.
+But in same with 3. As far as we know,
+that one could be on the convex hull. But
+as soon as we go out to 4 that's not a
+counterclockwise turn. It's going the
+wrong way and essentially what this means
+is a point 4 is evidence that point,
+there is no way the point 3 can be on
+the convex hull. You can [cough] convince
+yourself with that quite easily. So we
+just throw a point 3 out. It's not on
+the convex hull so, and what about the
+angle from 1 to 2 to 4? That's not
+counterclockwise either. It's turning the
+wrong way and it's turning to the right. So
+point 2 can't be on the convex hull
+either. And indeed if you just draw the
+line from 1 to 4, you can see the 2
+inside so there is no way it could be in
+the convex hull. Now that's essentially
+the proof that you have to have a
+counterclockwise turn. So now, we go on to
+5 - turning the wrong way. So, point 4
+can't be on the convex hull. So now we go
+to 6. As far as we know, it could be, but
+as soon as we hit 7, we know that it
+can't be cuz that's a right turn. So 6 is
+not there. Go to 8, nope. 7 can't
+be on the convex hull. Go to 9. 8 can't
+be on the convex hull. Now we go to
+10 and 11. As far as we know they
+could be. If 12 weren't there, they
+would be. As soon as we hit 12 we see
+that 11 can't be on the convex hull
+and 10 can't be on the convex hull and
+that completes the computation of the
+convex hull with the Graham Scan. Okay.
+So, there are number of implementation
+challenges for the Graham Scan and we're
+not going to go into detail on this
+because this is a lecture on sorting
+algorithms not computational geometry but
+it is indicative of how, even if we have a
+good sort, we might have to do some extra
+work to actually solve our problem in an
+application. So, how do we find the point
+with the smallest y coordinate? Well you
+could, you could sort, you could define an
+order and compare the points by y
+coordinate so essentially sorting is the
+[cough] answer to that question. And we'll
+look at the next lecture of what it means
+the divine ordering among objects, little
+more general than what we do for sorting.
+How to sort the points by polar angle?
+Well again we need to define what we mean
+when we're comparing points. And then the
+next lecture again we'll look at ways to
+define different orderings among points
+and Graham scan is a perfect example. We
+don't want to just be able to sort things,
+we don't want to just be able to sort them
+by defining and compared to. We're going
+to be able to sort the same things in
+different way sometimes and this example
+is a fine motivation of that. Figuring out
+whether what we have is a counter
+clockwise turn that's a little exercise in
+geometry and we'll just talk about that
+briefly in the next couple of slides. And
+then wow, what are we getting the sort
+efficient, done efficiently? Well, we
+could use Shellsort but actually in the
+next couple of lectures and we'll look at
+classical sorts - Mergesort and Quicksort -
+that we could use. The idea though is that
+this example illustrates that good sorting
+algorithm gives us a good convex hull
+algorithm. That's an extremely important
+principle in designing good algorithms.
+Once we have a good algorithm, if we have
+another problem we can say to ourselves,
+well, we've got a good solution to this
+algorithm, can we use that solution to
+solve our new problem? Convex hull, when
+we have a good sorting algorithm, it gives
+us a good convex hull algorithm. Because
+the main, the most work in convex hull is
+the sort. And then again there's all, all
+kinds of difficulties in implementing
+convex hull in real world situations
+because of various degeneracies. And these
+things are covered on the book site. So
+the main part of computation that we
+haven't really talked about and we'll
+cover briefly is if we have three points,
+a, b and c, and you go from a to b to c,
+are you making a counterclockwise turn or
+not? So, in the example at the left, a to
+b to c is counterclockwise. Example at the
+right, a to b to c is not counter
+clockwise. Going from a to b you turn left
+to get to c in the first case and you go
+right to get to c in the second case and
+we want to do a computation that
+distinguishes this. Now, this computation
+will be pretty easy except for the
+degeneracies. What do you want to count if
+they're all on the same line. Or if the
+slope is infinity. So, you have to just be
+aware that these situations have to be
+dealt with. So, the code isn't quite as
+simple as you might come up within the
+first instance that you try. So, there's
+degeneracies to deal with and floating
+point precision but people, researchers in
+computational geometry have worked this
+out and actually there's not that much
+code at all in the end involved. The and
+this is the slide that, that gives the
+math and I won't talk through this math.
+If you're interested in implementing this,
+you can come back to the slide. And it's
+essentially based on the idea of computing
+the slopes of the lines between a and b,
+between a and c and comparing them to
+decide whether you're turning counter
+clockwise or clockwise. And this is the
+specific math that gets that implemented.
+So [cough] this is if we implement a point
+data type for computational geometry, you
+can have a method ccw() that just with this
+little math calculation (b.x - a.x)(c.y - a.y)
+minus (b.y - a.y)(c.x - a.x) and we
+see that calculation here gives you
+immediately whether it's counter
+clockwise, clockwise or co-linear. Not
+much code at all. And that method is the
+basis for the Graham Scan. The Graham Scan
+uses a sort where we give two different
+ways to sort the points. And that uses a
+push down stack for the hull, it puts the
+points on the hull in it goes ahead and
+for every point considering I'm in the
+order of the polar sort it'll compare
+whether the top two points on the hull and
+the new point implement a CCW turn or not.
+And if it's not a CCW turn, it pops and
+then continues going. Very little code to
+implement the convex hull given that you
+have a sort and that's our main point for
+this lecture - there is many natural
+applications of sorting but also will be
+able to develop new algorithms that use
+sort that gain efficiency because of the
+efficiency of sorting.

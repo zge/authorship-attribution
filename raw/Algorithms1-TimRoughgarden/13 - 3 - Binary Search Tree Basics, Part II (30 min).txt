@@ -1,0 +1,814 @@
+So what I want to do next is test your
+understanding about the search and
+insertion procedures by asking you about
+their running time. So of the following
+four parameters of a search tree that
+contains n different keys, which one
+governs the worst case time of a search or
+insertion. So the correct answer is the
+third one. So, the heights of a search
+tree governs the worst case time of the
+search or of an insertion. Notice
+that means merely knowing the number of
+keys n is not enough to deduce what the
+worst case search time is. You also have
+to know something about the structure of
+the tree. So, to see that, just let's
+think about the two examples that we've
+been running so far. One of which is nice
+and balanced. And the other of which,
+which contains exactly the same five keys
+is super unbalanced, It's this crazy
+linked list in effect. So, in any
+search tree, the worst case time to do is
+search or insertion is
+proportional to the largest number of
+pointers left to right child pointer that
+you might have to follow to get from the
+root all the way to a null pointer. Of course
+in a successful search, you're going to
+terminate before you encounter a null
+pointer but in the worst case, you want
+insertion you go all the way to a null
+pointer. Now on the tree on the left
+you're going to follow at most 3 such
+pointers. So for example, if you're
+searching for 2.5. You're going to follow
+a left pointer followed by a right
+pointer. By another pointer and that one
+is going to be null. So we're going to
+follow three pointers. On the other hand,
+in the right tree, you might follow as
+many as five pointers before that fifth
+pointer is null. For example, if you
+search for the key zero, you're going to
+traverse five left pointers in a row and
+then you're finally going to encounter the
+null at the end. So, it is not constant
+time certainly, you have to get to the
+bottom of the tree. It's going to be from
+proportional to logarithmic, logarithm in
+the number of keys if you have a nicely
+balanced binary search tree like this one
+on the left. It's going to be proportional
+to the number of keys n as in the fourth
+answer if you have a really lousy
+search tree like this one on the right and
+in general. Search time or the insertion
+time is going to be proportional to the
+height. The largest number of hops we need
+to take to get from the root to
+the leaf of the tree. Let's move on to some more
+operations that search tree support but
+that, for example, the dynamics data
+structures of heaps and hash tables do not.
+So let's start with the minimum and
+the maximum. So, by contrast and a heap
+remember, you can choose one or the two.
+You can either find the minimum, usually
+you find the maximum easily but not both.
+And the search tree is really easy to
+find, either the min or the max. So, let's
+start with the minimum. One way to think
+of it is that you do a search for negative
+infinity in the search tree. So, you
+started the root. And you just keep
+following left child pointers until you
+run out, until you hit a null. And
+whatever the last key that you visit has
+to be the smallest key of the tree, right?
+Because, think about it, suppose you
+started the root. Supposed that the root
+was not the minimum, then where is the
+minimum got to be, It's got to be in the
+left sub-tree so you follow the left
+child pointer and then you just
+repeat the argument. If you haven't
+already found the minimum, where it's got
+to be with respect to current place,
+it's got to be in the left sub tree and
+you just iterate until you can't go to the left
+any further. So for example, in our
+running search tree. You'll notice that if
+we just keep following left child
+pointers, we'll start at the three, we'll
+go to the one, we'll try to go left from
+the one. We'll hit a null pointer and
+we'll return one and one is indeed the
+minimum key in this tree. Now, given that
+we've gone over how to compute the
+minimum, no prizes to guess how we compute
+the maximum. Of course, if we want to
+compute the maximum instead of following
+left child pointers we follow right child
+pointers by symmetric reasoning as
+guaranteed upon the largest key in the
+tree. It's like searching for the key plus
+infinity. Alright. So what about computing
+the predecessor? So remember this means
+you're given key in the tree, in the
+element of the tree and you want to find
+the next smallest element so for example
+the predecessor of the three is two. The
+predecessor of the two in this tree is the
+one. The predecessor of the five is the
+four. The predecessor of the four is the
+three. So, here I'll be a little hand
+wavy just in the interest of getting
+through all of the operations in
+reasonable amount of time but let me just
+point out that there is one really easy
+case and then there is one slightly
+trickier case. So the easy case. Is
+when the node with the key k has a
+non-empty left sub tree. If that's the
+case, then what you want is simply the
+biggest element in this node left sub
+tree. So, I'll leave it for you to prove
+formally that this is indeed the
+correct way to compute predecessors
+for keys that do have a non-empty left sub
+tree, let's just verify in our example
+by going through the trees that have a
+left sub tree and checking this is in
+fact what we want. Now, if you look at it,
+there's actually only two nodes that have
+a non-empty left sub tree. The three has a
+non-empty left sub tree and indeed the
+largest key in the left sub tree three is
+the two and that is the predecessor of the
+three so that worked out fine. And then
+the other node with a non-empty left subtree is the five
+and it's left subtree is simply the element four
+of course the maximum of that tree is also
+four. And then you'll notice that is
+indeed the predecessor of five in this
+entire search tree. So, the trickier case
+is what happens if you know the key with
+no left subtree at all. Okay. So, what are
+you going to do if you not in the
+easy case, Well, given at this node with
+key k, you only have three pointers and by
+assumption, the left one is null so that's
+not going to get you anywhere, now, the
+right childpointer if you think about it
+is totally pointless for computing
+the predecessor. Remember, the predecessor
+is going to be a key less than the given key
+k. The right subtree by definition of a
+search tree only has keys that are bigger
+than k. So, it stands for reason to find
+the predecessor we got to follow the
+parent pointer. Maybe in fact more than
+one parent pointer so to motivate exactly
+how we're going to follow parent pointers,
+let's look at a couple of examples in our
+favorite search tree here on the right.
+So, let's start with a node two. So, we
+know we got to follow a parent
+pointer. When we follow to this parent
+pointer, we get to one and boom, one in
+fact is two's predecessor in this tree so
+that was really easy to computer two's
+predecessor. It seemed that all we have to
+do is follow the parent pointer. So, for
+another example though which think about
+the node four. Now, four when we follow
+which parent pointer, we get to five and.
+Five is not 4's predecessor, it's 4's
+successor. What we wanted a key that is less
+than where we started, we follow the
+parent pointer and it was bigger. But, if
+we follow one more parent pointer, then we
+get to the three. So, from the two we
+needed to follow one parent pointer, from
+the four we needed to follow two parent
+pointers. But the point is, you just need
+to follow parent pointers until you get to
+a node with key smaller than your own. And
+at that point you can stop and that's
+guaranteed to be the predecessor. So,
+hopefully, you would find this intuitive.
+I should say, I have definitely not
+formally proved that this works and that
+is a good exercise for those of you that
+want to have a deeper understanding of
+search trees and this magical search tree
+property and all of the structure that it
+grants you. The other thing I should
+mention is another way to interpret the,
+the terminating criteria. So what I've
+said is you stop your search of parent
+pointers as soon as you get to through
+smaller than yours If you think it about
+a little bit, you'll realize you'll get to
+a key smaller than yours, the very first
+time you take a left turn. So the very
+first time that you go from a right child
+to it's parent. Look at the example, when
+we started from two, we took a left turn,
+right? We went from upper link going
+leftward To it's a right child of one, and
+that's when we got to the predecessor in
+just one step. By contrast when we started
+from the four, our first step was to the
+right. So, we got to a node
+that was bigger than where we started for
+five is four's left child which is going
+to be smaller than five. But the first
+time we took a left turn on the next step,
+we got to a node that is not only smaller
+than five but actually smaller from four,
+smaller from the starting point. So, in
+fact, you're going to see a key smaller
+than your starting point at very first
+time, you take a left turn, the very first
+time you go from a node to a parent and in
+fact, that node is that parent's right
+child. So this is another statement which
+I think is intuitive but which formally is
+not totally obvious. And again I encourage
+you to think carefully about why these two
+descriptions of the terminating criteria
+are exactly the same so it doesn't matter
+if you stop when you first find a key
+smaller than your starting point. It
+doesn't matter if you first stop when you
+follow a parent pointer that goes from a
+node that's the right child of a node.
+Either way you're going to stop at exactly
+the same time so I encourage you to think
+about why those are the exact same
+stopping condition. A couple of other
+details if you start from the unique node
+that has no predecessor at all, you'll
+never going to trigger this terminating
+condition so for example if you start from
+the node one in the search tree, not only
+is the left subtree empty which says
+you're suppose to start traversing parent
+pointers but then when you traverse a
+parent pointer, you only go to the right.
+You never turn left and that's because
+there is no predecessor so that's how you
+detect that you're at the minimum of a
+search tree. And then of course if you
+wanted to be the successor of the key
+instead of the predecessor, obviously you
+just flip left and right through out this
+entire description. So that's the high
+level explanation of all of these
+different ordering operations, minimum and
+maximum predecessor and successor work in
+a search tree. Let me ask you the same
+question I asked you when we talked about
+search in insertion. How long that these
+operations take in the worst case? Well,
+the answer is the same as it was before.
+It's proportional to the height of the
+tree and the explanation is exactly the
+same as it was before. So to understand
+the dependence on the height was just
+focused on the maximum operation that has
+the state within the question. The other
+three operations, the running time is
+proportional to the height in the worst
+case for exactly the same reasons. So,
+what is the max operation do when you
+started the root and you just follow the
+right child pointers until you run out
+them so you hit null. So, you know, that
+the running time is going to be no worse
+in the longest such paths. It's particular
+path from the root to essentially a
+leaf. So instead we're going to have a
+running time more than the height of the
+tree, on the other hand for all you know.
+The path from the root to the maximum key
+might well be the longest one in the tree.
+It might be the path that actually
+determines the height of the search tree.
+So, for example in our running unbalanced
+example, that would be a bad tree for the
+minimum operation If you look for the
+minimum in this tree, then you have to
+traverse every single pointer from five
+all the way down to one. Of course there's
+an analogious bad search tree for the
+maximum operation where the one is the
+root and the five is all the way down to the left. Another thing you can do is search
+trees which mimics what you can do with
+sorted arrays is you can print out all of
+the keys in the sorted order in linear
+time with constant time per element.
+Obviously, in the sorted array this is
+trivial. Use your for loop start ing at
+the beginning at the array pointing up the
+keys one at a time and there's a very
+elegant recursive implementation for doing
+the exact same thing in a search tree. And
+this is known as an in order traversal of
+binary search tree. So as always you begin
+at the beginning namely at the root of the
+search tree. And a little bit of notation
+of which call, all of the search tree that
+starts at r's left child t sub l and the
+search tree routed at r's right child t
+Sub r. In our running example of course
+the root is three t sub l with
+correspondent in the search tree
+comprising only the elements one and two,
+t sub r would correspond to the sub-tree
+comprising only the elements five and
+four. Now, remember we want to print out
+the keys in increasing order. So in
+particular, the first key we want to print
+out is the smallest of them all. So it's
+something we definitely don't want to do
+is we don't want to first print out the
+key at the root. For example in our search
+tree example, the root's key is three, we
+don't want to print that out first. We
+want to print out the one first. So where
+is the minimum lie? Well, by the search
+tree property, it's got to lie in the left
+subtree t sub l, So we're just going to
+recurse on t Sub l. So by the magic of
+recursion or if you prefer induction, what
+re-cursing on t sub l is going to
+accomplish is we're going to print out all
+of the keys in t sub l in increasing order
+from smallest to largest. Now that's
+pretty cool because t sub l contains
+exactly the keys that are smaller than the
+key of the root. Remember that's the
+search tree property. Everything bigger
+than the root's key has to be in the left
+sub tree. Everything bigger than the
+root's key have to be in its right sub
+tree. So in our concrete example of this
+first recursive call is we're going to
+print the keys one and then two. And now,
+if you think about it it's the perfect
+time to print out the key at the root,
+right? we want to print out all the keys in
+increasing order we've already done
+everything less than the root's key Where
+re-cursing and on the right hand side will
+take you everything bigger in it so in
+between the two recursive calls, this is
+why it's called an in order traversal,
+that's when we want to print out. R's key.
+And clearly this works in our concrete example, the first recursive call print out one and two,
+it's the perfect time to print out three and
+then a recursive call of print out four
+and five. And more generally, the
+recursive call on there right subtree
+will print out all of the keys bigger than
+the roots key and increasing order again
+by the magic of recursion or induction
+So, the fact that the pseudo-code is
+correct. The fact that the so-called
+in-order traversal indeed print out the
+keys in increasing order. This is a fairly
+straightforward proof by induction. It's
+very much in the spirit or the proofs by induction, correctness of divide and conquer
+algorithms that we've discussed earlier in
+the course. So what about the running time
+of an in order traversal? The claim is
+that the running time of this procedure is
+linear. It's O of n where n is the number
+of keys in the search tree. And the reason
+is, there's exactly one recursive call for
+each node of the tree and constant work is
+done in each of those recursive calls. And
+a little more detail, so what is the
+in order] traversal do, It will print
+out the keys in increasing. In particular
+it prints out each key exactly once. Each
+recursive call prints out exactly one key's
+value. So there's exactly n recursive
+calls and all of the recursive call does
+is print one thing. So n recursive calls
+constant time for each that gives us a
+running time of O(n) overall. In most
+data structures, deletion is the most
+difficult operation and in search trees.
+There are no exception. So let's get into
+it and talk about how deletion works,
+there are three different cases. So the
+first order of business is to locate the
+node that has the key k, locate
+the node that we want to get rid off.
+Right so for starters, maybe we're
+trying to delete the key two from our
+running example search tree. So the first
+thing we need to do is figure out where it
+is. So, there are three possibilities for
+the number of children that a node in a
+search tree might have and might have zero
+children that might have one child
+it might have two children, corresponding to
+those three cases that the deletion
+pseudo-code will also have three cases.
+So, let's start with the happy case where
+there's only zero children like in this
+case where deleting the key 2
+from the search tree. Then of course, we
+can, without any reservations just delete
+the node directly from the search tree,
+Nothing can go wrong, there's no children
+depending on that node. Then there is the
+medium difficult case. This is where. The
+node containing k has one child. An
+example here would be, if we wanted to
+delete five from the search tree so the
+medium case is also not too bad. All you
+got to do is splice out the node that you
+want to delete. That creates a hole in the
+tree but then that node, deleted node's
+unique child assumes the previous position
+of the deleted node. I can make a nerdy
+joke about Shakespeare right here but I'll
+refrain. For example, in our five node
+search tree if we wanted to, let's say we
+haven't actually deleted two out of this
+one, if we wanted to delete the five. The
+five when we take it out of the tree that
+would leave a hole but then we just
+replace the position previously held by five
+by it's unique child four. And if you
+think about it that works just fine in the
+sense of that preserves the search tree
+property. Remember the search tree
+property says that everything in say, a
+right subtree has to be bigger than
+everything in the nodes key, so we've made
+four the new right child of three but four
+and any children that it might have were
+always part of 3's right subtree so all
+that stuff has got to be bigger than three
+so there's no problem putting four and
+possibly all of its descendants. as the
+right child of three. The search tree
+property is in fact retained. So, the
+final difficult case then is when the node
+being deleted has both of its children,
+has two children. So, in our running
+example with five nodes, this would only
+transpire if you wanted to delete the
+root, you want to delete the key three
+from the tree. The problem, of course, is
+that, you know, you can try ripping out
+this node from the tree but then, there's
+this hole and it's not clear that it's
+going to work to promote either child.
+Into that spot. You might stare at our
+example search tree and try to understand
+what would happen if you try to bring one
+up to be the root or if you try to bring
+five up to be the root. Problems would
+happen, that's what would happen. This is an
+interesting contrast to when we faced the
+same issue with heaps. Because the heap
+property in some sense is perhaps less
+stringent, there we didn't have an issue.
+When we wanted to delete something with
+two children, we just promoted the smaller
+of the two children assuming we wanted to
+export and extract them in operation.
+Here, we're going to have to work a little
+harder. In fact this is going to be really
+neat trick. We're going to do something
+that reduces the case of two children to
+the previously solved cases of zero or one
+children. So here's a very sneaky way we
+identify a node to which we can apply
+either the case zero or the case one
+operation. What we're going to do is we're
+going to. Start from k and we're going to
+compute k's predecessor. Remember, this is
+the next smallest key in the tree. So, for
+example, the predecessor of the key three
+is two. That's the next smallest key in
+the tree. In general, let's call case
+predecessor l. Now, this might seem
+complicated. We're trying to implement one
+tree operation and with deletion and all
+of a sudden we're invoking a different
+tree operation predecessor which we
+covered a couple of slides ago. And to
+some extent you're right you know,
+delete, this is a nontrivial operation.
+But, it's not quite as bad as you think
+for the following reason. When we compute
+this predecessor, we're actually in the
+easy case of the predecessor operation
+conceptually . Remember how do you get a
+predecessor, well it depends. What does it
+depend on? It depends on whether you got a
+non-empty left sub tree or not. If you
+don't have a non-empty left sub tree,
+that's how you got to those things and
+follow a parent pointers upward until you
+find a key which is smaller than what
+you've started. But. If you've got a left
+sub tree, then it's easy. You just find
+the maximum of the left sub tree and
+that's got to be the predecessor and
+remember, finding maximum are easy. All
+you have to do is follow right child
+pointers until you can't anymore. Now,
+what's cool is because we only bother with
+this predecessor computation in the case
+where case k's node has both children. We only
+have to do it in the case where it has a
+non-empty left subtree. So really when we
+say compute k's predecessor l. All you
+got to do is follow k's left child. That's
+not null because it has both children. And
+then, follow right child pointers until
+you can't anymore and that's the
+predecessor. Now, here's the fairly
+brilliant parts of the way you do
+implement deletion in the search tree
+which is you swap these two keys, k and l.
+So for example in our running search tree,
+instead of this three at the root we would
+put a two there and instead of this two at
+the leaf, it would put a three there. And
+the first time you see this, it just
+strikes you as a little crazy, maybe even
+cheating or just simply disregarding the
+roles of, rules of search trees. And
+actually, it is like check out what happen
+to our example search tree. We swap the
+three and the two and this is not a search
+tree anymore, right? So, we have this three
+which is in two left sub tree and a three
+is bigger than the two and that is not
+allowed. That is violation of the search
+tree property. Oops. So, how can we get
+away with this and we get away with this
+is we're going to delete three anyway. So,
+we're going to wind up with the search
+tree at the end of the day. So we may have
+messed up the search tree property a
+little bit but we've swapped k in the
+position where its really easy to get rid of.
+Well how did we compute case
+predecessor l? Ultimately that was the
+result of a maximum computation which
+involves following right child pointers
+until you get stuck and l was the place we
+got stuck. What's the meaning to get
+stuck? It means l's right child pointer is
+null. It does not have two children. In
+particular it does not have a right child.
+Once we swap k in the l's old position, k
+now does not have a right child. It may or
+may not have a left child and the example
+on the right it does not have a left child
+either in this new position but in general
+it might have a left child. But, it
+definitely doesn't have a right child.
+Because that was a position at which a
+maximum computation got stuck. And if we
+want to delete a node that has only zero
+or one child, well that we know how to do.
+That we covered in the last slide. Either
+you just delete it, that's what we do in
+the running example here. Or in the case
+where k's new node does have a left child,
+you would do the splice out operation. So
+you would rip out the node that contains k
+and that the unique child of that node
+would assume the previous position of that
+node. Now an exercise which I'm not going
+to do here but I strongly encourage you
+think through in the privacy of your own
+home, is that , in fact, this deletion
+operation retains the search tree
+property. So roughly speaking, when you do
+the swap, you can violate the search tree
+property as we see in this example but all
+of the violations involved the node
+you're about to delete so once you delete
+that node, there's no other violations of
+the search property so bingo, you're left
+with the search tree. The running time
+this time no get, no prizes for guessing
+what it is because it's basically just one
+of these predecessor computations plus
+some pointer rewiring just like the
+predecessor and search is going to be
+governed by the height of the tree. So let
+me just say a little bit about the
+final two operations mentioned earlier,
+select and rank. Remember select is just
+a selection problem. I'll give you an
+order statistic like seventeen and I want you
+to return the seventeenth smallest key in
+the tree. Rank is I give you a key value
+and I want to know how many keys in the
+tree are less than or equal to that value.
+So, to implement these operations
+efficiently, we actually need one small
+new idea which is to augment binary search
+trees with additional information at each
+node. So, now the search tree will contain
+not just a key but also information about
+the tree itself. So, this idea is often
+called augmenting your data structure and
+perhaps the most canonical augmentation of
+the search tree like these is to keep track
+in each node, not just to the key value
+but also over the population of tree nodes
+in the sub tree that is rooted there. So
+let's call this size of x. Which is the
+number of tree nodes in the subtree rooted
+at x. So to make sure you know what I
+mean, let me just tell you what the size
+field should be for each of the five nodes
+in our running search tree example. So
+again example, we're thinking about how
+many nodes are in the subtree rooted given
+node. Or equivalently, following child
+pointers from that node how many different
+tree nodes can you reach? So from the root
+of course, you can reach everybody.
+Everybody's in the tree rooted at the root
+so the size there is five. By contrast,
+you start at the node one, well, you can
+get to the one or you can follow the right
+child pointer to get to the two. So at the
+one. The size would be two and the node
+with the key value five for the same
+reason, the size would be two. At the two
+leaves, the subtree where the leaf is just
+the leaf itself so there, the size would
+be one. There's an easy way to compute the
+size of a given node once you know the
+size of its two sub trees. So, if the
+given node in the search tree has children
+y and z, then, how many nodes are there in
+the sub tree rooted x, well, there's those
+that are rooted at y. There are those in
+the left sub tree, there are those that
+are reachable from z that is there are
+the children that are also children of z
+and then there's x itself. Now in
+general, whenever you augment a data
+structure, and this is something we'll
+talk about again when we discuss red black
+trees, you've got to pay the piper. So,
+the extra data that you maintain it might
+be useful for speeding up certain
+operations. But whenever you have
+operations that modify the tree,
+specifically insertion and deletion, you
+have to take care to keep that extra data
+valid, keep it maintained. Now, in the
+case of the subtree sizes, there are quite
+straightforward to maintain under
+insertion and deletion without affecting the
+running time of insertion and deletion
+very much but that's something you should
+always think about offline. For example,
+when you perform an insertion remember how
+that works. You do as, essentially a
+search. You follow left and right child
+pointers down to the bottom of the tree
+until you get a null pointer then that's
+where you stick a new node. Now what you
+have to do is you have to trace back up
+that path, all of the ancestors of the new
+node you just inserted and increment their
+subtree sizes by one. So let's wrap up
+this video by showing you how to implement
+the selection procedure given an nth order
+statistic in a search tree that's been
+augmented so that at every node you know
+the size of a subtree rooted at that node.
+Well of course as always you start at the
+beginning which in the search tree is the
+root. And let's say the root has a
+sub-children y and z. Y or z could be
+null, that's no problem. We just think of
+the size of a null node as being zero.
+Now, what's the search tree property? It
+says, every, these keys that are less than
+the keys sorted x are precisely the one
+that are in the left sub tree of x. The
+keys in the tree, they are bigger than the
+key to x or precisely the ones that you're
+going to find in x's right sub tree. So,
+supposed we're asked to find the
+seventeenth order statistic in the search
+three. Seventeenth smallest key that's
+stored in the tree, Where is it going to
+be? Where should we look? Well, it's going
+to depend on the structure of the tree and
+in fact it's going to depend on the
+subtree sizes. This is exactly. We're
+keeping track of them so we can quickly
+make decisions about how to navigate
+through the tree. So for a simple example,
+suppose that x's left subtree contains say
+25 keys. So remember y know locally
+exactly what the population of the subtree
+is so in constant time from x, we can
+figure out how many keys are in y subtree
+let's say its 25. Now, by the defining
+property of search trees, these are the 25
+smallest keys anywhere in the tree. Right,
+x is bigger than all of them. Everything
+in x's right subtree is bigger than all of
+them. So, the 25 smallest order
+statistics are all in the subtree rooted
+to y, clearly that where we should recurse. Clearly
+that's where the answer lies so in
+recursing the subtree root of y and then
+we are again looking for the seventeenth
+order statistic in this new smaller search
+tree. On the other supposed when we
+started x and we look, we ask why. How,
+how many nodes are there in your subtree.
+Maybe y locally have stored the number
+twelve. So there's only twelve things in
+x's left subtree. Well, okay, x itself is
+bigger than all of them so that's going
+to, x is going to be the thirteenth
+biggest order statistic. It's going to be
+the thirteenth biggest element in the
+tree. Everything else is in the right sub
+tree. So, in particular, the seventeenth
+order statistic is going to be in
+the right sub tree so we're going to
+recurse in the rght sub tree. Now, what
+are we looking for, we're not looking for
+the seventeenth order statistic anymore. The
+twelve smallest things all in x's sub tree, 
+x itself is the thirteenth
+smallest so we are looking for the fourth
+smallest of what remains. So, the
+recursion is very much along the lines of
+what we did in the divide and conquer
+selection algorithms earlier in the
+course. So to fill in some more details,
+let's let a denote the subtree size at y.
+And if it happens that x has no left
+child, we'll, the point would be a to be
+zero. So the super lucky case is when
+there's exactly i - 1 nodes in the left
+subtree. That means the root here, x is
+itself the ith order statistic remember it's bigger
+than everything In it's left subtree it's
+smaller than everything in its right
+subtree.  But, in the general case we're
+going to be recursing either on the left
+subtree or in the right subtree. We
+recurse on the left subtree when its
+population is large enough that we
+guarantee it and compasses the ith order
+statistic. And that happens exactly when it
+sides is at least i. That's because the left
+subtree has the smallest keys that are
+anywhere in the search tree. And in the
+final case when the left subtree is so
+small that the only does it not contain
+the ith order statistic but also x is
+too small to be an ith order statistic then we
+recurse in the right subtree knowing that
+we have thrown away a + 1, the a + 1
+smallest key values anywhere in the
+original tree. So, correctness of this
+procedure is pretty much exactly the same
+as the inducted correctness for the
+selection algorithms we've discussed
+earlier in effect to the root of the
+search tree is acting as a pivot element
+with everything in the left sub tree being
+less than the root everything in the right
+sub tree being greater than the element in
+the root so that's why the recursion is
+correct. As far as the running time, I
+hope it's evident from the pseudo code
+that we do constant time each time they
+recurse. How many times can we recurse
+when we keep moving down the tree that
+maximum number of times we can move down
+the tree is proportional to the height of
+the tree. So, it was again is proportional
+to the height. So, that's the select
+operation, There is an analogous way to
+write the rank operation. Remember, this
+is where you're given the key value and
+you want to count up the number of stored
+keys that are less than or equal to that
+target value, Again, you use this
+augmented search trees and again, you can
+get running time porportional to the height
+and I encourage you to think through
+the details of how implement rank
+offline.

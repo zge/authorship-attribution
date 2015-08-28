@@ -1,0 +1,209 @@
+There were lots of campus Ethernets because
+they were really easy to deploy and you
+could put them in a department, and then
+you could run a wire between two
+departments and it made a bigger network. And
+so, we've grown up networks sort of by
+agglomeration in lots of different
+university campuses and, NSF came up
+with some money and said, oh we've got a
+little bit in our budget where we could
+get some 56 kilobit lines, and tie those
+campuses together. And, they did that.
+Made the NSFNET phase one. But now
+you're tying together ten megabit campus
+infrastructure with 56 kilobit wires and
+it was wildly popular because people that
+couldn't talk could suddenly talk. And
+they're sending emails and moving huge
+files and, just, everybody's really
+excited about this technology. But, any
+one of those campuses could oversubscribe
+a net by, you know, a factor of a
+thousand. So we had a lot of packets
+piling up and getting dropped. At the
+time, I was, a researcher at Lawrence
+Berkeley Lab, which is in the hills up
+above the Berkeley Campus. And I was also
+teaching on the Berkeley Campus.
+Even back in those days, which was mid 80's we had
+a, for every class there was a
+messages group, you know like a little news group
+that was set up, all the assignments would
+be put online. And I was trying to get
+course materials from my office in LBL
+down to a machine in Evans Hall at
+Berkeley. And if there was, like, zero
+throughput in the net. It was, one packet
+every ten minutes or so. And, it seemed
+unbelievably bad. And I went down and talked
+to Mike Karels, who was heading the BSD
+group, the people that developed Berkeley
+Unix. And he's getting reports of these
+problems from all over the country. From,
+in those days, the easiest way to start
+running TCP/IP was to bring up Berkeley
+Unix because there was a ARPA funded, very
+nice implementation in it. And everybody
+was seeing poor performance. So, we talked
+for a long time that day and on succeeding
+days, about well, what's going wrong? Is
+there some mistake in the protocol
+implementation? Is there some mistake in
+the protocol? This thing was working on
+smaller scale tests and then it suddenly
+fell apart. I think we struggled for three
+or four months, just, going through the
+code writing tools to capture packet
+traces and looking at the packet traces
+and trying to, to sort out what was
+breaking, and I, I remember, the two of us
+were sleeping in Mike's office after we'd
+been pounding our head against the wall
+for, for literally months. And one of us,
+I can't remember which one said, you know
+that the reason I can't figure out why
+it's breaking is, I don't understand how
+it ever worked. You know we're, we're
+sending these bits out at ten megabits.
+They're zipping across campus.They're
+running into this 56 kilobit wire.
+We expect them to go through this wire, pop
+out on the other side. Go through
+How could that function? That turned out to be
+the, the crucial starting point.
+At that point, we started saying well what is
+there about this protocol that makes it
+work, how does it deal with all of those
+bandwidth changes, how does it deal with
+the multiple hops? So, this picture, that
+direction is time, this direction is
+bandwidth. So that's a fat pipe and that's
+a skinny pipe, and, the scale at the time,
+this is a ten megabit pipe and this is a
+56 kilobit pipe. So, here the difference
+is about three to one. It was really
+closer to hundred to one. And, so time,
+seconds times bits per second equals bits.
+So each of these little boxes in there is
+a packet, it's the number of bits in the
+packet and if you scrunch it down in
+bandwidth its got to spread out in time because the
+number of bits doesn't change. And so see
+the burst of packets, a window's worth of
+packets, gets launched. It's going to fly
+through the net until it hits this fast to
+slow transition. And then, because the
+packets have to stretch out in time,
+they'll have to sit there and wait as
+they're fed into the slower wire and you -
+they pop out the other side.
+They get spread out by this bottleneck, by the
+slower wire. Once they're spread out, they
+stay spread out. That there's nothing to
+push them back together again. They hit a
+receiver, it turns every data packet into
+an ACK. So you've got a bunch of ACKs that
+are going back towards the sender. And
+they remember what's the right spacing for
+that bottleneck. So the ACKs get back to
+the sender and every ACK gets turned
+into a data packet. So we can see the
+data packets flowing back and this is after
+one round trip time. Now the packets are
+coming out perfectly spaced so they go by
+a new one goes into the net in exactly the
+time it takes a packet to exit from the
+bottleneck. So these ACKs are sort of
+acting as a clock that tells you, tells
+the sender when it's safe to inject every
+new packet. And they're always going to be
+spaced by whatever is the slowest point in
+the net. ≫> And then the key thing
+is how, how quick, how can you get to
+steady state, sort them most quickly without wasting
+≫> I, yeah, and the
+issue of the failure we saw was: this works
+perfectly after you've exchanged a round
+trip time worth of packets. But, when
+you're starting up, when you're here,
+there's no clock. And so the hard part on
+TCP is not getting it running, it's
+getting it started. Because once you've
+got it running, you've got a clock that
+tells you exactly what to do. If you turn
+them on suddenly you get in this
+repetitive failure mode where you saturate
+the, the buffering that was available at
+some gateway. Then when you retransmit you
+do the same thing again. So your always
+losing packets. But if you turned it on
+more gradually, then you wouldn't overload
+the buffering. And then you'd get enough
+of a clock going, so that you'd control
+the amount of backlog to fit the available
+buffer. But you'd still be growing the
+number of packets in-flight, so that
+you'd eventually get a, a, you'd start with
+a kind of sporadic clock where you you'd
+eventually fill in the details and get a
+per-packet clock. ≫> How did you
+get it to the point where it was in all
+the TCP/IP implementations on the planet.
+Cuz they kind of have to cooperate in a
+way. ≫> So, remember it was a much
+simpler time when you're talking about all
+the TCP/IP implementations on the planet.
+At that time, there were, like four. So,
+there was the Berkeley Unix one. There was
+the MIT PC/TCP. There was a BBN one that
+was used in Butterflies and Nymphs. And
+there was a Multics one. I took the couple
+of TCP kernel modules that we'd been
+working on. Packaged them up a tar.
+I had this horrible driver hack that would
+let us snarf packets from the kernel. And
+I mean, it was really a horrible driver
+hack. It was the way you said what you
+wanted to snarf was by adb-ing the kernel,
+you, you wrote, in binary, some new
+values. These are the ports that I wanna
+look at. And the driver would capture
+those into a circular buffer. And you'd
+read kernel memory to pull that buffer
+out. Craig Leres and Chris Torek who were
+working in my group at LBL and were both
+long time kernel hackers were just
+embarrassed at this and they put together
+a really nice, clean driver I think called
+BPF, the Berkeley Packet Filter, that
+would let you pull packets out of the
+kernel by a, a very efficient I/O control
+interface and so we bundled all of that up
+and on the TCP/IP mailing list, which, in
+those days was, you know, TCP/IP was very
+experimental. It was very leading edge.
+And pretty much everybody who was playing
+with it was on that mailing list. So, now,
+since this stuff was available, a bunch of
+people FTPd it, tried it, it blew up, sent
+kernel core dumps, and bug reports, and
+I fixed the bug reports and put new versions
+out. Somebody would immediately come back
+and say, paniced here, do you want the kcore? And I'd go, oh, no. [laugh] embarrassed
+Put out a new version, go
+out. Somebody else would come back and
+say, paniced here, and fix that. And just
+cycled like that. And after about a day we
+got a version that didn't immediately
+panic, and then started working on the,
+actual algorithms and a little bit of
+tuning to make sure that it actually did
+good all the time and didn't do any harm.
+Just completely a, a community effort and
+ya know sort of when the, the community was saying
+this, mostly does good, and never seems to
+do harm. That's pretty much what
+Mike needed to put it into the kernel.
+So he took that, the community developed
+modules, and rolled them into the BSD release.

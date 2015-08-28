@@ -1,0 +1,133 @@
+So in the final segment of this lecture I
+want to talk about how we estimate these q
+and pr, q and t parameters in IBM Model 2.
+And in particular we're going to focus on
+something called an EM algorithm for
+estimation of parameters in this model.
+So here is a definition of the parameter
+estimation problem.
+As input to the parameter estimation
+algorithm we assume a set of sentence
+pairs.
+So I'm going to use e k, f k.
+To refer to our kth training example.
+And that example consists of an English
+sentence, so this could for example could
+be, the dog.
+And this is a French sentence which is
+assumed to be a translation of the English
+sentence.
+Here's another example.
+So, we might for example find that a
+hundredth training sample, consists of
+this English sentence, together with this
+frame sentence.
+As output from the model we want
+parameters of the form t,f,e or q,i,j,l,m.
+So for example, we might have an estimate
+of t of le, given the, or we might have an
+estimate of q of 1 given 1 6 7, just
+remember it is a distortion or alignment
+parameter.
+Now, a key challenge.
+In this problem is that we are assuming
+that we do not have alignments on our
+training samples.
+Okay, so in an ideal situation somebody
+would have annotated these alignments, so
+these alignments would have been present
+in our training samples.
+But that's really an unrealistic
+assumption.
+It's an extremely laborious task to
+annotate these alignments.
+And you know, typical training set sizes
+can easily be you know in the order of
+hundreds of thousands of sentences.
+We might have 500,000 sentences of
+training data.
+And it's just too much to expect humans to
+annotate all of those alignments on all of
+our training examples.
+Or ready for any significant subsetable
+training samples.
+So that's going to be the chee, the key
+challenge, and that is going to mean that
+we need to use something called the EM
+algorithm, which is a really a rather
+remarkable algorithm.
+This can be used for estimation, in this
+kind of scenario, where part of the data
+is hidden, hidden or missing.
+These alignments are unobserved.
+So let's, as a warm up for the EM
+algorithm, first consider the case where
+the alignments are observed.
+Okay, so let's just for now as humor in
+this idealized setting where we do
+actually have training examples with
+alignments.
+So each training example would now be a
+triple, e f a.
+For example, this might be a hundredth
+training sample.
+Specifying an English sentence.
+A French sentence.
+And an alignment between these two
+sentences.
+So this particular line would say that the
+first word in French aligned to a two.
+Second word is aligned to a three.
+And so on, and so on.
+Okay?
+So, as I said, each training example is a
+triple e f a.
+We're now seeing we have alignments.
+So, in this case, deriving
+maximum-likelihood parameter estimates is
+basically trivial.
+And it looks very much like the other.
+Parameter estimates we've seen earlier in
+this course.
+The ML estimates are just ratios of counts
+taken from our training data.
+So, for example, if I want to estimate the
+probability of le given the.
+I just set this as the ratio of two terms.
+So on the numerator is number of times
+that these two words have been aligned to
+each other, are seen, are seen aligned to
+each other in the training data.
+And on the denominator, I have just the
+number of times I see the English word.
+So that's a particular example of this
+definition.
+So again, numerator, number of times I've
+seen e aligned to f.
+Denominator the number of times I've seen
+e.
+Similarly the maximum length estimate
+distortion parameters are a simple ratio
+of counts.
+This numerator count is the number of
+times I've seen the word i in French
+aligned to word j in English.
+Given that the two sentence lengths are l
+and m respectively, and the denominator is
+basically the number of times I've seen
+the ith position align to anything given
+that we have the lengths l and m of these
+two sentences.
+So, that's the warm up.
+This is the case where the alignments are
+observed.
+I'm actually going to now write some
+pseudocode to be absolutely explicit about
+how these counts are calculated.
+The main reason for this, though, is that
+we'll see that the EM algorithm is in some
+sense, well it's certainly very closely
+related to the pseudocode I'm about to
+show you to the algorithm I'm going to
+shown you, to show you.
+There's just a couple of twists.

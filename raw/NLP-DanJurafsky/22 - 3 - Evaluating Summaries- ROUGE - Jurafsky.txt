@@ -1,0 +1,112 @@
+We talked earlier about evaluating
+question answering. If we have the answer
+to a factoid question we can simply
+evaluate it by seeing if the factoid
+the system returns is the correct
+factoid. Now summaries can't be
+evaluated that way because we can't have a
+single perfect summary for any document.
+So we'll introduce a different algorithm
+called ROUGE. Rouge stands for
+Recall Oriented Understudy for Gisting
+Evaluation, proposed by Lin and Hovy. And,
+here's the idea; it's is an intrinsic
+me-, metric for evaluating summaries, we're
+gonna ask is this summary good as a
+summary. Not in some other extrinsic
+application, but just as a summary. And
+it's based on a metric called bleu, or
+blue, that defined originally for machine
+translation. And it's not as good, rouge
+is not as good as using, as using humans
+to say, did this summary answer the user's
+question? So if we can afford that, we'll
+certainly hire users, and have them test
+to see if an answer answers a user's
+question. But rouge is very convenient for
+testing while we're building our system.
+And it works as follows. We're given a
+document D and let's say we've got our
+summarizer and it produces an automatic
+summary. And this can be a query focused
+summary, so we maybe know about the, the
+query that the user asked or even for
+generic summarization. Now we have N
+humans produce a set of reference
+summaries of this document. Again, in
+query focused summarization, they look at
+the query and write their summaries. In
+generic summarization, they just write
+their summaries. So we have a set of
+summaries, one, two, three, four human
+summaries, of our document D. And now the
+system produces another summary, call
+that x. So we have our automatic summary
+and our four human summaries and now we
+just ask, what percentage of the bigrams
+from these humans summaries occur in X?
+Obviously they won't all occur in x. A
+good summary will contain a lot of the
+bigrams that occur in some of these human
+summaries. So by counting the percentage
+you get an intuition for what's a good
+summary. And there are various versions of
+rouge, unigram rouge, bigram rouge,
+there's also other versions that, that
+talk about length in different ways. We'll
+introduce just one rouge two, bigram
+rouge, which works pretty well and it's
+just asking, out of all the bigrams, in all
+the sentences, in all the reference
+summaries, take the count of those
+bigrams. And notice that out of all those
+bigrams look at, again, in each sentence
+in this summary, for each bigram ask
+what's its minimum count in the, the
+summary produced by our system and the
+human summary. So it's asking how many
+bigrams occurred both in our system and in
+the human summary. So that will give us,
+out of all bigrams how many occurred both
+in our, in the summary and in the human
+references. Let's look at an example. Here
+I have made up three human summaries and a
+system summary, so here's our human three
+summaries and our system answer to a
+question. Let's compute rouge, so the
+numerator we want to know how many bigrams
+that occurred in these human summaries, how
+many of those bigrams also occurred in our
+system answer. We can walk through, well
+water spinach. That's in our answer. Here it is
+here. And spinach is, and is a. And in this
+summary water spinach and spinach is, and
+is a, and in this third summary again,
+water spinach and spinach is and is a, but
+also commonly eaten and leaf vegetable and
+of Asia. So if we add all that together,
+we have three from this first summary and
+three from the second summary and six from
+the third. And how many total bigrams are
+there in the human summary? Well, you can
+count them yourself. There are ten in the
+first example up here, nine in here,
+nine in here. So we have
+(3+3+6)/(10+9+9) or a rouge score of .43. So
+we've introduced rouge, an algorithm for
+evaluating summaries, whether they're generic
+or query focused, by looking at how many
+of the bigrams, or N grams in general, in
+a human summary occur in our machine
+generated summary, and a better summary is
+one that overlaps more with the human
+summary. Now rouge doesn't work as well as
+having humans actually answer the
+question, did this answer provide the
+information the user asked for. But, that
+can be very expensive, and so rouge
+can provide a fast-to-run and convenient
+intrinsic metric that we can use to test
+our systems, and then, at the end we can
+use humans to see how well it really
+did.

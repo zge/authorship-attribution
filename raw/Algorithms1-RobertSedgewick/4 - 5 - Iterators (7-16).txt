@@ -1,0 +1,136 @@
+Okay. There's another facility that Java
+provides that leads to very elegant
+compact client code that's definitely
+worthwhile to add to our basic data types
+and that's iteration, that's what we're
+going to talk about now. So, what we want
+to do is to allow the client to iterate
+through the items in the collection. But
+we don't have the client to know whether
+we're using an array or link list or
+whatever internal representation we might
+have in mind. It's not relevant to the
+client. And a lot of clients only want to
+do is just iterate through the stuff in
+the collection. But Java does provide a nice
+a solution to this called iteration. So
+what we're going to do is look at how to
+make our stack, and queue, and other data
+structures that we consider later on
+implement the so-called Iterable interface
+and it will work for client code no matter
+which implementation we used so let's take
+a look at the details of that. So what's
+an Iterable? Well, in Java lingo what an
+Iterable is, it's, it's a class that has a
+method that returns an iterator. And so
+what's an Iterator? Well an Iterator is
+something, a class that has methods hasNext()
+and next(). The Java also allows remove().
+We think that one is bad news, we don't
+use it can lead to insidious debug, bug
+debugging problems. So, it's hasNext() and
+next() and so to make the data structure
+iterable, we're going to implement those
+things. It seems like a lot of baggage to
+carry around and the reason that we do it,
+why do we go to the trouble doing it is
+that we can, if we have a data structure
+that's iterable we can use a very compact
+and elegant client code in Java, the so
+called for-each statement. So if we have a
+stack we can say - (for String s : stack).
+It means for each string in the
+stack - print it out. And if we didn't have
+that we would now, if we're using
+iterators, we could go ahead and write
+this longhand code but nobody would ever
+do that cuz it's equivalent to the
+shorthand or we might have to write client
+code that does a lot of unnecessary pushes
+and pops just to do this iteration. So
+that's the key is to be able to have
+client code that is so compact for
+iterating through items in the data
+structure so we're going to provide
+iteration for all our basic data
+structures and it's not too hard to do
+definitely worthwhile the effort. So
+here's what it looks like for link list.
+So it's got to implement Iterable so what
+does that mean implement Iterable? It's
+got to have a, a method iterator() that
+returns an iterator. So what's an
+iterator? So, we're going to use an
+inner class. In this case, we'll call it
+ListIterator that implements Iterator and
+it's generic. And basically what this
+thing has to do is implement these methods
+hasNext() and next(). And the semantics just
+clear from the names. hasNext() is supposed to
+if, if we're done is supposed to return
+false. If we're not done we're supposed to
+return true and the next() is supposed to
+give the next item in the iteration. So if
+the thing is a linked list we're going to
+start out at first. We have that's the,
+our first item in the list and we're going
+to maintain an instance variable current
+inside this iterator which is the current
+thing that we're iterating. So, get the
+next one just like if we want to remove
+the first. We pull out the current item
+and then advance the current reference and
+return item. Moving current to the next
+place. The client is always going to be
+testing hasNext() as I showed as I showed
+and that stub code before and so when it
+gets to null it will return false in the
+iterational stop. But for our iteration,
+we just have to worry about implementing
+next() and hasNext() and perhaps using a local
+instance variable to get it done. We have
+to probably to make bullet proof code -
+throw exceptions if a client tries to
+call next() with no items there and tries
+to call remove() at all, we're not going
+to support remove(). For, and for array,
+it's even simpler. So now with the iterator we
+have control over which order we go
+through the items and so that's going to
+go along with the semantics and the data
+structure so probably in a stack you want
+to get the things in stack order like the
+order that come out of the stack so that's
+reverse order in the array so in this case
+then next() is just decrement and return the
+next one and our instance variable is an
+index in the array. And then hasNext() is
+okay as long as that thing is positive. So
+a little Java [cough] code to provide this
+iteration facility but actually within
+this framework not too much to do and you
+can see how to implement this for your own
+data type and we'll use this paradigm for
+every basic data type that we, that
+involves collections of objects that we'll
+encounter. Alright, and in fact, it leads us
+to actually for a lot of clients it
+doesn't really matter what order we get
+the items. Really often what we're doing
+is just inserting items into a collection
+and then, later on, iterating through the
+items that we have. That data structure is
+called a bag and so let's look at what
+that API looks like. Order doesn't
+matter so all we want to do is add an item
+maybe you want to know the size and we
+want to iterate through all the items in
+the bag. So this is a simpler, narrower
+API but still it expresses an important
+little collection of operations and, and
+we'll use this one and we've already seen
+the implementations. You just take stack
+and remove the pop, or queue and remove the
+dequeue [cough] and you have fine
+implementation of a useful data structure.

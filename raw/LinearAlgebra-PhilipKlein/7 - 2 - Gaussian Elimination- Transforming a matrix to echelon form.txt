@@ -1,0 +1,300 @@
+
+[BLANK_AUDIO]. 
+So I've illustrated that if a matrix is 
+in echelon form, its non-zero rows form a 
+basis for its row space. 
+How can we use this idea, when our matrix 
+doesn't happen to be in echelon form? 
+What we want to do, is transform it into 
+a matrix, that is in echelon form, that 
+has no none, that has no zero rows and 
+such that, the row space is the same as 
+the row space of the original matrix. 
+So, in this, we'll represent our current 
+matrix as a row list, rather than using 
+the mat class. 
+So let's assume the variable row list has 
+been initialized with a list of Vecs, 
+such as this one. Our code will mutate 
+this variable. 
+To handle Vecs with arbitrary domain D, 
+we have to decide on ordering of the 
+columns. 
+So we'll use the sorted order as shown 
+here. 
+So the goal is to, transform a matrix 
+into one in echelon form and our first 
+approach will be, using sorting. 
+So, the algorithm will first choose a row 
+with a non-zero in the first column, then 
+choose a row with a non-zero in the 
+second column and so on and it'll 
+accumulate these rows in a list new, row 
+list. 
+In order to carry this out, the algorithm 
+has to keep track of which rows are 
+remaining to be sorted. 
+It uses rows left, to store the set of 
+indices of rows that haven't been 
+processed yet. 
+So the initialization we've already 
+discussed. 
+Here's the code for the algorithm proper. 
+The algorithm iterates through the 
+columns, and in each iteration, it finds 
+the set of row indices among those rows 
+still remaining to be sorted that have a 
+non-zero entry in the current column. 
+It selects one of those rows, in this 
+case the first in the list, adds that to 
+new row list and removes the index from 
+the set rows left, of rows yet to be 
+processed. 
+Let's see how this algorithm operates on 
+a matrix. 
+The algorithm iterates through the 
+columns one by one. 
+First, it considers the first column, it 
+finds a row with a non zero in that 
+column. 
+So, this row and adds that to new row 
+list, goes to the second column, finds a 
+row with a non zero in that column and 
+adds that to new row list. 
+Now, the algorithm runs into trouble, 
+when it gets to the third column, it 
+doesn't find any rows that have non-zeros 
+in that column. 
+So rows with non-zeros, will end up being 
+empty and this line will cause an error. 
+Now what the algorithm should really do, 
+is just move on at this point to the next 
+column. 
+So since column three doesn't have any 
+non-zeros among the remaining rows,it 
+moves on to column four and it finds 
+finds row, adds that to new rowlist and 
+finally, goes to the next column and 
+finds this row and adds that to new 
+rowlist. 
+So we should change the code to handle 
+this case. 
+So we add a check, to make sure that 
+there are some rows with non-zero 
+elements, if not, the algorithm just 
+moves onto the next column, the 
+algorithm's still not correct. 
+Let's see how it works on this matrix. 
+It'll produce this matrix, which 
+unfortunately is not an Eschelon form, we 
+don't have this nice staircase going down 
+because it whoops, this is non-zero, so 
+we're going to need to make a change to 
+the algorithm. 
+The algorithm is actually going to have 
+to change the vectors. 
+Let's consider the algorithm at the point 
+where it's eliminated these rows. 
+It's dealt with the first, second and 
+third columns and it's ready to deal with 
+the fourth column. 
+At this point it has to apply a 
+transformation, it has to change the 
+rows. 
+What it does is, it subtracts this twice 
+the second row, from the fourth row, 
+getting this. 
+This has the effect of zeroing out this 
+element, so, here's the result. 
+And this three is called the pivot 
+element, that's what we used to zero out 
+this element. 
+The transformation we performed, is 
+equivalent to multiplication by an 
+elementary row-addition matrix. 
+And such a matrix is invertible, in fact, 
+these matrices are inverses of each 
+other. 
+We'll show that, if M times A equals B, 
+where M is an invertible matrix, then the 
+row space of A equals the row space of B. 
+That means that this change to the rows 
+that the algorithm performed, doesn't 
+change the row space. 
+Therefore, a basis for the row space of 
+the change matrix, is also a basis for 
+the row space of the original matrix. 
+We'll first prove this Lemma. 
+Given matrices N and A, the row space of 
+N times A is a subset of the row space of 
+A. 
+Let V be any vector in the row space of N 
+times A. 
+That is, V is a linear combination of the 
+rows, of N times A. 
+Well, we can write it like this, V equals 
+some vector times N times A. 
+By using associativity, we can rewrite 
+this as U times the matrix N, all times 
+A. 
+And now, this is a vector times a matrix, 
+so this shows that this vector is a 
+product of vector times the matrix A. 
+So by the linear combinations rule of 
+vector matrix multiplication, this is a 
+linear combination of the rows of A. 
+We've shown that, any linear combination 
+of the rows of NA can be written as a 
+linear combination of the rows of A and 
+that completes the proof. 
+So we have this lemma, now let's go back 
+to the proposition. 
+If M is invertible in the row space of M 
+times A equals the row space of A. 
+To prove that, we prove two directions. 
+We prove that, the row space of M times A 
+is a subset of the row space of A and 
+vice versa. 
+First, let's show that the row space of M 
+times A, is a subset of the row space of 
+A. 
+Well, that's a direct application of the 
+lemma. 
+To get the other direction, we define the 
+matrix B to be M times A. 
+Now, M is invertible so it has an 
+inverse, M inverse, multiplying this 
+equation by M inverse, we get this, M 
+inverse times B equals A. 
+Now and application of the Lemma shows 
+that the row space of M inverse times B, 
+is a subset of the row space of B. 
+Well, this is just A and this is just M 
+times A. 
+So, what we've really shown is that the 
+row space of A is a subset of the row 
+space of M times A and that was the other 
+direction. 
+So that completes the proof of the 
+proposition. 
+So, applying elementary row addition 
+operations doesn't change the row space. 
+Let's incorporate this new feature into 
+our algorithm. 
+You noticed I've added this line in 
+which, we add suitable multiples of the 
+row indicated by the pivot index to each 
+of the rows that has a non-zero in the 
+current column. 
+So applied to this matrix for example, 
+after some iterations of the algorithm, 
+this matrix turns into this matrix. 
+Now the algorithm subtracts multiples of 
+this row, from the other two remaining 
+rows. 
+So this is the pivot element in this case 
+and here's the result. 
+We've zeroed out this column, it also 
+happens to have zeroed out these other 
+elements as well. 
+So here's the new code, the algorithm 
+iterates through all the rows with a 
+non-zero in the current column, other 
+than the one we selected, as the pivot 
+row and then subtracts an appropriate 
+multiple of the pivot row from each of 
+those rows. 
+Now, this algorithm is mathematically 
+correct, however, we have to cope with 
+the fact that, our computer computes not 
+with real numbers but, with floating 
+point numbers. 
+Let's say we started with this matrix, we 
+want to compute a basis for the row space 
+of the matrix. 
+One one iteration of our algorithm will 
+produce this matrix and notice this one 
+minus 10 to the 20. 
+What does Python do with an expression 
+like that? 
+Let's find out. 
+The result is just negative 10 to the 20 
+because of rounding therefore the matrix 
+that really results, is this one, where 
+we've replaced 1 minus 10 to the 20 with 
+just minus 10 to the 20. 
+One additional step, the algorithm 
+results in this matrix, which leads us to 
+think that the first two rows of this 
+matrix form a basis for the row space of 
+the original matrix. 
+But in fact, the row space of the 
+original matrix has dimension three. 
+So we've been mislead. 
+The problem is, Gaussian elimination got 
+the wrong answer due to round off. 
+Now, all of our algorithms are subject to 
+such errors, there is a way to help 
+Gaussian elimination get the right 
+answer. 
+According to partial pivoting, the 
+algorithm should select among the rows 
+remaining, whichever row has the element 
+of largest magnitude in the current 
+column. 
+Complete pivoting means that, the order 
+of columns can't be decided in advance 
+and the algorithm should search among all 
+remaining rows and columns to find the 
+entry with largest magnitude. 
+And these are a bit complicated to 
+implement, we won't study them. 
+Instead, we'll see how Gaussian 
+elimination is used when the matrices are 
+over GF2, in which case, we don't have 
+any rounding errors to worry about. 
+Let's see how the algorithm operates on a 
+matrix over GF2. 
+The algorithm starts with column A, the 
+algorithm selects row one, as the pivot 
+row, so, it puts that row into new row 
+list and now, since rows two and three 
+have non zeros in column A, the algorithm 
+uses the pivot row to wipe out those non 
+zeros and here is the result. 
+Now, column B, the algorithm selects row 
+three as the pivot row, adds it to new 
+row list, the other rows have zeros in 
+column B, so, we don't have to do any row 
+addition operations. 
+Let's move on to column C, the algorithm 
+selects row zero as the pivot row adds it 
+to new row list and then, there's only 
+one row remaining that has a non zero in 
+column C. 
+So, the algorithm adds the pivot row to 
+row two to make that zero. 
+Finally, column D, the only remaining row 
+is row two. 
+So, the algorithm selects row two and 
+adds it to new row list and no other row 
+operations are required, the algorithm is 
+done and it's come up with a basis for 
+the row space. 
+So far, we've seen how to use Gaussian 
+elimination to transform a matrix into 
+one, in echelon form and we know that 
+non-zero rows form a basis for the row 
+space of the original matrix, but there 
+are other things we can do with Gaussian 
+elimination as well. 
+We can use it to solve linear systems and 
+you'll see, that can be useful for 
+example in Lights Out. 
+We can also use it to find vectors in the 
+null space of a matrix and that can be 
+useful for example in integer factoring. 
+The key idea is to keep track of the 
+transformations the algorithm performs, 
+in putting the matrix into echelon form. 
+

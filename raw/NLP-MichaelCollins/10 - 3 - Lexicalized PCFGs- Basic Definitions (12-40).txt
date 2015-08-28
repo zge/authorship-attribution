@@ -1,0 +1,286 @@
+So we've now seen how to lexicalize the
+treebank, how to add these lexical
+annotations to each nonterminal in a
+treebank.
+Next, let's talk about lexicalized
+probabilistic context-free grammars.
+I'll give some basic definitions.
+Okay, so firstly to recap Let's remind
+ourselves of context free grammar and
+Chomsky Normal Form.
+So a CFG in Chomsky Normal Form consists
+of the following: N is a set of
+non-terminal symbols in the grammar.
+Sigma is a set of terminal symbols or
+words.
+We have S which is a distinguished start
+symbol, which always occurs at the root of
+the tree.
+And then finally we have a set of rules R.
+And each rule in r must take one of two
+different forms.
+So, it either has the form x goes to y one
+y two.
+Where all three elements x y one and y two
+are non-terminal.
+So an example would be s goes to n p v p.
+Or it consists of x goes to y, where x is
+a non-terminal and y is a word.
+So, for example, dt goes to there.
+And we saw that, given a PCFG, in Chomsky
+normal form.
+We can use dynamic programming to find the
+highest probability parse in order cubic
+time in the length of the sentence.
+So n is length of the sentence.
+And cubic time in the number of non
+terminals.
+And the grammar.
+So here's a definition of Lexicalized
+context free grammars in Chomsky normal
+form.
+Its closely related to the definition i
+gave you on the previous slide.
+And so with the lexicalized CFG we again
+assume we have some set of non terminal
+symbols.
+We have a set of terminal symbols and we
+have a start symbol but the rules in the
+grammar takes a slightly different form.
+So there are three different cases.
+Let's go through the simplest case first.
+So this say we can have a rule where X is
+non terminal and H is a word where X H we
+write as H so for example D t the goes to
+the as one example of this rule, where x
+equals d t.
+So these are the rules seen at the very
+leaves of the tree for a part of speech
+with some lexical item simply rewrites as
+that lexical item.
+Now let's look at this two remaining
+cases, let's look at this one first.
+This says I can take any three
+non-terminals x, y1 and y2 and any two
+words h and w and I can have a lexicalized
+rule where xh rewrites as y1hy2w Let me
+give you an example of such a rule.
+We could for example have VP saw goes to
+Vt saw MP dog.
+Now critically, I'm going to subscript
+these arrows.
+This has a one here to specify which of
+the two children is the head of this rule.
+So because saw Is on the left hand side of
+the rule.
+And saw is here on the first non terminal.
+I subscript the arrow one to say that,
+that's where this head word came from.
+That this is the head of the rule.
+So, in this particular example, we have x
+equals vp.
+Y1 is equal to vt.
+Y2 is equal to NP.
+H is equal to saw, and w is equal to dog.
+This case is similar, so then we can give
+an example of this rule, this for example
+could be S saw.
+Goes to two n p man v p saw.
+Notice in this case the head word comes
+from the second child and that's why the
+arrow's annotated in this way.
+So the, this annotation on the arrows is
+sort of a pesky detail.
+But it's important.
+And it's important because it voids
+ambiguities.
+If, for example, I have NP dog goes to NN
+dog, NN dog very unlikely, but possible.
+Where the h is equal to dog and w is equal
+to dog.
+Which can be careful to specify, which of
+these two children the head word came from
+.
+So here's an example of a Lexicalized,
+context-free grammar, and this trumpski
+the normal form, and let me show you a
+polis tree under this.
+So we have S(saw) goes to, for example,
+NP(man), VP(saw), and we'll just Mark this
+to say that this is where the, the head
+came from.
+This is the head of the phrase.
+And then n p man could go to d t there.
+N, n man, for example, so I've used this
+rule and now I'm using this rule.
+Again let's[UNKNOWN] the head.
+And we have the, man.
+And we could go on and on.
+So we have derivations with these
+lexicalized context free grammars which
+look very similar to derivations under
+regular context free grammars, we just
+have he, head words associated with each
+of these non terminals in the tree.
+So we will introduce parameters or
+probabilities in these lexicalized PCFGs.
+It's important To emphasize the
+similarities and differences from regular
+PCFGs.
+So in a regular PCFG we saw parameters
+like the following.
+For example, q of S goes to NP VP.
+This is the basically the conditional
+probability given that I have an S there
+are going to be multiple ways of rewriting
+that S.
+Np VP is going to be one of them and this
+is going to be the probability that we
+choose this as oppose to all those other
+alternatives.
+We have parameters in Lexicalized PCFG
+which again are associated with entire
+rules So here's an example parameter.
+And now, this parameter is for the rule, s
+saw goes to np[INAUDIBLE] vp saw.
+So this, again, is going to have an
+interpretation as a conditional
+probability.
+In this case, the interpretation is.
+Given that I have S saw on the left hand
+side of the rule, there are many, many
+different possibilities.
+One is to choose the second non-terminal
+as the head.
+And to choose NP man, VP saw, as the two
+children.
+And there are going to be many, many other
+poss, possibilities.
+So there are definite similarities between
+these two models.
+In fact Technically speaking, a
+lexicalized PCFG really is just a special
+case of PCFG.
+But qualitatively something has really
+changed which is that we've gone from a
+relatively small number of parameters in
+this original model to a very, very large
+number of parameters.
+We have one parameter for every possible
+lexicalized rule.
+And so we're going to have to be very
+careful in how we estimate the parameters
+of these models, but we'll see that the
+smoothing techniques you saw for language
+modeling In the very first segment of this
+course can be applied very, very directly
+to this problem.
+Next let's talk a little bit about parsing
+with lexicalized CFGs.
+I don't want to go into tremendous detail
+about parsing algorithms for lexicalized
+PCFGs, but I want to give you a sketch
+here.
+The main point being that you can use a
+very, very similar dynamic programming
+algorithm to the dynamic programming
+algorithm we saw for regular P F G's So
+the new form of grammar I've just shown
+you, is very similar to a Chomsky normal
+form CFG.
+But Whereas before we had rules like S
+goes to NPVP.
+So, there are order N cubed possible rules
+where N is the number of noon terminals,
+so N times N times N In this new grammar I
+have things like S saw goes to NP dog VP
+saw.
+And so If I think of the number of choices
+well I have three non-terminals here s,
+np, and vp.
+So I have n cubed choices there.
+And also in each rule I have two words,
+the head word saw and the modifier word
+dog.
+And so I'm going to have sigma squared.
+And so there are many, many possible
+rules, okay.
+So I've gone from a grammar with order n
+cubed rules.
+To grammar with this many rules.
+So naively you can just pick up the
+dynamic programming algorithm we saw for
+probabilistic context free grammars and
+apply it to this new grammar.
+These rules are really just like regular
+context free rules.
+We can just treat these as non terminals,
+we just have a much larger set of non
+terminals than we had before.
+But if you do this naively you'll end up
+with.
+The following running time.
+Remember before we had order n cubed times
+number of nonterminals cubed as the run
+time for, for dynamic programing.
+This is our new run time.
+And we have sigma squared coming in here.
+This is a terrible idea because the
+capillary size can be huge.
+Sigma could easily be on the order of
+100s, and much more likely thousands or
+even tens of thousands.
+But there's a simple observation which
+gives us at least a plausibly efficient
+algorithm.
+If I have a particular sentence like the
+dog saw the cat.
+I can immediately discard rules such as
+the following.
+So S questioned goes to two MP dog VP
+questioned.
+I can immediately discard this rule
+because it has a word questioned in one of
+these non-terminals, which is seen nowhere
+in the sentence.
+So we know that rule can never be used in
+pausing the sentence.
+And so We can actually restrict ourselves
+to a much smaller set of rules, where we
+now have order n squared times n cubed,
+because again we have Capital N choices
+for each of these three non terminals.
+And then, these two words, rather than
+being drawn from a full vocabulary, have
+to be drawn from one of the n words in the
+sentence.
+Okay?
+So we end up with a much smaller set of
+rules just by restricting the grammar in
+this very simple way.
+And this is actually going to lead to a
+run time.
+Of order n to the fifth times n cubed.
+But where did this come from?
+Well, we have order n cubed.
+It's the dependence of the dynamic
+programming algorithm on the sentence
+length.
+And then we have to multiply in the number
+of non terminals or rules in the grammar.
+And so this is where we get order n cubed
+times n squared.
+It's the number of possible rules, and we
+say, so this is the run time we get.
+So, that's really more of a sketch than a
+precise definition of the algorithm.
+But hopefully, you'll get the idea.
+And the important point is that you can
+end up pausing with these lexicalized
+PCFGs relatively efficiently.
+We now have gone from an N cubed
+dependance on the sentence length to an N
+to the fifth.
+And so that's expensive, but it's still
+manageable, if you're careful about how
+you do things.

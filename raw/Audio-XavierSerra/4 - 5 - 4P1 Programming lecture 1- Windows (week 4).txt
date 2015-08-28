@@ -1,0 +1,369 @@
+Hello.
+Welcome back to the course on audio signal
+processing for music applications.
+This week we're talking about
+the short time Fourier transform.
+And one of the fundamental elements of
+this transform is the analysis window.
+So in this programming lecture,
+I want to talk about windows
+but from a programming perspective.
+So lets open at text editor GEdit,
+in which I typed
+a script that, what it does is
+to get a window.
+In this case a Hanning window.
+And then
+it computes the spectrum of the window.
+But since I had to do all
+this zero phase windowing, and
+center things around zero, and
+zero padding at the end
+the code is going to be longer
+than what it could be desirable.
+So let's go through the code and
+talk about the main aspect of it.
+Well, first we have 
+the packages that we need.
+We import numpy, scipy and matplotlib.
+Then we have the lines that relate to the window.
+So we define the window length.
+In this case 63.
+And, and we keep that as M, capital M.
+Then we call function get-window.
+Which it has two parameters,
+the name of the window and the size.
+So, the window I chose is the hamming window,
+which is the raised cosine function.
+And then, I need
+the variables that keep the middle
+of the window information.
+And it has to handle this even and
+odd situation.
+So the middle can be different,
+depending of
+even an odd size and so the two sides
+might have a different number of samples.
+Okay. Then
+we need to prepare
+the window for computing the FFT.
+So to place the window
+at the 0th location.
+So what we are going to do
+is we create a buffer,
+of the size of the 51 that we want to
+compute, in this case, 512 samples.
+And then, we place the window
+around the 0th sample, okay?
+So, we take the second half of the window
+and place it at the beginning.
+And the first half of the window and
+place it at the end.
+Then, we can compute
+the spectrum of this buffer.
+Okay?
+So we'll compute the buffer using
+the FFT, algorithm.
+And then, we convert the spectrum
+into absolute value and phase.
+The absolute value, in order to
+convert it to decibels, which is 
+the way that we like to see
+the information of the magnitude.
+We have to make sure that
+there are no zeros so
+that the log of zero is not there.
+So we will have to check if
+the absolute value is below this epsilon value,
+which is the minimum value
+we can have in Python.
+So that's why we have
+this three lines of code.
+And then, we compute the angle
+of the complex values.
+And then in order to show it better,
+to display the spectrum,
+the magnitude and phase spectra.
+And see it centered in the middle,
+lets say, of the array,
+we undo this zero phase windowing thing, 
+so that we place back
+the data in the middle of the array.
+That's easier to visualize.
+Okay, lets run it.
+Okay.
+So we are in iPython and with Pylab in it,
+so we have the matplotlib
+package already in it and
+we can run the script.
+Okay, that's it.
+And now we can start plotting
+things that we have computed.
+For example, we can plot the window.
+Okay.
+So this is the Hanning window, which is this
+raised cosine going from zero to one and
+the 63 samples we have computed.
+Then we can plot how this window
+has been placed in the fftbuffer.
+So we can plot the fftbuffer.
+Okay.
+So
+here, the window is centered at zero,
+so we have the second half
+from zero to half of the window and
+the first half
+right before the 512
+value of the FFT buffer.
+Okay?
+And now we compute the FFT and we can
+plot the magntide spectrum resulting from that.
+Okay?
+So this is the magnitude spectrum.
+Again centered around zero.
+So, here we have the positive
+frequency values and
+in the second part
+we have the negative values.
+So, a better way to display that
+is to move things around and locate the
+main lobe in the center so,
+that's what we did, and mX1
+has the information in the center.
+Okay?
+And if we plot the phase we can also show,
+the location of the phases.
+And here what is important, of
+course, are the phases in the middle.
+And here we have this
+2pi discontinuities, but
+basically, everything is zero,
+modulus 2pi.
+And it's clear, it's good, because that
+means we've centered the window around
+zero, and therefore we have,
+what we call a zero phase window.
+Okay.
+In order to visualize the x axis better,
+I here type some commands,
+to plot in a way that
+the axis are better shown.
+So here what I did was to
+plot against an x axis array.
+That has been normalized, so that
+the zero padding does not affect.
+So, we divide by N and multiply by M,
+so we actually see the samples, let's
+say, the samples with respect to the window.
+And I also have normalized the
+magnitude so the maximum is zero decibels.
+And I am only plotting the values that
+go in the x axis from minus 20 to 20 and
+the dB values I am plotting
+from minus 80 to 0.
+Okay?
+So now, if we run this script,
+with these lines added.
+Well, we're seeing the magnitude
+spectrum of the Hanning window, but
+with an x axis that shows a center around
+zero and decibels starting from zero.
+So now we can check the values we talked
+about, that describe the windows.
+We mentioned that the main lobe,
+the width of the main lobe is an important
+characteristic of the window.
+And in here we can see if we look
+on the bottom right side,
+where our x value is of the cursor,
+and we can see that
+this main lobe sort of deep is at minus 2.
+And this other one is at 2.
+So clearly,
+this main lobe at this location,
+the width, is around four samples,
+what we call four bins.
+And this is what we mentioned,
+about the Hanning window.
+And then also we talked about the sidelobe level, the highest sidelibe level.
+And here again, we can put the cursor
+at the highest sidelobe level and
+it tells me kind of the value
+that this has and it's around
+minus 31 decibels, which is
+the kind of thing that we mentioned.
+Okay.
+So now, we can keep changing
+the window and for example,
+we can put instead of the hannind, instead
+of the hanning we can put the hamming.
+And compute the same script.
+And okay, that's a different window.
+And if we can measure the main lobe width,
+we see that it also has four samples but
+now, the side lobe level, is much lower.
+So the highest side-lobe,
+is around minus 42 decibels,
+which is the kind of things we
+mentioned in the theory class.
+Okay.
+And if we go to another window, for
+example we go to
+the blackman window.
+Blackman window and
+we save it and run it.
+Okay.
+Well, yes,
+that's what we saw in the theory class and
+now the main lobe is wider.
+It's around six bins and the side-lobe
+level is much lower, around 58 decibels.
+And then, finally, the last window
+that we also talked about
+was the Blackman-Harris window,
+Blackman-Harris window that we can compute,
+and if we run it.
+Okay.
+So now, in fact we are not seeing
+the side lobes and this is because the range we
+are specifying doesn't even
+reach where the side lobes are.
+So let's change the display and
+let's change the axis.
+Instead of having minus 80,
+let's put at least minus 100, so
+that when we show it,
+now we are seeing the side lobes.
+The highest side lobe is
+around minus 92 decibels.
+And now, the main lobe,
+is quite wider, is around eight bins.
+Okay.
+So this is a good way to visualize and
+try to understand the windows.
+And so,
+please feel free to play around with that.
+Now, I want to do it but with sinusoids.
+So to analyze a sinusoid that has been
+windowed, and this is another script.
+This is much shorter because instead of
+calling the FFT and worrying about all
+this centering around zero, and worrying
+about the zero padding, etcetera.
+I call directly that dftAnal function 
+that we
+have in the sms-tools directory.
+So, now,
+what I do is I specify the directory
+of the models where I have all
+the models of the sms-tools.
+And I import the dftMmodel file.
+Okay?
+So that, I can call this dftAnal
+function that receives
+as input the signal,
+the window, and the FFT size.
+And automatically does all
+the operations that we just showed in
+the previous script.
+Okay, so in this script basically
+what I do is I get a sinewave,
+with a given frequency,
+in this case the frequency is 5,000 hertz.
+Of course, a sampling rate of 44,100 and
+I compute 101 samples of a sinusoid
+which are basically going to be the same
+length of the window size I am using.
+For example, in this case,
+I am using the hamming window.
+But maybe let's change it and
+let's use the, I don't know, for
+example there the hamming window.
+Okay.
+And now, we compute the analysis.
+And here I also display, in a way
+the output, so
+I center everything and
+talk about hertz.
+So we're going to display
+only the positive part,
+because the dftAnal, only computes
+the positive part of the spectrum.
+And then I will be displaying it
+showing it in hertz.
+Okay.
+So let's execute this file.
+test1.
+Okay, and this is the sinusoid
+of of what I have analyzed.
+And this is the
+the shape of the window, in fact.
+So this is this, proves
+what we talked about in theory that,
+when we analyze a sinewave and
+we multiply it by a given window.
+In fact, what we're seeing in this
+spectrum, is the transfer of the window,
+centered at the frequency
+of the sinusoid, okay?
+5000 hertz, and
+with the amplitude of the sinusoid.
+The amplitude in this case was normalized,
+so it is not here
+an important thing, but we would also see
+the amplitude of the sinusoid.
+And of course
+we see the standard characteristics of
+the window, and
+here the x-axis is in hertz.
+So we need to understand
+the relationship between
+frequency in hertz, and all these other
+values, the bins that we talked about.
+And of course if we change the window and
+we compute the, like
+the one we mentioned,
+the blackman-harris.
+Okay, so now, we do this computation.
+Okay.
+And now,
+we're seeing, again,
+the blackman-harris window,
+the magnitude spectrum, but
+centered at the frequency of the sinusoid.
+Okay so that's basically all I wanted
+to talk about in this lecture.
+So we have been
+using some packages from Python.
+And also of course,
+we have been using the sms-tools,
+in order to get DFT
+analysis code from that.
+And that's all.
+So we, we have been focusing on one aspect
+of the Short-Time Fourier Transform,
+which is the analysis window.
+Which is a fundamental element and
+unless we understand how
+Windows work is going to be very difficult
+to understand how Spectrograms, and how
+the Short Time Fourier Transform and
+other Spectral analysis systems work.
+So, please make sure that you
+understand the concept of windowing and
+how it affects when either by
+itself, when you see the spectrum, or
+when we window a particular signal.
+And therefore, so how we see
+the spectrum of a particular signal
+having been windowed, in a certain way.
+So thank you very much.
+And I hope to see you in next programming
+class that we will basically put it
+together, together with the whole code
+of the Short Time Fourier Transform and
+we will be able to understand
+the whole implementation of the STFT.
+So, see you then.
+Bye, bye.
+

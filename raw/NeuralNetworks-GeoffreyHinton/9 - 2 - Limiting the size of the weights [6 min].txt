@@ -1,0 +1,161 @@
+In this video, I'll talk about how we can
+control compacity by limiting the size of
+the weights.
+The standard way to do this is to
+introduce a penalty that prevents the
+weights from getting too large.
+With the implicite assumption that a
+network with small weights is somehow
+simpler than a network with large weights.
+There are several different penalty terms
+we can use.
+And it's also possible to constrain the
+weights, so that the incoming weight
+vector to each of the hidden units is not
+allowed to be longer than a certain
+length.
+The standard weight can limit the size of
+the weights, is to use an L2 weight
+penalty, which means that we penalize the
+squared value of the weight.
+This is sometimes called weight decay in
+the neural network literature, because the
+derivative of that penalty acts like a
+force pulling the weight towards zero.
+This weight penalty keeps the weight
+small, unless they have big urge
+derivatives to counteract it.
+So if you look at what the penalty term
+looks like, as the weight moves away from
+zero, you get this parabolic cost.
+If you look at the equation, the cost that
+you're optimizing is the normal error that
+you're trying to reduce, plus a term which
+is the sum of the squares of the weights,
+with a coefficient in front, Lambda.
+And we divide by two so that when we
+differentiate the two is cancelled.
+That coefficient in front of the sum
+squared weights is sometimes called the
+weight cost.
+That determines how strong the penalty is.
+If you differentiate, you can see the
+derivative of this cost is just the
+derivative of the error plus something
+that's to do with the size of the weight
+and the value of Lambda.
+That derivative will be zero when the
+magnitude of the weight is one over Lambda
+times the magnitude of the derivative.
+So the only way you can have big weights,
+when you're at a minimum of the cost
+function, is if they also have big error
+derivatives.
+And this makes the weights much easier to
+interpret.
+You don't have a whole lot of weights that
+are large but aren't doing anything.
+The effect of an L2 penalty on the weights
+is to prevent the network from using
+weights that it doesn't need.
+This often improves generalization a lot,
+because it can use those weights that it
+doesn't really need to fit the sampling
+error.
+It also makes a smoother model in which
+the output changes more slowly as the
+input changes.
+So if the network has two very similar
+inputs, when you put in an L2 weight
+penalty, it prefers to put half the weight
+on each of those two similar inputs rather
+than all of the weight on one, as shown on
+the right here.
+If the two inputs are very similar, those
+two networks will produce very similar
+outputs.
+But the one with the half weights will
+have much less extreme changes in its
+outputs when you change the inputs.
+There are other kinds of weight penalty.
+For example, an L1 penalty, where the cost
+function is just this v shape.
+So here what we're doing is we're
+penalizing the absolute values of the
+weights.
+This has the nice effect that it drives
+many of the weights to be exactly zero and
+that helps a lot in interpretation.
+If there's only a few non zero weights
+left, it's much easier to understand
+what's going on.
+We can also use weight penalties that are
+more extreme than L1 where the gradient of
+the cost function actually gets smaller
+when the weight gets really big.
+This allows the network to keep large
+weights without them being pulled towards
+zero.
+It's just the small weights that'll get
+pulled towards zero.
+So we then even more like that getting it
+with a few large weight.
+Instead of putting penalties on the
+weights, we could actually use weight
+constraints.
+What I mean by that is instead of
+penalizing the squared value of each
+weight separately, we put a constraint on
+the maximum squared length of the incoming
+weight vector of each hidden unit or
+output unit.
+When we update the weights, if the length
+of that incoming vector gets longer than
+allowed by the constraint, we simply scale
+the vector down by dividing all the
+weights by the same amount until its
+length fits the allowed length.
+Using weight constraints like this, has a
+number of advantages over weight
+penalties, and I found these work
+necessary better.
+It's much easier to select the sensible
+value for the squared length of the
+incoming weight factor than it is to
+select the weight penalty.
+That's because, logistic units.
+Have, a natural scale to them so we know
+what a weight of one means.
+Using weight constraints also prevents
+hidden units getting stuck near zero with
+all their weights being tiny and not doing
+anything useful.
+Because when all their weights are tiny,
+there's no constraint on the weights.
+So there's nothing preventing them
+growing.
+Weight constraints also prevent the weight
+from exploding.
+One of the subtle things that weight
+constraints do is that when a unit hits
+its constraint, the effective penalty on
+all of its weights is determined by the
+big gradients.
+So if some of the incoming weights have
+very big gradients, they'll be trying to
+push the length of the incoming weight
+factor up.
+And that will push down on all the other
+weights.
+So in effect, if you think of it like a
+penalty, the penalty scales itself so as
+to be appropriate for the big weights and
+to suppress the small weights.
+This is much more effective than a fixed
+penalty of pushing irrelevant weights
+towards zero.
+For those of you who knows about La Grange
+multipliers,
+The penalties of in just the La Grange
+multipliers required to keep the
+constraints satisfied.

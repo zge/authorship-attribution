@@ -1,0 +1,173 @@
+Okay, so, so far I have described the
+basic formulas and underlying PCFGs, and
+I've described how you can learn a PCFG
+from a tree bank, from a set of example
+trees.
+In the last segment of this lecture I want
+to talk about parsing with a PCFG.
+So that is the problem of taking a,
+sentence as input.
+So for example, the man saw the dog with
+the telescope.
+And finding the most probable tree under
+the PCFG.
+Ok.
+So there is again a rather dumb, kind of
+brute force method for doing this.
+Which would be the following.
+So given this input sentence, I could
+somehow enumerate, brute force, all of the
+possible parse trees for that sentence,
+under the PCFG.
+So imagine I had an algorithm that simply
+listed all of the possible past trees for
+this input sentence, so that will be step
+one.
+In the second step, I will just calculate
+the probability.
+Of each of these trees.
+And I would choose the highest probability
+tree as the output from the parser.
+So that is a kind of brute-force method
+where I simply enumerate all of the trees,
+calculate the probability for each tree,
+return the highest scoring tree.
+There is a very clear problem with this
+method, which is the following.
+The number of possible parse trees for a
+sentence can be extremely large.
+And it's actually very easy to come up
+with grammars where the number of possible
+parse trees for the sentence grows
+exponentially quickly with respect to the
+length of the sentence.
+So bruteful search really becomes
+unfeasible for this kind of grammars
+there's simply too many pri trees to
+search through.
+However, there is rather a beautiful
+solution which again relies on dynamic
+programming.
+I'm going to show you how we can actually
+efficiently find the highest probability
+tree under PCFG, without having to
+enumerate, brute force, every possible
+tree under the grammar.
+And as I said, this will again use dynamic
+programming, in the same way that we saw
+the dynamic programming alrogithm, for
+hidden Markov models avoided this problem
+with brute force search.
+So in the parsing algorithm I'm going to
+describe to you, we'll actually assume
+that PCFG is in something called Chomsky
+Normal Form, which means that it has a set
+of restrictions on the rules of the PCFG.
+So context free grammar is in Chomsky
+normal form if it consists of the
+following.
+So again we have some set of non-terminal
+symbols.
+We have some set of terminal symbols or
+words in the grammar.
+We have a distinguished start symbol.
+And now the rules in the grammar are
+astricted to take one of two forms.
+So firstly we can have a rule of the form
+x goes to y1 y2.
+Where x, y1, and y2 are all non-terminals.
+So, for example, vp goes to vt np would be
+a perfectly valid rule, because of all
+three of these things are non-terminals.
+And I have two children.
+I always have to have two children under
+this definition.
+Similarly s goes to np vp.
+[unknown] is again about the valid rule in
+Chomsky Normal form.
+The second type of rule is of the form x
+goes to y where x is in nonterminal and y
+is a terminal symbol.
+So for example, Vt goes to Soar is a
+perfectly valid rule, or determiner goes
+to And so on, so rules of this phone have
+a non-terminal on the left hand side and a
+word on the right hand side.
+So a CFG in[UNKNOWN] would Chomsky normal
+form would have a set of rules like this
+with associated probabilities Okay.
+So the pausing algorithm I'm going to
+describe will assume that our PCFG has,
+has rules of this form.
+Now that might at first glance seem to be
+a very big restriction.
+But it turns out that it isn't in the
+sense that you can take any PCFG and
+convert it to an equivalent PCFG.
+In Chomsky Normal Form.
+I don't want to go into the full details
+of this because it's rather laborious.
+But I'll just give you a sketch of the
+kind of tricks we can use to take a PCFG
+in general form and convert to it to a
+Chomsky Normal Form PCFG.
+So let me give you one example.
+So let's say, I have a PCFG, which
+includes the following rule.
+This VP goes to say VT NP, propositional
+phrase.
+Okay.
+So let's say, for the sake of argument, we
+have the rule.
+The awkward thing about this rule is that
+it has 3 non terminals on the right hand
+side.
+And so it, it violates this restriction on
+the rules.
+So the solution is essentially to convert
+this to a.
+Sequence of rules in Chomsky normal form.
+Let me show you how this works.
+So I'm actually going to introduce a new
+symbol in the grammar.
+So, I'll write, my first rule is VP goes
+to Vt NP prepositional phrase 0.2.
+So this is a new symbol I've introduced
+Vt-NP and then I have a second rule which
+says that Vt Hyphen NP goes to VT followed
+by an NP with probability one.
+So you can see how I basically split this
+rule with thee non-terminals on the right
+hand side into two separate rules, each
+which are in Chomsky Normal Form.
+So, if under the previous grammar I'd have
+some parse tree, Where I would have
+something like this and I'd have some
+structures below these different symbols
+like that.
+In the new parse tree I essentially have
+this intermediate non-terminal.
+So, the structure would look something
+like this.
+Okay.
+So, I'm sorry that should be a attach the
+prepositional phrase, yep.
+Okay.
+So by doing this conversion, once I've
+done this conversion, I can run the
+parsing algorithm with the new PCFG with
+the rules converted in this way.
+And I'll recover trees like this and then
+it's straight forward to map back to the
+original format of the rules just by
+removing these intermediate nonterminals.
+Okay, so short story is, for grammar which
+is not in Chomsky normal form I can use
+various methods to convert it to a grammar
+in Chomsky normal form.
+Of course I haven't told you how to deal
+with unary rules.
+Things like vp goes to vi, with
+probability 0.8, or something.
+But there are similar tricks you can use
+for these kind of unary rules.

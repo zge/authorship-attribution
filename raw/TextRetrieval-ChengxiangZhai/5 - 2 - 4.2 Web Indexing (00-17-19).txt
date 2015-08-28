@@ -1,0 +1,403 @@
+[SOUND].
+This lecture is about web indexing.
+In this lecture, we will continue
+talking about web search, and
+we're going to talk about how
+to create a web scale index.
+So once we crawl the web
+we've got a lot of web pages.
+The next step is we use the indexer
+to create the inverted index.
+In general, we can use the standard
+information retrieval techniques for
+creating the index, and that is what we
+talked about in the previous lecture.
+But there are new challenges that we
+have to solve for web scale indexing,
+and the two main challenges of
+scalability and efficiency.
+The index will be so large that it cannot
+actually fit into any single machine or
+single disk, so we have to store
+the data on multiple machines.
+Also, because the data is so large,
+it's beneficial to process the data in
+parallel so
+that we can produce the index quickly.
+To address these challenges,
+Google has made a number of innovations.
+One is the Google File System,
+that's a general distributed file system
+that can help programmers manage files
+stored on a cluster of machines.
+The second is MapReduce.
+This is a general software framework for
+supporting parallel computation.
+Hadoop is the most well known open
+source implementation of MapReduce,
+now used in many applications.
+So this is the architecture
+of the Google File System.
+It uses a very simple centralized
+management mechanism to manage
+all the specific locations of files.
+So it maintains the file namespace and
+look up table to know where
+exactly each file is stored.
+The application client would
+then talk to this GFS master.
+And that obtains specific locations of
+the files that they want to process.
+And once the GFS client obtained
+the specific information about the files,
+then the application client
+can talk to the specific
+servers where the data
+actually sits directly.
+So that you can avoid avoid involving
+other nodes in the network.
+So when this file system
+stores the files on machines
+the system also would create
+a fixed sizes of chunks.
+So the data files are separate
+into many chunks,
+each chunk is 64 megabytes,
+so it's pretty big.
+And that's appropriate for
+large data processing.
+These chunks are replicated
+to ensure reliability.
+So this is something that the, the
+programmer doesn't have to worry about,
+and it's all taken care
+of by this file system.
+So from the application perspective,
+the programmer would see this
+as if it's a normal file.
+The program doesn't have to know
+where exactly it's stored, and
+can just invoke high level
+operators to process the file.
+And another feature is that the data
+transfer is directly between
+application and chunk servers, so
+it's, it's efficient in this sense.
+On top of the Google file system, and
+Google also proposed MapReduce as
+a general framework for
+parallel programming.
+Now, this is very useful to support
+a task like building inverted index.
+And so this framework is hiding a lot of
+low level features from the programmer.
+As a result, the programmer can
+make minimum effort to create
+a application that can be run
+on a large cluster in parallel.
+So, some of the low level
+details hidden in the framework,
+including the specific natural
+communications, or load balancing,
+or where the tasks are executed, all these
+details are hidden from the programmer.
+There is also a nice feature which
+is the built-in fault tolerance.
+If one server is broken,
+let's say, so it's down, and
+then some tasks may not be finished,
+then the MapReduce mechanism would
+know that the task has not been done.
+So it would automatically dispatch the
+task on other servers that can do the job.
+And therefore, again, the programmer
+doesn't have to worry about that.
+So here's how MapReduce works.
+The input data will be separated
+into a number of key, value pairs.
+Now, what exactly is in the value
+will depend on the data.
+And it's actually a fairly
+general framework to allow you to
+just partition the data
+into different parts.
+And each part can be then
+processed in parallel.
+Each key, value pair will be
+then sent to a map function.
+The programmer will write
+the map function, of course.
+And then the map function will then
+process this key value pair and
+generate the,
+a number of other key value pairs.
+Of course, the new key is usually
+different from the old key
+that's given to the map as input.
+And these key value pairs
+are the output of the map function.
+And all the outputs of all the map
+functions will be then collected.
+And then they will be further
+sorted based on the key.
+And the result is that all the values
+that are associated with the same
+key will be then grouped together.
+So now we've got a pair of a key and a set
+of values that are attached to this key.
+So this will then be sent
+to a reduce function.
+Now, of course, each reduce function will
+handle a different each a different key.
+So we will send this,
+these output values to
+multiple reduce functions,
+each handling a unique key.
+A reduce function would then process
+the input, which is a key and
+a set of values, to produce another
+set of key values as the output.
+So these output values would be then
+collected together to form the,
+the final output.
+Right, so this is the,
+the general framework of MapReduce.
+Now, the programmer only needs to
+write the the map function and
+the reduce function.
+Everything else is actually taken
+care of by the MapReduce framework.
+So, you can see the programmer really
+only needs to do minimum work.
+And with such a framework, the input data
+can be partitioned into multiple parts.
+Each is processed in
+parallel first by map, and
+then in the process after
+we reach the reduce stage,
+then much more reduce functions
+can also further process
+the different keys and
+their associated values in parallel.
+So it achieves some it
+achieves the purpose of parallel
+processing of a large dataset.
+So let's take a look at a simple example,
+and that's word counting.
+The input is is files containing words.
+And the output that we want to generate is
+the number of occurrences of each word, so
+it's the word count.
+Right, we know this,
+this kind of counting would be useful to,
+for example, assess the popularity
+of a word in a large collection.
+And this is useful for achieving
+a factor of IDF weighting for search.
+So how can we solve this problem?
+Well, one natural thought is that,
+well, this task can be done in
+parallel by simply counting different
+parts of the file in parallel and
+then in the end,
+we just combine all the counts.
+And that's precisely the idea of
+what we can do with MapReduce.
+We can parallelize lines
+in this input file.
+So more specifically, we can assume
+the input to each map function
+is a key value pair that represents the
+line number and the stream on that line.
+So the first line, for
+example, has a key of one.
+And the value is Hello World Bye World,
+and just four words on that line.
+So this key-value pair will
+be sent to a map function.
+The map function would then just
+count the words in this line.
+And in this case, of course,
+there are only four words.
+Each word gets a count of one.
+And these are the output that you see here
+on this slide, from this map function.
+So, the map function
+is really very simple.
+If you look at the, what the pseudocode
+looks like on the right side, you see,
+it simply needs to iterate over
+all the words in this line,
+and then just call a Collect function,
+which means it would then send the word
+and the counter to the collector.
+The collector would then try to
+sort all these key value pairs
+from different map functions.
+Right?
+So the functions are very simple.
+And the programmer specifies this function
+as a way to process each part of the data.
+Of course, the second line will be
+handled by a different map function,
+which will produce a similar output.
+Okay, now the output from the map
+functions will be then sent to
+a collector.
+And the collector will do
+the internal grouping or sorting.
+So at this stage, you can see we
+have collected multiple pairs.
+Each pair is a word and
+its count in the line.
+So once we see all these these pairs,
+then we can sort them based on the key,
+which is the word.
+So we will collect all the counts of
+a word, like bye, here, together.
+And similarly, we do that for other words.
+Like Hadoop, hello, etc.
+So each word now is attached to
+a number of values, a number of counts.
+And these counts represent the occurrences
+of this word in different lines.
+So now we have got a new pair of a key and
+a set of values,
+and this pair will then be
+fed into a reduce function.
+So the reduce function now will
+have to finish the job of counting
+the total occurrences of this word.
+Now it has already got all
+these partial counts, so
+all it needs to do is
+simply to add them up.
+So the reduce function shown
+here is very simple as well.
+You have a counter and then iterate over
+all the words that you see in this array,
+and then you just accumulate these counts,
+right.
+And then finally, you output the key and
+and the total count,
+and that's precisely what we want as
+the output of this whole program.
+So, you can see, this is already very
+similar to building a inverted index,
+and if you think about it,
+the output here is indexed by a word, and
+we have already got a dictionary,
+basically.
+We have got the count.
+But what's missing is the document IDs and
+the specific
+frequency counts of words
+in those documents.
+So we can modify this slightly to actually
+build a inverted index in parallel.
+So here's one way to do that.
+So in this case, we can assume
+the input to a map function is a pair
+of a key which denotes the document ID and
+the value denoting the string for
+that document.
+So it's all the words in that document.
+And so the map function will
+do something very similar to
+what we have seen in
+the water company example.
+It simply groups all the counts of
+this word in this document together.
+And it will then generate
+a set of key value pairs.
+Each key is a word.
+And the value is the count of this word
+in this document plus the document ID.
+Now, you can easily see why we
+need to add document ID here.
+Of course, later, in the inverted index,
+we would like to keep this information, so
+the map function should keep track of it.
+And this can then be sent to
+the reduce function later.
+Now, similarly another document D2
+can be processed in the same way.
+So in the end, again, there is a sorting
+mechanism that would group them together.
+And then we will have just
+a key like java associated
+with all the documents
+that match this key, or
+all the documents where java occurred,
+and their counts,
+right, so
+the counts of java in those documents.
+And this will be collected together.
+And this will be, so
+fed into the reduced function.
+So, now you can see,
+the reduce function has already got input
+that looks like a inverted index entry,
+right?
+So, it's just the word and all
+the documents that contain the word and
+the frequency of the word
+in those documents.
+So, all you need to do is simply to
+concatenate them into a continuous chunk
+of data, and this can be then
+retained into a file system.
+So basically, the reduce function
+is going to do very minimal work.
+And so, this is pseudo-code for
+inverted index construction.
+Here we see two functions,
+procedure Map and procedure Reduce.
+And a programmer would specify these two
+functions to program on top of MapReduce.
+And you can see, basically,
+they are doing what I just described.
+In the case of Map,
+it's going to count the occurrences
+of a word using an associative array,
+and will output all the counts
+together with the document ID here.
+Right?
+So this,
+the reduce function,
+on the other hand simply concatenates
+all the input that it has been given and
+then put them together as one
+single entry for this key.
+So this is a very simple
+MapReduce function, yet
+it would allow us to construct an inverted
+index at a very large scale, and
+data can be processed
+by different machines.
+The program doesn't have to
+take care of the details.
+So this is how we can do parallel
+index construction for web search.
+So to summarize, web scale indexing
+requires some new techniques that
+go beyond the standard
+traditional indexing techniques.
+Mainly, we have to store index on
+multiple machines, and this is usually
+done by using a file system like Google
+File System, a distributed file system.
+And secondly, it requires creating
+the index in parallel, because it's so
+large, it takes a long time to create
+an index for all the documents.
+So if we can do it in parallel,
+it would be much faster, and
+this is done by using
+the MapReduce framework.
+Note that the both the GFS and
+MapReduce frameworks are very general, so
+they can also support
+many other applications.
+[MUSIC]
+

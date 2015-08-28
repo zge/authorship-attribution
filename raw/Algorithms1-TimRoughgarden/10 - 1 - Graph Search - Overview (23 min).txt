@@ -1,0 +1,652 @@
+So let's talk about the absolutely
+fundamental problem of searching a graph,
+and the very related problem of finding
+paths through graphs. So why would one be
+interested in searching a graph, or
+figuring out if there's a path from point
+A to point B? Well there's many, many
+reasons. I'm going to give you a highly
+non-exhaustive list on this slide. >>So let
+me begin with a very sorta obvious and
+literal example, which is if you have a
+physical network, then often you want to
+make sure that the network is fully
+connected in the sense that you can get
+from any starting point to any other
+point. So, for example, think back to the
+phone network. It would've been a disaster
+if callers from California could only
+reach callers in Nevada, but not their
+family members in Utah. So obviously a
+minimal condition for functionality in
+something like a phone network is that you
+can get from any one place to any other
+place, similarly for road networks within
+a given country, and so on. It can also be
+fun to think about other non-physical
+networks and ask if they're connected. So
+one network that's fun to play around with
+is the movie network. So this is the graph
+where the nodes correspond to actors and
+actresses, and you have an edge between two
+nodes, if they played a role in a common
+movie. So this is going to be an
+undirected graph, where the edges
+correspond to, not necessarily
+co-starring, but both the actors appearing
+at least some point in the same movie. So
+versions of this movie network you should be able to
+find publicly available on the web, and
+there's lots of fun questions you can ask about
+the movie network. Like, for example,
+what's the minimum number of hops, where a
+hop here again is the movie that two people both played
+a role in? The minimum number of hops or
+edges from one actor to another actor, so
+perhaps the most famous statistic that's
+been thought about with the movie is the
+Bacon Number. So this refers to the fairly
+ubiquitous actor Kevin Bacon, and the
+question the Bacon Number of an actor is
+defined as the minimum number of hops you need in
+this movie graph to get to Kevin Bacon.
+So, for example, you could ask about Jon
+Hamm, also known as Don Draper from "Mad Men".
+And you could ask how many edges do
+you need on a path through the movie graph
+to get to Kevin Bacon? And it turns out
+that the answer is 1, excuse me, 2
+edges. You need one intermediate point,
+namely Colin Firth. And that's became,
+that's because Colin Firth and Kevin Bacon
+both starred in Atom Egoyan's movie, "Where
+"the Truth Lies", and Jon Hamm and Colin
+Firth were both in the movie "A Single Man".
+So that would give Jon Hamm a Bacon
+Number of 2. So, these are the kind of
+questions you're gonna ask about
+connectivity. Not just physical networks,
+like telephone and telecommunication
+networks, but also logical networks about
+parallel relationships between objects
+in general. So the Bacon Number is
+fundamentally not just about any path, but
+actually shortest paths, the minimum
+number of edges you need to traverse to
+get from one actor to Kevin Bacon. And
+shortest paths are also have a very
+practical use, that you might use
+yourself in the driving directions. So
+when you use a website or a phone app and
+you ask for the best way to get from where
+you are now to say some restaurant where
+you're gonna have dinner, obviously you're
+trying to find some kind of path through a
+network through a graph, and indeed often
+you want the, the shortest path, perhaps
+in mileage or perhaps in anticipated
+travel time. Now I realize that when you
+are thinking about paths and graphs, it's
+natural to focus on sort of very literal
+paths and quite literal physical networks.
+Things like routes through a road network or
+paths through the internet and so on. You
+should really think more abstractly as a
+path as just a sequence of decisions,
+taking you from some initial state to some
+final state. And it's this abstract
+mentality which is what makes graph search
+so ubiquitous, it feels like artificial
+intelligence, where you want to formulate
+a plan of how to get from an initial state
+to some goal state. So, to give a simple
+recreational example, you can imagine just
+trying to understand how to compute
+automatically a way to fill in a Sudoku
+puzzle so that you get to, so that you
+solve the puzzle correctly. So you might
+ask, you know, what is the graph that
+we're talking about, when we wanna solve a
+Sudoku puzzle. Well this is gonna be a
+directed graph, where here the nodes
+correspond to partially completed puzzles.
+So, for example, at one node of this
+extremely large graph, perhaps 40 out of
+the 81 cells are filled in with some kind
+of number, and now, again, remember a path
+is supposed to correspond to a sequence of
+decisions. So, what are the actions that
+you take in solving Sudoku? Well, you fill
+in a number into a square. So, an edge
+which here is going to be directed, is
+going to move you from one partially
+completed puzzle to another, where one
+previously empty square gets filled in
+with one number. And of course then the
+path is that you're interested in computing,
+or what your searching for when you search
+this graph. You begin with the initial
+state of the Sudoku puzzle and you want to
+reach some goal state where the Sudoku
+puzzle is completely filled in without any
+violations of the rules of Sudoku. And of
+course it's easy to imagine millions of
+other situations where you wanna formulate
+some kind of plan like this, for
+example if you have a robotic hand and you
+wanna grasp some object, you need to think
+about exactly how to approach the object
+with this robotic hand, so that you can
+grab it without, for example, first knocking
+it over, and you can think of millions of
+other examples. Another thing which turns
+out to be closely related to graph search,
+as we'll see, it has many applications in
+its own right, is that of computing
+connectivity information about graphs, in
+particular the connected components. So
+this, especially for undirected graphs,
+corresponds to the pieces of the graph.
+We'll talk about these topics in their own
+right, and I'll give you applications for
+them later. So for undirected graphs I'll
+briefly mention an easy clustering
+heuristic you can derive out of computing
+connected components. For directed graphs
+where the very definition of computing
+components is a bit more subtle, I'll show
+you applications to understanding the
+structure of the web. So these are a few
+of the reasons why it's important for you
+understand how to efficiently search
+graphs. It's a, a fundamental and widely
+applicable graph primitive. And I'm happy
+to report that in this section of the
+course, pretty much anything, any
+questions we wanna answer about graph
+search, computing connected components,
+and so on, there's gonna be really fast
+algorithms to do it. So, this will be the
+part of the course where there's lots of
+what I call for free primitives,
+processing steps, subroutines you can run
+without even thinking about it. All of
+these algorithms we're gonna discuss in
+the next several lectures, are gonna run
+in linear time, and they're gonna have
+quite reasonable constants. So, they're
+really barely slower than reading the
+input. So, if you have a graph and you're
+trying to reason about it and you're
+trying to make sense about it, you should
+in some sense feel free to apply any of
+these subroutines we're gonna discuss to
+try and glean some more information about
+what they look like, how you might
+use the network data. There's a lot of
+different approaches to systematically
+searching a graph. So, there's many
+methods. In this class we're gonna focus
+on two very important ones, mainly breadth
+first search and depth first search. But
+all of the graph search methods share some
+things in common. So, in this slide let me
+just tell you the high order bits of
+really any graph search algorithm. So
+graph search subroutines
+generally are passed as input a starting
+search vertex from which the search
+originates. So that's often called source
+vertex. And your goal then is to find
+everything findable from the search vertex
+and obviously you're not gonna find
+anything that you can't find that is not
+findable. What I mean by findable, I mean,
+there's a path from the starting point to this
+other node. So any other node to which you
+can get along on a path from the starting
+point you should discover. So, for
+example, if you're given an undirected
+graph that has three different pieces,
+like this one I'm drawing on the right,
+then perhaps S is this left most node
+here, then the findable vertices starting
+from S, i.e. the ones which you can
+reach from a path to S, is clearly
+precisely these four vertices. So, you
+would want graph search to automatically
+discover and efficiently discover these
+four vertices if you started at S. You can
+also think about a directed version of the
+exact same graph, where I'm gonna direct
+the vertices like so. So now the
+definition of the findable nodes is a
+little bit different. We're only expecting
+to follow arcs forward, along the forward
+direction. So we should only expect at best
+to find all of the nodes that you can
+reach, by following a succession of
+forward arcs, that is, any node that
+there's a path to from S. So in this case,
+these three nodes would be the ones we'd
+be hoping to find. This blue node to the
+right, we would no longer expect to find,
+because the only way to get there from S,
+is by going backward along arcs. And
+that's not what we're going to be thinking
+about in our graph searches. So we want to
+find everything findable, i.e. that we can get
+to along paths, and we want to do it
+efficiently. Efficiently means we don't
+want to explore anything twice. Right, so
+the graph has m arcs, m edges and n nodes
+or n vertices and really we wanna just
+look at either each piece of the graph only
+once for a small cost number of times. So
+looking for running time which is linear
+on the size of the graph that is big O of
+m plus n. Now when we were talking about
+representing graphs, I said that in many
+applications, it's natural to focus on
+connected graphs, in which case M is gonna
+dominate N, and you're gonna have at least
+as many edges as nodes, essentially. But
+connectivity is the classic case where you
+might have the number of edges of being
+much smaller than the number of nodes.
+There might be many pieces of the whole
+point of what you're trying to do is
+discover them. So, for this sequence of
+lectures where we talk about graph search
+and connectivity, we will usually write M
+plus N. We'll think that either one can be
+bigger or smaller than the other. So let
+me now give you a generic approach to
+graph search. It's gonna be
+under-specified, there'll be many
+different ways to instantiate it. Two
+particular instantiations will give us
+breadth first search and depth first
+search but here is just a general
+systematic method to finding everything
+findable without exploring anything more
+than once. So motivated by the second
+goal, the fact that we don't want to
+explore anything twice, with each node,
+with each vertex, we're gonna remember
+whether or not we explored it before. So
+we just need one Boolean per node and we
+will initialize it by having everything
+unexplored except S, our starting point
+we'll have it start off as explored. And
+it's useful to think of the nodes thus far
+as being in some sense territory conquered
+by the algorithm. And then there's going
+to be a frontier in between the conquered
+and unconquered territory. And the goal of
+the generic outcome is that each step we
+supplement the conquered territory by one
+new node, assuming that there is one
+adjacent to the territory you've already
+conquered. So for example in this top
+example with the undirected network,
+initially the only thing we've explored is
+the starting point S. So that's sort of
+our home base. That's all that we have
+conquered so far. And then in our main
+while loop, which we iterate as many times
+as we can until we don't have any edges
+meeting the following criterion, we look
+for an edge with one end point that we've
+already explored. One end point inside the
+conquered territory and then the other end
+point outside. So this is how we can
+in one hop supplement the number of nodes
+we've seen by one new one. If we can't
+find such an edge then this is where the
+search stops. If we can find such an edge,
+well then we suck V into the conquered
+territory. We think of it being explored.
+And we return to the main while loop. So,
+for example, in this example on the right,
+we start with the only explored node being
+S. Now, there's actually two edges that
+cross the frontier, in the sense one of
+the endpoints is explored, namely one of
+the endpoints is S, and the other one is
+some other vertex. Right? There's this
+there's these two vert, two edges to the
+left, two vertices adjacent to S. So, in
+this algorithm we pick either one. It's
+un, under-specified which one we pick.
+Maybe we pick the top one. And then all of
+the sudden, this second top vertex is also
+explored so the conquered territory is a
+union of them, and so now we have a new
+frontier. So now again we have two edges
+that cross from the explored nodes to the
+unexplored nodes. These are the edges that
+are in some sense going from northwest to
+southeast. Again, we pick one of them.
+It's not clear how. The algorithm doesn't
+tell us, we just pick any of them. So,
+maybe for example we pick this right most
+edge crossing the frontier. Now the
+right most edge of these-- right most vertex of these four is explored so our
+conquered territory is the top three
+vertices. And now again we have two edges
+crossing the frontier. The two edges that
+are incident to the bottom node, we pick
+one of them, not clear which one, maybe
+this one. And now the bottom node is also
+explored. And now there are no edges
+crossing the frontier. So there are no
+edges who, on the one hand, have one
+end-point being explored, and the other
+end-point being unexplored. So these will
+be the four vertices, as one would hope,
+that the search will explore started from
+S. Well generally the claim is that this
+generic graph search algorithm does what
+we wanted. It finds everything findable from
+the starting point and moreover it doesn't
+explore anything twice. I think that's
+fairly clear that it doesn't explore
+anything twice. Right? As soon as you look
+at a node for the first time, you suck it
+into the conquered territory never to look
+at it again. Similarly as soon as you look
+at an edge, you suck them in. But when we
+explore breadth and depth first search,
+I'll be more precise about the running
+time and exactly what I mean by you don't
+explore something twice. So, at this level
+of generality, I just wanna focus on the
+first point, that any way you instantiate
+this search algorithm, it's going to find
+everything findable. So, what do I really
+mean by that? The formal claim is that at
+the termination of this algorithm, the
+nodes that we've marked exp-, explored,
+are precisely the ones that can be reached
+via a path from S. That's the sense in
+which the algorithm explores everything
+that could potentially be findable from
+the starting point S. And one thing I
+wanna mention is that this claim and the
+proof I'm going to give of it, it holds
+whether or not G is an undirected graph
+or a directed graph. In fact, almost all
+of the things that I'm gonna say about
+graph search, and I'm talking about
+breadth first search and depth first
+search, work in essentially the same way,
+either in undirected graphs or directed
+graphs. The obvious difference being in an
+undirected graph you can traverse an edge
+in either direction. In a directed graph,
+we're only supposed to traverse it in a
+forward direction from the tail to the
+head. The one big difference between
+undirected and directed graphs is when
+we connectivity computations and I'll
+remind you when we get to that point which
+one we're talking about. Okay? But for the
+most part, when we just talk about basic
+graph search it works essentially the same
+way whether it's undirected or directed.
+So keep that in mind. Alright, so why is
+this true? Why are the nodes that get
+explored precisely the nodes for which
+there's a path to them from S? Well, one
+direction is easy. Which is, you can't
+find anything which is not findable, that
+is, if you wind up exploring a node, the
+only reason that can happen is because you
+traversed a sequence of edges that got you
+there. And that sequence of edges
+obviously defines a path from S to V. If
+you really want to be pedantic about the
+forward direction that explored nodes have to have paths from S. Then you can
+just do an easy induction. And I'll leave
+this for you to check, if you want, in the
+privacy of your own home. So the important
+direction of this claim is really the
+opposite. Why is it that no matter how we
+instantiate this generic graph search
+procedure, it's impossible for us to miss
+anything. That's the crucial point, we
+don't miss anything that we could, in
+principle, find via a path. But we're
+gonna proceed by contradiction. So, what
+does that mean, we're going to assume
+that, the statement that we want to prove
+is true, is not true. Which means that,
+it's possible that, G has a path from s to
+v and yet, somehow our algorithm misses
+it, doesn't mark it as explored. Alright,
+that's the thing we're really hoping
+doesn't happen. So let's suppose it does
+happen and then derive a contradiction. So
+suppose G does have a path from s to some
+vertex v. Call the path P. I'm gonna draw
+the picture for an undirected graph but
+the situation would be same in the, in the
+directed case. So there's a bunch
+of hops, there's a bunch of edges and then
+eventually this path ends at v. Now the
+bad situation, the situation from which we
+want to derive a contradiction is that V
+is unexplored at the end of this
+algorithm. So let's take stock of what we
+know. S for sure is explored, right. We
+initialized this search procedure so that
+S is marked as explored. V by hypothesis
+in this proof by contradiction is
+unexplored. So S is explored, V is
+unexplored. So now imagine we, just in our
+heads as a thought experiment which
+traverse this path P. We start at S and we
+know it's explored. We go the next vertex,
+it may or may not have been explored,
+we're not sure. We go to the third vertex,
+again who knows. Might be explored, might
+be unexplored and so on, but by time we
+get to V, we know it's unexplored. So we
+start at S, it's been explored, we get to V
+it's been unexplored. So at some point
+there's some hop, along this path P, from
+which we move from an explored vertex, to
+an unexplored vertex. There has to be a
+switch, at some point, cuz the end of the
+day at the end of the path we're at an
+unexplored node. So consider the first
+edge, and there must be one that we switch
+from being at an explore node to being at
+an unexplored node. So, I'm going to call
+the end points of this purported edge U and
+W. Where U is the explored one and W is the
+unexplored one. Now, for all we know U
+could be the same as S, that's a
+possibility, or for all we know, W could
+be same as V. That's also a possibility.
+In the picture, I'll draw it as if this
+edge UX was somewhere in the middle of
+this path. But, again it may be at one of
+the ends. That's totally fine. But now in
+this case, there's something I need you to
+explain to me. How is it possible that, on
+the one hand, our algorithm terminated.
+And on the other hand, there's this edge U
+comma X. Where U has been explored and X
+has not been explored. That, my friends,
+is impossible. Our generic search
+algorithm does not give up. It does not
+terminate, unless there are no edges where
+the one end point is explored and the
+other end point is unexplored. As long as
+there's such an edge, it has, is gonna
+suck in that unexplored vertex into the
+conquered territory, it's gonna keep
+going. So the upshot is there's no way
+that our algorithm terminated with this
+picture. With there being an edge U X, U
+explored, X unexplored. So, that's the
+contradiction. This contradicts the fact
+that our algorithm terminated with V
+unexplored. So that is a general
+approach to graph search. So that I hope
+gives you the flavor of how this is going
+to work. But now there's two particular
+instantiations of this generic method that
+are really important and have their own
+suites of applications. So we're gonna
+focus on breadth-first search and
+depth-first search. We'll cover them in
+detail in the next couple of videos. I
+wanna give you the highlights to conclude
+this video. Now let me just make sure it's
+clear where the ambiguity in our generic
+method is. Why we can have different
+instantiations of it that potentially have
+different properties and different
+applications. The question is at a given
+iteration of this while loop, what do you
+got? You've got your nodes that you've
+already explored, so that includes S plus
+probably some other stuff, and then you've
+got your nodes that are unexplored, and
+then you have your crossing edges.
+Right? So, there are edges with one
+point in each side. And for an undirected
+graph, there's no orientation to worry
+about. These crossing edges just have one
+endpoint on the explored side, one
+endpoint on the unexplored side. In the
+directed case, you focus on edges where
+the tail of the edge is on the explored side
+and the head of the edge is on the
+unexplored side. So, they go from the
+explored side to the unexplored side. And
+the question is, in general, in an
+iteration of this while loop there's gonna
+be many such crossing edges. There are
+many different unexplored nodes we could
+go to next, and different strategies for
+picking the unexplored node to explore
+next leads us to different graph search
+algorithms with different properties. So
+the first specific search strategy we're
+gonna study is breadth first search,
+colloquially known as BFS. So let me tell
+you sort of the high level idea and
+applications of bread first search. So,
+the goal is going to be to explore the
+nodes in what I call, layers. So, the
+starting point S will be in its own layer,
+Layer-0. The neighbors of S will
+constitute Layer-1, and then Layer-2 will
+be the nodes that are neighbors of Layer-1
+but that are not already in layer zero or
+layer one, and so on. So layer i plus one,
+is the stuff next to layer i that you
+haven't already seen yet. You can think of
+this as a fairly cautious and tentative
+exploration of the graph. And it's gonna
+turn out that there's a close
+correspondence between these layers and
+shortest path distances. So if you wanna
+know the minimal number of hops, the
+minimal number of edges you need in a path
+to get from point A to point B in a graph.
+The way we wanted to know the fewest
+number of edges in the movie graph
+necessary to connect to John Hamm to Kevin
+Bacon. That corresponds directly to these
+layers. So if a node is in layer i, then
+you need i edges to get from S to i in the
+graph. Once we discuss breadth-first search,
+we'll also discuss how to compute the
+connected components, or the different
+pieces, of an undirected graph. Turns out
+this isn't that special to breadth-first
+search, you can use any number of
+graph search strategies to compute
+connected components in undirected graphs.
+But I'll show you how to do it using a
+simple looped version of breadth-first
+search. And we'll be able to do this stuff
+in the linear time that we want. The very
+ambitious goal of getting linear time. To
+get the linear time implementation, you do
+wanna use the right data structure, but
+it's a simple, simple data structure,
+something probably you've seen in the
+past. Namely a queue. So, something's that
+first in and first out. So, the second
+search strategy that's super important to
+know is depth first search, also known as
+DFS to its friends. Depth first search
+has a rather different feel than breadth
+first search. It's a much more aggressive
+search where you immediately try to plunge
+as deep as you can. It's very much in the
+spirit of how you might explore a maze,
+where you go as deeply as you can only
+backtracking when absolutely necessary.
+Depth first search will also have its own
+set of applications. It's not, for
+example, very useful for computing
+shortest path information, but especially
+in directed graphs it's going to do some
+remarkable things for us. So, in directed
+acyclic graphs, so a directed graph
+with no directed cycles it will give us
+what's called the topological ordering. So
+it'll sequence the nodes in a linear
+ordering from the first to the last, so
+that all of the arcs of the directed graph
+go forward. So this is useful for example
+if you have a number of tasks that need to
+get completed with certain precedence
+constraints. Like for example you have to
+take all of the classes in your
+undergraduate major, and there was certain
+prerequisites, topological ordering will
+give you a way in which to do it,
+respecting all of the prerequisites. And
+finally where for undirected graphs it doesn't really
+matter whether you use BFS or DFS to connect
+the components, in the directed graphs where
+even defining connected components is a little
+tricky it turns out depth first
+search is exactly what you want. That's
+what you're going to get a linear time
+implementation for computing the right notion of connected
+components in the directed graph case. Time-wise,
+both of these are superb strategies for
+exploring a graph. They're both linear
+time with very good constants. So
+depth-first search again, we're gonna
+get O of M plus N time in a graph with M
+edges and N vertices. You do wanna use a
+different data structure reflecting the
+different search strategy. So, here
+because you're exploring aggressively, as
+soon as you get to a node you'll meet and
+you start exploring its neighbors, you
+wanna last-in first-out data structure,
+also known as a stack. Depth first search
+also admits a very elegant recursive
+formulation, and in that formulation, you
+don't even need to maintain a stack data
+structure explicitly, the stack is
+implicitly taken care of in the recursion.
+So that concludes this overview of graph
+search. Both what it is, what our goals
+are, what kind of applications they have
+and two of the most common strategies. The
+next couple videos are going to explore
+these search strategies, as well as a
+couple of these applications in greater
+depth.

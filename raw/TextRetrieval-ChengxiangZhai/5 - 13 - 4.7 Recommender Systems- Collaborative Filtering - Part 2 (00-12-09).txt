@@ -1,0 +1,259 @@
+[NOISE].
+And here what will do is
+talk about basic strategy,
+and that would be based on
+similarity of users and
+then predicting the rating
+of an object by a, a,
+active user using the ratings of
+similar users to this active user.
+This is called a memory-based approach
+because it's a little bit similar to
+storing all the user information.
+And when we are considering a particular
+user, we're going to try to
+kind of retrieve the relevant users, or
+the similar users through this user case.
+And then try to use that
+user's information about those users
+to predict the preference of this user.
+So here's the general idea, and
+we use some notations here, so.
+X sub i j denotes the rating
+of object o j by user u i.
+And n sub i is average rating
+of all objects by this user.
+So this n i is needed.
+Because we would like to normalize
+the ratings of objects by this user.
+So how do you do normalization?
+Well, where do you adjust that?
+Subtract the,
+the average rating from all the ratings.
+Now this is the normalized ratings so
+that the ratings from different
+users will be comparable.
+Because some users might be more generous
+and they generally give more high ratings.
+But, some others might be more critical.
+So, their ratings can not be
+directly compared with each other or
+aggregated them together.
+So, we need to do this normalization.
+Now, the prediction of the rating.
+On the item by another user or
+active user, u sub a here
+can be based on the average
+ratings of similar users.
+So the user u sub a is the user that we
+are interested in recommending items to.
+And we now are interested in
+recommending this o sub j.
+So we're interested in knowing how
+likely this user will like this object.
+How do we know that?
+Well the idea here is to look at the how
+whether similar users to this user
+have liked this object.
+So mathematically, this is, as you say,
+the predict the rating of this
+user on this app, object.
+User A on object Oj is
+basically combination of
+the normalized ratings of different users.
+And in fact, here,
+we're picking a sum of all the users.
+But not all users contribute
+equally to the average.
+And this is controlled by the weights.
+So this.
+Weight controls the inference
+of a user on the prediction.
+And of course, naturally this weight
+should be related to the similarity
+between ua and this particular user, ui.
+The more similar they are then
+the more contribution we would like
+user u i to make in predicting
+the preference of u a.
+So the formula is extremely simple.
+You're going to see it's a sum
+of all the possible users.
+And inside the sum, we have their ratings,
+well their normalized
+ratings as I just explained.
+The ratings need to be normalized in
+order to be comfortable with each other.
+And then these ratings
+are rated by their similarity.
+So we can imagine a W of A and
+I is just a similarity of user A user I.
+Now, what's k here?
+Well, k is a simpler normalizer.
+It's just it's just one over the sum
+of all the weights, over all the users.
+And so this means, basically, if you
+consider the weight here together with k.
+And we have coefficients or weights
+that would sum to one for all the users.
+And it's just a normalization strategy,
+so that you get this predicted rating
+in the same range as the these ratings
+that we use to make the prediction.
+Right?
+So, this is basically the main idea
+of memory-based approaches for
+collaborative filtering, okay?
+Once we make this prediction,
+we also would like to map back
+to the rating that the user.
+The user would actually make.
+And this is to further add the,
+mean rating or
+average rating of this user u
+sub a to the predicted value.
+This would recover.
+A meaningful rating for this user.
+So if this user is generous,
+then the average would be somewhat high,
+and when we added that, the rating will
+be adjusted to a relatively high rating.
+Now, when you recommend an item to a user,
+this actually doesn't really matter
+because you are interested in basically
+the normalized rating
+that's more meaningful.
+But when they evaluate these collaborative
+filtering approach is typically
+assumed that actual ratings of user
+on these objects to be unknown.
+And then you do the prediction and
+then you compare the predicted
+ratings with their actual ratings.
+So they,
+you do have access to the actual ratings.
+But then you pretend you don't know.
+And then you compare real systems
+predictions with the actual ratings.
+In that case, obviously the system's
+prediction would have to be adjusted to
+match the actual result the user, and this
+is not what's happening here, basically.
+Okay?
+So this is the memory-based approach.
+Now of course if you look at the formula,
+if you want to write
+the program to implement it.
+You still face the problem of determining
+what is this w function, right?
+Once you know the w function, then
+the formula is very easy to implement.
+So indeed there are many different ways to
+compute this function or this weight, w.
+And, specific approaches generally
+differ in how this is computed.
+So, here are some possibilities.
+And, you can imagine,
+there are many pro, other possibilities.
+One popular approach is we use
+the Pearson Correlation Coefficient.
+This would be a sum of a common
+range of items, and the formula
+is a standard Pearson correlation
+coefficient formula, as shown here.
+So, this basically measures
+weather the two users tended
+to all give higher ratings to similar
+items, or lower ratings to similar items.
+Another measure is the cosine measure and
+this is the retreat the rating vectors as
+vectors in the vector space, and then
+we're going to measure the the angel and
+compute the cosign of
+the angle of the two vectors.
+And this measure has been used in the
+vector space more for retrieval as well.
+So as you can imagine, there are so
+many different ways of doing that.
+In all these cases, note that the user
+similarity is based on their preferences
+on items, and we did not actually use
+any content information of these items.
+It didn't matter what these items are.
+They can be movies, they can be books,
+they can be products,
+they can be tax documents.
+We just didn't care about the content.
+And so this allows such approach to be
+applied to a wide range of problems.
+Now in some newer approaches of course,
+we would like to use more
+information about the user.
+Clearly, we know more about the user, not
+just a, these preferences on these items.
+And so in a actual filtering system, using
+collaborative filtering, we could also
+combine that with content-based filtering,
+we could use context information.
+And those are all interesting approaches
+that people are still studying.
+There are newer approaches proposed.
+But this approach has been shown
+to work reasonably well and
+it's easy to implement.
+And practical applications
+could be a starting point to
+see if the strand here works well for
+your application.
+So there are some obvious ways
+to also improve this approach.
+And mainly would like to improve
+the user similarity measure.
+And there are some practical
+issues to deal with here as well.
+So for example,
+there will be a lot of missing values.
+What do you do with them?
+Well, you can set them to default values
+or the average ratings of the user.
+And that will be a simple solution.
+But there are advantages to approaches
+that can actually try to predict those
+missing values and then use the predicted
+values to improve the similarity.
+So in fact, the memory database approach,
+you can predict those with missing values,
+right?
+So you can imagine,
+you have iterative approach where you
+first do some preliminary prediction and
+then you can use the predictor values to
+further improve the similarity function.
+Right so this is here is
+a way to solve the problem.
+And the strategy of this in the effect
+of the performance of clarity filtering,
+just like in the other heuristics,
+we improve the similarity function.
+Another idea which is actually very
+similar to the idea of IDF that we
+have seen in text research, is called
+the inverse user frequency or IUF.
+Now here the idea is to look at the where
+the two users share similar ratings.
+If the item is a popular item that has
+been aah, viewed by many people and
+seemingly leads to people interested
+in this item may not be so interesting.
+But if it's a rare item and
+has not been viewed by many users.
+But, these two users
+[INAUDIBLE] to this item.
+And they give similar ratings, and it
+says more about their similarity, right?
+So it's kind of to emphasize
+more on similarity
+on items that are not
+viewed by many users.
+[MUSIC]
+

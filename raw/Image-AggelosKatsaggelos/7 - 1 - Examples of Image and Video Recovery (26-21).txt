@@ -1,0 +1,662 @@
+[BLANK_AUDIO].
+Welcome to week six.
+We will cover this and next week another
+exciting
+top in image and video processing, the
+topic of recovery.
+It's a natural continuation of image and
+video enhancement that we covered last
+week.
+There's an important distinction between
+the 2 topics.
+As we saw last week, the objective of
+enhancement is to improve the visual
+quality of
+the image or improve its usefulness in
+performing
+a certain task, based on some subjective
+criteria.
+For image and video recovery problems,
+information is lost, either in the
+spacial temporal or the frequency domains,
+and the objective is it's recovery.
+Unlike enhancement however, where also
+information is lost in some
+cases, in recovery a model of the process
+that resulted in this information
+loss is first established, and then
+an objective optimality criteria is
+determined,
+based on which an estimate of the original
+image is sought after.
+During this week, we provide examples of
+image individual recovery.
+Depending upon the application domain,
+recovery
+comes with different names such as
+restoration,
+deconvolution, [INAUDIBLE], in painting,
+blocking artifact
+removal, super resolution, pansharpening,
+and so on.
+All these recovery problems are inverse
+problems.
+We will then discuss some of the important
+restoration approaches that are used
+widely in practice.
+There's probably no application area where
+images and videos are acquired
+that does not have either active or
+potential work in image recovery.
+The material therefore of this and next
+week will be very valuable in this regard.
+In this module of the course, we will
+first show examples of image recovery.
+Then we will focus on image restoration
+and more specifically image
+deconvolution approaches and we'll group
+them into the deterministic and
+stochastic.
+And finally, we we're going to show the
+formulation of other recovery problems.
+I used the term recovery as the umbrella
+term, any
+problem in which information is lost and
+needs to be recovered.
+As we'll see recovery problems assume
+specific names based
+on the application, restoration typically
+and the convolution as a
+special guest of restoration, it fails to
+a specific
+modeling of the input output relationship
+of the degradation system.
+We show here a blurred image due to
+defocusing.
+This is the situation where the automatic
+focusing system of
+a camera failed or the manual focusing was
+not successful.
+So what is acquired is this blurred image,
+it's hard
+to decipher what's in it, so applying a
+restoration algorithm.
+We can obtain a restored image that looks
+like this.
+This is by the way, a grayscale image, not
+a binary image.
+So on the left was the image of EECS
+department at Northwestern
+before I joined, and on the right is the
+image after I joined.
+The Hubble space telescope named after the
+astronomer Edwin Hubble, was placed in
+orbit in 1990 by a space shuttle and is
+still in operation.
+Between 93 and 2009, 5 different repair
+missions
+repaired, upgraded, and replaced systems
+on the telescope.
+Now after it was placed in orbit, it was
+discovered that
+it's main mirror was not cut
+to specifications, and therefore the
+telescope
+was myopic, it would observe images such
+as this one of
+Saturn and this is a blurred image, the
+rings are not clear.
+So these images would be beamed down to
+stations down to earth and people would
+try
+various restoration algorithms like the
+ones we will
+discuss later in class to obtain restored
+images.
+Based on some work we did, here is a
+restoration of Saturn.
+The rings are now much sharper and
+accurate
+flux measurements can be made on the
+restored image.
+Here's another observation by the
+telescope of a galaxy
+and here's the restored version of this
+particular image.
+I should mention that in carrying out the
+restoration, the impulse response
+of the degradation system, which is the
+myopic telescope, needs to be known.
+And in this case either this impulses
+bonds
+will be obtained based on geometric optics
+or
+would be obtained by pointing the
+telescope to
+a distant star and measuring the response
+to that.
+So the star represents an impulse
+therefore this is the impulse response.
+The telescope actually has been extremely
+successful.
+It has acquired beautiful images of the
+heavens, and
+major scientific results have been
+obtained due to it's observations.
+Here's a color image, and this color image
+is undergoing degradation that is three
+dimensional, so in distorting one channel
+the other two channels have error in it.
+So, due to this three dimensional
+degradation, the degraded image looks like
+this, it has been subjected to color
+alterations, so therefore a three
+dimensional deconvolution is required and
+here is an example of the restored image.
+When the degradation is 3D, then the
+deconvulation is certainly 3D.
+But in many instances, the degradation can
+be two dimensional, but still we might
+choose
+to do a three dimensional deconvulation by
+taking
+in other words, the other channels into
+account.
+This could be thought as multi channel
+restoration.
+And that is the number of applications in
+microscopy
+for example, fluorescent microscopy while
+3D deconvolution is required.
+Here's an example of a blurred image due
+motion between the camera and the scene.
+It's an aerial picture taken by a plane
+and the motion compensation
+system on the plane failed and therefore
+this blurred image was acquired.
+This is real image of a toy train, moving
+toy train due to motion again, there is
+blur on the train, while the background
+and foreground are, are not blurred.
+So in this particular case, a small
+algorithm is
+acquired to first identify the parts of
+the image, the
+pixels in the image that are blurred and
+restore only
+those pixels while the remaining of the
+image stays untouched.
+Here's an image of a so called auto
+radiograph microspheres are attached
+to a specimen and then this radiographic
+image is acquired, its certainly blurred.
+Applying some of the algorithms, we will
+be discussing in
+this class here are the restored versions
+of these images.
+So the blurred images, the restored
+images.
+Clearly, a lot of information has been
+recovered.
+We can see the fine details of aerial
+images.
+There's a river there and the bridges.
+We can see the micro-spheres well defined,
+and we can see the
+image of the train being now sharp, we can
+read the letters
+on the side of the train, white foreground
+and background are also
+sharp, have not been modified, have not
+been degraded by this operation.
+We show here an image acquired by a hand
+held camera.
+During exposure time the camera shook, and
+this is the resulting blurred image.
+We show some sub images here blown up to,
+to pay attention to.
+The, the gradation is not known.
+And therefore a blind spatially varying
+restoration algorithm was developed
+by us and applied to this image to obtain
+this restoration.
+We see here the shape of the degradation,
+of the impulse responsible for the
+degradation, and we also look specifically
+at the sub images.
+So it's, the improvement is crystal clear,
+and
+you can see the three people here walking.
+They're not distinguishable at, at all in
+the original observation
+but after restoration, there's a very good
+representation of them.
+As you will see when I discuss later in
+the course
+in detail image and video compression
+techniques, in hearing out compression we
+take each still image or frame subdivide
+it into blocks, and
+then each block is compressed
+independently
+from the remaining of the blocks.
+So due to this specific type
+of processing, especially at high
+compression ratios,
+if one looks at the compressed image, one
+can see those annoying blocking artifacts.
+You can see here the boundaries of
+each individual block this image was
+divided into.
+So the problem at hand is to devise a
+recovery algorithm that will
+bring back some of the lost information
+and result in removing this blocking
+artifact.
+So here is one result we obtained with one
+of the algorithms.
+By and large, the blocking artifacts have
+been reduced or completely eliminated.
+Maybe if one pays attention to the
+forehead of the lady,
+and maybe the hat here, and some other
+regions of the image.
+This is the same problem as in the
+previous slide.
+Here we deal with video, not just a still
+image.
+So the blocking artifacts are visible in
+this frame of the video.
+And based on the technique, we also
+developed this is the processed image.
+In this particular case when video is
+involved, one can utilize not only the
+spacial information but also the temporal
+information
+based on the motion information you can
+find.
+The similar blocks, the similar agents in
+previous frames and
+utilize that information to remove some of
+the blocking artifacts.
+Here's another example of a recovery
+problem.
+When images and videos are transmitted,
+rows of micro blocks
+are typically placed into packets, and
+these packets are transmitted.
+If some of these packets are lost during
+transmission, then the received image can
+look like this.
+This is a frame of a video, and this
+black here, rectangles indicate
+packets which were lost and therefore the
+intensity information is lost.
+So we try to recover the lost information.
+This is a recovery problem that is
+typically referred to as error concealment
+problem since we try to conceal the errors
+that were introduced by the channel.
+Since we deal with video again, one can
+use not only the
+spacial neighborhood information to
+recover this
+lost information but also the temporal
+information.
+Based on some of our work, here's an
+example of the concealed frame.
+It's a satisfactory result, especially for
+this packet here since a lot
+of structure was lost but we see that it
+is recovered nicely.
+This particular packet did not convey
+probably as
+much information but still, it, it's a
+satisfactory concealment.
+Here's another example of a still image.
+So the, these blocks were lost, the black
+blocks.
+This would represent the best type of
+error.
+So based on a different algorithm,
+recovery
+algorithm we developed, here is the
+recovered image.
+It's almost perfect.
+If one pays close attention, there are
+some
+issues like here for example, or here
+which might
+be part of the hat and so on but
+by and large, it's a very satisfactory
+concealed image.
+The last example we saw transitions nicely
+into the inpainting problem.
+So here we're given an image like this,
+this is actually an old movie and this was
+supposed to be sub titles, but back then
+when people were not as skilled
+readers and these sub titles were rather
+large, so this is the only copy of
+movie available and we want to remove the
+letters, so that the original information
+is available.
+So this problem is again referred to as in
+painting,
+we want to paint the missing values in,
+inside the image.
+It's very similar to the error concealment
+problem.
+One difference is in error concealment,
+the missing
+regions are nicely structured and their
+location is known.
+With an inpainting problem, one has to
+identify the regions in which information
+is missing.
+So in this particular example we have to
+identify the, each and every letter and
+realize that whatever this is white here,
+it's a letter is information
+lost, but there's white shirt here and the
+information is not lost there.
+So this is not the easy problem that has
+to first be solved before inpainting.
+So here's an example of a not very
+skillful and successful inpainting but
+nevertheless it gives you an idea of the
+problem, the letters are removed.
+Again, inpainting can be applied to still
+images or videos.
+When videos are available, then there is
+both spacial
+and temporal information that can be
+utilized towards in painting.
+Another recovery problem is the image
+super-resolution problem.
+We observe a set of low resolution images,
+and the objective
+is to combine them to in order to obtain
+high resolution one.
+So these are images of the same scene and
+there is a transformation connecting them.
+The transformation could be a simple sub
+pixel shift among the frames
+or a rotational component can be there or
+any general [INAUDIBLE] transformation.
+So based again on some of our work here is
+an example of a super-resolved image.
+None of the numbers is visible in the
+low res images and clearly a lot of
+information
+was recovered since the numbers can be
+read
+and the image is sharp and of high
+resolution.
+Here's another example for lower
+resolution images are observed
+and combined judiciously resulted in this
+high resolution image.
+Actually the dimension of these images
+here is the same, the
+low and high but this was done just for
+displaying purposed.
+The super resolution of the compressed
+video is another recovery problem.
+So the degradation model is shown here,
+which starts with a
+video of the original resolution, a short
+segment is shown here.
+This is down sample by a factor of two in
+both dimensions of this particular case.
+And then this down sample video is
+compressed using the MPEG4 video
+compression standard that one megabit per
+second using this specific rate
+controller.
+So here is the compressed down sample
+video.
+So the objective is to, where would this
+compressed down sampled video
+and come up with an estimate of the video,
+the original resolution.
+So, here is the two results.
+On the left is the result based on
+bi-linear interpolation
+and on the right, on an algorithm that we
+developed.
+So by comparing them side by side, it
+should be clear that a lot of
+the artifacts are not there with the
+so-called proposed algorithm here.
+And it represents, by and large, a very
+good presentation of the video at the
+original resolution.
+Another recovery problem is the dual
+exposure restoration problem, a more
+recent problem.
+According to it, two images are observed,
+a long exposure image and the short
+exposure one and they are actually cell
+phones in the market that do that.
+They take simultaneously two images a long
+and a short exposure one.
+So the long exposure one is subject to
+blurring
+due to motion, shaking of the camera and
+so on.
+The short exposure one does not have this
+problem, but
+it is noisy and also the colors have been
+outed.
+One approach would be to work with the
+short exposure image and smooth
+the noise and if we do so, we obtain an
+image like this.
+It's brighter, the noise has been reduced,
+removed, however,
+the colors are not the colors of the
+original image.
+If we combine now the long and short
+exposure based on some
+of our recent work, we can obtain the
+restored image shown here.
+So this definitely an improved version of
+the observations,
+its a sharp image while maintaining the
+colors of, of the original scene.
+Blind restoration was performed and this
+is the estimated point spread function
+impulse
+response, so the degradation system that
+gave rise to the long exposure image.
+Another recovery problem by the name
+of pansharpening is encountered in
+multispectral
+imaging, in remote sensing when image that
+are acquired for example by lancer.
+So in that case, instead of having an
+ideal sensor that would generate
+high resolution multi-spectral images,
+instead there is
+spectral decimation as well as spatial
+decimation.
+So the spectral decimater results in high
+resolution image but the
+the frequency formation has been lost,
+it's a great scale unchormatic image.
+While the spatial decimater will give each
+and every band
+of this multi spectral image but at the
+reduce resolution.
+So the problem at hand is to combine the
+pan-chromatic high resolution image and
+the low resolution spectral images,
+and try to increase the resolution of the
+spectral
+images, bring them to the resolution of
+the pan-chromatic image.
+It's a super resolution problem, but in
+this context
+of multi-spectral imaging is referred to
+as a pansharpening problem.
+So here is an example of pansharpening.
+We're given the low resolution spectral,
+the panchromatic place scale and combining
+the 2, here's a pansharpened image we
+obtained with one of our algorithms.
+So it has the same resolution as the
+panchromatic and has all the spectral
+information here shown clearly in
+pseudo-coloring of the spectral bands.
+[BLANK_AUDIO].
+Another recovery problem is that of
+demosaicing.
+Most modern digital cameras acquire images
+using a
+single image sensor overlaid with a
+colored filter array.
+The most commonly used one is the Bayer
+CFA shown here.
+According to it, 50% of the pixels are
+green, and 25
+are red and blue, so equivalently out of
+the three planes,
+the R, G and B planes, 75% of the pixels
+are missing here,
+50% in the green channel, and 75% in the
+blue channel.
+So, demosaicking is the digital image
+processing recovery problem used to
+reconstruct
+a full-color image from the incomplete
+color samples that is shown here.
+With this final example, I want to make
+the point that
+the degradation such as motion blur is not
+only important to be
+removed so as to visual the distorted
+image, but it needs to
+be taken into account when another task is
+performed such as tracking.
+So we see here a popular and successful
+tracker by the name of Mean Shift
+failing to perform really well when the
+there is motion blur.
+The red window shows the the tracking
+result, so the red windows stays with the
+object most of the time but the number
+of occasions does not coincide with the
+object.
+So the tracker loses track of the object
+of interest.
+But by taking the motion blur into account
+with some
+of the work we did here, we can see that
+now the tracking is more successful.
+This red square, rectangle rather, stays
+with the object most of the time.
+We tried to demonstrate with the previous
+examples, that there are various sources
+of degradation
+which result in loss of information and
+therefore a recovery problem needs to be
+solved.
+It's probably safe to say that whenever
+images and videos are acquired
+there is either active or potential work
+in solving a recovery problem.
+Drawing from the previous examples, here
+are some examples of degradation.
+The degradation can be due to motion
+between the camera and the scene, either
+unintentional motion or when a motion
+compensation
+system fails for example due to
+atmospheric turbulence.
+Whenever we image for example with ground
+based telescope, the objects
+in the sky, we have to image through the
+turbulent atmosphere.
+[BLANK_AUDIO]
+Due to out of focusing, either because the
+auto focusing system failed,
+or when we manually focus, we don't do the
+best possible job.
+Generally speaking due to the limitations
+of a, acquisition systems, the final
+resolution for example imposed by the
+optics, constraints imposed by physics
+of the object of interest, we're going to
+image and cost considerations.
+Very often, we go on with software to
+increase the capability of hardware.
+So we want to make for example, a
+$1000 camera performed like it's a $30000
+camera.
+The finite resolution of sensors and this
+resolution is dependent on
+the frequency of the electromagnetic
+spectrum at which we're imaging.
+Doe to quantization errors when for
+example, compression is performed on a
+signal
+through transmission errors, errors
+introduced by an unfriendly
+channel and of course, the ever present
+noise.
+We show here a list of the recovery
+problems we described through the example
+we just showed.
+So there's the ever present noise
+smoothing problem, restoration
+of the convolution in 1 or 2 or 3
+dimensions.
+The removal of compression artifacts,
+super resolution in
+its various incarnations such as
+pansharpening or demosaiking.
+The two cousin problems of inpainting and
+concealment, dual exposure imaging,
+reconstructions or projections, and
+these two topics that we did not show any
+examples but we will visit them later.
+I'd like to mention here that some of
+these problems are combined.
+For example, I might be interested in
+solving a super resolution problem with
+compressed images or videos when of course
+noise is always present in the data.
+Another comment is that in some
+applications, we observe
+just a single image or frames of a video.
+But while in other application that are
+multiple observations
+involve such as dual exposure or the super
+resolution.
+The examples of discovery problem we
+described and additional others can
+be counted in a number of applications,
+for example, in space exploration
+or images acquired by the Hubble Space
+Telescope, remote sensing,
+surveillance, medicine, neuroimaging,
+nondestructive testing, commercial and
+digital photography,
+video printing, printing one frame from a
+video, microscopy,
+molecular and cellular imaging and
+multimedia communications.
+And of course, this is not an exhaustive
+list of either the applications
+or the type of recovery problems or the
+list of degradations we just mentioned.
+So this is very, very rich field and what
+we try to
+do is just demonstrate and describe some
+the very basic principles that one
+can take then and apply to all these again
+incarnations of the recovery problem
+in the very many applications that such
+recovery problems could be encountered.
+

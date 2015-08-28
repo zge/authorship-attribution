@@ -1,0 +1,387 @@
+Okay, so this video's not about any
+particular graph problem, not about a, any
+particular graph algorithm. Just, sort of,
+the preliminaries we need to discuss
+algorithms on graphs. How do we measure
+their size? How do we represent them, and
+so on. Remember what a graph is, it really
+has two ingredients. First of all, there's
+this set of objects we're talking about.
+Those might be called vertices.
+Synonymously, we might call them nodes. We
+represent pair wise relationships using
+edges. These can be either un-directed in
+which case, they're ordered pairs or an
+edge can be directed from 1 to another. In
+that case, they're ordered pairs, and we
+have a directed graph. Now, when we talk
+about say, the size of a graph, or the
+running time of an algorithm that operates
+on a graph. We need to think about what we
+mean by input size. In particular, for a
+graph, there's really two different
+parameters that control how big it is,
+unlike an array. For arrays, we just had a
+single number, the length. For graphs, we
+have the number of vertices, and we have
+the number of edges.
+Usually we'll use the notation n for the
+number vertices, m for the number of
+edges. So the next quiz will ask you to
+think about how the number of edges m, can
+depend on the number of vertices, n. So,
+in particular, I want you to think about
+in this quiz, an un-directed graph It has
+n vertices. There's no parallel edges.
+'Kay, so for a given pair of vertices,
+there's either zero or one edge between
+them. Moreover, let's assume that the
+graph is unconnected. 'Kay?
+So I don't want you to think about graphs
+that have zero edges. Now, I haven't
+defined what a graph is. What it means for
+a graph to be connected formally, yet, but
+I hope you get the idea. It means it's in
+one piece, you can't break it into two
+parts that have no edges crossing between
+them. So, for such a graph, no parallel
+edges, in one piece, n vertices, think
+about what is the minimum number of edges
+it could possibly have, and what is the
+maximum number of edg es, as a function of
+n, that it could possibly have. All right,
+so the correct option is the first one The
+fewest number of edges that a connected
+undirected graph we can have is n minus 1,
+and the maximum number of edges that an
+undirected graph with no parallel edges
+can have is n times n minus 1 over 2,
+better known as n choose 2. So why does it
+need at least n minus 1 edges, if it's
+going to be in one piece. Well think about
+at, adding the edges one at a time. Okay,
+on each of the edges of the graph. Now,
+initially, you just have a graph with zero
+edges, the graph has indifferent pieces
+and isolated vertices has no edges at all.
+Now each time you add one edge, what you
+do is you take two of the existing pieces,
+at best, and fuse them into one. So, the
+maximum decrease you can have in the
+number of different pieces of a graph is
+it can decrease by 1 each time you add an
+edge. So from a starting point of n
+different pieces, you've got to get down
+to 1 piece. So that requires the addition
+of n minus 1 edges. You can also convince
+yourself of this best, by drawing a few
+pictures and noticing that trees achieve
+this bound exactly, so for example here is
+a 4 vertex tree that has 3 edges. So this
+is a case where m is indeed, n minus 1.
+Now, for the upper bound, why can't you
+have more than n choose 2? Well, it's
+clear that the largest number of edges you
+can have is for the complete graph. Where
+every single pair of edges has 1 between
+them. Again, there's no parallel arcs and
+edges are unordered. So, there's at most,
+n choose 2 possibilities of where to put
+an edge. So again, if n equals 4, here
+would be an example with a maximum
+possible number, 6 edges. So, now that
+I've got you thinking about how the number
+of edges can vary with the number of
+vertices. Let me talk about the
+distinction between sparse and dense
+graphs. It's important to distinguish
+between these two concepts because some
+data structures and algorithms are better
+suited for sparse graphs. Other data
+structures and algorithms are better
+suited for dense graphs. So, to make this
+precise, let me just put down this very
+common notation n is the number of
+vertices of the graph under discussion, m
+is the number of inches. This is quite
+standard notation. Please get used to it
+and use it yourself. If you reverse these,
+you will confuse a lot of people who have
+familiarity with graph algorithms and data
+structures. Now one thing we learned from
+the previous quiz is the following. So in
+most applications, not all applications,
+but most applications, m is at least
+linear in n. Remember in the quiz we saw
+is at least n minus 1 if you wanted the
+graph to be connected, and it's also big O
+of n squared. This is under the assumption
+that there's no parallel arcs. Now, there
+are cases where we want to allow parallel
+arcs. In fact we'll do that in the
+contraction algorithm for the min cut
+problem. There are cases where we want to
+allow the number of edges to drop so low,
+that the graph breaks into multiple
+pieces. For example, when we talk about
+connected components but more often than
+not, we're thinking about a connected
+graph with no parallel edges. And then we
+can pin down the number of edges m to be
+somewhere between the linear and the
+number of nodes, linear and n and
+quadratic in it. Now I'm not going to give
+you a super formal definition of what a
+sparse or a dense graph is, and people are
+a little loose with this, this terminology
+in practice. But basically, sparse means
+you're closer to the lower bound, closer
+to linear. Dense means, you're closer to
+the upper bound, closer to quadratic. Now
+I know this leaves ambiguity when the
+number of edges is something you know like
+n to the 3 halves. usually in that case
+you'd think of that as a dense graph. So
+usually anything which is more than N
+times logarythmic terms, you'd think of
+that as a dense graph. But again, people
+are a little bit sloppy with this when
+they talk about graphs. Next I want to
+discuss two representations of graphs and
+we're mostly going to be using the s econd
+one in this course, but this first one,
+the adjacency matrix, I do want to mention
+just briefly, just on this slide. This is
+the supernatural idea where you represent
+the edges in a graph using a matrix. Let
+me describe it first for undirected
+graphs. So, the matrix is going to be
+denoted by capital A, and it says square n
+by n matrix where n is the number of
+vertices of the graph. And the semantics
+are the i-jth entry of the matrix is 1. If
+and only if there's an edge between the
+vertices i and j in the graph. I'm
+assuming here that the vertices are named
+1, 2, 3, 4, et cetera all the way up to n.
+It's easy to add bells and whistles to the
+adjacency matrix to accommodate parallel
+edges to accommodate edge weights, which
+is accommodate directed arcs, directed
+edges. If you wanted to have parallel
+arcs, you could just have Aij denote the
+number of arcs that are between i and j.
+If edges have different weights, you could
+just have Aij be the weight of the ij
+edge. And for the directed graph you could
+use plus ones and minus ones. So if the
+arc is directed from i to j, you'd set i,
+Aij to be plus 1. If the arc is directed
+from j to i, you'd set Aij to minus 1.
+There are many metrics by which you can
+evaluate a data structure, or a
+representation. two important ones I want
+to discuss here. First of all, the number
+of resources it requires and in this
+context, that's the amount of space that
+the data structure needs. The second thing
+is what are the operations of the data
+structure supports. So let's just begin
+with space requirements. What are they for
+the adjacency matrix? Alright, so the
+answer at least with the sort of straight
+forward way of storing a matrix is n
+squared. And this is n dependent of the
+number of edges. So you could try to beat
+this down for sparse graphs using sparse
+matrix tricks. But for the basic idea of
+just actually representing an n by n
+matrix, you got n squared entries, you
+gotta store one bit in each whether the
+edge is there or not. So that's going to
+give yo u n squared space. The constants
+are, of course, very small, because you're
+just storing one bit per entry. But
+nonetheless this is quadratic in the
+number of vertices. Now that's going to be
+fine if you have a dense graph, the number
+of edges is as high as n squared, then
+you're not really wasting anything in this
+representation. But in a sparse graph, if
+m is much closer to linear, then this is a
+super wasteful representation. Let's talk
+about the ajacently list representation,
+this is the, the dominant one we'll be
+using in this class. This has several
+ingredients. So, first you keep track of
+both the vertices and the edges as
+independent entities. So you're going to
+have an array, or a list of each. And then
+we want these two arrays to
+cross-reference each other in the obvious
+way. So given a vertex, you want to know
+which edges it's involved in. Given an
+edge, you want to know what its endpoints
+are. So, let's say first, most simply,
+each edge is going to have two pointers,
+one for each of the two endpoints. And in
+directed graph, of course, it would keep
+track of which one is the head and which
+one is the tail. Now, each vertex is going
+to point to all of the edges of which it's
+a member. Now in an undirected graph, it's
+clear what I mean by that. In a directed
+graph, you could do it in a couple ways.
+Generally you'd have a vertex, keep track
+of all of the edges, for which it is the
+tail. That is, all of the edges which you
+can follow one hop out from the edge. If
+you wanted to, you can also have a second
+array, at a more expense of storage, where
+the vertex also keeps track of the edges
+pointing to it. The edges for which it's
+the head. So, let me ask you the same
+question I did with an adjacency matrix.
+What is the space required of an adjacency
+list, as a function of the number of edges
+m, and the number of vertices n, of the
+graph? So, the correct answer to this
+question is the third option, theta of m
+plus n, which we're going to think of as
+linear space in the size of the gra ph.
+So, this quiz is, is a little tricky. So,
+it's explain the answer when we return to
+the slide with the ingredients of
+adjacency lists. And let's compute the
+space for each of these four ingredients
+separately. Most of them are
+straightforward. For example, consider the
+first ingredient. This is just an array,
+or a list of the n vertices. And we just
+need constant space per vertex to keep
+track of its existence. So this is going
+to be theta of n, linear in the number of
+vertices. Similarly, for the m edges, we
+just need linear space in the number of
+edges to remember their existence. So
+that's going to be theta of m. Now, each
+edge has to keep track of both of its
+endpoints. So that's two pointers, but two
+is a constant. For each of the m edges, we
+have a constant space to keep track of
+endpoints. So that's going to give us
+another theta of m constant per edge. Now,
+this fourth case, you might be feeling
+kind of nervous, because a vertex, in
+principle could have edges involving all n
+minus 1 of the vertices. So the number of
+point or is it a single vertex could be
+theta of n. Also you could have you know,
+you do have n vertices that could be theta
+of n squared. And certainly in something
+like a complete graph you really would
+have that function. But the point is in
+sparse graphs n, n squared is way overkill
+to the space needed by this fourth set of
+pointers. Actually, if you think about it
+for each pointer in the fourth category, a
+vertex pointing to a given edge, there is
+a pointer in the third category pointing
+in the opposite direction, from that edge
+back to that vertex. So, there's actually
+a one to one correspondence. Between
+pointers in the third category, and
+pointers in the fourth category. Since the
+third category has space theta of m, so
+does all of the pointers in the fourth
+category. So adding up over the four
+ingredients, we have one theta of n, and
+three theta of ms, so that's going to give
+us overall a theta of m plus n. If you
+prefer, another way you could think about
+this would be theta of the max of m and n.
+These are the same up to a constant
+factor. Now, as we discussed in a previous
+slide. Often, m is going to be bigger than
+n, but I wanted to do a generic analysis
+here, which applies even if the graph is
+not connected, even, even if it is in
+multiple pieces. So the space of the
+adjacency list is within a constant factor
+the same as the number of ingredients in
+the graph, the number of vertices plus the
+number of edges. So in that sense, that's
+exactly what you want. Now being
+confronted with these two graph
+representations that I've shown you I'm
+sure you're asking, well, which one should
+you remember? Which one should you use?
+And the answer, as it so often is, is it
+depends. It depends on two things. It
+depends on the density of your graph. It
+depends on how m compares to n. And it
+also depends on what kind of operations
+that you support, want to support. Now
+given what we're covering in this class,
+and also the motivating applications I
+have in mind I can give you basically a
+clean answer to this question for the
+purposes of these five weeks. Which is
+we're going to be focusing on adjacency
+lists. The reason we're going to focus on
+adjacency lists in this class, is both, is
+for both of these reasons, both because of
+the operations we want and both because of
+the graph density and motivating
+applications. So, first of all, most of
+the graph primitives, not all, but most,
+will be dealing with graph search and
+adjacency lists are perfect for doing
+graph search. You get to a node. You
+follow an outgoing arc. You go to another
+node. You follow an outgoing arc and so
+on. And so, adjacency lists are the
+perfect thing to do graph search.
+Adjacency matrices are definitely good for
+certain kinds of graph operations. But
+they're not things we're really going to
+be covering in this class. So that's
+reason one. Reason two is, a lot of the
+motivations for graph primitives these
+days comes from massive, massive networks.
+I mentioned earlier how the web ca n be
+fruitfully thought of as a directed graph.
+Where the vertices are individual web
+pages. And directed arcs correspond to
+hyperlinks, going from the page with the
+hyperlink, pointing to the one that the
+hyperlink goes to. Now, it's hard to get
+an exact measurement of the web graph, but
+a conservative lower bound on the number
+of vertices is something like 10 billion.
+So that's 10 to the 10. Now that's pushing
+the limits of what computers can do, but
+it's within the limits. So if you work
+hard, you can actually operate on graphs
+with 10 to the 10 nodes. Now, suppose we
+use an adjacency matrix representation. So
+if n is 10 to the 10, then n squared is
+going to be like 10 to the 20. And now
+we're getting close to the estimated
+number of atoms in the known universe. So
+that is clearly not feasible now and it's
+not going to be feasible ever. So the
+adjacency matrix representation is totally
+out for, huge sparse graphs like the web
+graph. Adjacency lists, well, the degree,
+on average, in the web, is thought to be
+something like 10. So, the number of edges
+is only going to be something like 10 to
+the 11. And then the adjacency of this
+representation will be proportional to
+that. And again, that's really pushing
+what we can do with current technology,
+but it is within the limits, so using that
+representation we can do non-trivial
+computations on graphs, even at the scale
+of the web graph.

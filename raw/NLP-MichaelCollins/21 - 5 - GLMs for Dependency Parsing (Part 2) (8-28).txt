@@ -1,0 +1,192 @@
+So now let's describe how these feature 
+factor definitions can be used with, 
+within the context of Global Linear 
+Models for Dependency parsing. 
+So, recall that to run the perceptron 
+algorithm, we need to be able to 
+calculate this function, capital F of x, 
+x is a sentence. 
+For example, John saw Mary and, this 
+function is going to take a sentence and 
+map it to some dependency structure, for 
+example this structure here, John saw 
+Mary. 
+And it's defined in the usual way in 
+local linear, in global linear models. 
+GEN of x is defined as the set of all 
+possible dependency structures for this 
+input sentence, and I'm going to take a 
+max of all possible structures. 
+And we're going to score each of those 
+structures using w.f, where w is a 
+parameter vector, in d dimensional space, 
+and f is a feature vector. 
+So, again, as we saw in Tagging, it's 
+critical that we can compute this 
+function F of x, efficiently, for a 
+couple of reasons. 
+One is, when we get a new test example, 
+we want to be able to parse it, we want 
+to be able to apply this function, okay. 
+But the second reason is that to run the 
+perceptron algorithm that learns these 
+way to w from examples. 
+We need to repeatedly calculate this 
+function on the train examples. 
+Remember, the perceptron typically 
+calculates the output on a particular 
+trend example, under the current 
+parameters. 
+And then it does a very simple update to 
+those parameters if we make some errors. 
+So, f of x is crucial within, within the 
+perceptron algorithm. 
+And again, let's just emphasize this set 
+GEN, is typically very large. 
+So, it's exponential in n, where n is the 
+length of the sentence. 
+As I've just shown you, we have defined 
+this function capital f, sorry lower case 
+f. 
+The feature vector function through a sum 
+of local feature vectors. 
+Each of these feature vectors takes a 
+sentence and looks at just a single 
+dependency within the structure y and 
+returns a feature vector. 
+So, this problem here is reduced to the 
+problem of finding the highest scoring 
+structure in GEN where the score of any 
+structure is through this sum of terms, 
+one for each of the dependencies. 
+Now I'm not going to explain the 
+algorithm for this. 
+I'll try to post a paper that specifies 
+the algorithm. 
+But, critically we can make use of 
+dynamic programming for this problem, and 
+it actually runs in cubic time in the 
+length of the sentence. 
+And intuitively, that is because we've 
+decomposed the score from an entire 
+structure into a sum of local schools 
+across just dependencies within the 
+structure. 
+And that decomposition allows us to use 
+dynamic programming algorithms that are 
+already quite similar to the algorithms 
+that we saw for PCFGs, so they're similar 
+to the CKY algorithm. 
+But which leverage dependency structures 
+in really rather beautiful ways. 
+And again Jason Eisner has some wonderful 
+papers on these algorithms. 
+So to summarize, we've defined global 
+feature vectors through local feature 
+vectors, that allows us to find the 
+highest scoring dependency structure 
+under the model very efficiently using 
+dynamic programming. 
+We can use that dynamic programming 
+method both within the perceptron 
+algorithm when we train these parameters 
+w, and also for decoding new test 
+sentences. 
+To finish up this segment let me just 
+talk about a little bit about the kind of 
+features that McDonald actually looked 
+like. 
+And they're, they're very similar to the 
+the features I showed you. 
+So remember, the feature vector's 
+going to take a sentence, a head word, 
+and a modifier word. 
+so we define the w to be the i'th word in 
+the sentence, and t of i to be i'th tag. 
+So the part of speech tag for the i'th 
+word. 
+So again, we're going to assume that as 
+input, we don't just have the sentence. 
+We also have the part of speech tags for 
+that sentence because the part of speech 
+tags can give us valuable information. 
+There are some very simple Unigram 
+features, which just look at the identity 
+of the head word, or the identifier, 
+identity of the modifier word. 
+While the identity of the head tag or the 
+identity of the modifier, identity of the 
+modifier tag. 
+More interestingly, there are bigram 
+features which are rather similar to the 
+features I showed you on the previous 
+slide. 
+So, we can look at the identity of the 
+4-tuple, wh, wm, t sub h, t sub m. 
+So, we could have features which are true 
+for a particular combination, so maybe 
+Saw, John, VBD and NNP. 
+So we have a feature which is one if and 
+only if we saw a dependency between a 
+word Saw tagged as a VBD and a word John 
+tagged as an NNP. 
+And we can also define features which 
+look at various subsets of this 4-tuple. 
+For example, we might just look at the 
+two words involved. 
+We might just look at saw and John. 
+We might just look at the two parts of 
+speech involved. 
+Or we might look at just the fact that we 
+have John tagged as an NNP modifying some 
+VBD, and so on. 
+McDonald also used Contextual features 
+for example, you might look at not just 
+the tag, if we have a particular 
+dependency. 
+So this is word h and word m. 
+You might be interested not at just the 
+part speech tag for this nth word and the 
+part speech tag for this hth word. 
+You might also look at part speech tags 
+to the immediate left and right of this 
+head and modifier word. 
+So, for example we might look at the 
+fortuple, th, th plus one. 
+So that's this part of speech, this part 
+of speech and then tm minus one tm, so 
+this part of speech and this part of 
+speech. 
+And there are several kinds of features 
+you can define here which look at the 
+part of speech of the, the modifier word, 
+and the head word and also the part of 
+speech of the previous word or the next 
+word for each of these cases. 
+So that clearly gives us a richer context 
+in which to consider a particular 
+dependency. 
+Finally an important classic feature are 
+what, are what are called In-between 
+features. 
+So empirically we are, are statistically 
+speaking some parts of speech, for 
+example a verb cause a dependency to be 
+relatively unlikely. 
+So if a verb is seen between these two 
+words, that diminishes the probability of 
+seeing a dependency. 
+So, it seems empirically if you look at 
+least English, the chances of it seeing a 
+dependency crossing certain parts of 
+speech such as a verb is, is much less 
+than a chance of crossing of other parts 
+of speech. 
+And so McDonald introduced features which 
+would track the tag of the head, tag of 
+the modifier, and also would check 
+whether a particular tag, for example 
+VBD, was seen between these two words. 
+so this turned out to be another useful 
+feature type. 
+

@@ -1,0 +1,277 @@
+Another popular closure resolution method
+is known as linear probing. In this you
+know many different versions of hashing
+that are based on this idea. With linear
+probing is called open addressing and is
+also around the same time in the 50's the
+idea is just use an array. Instead of
+using space for the length in a length
+list. I use that same space, and just,
+allocate an array. In this case, the size
+of the array is going to have to be bigger
+than the number of keys that we
+[inaudible] expect. And we use the empty
+slots in the array. To. Essentially
+terminate the length of the [inaudible]
+list that we have to search through when
+we're doing a insertion. So let's look at
+a demo of how it looks. So to hash again
+we do the same thing, we just map the key
+to a index. But, in linear probing, to
+insert what we do is when we put it in
+position I if that's free, if not we just
+look at I plus one, and I plus two, and
+wrap around to the beginning if we reach
+the end. Now that's also simple to
+implement and it works well as long the
+size of the array is, significantly bigger
+than the number of keys. Let's look at,
+Well it's a demo. So we start with an
+empty table, insert s, it's hash value is
+six, six is empty so we put it there. Now
+we look at e, hash of e is ten, we look at
+ten, it's empty so we put e there. So at
+the beginning we're going to be fine. A is
+four, empty, put it there. R is fourteen,
+empty, put it there. So we just
+essentially, using the hash funtion as an
+array index. C is five, that's empty and
+we put it there. So H now, the hash value
+of H is four. So now we look at four, and
+that's occupied, so we can't put the H
+there. And then linear probing says, just
+look at the next position, look at five.
+That's still not empty. So we look at six.
+And we keep going till we find an empty
+place, and then we put H there. Now when
+we search, we're going to have to do the
+same thing. We'r e going to have to look
+at all those positions to look at H. The.
+Group of four key, continuous keys in a
+table space there is called a cluster and
+clearly we want to keep those clusters
+small. And we do that by juts by not
+putting too many keys in to the table. So
+X hashes to fifteen, that's empty so we
+put it there, M hashes to one, that's
+empty and we put it there. P hashes to
+fourteen, 14's occupied, 15's also
+occupied, now we run off the end of the
+table, and look at zero, and that's empty
+so we put it there. L hashes to six. Six
+is occupied. We look at seven, seven is
+occupied. We look at eight, and we put it
+there. And, so that's an example of
+inserting, keys into a hash table. And
+now, for a search, we just do the same
+thing. We, use the hash function. To
+search for E, E's hash value is ten so we
+look in ten and there it is. So that's a
+search hit. If we're going to search for
+say L L's hatch value is six so it's not
+there. So in order to look at every place
+in the table where L could be, we have to
+keep looking til we found an empty table
+position, or we find L itself. So now we
+look at seven L not there, we look at
+eight L is there, that's a search hit. If
+we have a value that's not in the table
+like K, well hash and is in position five,
+no, six no, seven no, eight no and we find
+an empty position at that point we can
+conclude that K is not in the table.
+Because if K were in the table it would be
+somewhere between it's hash point five and
+that empty position nine. That's a search
+miss, and we return all. So that's a short
+demo of linear probing hashing. So here's
+a summary of linear probing, hashing. To.
+To get started we map a key to a integer
+between zero and m-1 where m is the sides
+of our array where we are storing the
+keys. To insert we put the key value pair.
+Use parallel arrays [inaudible] and the
+value array with the same index. We put
+the entry at the table index A for three.
+If not try I+1 I+2 until getting to a
+empty position. And for search you do the
+same thing you hash to the table position
+and you look there into the right. To find
+the key and you stop when you find an
+empty table position. Find the key or find
+an empty table position. Now, it's
+essential that the array size is greater
+than the number of key value pairs N. And
+for linear probing hashing, really, the
+implementation needs to include array
+resizing, whenever the hash table gets too
+full. Here's the implementation. And it's,
+quite straightforward, given the demo that
+we talked about. You use the same hash
+function. And we use parallel arrays for
+the value in the keys. And we have to use
+ugly cast, 'cause we can't have a race of
+generics. Then let's do the search. So. We
+just have a for loop starting at hash of
+key and going until we get to a position
+that's null. As long as it's not null, we
+stay in the loop and increment I mod m. So
+that's when I gets to the end it gets to
+the end, it's in the position m minus one
+and it goes... In the next increment goes
+back to zero at the left end of the table
+and we just test for all the non null
+keys. If it's equal, if it is, go ahead
+and return the associated value and if you
+get to an empty position, then return
+null. And the implementation of put is
+similar. Find a, a position, if it's,
+that's equal, And then, reset the key, in
+the value. If the key's there, it just
+resets the value. If they key's not there,
+it puts a new entry in. So again, that's,
+fairly little code, to implement, a fast
+symbol table and insert, search and
+insert. But it's only going to be fast, if
+the, table size is set appropriately. In
+ancient times, memory was, at quite a
+premium and so people were very concerned
+in m-m-making sure that the hash table
+never, got too empty. Remember in the
+first computers, each bit was a physical
+thing, a magnetic core that somebody had
+to string a wire through, so. The bits
+were really expensive, and people wanted
+to make sure, that they were making best
+use of the memory. And just leaving empty
+positions around, in a hash table, or
+using links in a link list, did not seem
+like an appropriate use of space. And, so
+there was quite a bit of effort, devoted
+to figuring it out, how full we could get
+the hash table, in linear probing. And how
+close it could get to full without
+sacrificing performance. And one way to
+think about what goes on is to just watch
+what happens when a hash table fills up.
+So here we just as, as it goes up we're
+showing each key getting inserted in the
+number of probes of the table that are
+needed for the insertions are J hash to
+the same position that A; you had to look
+for a while, and the one thing to notice
+is as the table gets full, is that first
+of all. You have, these clusters or these
+chains building. And so, what's clear
+about that is that, it means that, the new
+hash is likely to hash into a big cluster.
+>> And not only that once you have a big
+cluster and you hash into the middle of it
+you've got a good chance that, that
+clusters going to get longer, or worse.
+That's it's even going to merge with
+another big cluster. And so, that's the
+situation as the table fills up. You get
+long clusters and they're likely to get
+longer. And the math bares that out. Now
+this was studied in detail by Knauf, Don
+Knauf, in the 1960's and actually this
+problem, Knauf says, was the origin of the
+origin of analysis of algorithms.
+Mathematicians were trying hard to
+understand this problem and were ready to
+give up and he realized you could use
+classical balls and bins type
+probabilistic analysis. Not an easy
+analysis, but we actually could make
+precise accurate statements about the
+performance of this algorithm. And those
+statements can be borne out in practice,
+because the hash functions approximate
+random, the math assumes random and the
+formulas predict what actually happened in
+practice. No way can you formulate the
+problem as so called parking problem. So,
+what happens is that you are on a one way
+street and you are looking for a parking
+place and, it's, the idea's you start
+looking for a parking place at particular
+times and say "Okay, now I need a parking
+place", and what you're doing is linear
+probing hashing. If the current space is
+taken, you try the next space and the one
+after and so forth. And the question is.
+If every car. Starts looking for a place
+at a random time. That. Then that models
+the hash function, then how far do they
+have to go to look for a place? That's
+canoot's parking problem. And he was able
+to show, and we'll talk just a little bit
+about this, that if, there's, only half of
+the parking spaces are occupied, then, on
+average, half the people find, find it
+after one place and the other half have to
+look one extra. So that's the kind of
+performance that we want. But as it gets
+full. The displacement gets up to square
+root, of pi M over eight. Which is
+obviously much higher than we want. We
+don't want our searches to take that long.
+And that actually, the analysis, is
+amazing function that goes back to famous
+Roman Nuygen and other classical results
+from our commentorial analysis. What
+Canute's theorem says is that under the
+uniform hashing assumption, the number of
+probes in the linear hash table size M,
+that is alpha percent full, so the number
+of keys is a fraction of M, is for a
+search miss half one plus one over alpha,
+and a search miss one plus one over one
+minus alpha squared. One myse alpha is for
+the hit, one myse alpha for the squared
+for the insert. Now as alpha gets close to
+one, you can see these things are going to
+grow, and particularly the search miss is
+growing to grow quite, quite a bit. If
+it's 9/10's full one over one minus alpha
+squared is 100 one over 100, so it means
+it's going to be 50 p robes for a search
+miss if it's 9/10's full, and that's
+independent of N and M, whereas if it's
+half full then we get the nice. Numbers of
+only 3-house for a hit, and only 5-house
+for a miss. And, again these formulas are
+nice approximate formulas, but Knuth, once
+he figured this out, in 1963, tells
+stories, that time, he decided to write
+his famous series of books on algorithms.
+Now there's four volumes out and more
+planned, and this is where, all computer
+scientists go. For detailed information on
+a performance, eval grievance. So, in, in
+summary. You can't have M too large, what
+we want to use nowadays is array resizing
+to make sure that the array is always
+about half time, half full. And if we can
+keep the array about half full then we get
+constant time performance for search hit
+and search miss. And linear probing is
+very attractive in this case. There's
+other things that we can do
+algorithmically to bring down the search
+time a little bit. Like using another
+hatch function rather than looking at the
+next entry. Use another hatch function to
+determine the stride that we're going to
+use. And that brings it down somewhat and
+allows us to keep the tables more full.
+But the bottom line is that now we have
+two methods that under the uniform hashing
+assumption can give us constant time,
+search, search it insert and delete. For
+symbol table implementations where we
+don't need ordering. And we've got a
+reasonable hash function. So, that's a
+summary of linear probing or second hash,
+collision avoidance strategy.

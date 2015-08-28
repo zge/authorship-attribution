@@ -1,0 +1,298 @@
+This lecture is about query likelihood and
+probabilistic retrieval model.
+In this lecture,
+we continue the discussion of
+probabilistic retrieval model.
+In particular,
+we're going to talk about the query
+likelihood of the retrieval function.
+In the query of likelihood retrieval
+model our idea is a model.
+How a likely a user, who likes a document
+would pose a particular query.
+So in this case, you can imagine,
+if a user likes this particular document
+about the presidential campaign news.
+Then we can assume,
+the user would use this
+working as a basis to oppose a query
+to try and retrieve this doc.
+So you can imagine the user, could use
+a process that works as follows, where
+we assume that the query is generated
+by sampling words from the document.
+So for example,
+a user might pick a word like
+presidential from this document,
+and then use this as a query word.
+And then the user would pick another word,
+like campaign and
+that would be the second query word.
+Now this, of course,
+is assumption that we have made about,
+how a user would post a query.
+Whether a user actually
+followed this process.
+Maybe a different question.
+But this assumption,
+has allowed us to formally characterize
+this conditional probability.
+And this allows to also not rely on
+the big table that I showed you earlier
+to use imperative data to
+estimate this probability.
+And this is why we can use this
+idea to then further derive
+retrieval function that we can
+implement with the languages.
+So, as you see, the assumption that
+we've made here is, each query word,
+is independent in this sample, and also,
+each word is basically
+obtained from the document.
+So now let's see how this works exactly.
+Well, since we are computing
+a query likelihood,
+then the probability here is just
+the probability of this particular query,
+which is a sequence of words.
+And we make the assumption that each
+word is generated independently.
+So, as a result, the probability
+of the query is just a product
+of the probability of each query word.
+Now, how do we compute
+the probability of each query word?
+Well, based on the assumption,
+that a word is picked from the document,
+that the user has in mind.
+Now we know the probability
+of each word is just the,
+the relative frequency of
+the word in the document.
+So, for example the probability of
+presidential given the document,
+would be just the count of
+presidential in the document,
+divided by the total number of words
+in the document or document length.
+So with this these assumptions,
+we now have actual simple formula for
+retrieval, right?
+We can use this to rank our document.
+So does this model work?
+Let's take a look, here are some example
+documents that you have seen before.
+Suppose now the query is
+presidential campaign.
+And we see the formula here on the top.
+So how do we score these documents?
+Well it's very simple, right,
+we just count how many times we have seen
+presidential, how many times
+we have seen campaign etc.
+And see here 44 and
+we've seen president Jou Tai,
+so that's two over the lands
+of document the four.
+Multiply by 1 over lands of document
+of 4 for the probability of
+campaign and seeming we can probabilities
+for the other two documents.
+Now if you'll look at this, these numbers
+or these, this, these formulas for
+scoring all these documents, it seems to
+make sense because, if we assume d3 and
+d4 have about the same length,
+then it looks like we will rank d4
+above d3 and which is above d2, right?
+And as we would expect, looks like
+it did capture the tf heuristic.
+And so this seems to work well.
+However, if we try a different
+query like this one,
+presidential campaign update,
+then we might see a problem.
+But what problem?
+Well, think about update, now none of
+these documents has mentioned update.
+So according to our assumption that
+a user would pick a order from a document
+to generate a query,
+then the probability of obtaining
+a word like update would be what.
+Would be zero, right?
+So that cause a problem,
+because it would cause all these documents
+to have zero probability
+of generating this query.
+Now, while it's fine to have a zero
+probability for d2 which is not relevant.
+It's not okay to have zero for d3 and
+d4, because now we no longer
+can distinguish them.
+What's worse,
+we can't even distinguish them from d 2.
+All right, so
+that's obviously not desirable.
+Now when one has such result, we should
+think about what has caused this problem.
+So we have to examine what
+assumptions have been made,
+as we derive this ranking function.
+Now if you examine those assumptions
+carefully you would realize.
+What has caused this problem, right?
+So, take a moment to think about,
+what do you think is the reason why
+update has zero probability,
+and how do we fix it?
+Right?
+So, if you think about this for
+the moment that you realize that.
+That's because we have made an assumption
+that every query word must be drawn
+from the document in the user's mind.
+So, in order to fix this,
+we have to assume that,
+the user could have drawn a word,
+not necessarily from the document.
+So let's see improved model.
+An improvement here is to say that,
+well, instead of drawing a word from
+the document, let's imagine that the user
+would actually draw a word from a document
+model and so I show a model here.
+Here we assume that this
+document is generated,
+by using this unigram image model.
+Now, this model, doesn't necessarily
+assign zero probability for update.
+In fact we assume this model does not
+assign zero probability for any word.
+Now if we're thinking this
+way then the generation
+process is a little bit different.
+Now the user has this model in mind,
+instead of this particular document.
+Although the model has to be
+estimated based on the document.
+So the user can again generate
+the query using a similar process.
+They may pick a word, for example
+presidential and another word campaign.
+Now the difference is that, this time
+we can also pick a word like update,
+even though update it
+doesn't occur in the document
+to potentially generate
+a query word like update.
+So that, a query was updated we
+want to have zero probabilities.
+So this would fix our problem and
+it's also reasonable,
+because we're now thinking of what the
+user is looking for in a more general way,
+that is unique language model
+instead of a fixed document.
+So how do we compute this query,
+like if we make this sum where
+it involves two steps, right?
+The first is the computer's model, and we
+call it talking the language model here.
+For example, I have shown two
+possible energy models here.
+This has been based on two documents.
+And then given a query and
+I get a mining algorithms.
+The second step, is just to compute
+the likelihood of this query.
+And by making independence assumptions,
+we could then have this probability as
+a product of the probability
+of each query word, all right?
+But we do this for both documents.
+And then we're going to score these
+two documents and then rank them.
+So that's the basic idea of this
+query likelihood retrieval function.
+So more generally than this ranking
+function would look like the following and
+here as, we assume that query
+has end words W1 through WN.
+And then the scoring function,
+the ranking function is the probability
+that we observe this query, given that
+the user is thinking of this document.
+And this assumed to be product of
+probabilities of all individual words and
+this is based on
+the independence assumption.
+Now we actually often score the,
+document for
+this query by using log of the query
+likelihood, as shown on the sigma line.
+Now we do this to avoid having
+a lot of small probabilities.
+M, multiplied together.
+And this could cause underflow and
+we might lose precision by transforming
+the value as a logarithm function.
+We maintain the order of these documents,
+yet we can avoid the end of flow problem.
+So if we take longer than transformation
+of coarse the product that would become
+a sum, as you stake in the line here.
+So it's a sum of all of the query words,
+and inside the sum
+that is log of the probability of
+this word given by the document.
+And then we can further rewrite the sum,
+into a different form.
+So in the first of the sum here,
+in this sum,
+we have it over all the query
+words n query words.
+And in this sum, we have a sum
+of all the possible words but
+we put a counter here of
+each word in the query.
+Essentially we are only considering
+the words in the query,
+because if a word is not in the query,
+it can would be zero.
+So we're still considering
+only these end words.
+But we're using a different form as if
+we were going to a sum of all the words,
+in the vocabulary.
+And of course a word might occur
+multiple times in the query.
+That's wh, why we have a count here.
+And then this part is
+log of the probability of the word
+given by the document MG model.
+So you can see, in this material function,
+we actually know the count
+of the word in the query.
+So, the only thing that we don't know
+is this document language model.
+Therefore, we can convert
+through the retrieval problem
+into the problem of estimating
+this document language model.
+So that we can compute, the probability of
+each query we're given by this document.
+At different estimation methods here,
+would lead to different ranking functions.
+And this is just like a different
+a ways to place a doc in the vector,
+in the vector space.
+Would lead it to a different ranking
+function in the vector space model.
+Here are different ways to estimate
+this stuff in the language model,
+will lead you to a different ranking
+function for query likelihood.
+[MUSIC]
+

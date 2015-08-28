@@ -1,0 +1,203 @@
+In this segment I briefly discuss how we
+evaluate parsing results. So, how do we go
+about evaluating whether our parsers are
+doing a good job or not? One measure would
+just be to say, is the parse that we
+produce exactly the right parse according
+to the tree bank. That's a possible
+standard, and actually close to what
+the probabilistic models do, but it's a
+rather a tough job to get the entire
+structure of a sentence right. And so the
+most used evaluation measures have divided
+up the pieces of the parse so you can get
+partial credit for being right. So let's
+go through how that works. So the idea is,
+we start with the gold standard parse
+tree, this is the correct parse of the
+sentence. So then we run our parser, and
+our parser is going to choose some parse tree
+for the sentence and return it. So in the
+example here, the parser is mostly right.
+It's got the noun phrase sales executives.
+It's got this verb structure of were
+examining, and the noun phrase the figures
+right. It's actually made one little
+mistake at the end, so yesterday should be
+this kind of weird kind of temporal noun
+phrase that English has where you have
+bare noun phrases like yesterday, or next
+week, to express a time that can otherwise
+be expressed as a prepositional phrase like on
+Sunday, in the spring, but the parser has
+wrongly just stuck it on as an extra noun
+at the end of the noun phrase, great care.
+And so that's an error. So, how are we gonna
+go about measuring that? Well, the way
+that we're gonna do it, is we're going to
+look at individual constituency claims.
+So, here is a noun phrase and we're gonna
+say that it goes from position zero to two
+in the sentence, where I'm putting these
+fence post marker numbers in between the
+words of the sentence. And so then, we
+look down at our guessed parse, and say,
+well, it also has a noun phrase that goes
+from zero to two in the sentence. And so
+that particular constituency claim in the
+gold tree is correctly captured in the
+parse tree. And so the way we do that for
+all the cases is we convert the gold tree
+into a set of constituency claims, where
+we leave out the the root node, so I've
+written claims across the root node. So
+this are our constituency claims, so we
+have a sentence that's going from zero
+to eleven, and then the various other
+constituency claims, then we do exactly
+the same thing for the candidate parse
+produced, suggested by the parser. And so
+it's also suggested that the whole thing
+is a sentence from zero to eleven. It's
+also suggested that the NP from zero to
+two, and so on. So it's got a set of
+constituency claims. And then what we do
+is we simply treat each of these as a
+unit, as an atom, that you either get
+right or wrong and then we use exactly the
+same precision recall F measure that
+you've already seen several times before.
+So here are the gold standard label
+bracketings. Here are the candidate label
+bracketings and I've shown in bold the
+three that the candidate agrees with the
+correct parse are on. And so in total
+there are eight bracketings in the gold
+parse and seven in the proposed parse. So
+the labeled precision is 3/7, 42.9 percent,
+recall 37.5 percent and the F1 that
+combines those in the usual way comes out
+as 40%. Now, what that partly means is
+when before we had this, there were these
+extra nodes down here for the parts of
+speech that we talked about before. We
+don't, in the parsing measure, evalu,
+evaluate the part of speech tagging, even
+though most parsers do part of speech
+tagging as part of their work. So that's
+reported separately. And in the example
+I've got here the tagging is completely
+correct, and so that's 100%. Something
+that you might notice here is that these
+scores are actually pretty low, and it's
+worth thinking a bit about why they're so
+low. And what we find is that even though
+the candidate parse was mostly correct we
+actually get a lot of brackets wrong. So
+what happened, the only thing that was
+wrong with the candidate parse was that
+this noun yesterday was wrongly fit
+into this noun phrase, rather than being a
+sentential modifier, as a temporal NP.
+But as a consequence of making that
+mistake, the parser is scored as doing a
+lot of other things wrong, so that this
+verb phrase is scored as wrong, because
+it's wrongly extending to cover yesterday
+whereas it shouldn't. This verb phrase is
+wrong for exactly the same reason. This
+prepositional phrase is wrong for the same
+reason and so is this noun phrase. So this
+labeled precision recall measure suffers
+from these cascading errors whenever you
+attach something very low that should be
+high or vice versa, so many people think
+this is actually not such a good measure
+of parser performance. And people,
+including me, have argued that instead we
+should use dependency measures of parsing
+performance even for constituency
+parsers. But that just isn't the current
+practice of what you see everywhere in
+research. The measure that you see is this
+labeled precision, labeled recall, F1. And
+so that's a measure that we've presented
+here. I'll just briefly mention. You can
+also do an unlabeled version of these
+measures, where you simply look at the
+constituency claim as a sequence of words
+without worrying about the label, but
+that's much less used. Okay. So now that
+we know how to evaluate PCFGs, how well do
+they do? Well, if you just train a PCFG
+off the Penn Treebank and run it on some
+Penn Treebank test data and evaluate with
+this measure, the answer is you get about
+73 percent F1 measure. So that's not
+terrible. You get quite a lot of the
+brackets right but remember it is counting
+each bracket separately so if you're
+getting over a quarter of the brackets
+wrong, that means that you're mak-,
+tending to make several bad attachment
+errors in every sentence. So that's not a
+great result and we'll talk about how to
+improve it very soon. So let's just
+summarize though a little bit the properties
+of the PCFGs that we've seen up until now.
+So the good things about PCFGs is that
+they're very robust. You, normally when
+estimating a PCFG off a tree bank you get
+the result that, that with smoothed
+probabilities, that every possible string
+of words is included in the grammar. So
+there's no categorical grammar constraint
+whatsoever anymore. All the action is in the
+probabilities, what's high probability and
+low probability, and that's useful because
+the parser is robust. You can give it
+anything at all and it'll do its best job
+to give you the most likely sentence parse
+for that. Another good thing about PCFGs
+is that they give us at least part of a
+solution to grammar ambiguity. So, like in
+the example of people fishing that I
+showed earlier, the PCFG tells you which
+parse for a sentence to choose. And at least
+sometimes it chooses the correct one. So
+it gives some ideas of the plausibility
+for a parse. But, as we'll see more later,
+and you already got a hint of, that because
+of the strong independence assumptions of
+a PCFG, it's not actually very good at doing
+that. A third good property is that
+PCFGs give us a probabilistic language
+model, so when you say how likely or
+unlikely sentences are in a language. But it's
+important to point out that
+you shouldn't just now go and run off and
+think ah-ha, I've got a grammar, I'll use
+a PCFG as a better language model than the
+bigrams and trigrams we saw earlier,
+because actually a PCFG as we've shown it
+so far doesn't work as well as a bigram
+or trigram, as a language model, for tasks
+like spelling correction or speech
+recognition. And the reason for that seems
+to be, is that PCFG's lack the
+lexicalization of a trigram model. So,
+what do we mean by that? Well what we meant
+by that, is that, if you're looking at this
+PCFG, most of the PCFG is of the nature
+VP rewrites as VBD VP, that rules that are
+expanding without any reference to what
+words are actually used in the sentence.
+In fact the only rewrite rules that
+consider words are the ones that rewrite
+from a preterminal to the word itself.
+And so this limits the ability of a plain
+PCFG to act as a very effective language
+model. That's a problem we'll address
+again very soon. But for the moment you
+now know how to go about evaluating
+constituency parsers.

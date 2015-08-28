@@ -1,0 +1,247 @@
+Observing what's happening as we did in
+the last section it gives us a, a way to
+predict performance but it really doesn't
+help us understand what the algorithm's
+doing. So next, we're going to look at
+mathematical model. A way to get a better
+concept of what's really happening. Again,
+this concept was really developed and
+popularized by Don Knuth starting in the
+late 60s. At that time, computer systems
+were really becoming complicated for the
+first time. And computer scientists were
+concerned about whether we really were
+going to be able to understand what's
+going on. And Knuth was very direct in
+saying that this is something that we
+certainly can do. We can calculate the
+total running time of a program by
+identifying all the basic operations,
+figuring out the cost, figuring out the
+frequency of execution and summing up the
+cost times frequency for all the
+operations. You have to analyze the
+program to determine what set of
+operations and the cost depends on the
+machine and the computer in the system is
+what we talked about before. The frequency
+leads us to mathematics because it depends
+on the algorithm and input data. Knuth has
+written a series of books that give very
+detailed and all exact analyses within a
+particular computer model for a wide range
+of algorithms. So, from Knuth, we know
+that in principle, we can get accurate
+mathematical models for the performance of
+algorithms or programs and operation. All
+right. So what, what does this process
+look like? Well you can, if you want run
+experiments. In, in ancient times, we
+would actually look at the computer manual
+and every computer came with a manual that
+said precisely how long each instruction
+would take. But nowadays, it's a little
+more complicated. So, we run experiments
+and, and you can go ahead and do a billion
+ads and figure out that maybe on your
+computer, an ad takes 2.1 nano seconds. Or
+you can do more complicated function s
+like computer sign or an arc tangent
+although that's already getting close to
+the analysis of algorithms. So, there's
+some way to determine the costs of the
+basic operations. And so, we'll just in
+most, most of the cases we'll just
+postulate that it's some constant and you
+can figure out what the constant is.
+Although when we're working with a
+collection of objects, of anobjects there
+are some things that takes time
+proportional to N like if you're going to
+allocate a array of size N it takes time
+proportional to N because in Java the
+default is that all the elements in the
+array initialize to zero. In other
+operations it depends on the system
+implementation and an important one is
+string concatenation. If you concatenate
+two strings the running time is
+proportional to the length of the string.
+In many novices programming in Java, make
+a mistake of assuming that's a constant
+time operation when its not. Alright, so
+that's the cost of each operation. More
+interesting is the frequency of operation,
+of execution of the operations. So this is
+a, a, it's a very simple variant of the
+three sum problem. That's the one sum
+problem. That's how many numbers are
+actually equal to zero? How many single
+numbers add up to zero? So, that one, it's
+just one four loop, and we go through, and
+we tested the number zero and increment or
+count. And by analyzing that code you can
+see that I and count have to be declared
+and then they have to be assigned to zero.
+There's compares of i against N and
+there's N + one of them. There's compares
+of A(i) against zero, there's N of those,
+N array axises and the number incremented
+is number of times there's an increment is
+variable. I has incremented N times, but
+count could be incremented any number from
+zero to N times. And so that frequency is
+dependent on the input data. Or we might
+need a model for describing that or maybe
+there's other operations that are more e
+xpensive and we won't need to worry about
+that. So, let's look at the next more
+complicated problem is what about the
+frequency of execution of instructions in
+this program which is the two sum problem,
+how many pairs of integers sum to zero?
+Well, in this case, you have to do a
+little bit of math to see that when we
+when i goes from zero to N, and j goes
+from i + a to N the number of compares
+that we do work, plus array axises that we
+do is two for each time the if statement
+is executed for Ai and Aj and that time
+is, thing is executed N - one times the
+first time through the loop and N -two^2
+and so forth. It's the sum of the integers
+from zero up to N - one which is a simple
+discrete sum one-half N, (N - one) and
+since, and since we're doing it twice the
+number of array axises is N, N - one. So,
+we can go ahead and get these actual exact
+counts. But already, it's getting a little
+bit tedious to do that. And as far back as
+Turing who also knew that and as well as
+Babbage did, that we want to have a
+measure of the amount of work involved in
+the process. He recognized that you didn't
+want to necessarily go through and do it
+in full detail. It's still helpful to have
+a crude estimate. So, you could count up
+the number of times that every operation
+is applied, give it weights and, and count
+the [inaudible] and so forth. But maybe we
+should just count the ones that are most
+expensive that's what Turing said in 1947,
+and realistically that's what we do
+nowadays. So rather than going in and
+counting every little detail, we take some
+basic operation that's maybe the most
+expensive and or and or the one that's
+executed the most often. The one that cost
+and frequency is the highest and use that
+as a proxy for running time. Essentially,
+making the hypothesis that the running
+time is, is going to grow like a constant
+times [inaudible], So, in this case, were
+going to pick array axises. So, that's the
+first simplification. And the second
+simplification is that we're going to
+ignore low order terms in the formulas
+that we derive. And there's an easy way to
+do that. It's called the tilde notation
+and, and the idea is when N is large in a
+formula like this the N^3 term is much,
+much higher than the N term or sixteen. In
+fact, so much so that we wouldn't even
+hardly notice these low order terms. So,
+all of these formulas are tilde one-sixth
+N^3 and that's a fine representative or
+approximate, approximation to these
+quantities. And it greatly simplifies
+their calculations to for a, through a way
+to lower, lower to terms like this. So, by
+focusing on one operation and , throwing
+away the tildes, the lower the terms and
+this is the technical definition of tilde.
+It's just, F(N) tilde G (N) means the
+limit as FN or GN equals one, and you can
+check that that's going to hold in these
+kinds of situations. So, that greatly
+simplifies the frequency counts. And if
+we're only picking one thing we're just
+talking about tilde N^2 and maybe another
+tilde N^2 for the increment for the two
+sum problems, okay. So again, when N is
+large, the terms are negligible and when N
+is really small, they're not negligible
+but we don't really care because we're
+trying to estimate running times for large
+N and running times for small N are going
+to be small no matter what. All right, so
+now, we're using both the cost model and
+the tilde notation and then we can simply
+say, that this program uses tilde N^2
+squared array axises and have implicit the
+hypothesis that we think the running time
+is going to be tilde, a constant, times N
+squared. Okay, we now what about three
+sums, let's do a, a real problem. So now,
+we have the triple loop. And then, we have
+to do a more complicated combinatorial
+problem in is not that big a deal really
+we are looking at the distinct number of
+ways you can chose three things out of N
+and that 's binomial coefficient. And
+again, doing the math and using the tilde,
+it's just tilde one-sixth N^3 three ray
+axises for each triple so we can say
+one-half N^3. So we're not computing and
+summing the costs of all operations that's
+too much work. We're picking the most
+expensive in terms of cost times frequency
+and approximating that and trying to get a
+good model for the running time. So now
+most, we're not going to do of a full
+discrete mathematics in this course but
+there's some basic things that we'll want
+to use and are, are not that difficult to
+understand. So, a lot of times we find out
+that we need to come up with an estimate
+of a discrete sum. Like we did for one +
+two up to N. Or some of the squares or
+other things like the three sum triple
+loop. And so actually if you've had basic
+calculus, one way to think of it as to
+just replace the sum with an interval,
+integral. That usually works or we can do
+the math and use the so-called
+Euler–Maclaurin summation formula to get
+a true approximation. But if you think of
+it this way you'll believe us when we say
+that, that thing is tilde one-half N^2 or
+sum of one+ one-half + one-third up to one
+/ N. That's like integral from x = one to
+N1 / x and that's natural log of N. Now
+even the three sum triple loop kind of if
+you're used to multiple integrals, I will
+quickly give you the one-sixth N^3.
+There's many more and other techniques
+that we could use for this. And we're not
+going to teach all that, but we'll
+sometimes refer to results of this type.
+Alright, so in principle, Knuth tells us
+that accurate mathematical models are
+available in practice, we can get really
+complicated formulas. We also might need
+some advance mathematics that the
+theoretician will revel in. But that maybe
+people learning algorithms for the first
+time might not be expected to know. So in
+the end careful exact models are best,
+best left for exit, experts. There's
+really a lot of things that can go on. On
+the other hand approximate models are
+definitely worthwhile. And for all the
+algorithms that we consider we'll try to
+communicate a reasonable approximate model
+that can be used to describe the running
+time. Sometimes we'll give the
+mathematical proofs and other times we'll
+have to just cite the work of some expert.

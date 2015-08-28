@@ -1,0 +1,141 @@
+So, very soon I'll talk about results 
+using the reranking approach using the 
+kind of features I just described. 
+But first I want to talk about a first 
+method for parameter estimation, namely a 
+method for finding these V parameters and 
+this is a variant of the perceptron 
+algorithm. 
+We'll see that its a very simple 
+algorithm, but empirically it turns out 
+to work really quite well on a, a, a wide 
+range of natural language processing 
+problems. 
+So, here is the algorithm. 
+So, we're going to assume that as input 
+we have some training set, some set of 
+examples xi, yi for i equals one to n. 
+And we have these functions GEN and f, 
+which I just described, so GEN enumerates 
+candidates for an input, f defines a 
+feature vector mapping, and we'll assume 
+these 2 components are fixed. 
+The task is going to be learn, to learn 
+our parameters v using these training 
+examples as information. 
+So, we initialize all of our parameters v 
+to be 0, so we set v equals the vector of 
+all zeros. 
+That's the starting state, and then, I'll 
+define capital F for any input X in 
+exactly the same way as before. 
+So, we enumerate all possible structures 
+Y in the set GEN of X. 
+For each structure, we can calculate a 
+feature vector, F of X and Y, and we take 
+the inner product, with V to calculate 
+the score for that structure, and we, we 
+take the highest scoring member of GEN as 
+the final output of this model. 
+Initially, when all of these parameters 
+are 0, all of these structures are 
+going to have score 0, and so this is 
+going to be a tie. 
+Let's just assume in that case that we 
+have some arbitrary way of choosing 
+between the tie members and the argmax. 
+That's a minor detail. 
+The other input to the algorithm is T, 
+capital T, which is the number of 
+iterations the algorithm has run for. 
+And one nice thing about the perceptron 
+is that T can often be quite small, maybe 
+5 or 10 or 20. 
+Okay, so the algorithm proceeds as 
+follows. 
+So, I make big T passes over the data. 
+That's what this loop here does. 
+And at each loop over the data, I pass 
+over the examples from i equals one to n. 
+So I go through a single training example 
+at a time. 
+For each training example I do 2 things. 
+Firstly, I calculate the current output 
+from the model. 
+So z sub i is going to be the output of f 
+on xi. 
+It's going to be the highest scoring 
+structure under my current parameters. 
+Now, if zi is equal to yi, that means 
+that I've correctly recovered the correct 
+structure on this particular example. 
+And in that case, I do nothing to the 
+parameters. 
+I leave the parameters phi unchanged. 
+The idea here is that, if it's not 
+broken, don't try to fix it. 
+We have not made a mistake on this 
+example. 
+So let's leave the parameters unchanged. 
+If however we have zi not equal to yi, 
+then the structure we've produced is 
+somehow different from the target 
+structure yiI. 
+And in that case I make an update to the 
+parameters v. 
+The updates look extremely simple. 
+So we simply take v, the new value for v, 
+is the old value for v. 
+We add in the feature vector for xi, yi 
+and we subtract the feature vector for xi 
+and zi. 
+Remember, all of these vectors are in 
+some D dimensional space. 
+So the, the parameter of X is a D 
+dimensional, and the phi of X is also D 
+dimensional. 
+And so there's no clash here. 
+These, these computations make sense. 
+I'm adding and subtracting D dimensional 
+vectors. 
+Intuitively, what is going on here is 
+that any features which are seen in the 
+true[UNKNOWN] structure have their 
+parameter value increased, whereas any 
+features seen in the incorrectly proposed 
+structure have their feature values, 
+sorry their parameter values decreased. 
+So this is kind of a reinforcing step, 
+which pushes up the parameter values for 
+things seen in the truth and pushes down 
+the parameter values for features seen in 
+zi, which was the incorrectly produced 
+structure. 
+So that is the perceptron algorithm. 
+The things to stress are that the inputs 
+to the algorithm are set of training 
+examples. 
+And definitions for GEN and f and also 
+specification of t, the number of passes 
+over the training set and the output is, 
+as I said, a parameters v. 
+As I hope you'll see, its a very simple 
+algorithm which just relies on decoding 
+at each step, finding the highest con 
+structure under the current model then if 
+we make a mistake, making a very simple 
+update to this parameters v. 
+There's actually a quite rich theory 
+underlying the Perceptron. 
+And justifying it, both in an algorithmic 
+sense, defining when it converges, and 
+also in a statistical sense, describing 
+why it can generalize well to new test 
+examples or at least specifying 
+conditions under which it is guaranteed 
+to generalize well to new test examples. 
+We'll try to post some pointers to papers 
+on those topics on the course. 
+I'm not going into detail about the 
+theory underlying the Peceptron. 
+

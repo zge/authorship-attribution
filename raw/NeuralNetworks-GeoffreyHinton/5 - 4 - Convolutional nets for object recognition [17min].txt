@@ -1,0 +1,491 @@
+It was always a question for speculation
+whether the kinds of nets developed for
+recognizing handwritten digits could
+actually be scaled up to what vision
+people call a real task.
+That is, recognizing objects in high
+resolution color images when the scene is
+cluttered.
+So that you have to do things like
+segmentation, you have to deal with 3D
+viewpoint, you have to deal with 5-foot
+list.
+Many different objects surrounding, you're
+not quite sure which is the intended one,
+and so on.
+Since the start of this course, we've got
+some interesting new results on that.
+So in my first lecture, I described the
+network developed by Alex Krizhevsky and
+showed that it was good at object
+recognition.
+But at that point it hadn't been
+benchmarked against the best computer
+vision systems,
+Now it has.
+People worked on Emenise for many years,
+gradually improving their ability of these
+networks to recognize handwritten digits.
+Many computer vision researchers thought
+this was a waste of time if you wanted to
+be able to recognize real objects in color
+images, because they thought the lessons
+learned from Emnise would not generalize
+to that domain.
+That was a fairly reasonable thing to
+think.
+Here's a number of reasons why it's a much
+more difficult task.
+First of all, there's many, many more
+different kinds of objects.
+Even if we only recognize a thousand
+classes, that's still a factor of a
+hundred.
+Secondly there is many more pixels even if
+we use trans sampled images that are only
+256 by 256 with color pixels that's still
+100 or 300 times of many pixels Another
+factor is that in real scenes you have to
+deal with the fact you've got a two
+dimensional image of a three dimensional
+reality so a lot of information is being
+lost.
+And real scenes have clutter of a kind
+that doesn't occur in handwriting.
+In handwriting you can have overlapping
+letters and that requires segmentation but
+you don't have things like occlusion of
+large parts of objects by opaque other
+objects.
+You don't have many different kinds of
+objects in the same scene.
+And you don't have a little lighting
+variations that you get in real scenes.
+So the question is will the same kind of
+convolution neural network that proved to
+be so good on recognizing hand written
+digits work for real color images In the
+domain of real color images we probably do
+need to wire in some prior knowledge.
+Because, if we try and do it in the sera
+san way with no knowledge wired in,
+putting in all the knowledge by generating
+extra training examples.
+The computational problem is still too
+large for current computers.
+So there was a recent competition.
+And it was on a data base called ImageNet.
+ImageNet actually has many more than a
+machine images but a subset of 1.2
+millimeters was chosen and the
+classification task was to correctly label
+those images.
+Now the images were hand labelled with a
+thousand different classes but this wasn't
+very reliable.
+There could be an image that has two of
+those thousand different objects in it and
+only one of them is labeled.
+So, to make the task feasible the computer
+vision system is allowed to make five
+bets.
+And it's set to get it right if one of
+those bets corresponds to the label that a
+person has given the image.
+There's also a localization task.
+The reason for the localization task is
+that many computer vision systems use a
+bag of features approach.
+For the whole image or for say, a quadrant
+of the image they know what the features
+are, but they don't know where they are.
+This allows them to recognize objects but
+without knowing exactly where they are.
+That's very unlike how people behave
+except people with a curious kind of brain
+damage called balance syndrome where they
+can recognize objects and not be sure
+where they are.
+So for the localization task you have to
+place a box around an object once you've
+recognized it and to get it right your box
+must have at least a 50% overlap with the
+correct box.
+On this task, people tried some of the
+best existing computer vision methods.
+So, leading groups from Oxford and the
+French National Research Labs Inria and
+Xerox's European Research Center and
+various other universities tried this task
+and discovered it's very hard.
+The computer vision systems typically use
+complicated multi-stage systems.
+The early stages of these systems are
+typically hand-tuned by optimizing a few
+parameters using some of the data.
+And, the top stage of these systems is
+always a learning algorithm.
+But they don't learn all the way through.
+In the way that a deep neural net does
+when its trained to do back propagation.
+They don't have end-to-end learning, where
+the parameters used in the early feature
+detectors are being influenced by how
+useful they are for making final decision
+about classes.
+So here are some examples from the test
+set to show you what the data is like.
+You already sow some examples in the first
+lecture, but here's some more.
+So you can see that it's fairly obvious
+what the object is in that image, but a
+lot of it's missing.
+It doesn't have ears, it doesn't have
+legs.
+The predictions are the un-normalized
+probabilities of Alex Krizhevsky's
+deep-neural-network.
+And you can see it's confident that, that
+is a cheetah And if it's not a cheetah, it
+thinks it almost sudden a leopard.
+It also understands there's other
+possibilities, like a snow leopard, it's
+the wrong color for a snow leopard, or an
+Egyptian cat.
+Here's an example the other way around,
+here there's many objects in the image and
+the object of interest is only a very
+small fraction of the pixels.
+The network correctly says bullet train.
+But it also has other bets, like subway
+train or electric locomotive, which are
+presentable bets.
+If you look at the image, there's lots of
+other things that could be labeled, like
+the roof which occupies a much larger
+fraction of the image than the train or
+the pillar that's supporting the roof or
+the pedestrian.
+Or the large apartment block in the
+background.
+In these kinds of images you really have
+to be able cope with the fact that there's
+lots of alternative targets.
+Last image shows a different kind of
+example where there is no background
+clutter.
+The object is quite well isolated,
+probably a picture from a catalog or
+something.
+And the network doesn't get it right for
+its first bet, but it does get it in its
+top five bets.
+But here the network isn't confident about
+anything.
+These are the relative probabilities, and
+the network correctly realizes it doesn't
+really know.
+And if you look at the other
+possibilities, they're all perfectly
+plausible.
+If you screw your eyes up so you can't see
+the image too well, you can see how it
+might think it was a frying pan or a
+stethoscope.
+So how did the systems do on this data?
+Here's the error rates for the computer
+vision systems.
+One thing you'll notice is that the best
+systems are all very similar.
+So the University of Tokyo managed to get
+26.1%, and here what I'm doing is just
+reporting the best system from each group.
+Oxford University, which has a very good
+computer vision group, generally
+recognized to be possibly the best group
+in Europe, again got in the 26 percents
+and the French National Research Labs in
+the Xerox Park Center, which are, again, a
+very good computer vision groups, got 27%.
+So you'll guess from this that it is going
+to be hard to be 26%, and if you do beat
+26% you're comparable with the very best
+computer vision systems.
+So Alex Krizhevsky's neural net got
+sixteen percent error.
+It's a huge gap.
+Normally, in these competitions you don't
+see big gaps like that.
+So Alex Krizhevsky's network works like
+this.
+It's a very deep convolutional neural net
+of the type pioneered by Yann Le Cun was
+first used for digit recognition and then
+Yann later applied it to recognizing real
+objects.
+And we're using all the lessons that we
+learned by Yann's group from [UNKNOWN]
+group and various other groups, developing
+these deep neural nets for doing real
+vision.
+It has seven hidden layers, which is
+deeper than usual and that's not counting
+some of the max-pooling layers.
+The early layers are convolutional.
+We could probably get away with using just
+local receptive fields, without tying any
+weights, if we had a much bigger computer.
+But by making them convolutionary, you cut
+down the parameters a lot, so you cut down
+the amount of training data you need a lot
+which cuts down the amount of computation
+time a lot.
+The last two loads were globally connected
+and that's where most of the parameters
+are.
+I think there's about sixteen million
+parameters between each pair of those
+layers.
+What the last two layers are doing is
+looking for combinations of local features
+that were extracted by the early layers.
+And obviously this commonly tourily many
+combinations to look for.
+And that's why you need a lot of
+parameters there.
+The activation functions were rectified
+linear units in every hidden layer.
+These train much faster than logistic
+units and they're more expressive.
+Most of the people seriously applying deep
+in your own networks to real images to the
+object recognition of I switch direct fi
+linear units.
+We also used competitive normalization,
+within a layer to suppress the activity of
+a unit, if other units that are looking
+nearby localities are very active.
+This helps a lot with variations in
+intensity.
+So, you might have an edge detector, which
+gets somewhat active due to some fairly
+faint edge.
+And that's pretty much irrelevant, if
+there is much more intense things around.
+There's other tricks that we used to
+significantly improve the generalization
+of this net.
+First of all, we use the trick of
+enhancing the data by using
+transformations.
+So here's a skit for down-sampled the
+images in the competition to 256 by 256.
+But instead of using those whole images
+Alex Krizhevsky took random 224 by 224
+patches from those images.
+Which gave him hugely more images to train
+on.
+And helped him deal with translation and
+variance.
+Even though they're convolutional nets
+that's still a help.
+He also used left-right reflections of the
+images, which again doubled the amount of
+data.
+He didn't use up dime reflections.
+Because, gravity's very important.
+Left right reflections don't really change
+what things look like much unless they're
+things like writing.
+At test time, he doesn't just use one
+patch.
+He uses a number of different patches, the
+four corners, the middle, that gives him
+five, and then the left right reflections
+of all those, that gives him ten.
+He runs all ten through the network and
+then combines their opinions.
+In the top layers, where most of the
+parameters are, he uses a new
+regularization technique, called drop-out,
+which is very effective.
+And stops the network over fitting.
+That's worth several percent in his
+results.
+I'll describe drop pouch at some length in
+the later lecture.
+But for now, the basic idea of drop out is
+that each time you present a training
+example, you omit half the hidden units
+from a layer.
+This means that the other hidden units in
+that layer, the survivors, can't rely on
+the their com rates being present.
+They can't learn to fix up the errors left
+over by the other hidden units in that
+layer, cuz the other hidden units might
+not be there no matter be fixing up an
+error that doesn't exist.
+So they have to become more individualist.
+They have to individually do useful things
+but they still have to do useful things
+that are different from what the other
+survivors do.
+So drop out is stopping too much
+cooperation between the hidden units.
+And a lot of cooperation is very good for
+fitting the training data.
+But if the test distribution is
+significantly different, then all that
+cooperation causes over-fitting.
+Alex couldn't have done this work without
+significant hardware, but the hardware
+only costs a few thousand dollars now.
+Alex is a very good programmer, and he
+used a very efficient implementation of
+convolution and neural nets on two Invidia
+GTX 580 graphics processors.
+Each of these has over 500 fast little
+cores, which are very good at doing
+arithmetic and not much good at anything
+else.
+The GP use are very good at doing matrix,
+matrix multiplies.
+So if you stack together the vector of
+activities of a hidden layer, over many
+training cases, that gives you a matrix.
+And now you multiply that by matrix of
+weights to figure out the activities in
+the next hidden layer for all those
+training cases.
+And if both those matrices are big, the
+GPU's give you a huge advantage.
+They give you about a factor of 30.
+They also have very high bandwidth to
+memory, and that's needed for neural nets.
+Cause in neural nets you keep wanting to
+know another weight so that you can
+multiply it by an activity.
+And there's millions of these weights, so
+you can't keep them all in the cache.
+Using all that hard brac, he could train
+his final network, in a week.
+And you could also combine results from
+ten, ten different patches of TestTime
+very quickly.
+So Test Time you can run it at just about
+the frame rate.
+In the future we are going to be able to
+spread this kind of network over a large
+number of calls.
+As calls become cheaper, people at Google
+are already experimenting with that.
+And if we can communicate the stakes fast
+enough we are going to be able to do much
+bigger networks on many more calls.
+Google has already simulated networks with
+1.7 billion connections and I think that
+it's only going to get bigger.
+As the cores get cheaper and the data sets
+get bigger, these big deep neural nets are
+gonna improve much faster than the
+old-fashioned computer vision systems,
+because they don't involve much hand
+engineering, and they can make very good
+use of huge data sets and huge amounts of
+computation.
+So the fact that we've already opened up a
+big gap I think means there's no looking
+back.
+I think from now on all the best object
+recognition systems, at least of static
+images, will use big deep neural nets.
+There are other application domains where
+we've learned the same lesson so Vladimir
+Nee.
+Used a net with local fields but without
+convolution to extract roads from aerial
+images.
+These are cluttered aerial images of urban
+scenes.
+Again he uses multiple layers of rectified
+linear units.
+And he takes a relatively large image
+patch, and predicts for the central 16x16
+pixels whether each of those pixels is a
+piece of road or not a piece of road.
+The nice thing about this task is that
+there's a lot of label training data
+available.
+That's because maps tell you where the
+centre lines of roads are and roads are
+roughly fixed width.
+So from the vectors in the map that tell
+you where the centre line of the road is
+you can estimate which pixels are probably
+road.
+Nevertheless, the task is very hard.
+There's the normal kind of vision
+problems: so roads are occluded by
+buildings because a plane isn't looking
+straight down when it takes the
+photograph.
+They're occluded by trees.
+They're also occluded by cars that are
+sitting on the road.
+The shadow effects from building, the
+major lighting changes depending on
+whether it's a sunny day or a cloudy day
+for example and there's minor view point
+changes.
+So the plane is basically looking
+downwards, but in any large photo it can't
+be looking straight downwards at every
+pixel.
+The worst problems in this data are the
+incorrect labels.
+You get incorrect labels because the maps
+aren't perfectly registered.
+For most purposes, you don't need a map to
+be registered better than a few meters.
+The pixels are about one meter square in
+this data.
+And so if the registration of the map is
+off by three meters, you're going to get
+at least three of the labels wrong for
+pixels, across every road.
+Another, severe problem, is that the
+people making maps have to make arbitrary
+decisions about what counts as a road and
+what counts as a laneway.
+So, in may of the maps, you look at
+something, and you've no idea whether
+that's gonna be considered to be a road or
+a lane-way.
+And so you simply don't know what label
+it's gonna get from the map.
+Big neural nets trained on big image
+patches, using millions of examples, are,
+I think, the only real hope for doing a
+good job at this task.
+It's very hard to find out what people can
+do.
+So, here is what the data looks like.
+This is a part of Toronto.
+If you know Toronto, you can tell that by
+the angle of the roads.
+And, above the image of the part of
+Toronto, I put two patches extracted from
+that image.
+And if you look at those patches, you can
+see it's not trivial to tell which the
+road pixels are.
+On the right, is the output of [UNKNOWN]
+system.
+Green is correctly identified pixels of
+road, and red means things that his system
+thought might be road, but actually
+aren't.
+Actually that thing is a parking lot but
+you can see why he might have thought it
+was a road.

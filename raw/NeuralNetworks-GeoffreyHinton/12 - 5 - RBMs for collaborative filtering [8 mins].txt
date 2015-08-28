@@ -1,0 +1,204 @@
+In this video, I'm going to talk about
+applying restrictive Boltzmann machines to
+collaborative filtering.
+Collaborative filtering means trying to
+figure out how much a user would like one
+product based on how much that user liked
+other products and how much many other
+users like products.
+The particular case we'll look at is the
+Netflix competition, in which a machine
+learning algorithm has to predict how much
+a particular user will like a particular
+movie.
+The training data for this competition
+consists of 100 million ratings of 18,000
+movies by half a million users.
+So it's quite a big data set.
+It's not the kind of thing anybody at the
+time imagined a Boltzmann machine could
+deal with.
+As we'll see, there's an important trick
+to being able to get a restricted
+Boltzmann machine to cope with the fact
+that nearly all the ratings of nearly all
+the movies are missing.
+But when we use this trick, we're able to
+train models, that are very useful in
+practice, and were in fact used in the
+winning entry.
+So now I'm going to explain how restricted
+Boltzmann machines were used for
+collaborative filtering in the Netflix
+competition.
+In that competition, you're given most of
+the ratings that half a million users
+gave, to 18,000 movies, and each movie
+gets rated on a scale from one to five.
+Each user, of course, only rates a small
+fraction of the movies.
+But even so, there's about a hundred
+million ratings, so it's quite a big data
+set.
+You have to predict the ratings that the
+users gave to held out movies, and if you
+can do that well you get a big prize.
+You actually win a million dollars if
+you're the best person at doing that.
+So, you can draw the ratings in a big
+matrix like this where we have movies
+across the top, and users down the side.
+And so for example, user two gave a rating
+of five to movie one, and a rating of one
+to movie three.
+User four gave a rating of four to movie
+one, and the question is what rating did
+he give to movie three.
+You might decide he's quite like user two
+because he rated movie one the same way.
+So maybe like user two he hated movie
+three.
+On the other hand, user four liked movie
+six.
+So maybe he likes all the movies.
+By the time you've done that much
+reasoning, you realize you better use some
+statistics.
+Let's start by trying to use a language
+model.
+It sounds bizarre, but as you'll see it's
+equivalent to a standard method.
+So we can write the data as a string of
+triples, much like family trees.
+Each triple has a form, user, movie and
+rating.
+So here's some of the data on that table
+on the previous slide and we just have to
+predict the third term of a triple.
+So if we built a language model, what we
+would do is we'd convert each user into a
+vector features for that user, that is a
+vector that we learned and we converted
+movie into a vector features for that
+movie, a vector that we learned and from
+those two feature vectors, we try and
+predict the rating.
+Now, the obvious way to do this is to put
+in a big hidden layer, and make the
+feature vectors feed into the hidden layer
+and then have the hidden layer predict the
+rating.
+We tried that, and we couldn't get that to
+work any better than a very simple method.
+Which is simply, to take the scalar
+product of the feature vector for the user
+and the feature vector for the movie.
+You just multiply them together point
+wise, add it up and output that as your
+rating.
+So it's not even a soft max, you actually
+output whatever real number you get form
+the scaler product.
+Now that's exactly equivalent to doing
+something else, which is normally called a
+Matrix Factorization model.
+If we arrange the user features down the
+rows and the movie features above the
+columns, we can see that if we multiply,
+that matrix of users times features by the
+matrix of features times movies, then
+we'll get predictions for the ratings.
+And it will be exactly equivalent to the
+language model that's beside it.
+So the matrix factorization model is the
+most commonly used model for collaborative
+filtering like this, and it works pretty
+well.
+Now let's consider an alternative model,
+using our restrictive Boltzmann.
+Machine.
+It's not obvious how you would apply a
+restrictive Boltzmann machine to this
+problem.
+And so we had to do some thinking.
+In the end we decided that we would treat
+each user as a training case.
+And so a user is really a vector of movie
+ratings.
+And for each movie we would have a visible
+unit that had five alternative values.
+So visible units instead of being binary,
+are five way softmaxes.
+And so the network of our restrictive
+Boltzmann machine looks like this.
+Each of it's visible units is a five way
+softmax, with one visible unit per movie.
+You might start worrying about there being
+18,000 visible units here.
+And then we had about 100 binary hidden
+units.
+And each hidden unit is connected to all
+five values of the soft max.
+It also has a bias.
+And so you can see the number of
+parameters we'll have is large.
+The CD learning rule for softmax,
+incidentally is exactly the same as for a
+binary unit and like I said we've got
+about a 100 in units.
+And what we're going to do is learn a
+model and then try and fill in one of the
+missing values using the model.
+Now the problem with this approach, is we
+don't want to have an RBM with 18,000
+visible units.
+Only a few of which have known values.
+That's a huge number of missing values to
+begin with.
+And there's a neat way around that.
+For each user we use an RBM that only has
+as many visual units as the movies that
+the user rated.
+So, it's possible that every user will
+correspond to a different RBM, with a
+different subset, with visible units.
+Now, all of these RBMs are going to share
+the same weights.
+That is, we know which move is which.
+And so if two users saw the same movie and
+rated the same movie, the weights from
+that movie to the hidden units will be the
+same for those two users.
+So we're doing an awful lot of weight
+sharing here.
+And that's lucky, because for each user,
+We only get one training case.
+We make this specific RBM for each user
+with the right architecture, that is, the
+right number of visible units for the
+movies that the user rated.
+And now there's only one training case,
+which is that rating vector.
+But all of these half a million training
+cases share weights to hidden units.
+So the learning works fine.
+The models are trained with CD1 and then
+after a while with CD3. That is you go up
+and down three times before you collect
+the statistics for the negative phase and
+then we CD5 and then we CD9 and how well
+does it work?
+Well the RBM's work about as well as the
+matrix factorization methods but they give
+very different errors.
+What that means is that if you average the
+predictions of the RBM's with the
+predictions of the matrix factorization
+methods, you get a big win, and the
+winning group actually used multiple
+different RBM models in their average and
+multiple different matrix factorization
+models and I think probably other models
+as well.
+As far as I know their main models were
+matrix factorization models and RBM

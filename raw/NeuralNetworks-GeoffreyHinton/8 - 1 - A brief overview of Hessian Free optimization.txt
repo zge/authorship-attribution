@@ -1,0 +1,346 @@
+In this video, I'm going to give a brief
+overview of the Hessian-Free optimizer
+that can be used to train recurrent neural
+networks very effectively.
+This is a very complicated optimizer and I
+don't expect you to get all the details of
+it from this video.
+I just want you to have a general feel for
+how it works.
+And then in the next video, we will see
+how well it does on an interesting
+problem.
+When we're training the weights of a
+neural network, we are trying to get as
+far down the error surface as possible.
+So one question is if we choose a given
+direction to go in,
+How much reduction in the arrow can we
+achieve by going just the right distance
+in that direction?
+How much does the arrow decrease before it
+starts rising again?
+And here we'll assume that the curvature
+is constant.
+I will assume it really is a quadratic
+error surface.
+We can assume that the magnitude of the
+gradient decreases as we move down the
+gradient.
+That amounts to assuming that the error
+surface is concave upward like a bowl.
+The maximum reduction that we can get in
+the error by going in a particular
+direction depends on the ratio of the
+gradient to the curvature.
+So we want to move in directions that have
+a good ratio.
+Even if the gradient is quite small, we
+want the curvature to be even smaller.
+So here's an example of a direction we
+could move in where the vertical axis
+corresponds to the error, the horizontal
+axis corresponds to the weights in the
+direction we're moving in, and the blue
+arrow corresponds to the reduction we get
+if we start at that red point.
+Here's a surface that has a gentler
+gradient but because it's got a better
+ratio as the gradient to the curvature, we
+get a bigger reduction in the error by the
+time we get to the minimum.
+The question is, how can we find
+directions like that second one?
+Directions in which even though the
+gradient may be small, the curvature is
+even smaller.
+So let's start with Newton's method.
+Newton's method addresses the basic
+problem at its deepest descent, which is
+that the gradient isn't the direction that
+you want to go in.
+If the error surface has circular cross
+sections and is quadrant, the gradient is
+a good direction to go.
+It will point straight at the minimum.
+So the idea of Newton's method is to apply
+a linear transformation that turns
+ellipses into circles.
+If that we apply that transformation to
+the gradient vector, it will be as if we
+were going downhill in a circular error
+surface.
+To do this, we need to multiply the
+gradient dE by dW by the inverse of the
+curvature matrix.
+So H is the curvature matrix, sometimes
+called the Hessian.
+Its the function of the weights we have
+and we need to take its inverse and
+multiply the gradient by that,
+Then we need to go some distance in that
+direction.
+If it's a truly quadratic surface and we
+choose epsilon correctly, which is quite
+easy to do, we'll arrive at the minimum of
+the surface in a single step.
+Of course, that single step involves
+something complicated, which was inverting
+that Hessian matrix.
+The problem with this is that even if we
+only have a million weights in our neural
+network, the curvature matrix, the
+Hessian, will have a trillion terms, is
+completely infeasible to invert it.
+So curvature matrices look like this.
+For each weight, Wi or Wj,
+They tell you how the gradient in one
+direction changes as you change in another
+direction.
+In other words, as I change weight i, how
+does the gradient of the error with
+respect to weight j change?
+That's what a typical off diagonal term
+tells you.
+The terms on the diagonal tell you how the
+gradient of the arrow changes in the
+direction of a weight as you change that
+weight.
+So the off-diagonal terms in a curvature
+matrix correspond to twists in the error
+surface.
+A twist means, when you travel in one
+direction, the gradient in another
+direction changes.
+If we have a nice circular [inaudible],
+all those off-diagonal terms are zero.
+As we travel in one direction, the
+gradient in other directions doesn't
+change.
+So, what's going wrong with steepest
+descent, when you have an elliptical error
+surface,
+Is that, as we travel in one direction,
+the gradient in another direction changes.
+And so if I update one of the weights, at
+the same time as I'm updating all the
+other weights, all those other updates
+will cause a change in the gradient for
+the first weight.
+And that means, when I update it, I may
+actually make things worse.
+The gradient may have actually reversed
+sine due to all the changes in the other
+weights.
+And so. as we get more and more weights,
+we need to be more and more cautious about
+changing each one of them,
+Because the simultaneous changes in all
+the other weights can change the gradient
+of our range.
+The curvature matrix determines the size
+of those interactions.
+So we have to deal with the curvature.
+We can't just ignore it.
+And we'd like to deal with it without
+actually inverting a huge matrix, because
+the matrix has too many terms in a big
+neural net.
+One thing we can do is to just look at the
+leading diagonal of the curvature matrix
+and make our step size depend on that
+leading diagonal.
+That helps a bit.
+It will get us to make different step
+sizes for different weights,
+But the diagonal turns only a tiny
+fraction of the interactions, so we're
+ignoring most of the turns in the
+curvature matrix when we do that.
+In fact, we're ignoring nearly all of
+them.
+Another thing we could do is, turn
+approximate the coverage of matrix with
+the matrix of much lower rank that
+captures the main aspects of the coverage
+matrix.
+That was done in Hessian-Free methods and
+LBFGS, and many other methods that trying
+and do an approximate second order method
+for minimizing the error.
+In the Hessian-Free Method, we make an
+approximation to the curvature matrix and
+then we assume that the approximation is
+correct.
+So we assume we know what the curvature is
+and that the error surface really is
+quadratic.
+And then, starting from wherever we are
+now, we minimize the error using an
+efficient technique called conjugate
+gradient.
+Once we've done that, once we got close to
+a minimum on this approximation to the
+curvature, we then make another
+approximation to the curvature matrix and
+we use conjugate gradient to minimize
+again.
+It's also important in recurrent neural
+networks to add a penalty for changing any
+of the hidden activities too much.
+That will prevent us for example, from
+changing a weight early on that causes
+huge effects later on in the sequence.
+We don't want to get effects that are too
+big, and if we look at the changes in the
+hidden activities we can prevent that by
+penalizing those changes.
+If we put a quadratic penalty on those
+changes, we can combine that with the rest
+of the Hessian-Free method.
+The last thing I need to explain is
+conjugate gradient and I'm just going to
+explain it briefly.
+Conjugate gradient is a very clever method
+that, instead of trying to go straight to
+the minimum like in Newton's method, tries
+to minimize in one direction at a time.
+So it starts off by taking the direction
+of steepest descend and goes to the
+minimum in that direction.
+That might involve re-evaluating the
+gradient, re-evaluating the error a few
+times to find the minimum in that
+direction.
+Once its done that, it now finds another
+direction and goes to the minimum in that
+second direction.
+The clever thing about the technique is,
+it chooses its second direction in such a
+way that it doesn't mess up the
+minimization it already did in the first
+direction.
+That's called a conjugate direction.
+Conjugate means that as you go in the new
+direction, you don't change the gradients
+in the previous directions.
+It's a funny idea.
+It's like the idea of a twist in an error
+surface.
+A twist means when you go in one
+direction, you change the gradient in
+another direction.
+And a conjugate direction is one you can
+go in that in a sense, doesn't have a
+twist.
+You go in that direction and the gradient
+in the first direction doesn't change.
+So here is a picture of an ellipse and the
+red line is the major axis of the ellipse.
+We start off by doing one step of steepest
+descent all the way to the minimum in that
+direction.
+And if you think about it a bit, you can
+see that the minimum won't actually lie on
+the red line.
+On the red line, the gradient will be
+zero, at right angles for that red line,
+cuz it's the bottom of the ravine.
+But the direction we're going in, isn't
+actually at right angles to that point.
+We can make a little bit more progress by
+making a small step at right angles to the
+red line and then a small step along the
+red line.
+Since the red line slopes down towards the
+middle of the elipse, that's going to make
+some progress for us.
+So when we minimize in the first
+direction, we'll go slightly across the
+bottom of the ellipse. And when we reach
+that point that's a minimum, there's an
+interesting property of all the points
+that lie on the green line.
+On that green line, the gradient in the
+direction of that black arrow is zero.
+So we can go anywhere along that green
+line and we won't destroy the fact that we
+are at a minimum in the direction of the
+black arrow.
+If we can keep doing that from many
+directions in a high dimensional error
+surface, we'll eventually be at a minimum
+in many different directions.
+And if we are at a minimum in as many
+different directions as there are
+dimensions in the space, we'll be at the
+global minimum.
+So, we take this first step of steepest
+descent, we then figure out, and I'm not
+going to explain how we do that.
+We figure out the direction of that green
+line, and then, we do a search along the
+green line to find how far we should go in
+order to minimize the error along the
+green line.
+And we take our second step, like this.
+And now, in this 2-dimensional space,
+we'll be at the minimum.
+Because, we're at the minimum in the
+direction of the first step and we're now
+at a minimum in the direction of the
+second step,
+While still being at a minimum in the
+direction of the first step and so that
+must be the global minimum.
+What conjugate gradient achieves is that
+it gets to the global minimum of an
+N-dimensional quadratic surface in only N
+steps.
+It's very efficient.
+It does that because it manages to get the
+gradient to be zero in N different
+directions.
+They're not orthogonal directions,
+But they are independent of one another
+and so that's efficient to be at the
+global minimum.
+More importantly, in many less than N
+steps on a typical quadratic surface, it
+will have reduced the area very close to
+the minimum value, and that's why we use
+it.
+We're not going to do the full N steps,
+that would be as expensive as inverting
+the whole matrix.
+We're going to do many less than N steps,
+and we're going to get quite close to the
+minimum.
+You can apply conjugate gradient directly
+to a non-quadratic error surface, like the
+error surface for a multilayer non-linear
+neural net and it usually works quite
+well.
+It's essentially a batch method, but you
+can apply it to large mini batches.
+And when you do that, you do many steps of
+conjugate gradient on the same large mini
+batch and then you move on to the next
+large mini batch.
+That's called non-linear conjugate
+gradient.
+The Hessian-Free optimizer uses conjugate
+gradient for minimization on a genuinely
+quadratic surface and that's what
+conjugate gradient is best at.
+It works much better for that than for a
+non-linear surface.
+This genuinely quadratic surface that HF
+is using it for is the quadratic
+approximation to the true surface that was
+made by the Hessian-Free method.
+So it makes that approximation,
+It uses conjugant gradient to get close to
+a minimum, for the first approximation.
+And then it makes a new approximation to
+the curvature, and does it again.

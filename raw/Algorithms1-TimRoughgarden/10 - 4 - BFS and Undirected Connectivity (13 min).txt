@@ -1,0 +1,380 @@
+So, what's the problem? Well, so I did say most of
+this stuff about graph search it really
+doesn't matter undirected or directed.
+It's pretty much cosmetic changes, but the
+big exception is when you're computing
+connectivity. When you're computing the
+pieces of the graph. So, right now I'm
+only gonna talk about undirected graphs.
+In the directed case, we can again get a
+very efficient algorithms for it, but it's
+quite a bit harder work. So, that's gonna
+be covered in detail in a separate video.
+So, for now focus just on a undirected
+graph, G. And we're certainly not going to
+assume that G is connected. Indeed part of
+the point here is to figure out whether or
+not it's connected, i.e. in one
+piece. So, maybe the graph looks like
+this. So, for example maybe the graph has
+ten vertices and looks like this, on the
+right. And intuitively, especially given
+that I've drawn it in such a clean way,
+it's clear that this graph has three
+pieces, and those are the things that we
+wanna call the connected components. But
+we do want a somewhat more formal
+definition. Something which is actually
+you know, in math, that we can say is true
+of false about a given graph. And roughly
+we define the connected components of an
+undirected graph as the maximal regions
+that are connected. In the sense you can
+get from any vertex in the region from any
+other vertex in the region using a path.
+So maximal connected regions in that
+sense. Now the slick way to do this is
+using an equivalence relation. And I'm
+gonna this here in part because it's
+really the right way to think about the
+directed graph case, which we'll talk
+about in some detail later. So for undirected
+graphs. So this isn't super important but
+let me go ahead and state the formal
+definition just for completeness about
+what is a connected component. What do I
+mean by a maximal region that's mutually
+connected. So a good formal definition is
+as the equivalence classes of the relation
+on vertices where which we define by U being
+related to V if and only if there's a path
+between U and V in the graph G. So
+I'll leave it for you to do the simple
+check that the squiggle is indeed an
+equivalence relation. I'm gonna remind you
+what equivalence relations are. This is
+something you generally learn in your
+first class on proofs or your first class
+on discrete math. So it's just something
+which may or may not be true about pairs
+of objects. And to be an equivalence
+relation, you have to satisfy three
+properties. So, first you have to be
+reflexive, meaning A, everything has to be
+related to itself, and indeed, in a graph,
+there is a path from any node to itself,
+namely the empty path. So, also
+equivalence relations have to be
+symmetric, meaning if U and V are
+related then V and U are related. Because
+this is an undirected graph, it's clear
+that this is symmetric. If there's a path
+from U to V in the graph, there's also a
+path from V to U, so no problem there.
+Finally equivalence class has got to be
+transitive. So that means if U and V are
+related and so are V and W, then so are U
+and W. That is if U and V have a path, V
+and W have a path, then so does U and W.
+And you can prove transitivity just by
+pasting the two paths together. And so the
+upshot is when you want to say something
+like the maximal subset of something where
+everything is the same, the right way to
+make that mathematical is using
+equivalence relations. So over in this
+blue graph, we want to say one, three,
+five, seven and nine, are sort of all the
+same in the sense that they are mutually
+connected and so that's exactly what
+this relation is making precise. All five
+of those nodes are related to each other.
+Two and four are related to each other.
+Six, eight, and ten all pairs of them are
+related to each other. So the equivalence,
+so equivalence relations always have
+equivalence classes of the maximal mutually
+related stuff, and in this graph context
+that's exactly this connected component.
+That's exactly what you want. So, what I
+wanna show you is that you can use breadth
+first search wrapped in an outer for loop
+over all of the vertices to compute, to
+identify, all the connected components of
+the graph in time linear in the graph. In
+O of N plus M time. Now you might be
+wondering, you know, why do you wanna do
+that. Well there's a lot of reasons. So,
+an obvious one which is relevant for
+physical networks is to check if a network
+has broken into two pieces. So, certainly
+if you're an internet service provider,
+you wanna make sure that from any point in your
+network you can reach any other point in
+the network. And that boils down to just
+understanding whether the graph that
+represents your network is a connected
+graph, that is, if it's in one piece or if
+it's not in one piece. So obviously you
+can ask this same question about
+recreational examples so if you return to
+the movie graph, maybe you're wondering,
+can you get from every single actor, in
+the IMDB database, to Kevin Bacon, or are
+there actors for which you cannot reach
+Kevin Bacon, via a sequence of edges, the
+sequence of movies in which two actors
+have both played a role. So that's
+something that boils down to a
+connectivity computation. If you have
+network data and you want to display it,
+you want to visualize it and show it to a
+group of people so that they can interpret
+it. Obviously one thing you wanna do is
+you wanna know if there's multiple pieces
+and then you want to display the pieces
+separately. So let me mention one
+probably a little less obvious application of
+undirected connectivity, which is it gives
+a nice quick and dirty heuristic for doing
+clustering, if you have pairwise
+information about objects. So let me be a
+little, let me be a little more concrete.
+Suppose you have a set of objects that you
+really care about. So this could be a set
+of documents, maybe web pages that you
+crawled, something like that. It could
+be a set of images, either your own or
+drawn from some database, or it could be
+for example a set of genomes. Suppose
+further that you have a pairwise function.
+Okay? Which for each pair of objects tells
+you whether they are very much like each
+other or very much different. And so let's
+suppose that if two objects are very
+similar to each other, like they're two web
+pages that are almost the same, or they're two
+genomes where you can get from one to the
+other with a small number of mutations,
+then they have a low score. So low numbers
+close to zero indicate that the objects
+are very similar to each other. High
+numbers, let's say they could go up to
+even a thousand or something, indicate
+that they are very different objects. Two
+web pages that have nothing to do with
+each other. Two genomes for totally
+unrelated parts or two images that seem to
+be of completely different people or even
+completely different objects. Now here's a
+graph you can construct using these
+objects and the similarity data that you
+have about them. So you can have a graph
+where the nodes are the objects. So for
+each pixel, for each image, for each
+document, whatever, you have a single
+node. And then for a given pair of nodes,
+you put in an edge if, and only if, the
+two objects are very similar. So, for
+example, you could put in an edge between
+two objects if, and only if, the score is
+at most ten. So remember, the more similar
+two objects are, the closer their score is
+to zero. So you're gonna get an edge
+between very similar documents, very
+similar genomes, very similar images. Now
+in this graph you've constructed, you can
+find the connected components. So, each of
+these connected components will be a group of
+objects, which more or less are all very
+similar to each other. So, this will be a
+cluster of closely related objects in your
+database. And you can imagine a lot of
+reasons why, given a large set of
+unstructured data, just a bunch of
+pictures, a bunch of documents, or
+whatever, you might wanna find clusters of
+highly related objects. So we'll probably
+see more sophisticated heuristics for
+clustering in some sequel course. But
+already undirected connectivity gives
+you a super fast, linear time, quick and dirty heuristic
+for identifying clusters of similar
+objects given pairwise data about
+similarity. So that's some reasons you
+might wanna do it. Now let's actually talk
+about how to compute the connected
+components in linear time using just a
+simple for loop and breadth-first search
+as its inner work horse. So here's the
+code to compute all the connected
+components of an undirected graph. So
+first we initialize all nodes as being
+unexplored. I'm also going to assume that
+the nodes have names. Let's say their
+names are from one to N. So, these names
+could just be the position in the node
+array that these nodes occupy. So there's
+gonna be an outer for loop, which walks
+through the nodes in an arbitrary order,
+let's say from one to N. This outer for
+loop is to ensure that every single node
+of the graph will be inspected for sure at
+some point in the algorithm. And again,
+one of our maxims is that we should never
+do redundant work, so before we start
+exploring from some node, we check if
+we've already been there. And if we
+haven't seen I before, then we invoke the
+breadth-first search subroutine we were
+talking about previously in the lecture in
+the graph G starting from the node I. So
+to make sure this is clear, let's just run
+this algorithm on this blue graph to the
+right. So we start in the outer for loop
+and we set I equal to one, and we say have
+we explored node number one yet? And of
+course not, we haven't explored anything
+yet. So the first thing we're gonna do is
+we're gonna, we're gonna invoke BFS on
+node number one here. So now we start
+running the usual breadth first search
+subroutine starting from this node one.
+And so we explore, you know, layer one
+here is gonna be nodes three and five and
+so we explore them in some order. For
+example, maybe, node number three is what
+we explore second and then node number
+five is what we explore, third. And then
+the second layer in this component is
+going to be the nodes seven and nine. So,
+we'll explore them in some order as well.
+Let's say seven first, followed by nine.
+So, after this BFS initiated from node number one
+completes of course it will have found
+everything that it could possibly find,
+namely the five nodes in the same
+connected component as node number one. And
+of course all of the five of these nodes
+will be marked as explored. So, now we
+return once that exits. We return to the
+other for loop we increment I, we go to I
+equals two, where we'll say, oh, have we already
+explored node number two? No we have
+not. And so now we invoke BFS again from
+node number two. So that'll be the sixth
+node we explore. There's not much to do
+from two. All we can do is go to node
+number four. So, that's the seventh node
+we explore. That BFS terminates finding
+the nodes in this connected component.
+Then we go back to the outer for loop. We
+increment i to three. We say ah, have we already
+seen node number three? Yes we have. We
+saw that in the first breadth first
+search. So we certainly don't bother to
+BFS from this node three. Then we
+increment i to four, have we seen four?
+Yes we have, in the second call to BFS.
+Have we seen node five? Yes we have, in
+the first call to BFS. Have we seen node
+six? No, we have not. So the final
+invocation of breadth-first search begins
+from node number six. That's gonna be the
+eighth node overall that we see. And then
+we're gonna see the nodes eight and ten in
+some order. So for example, maybe we first
+explore node number eight. That's a N,
+that's one of the first layer in this
+component, and then node number ten is the
+other node of the first layer in this
+component. So, in general what's going on,
+well, what we know about, what we know
+what will happen when we invoke breadth
+first search from a given node I, we're
+going to discover exactly the nodes in I's
+connected component. Right? Anything where
+there's a path from I to that node, we'll
+find it. That's the BFS guarantee.
+That's also the definition of a connected
+component. All the other nodes, which have
+a path to, to I. Another thing that I hope
+is clear from the example, but you know,
+just to reiterate it, is every breadth
+first search call when you explore a node,
+you remember that through the entire for
+loop. Right? So when we invoke breadth
+first search from node number one, we
+explore nodes one, three, five, seven, and
+nine, and we keep those marked as explored
+for the rest of this, for the rest of this
+algorithm. Right? So and that's so that we
+don't do redundant work when we get to
+later stages of the for loop. So, as far
+as what does this algorithm accomplish?
+Well, it certainly finds every connected
+component. Alright, there is absolutely no
+way it can miss a node because this
+for loop literally walks through the
+nodes, all of them, one at a time. And so
+you're not gonna miss a node. Moreover, we
+know that, you know, as soon as you f-,
+hit a connected component for the first
+time, and you do breadth first search from
+that node, you're gonna find the whole
+thing. That's the breadth first search
+guarantee. As far as what's the running
+time? Well it's going to be exactly what
+we want. It's going to be linear time
+which again means proportional to the
+number of edges plus the number of
+vertices. And again, depending on the
+graph, one of these might be bigger than
+the other. So why is it O of M plus N?
+Well as far as the nodes we have to do
+this initialization there where we marked
+them all as unexplored so that takes
+constant time per node. We have just the
+basic overhead of a for loop so that's
+constant time per node and then we have
+this check. Constant time per node so
+that's O of N. And then recall we proved
+that within breadth first search you do
+amount of work proportional, you do
+constant time for each node in that
+connected component. Now each of the nodes
+of the graph is in exactly one of the
+connected components, so you'll do constant
+time for each node in the BFS in which
+you discover that node. So, that's again O
+of N over all of the connected components. And as far as the edges, no, we
+don't even bother to look at edges until
+we're inside one of these breadth first
+search calls. They play no role in the
+outer for loop or in the preprocessing,
+and remember what we proved about an
+invocation of breadth first search. The
+running time, you only do constant amount
+of work per edge in the connected
+component that you're exploring. In the
+worst case you look at the edge once from
+either end point and each of that triggers
+a constant amount of work. So when you
+discover a given connected component the
+edge work is proportional to the number of edges in
+that connected component. Each edge of the graph is
+only, is in exactly one of the connected
+components. So over this entire for loop
+over all of these BFS calls for each edge
+of the graph you'll only be responsible
+for a constant amount of work to the
+algorithm. So summarizing, because
+breadth first search from a given
+starting node does, works in time
+proportional to the size of that
+component. Piggy backing on that sub
+routine, and looping over all of the nodes
+of the graph we find all of the connected 
+components, in time proportional to the
+number of edges and nodes in the entire
+graph.

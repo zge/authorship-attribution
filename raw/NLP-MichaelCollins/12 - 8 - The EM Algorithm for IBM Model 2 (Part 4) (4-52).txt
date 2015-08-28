@@ -1,0 +1,124 @@
+So let me briefly talk about the
+justification for this algorithm.
+There's actually much more detail about
+the algorithm and its justification in the
+notes which are posted with this class.
+But let me give you a sketch.
+So, as we said the training samples are e
+k, f k pairs for k equals 1 to n.
+And we can define something called the log
+likelihood function which is a function of
+our t parameters and our q parameters.
+And this is basically going to be a
+measure of how well our parameters fit our
+training examples.
+So higher values for L mean that L, or
+that t and q values do a better job of
+modeling the training examples we're
+looking at.
+So how is this defined?
+This is simply defined as the log
+probability of the data.
+Or more precisely a sum over all of my n
+examples.
+And for each example, I calculate the
+conditional probability of f k given e k
+under the model.
+When I take it's log.
+So this is a log likelihood, it's
+basically log probability, sum of log
+probabilities.
+And recall that under the IBM models, this
+probability has the following form.
+Where I have a sum over all possible
+alignments.
+I have p of f k comma a given e of k.
+So I have the sum within the log.
+And of course, this p this probability p
+is going to be some product of q and t
+terms for this particular example.
+Reflecting e k, f k and the particular
+line that we're looking at.
+And so you can see that this is clearly
+very directly a function of our q and t
+parameters.
+As we vary the q and t parameters, these
+probabilities will vary.
+And this likelihood function may go up or
+down.
+The maximum likelihood estimates are then
+defined as the t and q pair that maximize
+this function.
+So, on the maximum-likelihood estimation,
+we would like to find the parameters that
+make the data as probable as possible.
+In some sense fit the data as well as
+possible.
+Where a measure of fit is this
+log-likelihood.
+More formally, you can derive many formal
+guarantees for maximum-likelihood
+estimates.
+For example, showing that they.
+Converge closer and closer to the true
+upper length parameters as we get more and
+more training data.
+Now as it happens, this likelihood
+function is quite nasty.
+It's quite difficult to optimize.
+And you know, nice looking functions, will
+have a single maximum.
+This is a convex function.
+Imagine we only had a single parameters, t
+here, and I have some function L of t.
+This is nice and well behaved because it
+only has a single maximum, and essentially
+any hill climbing method will in general
+be guaranteed to get to the maximum of
+that function.
+Unfortunately this log-likelihood function
+is not nearly so nice, so schematically it
+looks rather like this, where you might
+have many different points which are local
+optimum.
+So hill climbing method is in general very
+likely to get stuck.
+At one of these non-optimal points.
+Again these are schematic, where I'm
+showing functions where there's just a
+single parameter.
+In reality these are multi-dimensional
+functions.
+Where I have t and q, we might have
+thousands of parameters.
+And so these kind of surfaces can become
+extremely complex with many, many local
+optima.
+Okay.
+This makes optimization of the likelihood
+function very hard.
+In facts it's almost certainly provably
+hard.
+It's mp hard or, or something similar.
+The guarantee for the EM algorithm is
+that, you know, it defines a sequence of
+parameters, we start q t and at each point
+we calculate a new q t and we keep going
+like this for maybe a few tens or hundreds
+of iterations.
+The EM algorithm is guaranteed in the
+limit, to converge to one of these local
+optima of the likelihood function.
+And so while that is in Ideal, ideally
+we'd like to get to the global maximum.
+In practice it works quite well and is a
+quite en effective algorithm.
+One thing to note is that because of this
+property, the point you covert to is going
+to depend on your initial parameter
+values, and so you have to sometimes be
+careful about how you initialize your
+parameters.
+There's a lot more discussion of that in
+the notes which are posted along with this
+class.

@@ -1,0 +1,611 @@
+I said pretty much everything I wanna say
+about sorting at this point but I do wanna
+cover one more related topic, namely the
+selection problem. This is a problem of
+computing order statistics of an array.
+With computing the median of an array
+being a special case. Analogous to our
+coverage of quick sort the goal is going
+to be the design and analysis of a super
+practical randomized algorithm that solves
+the problem. And this time we'll even
+achieve an expected running time that is
+linear in the length of the input array.
+That is bigger of N for input array of
+length N as supposed to the O of N login
+time that we had for the expected running
+time of quick sort. Like quick sort the
+[inaudible]. Our analysis is also going to
+be, quite elegant. So in addition these
+two required video's on this very
+practical algorithm will motivate two
+optional video's that are on very cool
+topics but of a similar more theoretical
+nature. The first optional video is going
+to be on how you solve the selection
+problem in deterministic linear time. That
+is without using randomization. And the
+second optional video will be a sorting
+lower bound. That is why no comparison
+[inaudible] sort can be better than
+merSort. Can have better running time.
+[inaudible] and login. So a few words
+about what you should have fresh in your
+mind before you watch this video. I'm
+definitely assuming that you've watched
+the quick sort videos. And not just
+watched them, but that you have that
+material pretty fresh in your mind. So in
+particular the video of quick sort about
+the partition subroutine, so this is where
+you take an input array, you choose a
+pivot, and you do by repeated swaps. You
+rearrange the array so that everything
+less than the pivot's to the left of it,
+everything bigger than the pivot is to the
+right of it. You should remember that
+sub-routine. You should also remember the
+previous discussion about pivot choices,
+the idea that the quality of a pivot
+depends on how balanced a split into two
+different sub-problems it gives you. Those
+are both going to be important. For the
+analysis of this randomized linear time
+selection algorithm, I need you to be,
+remember the concepts from probability
+review part one, in particular, random
+variables, their expectation, and
+linearity of expectation. That said let?s
+move on and formally define what the
+selection problem is. The input is the
+same as for the sorting problem; just
+you're given an array. Of indistinct
+entries [sound]. But in addition, you're
+told what order statistic you're looking
+for. So that's gonna be a number I, which
+is an integer between one and n. And the
+goal is to output just a single number,
+mainly the I-th order statistic. That is
+the I-th smallest entry in this input
+array. So just to be clear, we have an
+array entry of, let's just, say four
+elements. Continue the numbers ten, eight,
+two, and four, and you were looking for
+say the third or statistic, that would be
+this eight. The first order statistic is
+just the minimum elent, element of the
+array. That's easy to find with a linear
+scan. The Nth order statistic is just the
+maximum. Again easier, easy to find with a
+linear scan. The middle element is the
+median and you should think of that as the
+canonical version of the selection
+problem. Now, when n is odd, it's obvious
+what the median is. That's just the middle
+element, so the n + one over 2-th order
+statistic. If the array has even link,
+there's two possible mediums, so let's
+just take the smaller of them. That's the
+end over truth order statistic. You might
+wonder why you'd ever want to compute the
+median of an array rather than the mean,
+that is, the average. It's easier to see
+that you can compute the average with a
+simple linear scan. And the median you
+can, one motivation is it's a more robust
+version of the mean. So if you just have a
+data entry problem and it corrupts one
+element of an input array, it can totally
+screw up the average value of the array.
+But it has generally very little impact on
+the median. A final comment about the
+problem is I am going to assume that the
+array entries are distinct. That is,
+there's no repeated elements. But just
+like in our discussions of sorting, this
+is not a big assumption. I can encourage
+you to think about how to adapt these
+algorithms to work even if the arrays do
+have duplicates. You can indeed still get
+the same very practical, very fast
+algorithms with duplicate elements. Now,
+if you think about it, we already have a
+pretty darn good algorithm that solves the
+selection problem. Here's the algorithm,
+its two simple steps and it runs in O of N
+login time. Step one, sort the input
+array. We have various subroutines to do
+that. Let's say we pick merge sort. Now
+what is it we're trying to do? We're
+trying to find the Ith smallest element in
+the input array. Well, once we've sorted
+it, we certainly know where the Ith
+smallest element is. It's in the Ith
+position of the sorted array. So that's
+pretty cool. We've just done what a
+computer scientist would call a reduction,
+and that's a super useful and super
+fundamental concept. It's when you realize
+that you can solve one problem. By
+reducing it to another problem that you
+already know how to solve. So what we just
+showed is that the selection problem
+reduces easily to the sorting problem. We
+already know how to solve the sorting
+problem N log N time, so that gives us an
+N log N time solution to the selection
+problem. But, again, remember the mantra
+of any algorithm designer worth their salt
+is can we do better. We should avoid
+continents. Just because we got N log N
+doesn't mean we can stop there. Maybe we
+can be even faster. Now certainly we gonna
+have to look at all the elements in the
+input array in the worst case. We
+shouldn't expect to do better than linear,
+but, Hey Why not linear time? Actually, if
+you think about it, we probably should
+have asked that question back when we were
+studying the sorting problem. Why were we
+so content with the N log N time bound for
+Merge Short? And the O of N log N time on
+average bound for Quick Sort. Well, it
+turns out we have a really good reason to
+be happy with our N log N upper bounds for
+the sorted problem. It turns out, and this
+is not obvious, and will be the subject of
+an optional video. You actually can't sort
+an input array of length N better than N
+log N time. Either in the worse case, or
+on average. So, in other words, if we
+insist on solving the selection problem
+via a reduction to the sorting problem
+then we're stuck with this n log n time
+amount. Okay, strictly speaking that's for
+something called comparison sorts; see the
+video for more details. But the upshot is
+if we want a general purpose algorithm and
+we wanna do better than n log n for
+selection, we have to do it using
+ingenuity beyond this reduction. We have
+to prove that selection is a strictly
+easier problem. Then sort it. That's the
+only way we're gonna have an algorithm
+that beats n log n. It's the only way we
+can conceivably get a linear time
+algorithm. And, that is exactly what is up
+next on our plates. We're going to show
+selection is indeed fundamentally easier
+than sorting. We can have a linear time
+algorithm for it, even though we can't get
+a linear time algorithm for sorting. You
+can think of the algorithm we're gonna
+discuss as a modification of quick sort,
+and in the same spirit of quick sort, it
+will be a randomized algorithm, and the
+running time will be an expected running
+time that will hold for any input array.
+Now, for the sorting problem, we know that
+quick sort, that n log n time on average
+for the average is over the coin flips
+done by the code. But we also know that if
+we wanted to we could get a sorting
+algorithm in n log n time that doesn't use
+randomization. The merge sort algorithm is
+one such solution. So, if you were giving
+a liner time solution for a selection for
+finding order statistics that uses
+randomization. And we'd be natural to
+wonder is there an analog to merge sort?
+Is there an algorithm which does not use
+randomization and gets this exact same
+linear time [inaudible]? In fact, there
+is. The algorithm's a little more
+complicated and there. For not quite as
+practical as this randomize algorithm.
+But, it's still very cool. It's a really
+fun algorithm to learn and to teach. So, I
+will have an optional video about linear
+time selection without randomization. So,
+for those of you who aren't gonna watch
+that video or wanna know what's the key
+idea the idea is to choose the pivots
+deterministically in a very careful way
+using a trick called the median of
+medians. That's all I'm gonna say about it
+now. You should watch the optional video
+if you want more details. I do feel
+compelled to warn you that if you're going
+to actually implement a selection
+algorithm, you should do the one that we
+discuss in this video and not the linear
+time one because the one we'll discuss in
+this video has both smaller constants and
+works in place. So, what I want to do next
+is develop the idea that we can modify the
+quick sort paradigm in order to directly
+solve the selection problem. So, to get an
+idea of how that works, let me review the
+partition subroutine. Like in quick sort.
+This subroutine will be our workhorse for
+the selection algorithm. So what the
+partition subroutine does is it takes and
+inputs some jumbled up array and it's
+going to. Solve a problem which is much
+more modest than sorting. So, in
+partitioning, it's going to first choose a
+pivot element, somehow. We'll have to
+discuss what's a good strategy for
+choosing a pivot element. But suppose, you
+know, in this particular input array, it
+chooses the first element, this three, as
+the pivot element. The responsibility of
+the partition subroutine, then, is to
+rearrange the elements in this array so
+that the following properties are
+satisfied. Anything less than the pivot is
+to the left of it. It can be in jumbled
+order but if you're less than the pivot,
+you'd better be to the left like this two
+and one is less than the three. If you're
+bigger than the pivot, then again you can
+be in jumbled order amongst those elements
+but all of them have to be to the right of
+the pivot, and that's true for the numbers
+four through eight, they all are to the
+right of the pivot three in a jumbled
+order. So this in particular puts the
+pivot in its rightful position where we
+belong in the final sorted array and at
+least for quick sort, it enabled. Us to
+recursively sort to smaller sub problems,
+so this is where I want you to think a
+little bit about how we should adapt this
+paradigm. So supposed I told you the first
+step of our selection algorithm is going
+to be to choose a pivot and partition the
+array, now the question is. How are we
+going to recurs? We need to understand how
+to find the Ith order statistic of the
+original input array. It suffices to
+recurs on just one sub problem. Of smaller
+size. And find a suitable order statistic
+in it. So how should we do that? Let me
+ask you that in, with some very concrete
+examples, about what pivot we'd choose,
+and what order statistic we're looking
+for, and see what you think. So the
+correct answer to this quiz is the second
+answer. So we can get away with recursing
+just once, and in this particular example
+we're going to recurs on the right side of
+the array. And instead of looking for the
+fifth order statistic like we were
+originally. We're going to recursively
+search for the second order statistic. So,
+why is that? Well, first, why do we recurs
+on the right side of the array? So, by
+assumption we have an array with ten
+elements. We choose the pivot, we do
+partitioning. Remember the pivot winds up
+in its rightful positioning. That's what
+partioning does. So, if the pivot winds up
+in the third position, we know it's the
+third smallest element in the array. Now
+that's not what we were looking for. We
+were looking for the fifth smallest
+element in the array. That of course is
+bigger. Than the third smallest element of
+the array, so by partitioning, where is
+the fifth element gonna be, it's gotta be
+to the right, of this third smallest
+element, to the right of the pivot, so we
+know for sure. That the fifth order
+statistic of the original array lies to
+the right of the pivot. That is
+guaranteed. So we know where to recurs on
+the right-hand side. Now. What are we
+looking for? We are no longer looking for
+the fifth order statistic, the fifth
+smallest element. Why? Well, we've thrown
+out both the pivot, and everything smaller
+than it. Remember, we're only recursing on
+the right hand side. So we've thrown out
+the pivot, the third element, and
+everything less that it. The minimum and
+the second minimum. Having deleted the
+three smallest elements, and originally
+looking for the fifth smallest of what
+remains of what we're recursing on. We're
+looking for the second smallest element.
+So, the selection algorithm, in general,
+is just the generalization of this idea,
+so arbitrary arrays. And arbitrary
+situations of whether the pivot comes
+back, equal to less than or bigger than
+the element you're looking for. So let me
+be more precise. I'm gonna call this
+algorithm R select for randomize
+selection. And according to the problem
+definition it takes as input as usual an
+array A of some length N. But then also
+the order statistic that we're
+looking for. So we're gonna call that I.
+And of course we assume that I is some
+integer between one and N inclusive. So
+for the base case that's gonna be if the
+array has size one. Then the only element
+we could be looking for is the one quarter
+statistic and we just return the sole
+element of the array. Now we have to
+partition the array around the pivot
+element. And just like in quick sort we're
+not going to be, we're going to be very
+lazy about choosing the pivot. We're gonna
+choose it uniformly at random from the
+[inaudible] possibilities and hope things
+work out. And that'll be the crups of the
+analysis proving that random pivots are
+good enough sufficiently often. Having
+chosen the pivot we now just invoke that
+standard partitioning sub routine. As
+usually that's gonna give us the
+partition's array. You'll have the pivot
+element. You'll have everything less than
+the pivot to the left, everything bigger
+than the pivot to the right. As usual,
+I'll call everything to the left the first
+parts of the partitioned array. Everything
+bigger the second part. Now we have a
+couple of cases, depending on whether the
+pivot is bigger or less than the element
+we're looking for. So I need [inaudible]
+notation to, to talk about that. So let's
+let J be, the ordered statistic that P is.
+So if P winds up being the third smallest
+element, like in the quiz, then J's gonna
+be equal to three. Equivalently, we can
+think of J as defined as the position of
+the pivot in the partitioned version of
+the array. Now there's one case which is
+very unlikely to occur but we should
+include it just for completeness. If we're
+really lucky then in fact our random pivot
+just happens to be the older statistic we
+were looking for. That's when I equals J.
+We're looking for I's smallest element if
+by dumb luck the pivot winds up being I's
+smallest element, we're done. We can just
+return it we don't have to recurs. Now in
+general of course, we don't randomly
+choose the element we're looking for. We
+choose something that well, it could be
+bigger or could be smaller than it. In the
+quiz, we chose a pivot that was smaller
+than what we're looking for. Actually,
+that's the harder case. So let's first
+start with a case where the pivot winds up
+being bigger than the element we're
+looking for. So that means that J is
+bigger than I. We're looking for the Ith
+smallest. We randomly chose the Jth
+smallest for J bigger than I. So this is
+opposite case of the quiz. This is where
+we know what we're looking for has to be
+to the left of the pivot. The pivot's the
+J smallest. Everything less than it is to
+the left. We're looking for the I
+smallest. I is less than J, so that's
+gotta be on the left. That's where we
+recurs. Moreover, it's clear we're looking
+for exactly the same order statistic. If
+we're looking for the third smallest
+element, we're only throwing out stuff
+which is bigger than something even bigger
+than the third smallest element. So we're
+still looking for the third smallest of
+what remains. And naturally the new array
+size is J minus one, because that's what's
+is to the left of the pivot. Is when the
+random element that we choose is less than
+what we are looking for and then we're
+just like the quiz. So namely what we are
+looking for is bigger than the pivot, it's
+got to be on the right hand side, we know
+we've got recurs on the right hand side.
+Into the right hand side has n-j elements
+we threw out everything up to the pivots.
+We threw out J things that's n-j left and
+of all of the j things we threw out are
+less than what we are looking for. So what
+we use to be looking for is I's smallest
+element now we are looking for the I-J's
+smallest element. So that is the whole
+algorithm. That is how we adopt the
+approach we took toward the sorting
+problem in Quick Sort, and adapt it to the
+problem of selection. So, is this
+algorithm any good? Let's start studying
+its properties, and understand how well it
+works. So let's begin with correctness. So
+the claim is that, no matter how the
+algorithm's coin flips come up, no matter
+what random pivots we choose, the
+algorithm is correct, in the sense that
+it's guaranteed to output the [inaudible]
+order statistic. The proof is by
+induction. It precedes very similarly to
+Quick Sort, so I'm not gonna give it here.
+If you're curious about how these proofs
+go, there's an optional video about the
+correctness of Quick Sort. If you watch
+that and understand it, it should be clear
+how to adapt that inductive argument, to
+apply to this selection algorithm as well.
+So as usual for divide-and-conquer
+algorithms, the interesting part is not so
+much knowing, understanding why the
+algorithm works, but rather understanding
+how fast it runs. So the big question is,
+what is the running time of this selection
+algorithm? Now to understand this, we have
+to understand the ramifications of pivot
+choices on the running time. So, you've
+seen the Quick Sort videos, they're fresh
+in your mind. So what should be clear is
+that, just like in Quick Sort, how fast is
+algorithm one is going to depend on how
+good the pivots are, and what good pivots
+means is pivots that guarantee a balanced
+split. So in the next quiz, we'll make
+sure that you understand this point, and
+ask you to think about just how bad this
+selection algorithm could be if you get
+extremely unlucky in your pivot choices.
+So the correct answer to this question is
+exactly the same as the answer for Quick
+Sort. The worst case running time, if the
+pivots are chosen, just, in a really
+unlucky way, is actually quadratic in the
+array length. Remember, we're
+shooting for linear time. So this
+quadratic is a total disaster. So how
+could this happen? Well, suppose you're
+looking for the median. And suppose you
+choose the minimum element as the pivot
+every single time. So if this is what
+happens if every time you choose the pivot
+to be the minimum, just like in quick sort
+this means every time you recurce all you
+succeed doing is peeling off a single
+element from the inputt array, now you're
+not going to find the medium element until
+you've done roughly N over two recursive calls, each on an array that has size at
+least a constant fraction of the original
+one, so that it's a linear number of
+recursive calls, each on an array of size
+at least some constant times N, so that
+gives you a total running time of
+quadratic overall. Of course, this is an
+absurdly unlikely event. Frankly, your
+computer is more likely to be struck by a
+meteor than it is for the pivot to be
+chosen as the minimum element in every
+recursive call. But, if you really had an
+absolutely worst case choice of pivots, it
+would give this quadratic run time bound.
+So the upshot then is that the running
+time of this randomized selection
+algorithm depends on how good our pivots
+are and for worst case choice of pivots,
+the running time can be as large as
+N-squared. Now hopefully, most of the time
+we're gonna have much better pivots and so
+the analysis proceeds on making that idea
+precise. So the key to a fast running time
+is going to be the, the usual property
+that we want to see in divide and conquer
+algorithms. Mainly every time recourse,
+every time they recourse, the problem size
+better not just be smaller, but it better
+be smaller by a significant factor. How
+would that happen in this selection
+approach based on the partition
+subroutine; well if both of the sub
+problems are not too big, then we're
+guaranteed that when we recourse we make a
+lot of progress. So let's think about what
+the best possible pivot would be in the
+sense of giving a balanced split. Right?
+So, of course, in some sense the best
+pivot is you just choose the order
+statistic you're looking for and that,
+then you're done in constant time but
+that's extremely unlikely and it's not
+worth worrying about. So ignore the fact
+that we might guess the pivot. What's the
+best pivot if we want to guarantee an
+aggressive decrease in the input size
+before the next generation. Well, the best
+pivot's the one that gives us as most
+balanced split as possible. So what's the
+pivot that gives us the most balanced
+split, a 50-50 split? Well, if you think
+about it, it's exactly the median. Of
+course, this is not super helpful, because
+the median might well be what we're
+looking for in the first place. So this
+is, sort of, a circular idea. But for
+intuition, it's still worth exploring what
+kind of running time we would get in the
+best case, right. If we're not going to
+get linear time even in this magical best
+case, we certainly wouldn't expect to get
+it on average over random choices of the
+pivots. So what would happen if we
+actually did luckily choose the median as
+the pivot every single time? Well, we get
+the recurrence that the running time that
+the algorithm requires on an array of
+length N. Well, there's only gonna be one
+recursive call. So this is the big
+difference from Quick Sort, where we had
+to recurs on both sides, and we had two
+recursive calls. So here, we're gonna have
+only one recursive call. In the magical
+case where our pivots are always equal to
+the median, both sub problems sizes
+contain, are only half as large as the
+original one. So when we recurs, it's not
+a problem size guaranteed to be, at most,
+N over two. And then outside the recursive
+call, pretty much all we do is a
+partitioning indication. And we know that
+that's linear time. So the. Recurrence we
+get is T of n is at most T of n over two,
+plus big O of n. This is totally ready to
+get plugged into the master method. It
+winds up being case two of the master
+method. And indeed, we get exactly what we
+wanted, linear time. To reiterate, this is
+not interesting in its own right, this is
+just for intuition. This was a sanity
+check that, at least for a best case
+choice of pivots, we'd get what we want, a
+linear time algorithm, and we do. Now the
+question is, how well do we do with random
+pivots? Now the intuition, the hope is
+exactly as it was for Quick sort, which is
+that random pivots are perfectly good
+surrogates for the median, the perfect
+pivot. So having the analysis of Quick
+sort under our belt we're indeed random
+pivot do approximate very closely with the
+performance you'll get with best case
+pivots. Maybe, now we have reason to
+believe this is hopefully true. That said
+as a mathematical statement this is
+totally not obvious and it's going to take
+proof, that's the next subject for next
+video. But let me just be clear exactly
+what we're claiming. Here is the running
+time guaranteed the randomized selection
+provides. For an arbitrary input array of
+length N, the average running time of this
+randomized collection algorithm is linear,
+Big O of N. Let me reiterate a couple
+points I made for the analogous guarantee
+for the Quick sort algorithm. The first is
+that, we're making no assumptions about
+the data whatsoever, in particular we're
+not assuming that the data is random. This
+guarantee holds not matter what input
+array that you feed into this randomized
+algorithm, in that sense this is a totally
+general purpose subroutine. So, where then
+does this averaging come from? Where does
+the expectation come from? The randomness
+is not in the data, rather the randomness
+is in the code and we put it there
+ourselves. Now let's proceed to the
+analysis.

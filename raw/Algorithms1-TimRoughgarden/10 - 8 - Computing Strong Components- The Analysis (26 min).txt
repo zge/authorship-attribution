@@ -1,0 +1,673 @@
+So the goal of this video is to prove the
+correctness of Kasaraju two-pass,
+depth-first-search based, linear time
+algorithm that computes the strongly
+connected components of a directed graph.
+So I've given you the full specification
+of the algorithm. I've also given you a
+plausibility argument of why it might
+work, in that at least it does something
+sensible on an example. Namely, it first
+does a pass of depth first search on the
+reverse graph. It computes this magical
+ordering. And what's so special about this
+ordering is then when we do a depth first
+search using this ordering on the forward
+graph; it seems to do exactly what we
+want. Every indication of depth first
+search to some new node discovers exactly
+the nodes of the strong component and no
+extra stuff. Remember that was our first
+observation, but that was unclear whether
+depth for search would be useful or not
+for computing strong components. If you
+call depth first search from just the
+right place, you're gonna get exactly the
+nodes of an SCC and nothing more. If you
+call it from the wrong place, you might
+get all of the nodes of the graph, and get
+no information at all about the structure of the strong components and at least in
+this example this first pass with the
+finishing time seems to be accomplishing
+seems to be leading us to invoking
+DFS from exactly the right
+places. So remember how this worked in the
+example so in the top graph, I have
+shown you the graph with the arch
+reversed. This is where we first invoked
+DFS loop with the loop over the nodes
+going from the highest node name nine all
+the way down to the node name one. And
+here we compute finishing time that's the
+bookkeeping that we do in the first pass
+so we just keep the running count of how
+many nodes we've finished processing. That
+is how many we've both explored that node
+as well as explore all of the outgoing
+arches and so that gives us these numbers
+in the red, these finishing times between
+one and nine for the various
+nodes. Those became the new node names in
+the second graph and then we reverse the
+arches again and get the original graphs
+back and then we saw that every time we
+invoked DFS in our second pass we
+uncovered exactly the nodes of an SCC. So
+when we invoked it from the node 9 we
+discovered that 9, 8 and 7 those
+have a leader vortex 9. Then when we
+next invoked DFS from 6, we discovered
+6, 5, and 1, and nothing else. And
+then finally we invoked it from 4, and
+we discovered 2, 3, and 4, and
+nothing else. And those are exactly the
+three, SCCs of this graph. So let's now
+understand why this works in any directed
+graph, not just this, in this one example.
+So let's begin with a simple observation
+about directed graphs, which is actually
+interesting in its own right. The claim is
+that every directed graph has two levels
+of granularity. If you squint, if you sort
+of zoom out, then what you see is a
+directed acyclic graph, of course
+comprising its strongly connective
+components. And if you want, you can zoom
+in and focus on the fine grain structure
+with one SCC. A little bit more precisely.
+The claim is of the strongly connected
+components of a directed graph induce in
+a natural way an acyclic metagraph. So
+what is this metagraph? What are the nodes
+and what are the arcs, what are the edges?
+Well, the metanodes are just the SCCs, so
+we think of every strong connected
+component as being a single node in this
+metagraph. So call them say 'C1' up to 'Ck'. So what are the arcs in this metagraph?
+Well, they're basically just the ones
+corresponding to the arcs between SCCs in
+the original graph. That is, we include in
+the meta graph an arc from the strong
+component 'C' to 'C-hat'
+if and only if there's an arc from a node
+in 'C' to a node in 'C-hat' in the original
+graph 'G'. So for example if this is your 'C'
+and so the triangle is your 'C-hat' and you
+have one or maybe multiple edges going
+from 'C' to 'C-hat', then in the corresponding
+metagraph your just gonna have a node for
+'C', a node for 'C-hat' and the directed
+arch from 'C' to 'C-hat'. So if we go back to
+some of the directed graphs that we've
+used as running examples so we go back to
+the beginning of the
+previous video and it's look maybe something
+like this the corresponding directed acyclic
+graph has four nodes and four
+arches. And for the running example we used
+to illustrate Kosaraju's algorithm with
+the three triangles, the corresponding
+metagraph would just be a path with three
+nodes. So why is this meta-graph
+guaranteed to be acyclic? Well, remember
+metanodes correspond to strong
+components, and in a strong component you
+can get from anywhere to anywhere else.
+So, if you had a cycle that involved two
+different metanodes, that is two
+different strong connected components,
+remember on a directed cycle you can also
+get from anywhere to anywhere else. So if
+you had two supposedly distinct SCCs,
+that you could get from the one to the
+other and vice versa, they would collapse
+into a single SCC. You can get from
+anywhere to anywhere in one, anywhere from
+anywhere in the other one, and you can
+also go between them at will, so you can get from
+anywhere in this union to anywhere in the
+union. So not just in this context of
+competing strong components but also just
+more generally, this is a useful fact to
+know about directed graphs. On the one
+hand, they can have very complex structure
+within a strong components. You have paths
+going from everywhere to everywhere else,
+and it may be sort of complicated looking.
+But at a higher level, if you abstract out
+to the level of SCCs, you are guaranteed
+to have this simple DAG, this simple
+directed acyclic graph structure. So, to
+reinforce these concepts, and also segue
+into thinking about Kosaraju's algorithm
+in particular, let me ask you a question
+about how reversing arcs affects the
+strong components of a directed graph. So
+the correct answer to this quiz is the
+fourth one. The strong components are
+exactly the same as they were before, in
+fact the relation that we described is
+exactly the same as it was before so
+therefore the equivalence classes of the
+strong components is exactly the same. So
+if two nodes were related in
+the original graph, that is a path from U
+to V and a path from V to U, that's still
+true after you reverse all the arcs, you
+just use the reversal of the two paths
+that you had before. Similarly if the two
+nodes weren't related before, for example
+because you could not get from U to V,
+well that after you reverse everything,
+then you can't get from V to U, so again you don't have this relation holding, so
+the SCCs are exactly the same in the
+forward or the backward graph. So in
+particular in Kazarogi's algorithm, the
+strong component structure is exactly the
+same in the first pass of DFS and in the
+second pass of DFS. So now that we understand
+how every directed graph has a meta graph with the nodes correspond to a strong
+connected components, and you have an arch
+from one SCC to another if there's any
+arch from any node in that SCC to the
+other SCC in the original graph, I'm in a
+position to state what's the key lemma.
+That drives the correctness of Kosaraju's
+two pass algorithm for computing the
+strong connected component of a directed graph.
+So here's the lemma statement. It
+considers two strongly connecting
+components that are adjacent, in the sense
+that there's an arc from one node in one
+of them to one node in the other one. So
+let's say we have one SCC - 'C1', with a
+node I, and another, SCC 'C2' with a node
+J, and that in G, in the graph, there's an
+arc directly from I to J. So in this sense
+we say that these SCCs are adjacent, with
+the second one being in some sense after
+the first one. Now let's suppose we've
+already run the first pass of the DFS loop
+subroutine. And remember that works on the
+reverse graph. So we've invoked it on the
+reverse graph. We've computed these
+finishing times. As usual we'll let f(v)
+denote the finishing times computed in
+that depth first search subroutine on the
+reverse graph. The lemma then asserts the
+following. It says first, amongst all the
+nodes in 'C1' look at the one with the
+largest finishing time. Similarly amongst
+all nodes in 'C2' look at the one with the
+biggest finishing time. Amongst all of
+these the claim is that the biggest
+finishing time will be in 'C2' not in 'C1'. So
+what I wanna do next is I wanna assume that
+this lemma is true temporarily. I wanna
+explore the consequences of that
+assumption and in particular what I wanna
+show you is that if this lemma holds, then
+we can complete the proof of correctness
+of Kosaraju's two-pass SCC computation
+algorithm. Okay, so if the lemma is true
+then after... I'll give you the argument
+about why we're done. About why we just
+peel off the SCC one at
+a time with the second pass of depth first
+search. Now of course a proof with a hole
+in it, isn't a proof. So at the end of the
+lecture I'm gonna fill in the hole. That
+is, I'm gonna supply a proof of this key
+lemma. But for now, as a working
+hypothesis, let's assume that it's true.
+Let's begin with a corollary, that is a
+statement which follows essentially
+immediately, from the statement of a lema.
+So for the corollary, let's forget about
+just trying to find the maximum
+maximum finishing time in a single SCC.
+Let's think about the maximum finishing
+time in the entire graph. Now, why do we
+care about the maximum finishing time in
+the entire graph? Well, notice that's
+exactly where the second pass of DFS
+is going to begin. Right, so
+it processes nodes in order from largest
+finishing time to smallest finishing time.
+So equivalently, let's think about the
+node at which the second pass of depth
+first search is going to begin, i.e., the
+node with the maximum finishing time.
+Where could it be? Well, the corollary is
+that it has to be in what I'm gonna call a
+sink, a strongly connected component, that
+is a strongly connected component without
+any outgoing arcs. So for example
+let's go back to the, meta graph of SCCs
+for the very first directed graph we
+looked at. You recall in the very first
+direc ted graph we looked at in when we
+started talking about this algorithm there
+were four SCCs. So there was a 'C1', a 'C2',
+a 'C3', and a 'C4'. And of course within each
+of these components, there could be
+multiple nodes but they are all strongly
+connected to each other. Now, let's use
+F1, F2, F3 and F4 to denote the maximum
+finishing time in each of these SCCs. So
+we have F1, F2, F3 and F4. So, now we
+have four different opportunities to apply
+this lemma. Right? Those four different
+pairs of adjacent SCCs. And so, what do
+we find? We find that well, comparing F1 and F2, because C2 comes after C1,
+that is there's an arc from C1 to
+C2, the max finishing time in C2 has
+to be bigger than that in C1. That is F2 is bigger than F1. For the same
+reasoning F3 has to be bigger than F1.
+Symmetrically we can apply the limit to
+the pair C2, C4 and C3, C4 and we get that
+F4 has to dominate both of them. Now
+notice we actually have no idea whether F2
+or F3 is bigger. So that pair we can't
+resolver. But we do know these
+relationships. Okay F1 is the smallest and
+F4 is the smallest [biggest!!]. And you also notice
+that C4 is a sink SCC and the sink has no
+outgoing arches and you think about it
+that's a totally general consequence of
+this lema. So in a simple group of
+contradiction will go as follows. Consider
+this SCC with
+the maximum F value. Suppose it was not a
+sink SCC that it has an outgoing arch,
+follow that outgoing arch to get some
+other SCC by the lema the SCC you've got
+into has even bigger maximum finishing
+time. So that contradicts the fact that
+you started in the SCC with a maximum
+finishing time. Okay. So just like in this
+cartoon, where the unique sink SCC has
+to have the largest finishing time, that's
+totally general. As another sanity check,
+we might return to the nine node graph,
+where we actually ran Kasaraja's
+algorithm and looking at the ford
+version of the graph, which is the one on
+the bottom, we see that the maximum
+finishing times in the three FCC are 4,6
+and 9. And it turns out that the same
+as the leader nodes which is not an
+accident if you think about it for a
+little while and again you'll observe the
+maximum finishing time in this graph
+namely 9 is indeed in the left most SCC
+which is the only SCC with no outgoing
+arks. Okay but it's totally general
+basically you can keep following arks and
+you keep seeing bigger and bigger
+finishing times so the biggest one of all
+it has to be somewhere where you get stuck
+where you can't go forward but there's no
+outgoing arks and that's what I'm calling
+a sink SCC. Okay. So assuming the lemma is true we know that the corollary
+is true. Now using this corollary
+let's finish the proof of correctness, of
+Kasaraja's algorithm, module over proof
+of the key lima. So I'm not going to do
+this super rigorously, although everything
+I say is correct and can be made, made
+rigorous. And if you want a more rigorous
+version I'll post some notes on the course
+website which you can consult for more
+details. So what the previous corollary
+accomplished, it allows us to locate, the
+node with maximum finishing time. We can
+locate it in somewhere in some sink
+SCC. Let me remind you about the
+discussion we had at the very beginning of
+talking about computing strong components.
+We're tryna understand depth-first search
+would be a useful workhorse for finding
+the strong components. And the key
+observation was that it depends, where you
+begin that depth-first search. So for
+example in this, graph with four SCC's
+shown in blue on the right. A really bad
+place to start. DFS called Depth For
+Search would be somewhere in C1. Somewhere
+in this source SCC, so this is a bad DFS.
+Why is it bad? Well remember what Depth
+For Search does; it finds everything
+findable from its starting point. And from
+C1 you can get to the entire world, you
+can get to all the nodes in the entire
+graph. So you can discover everything. And
+this is totally useless because we wanted
+to discover much more fine-grain
+structure. We wanted to discover C1, C2,
+C3 and C4 individually. So that would be
+an disaster if we invoked depth first
+search somewhere from C1. Fortunately
+that's not what's going to happen, right?
+We computed this magical ordering in the
+first pass to insure that we look at the
+node with the maximum finishing time and,
+by the corollary, the maximum finishing
+time is going to be somewhere in C4.
+That's gonna be a good DFS, in the sense
+that, when we start exploring from
+anywhere in C4, there's no outgoing arcs.
+So, of course, we're gonna find everything
+in C4. Everything in C4's strongly
+connected to each other. But we can't get
+out. We will not have the option of
+trespassing on other strong components,
+and we're not gonna find'em. So we're only
+gonna find C4, nothing more. Now, here's
+where I'm gonna be a little informal.
+Although, again, everything I'm gonna say
+is gonna be correct. So what happens now,
+once we've discovered everything in C4?
+Well, all the nodes in C4 get marked as
+explored, as we're doing depth first
+search. And then they're basically dead to
+us, right? The rest of our depth first
+search loop will never explore them again.
+They're already marked as explored. If we
+ever see'em, we don't even go there. So
+the way to think about that is when we
+proceed with the rest of our for loop in
+DFS loop it's as if we're starting
+afresh. We're doing depth first search
+from scratch on a smaller graph, on the
+residual graph. The graph G with this
+newly discovered strong component 'C<i>'</i>
+deleted. So in this example on the right,
+all of the nodes in C4 are dead to us and
+it's as if we run DFS anew, just on the
+graph containing the strong components C1,
+C2 and C3. So in particular, where is the
+next indication of depth first search
+going to come from? It's going to come
+from some sink SCC in the residual graph,
+right? It's going to start at the node
+that remains and that has the largest
+finishing time left. So there's some
+ambiguity in this picture. Again recall we
+don't know whether F2 is bigger or F3 is
+bigger. It could be either one. Maybe F2
+is the largest remaining finishing time in
+which case the next DFS indication's gonna
+begin somewhere more from C2. Again, the
+only things outgoing from C2 are these
+already explored nodes. Their effectively
+deleted. We're not gonna go there again.
+So this is essentially a sink FCC. We
+discover, we newly discover the nodes in
+C2 and nothing else. Those are now
+effectively deleted. Now, the next
+indication of DFS will come from somewhere
+in F3, somewhere in C3. That's the only
+remaining sink SCC in the residual graph.
+So the third call, the DFS will discover
+this stuff. And now, of course, we're left
+only with C1. And so the final indication
+of DFS will emerge from and discover the
+nodes in C1. And in this sense because
+we've ordered the nodes by finishing times
+when DFS was reverse graph, that ordering
+has this incredible property that when you
+process the nodes in the second pass we'll
+just peel off the strongly connected
+components one at a time. If you think
+about it, it's in reverse topological
+order with respect to the directed asypric
+graph of the strongly connected
+components. So we've constructed a proof
+of correctness of Kosaraju's, algorithm
+for computing strongly connected
+components. But again, there's a hole in
+it. So we completed the argument assuming
+a statement that we haven't proved. So
+let's fill in that last gap in the proof,
+and we'll we done. So what we need to do
+is prove the key lemma. Let me remind you
+what it says. It says if you have two
+adjacent SCCs, C1 and C2 and is an arc from a
+node in C1, call it 'I' to a node in C2, say
+J. Then the max finishing time in C2 is
+bigger than the max finishing time in C1. Where, as always, these finishing
+times are computed in that first pass of
+depth-first search loop in the reversed
+graph. All right, now the finishing times
+are computed in the reversed graph, so
+let's actually reverse all the arcs and
+reason about what's happening there. We
+still have C1. It still contains the
+node I. We still have C2, which still
+contains the node J. But now of course the
+orientation of the arc has reversed. So
+the arc now points from J to I. Recall we
+had a quiz which said, asked you to
+understand the effect of reversing all
+arcs on the SCC's and in particular there
+is no effect. So the SCC's in the reverse
+graph are exactly the same as in the
+forward graph. So now we're going to have
+two cases in this proof and the cases
+correspond to where we first encounter a
+node of C1 and union C2. Now remember,
+when we do this DFS loop, this second
+pass, because we have this outer four loop
+that iterates over all of the nodes we're
+guaranteed to explore every single node of
+the graph at some point. So in particular
+we're gonna have to explore at some point
+every node in C1 and C2. What I want you
+to do is pause the algorithm. When it
+first, for the first time, explores some
+node that's in either C1 or C2. There's
+going to be two cases, of course, because
+that node might be in C1, you might see
+that first. Or it might be in C2, you
+might see something from C2 first. So our
+case one is going to be when the first
+node that we see from either one happens
+to lie in C1. And the second case is where
+the first node V that we see happens to
+lie in C2. So clearly exactly one of these
+will occur. So let's think about case one.
+When we see a node of C1 before we see
+any nodes of C2. So in this case where we
+encounter a node in C1 before we encounter
+any node in C2, the claim is that we're
+going to explore everything in C1 before
+we ever see anything in C2. Why is that
+true? The reason is there cannot be a path
+that starts somewhere in C1, for example,
+like the vertex V, and reaches C2. This is
+where we are using the fact that the
+meta-graph on SCC is a cyclic. Right C1 is strong
+connected, C2 is strong connected, you can
+get from C2 to C1 and, if you can also get
+from C1 back to C2 this all collapses into
+a single strongly connected component. But
+that would be a contraction, we're
+assuming C1 and C2 are distinct strongly
+connected components, therefore you can't
+have paths in both directions. We already
+have a path from right to left, via JI, so
+there's no path from left to right. That's
+why if you originate a depth first search
+from somewhere inside C1 like this vertex
+V, you would finish exploring all of C1
+before you ever are going to see C2,
+you're. Only gonna see C2 at some later
+point in the outer for loop. So, what's
+the consequence that you completely finish
+with C1 before you ever see C2? Well it
+means every single finishing time in C1 is
+going to be smaller than every single
+finishing time in C2. So that's even
+stronger that what we're claiming, we're
+just claiming that the biggest thing in C2
+is bigger than the biggest of C1. But
+actually finishing times in C2 totally
+dominate those in C1, because you finish
+C1 before you ever see C2. So let's now
+have a look at case one actually in
+action. Let's return to the nine-node
+graph, the one that we actually ran
+Kosaraju's algorithm to completion. So if
+we go back to this graph which has the
+three connected components, then remember
+that the bottom version is the forward
+version, the top version is the reversed
+version. So if, if you think about the
+middle SCC as being c1, pulling the row of
+c1 and the left most. Scc playing the role
+of C2, then what we have exactly is case
+one of the key lemma. So, which was
+the first of these six vertices visited
+during the DFS loop in the reversed graph?
+Well that would just be the node with the
+highest name, so the node nine. So this
+was the first of these six vertices that
+depth first search looked at in the first
+pass, that lies in what we're calling C1.
+And indeed everything in C1 was discovered
+in that pass before anything in C2 and
+that's why all of the finishing times in
+C2, the 7,8,9 are bigger than
+all of the finishing times in C1 -
+the 1,5, and 6. So we're good to go in
+case two. We've proven sorry, in case one,
+we've proven the lemma. When it's the case
+that, amongst the vertices in C1
+and C2, depth first search in the first pass
+sees something from C1 first. So
+now, let's look at this other case, this
+grey case, which could also happen,
+totally possible. Well, the first thing we
+see when depth first searching in the
+first pass, is something from C2. And here
+now is where we truly use the fact that
+we're using a depth first search rather
+than some other graph search algorithm
+like breadth first search. There's a lot
+of places in this algorithm you could swap
+in breadth first search but in this case
+two, you'll see why it's important we're
+using depth first search to compute the
+finishing times. And what's the key point?
+The key point is that, when we invoke
+depth first search beginning from this
+node V, which is now assuming the line C2.
+Remember depth first search will not
+complete. We won't be done with V until
+we've found everything there is to find
+from it, right? So we recursively explore
+all of the outgoing arcs. They recursively
+explore all of the outgoing arcs, and so
+on. It's only when all paths going out of
+V have been totally explored and
+exhausted, that we finally backtrack all
+the way to V, and we consider ourselves
+done with it. That is, depth first search.
+In the reverse graph initiated at v. Won't
+finish until everything findable has been
+completely explored. Because there's an
+arc from C2 to C1, obviously everything to
+C2 is findable from V, that's strongly
+connected. We can from C2 to C1 just using
+this arc from J to I. C1 being strongly
+connected we can then find all of that.
+Maybe we can find other strongly connected
+components, as well, but for sure
+depth-first search starting from V will
+find everything in C1 to C2, maybe some
+other things. And we won't finish with V
+until we finish with everything else,
+that's the depth-first search property.
+For that reason the finishing time of this
+vertex V will be the largest of anything
+reachable from it. So in particular it'll
+be larger than everything in C two but
+more to the point, it'll be larger than
+everything in C1 which is what we are
+trying to prove. Again let's just see
+this quickly in action in the nine node
+network on which we traced through
+Kosaraju's algorithm. So to show the rule
+that case two is playing in this concrete
+example let's think of the right most
+strongly connected component as being C1.
+And let's think of the middle SCC as being C.2. Now
+the last time. We called the middle one C1
+and the leftmost one C2. Now we're calling
+the rightmost one C1 and the middle one
+C2. So again, we have to ask the question,
+you know, of the six nodes in C1 and in
+C2, what is the first one encountered in
+the depth first search that we do in the
+first pass. And then again, is the node
+nine? The, the node which is originally
+labeled not. So it's the same node that
+was relevant in the previous case, but now
+with this relabeling of the components,
+nine appears in the strongly connected
+component C-2, not in the one labeled C-1.
+So that's the reason now we're in case
+two, not in case one. And what you'll see
+is, what is the finishing time that this
+originally labeled nine node gets. It gets
+the finishing time six. And you'll notice
+six is bigger than any of the other
+finishing times of any of the other nodes
+in C1 or C2. All, the other five nodes
+have the finishing times one through five.
+And that's exactly because when we ran
+depth first search in the first pass, and
+we started it at the node originally
+labeled nine, it discovered these other
+five nodes and finished exploring them
+first before finally back tracking all the
+way back to nine, and deeming nine fully
+explored. And it was only at that point
+that nine got its finishing time after
+everything reachable from it had gotten
+there lower finishing times. So that
+wraps it up. We had two cases depending on
+whether in these two adjacent SCC's, the
+first vertex encountered was in the C1, or
+in C2. Either way it doesn't matter, the
+largest finishing time has to be in C2.
+Sometimes it's bigger than everything,
+sometimes it's just bigger than the
+biggest in C-1, but it's all the same to
+us. And to re cap how the rest of the
+proof goes, we have a corollary based on
+this lemma, which is maximum finishing
+time have to lie in sink SCC
+And that's exactly
+where we want our depth first search to
+initiate. If you're initiated in a strong
+component with no outgoing arcs, you do
+DFS. The stuff you find is just the stuff
+and that strongly connected component. You
+do not have any avenues by which to
+trespass on other strong components. So
+you find exactly one SCC. In effect, you
+can peel that off and recurse on the rest
+of the graph. And our slick way of
+implementing this recursion is to just do
+the single second, DFS pass, where you
+just treat the nodes in decreasing order
+of finishing times, that in effect,
+unveil, unveils all of the SCCs in
+reverse topological ordering. So that's
+it, Kosaraju's algorithm, and the complete
+proof of correctness. A blazingly fast
+graph primitive that, in any directed
+graph, will tell you its strong
+components.

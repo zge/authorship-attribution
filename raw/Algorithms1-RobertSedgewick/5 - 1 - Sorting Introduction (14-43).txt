@@ -1,0 +1,291 @@
+Okay, what are the rules that we're going
+to follow? Well, let's start with looking
+at a typical basic sorting problem. Say,
+university has student records and for
+every student there is a certain amount of
+information. Maybe there's a class number,
+there is a grade, there's a phone number
+maybe an address so we refer to an item
+and it has a record or the information
+that we're going to sort. But in
+particular, there's a piece of a record
+called a key and what we want to do is put
+the records into order according to the
+key. That's the sort problem. Re-arrange
+an array of n items into ascending order
+according to a defined key which is part
+of the item. Now, our goal is to be able
+to sort any type of data so let's look at
+a couple of client programs. First example
+is to just sort some random real numbers
+into ascending order. So, here's a client
+that calls our insertion sort method and
+all it does is read numbers from standard
+input than into an array a then calls
+insertion sort and then prints them out.
+And you can see on the right that the
+numbers are printed out in sorted order.
+This seems like an artificial kind of
+input but actually we'll look at an
+application even in this lecture. And then
+there are many applications where random
+inputs are fine model. Here's maybe a more
+familiar sort client that sort strings.
+And in this case it reads the strings from
+a file using our readStrings() method in
+our In class that which takes a file as
+argument. So we take the file name as the
+first command line argument, read in array
+of string from that file separated by
+blanks, call an Insertion.sort() method again. So,
+Insertion.sort is a method that takes an
+array a as its parameter and it, it's the
+first argument and it rearranges the
+strings in that array to be in sorted
+order. So in this case words, words
+three.text has the certain number of three
+letter words and this client program will
+result in those three letter words being
+rearranged into alphabetical order.
+Here's another client that we could use
+our sort program for, if we achieved the
+goal of sorting any type of data. In this
+one, we're going to sort file, file's name
+in a given directory. So again we use the
+File class from Java and we use, we go and
+use the listFiles() method from that class
+to get an array that contains all the file
+names in the given directory. That's an
+array with file names in it and Insertion.sort()
+takes that array as its first
+argument and again sorts them and then we
+go ahead and use as, go through them one
+by one and print them and they come out in
+order of file name. So that's three
+different clients, three completely
+different types of data. And the first
+rule of the game that we have to think
+about is, how can we make it so that we
+can implement one sort program that can be
+used by these three different clients to
+implement three different types of data.
+In the way that, that happens is a
+mechanism known as a callback. So, that's
+our basic question, how can sort, now, how
+to compare data of all those different
+types without being given any information
+about the type of an item's key? And the
+answer is that what is we set up a
+mechanism known as a callback or reference
+to executable code where the client, by
+passing an array of objects to the sort
+function. In Java, there's an implicit
+mechanism that says that any such array of
+object is going to have the compareTo()
+method, then the sort function calls back
+the compareTo() method associated with the
+objects in the array when it ever needs,
+whenever it needs to compare two items.
+There's a lot of different ways to
+implement callbacks and that's
+programming language specific. Different
+languages have different mechanisms. It's
+all about the idea of passing functions as
+arguments to other functions which is the
+pair and gets into functional programming
+and thinking all the way back to Turing and
+Church. For Java, because of the desire
+to check types at compile time, the use of
+specific method called an interface and
+then, we'll look at the details of how to
+implement callbacks with the Java
+interfaces now. It's a little bit of
+programming language detailed but it's,
+it's really worthwhile because it allows
+us to use the sorts that we developed for
+any type of data in a type safe manner. So
+we already looked at some clients. This is
+the example of the client program that
+sorts the files in a given directory by
+file name. So it just calls our sort()
+method with a, an array some type of
+object as first argument. Now, built in to
+Java is the so-called the Comparable
+interface and all the Comparable interface
+is the specification that a type, data
+type that implements Comparable will have
+a compareTo() method. And it's generic and
+will be compared to against a certain type
+of item. Now when we implement objects
+that are to be sorted we'll implement the
+Comparable method. That's up in the top
+class file, implements comparable file.
+And since sorting is an operation that's
+used in so many situations, many of the
+standard Java types that you would expect
+to involve sorts will implement
+Comparable. And all that means is that,
+that data type has an instance method that
+will implement the compareTo() method.
+It'll compare this object against the
+object given as argument and depending on
+some complicated tests, it'll return -1,
+meaning less, +1, meaning greater or
+0, meaning equal. Now, that compareTo()
+method is really all that the sort
+implementation needs. First it says that,
+that it's going to take as argument an
+array of type Comparable. So that means,
+the objects in the array are going to
+implement the Comparable interface or that
+it will have a compareTo() method. And then
+the sort code can just use that compareTo()
+method, invoked in a sense of the
+object like an entry in the array and as
+argument and another instance in the
+object like another entry in the array to
+test whether the first is less than the
+second as in this example. The key point
+is that the sort implementation has no
+dependence on the type of data that's
+handled by the Comparable interface and a
+different Comparable array will be sorted
+in the same way though eventually, because
+of the interface mechanism, they call back
+to the actual compareTo() code that goes
+with a type of object being sorted. Now
+there's a few rules and there's natural
+rules but they're worth talking about and
+paying attention to that the compareTo()
+method has to implement in the so called a
+total order. In all that saying is really
+that it must be possible to put items in
+order in a sort. So there's three
+properties. First one says that if v is
+less than or equal to w and w is less than
+or equal to v then the only way for that
+to be true is if they're equal and then
+there's transitivity. If v less than w, w
+is less than x, then v must be less than
+or equal to x. In totality, is that either
+v is less than or equal to w or w is less
+than equal to v or both they are equal.
+And there's plenty of natural total orders
+in the types of data that we normally want
+to consider for sort keys. Like the
+integers or natural numbers or real
+numbers or alphabetical order for strings,
+chronological order for dates or times and
+so forth. The cartoon on the right shows
+that not all orders are necessarily total
+orders. So, rock, paper, scissors is intransitive.
+If you know that v is less
+that w, w is less than v, you don't know
+that v is less than or equal to v. I'm
+sorry, v is less than w, w less than equal
+to x that you don't necessarily know that
+v is less than or equal to x. Alright. So
+the Comparable API then, by convention in
+Java we always need to implement compareTo()
+such that v that compared to w is a
+total order. And also by convention, it
+returns a negative integer for its less
+zero if it's equal positive its greater.
+If this object is greater than the object
+given as argument. If the types are
+incompatible or if either one is null
+compareTo() should throw an exception.
+Now, again, many of Java's standard types
+for numbers and dates and files and so
+forth implement compareTo() by convention.
+Now if we're going to implement our own
+type then we have to go ahead and
+implement the Comparable interface
+according to these rules. And usually
+that's fairly straightforward. So here's
+an example. It's a simplified version of
+the Date class that's implemented within
+Java just to show the idea of implementing
+Comparable. So, after the class
+declaration, we write implements
+Comparable and then we fill in the generic
+with the same type because we're only
+going to compare dates to other dates. In
+this implementation, the Date class has
+three instance variables. The month, the
+day and the year and the constructor
+fills those from the arguments as you can
+see. So now, if you want to compare two
+different dates then the first thing to do
+is to check if this year is less than that
+year, over that is the year given, the
+date given in the argument. If that's true
+then it's less return -1 and if it's,
+the year is greater, return +1.
+Otherwise, the year, years must be equal
+so we have to look at the months to do the
+compare and so forth down to do the days.
+Only if they're all equal that we return
+zero. So, that's an example of an
+implementation of Comparable by
+implementing the compareTo() method to put
+dates in order as you might expect. So the
+Java language helps us with this
+Comparable mechanism so that we can sort
+data of any type. When we continue to
+implement sorting algorithms, we're
+actually even in a hide that beneath our
+own implementations. So, that are sorting
+algorithms actually their actual code can
+be used to implement sorting in many other
+languages. The way we do that is to take
+the two primary operations, compares and
+exchangers that were that were, were used
+to refer the data and encapsulate them
+just the static methods. So, we're going
+to use a method less() that takes two
+Comparable objects as arguments and it
+just returns, v.compareTo(w) less than
+zero. And then the other thing that we do
+when we sort items that are in an array is
+to, to swap or exchange of the item at a
+given index i with the one at a given
+index j. And that's every programmer's
+first introduction to assignment
+statements. We save a[i] in a variable swap,
+put a[j] in a[i], and then put swap back
+in a[j]. So now our sort methods to refer
+the data will just use this two static
+methods. And there's a good reason for
+that. Here's an example. Suppose we want
+to test if an array is sorted. So this is
+a static method that is supposed to return
+true if the array is sorted and false if it's
+not. And all it does is just go through
+the array from the one to the length of
+the array and test if each item is less
+than the one before. If you have an item
+that's less than one before then it's not
+sorted you return false. If you get all
+the way through the array without that
+happening, then you say the array is true.
+That's pretty simple code, the question
+is, if you have a sorting algorithm that
+passes that test, are you sure that it
+correctly sorted the array? Well the
+answer to that question is, yes if, yes if
+you used only the less() and exchange()
+methods to implement, to refer the data
+because then you know because you used the
+exchange() method that the data in the array
+after the sort is the same data as was in
+the array before the sort, sort. If you
+have a sort method that can store any
+values in an array, it could, for example,
+store zeros in every array entry that
+method would pass this test, but it didn't
+really correctly sort the array because
+overwrote all the values. So, we use less()
+and exchange() to be sure that we can test
+that our, our methods work with the method
+like this.

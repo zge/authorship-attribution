@@ -1,0 +1,249 @@
+For logistic regression, we previously
+talked about two types of optimization algorithms.
+We talked about how to use
+gradient descent to optimize as cost function J of theta.
+And we also talked about
+advanced optimization methods.
+Ones that require that you
+provide a way to compute
+your cost function J of
+theta and that you provide a way to compute the derivatives.
+In this video, we'll show how
+you can adapt both of
+those techniques, both gradient descent and
+the more advanced optimization techniques
+in order to have them
+work for regularized logistic regression.
+So, here's the idea.
+We saw earlier that Logistic
+Regression can also be prone
+to overfitting if you fit
+it with a very, sort of,
+high order polynomial features like this.
+Where G is the
+sigmoid function and in
+particular you end up with
+a hypothesis, you know,
+whose decision bound to be
+just sort of an overly complex
+and extremely contortive function that
+really isn't such a great
+hypothesis for this training
+set, and more generally if you have
+logistic regression with a lot of features.
+Not necessarily polynomial ones, but
+just with a lot of
+features you can end up with overfitting.
+This was our cost function for logistic regression.
+And if we want to modify
+it to use regularization, all we
+need to do is add to
+it the following term
+plus londer over 2M, sum
+from J equals 1, and
+as usual sum from J equals 1.
+Rather than the sum from J
+equals 0, of theta J squared.
+And this has to
+effect therefore, of penalizing
+the parameters theta 1 theta
+2 and so on up to theta N from being too large.
+And if you do this,
+then it will the have the
+effect that even though you're fitting
+a very high order polynomial with a lot of parameters.
+So long as you apply regularization
+and keep the parameters small
+you're more likely to get a decision boundary.
+You know, that maybe looks more like this.
+It looks more reasonable for separating
+the positive and the negative examples.
+So, when using regularization
+even when you have a lot
+of features, the regularization can
+help take care of the overfitting problem.
+How do we actually implement this?
+Well, for the original gradient descent
+algorithm, this was the update we had.
+We will repeatedly perform the following
+update to theta J. This
+slide looks a lot like the previous one for linear regression.
+But what I'm going to do is
+write the update for theta 0 separately.
+So, the first line is
+for update for theta 0 and
+a second line is now
+my update for theta 1
+up to theta N.
+Because I'm going to treat theta 0 separately.
+And in order to
+modify this algorithm, to use
+a regularized cos function,
+all I need to do is
+pretty similar to what we
+did for linear regression is
+actually to just modify this
+second update rule as follows.
+And, once again, this, you know,
+cosmetically looks identical what
+we had for linear regression.
+But of course is not the
+same algorithm as we had,
+because now the hypothesis
+is defined using this.
+So this is not the same algorithm
+as regularized linear regression.
+Because the hypothesis is different.
+Even though this update that I wrote down.
+It actually looks cosmetically the
+same as what we had earlier.
+We're working out gradient descent for regularized linear regression.
+And of course, just to wrap
+up this discussion, this term
+here in the square
+brackets, so this term
+here, this term is,
+of course, the new partial
+derivative for respect of
+theta J of the new cost function J of theta.
+Where J of theta here is
+the cost function we defined on
+a previous slide that does use regularization.
+So, that's gradient descent for regularized linear regression.
+Let's talk about how to
+get regularized linear regression
+to work using the more
+advanced optimization methods.
+And just to remind you for
+those methods what we needed
+to do was to define the
+function that's called the cost
+function, that takes us
+input the parameter vector theta and
+once again in the equations
+we've been writing here we used 0 index vectors.
+So we had theta 0 up
+to theta N. But
+because Octave indexes the vectors starting from 1.
+Theta 0 is written
+in Octave as theta 1.
+Theta 1 is written in
+Octave as theta 2, and
+so on down to theta
+N plus 1.
+And what we needed to
+do was provide a function.
+Let's provide a function called
+cost function that we would
+then pass in to what we have, what we saw earlier.
+We will use the fminunc
+and then
+you know at cost function,
+and so on, right.
+But the F min, u
+and c was the F min
+unconstrained and this will
+work with fminunc
+was what will take
+the cost function and minimize it for us.
+So the two main things that
+the cost function needed to
+return were first J-val.
+And for that, we need
+to write code to
+compute the cost function J of theta.
+Now, when we're using regularized logistic
+regression, of course the
+cost function j of theta
+changes and, in particular,
+now a cost function needs to
+include this additional regularization term at the end as well.
+So, when you compute j of
+theta be sure to include that term at the end.
+And then, the other thing that
+this cost function thing
+needs to derive with a gradient.
+So gradient one needs
+to be set to the
+partial derivative of J
+of theta with respect to theta
+zero, gradient two needs
+to be set to that, and so on.
+Once again, the index is off by one.
+Right, because of the indexing from
+one Octave users.
+And looking at these terms.
+This term over here.
+We actually worked this out
+on a previous slide is actually equal to this.
+It doesn't change.
+Because the derivative for theta zero doesn't change.
+Compared to the version without regularization.
+And the other terms do change.
+And in particular the derivative respect to theta one.
+We worked this out on the previous slide as well.
+Is equal to, you know,
+the original term and then minus
+londer M times theta 1.
+Just so we make sure we pass this correctly.
+And we can add parentheses here.
+Right, so the summation doesn't extend.
+And similarly, you know,
+this other term here looks
+like this, with this additional
+term that we had on
+the previous slide, that corresponds to
+the gradient from their regularization objective.
+So if you implement this
+cost function and pass
+this into fminunc
+or to one of those advanced optimization
+techniques, that will minimize
+the new regularized cost function J of theta.
+And the parameters you get out
+will be the ones that correspond to
+logistic regression with regularization.
+So, now you know
+how to implement regularized logistic regression.
+When I walk around Silicon Valley,
+I live here in Silicon Valley, there are
+a lot of engineers that are frankly, making
+a ton of money for their
+companies using machine learning algorithms.
+And I know we've
+only been, you know, studying this stuff for a little while.
+But if you understand linear
+regression, the advanced optimization
+algorithms and regularization, by
+now, frankly, you probably know
+quite a lot more machine learning
+than many, certainly now,
+but you probably know quite a
+lot more machine learning right now
+than frankly, many of the
+Silicon Valley engineers out there having very successful careers.
+You know, making tons of money for the companies.
+Or building products using machine learning algorithms.
+So, congratulations.
+You've actually come a long ways.
+And you can actually, you
+actually know enough to
+apply this stuff and get to work for many problems.
+So congratulations for that.
+But of course, there's
+still a lot more that we
+want to teach you, and in
+the next set of videos after
+this, we'll start to talk
+about a very powerful cause of non-linear classifier.
+So whereas linear regression, logistic
+regression, you know, you can
+form polynomial terms, but it
+turns out that there are much
+more powerful nonlinear quantifiers that
+can then sort of polynomial regression.
+And in the next set
+of videos after this one, I'll start telling you about them.
+So that you have even more
+powerful learning algorithms than you have
+now to apply to different problems.

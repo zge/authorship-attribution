@@ -1,0 +1,411 @@
+Welcome back, today we're going to talk
+about balance search trees,
+Which will lead us to an ultimate symbol
+table implementation that can provide fast
+performance for all the simulative options
+we've looked at, guaranteed.
+So here's the review of where we were with
+single tables.
+We took a look at the last time at the
+binary search tree,
+Which if things are well modeled by random
+exertions, have a great performance.
+They get search and insert on in time
+proportion for log base two of N and they
+support ordered operations.
+But really our goal is to have these
+operations be guaranteed to take time
+proportional to log N,
+Because we don't have control over the
+order of operations and they may not be
+random at all.
+And in fact, in many real applications,
+they're not very random.
+So that's what were going to look at now
+is try to find an implementation that can
+guarantee to be fast for all the symbol
+table operations.
+.
+That's our challenge.
+So what we're going to talk about to do
+it, is an algorithm, that actually pretty
+old algorithm called 2-3 trees, and a
+particular implementation that requires
+very little code, called left leaning red
+black BSTs and then we'll talk about a
+generalization called B-trees. And these
+methods are all widely used throughout our
+computational infrastructure.
+To start, we'll talk about 2-3 search
+trees, which is a model that underlies the
+concise and efficient implementation that
+we're going to look at.
+So, the 2-3 tree is a way to generalize
+BSTs to provide the flexibility that we
+need to guarantee fast performance.
+And the idea is very simple,
+We allow one or two keys per node.
+That is, we allow for the possibility of
+something called a 3-node that can hold
+two keys,
+But then it has to have three children.
+In a regular BST node, the 2-node, we have
+one link for the keys that are less than
+the key in the node, and one link for the
+keys that are greater.
+In a 3-node, we need three links, one for
+less, one for between and one for greater.
+Another property of these 2-3 trees is
+that we are going to have perfect balance,
+That is every path from the route to a
+null link is going to have the same link
+in the 2-3 tree.
+So, as I mentioned, the symmetric order is
+part of the definition of a 2-3 tree.
+Every 3-node has three links and two keys.
+The left link is for the keys that are,
+points to a 2-3 tree with the keys that
+are smaller than the smaller of the two
+keys in the 3-node.
+The middle link points to a 2-3 tree that
+contains all the keys that are between the
+two keys.
+And the right link points to all, 2-3 tree
+containing all the keys that are larger
+than the larger of the two keys in the
+3-node.
+Okay, let's take a look at a demo of
+searching in a 2-3 tree.
+So say we have this 2-3 tree here and we
+want to search for whether or not H is one
+of the keys in the tree.
+So we start at the root,
+Compare the search key against the key or
+keys in the node.
+And follow the link corresponding to the
+interval that we know must contain the
+search key by definition of the tree and
+then we recursively continue the search.
+So, if we're looking for H, it's less than
+M, so the only place it could be in this
+2-3 tree is in the 2-3 tree on the left
+link,
+So we follow the left link.
+Now, we compare H with E and J, and in
+this case it's between, so now we are
+going to take the middle link, that's the
+only place that H possibly could be.
+In this case, that node, one node 2-3 tree
+contains H, so that's a search hit.
+Let's take another example for
+unsuccessful search, a key that's not in
+the tree.
+As usual, we start at the root.
+It's less, so we go left.
+And it's less than both keys,
+So, if it's in the tree, it would have to
+be in the left link and it's between those
+two keys.
+So if it's in the tree, it would have to
+be on the middle link.
+And that link is null, so that's a search
+miss.
+So the search is a natural generalization
+of the search in, binary search trees.
+Now what about inserting?
+Well, it's a similar type of strategy as
+with regular binary search trees, except
+that we manipulate the two and 3-node to
+keep perfect balance in the tree.
+So the easy case is if the key winds up in
+a 2-node at the bottom, like this one.
+Suppose we're inserting K. K is less than
+M so we go left.
+K is greater than both the keys, so we go
+right.
+K is less than L, so the search ends at
+the left link of L.
+And to perform an insertion all we need to
+do is replace that 2-node with a 3-node
+containing K.
+Now, K is inserted into the 2-3 tree and
+it satisfies all the rules.
+Now if we're inserting into a 3-node at
+the bottom, we have to do more work.
+And specifically, the work we do is, we
+add the key to a 3-node to create a
+temporary 4-node and then split up that
+four node and move it's middle key into
+the parent.
+So, let's see an example.
+If we are going to insert Z into this
+tree, it's greater than N, so we go to the
+right. It's greater than R, so we go to
+the right. And now it's greater than x,
+and that's a null link to the right of x,
+so the search ends there and are, what we
+want to do is insert Z into that 3-node.
+And the way we do it is, first make a
+temporary 4-node that replaces that
+3-node.
+And then that's not a 2-3 tree cuz it's
+got that one 4-node with three keys and
+four links.
+But what we can do is split that 4-node
+and pass the middle key up to its parent.
+So split into two 2-node and pass the
+middle key to the parent.
+That's kind of a magical operation and
+believe me, it's easier to get done in the
+implementation than the graphics.
+But now you can see that, that local
+transformation on the 2-3 tree completes
+the insertion.
+Now, if that parent were a 3-node, it
+would become a temporary 4-node and would
+continue the process moving up the tree.
+That's a demo of search and insertion in a
+2-3 tree.
+So, let's look at a double split like
+that.
+So, say we're inserting L in, into this
+tree.
+So, it goes down to the middle, and winds
+up needing to be inserted in the, 3-node
+in the middle.
+So we're going to convert that into a
+4-node.
+Now, L is the middle key of that one,
+So we're going to split that 4-node into,
+two 2-nodes and move L to the parent.
+The 4-node had four links, and the two
+2-nodes have four lengths, so nothing has
+to be changed below.
+And then this insertion into the parent
+changed it from a two, a 3-node into a
+4-node essentially adding a length cuz of
+the split with the two 2-nodes where there
+was only one 3-node before.
+But now, that's not a 2-3 tree, so we have
+to split again.
+And in this case there is no paren, so we
+create a new one and the height of the
+tree increases by one.
+That's the only time the height of a 2-3
+tree changes, when the roots splits the
+height introduces increases by one.
+So, that's a demo of insertion into a
+3-node at the bottom, in a 2-3 tree that
+percolates all the way to the top.
+Now let's look at constructing a 2-3 tree
+from an initially empty tree.
+So if we start by just inserting a key,
+well, that just creates a 2-node
+containing that key, and that's legal 2-3
+tree, so we're fine.
+Now, inserting E into that well, it's
+going to B if it's in the tree left of S,
+that's a null lin. So we need to convert
+that 2-node into a 3-node.
+Okay? And that's the legal of 2-3 trees,
+So we stop inserting A into that.
+We convert that 3-node into a temporary
+4-node, but then we need to split that
+4-node moving E to the parent and that
+creates a new, root node and increases the
+size of the tree by one, But now that's a
+legal 2-3 tree so we stop.
+Insert R into that, it goes to the right
+of E.
+Convert into a 3-node,
+Now insert C into that. it goes to the
+left of E, has to be joined with A into a
+new 3-node.
+Again, that's a legal 2-3 tree and we
+stop.
+Now we insert H, that kind of goes to the
+right of E.
+That 3-node gets converted into a 4-node.
+That's a temporary 4-node and we split and
+move R to the parent,
+Now that parent's a legal and there's
+nothing more to be done.
+We, have a legal three tree,
+2-3 tree. Insert X,
+It's bigger than R,
+Goes to the right.
+There's a 2-node, there's room for the X.
+Insert P,
+That goes between E and R.
+The 2-node containing H,
+Right link is null,
+So we convert that 2-node into a 3-node
+and now we have a legal 2-3 tree.
+Now, you, you can see this next insertion
+is going to cause some splitting wherever
+it is.
+So insert L,
+That's between E and R.
+So it goes in the, 3-node containing H and
+P and we convert that into a temporary
+4-node.
+Split that 4-node, moving L to the parent.
+Now that parents of 4-node and that has to
+be split,
+And we create a new root node.
+And then the height of the tree grows by
+one.
+And that's a legal 2-3 tree, so we stop.
+So, those local transformations,
+converting a 2-node to a 3-node or
+converting a three to a four, and then
+splitting and passing a node up.
+Those are the, only operations we need to
+consider to get balance in our search
+trees.
+Alright.
+So as I've mentioned and this diagram
+shows, the splitting of 4-node and a 2-3
+tree is a local transformation.
+It only involves changing a constant
+number of links.
+So, in this example, it shows the general
+situation, when the 4-node to be split is
+the middle length,
+But the same is true if it's a left or
+right.
+And those six subtrees drawn could be
+huge.
+They could contain millions of keys,
+But it doesn't matter what they contain.
+We don't touch them at all,
+Nor do we touch anything above this node
+in the tree until the split happens.
+So the transformation that splits that b,
+c, d, node and inserts the C into the
+3-node at the root, just involves, making
+that 3-node into a temporary 4-node.
+And making that, 4-node into two 2-nodes
+and adjusting the lengths appropriately.
+Just a constant number of operations and
+that's why, this operation, is, in
+general, efficient. so let's look at the
+just the global properties that these
+manipulations preserve.
+The two things that are critical is that
+the, in a, in a 2-3 tree, we always have
+symmetric order.
+That is the word that we defined, for
+2-nodes and 3-nodes, and we also have the
+perfect balance.
+The distance from the root to the bottom
+is always the same.
+And to prove that, we just need to show
+that each transformation maintains
+symmetric order and perfect balance, and
+these are all the possible transformations
+that we could do.
+If we split the root, then, that's the,
+what happens at the root, and if there was
+perfect balance before, there's perfect
+balance after, with the height one bigger.
+If the parent was a 2-node then the
+transformation is a local transformation
+and if you look at where the links are,
+then it's easy to see by induction that if
+there was perfect balance before there's
+perfect balance afterward,
+Because we didn't change anything about
+the perfect balance in any of those
+subtrees.
+And that's true in every case.
+If the 3-nodes at the right and this one
+is one higher and those four are one lower
+and afterwards it's the same.
+If there was perfect balance before
+there's perfect balance afterwards,
+because we didn't change the height of any
+nodes.
+We just moved things around locally within
+nodes.
+And this is when this parent is a 3-node,
+then there's the tree cases,
+If we split up the last split at the
+middle and split at the right,
+And again, changing the four node to, to a
+2-nodes and adding links.
+If there was perfect balance before,
+there's perfect balance after, because we
+didn't change the heights of anything else
+in the tree.
+So our operations maintain symmetric order
+and perfect balance in a 2-3 tree.
+So, that's going to give us, a very easy
+way to describe a performance.
+The call, or operations have costs that's
+proportional to the path link from the,
+height to the bottom, and every path from
+the root to a null link has the same
+length.
+How long can those paths be?
+Well, it's not hard to see that the, in
+the worst case, if they're all 2-nodes,
+that's the longest they can be is log base
+two of N.
+Now, and if they're all 3-nodes, it would
+be log base three of N, which is less,
+It's about 0.63 log base two of N.
+So, all the paths in a 2-3 tree with N
+nodes have to have length between those
+two bounds and those are pretty small
+numbers.
+For a million nodes, that's between twelve
+and twenty.
+And, if, if it's a billion nodes, that's
+between eighteen and 30.
+Those are remarkably small numbers, so
+we're going to have guaranteed
+performance, even for huge databases,
+We're going to be able to guarantee that
+we can get search and insert them with
+just eighteen to 30 operations and it's
+quite remarkable, really.
+So, here's what our table, will look like,
+when we finish the implementation of 2-3
+trees.
+Every operation is guaranteed to be a
+constant times log n.
+Now, the constant depends on the
+implementation, exactly what kind of
+manipulations we need to do to convert,
+3-nodes to 4-nodes and so forth.
+But it's, easy to see from demo and from
+the diagrams that those are going to be
+constant, guaranteed logarithmic
+performance for all operations, which is
+certainly what we want in a symbol table
+implementation Now what about the
+implementation?
+Well, we're actually not going to talk
+about a direct implementation of 2-3
+trees, because it's kind of complicated.
+It's cumbersome to maintain multiple node
+types.
+You might need, a multiple compares to
+move down the tree.
+If there's a two, a 3-node, it takes more
+compares than a 2-node,
+So, it's complicated to analyze.
+We have to take track, keep track the
+links as we go up and down the tree to
+take, handle the splitting,
+And there's, and there's a lot of cases.
+I drew all the cases and, and, there's a,
+whether you're splitting into the middle
+of a 4-node or the right of a 2-node,
+there's just a lot of cases.
+So, you could do it but we're not going to
+because there's a much easier way.
+So that's 2-3 trees,
+A, a model for implementing balanced trees
+in guaranteed logarithmic time.

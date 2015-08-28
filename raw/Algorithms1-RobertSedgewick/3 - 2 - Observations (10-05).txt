@@ -1,0 +1,181 @@
+Okay, so the first step is to be able to
+make some observations about the running
+time of the programs. And for analysis of
+algorithms that's easier than in a lot of
+scientific disciplines, as we'll see. For
+a running example we're going to use the
+so-called 3-sum problem. And it's an easy
+to state problem. If you've got N distinct
+integers, how many triple sum to exactly
+zero? For example in this file 8ints.text.
+Text which has eight integers in it.
+There's four triples that sum to zero. 30
+- 40, ten. 30 - twenty - ten and so forth
+and so our goal is to write a program that
+can compute this quantity for any input
+file, any set of N integers. This is
+actually a, an extremely important
+computation that's deeply related to many
+problems in computational geometry which
+is a branch of computer science that
+covers the algorithms and underlying
+science related to graphics and movies and
+geometric models of all sort. So this is a
+actually an important practical problem.
+But it's a simple one to write code for in
+a view you could write down this program
+without much effort. It's a, got a static
+method count that is going to go ahead and
+take a integer array as an argument. And,
+is that, that's a number of integers,
+that's the length of the array. We will
+start with a variable count equals zero,
+and then a triple for loop, that checks
+each triple I j k, we go I from one and j
+from I+1 to n, and k from j+1 to n, so
+that we get each triple just once. And
+then if I+j, ai + aj + ak = zero, we
+increment the count. Alright. And after
+that triple four loop, we return the
+count. And then the main method, in this
+simple class just reads in, all the
+integers, and prints out the count. So
+that's a brute force algorithm that is a
+fine method for solving the three sum
+problem, now what we're interested in is
+how much time does this take as a function
+of' n? Well, one to time our program is to
+is just look at the watch. If you have a
+stopwatch, or look at the clock or your
+phone, or whatever you might need you can
+just go ahead and time it if you want or
+we have, Java has this part of it's
+standard library, a stopwatch class that
+will go ahead and compute a lapse time.
+So, in order, anytime you run a program,
+if it is setup to easily take input of
+different sizes, a natural thing to do, is
+just run it for bigger sizes. So for eight
+ints this program takes not too much time,
+for 1000 ints it takes half a second. For
+2,000. Takes more time. That's 3.7 seconds
+run it again, still takes 3.7 seconds for
+4,000, so each time we're doubling the
+size of the input and it's definitely
+taking more time each time. And actually
+as we'll see if programmers who get in the
+habit of testing or any time on their
+program in this way can get so that you
+can actually pretty easily and quickly
+evaluate when it's going to finish. In
+fact. While you're waiting for it to
+finish you can often figure it out. So
+that one took 30 seconds for 4K and
+definitely we could figure it out how long
+it's going to take for 8K before it
+finishes, and you'll see how in just a
+second. I'm not going to wait right now.
+You can think about what you think. Okay
+so [cough] that's empirical analysis,
+analysis. Run it for various input sizes
+and measure their running time. Now if
+this were some scientific problem where we
+were counting something that happen in the
+natural world. The number of ants in an
+ant hill or whatever then we'd have only a
+few data points and we would try to
+understand whats was going on by doing a
+plot of or running time with quite
+interested in on the Y axis and problem
+size with the X axis. Hit a curve like
+this and actually whats science usually do
+because of some many problems fall into
+out of this class is do the plot as a lg,
+lg plot. If you do it as a lg, lg plot
+very often you'll get a straight line. And
+the slope of the straight line is the key
+to what's going on. In this case, the
+slope of the straight line is three and so
+you can run what's called a regression to
+fit a late, the straight line through the
+data points. And then, it's not difficult
+to show to do the math to show that if you
+get a straight line and the slope is B,
+then your function is proportional to A,
+N^B. That's called the power law. And
+that's true of many, many scientific
+problems including most algorithms. So
+here's a little bit of the math for that.
+So the straight line means that since we
+did a lg, lg plot with powers of two, that
+lg(T(N) = B lg N + C. And we have our
+empirical values of B and C and then if
+you raise both sides of that equation to
+two to that power then you get T(N) = a
+constant times N^B. So right away just
+from observation we have a pretty good
+model for the running time for our
+program, we can figure and do the math and
+figure out that it seems as though the
+running time is about ten^-10 N^3 seconds.
+We can use that hypothesis to go ahead and
+make predictions. Just plug in for
+different values of N and it says it will
+take us 400 seconds for 16,000. 400
+seconds is plenty of time but now we can
+go ahead and invest and run that
+experiment and sure enough we're pretty
+close to that 408 seconds when we run it.
+And now we can make a prediction for
+32,000 or for or for whatever else we
+might be interested in. The model helps us
+do predictions without investing the
+expense to run the experiments. In fact,
+in this situation if there is a power law,
+and again in a very great majority of
+computer algorithm running times is going
+to be a power law. What we can do is just
+double the size of the input each time the
+way we were and take the ratio of the
+running times for N and 2N. And if you do
+that, that ratio going to converge to a
+constant. And in fact the log of the ratio
+is going to converge to that constant,
+which is the exponent of N and the running
+time. And you just need a little math to
+check that one, but that's a very easy and
+natural way to go ahead and predict
+running times. So that's what I said
+before is, so we have this quick way to
+estimate B in the power law relationsh ip.
+How do we estimate A? Well we can just run
+it and solve for A. So once we've decided
+that, that exponent is three let's run it
+for some big N and we get pretty close
+model to the one we had from plotting
+things. So it's almost identical
+hypothesis and we just got it by running
+the program double N each time. Okay so
+there is a lot of effects in trying to
+understand the running time of a program
+on, on your machine. [cough] So. Key
+effects are independent of what computer
+it is. And that's the algorithm you're
+using and what's the data. And that's
+going to really determine the exponent in
+the power law. And then there's a lot of,
+system dependent effects. What kind of
+hardware do you have? Do you have a fast
+computer or a slow one? What kind of
+software? What's going on in your
+computer? All of those things really
+determine the constant A in the power law.
+So. In modern systems it is so much going
+on in the hardware and software, it's
+sometimes difficult to get really precise
+measurements. But on the other hand we
+don't have to sacrifice animals, or fly to
+another planet the way they do in other
+sciences, we can just run a huge number of
+experiments and usually take care of
+understanding these kind of effects.

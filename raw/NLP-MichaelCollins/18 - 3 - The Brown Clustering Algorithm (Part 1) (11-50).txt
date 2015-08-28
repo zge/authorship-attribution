@@ -1,0 +1,260 @@
+So, how do we recover these 
+representations? 
+How do we derive these representations 
+from large quantities of unlabeled dater? 
+In a moment, I'm going to describe the 
+mechanics of the Brown clustering 
+algorithm. 
+But firstly, I want to talk about the 
+intuition which underlies this algorithm. 
+The intuition is that if we have a large 
+amount of unlabeled dater, we can 
+leverage the fact that similar words tend 
+to appear in similar contexts. 
+Or a little more precisely, similar words 
+have similar distributions of words to 
+their immediate left and right. 
+So, for example, if I take the word the 
+and the word a, these are both similar 
+words. 
+They're both determiners. 
+I can look at the frequency of different 
+words, the immediate left and right. 
+So, we might find the prepositions like, 
+in and of frequently seen to the left of 
+the word there. 
+the nouns like dog or park or share, are 
+frequently seen to the right. 
+And so, you can, given a large 
+conceivable dater, you can basically look 
+at the distribution of words, to the 
+immediate left of the word and the 
+distribution of words to the immediate 
+right. 
+And I can do a similar thing for the word 
+a. 
+And because these two words are similar, 
+I'm going to see a very similar 
+distribution or at least a somewhat 
+similar distribution, where again, I see 
+the most frequent words being nouns like 
+dog, park, or share to the right and 
+prepositions like in and of to the left. 
+If I take another example, if I take 
+Monday versus Tuesday, if I look at the 
+frequent words to the left, they're 
+going to be things like last or on 
+Monday, last Monday, various things here. 
+And again, we're going to see these words 
+like last or on, frequently in this 
+context. 
+And similarly, there'll be a set of words 
+which tend to appear after days of the 
+week. 
+And we'll see a similar right context for 
+Monday and Tuesday because they are both 
+days of the week. 
+So, that's the basic intuition. 
+And the brown clustering method is one 
+clustering algorithm. 
+They're actually several possible 
+algorithms. 
+We're going to focus on this one. 
+But all of these different ways of 
+deriving these word clusters basically 
+leverage this intuition that similar 
+words tend to have similar distributions 
+of words to the left and right. 
+So, now let's look at the formulation 
+underlying the Brown algorithm. 
+So, we'll use script V to refer to the 
+set of all words seen in the corpus. 
+I, this is going to be our vocabulary. 
+And we'll assume that the corpus consists 
+of a sequence of words, w1 through w 
+capital T. 
+For convenience, I'll assume that we 
+don't have individual sentences, we just 
+have one very long sequence of words. 
+Think of this as, as the entire corpus 
+concatenated. 
+it's a minor detail, whether we split 
+this into sentences or not. 
+And the output of the brown clustering 
+model, for now, is going to be a 
+clustering. 
+a clustering is a function c that maps 
+the vocabulary to the set one through k. 
+So, every word in the vocabulary is 
+going to be sign-, assigned an integer. 
+So, say k equals 1000, we have 1000 
+clusters. 
+We might assign the word the to 1, a to 
+1. 
+And then, maybe, Monday [SOUND] to 2, 
+said to 3, and so on. 
+So, this function is going to map each 
+word to an integer, between 1 and 1000, 
+say. 
+Basically, you're defining a mapping from 
+words into the underlying classes. 
+. 
+So, in the Brown model, there are 
+basically two types of parameters. 
+And they look very similar to the types 
+of parameters we would see in a Bigram 
+HMM. 
+So, firstly we have a mission parameters. 
+So, we might, for example, have e of the 
+given 1, which intuitively is the 
+probability of cluster one omitting the 
+word the. 
+Okay. 
+So, each cluster from 1 to k is going to 
+have a distribution over the different 
+words in the vocabulary. 
+The second type of parameter looks very 
+much like the kind of transition 
+parameter we saw in HMM's. 
+So, for example, q of 3 given 1, would be 
+the probability of class 3 following 
+class 1. 
+So, a Brown Clustering model is going to 
+consist of a function c and that maps 
+vocabulary v to the set 1 through k, 
+together with these parameters, these e 
+and these q parameters. 
+It's really very similar to an HMM. 
+The main difference is that this function 
+c is deterministic, that each word gets 
+mapped to a single state. 
+We're not going to allow any ambiguity 
+where different words rather the same 
+word, can belong to different states in 
+the HMM. 
+Now, given settings for these parameters 
+e and q, and given a definition of this 
+function c, we can write down the 
+probability of our corpus as follows. 
+it's going to be a product of terms, i 
+equals 1 to N, and we're basically 
+going to have a Bigram model, wi given wi 
+minus 1. 
+That's what this term here is. 
+But to calculate this, we calculate this 
+in a rather different way than what we've 
+seen before. 
+So, there are two terms. 
+Firstly, I have q of C of wi, given C of 
+wi minus 1. 
+That intuitively is the probability given 
+that the previous cluster was C of wi 
+minus 1, of choosing the next cluster of 
+Cwi. 
+And then I have e of wi given C of wi 
+minus C of wi, sorry. 
+That's what we have here. 
+So, you can think about this as follows. 
+Say, the previous word is the, say this 
+is wi minus 1, and I want to calculate 
+the probability of the next word being 
+dog. 
+And lets say for the sake of argument 
+that C of the is equal one and C of dog 
+is equal to 50. 
+So, the falls into the first cluster and 
+dog fall-, falls into the 50th cluster. 
+Then, in some sense, what I'm doing here 
+is I'm first mapping the word the to 
+cluster one and then, conditioned on 
+that, I'm mapping to class 50 as the next 
+one. 
+And then, I'm generating the word dog 
+from this cluster 50. 
+And the result is we have p of dog, given 
+the, is equal to e of dog given 1, sorry, 
+50 times q of 50 given 1. 
+so that's the basic model. 
+The thing to really, to bear in mind 
+though, is that all this machinery is 
+really there, so we can derive this 
+clustering. 
+So, we'll see that in learning this 
+model, we're actually going to have a 
+method that takes a corpus' input and 
+choose its parameters e and q and a 
+clustering c. 
+But the clustering is really what we are 
+looking for as the output of this model. 
+We want a division of words in the 
+vocabulary into a set of clusters, such 
+that similar words appear in the same 
+cluster. 
+And a little later, we'll talk about how 
+actually to optimize this, how to choose 
+values for each e, q, and c that attempt 
+to maximize this function. 
+. 
+Let me give you one more example of how 
+this model works on a slightly more 
+complicated example. 
+So, here I have the full distribution, 
+the definition I showed you on the 
+previous slide. 
+And now, let's assume that of our 
+vocabulary V just consists of the words 
+the, dog, cat, saw, or at least it has 
+those four words. 
+It might have many others. 
+And so C of the is going to be 1, C of 
+dog is equal to C of cat is equal to 2, 
+and C of saw is equal to 3. 
+That's reflecting the fact that this word 
+appears in cluster one, these two are in 
+cluster 2, and this word, word is in 
+cluster 3. 
+Let's assume we have these mission 
+probabilities. 
+So, e of the given 1 is 1, e of cat given 
+2 is equal to e of dog given 2 is 0.5, e 
+of saw given 3 is 1. 
+And let's assume we have some transition 
+prob- probabilities. 
+Let's not see how we can calculate the 
+probability of the dogs or the cat. 
+Well, the first thing we do is we notice 
+that each of these words falls into a 
+cluster, and so, the falls into cluster 
+one dog into two, saw into three, the 
+into one, cat into two. 
+And we can now write down the precise 
+form of this equation, for this 
+particular example. 
+So, firstly, I'm going to have some q 
+terms corresponding to basic mark of 
+sequence under these, these five words. 
+So I have q of 1 given 0. 
+I'm assuming that the class, class for 
+the, sort of the star word, the start of 
+the sentence is equal to 0, and q of 2 
+given 1 times q of 3 given 2 times q of 1 
+given 3 times q of 2 given 1. 
+Looks very much like a standard HMM. 
+And then, I have e of the given 1 times e 
+of dog given 2 times e of saw given 3, 
+and so on and so on. 
+One emission term for each of these 
+words. 
+So, again, very similar to the 
+calculations. 
+We see for HMM's. 
+The only wrinkle here really is that we 
+have this function c that maps a word to 
+a deterministic choice of underlying 
+state. 
+And so, to calculate this probability, 
+we'll first look up for each word, which 
+cluster it falls into and then calculate 
+the probability of the sentence as a 
+product of q and e terms. 
+

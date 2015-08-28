@@ -1,0 +1,213 @@
+In this segment, I'm going to introduce
+another score that's used for ranking
+the matches of documents to a query. And
+that is, to make use of this notion of
+document frequency. In particular, we
+always use it in reverse, so it's normally
+referred to as inverse document frequency
+weighting. The idea behind making use of
+document frequency is that rare terms are
+more informative than frequent terms. So
+if you remember earlier on we talked about
+stop words, which was you know, words like
+the, and to, and of. And so the idea that
+it was that these words were so common, so
+semantically empty, that we didn't have to
+include them in our information retrieval
+system at all. They had no effect on how
+good a match a document was to a query.
+Well, that's maybe not quite true, but
+there's some truth in it. In particular it
+seems like in general very common words
+aren't very determinative of the matching of
+a document in the query, whereas rare
+words are more important. So consider a
+term in the query that is very rare in the
+collection, perhaps something like
+arachnocentric. Well, if someone had typed
+that word into their query and we can find
+a document that contains the word
+arachnocentric it's very likely to be a
+document that the user would be interested
+in seeing. So we want to give a high
+weight in our match score for rare terms
+like arachnocentric. On the other hand,
+frequent terms are less informative than
+rare terms. So consider a term that is
+frequent in the collection, like high
+increase line which might occur in lots of
+documents. Well, a document containing
+such a term is more likely to be relevant
+than a document that doesn't, if the query
+contained one of those terms. But it's not
+such a sure indicator of relevance. So
+frequent terms we want to give positive
+weights for a document matching a term in
+the query, but lower weights than for rare
+terms. And so the way we're going to go
+about doing that is by making use of this
+notion of document frequency scores. So
+what exactly is that? Well. The document
+frequency of a term is the number of
+documents that contain the term. So what
+this means is that we're looking at the
+entire collection. So maybe the collection
+is a million documents and if ten
+documents have this word, we're saying
+that the document frequency is ten. So
+that's just counting the number of
+documents that occurs regardless of
+the number of times it occurs. That's
+something I'll come back to. So document
+frequency is an inverse measure of
+informative that, of informativeness of
+the term. And we also note that the
+document frequency has to be, of all term
+has to be smaller than the number of
+documents in the collection. So putting
+that together, this gives us the measure
+of inverse document frequency where we
+start with the document frequency and use
+it as the denominator. And the numerator N
+here is the number of documents. So for a,
+a word that appears in just one document,
+this part will be N. And for a word that
+appears in every document, its value will
+be one. So it's some value between one and N.
+And so then what we do after that is we
+take the log of it. And the log is used to
+dampen the effect of inverse document
+frequency. The idea again is that if you
+just use the absolute score, that would be
+too strong a vector. Now in this
+computation you can see I've used log to
+the base ten and that's very commonly
+used. But actually it turns out that what
+we use as the base of the log isn't really
+important. Okay, let's go through a
+concrete example, where again we are going
+to suppose that the size of our document
+collection is 1,000,000 documents. So if
+we take an extremely rare word like
+calpurnia, which let's say occurs in just
+one document. Well, then what we are going
+to be doing is we're going to be taking,
+1,000,000, the number of documents, divided
+by one, and then taking the log of that,
+which means with log to the base ten, then
+that would be six. If we take a somewhat
+more common doc-, word that occurs in
+may 100 documents, then we going to get
+the inverse frequency of that is four. And
+so then we can work on down for
+progressively more common words, and the
+inverse document frequency or countdown.
+And in particular in the final case if we
+assume the word the occurred in every one
+of our documents, well then we've got a
+million divided by a million, which is
+one, and if we take the log of that, which
+is, we get the answer zero. So the result
+we actually get is that a word that occurs
+in every document does have a weight of
+zero, according to an IDF score and has no
+effect on the ordering of words in
+retrieval. And that makes sense because if
+it has, if it occurs in every document it has no
+discriminatory value between documents, and gets a
+weight of zero. And so what you can see with these
+numbers overall though is that this
+inverse document frequency weighting will
+give a small multiplier to pay more
+attention to words that a rarer words,
+rather than very common words. Another
+thing to note here is that IDF values
+aren't things that change for each query,
+that there's precisely one IDF value for
+each term in the collection, and that's
+going to be the same regardless of what
+query you're issuing of the collection.
+Okay, here's a, a yes/no question for you
+guys, does the IDF have an effect on
+ranking for one term queries like this one.
+The answer is no, it doesn't. IDF has
+no effect on one term queries. So for a
+term one query, you're going to have one
+of these terms of N over the document
+frequency, and it'll be worked out. But
+it's going to be just a scaling factor.
+Which, since there's only one IDF value
+for each term will be applied to every
+document, and therefore, it won't affect
+the ranking in any way. You only get an
+effect from IDF when you have multiple
+terms in a query. So, for example, if we
+have the query, capricious person, well,
+now, we're in a situation where capricious
+is a much rarer word. And so IDF will say.
+Pay much more attention to documents that
+contain the word capricious, than to
+documents that contain just the word
+person in ranking your retrieval results.
+There's another measure that reflects the
+frequency of a term and indeed you might
+have been wondering why we're not using
+it. And that other measure is what
+information retrieval people refer to as
+the collection frequency of a term. So the
+collection frequency of a term is just the
+total number of times it appears in the
+collection, counting multiple occurrences.
+So that's the measure that we've been
+using in other places, it's the measure we
+were using to build unigram language models
+or when we're working out spam classifiers
+or something like that. But it's not what
+usually used in information retrieval
+ranking systems, and this next example can
+maybe help explain why. So here we have
+two words, insurance and try. And I picked
+those two words because they have
+virtually identical collection frequency,
+overall they both occur somewhat more than
+10,000 times in the collection. But let's then
+look at their document frequency, so the
+word try occurs in 8,700 odd documents and
+that stands in contrast to insurance,
+which occurs in slightly under 4000
+documents, and so what does that mean?
+What that means is that when try occurs in
+a document it tends to occur only once,
+but that try is widely distributed across
+documents. On the other hand, when
+insurance occurs in a document, it tends
+to occur several times. It tends to occur
+two to three times. And so what does that
+reflect? It reflects the fact that there
+tend to be documents about insurance,
+which then mention insurance several times
+where there don't really tend to be
+documents about trying. And so what does
+that mean in terms of coming
+up with a score for retrieval systems with
+words matching. What it seems to suggest
+is that what we should be doing is giving
+higher weighting to instances of the word
+insurance appearing. So if we had some
+kind of, imagine some kind of query like,
+try to buy Insurance. The most important
+word to make sure we're finding in our
+documents to match the query is insurance.
+And probably the second most important
+word is buy, and try should be coming in
+third place, before the near stop word of
+to. And so that's an idea that is being
+correctly captured by looking at the
+document frequency, but as you can see,
+it's not captured by the collection
+frequency, which would score, try and
+insurance equally. Okay, so I hope now
+you know what document frequency weighting
+is, and why people usually use that as a
+retrieval ranking score rather than
+collection frequency.

@@ -1,0 +1,191 @@
+So the input to the Brown Clustering 
+Algorithm is a corpus of words, or 
+rather, sentences. 
+This could potentially be quite large. 
+we might use a few million or few tens of 
+millions or even a few hundred, hundreds 
+of millions of sentences. 
+And as I said, one advantage of the Brown 
+method is that it doesn't require 
+annotated data. 
+So you can just use raw un-annotated text 
+that you might find on the web or in news 
+wire data or various other sources. 
+It can produce two types of output. 
+The first is a partition of words into 
+word clusters. 
+And the second is actually generalization 
+of the first, which is a hierarchical 
+clustering of words. 
+So let me actually give you some examples 
+of these two types of outputs. 
+So firstly, here are some example 
+clusters. 
+This is actually from the original paper 
+by Brown and colleagues from 1992. 
+And so again, remember, the input to this 
+algorithm is unlabeled text. 
+What they've shown here is some different 
+clusters that their algorithm recovered. 
+So this is basically a partition of the 
+words and the vocabulary into clusters, 
+in such a way that similar words appear 
+in similar clusters. 
+And these are really rather striking. 
+So the first one, if we look here, has 
+words such as Friday, Monday, Thursday, 
+Wednesday, so all of the days of the week 
+and in addition weekends in this case. 
+And again, I stress, this is derived 
+completely automatically from unlabeled 
+text. 
+We'll soon how they did this. 
+The second cluster seems to consist of 
+month names. 
+And then we have another cluster with 
+words like people, guys, folks, fellows, 
+CEOs, chaps, doubters, commies, 
+unfortunates, blokes. 
+Here we seem to have a mineral cluster, 
+water, glass, coal and so on. 
+we have man, woman, boy. 
+down here we have first names. 
+And so on and so on. 
+Now, you can imagine that these kind of 
+word clusters can be very useful in a 
+pretty wide range of natural language 
+applications, because now you have 
+additional knowledge, not just about the 
+identity of a particular word, but also 
+about what class of words it falls into. 
+And actually, in the final part of this 
+segment, I'll show how these kind of 
+cluster representations can be used very 
+directly in the problem of named entity 
+recognition. 
+And they can give some big improvements 
+in that particular task. 
+So that was an example of a set of word 
+clusters. 
+Now let's look at the second kind of 
+representation that Brown Clustering can 
+produce, which is a hierarchical 
+representation of words. 
+To illustrate this, let me give a very 
+simple hierarchy. 
+So say I have just six words in my 
+vocabulary, say apple pear, boy girl, 
+maybe said and reported. 
+So we might, in that case, have a 
+hierarchical clustering, which looks like 
+this. 
+So if I take any node in this tree that I 
+have drawn, drawn here, I end up with a 
+cluster of words. 
+So this node here, for example, 
+corresponds to the two words, boy and 
+girl. 
+This node here corresponds to the two 
+words, apple and pear. 
+This node here corresponds to the two 
+words, said and reported. 
+I can go higher in the tree, so this node 
+here would correspond to a cluster with 
+four words, apple pair, boy and girl. 
+And finally, the top node in the entire 
+tree is just the entire vocabulary. 
+So this is the least interesting 
+clustering you can think of. 
+But we can see here that we have some 
+kind of hierarchical clustering, which 
+reflects the fact that boy and girl are 
+very similar, as are apple and pear. 
+But in some sense, these four words are 
+more similar, because they're are all 
+nouns, than these two words, which are 
+verbs. 
+And so, a hierarchical representation 
+allows clustering with different levels 
+of granularity. 
+Now, it'll be useful to think about these 
+hierarchies as assigning bit strings to 
+each word in the vocabulary. 
+So whenever I have a branch in this tree, 
+I can have a 1 for the left branch and a 
+0 for the right branch. 
+So similarly I can have 1 versus 0 here, 
+1 versus 0 here, and so on and so on. 
+So now, if I think about these words, 
+apple corresponds to the bit string 111. 
+Pear corresponds to the bit string 110. 
+Boy is 101. 
+Girl is 100, and so on and so on. 
+Said, I think, is 01, and reported is 00. 
+Notice that these bit strings can be of 
+different lengths. 
+For example, two versus three are the two 
+lengths here, because different words may 
+be at different depths in this tree. 
+So now we can think of a prefix, or any 
+prefix that these bit strings defines a 
+clustering. 
+So 11 is the cluster apple pear or 10 is 
+the cluster boy girl. 
+1 is actually all four words, apple, 
+pear, to girl, and 0 is just said and 
+reported. 
+So in any case, it's going to be useful 
+to think of a representation of these 
+hierarchical clusterings as bit strings, 
+as I've shown you here. 
+This is an actual example of a 
+hierarchical representation of this type 
+derived using Brown clusters. 
+And this is from a paper by Scott Miller 
+and others from a conference called NAACL 
+in 2004. 
+And we'll look more closely at this paper 
+later in this lecture, where they used 
+these kind of clusters within the context 
+of named entity recognition. 
+But let's take a look at these. 
+Again, you can see that the Brown 
+Algorithm has been really remarkably 
+effective in deriving useful hierarchical 
+representations. 
+These representations were derived from a 
+few tens of millions of words, I think of 
+news wire text. 
+So if we see here, all of these words 
+here have some bit string, which I think 
+is common right the way up here. 
+So the first several bits are the same. 
+So they're deeply nested in some 
+hierarchical tree with the same path down 
+to that node. 
+And again, we have words like lawyer, 
+newspaperman, stewardess, toxicologist. 
+These are clearly people in general. 
+Of course occasionally there are errors. 
+Here's one, the word slang for some 
+reason is in there. 
+But in general, these representations 
+look pretty good. 
+Similarly, these are company names. 
+So again, these share some pretty long 
+bit string, all the way down here. 
+So they're pretty deep in this hierarchy. 
+And finally, these are first names. 
+Okay, and again these share some pretty 
+deep bit stream. 
+Now, you can imagine if you think of the 
+named entity recognition problem, for 
+example, you can imagine how useful these 
+representations can be, because for 
+infrequent or rare words, or words which 
+were never seen in training data, knowing 
+that a word like Consuelo appears in this 
+class of first names can be extremely 
+useful information if we're trying to 
+build a named entity detector. 
+

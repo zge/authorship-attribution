@@ -1,0 +1,226 @@
+[SOUND].
+This lecture is about link analysis for
+web search.
+In this lecture we're going to talk
+about web search, and particularly
+focusing on how to do link analysis and
+use the results to improve search.
+The main topic of this lecture is to look
+at the ranking algorithms for web search.
+In the previous lecture,
+we talked about how to create index.
+Now that we have got index,
+we want to see how we can improve
+ranking of pages on the web.
+Standard IR models can
+also be applied here,
+in fact they are important building
+blocks for supporting web search,
+but they aren't sufficient,
+mainly for the following reasons.
+First, on the web we tend to have
+very different information needs.
+For example, people might search for
+a web page or entry page, and
+this is different from
+the traditional library search
+where people are primarily interested
+in collecting literature information.
+So these kind of queries are often
+called navigational queries,
+the purpose is to navigate into
+a particular targeted page.
+So for such queries, we might
+benefit from using link information.
+Secondly, documents have
+additional information.
+And on the web, web pages are web format.
+There are a lot of other groups,
+such as the layout, the title,
+or link information again.
+So this has provided an opportunity to
+use extra context information of
+the document to improve scoring.
+And finally,
+information quality varies a lot.
+So that means we have to consider many
+factors to improve the ranking algorithm.
+This would give us a more robust way to
+rank the pages making it the harder for
+any spammer to just manipulate the one
+signal to improve the ranking of a page.
+So as a result people have made
+a number of major extensions
+to the ranking algorithms.
+One line is to exploit links to
+improve scoring and
+that's the main topic of this lecture.
+People have also proposed
+algorithms to exploit large scale
+implicit feedback information
+in the form of clickthroughs.
+That's of course in the category
+of feedback techniques, and
+machinery is often used there.
+In general, in web search the ranking
+algorithms are based on machinery
+algorithms to combine
+all kinds of features.
+And many of them are based on the standard
+original models such as BM25 that
+we talked about, or
+queried iCode to score
+different parts of documents or
+to, provide additional features
+based on content matching.
+But link information
+is also very useful so
+they provide additional scoring signals.
+So let's look at links in
+more detail on the web.
+So this is a snapshot of some
+part of the web, let's say.
+So we can see there are many links
+that link different pages together.
+And in this case you can also look at the,
+the center here.
+There is a description of a link
+that's pointing to the document on
+the right side.
+Now this description text
+is called anchor text.
+If you think about this text,
+it's actually quite useful
+because it provides some extra description
+of that page being pointed to.
+So, for example, if someone wants
+to bookmark Amazon.com front page,
+the person might say,
+the big online bookstore, and
+then with a link to Amazon, right?
+So the description here is actually very
+similar to what the user would type in
+in the query box when they are looking for
+such a page.
+That's why it's very useful for,
+for, ranking pages.
+Suppose someone types in a query
+like online bookstore or
+big online bookstore, right.
+The query would match this
+anchor text in the page here.
+And then this actually
+provides evidence for
+matching the page that's been pointed to,
+that is the Amazon entry page.
+So if you match the anchor text
+that describes the link to a page,
+actually that provides good evidence for
+the relevance of the page
+being pointing to.
+So anchor text is very useful.
+If you look at the bottom part of this
+picture, you can also see there are some
+patterns of links, and these links might
+indicate the utility of a document.
+So for example,
+on the right side you can see this
+page has received many in, in links.
+That means many other pages
+are pointing to this page.
+And this shows that this
+page is quite useful.
+On the left side you can see, this is
+a page that points to many other pages.
+So, this is a theater page
+that would allow you to
+actually see a lot of other pages.
+So we can call the first case authority
+page and the second case a hub page.
+This means the link information
+can help in two ways.
+One is to provide extra text for matching.
+The other is to provide some
+additional scores for the web
+pages to characterize how likely a page is
+a hub, how likely a page is a authority.
+So people then, of course, propose ideas
+to leverage this, this link information.
+Google's PageRank,
+which was a main technique that they
+used in early days, is a good example.
+And that, that is the algorithm
+to capture page popularity,
+basically to score authority.
+So the intuitions here are, links are just
+like citations in the literature.
+Think about one page
+pointing to another page.
+This is very similar to one
+paper citing another paper.
+So, of course,
+then if a page is cited often,
+then we can assume this page to
+be more useful in general, right?
+So that's a very good intuition.
+Now, page rank is essentially
+to take advantage of this
+intuition to implement the,
+with the principle approach.
+Intuitively it's essentially doing
+citation counting or in link counting.
+It just improves this simple idea in,
+in two ways.
+One is would consider indirect citations.
+So that means you don't just look
+at the how many in links you have,
+you also look at the what are those
+pages that are pointing to you.
+If those pages, themselves, have a lot
+of in links, well that means a lot.
+In some sense you will get
+some credit from that.
+But if those pages that are pointing
+to you are not are being pointed to
+by other pages, they themselves don't
+have many in links, then, well,
+you don't get that much credit.
+So that's the idea of
+getting indirect citation.
+Right, so you can also understand
+this idea by looking at, again,
+the research papers.
+If you are cited by, let's say ten papers,
+and those ten papers are, just
+workshop papers and that, or some papers
+that are not very influential, right,
+so although you got ten in links,
+that's not as good as if you have,
+you're cited by ten papers that themselves
+have attracted a lot of other citations.
+So this is a case where
+we would like to consider indirect
+links and PageRank does that.
+The other idea is,
+it's good to smooth the citations.
+Or, or, or
+assume that basically every page is
+having a non-zero pseudo citation count.
+Essentially, you are trying to imagine
+there are many virtual links that
+will link all the pages together so
+that you,
+you actually get pseudo
+citations from everyone.
+The, the reason why they want to
+do that is this would allow them
+to solve the problem elegantly
+with linear algebra technique.
+So I think maybe the best
+way to understand the page
+rank is through think of
+this as through computer,
+the probability of a random surfer,
+visiting every web page, right.
+[MUSIC]
+

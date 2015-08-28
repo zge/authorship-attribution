@@ -1,0 +1,208 @@
+Okay. We're going to finish up by talking
+about some, practical applications of red
+black trees. And in particular, B trees
+which are a general, general version. So
+the idea the sign behind bee trees is that
+often, the data that we're, trying to
+store is, is really huge. There's a, a
+large amount of data. And we're, we're
+going to look at a more general model for
+external storage. Where, we work with
+continuous blocks of data that are big.
+Maybe four, 4k or bigger, or maybe even a
+whole file. And all we want to count is
+the first time we access a page, because
+the main cost is trying to find where the
+page is. Once it's read in we get to read
+all of the page for free pretty much. So
+the real property of external storage that
+not your local memory, is that the time
+required to get to a page is way larger
+than the time to access data within a
+page. So what we want to do is try to
+access data that's out, externally, using
+a minimum number of probes. That's a model
+of a file system that is pretty workable.
+And so bee trees are a generalization of.
+Balance trees, that allow for this. The
+idea is to, allow not just two or three,
+keys per node, but a large number like the
+number that can fit in a page. So, might
+be, M = 1000 or M = 4000. And well, we've
+gotta have at least, two, keys at the
+root. And, and the only other restriction
+is that, we don't want the nodes to get
+too empty. So we have less than M. But we
+want to have at least M over two. And as
+you'll see, this is, a generalization of,
+two three trees. That allows us to, build
+balance trees that, are very, very
+shallow. Typically, these are set up so
+that, the, all the data is in the external
+nodes. And so the external nodes have no
+links, they just have keys. And their in,
+kept in sorted order. So, for example,
+this is a external, this is M = six. This
+is an external five node. So it's got five
+keys. It's got, room for one more
+temporary one, And then what will happen
+is, when you insert into a full node,
+it'll split in the same as before. And
+then we'll pass the s plit up causing a
+split up higher so the red keys in the
+internal nodes are copies of keys down
+below that direct the search. And it is
+that, that's a little extra detail. It
+just makes the implementation a little bit
+easier and that's the way it's usually
+done. So but for now the main idea is that
+it's like a 233 except that we allow way
+more keys per node. And then when a node
+gets filled it splits. Into two so a node
+is always between half full and full. So
+it's in 1000, it splits in two. And then
+each side has 500. And then we can use,
+that property of the trees, in the
+analysis to, show that, it's not going to
+be very many probes to get to any key. So
+the, search is, you know, just the same as
+we've been doing, just generalized.
+There's a list of keys at every internal
+node and that key, tells you that, then
+links for every key that give you, a place
+where your key would have to be. So, this
+link is for all the keys in the B tree
+that are between this key and the next one
+and in every case, it's that way. So if
+we're looking for E. B and this b tree
+would go down the left link. And then
+looking on the second link cuz E is
+between D and H. And that's just the way
+it organized. And then when you get to an
+external node you just look for and so
+that's a, that's the all searches
+terminated in external node, in other
+words that's just a generalization of what
+we just did. And insertion, works the same
+way, where we get to the bottom, and then,
+and then we split. So let's look at just
+inserting A into this B tree. It comes
+into the node on the left. And then that
+makes that temporarily overful. It's got
+one too many. So we split it into two
+nodes. And that causes us to add a new
+entry into this internal, node. In this
+case, it's the C, which is the smallest
+one in this new page. And that had to be
+added. And we can move all those over.
+There's plenty of time by the memory
+model. We're only counting the number of
+times we access the pages. We get to move
+things around for free. And you could have
+some hybrid struc ture where you use
+something different for the internal
+model. But usually it's fine just to do
+that. Now that one becomes overfull. So it
+has to split and we have to create a new
+route, just in the same way as we've been
+doing. So without seeing all the details
+yo can understand that the same basic idea
+is going to work in this situation where
+we're dealing with much, much more memory.
+And so the end result is that a search or
+an insertion in a B-tree in a order m,
+that's where we're putting M keys per
+page, requires between log base M - 1N and
+log. Base M over two M probes and that's
+going to be a really small number, so say
+M is a 1000, log base M over two is, is
+log base 500. So what power do you have to
+raise 500 to get bigger than N? In
+practice that's going to be like four or
+five. And we can keep the root page in
+memory so that it means, for any
+conceivable application, you can get to
+any piece of data. Even if it's trillions
+of, of pieces of data in this huge, huge
+file. You can get to any one with only
+five or six probes. That's quite amazing.
+It's really an astounding example of
+algorithmic technology. Doing something
+that, you wouldn't really, necessarily
+think that you could do so easily.
+Maintain a dynamic search symbol table
+with trillions of keys, so that you can
+get to any key just by looking five or six
+places but that's what B-trees provide for
+us. This is a simulation that shows a, a
+growing B-tree so when a page, at the top,
+there's just one page that fills up. When
+it fills up, it's red, and that splits
+into two half pages and then keys get
+added on one side or the other so each.
+Lying in this table some pages getting a
+new key and eventually one of them fills
+up and splits. Now we have three pages and
+we keep going eventually one of them fills
+up and splits. Now we have four pages and
+now this time the first one fills up and
+splits and so forth. So the black is the
+occupied part of the page. The white is
+the unoccupied part. And the full page
+about to split then right below there's
+two pages. S o this shows the process of
+building a large B-tree. And that and you
+can see the amount of black. It's kind of
+half empty. It's a little more than half
+empty usually now, as this shows. And, and
+people have variants of these algorithms
+that keep it more, much more than half
+empty if that kind of space is a, is a
+consideration. So, as I've mentioned, red
+black trees and B-trees are widely used as
+system symbol tables. The Java
+implementation of tree map and tree set is
+red black trees, C++, the standard
+template library uses, red black trees.
+And it's also, used in the, Linux kernel,
+and in many other systems. B-trees,
+there's many different variants that, give
+different characteristics of, space usage
+and other characteristics. In most
+databases, nowadays that, that you might
+use. Sql or Oracles database and others,
+are based on, some variant of B-trees
+because they're so, so effective. But you
+really know that your data structure and
+algorithm is used by a lot of people when
+it appears in the popular culture. My
+friend Philippe Flajolet who recently died
+was a famous French mathematician send me
+an e-mail late one night. He was quite
+excited because he was watching a re-run
+on, of an English actually Canadian TV
+show on French TV. I didn't know he spend
+his time doing that But he was very
+excited because he saw this clip.
+>> It was the red door again.
+>> I thought the red door was the storage
+container.
+>> But it wasn't red anymore, it was
+black.
+>> So red turning to black means what?
+>> Budget deficits, red ink, black ink.
+>> It could be from a binary search tree.
+The red black tree tracks every simple
+path from a node to a descendant leaf that
+has the same number of black nodes.
+>> Does that help you with the ladies?
+>> So not only is there some excitement in
+that dialogue but it's also technically
+correct which you don't often find with
+math in popular culture of computer
+science. A red black tree tracks every
+simple path from a node to a descendant
+leaf with the same number of black nodes
+they got that rig ht. And that's also true
+of B-trees and both of these methods are
+very effective and widely use.

@@ -1,0 +1,206 @@
+In this video, we're going to look at a
+practical use for feature vectors that
+represent words.
+The uses in speech recognition systems,
+where having a good idea of what somebody
+might say next is very helpful in
+recognizing the sounds they make.
+We're now going to see an important
+practical use for feature factors that
+describe words.
+When we're trying to do speech
+recognition, it's impossible to identify
+phonemes perfectly in noisy speech.
+The acoustic input just isn't good enough.
+It's often ambiguous.
+There may be several different words that
+fit the acoustic signal equally well.
+We don't notice this a lot of the time,
+because we're so good at using the meaning
+of the utterance to hear the right words.
+So if I read the next comment on the
+slide, I would say we do this
+unconsciously when we recognize beach.
+And you would hear, we do this
+unconsciously when we recognize speech.
+You can actually hear the slight
+difference between recognize beach and
+recognize speech.
+But if you're expecting recognize speech,
+particularly if there's noise around you
+wouldn't hear recognize beach.
+Okay.
+So we're very good at doing this.
+We do it all the time when we do it
+unconsciously.
+That means that speech recognizers have to
+know which words are likely to come next
+and which are not.
+Fortunately.
+Words can be predicted quite well without
+having a full understanding of what's
+being said.
+So there's a standard method for
+predicting the probabilities of the
+various words that might come next, it's
+called the trigram method.
+You take a huge amount of text and you
+count the frequencies of all triples of
+words.
+Then you use these frequencies to make
+bets on the relative probabilities of the
+next word given the previous two words.
+So if we've heard the words A and B.
+We can look at the counts that we have in
+our huge body of text.
+For the sequence ABC, and the sequence
+ABD, we can say that the relative
+probability that the third word will be C
+versus the third word will be D, is given
+by the ratio of the two counts.
+Abc and ABD.
+Until very recently, this was the state of
+the art method for getting the probability
+of the next word to help out the speech
+recognizer.
+We can't use much bigger contexts than two
+previous words, because there are just too
+many possibilities to store, and if we did
+use bigger contexts, the counts would be
+mostly zero.
+Even for two word contexts there's many
+contexts that you will never have heard.
+For example, if I say dinosaur pizza,
+that's probably a string of two words that
+you've never heard before.
+For cases like that, we have to back off
+to individual words.
+So, after dinosaur pizza, you predict the
+next word by just seeing what's likely to
+come after the word pizza, because you've
+never heard dinosaur pizza before.
+What you mustn't do is to say that
+probability's a zero just because you
+haven't seen an example.
+That's clearly not true.
+Now the trigram model fails to use a lot
+of obvious information that will help you
+predict the next word.
+Suppose for example, you have seen the
+sentence the cat got squashed in the yard
+on Friday.
+That should help you predict the words in
+the sentence, the dog got flattened in the
+yard on Monday.
+In particular, the trigram model doesn't
+understand the similarities between words
+like cat and dog, or squashed and
+flattened, or garden and yard, or Friday
+and Monday.
+So it can't use past experience with one
+of those words to help it with the other
+one.
+To overcome this limitation, what we need
+to do is convert the words into a vector
+of semantic and syntactic features.
+And use the features of previous words to
+predict the features of the next word.
+Using a feature representation, allows us
+to use much bigger context, that contains
+many more words.
+For example, ten previous words.
+Yoshua Bengio pioneered this approach for
+language models, and his initial network
+for doing this looks rather familiar.
+It is actually very similar to the family
+trees network.
+It's just applied to a real problem, and
+is much bigger.
+So at the bottom you can think of us as
+putting in the index of a word, and you
+could think of that as a set of neurons of
+which just one is on.
+And then the weight from that on neuron
+will determine the pattern of activity in
+the next hidden layer.
+And so the weights from the active neuron
+in the bottom layer will give you the
+pattern of activity in the layer that has
+the distributed representation of the
+word.
+That is it's feature vector.
+But this is just equivalent to saying you
+do table look-up.
+You have a stored feature vector reach
+word, and with learning, you modify that
+feature vector.
+Which is exactly equivalent to modifying
+the weights coming from a single
+active-input unit.
+After getting distributed representations
+of a few previous words, I've only shown
+two here but you would typically use, say,
+five.
+You can then, use those distributed
+representations, via hidden layer, to
+predict, via huge softmax, what the
+probabilities are for all the various
+words that might come next.
+When extra refinement that makes it work
+better is to use skip-lag connections that
+go straight from the input words to the
+output words.
+Because the individual input words are,
+are individually quite informative about
+what the output word might be.
+Bengio's model was actually slightly worse
+than Trigram's at predicting the next
+word, but it was in the same ballpark, and
+if you combined it with Trigram's it
+improved things.
+Since then these language models that use
+feature vectors for words have been
+improved considerably, and they're now
+considerably better than trigram models.
+One problem with having a big softmax
+output layer, is that you might have to
+deal with 100,000 different output works.
+Because typically in these language
+models, the plural of a word is a
+different word from the singular.
+And the various different tenses of a verb
+are different words from other tenses.
+So each unit in the last hidden layer of
+the net, might have to have a
+hundred-thousand outgoing weights.
+And that means we can only afford to have
+a few units there before we start
+over-fitting.
+That's not necessarily true.
+We might have a huge number of training
+cases.
+So some organization like Google might
+have so much training tech that it can
+afford to have a very big softmax layer.
+We could try and make the last hidden less
+small, so we don't need too many weights.
+But then we have the problem that we have
+to get the 100,000 probabilities of the
+various words that might come next fairly
+accurately right.
+It's not just the big probabilities we
+need.
+A very large number of words will have
+small probabilities.
+And the small probabilities are often
+relevant.
+It might be that the speech recognizer Has
+to decide whether it's two different rare
+words, and then it's very relevant which
+of those is more common in the context,
+even though both of them are pretty
+unlikely.
+The question is, is there a better way to
+deal with such a large number of outputs?
+And we'll see several different ways of
+doing that in the next video.

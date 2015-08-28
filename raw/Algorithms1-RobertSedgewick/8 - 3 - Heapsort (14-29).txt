@@ -1,0 +1,296 @@
+Next we're going to look at the use of the
+binary heap data structure to implement a
+clever sorting algorithm known as
+Heapsort. So here's the basic plan. What
+we're going to do is we have our end keys
+and we'll have them in an array. We'll
+view that array as eventually being a max
+heap. So what we have to do first is to
+rearrange the keys in the array to heap
+order it. So just make it so that every
+key is larger than it's two children. And
+for example, the largest of all the keys
+is at the root. And then, the next phase
+would be to take that heap ordered array
+and get, get it to be a sorted result in,
+in place. And again, the, heap is stored
+in the array, with the first key position
+one, next to position two and three and
+like that. So the end result would be like
+that, with, no keys in the heap, but all
+the keys in the array in sorted order. So
+it's a little exercise in abstraction.
+Part of the array is the heap. Part of the
+array is the sorted sub array. And
+eventually we bring it down to the whole
+thing being sorted. It's very little code
+beyond the basic heap code that we've
+looked at can get this implemented. And
+that's called Heapsort. Let's take a demo
+of how Heapsort works in our example. So
+the idea is we're going to use a bottom up
+method. So all that means is we start with
+an array in arbitrary order and then we're
+going to work from the bottom up to make
+sure that it's heap order. Well all the
+nodes with no children are heap order,
+they are only a size one, the first one we
+have to worry about is this one here the
+root, the root. We haven't examined yet,
+it's children are heap ordered so it's a
+small heap of size three that may not be
+heap ordered. In this case it's not
+because one of the children is larger, so
+that's where things are going to start. We
+have a lot of one node heaps and then
+we're going to have to perform the sync
+operation on this one, that node five,
+that's, in this case just to change it
+with it's parent. And then proceeding in
+that way, moving bottom up or moving from
+right to left, the next thing we do is but
+then worry about a three node heap that's
+heap ordered and we're fine. Now we'll
+move over to the T and again, that's the
+root of a three node heap that's heap
+ordered except at the root. We may need to
+fix it with the sync operation. In this
+case nothing is required because it's
+larger than its children, so we have a
+three node heap. And then we move one more
+to the left, now we're looking at the R.
+Again root of a three node heap may or may
+not be heap ordered, we do have to do the
+sync operation. In this case that brings
+the X up. A three node heap. Now we go to
+two. Now that's the root of a seven node
+heap. We know the two three node heaps
+that are the children are heap ordered but
+we may have to correct the heap ordering
+at the root so we do a sync on two. And
+that's going to involve, exchanging with
+the T, because T is larger than O. And
+exchanging with the P because P is larger
+than O. Now that heap is a seven node heap
+that's all heap ordered, and then the last
+thing is to do the root of the whole thing
+and again, now the two sub trees are heap
+ordered, that's what we mean by bottom up,
+we took care of the heep ordering from the
+bottom up. And so we'll do a sync on the S
+and bring it into a heap ordering, so
+that's with just a few exchanges we got
+that whole array heap order, and now what
+we want to do is take advantage of the
+heap ordering in the array to do a sort.
+And the concept is very simple. Right away
+we have the maximum element in the array
+right at the root, we want that to be at
+the end so that's what we're going to do
+and that's what we're going to do is just
+put it at the end. We exchange the element
+at the root with the last element. Pull it
+off the heap and then that's our example.
+We might have violated the heap order
+condtion at the heap right now. So now we
+have to do a sync operation on, on the E.
+And so, it's larger than, it's both
+children, and the larger of the two
+children is T, so we promote the T. And
+the P is larger, the two children promote
+that and then finally, the E comes down to
+the bottom. So now that's one step in the
+sort, we got the largest element off. Now
+the next largest element in the array is
+now at the root of the heap. We're going
+to do the same thing, exchange it with the
+last element in the heap. Then now that T
+is in its final position in the sorted
+array, we take it off the heap. So now,
+we've got a heap with nine elements and
+two of the elements in the array are
+already in their final position. And now
+this one's not heap ordered, so we have to
+exchange over the largest of its two
+children. In this case that involves
+regarding the S and the R. Now it's heap
+ordered. So that's the end of the two
+steps in Heapsort. And then we just keep
+going. Pulling off the largest element
+from the heap. Exchanging it with the.
+Element in the heap in the largest
+position in the array which brings that
+element into its final position in the
+sorted array. And then adjusting the heap
+ordering with the sync operation. So that
+E again is going to come down and now it
+only goes down one step in this case. So
+now R exchanges with M. It's in it's final
+position and you can see down at the
+bottom, the large elements in the array
+filling in, in their final position, in
+the, the left part of the array is
+representing the heap. The R goes off the
+heap, do the sync operation on the M, and
+now we have a heap ordered array. So now
+do the P, exchange that with the A. Take
+it off the heap. Do the sync operation on
+the A. Now we're going to do the O.
+Exchange that with the E. Take it off the
+heap. Do the sync operation on E which
+involves promoting the larger of its two
+children, until it gets to the bottom, or
+a place where it's larger than both its
+children. So now we have, just five
+elements left. We'll, get the M. Do heap
+ordering on the, heap of four and that
+only involves one exchange. Now we get the
+L. A exchange for the larger of its two
+children. While, they're both the same, so
+i t goes with the left one. That's the
+heap of size three. Pull off the first E,
+it's already heap ordered. Pull off that
+E. And, now we are left with only one
+element in the heap in this in the first
+position, so there is nothing to do. So
+with a series of in exchange and then sync
+operations, we pull the sorted array out
+of the heap. Okay. This, slide summarizes
+the code for, heap construction. And as
+you can see, it's a one liner. We go
+backwards through the heap. Starting at N
+over two because the, N over, half of the,
+right most half of the array is just
+little heaps of size one. We just go
+backwards doing a sync starting at K. So
+that's the first piece of code for heap
+ordering an array with arbitrary values
+and then these diagrams summarize the sync
+calls that, that we just went through in
+the demo starting at five, four, three,
+two, one. As you can see, only one, two,
+three, four, five exchanges are needed to
+bring this into heap order. Then the
+second pass again that's only a two liner,
+we exchange the first element with the one
+at the end and then decrement the size of
+the heap and then do a sync operations.
+And these diagrams summarize the sync
+operations that we showed in the demo. On
+every smaller heap, now we continue just
+performing sync operations at the root
+until we get a completely sorted array. So
+given the sink implementation, we had done
+a one liner for the first pass and a three
+liner for the second pass so that gives a
+complete implementation of heap sort with
+the code that we have given so for, so
+far. There's is one little detail when you
+are sorting an array of course position
+zero comes into account and we've been
+building our heaps from position one. So,
+but we can take care of that in the less
+and exchange methods by just decrementing
+the indices in those methods to have it
+work as if the array were zero through n.
+That's a little implementation detail, but
+otherwise this is a fine sword
+implementation, that actually is very
+little code, and its got a place in, in
+the theory of algorithm, that I will talk
+about in a second. This is just another
+trace without the data-structure shown, to
+just show in our standard way, the
+elements in black and red are the ones
+that are touched and the elements in grey
+are the ones that are not touched at all.
+And to just show that this thing gets the
+sort done with touching relatively few
+elements. That's a trace. Let's look at an
+animation, an animation with Heapsort is
+interesting to watch so the construction
+of the heap happens in a blink and now
+it's pulling off the largest elements,
+moving from right to left. So again, a
+very efficient way to get a sorting job
+done. So what about the mathematical
+analysis? Well the mathematical analysis,
+for the Heapsort part is pretty easy. N
+times, we're doing a sink operation, and
+the size of the heap is at most lg N so
+it's N lg N. The construction, actually,
+it turns out although it's a little more
+complicated to prove, that it always uses
+just a linear number of comparison
+exchanges. And that's an interesting
+result in itself. You can build a heap
+from N values in linear time. And then,
+and then lg N more time. You can sort from
+that heap and that's significance be,
+significant because it's the first sorting
+algorithm that we've seen that is both in
+place. And manages to get the sorting job
+done with guaranteed analogs and compares.
+Mergesort doesn't do that. It takes linear
+extra space. Quicksort doesn't do that. It
+takes quadratic time in a worse case even
+though we make that unlikely by random
+shuffling. It still takes quadratic time
+in the worse case but Heapsort does both.
+Now there is more complicated versions of
+Mergesort and Quicksort that can do this
+in theory but Heapsort is pretty simple
+algorithm that gets both done, so in a job
+interview somebody asks you what's an
+in-place sorting algorithm that's
+guaranteed N lg n? Your answer's going to
+be Heapsort. Now in practice Heapsort is
+actually not used that much for a couple
+of reasons. And they might ask you these
+on your job interview too. First thing is
+the inner loop is longer than Quicksorts.
+Like Mergesort there is more things to do
+in the inner loop. There is that compare
+are the two children bigger, then compare.
+So there are two compares that get done at
+N lg N times. And then there is some that
+array index arithmetic. The other thing
+that is probably more significant on
+modern machines is. That the references to
+memory are all over the place when it's a
+huge array, so it's not a good algorithm
+for a situation where there's caching
+which is almost everywhere nowadays. It
+doesn't have a local reference, like
+Quicksort does. It's always refers to
+something that's nearby something else
+that I just referred to. So if a big block
+of things comes into memory, there's no
+more extra costs, whereas Heapsort is
+going to look far away from the current
+place as it goes down the tree and that
+makes it slower in a lot of situations.
+And on the other thing is it's not stable,
+sometimes people choose to use Mergesort
+in practice because of the stability but
+Heapsort isnot stable for the usual reason
+that it does long distance exchanges that
+might bring items that have equal keys
+back out of order. So that, that, that's
+our full summary of sorting algorithms to
+and completes our treatment of sorting
+algorithms with Heapsort. And this is just
+adding the Heapsort line to the table.
+It's in place we don't use any auxiliary
+array it's not stable, but its worst-case
+guaranteed time is proportional to N lg N
+as well as the average and, and the best
+this is not a result but that's also the
+case so it's N lg N guarantee N place, but
+it's not stable, and we still have the
+hope that someday somebody will develop a
+simple in-place stable worst case N lg N
+algorithm but we're not quite there yet.
+And that completes our treatment of
+sorting algorithms with the Heapsort
+algorithm.

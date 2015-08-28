@@ -1,0 +1,87 @@
+Okay. So in this video, we'll get our first
+sense of what it's actually like to analyze an algorithm.
+And we'll do that by first of all reviewing a famous sorting algorithm, namely the Merge Sort algorithm.
+And then giving a really fairly mathematically precise upper bound on exactly how many operations
+the Merge Sort algorithm requires to correctly sort an input array.
+So I feel like I should begin with a bit of an apology.
+Here we are in 2012, a very futuristic sounding date. And yet I'm beginning with a really quite ancient algorithm.
+So for example, Merge Sort was certainly known, to John Von Neumann all the way back in 1945.
+So, what justification do I have for beginning, you know, a modern class in algorithms with such an old example?
+Well, there's a bunch of reasons.
+One, I haven't even put down on the slide, which is like a number of the algorithms we'll see, "Merge Sort" as an oldie but a goodie.
+So it's over 60, or maybe even 70 years old. But it's still used all the time in practice, because this really is one of the methods of choice for sorting.
+The standard sorting algorithm in the number of programming libraries. So that's the first reason.
+But there's a number of others as well that I want to be explicit about.
+So first of all, throughout these online courses, we'll see a number of general algorithm design paradigms ways of solving problems that cut across different application domains.
+And the first one we're going to focus on is called the Divide-and-Conquer algorithm design paradigm.
+So in Divide-and-Conquer, the idea is, you take a problem, and break it down into smaller sub problems which you then solve recursively, ...
+... and then you somehow combine the results of the smaller sub-problem to get a solution to the original problem that you actually care about.
+And Merge Sort is still today's the, perhaps the, most transparent application of the Divide-and-Conquer paradigm, ...
+... that will exhibit very clear what the paradigm is, what analysis and challenge it presents, and what kind of benefits you might derive.
+As for its benefits, so for example, you're probably all aware of the sorting problem.
+Probably you know some number of sorting algorithms perhaps including Merge Sort itself.
+And Merge Sort is better than a lot of this sort of simpler, I would say obvious, sorting algorithms, ...
+... so for example, three other sorting algorithms that you may know about, but that I'm not going to discuss here.
+If you don't know them, I encourage you to look them up in a text book or look them up on the web.
+Let's start with three sorting algorithms which are perhaps simpler, first of all is "Selection Sort".
+So this is where you do a number of passes through the way repeatedly, identifying the minimum of the elements that you haven't looked at yet, ...
+... so you're basically a linear number of passes each time doing a minimum computation.
+There's "Insertion Sort", which is still useful in certain cases in practice as we will discuss, but again it's generally not as good as Merge Sort, ...
+... where you will repeatedly maintain the invariant that prefix view of array, which is sorted version of those elements.
+So after ten loops of Insertion Sort, you'll have the invariant that whatever the first ten elements of the array are going to be in sorted order, ...
+... and then when Insertion Sort completes, you'll have an entire sorted array.
+Finally, some of you may know about "Bubble Sort", which is where you identify adjacent pairs of elements which are out of order, ...
+and then you do repeated swaps until in the end the array is completely sorted.
+Again I just say this to jog your memory, these are simpler sorts than Merge Sort, ...
+... but all of them are worse in the sense that they're lack in performance in general, which scales with N^2, ...
+...  and the input array has N elements, so they all have, in some sense, quadratic running time.
+But if we use this non-trivial Divide-and-Conquer approach, or non-obvious approach, we'll get a, as we'll see, a much better running time than this quadratic dependence on the input.
+Okay? So we'll get a win, first sorting in Divide-and-Conquer, and Merge Sort is the algorithm that realizes that benefit.
+So the second reason that I wanna start out by talking about the Merge Sort algorithm, is to help you calibrate your preparation.
+I think the discussion we're about to have will give you a good signal for whether you're background's at about the right level, of the audience that I'm thinking about for this course.
+So in particular, when I describe the Merge Sort algorithm, you'll notice that I'm not going to describe in a level of detail that you can just translate it line by line into a working program in some programming language.
+My assumption again is that you're a sort of the programmer, and you can take the high-level idea of the algorithm, how it works, ...
+... and you're perfectly capable of turning that into a working program in whatever language you see fit.
+So hopefully, I don't know, it may not be easy the analysis of Merge Sort discussion.
+But I hope that you find it at least relatively straight forward, ..
+.. because as the course moves on, we're going to be discussing algorithms and analysis which are a bit more complicated than the one we're about to do with Merge Sort.
+So in other words, I think that this would be a good warm-up for what's to come.
+Now another reason I want to discuss Merge Sort is that our analysis of it will naturally segment discussion of how we analyze the algorithms in this course and in general.
+So we're going to expose a couple of assumptions in our analysis, we're focus on worst case behavior, ...
+... or we'll look for guarantees on performance on running time that hold for every possible input on a given size, ...
+and then we'll also expose our focus on so called "Asymptotic Analysis", which meaning will be much more concerned with the rate of growth on an algorithms performance than on things like low-order terms or on small changes in the constant factors.
+Finally, we'll do the analysis of Merge Sort using what's called as "Recursion-Tree" method.
+So this is a way of tying up the total number of operations that are executed by an algorithm.
+And as we'll see a little bit later, this Recursion-Tree method generalizes greatly.
+And it will allow us to analyze lots of different recursive algorithms, lots of different Divide-and-Conquer algorithms, including the integer multiplication algorithm that we discussed in an earlier segment.
+So those are the reasons to start out with Merge Sort.
+So what is the computational problem that Merge Sort is meant to solve?
+Well, presumably, you all know about the sorting problem. But let me tell you a little bit about it anyways, just so that we're all on the same page.
+So, we're given as input. An array of N numbers in arbitrary order, and the goal of course is to produce output array where the numbers are in sorted order, let's say, from smallest to largest.
+Okay so, for example, we could consider the following input array, and then the goal would be to produce the following output array.
+Now one quick comment. You'll notice that here in input array, it had eight elements, all of them were distinct, it was the different integers, between 1 and 8.
+Now the sorting problem really isn't any harder if you have duplicates, in fact it can even be easier, ...
+... but to keep the discussion as simple as possible let's just, among friends, go ahead and assume that they're distinct, for the purpose of this lecture.
+And I'll leave it as an exercise which I encourage you to do, which is to think about how the Merge Sort algorithm implementation and analysis would be different, if at all, if there were ties, okay?
+Go ahead and make the distinct assumption for simplicity from here on out.
+Okay, so before I write down any pseudo code for Merge Sort, let me just show you how the algorithm works using a picture, ...
+... and I think it'll be pretty clear what the code would be, even just given a single example.
+So let's go ahead and consider the same unsorted input array that we had on the previous slide.
+So the Merge Sort algorithm is a recursive algorithm, and again, that means that a program which calls itself and it calls itself on smaller sub problems of the same form, okay?
+So the Merge Sort is its purpose in life is to sort the given input array. So it's going to spawn, or call itself on smaller arrays.
+And this is gonna be a canonical Divide-and-Conquer application, where we simply take the input array, we split it in half, we solve the left half recursively, we solve the right half recursively, and then we combine the results.
+So let's look at that in the picture.
+So the first recursive call gets the first four elements, the left half of the array, namely 5, 4, 1, 8. And, of course, the other recursive call is gonna get the rest of the elements, 7, 2, 6, 3.
+You can imagine these has been copied into new arrays before they're given to the recursive calls.
+Now, by the magic of recursion, or by induction if you like, the recursive calls will do their task.
+They will correctly sort each of these arrays of four elements, and we'll get back sorted versions of them.
+So from our first recursive call, we receive the output, 1, 4, 5, 8, and from the second recursive call, we received the sorted output, 2, 3, 6, 7.
+So now, all the remains to complete the Merge Sort is to take the two results of our recursive calls, these two sorted elements of length-4, and combine them to produce the final output, namely the sorted array of all eight of the input numbers.
+And this is the step which is called "Merge".
+And hopefully you are already are thinking about how you might actually implement this merge in a computationally efficient way.
+But I do owe you some more details. And I will tell you exactly how the merge is done.
+In effect, you just walk pointers down each of the two sort of sub-arrays, copying over, populating the output array in the sorted order.
+But I will give you some more details in just a slide or two.
+So that's Merge Sort in a picture.
+Split it in half, solve recursively, and then have some slick merging procedure
+to combine the two results into a sorted output.

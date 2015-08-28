@@ -1,0 +1,198 @@
+
+Now we have this proposition. 
+Mutually orthogonal non zero vectors are 
+linearly independent. 
+Let's see how we can use this in an 
+algorithm. 
+What happens when we call the 
+orthogonalized procedure on a list, v 
+list consisting of the vectors v0 to vn. 
+When those vectors are not necessarily 
+linearly dependent. 
+So, let's imagine that the dimension of 
+the span of these vectors is less than 
+the number of vectors. 
+We run orthogonalize on the list of the 
+vectors and it returns some output list 
+v0* through vn*. 
+Now, we know that those vectors in the 
+output are mutually orthogonal. 
+They can't be linearly independent, 
+because they span a space of dimension 
+less than their number. 
+Must be that some of them must be 0. 
+Let's consider these vectors but leave 
+out the 0 vectors. 
+That doesn't change the space spanned by 
+them. 
+So let s be the subset of the output 
+vectors v0* through vn*, 
+consisting just of the non 0 vectors. 
+Well, the span of S is equal to the span 
+of all the vectors, v0* through vn 
+star, because 0 vectors don't contribute 
+to anything to the span. 
+This is equal to the span of the original 
+vectors v0 through vn. 
+That's the correctness property of 
+orthogonalize. 
+And the proposition implies that the set 
+s is linearly independent. 
+So we got a set of vectors that are 
+linearly independent and span the same 
+space as v0 through vn. So S is a basis for 
+that vector space. 
+So in principle this algorithm should 
+find a basis 
+for the space span by the input vector v0 
+through Vn. It 
+first computes Vo* through Vn* by 
+running orthogonalize on the input 
+vectors V0 through Vn and then it returns 
+the list consisting of those star vectors 
+that are non-zero. 
+For example, suppose we run orthogonalize 
+on the vectors v0 through v6, and it 
+returns the vectors v0* through v6*. 
+And suppose from among these output 
+vectors, v2*, v4*, and v5* are 0. 
+In that case, the remaining output 
+vectors, v0*, v1*, v3* and v6* 
+form a basis for the span of those 
+initial input vectors. 
+Now, you might remember we had a lemma 
+that said that every finite set T 
+of vectors contains a subset that's a basis 
+for span of T. 
+Can we adapt this algorithm to give us 
+such subset basis. 
+Given vectors v0 through vn 
+find a subset of these input vectors that 
+is a basis for their span. 
+Here's the proposed algorithm. 
+We run orthogonalize on the list of input 
+vectors, V0 through Vn, getting vectors, 
+V0* through Vn*. 
+Now, we return the list consisting of 
+those original vectors that correspond to 
+starred vectors that are non-zero. 
+Does this algorithm work? 
+I'll illustrate by example that the 
+algorithm is correct. 
+So let's say we ran orthogonalize on v0, 
+v1, through v6. 
+And got back v0* through v6*. 
+Let's suppose as before that v2*, v4* 
+ and v5* are 0 vectors. 
+So consider how orthogonalize would run. 
+In it's third iteration it takes v3 and 
+projects it orthogonal to the vector v0* 
+ v1* and v2* 
+to compute v3*. 
+Well, how does it do that? 
+It subtracts the projection of v3 along 
+v0*, then it subtracts the projection 
+along v1*, then it subtracts the 
+projection along v2*. 
+But since v2* is 0, the projection is the 
+
+0 vector,49
+00:04:32,126 --> 00:04:41,302
+ so subtraction does nothing. 
+So the results is the same as if the 
+algorithm had projected v3 orthogonal to 
+v0* and v1*. 
+V2* played no role. 
+0* vectors in the second argument of 
+project orthogonal are ignored. 
+So if we ran orthogonalize on just the 
+vectors v0, v1, v3 and v6, the output 
+would be exactly those vectors v0*, 
+v1*, v3* and v6* as we got 
+here. 
+We already know that those vectors, v0*, v1*, v3* and v6* form a 
+basis for the vector space that's the 
+span of v0 through v6. 
+And, we've seen that v0, v1, v3, and v6 
+span the same space, they have the same 
+cardinality. 
+So they also form a basis for that vector 
+space. 
+Here's another way to see that our 
+procedure is correct. 
+Recall that we had a matrix equation, 
+relating the original vectors to the 
+starred vectors. 
+The matrix whose columns are the original 
+vectors, equals the matrix whose columns 
+are the starred vectors. 
+Times this invertible triangular matrix. 
+Now suppose we run find subset basis on 
+the vectors v 0 through v 6. 
+Let big v be the span of those vectors. 
+Here's the matrix equation that in which 
+we write those vectors in terms of the 
+starred versions times the invertible 
+upper triangular matrix. 
+And let's suppose, as before, that v0 
+star, v4* and v5* are 0 vectors. 
+But let's delete those vectors, so this 
+is 0, this is 0 and this is 0. 
+We going to delete those columns from 
+this matrix and delete the corresponding 
+rows, from the triangular matrix. 
+ Let me get this. 
+Thus the span of v0 through v6. 
+Is the subset of the span of v0*, v1*, v3*, and v6*. 
+So that shows that these starred vectors 
+form a basis for big V. 
+Now let's delete the original columns 
+corresponding to the 0 vectors, v2, v4 
+and v5. 
+And delete the corresponding columns of 
+this matrix. 
+And we get this relationship. 
+Now, this triangular matrix is 
+invertible. 
+we can move it to the other side, 
+multiplying by the inverse. 
+And we get this relationship. 
+Now, this shows that v0*, v1*, v3* 
+linear combinations of v0, v1, v3, and 
+v6. 
+Well, that shows that these remaining 
+starred vectors are in the span of the 
+remaining unstarred vectors. 
+So that shows that the remaining 
+unstarred vectors, v0, v1, v3, and v6 are 
+a basis for big V. 
+Now, in principle we said, this algorithm 
+finds a basis. 
+For the space span by v1 through vn. 
+We use orthogonalize to compute v1* 
+though vn* 
+and then return the list consisting just 
+of the nonzero vectors. 
+However, the computer uses floating point 
+numbers, and due to round-off error 
+vectors that are supposed to be 0, won't 
+end up being exactly 0. 
+So instead, we'll modify the algorithm to 
+consider a vector to be effectively 0 if 
+it's norm squared, that is, the dot 
+product of v with itself, is very small, 
+say less than 10 to the minus 20. 
+So here's the revised algorithm, it 
+applies orthogonalize, and then it 
+returns a list consisting just of those 
+vectors. 
+Whose squared norms are greater than, 
+say, ten to the minus 20. 
+Now this procedure which finds a basis 
+for the space spanned by V1 through Vn 
+can in turn be used to define the rank 
+procedure and the is independent 
+procedure. 
+And we can use the same ideas in find 
+subset basis as well. 
+

@@ -1,0 +1,458 @@
+Hello, motion is a powerful cue used by
+humans and many other animals to extract
+objects or region of interest from a
+background of irrelevant detail.
+Although it's done so effortlessly by
+humans,
+it's a challenging task for the computer.
+It is a topic of great activity,
+because it's so fundamental, in many
+applications such
+as object detection and tracking, like
+vehicles and
+pedestrians, robotics, surveillance and
+video manipulation and editing.
+We describe some of the basic ideas and
+show some results.
+In this segment.
+We also describe, at a high level, some
+of the most recent and powerful approaches
+for segmentation.
+Specifically, the mean shift and graph cut
+algorithms.
+So, let us look at the fine details of
+this material.
+So far, we have primarily focused on
+segmentation based on intensity values.
+Or segmentation of still images.
+When we deal with videos, then motion is
+an
+important feature, that can also be used
+to perform segmentation.
+The idea of segmentation is that you
+want to group objects, pixels with similar
+properties.
+So, the dominant property here is motion,
+so, an object that moves
+in a certain direction should stand out
+and be segmented based on motion.
+Motion is definitely a powerful cue that
+is used by humans and many other animals
+to extract objects or regions of interest
+from a background of irrelevant detail.
+So given an image, image sequence we have
+to define the number of motion
+models and the type of motion models if
+its an affine model and so on.
+And then using this motion information we
+want to perform segmentation.
+This is a rich field in image processing
+and computer vision.
+There are techniques that are published
+everyday
+I would say on the topic of Motion-based
+Segmentation and motion based tracking
+that is
+tightly coupled with what we are
+discussing here.
+So here is an example of one frame of a
+scene.
+Is actually on campus here outside my
+office and
+based on one approach, this is the
+resulted segmentation.
+There are a lot of people working and some
+are working away from
+the camera, some towards the camera and
+they are identified by the various colors.
+So, green is towards the camera and red is
+away from the camera.
+There are really a large number of
+applications that
+utilize Motion-based Segmentation, some of
+which are just listed here.
+So, object detection and tracking is the
+one I already mentioned.
+Robotics as a similar problem if the
+interaction is based on a camera,
+we want the robot to be able to identify
+objects and track them.
+Surveillance is a large application area.
+Image and ved, video compression, as we
+saw in MPEG-4, we are able
+to perform Motion-based Segmentation and
+then in
+MPEG-4 we can encode visual objects
+separately.
+Scene reconstruction and video
+manipulation or editing.
+Video matting where we want to pull the
+visual objects out of the scene.
+Annotation motion magnification, and so
+on.
+[SOUND] We see two results here of object
+based, Motion-based Segmentation.
+So this is the called monitor sequence.
+Three different methods are compared.
+The one at the bottom right is the one
+that
+is lesser susceptible to noise, it gives
+cleaner results, so.
+You see again, the objects that are moving
+these people that
+they are walking around, that are pulled
+out from the video.
+We see a similar result here.
+This is a sequence from the top of the
+engineering building where my
+office is and you see cars are moving as
+well as individual people.
+There's another piece of work we did here
+in the lab where we
+tracked the motion of the hands of the
+person performing CPR on this mannequin.
+So this can be used for training purpose,
+for example, then based on the motion,
+we try to extract the frequency of
+compression as well as the depth of
+compression.
+There is an actual system that real time
+can demonstrate that.
+The basic approach to perform Motion-based
+Segmentation, maybe the
+one that first comes to mind to everybody
+is
+just to look at the difference between two
+consecutive
+frames or a reference image and a second
+image.
+So.
+If we have these two images, we take the
+absolute value of the difference.
+If it's above a threshold, then
+we put in 1 there.
+Otherwise we put a 0.
+So it's a threshold based detection of
+motion.
+And that way we obtain a binary image
+again.
+The moving part is 1 and the non-moving
+part is 0.
+The underlying assumptions are that the
+images are registered spatially, otherwise
+would be detected, detecting the shifts
+and that the illumination is constant.
+Otherwise you change the illumination, you
+see a lot of moisture and these are the
+effects actually that I demonstrated when
+we
+talked about motion estimation earlier in
+the course.
+An improvement to the previous simple idea
+I
+just explained is this accumulative
+difference image, ADI and
+you then have the absolute based value or
+the absolute image, accumulative image or
+positive or negative.
+So, one absolute, we have a reference
+image here and then a number of frames.
+But to compare again.
+So if the absolute value is greater than
+the
+threshold, then the accumulated here value
+is increased by one.
+Otherwise it stays the same.
+So it's exactly the same operation, but
+now instead
+of the absolute value, we take just the
+value, the
+positive value if it's above the
+threshold, and otherwise
+we take the value if it's below a negative
+threshold.
+The isolated en-, entries in the dij
+result from noise and are not significant.
+The thresholding is the connectivities
+removed,
+but may remove this entries as well.
+And the use of the ADI ignores changes
+that occur only sporadically.
+Here's a simple example we performed is
+just a white square
+that is moving in a certain direction over
+a number of frames.
+So we show the positive ADI here, so it
+can show the size of the moving object
+and the location of the moving object in
+reference to the image frame.
+So this is the idea behind a positive, it
+can nicely isolate the size while the
+absolute and negative, can show us the
+speed and direction of the motion.
+So, actually, it's a good idea if all
+these
+ADI metrics, absolute positive and
+negative are used together.
+Because each of them conveys a different
+piece of information.
+[SOUND] One of the most current and useful
+and effective
+techniques in doing segmentation is the
+Mean Shift technique.
+So as the first step, the data is
+transferred into a feature space.
+It Could be the color, the texture, the
+gradient, the combination of the above.
+And then the idea is to find the maximum
+density in this feature space so here for
+example,
+in this particular example that's where
+the maximum density
+takes place and we would like to locate
+that.
+So.
+We start with an initial estimate of where
+the maximum density is.
+This is depicted by this circle.
+Of course, this is a multi-dimensional
+space, so this is a hyper sphere.
+And then, we estimate the Center of Mass
+of the point that belong to this region.
+So, let's say the Center of Masses there,
+then the vector that needs to move the
+center of the initial hyper-sphere to the
+new
+Center of Mass is the Mean Shift Vector.
+So now we move the region, we center it
+around
+the Center of Mass and then we perform the
+same operation.
+We find the new Center of Mass which
+happens to be there, this
+is the new Mean Shift Vector, we shift the
+analysis region to
+the location of the new Center of Mass and
+keep going this way.
+Until at the end we land at this location.
+So then this will provide one of
+of, of the segments in performing this
+segmentation.
+So this is the intuitive idea behind
+behind the mean shift algorithm.
+So here is the result of the application
+of the Mean Shift algorithm.
+We see it applied to this image,
+these two fine gentlemen and this is the
+resulting segmented image.
+We see that it's doing a very satisfactory
+job when it comes to this.
+Region here but also in kind of segmenting
+the, the feature,
+the clothes of, of the people, then the
+ocean is behind it.
+The sky is a separate segment and then the
+sea and
+this is kind of a land mass here that is
+nicely separated.
+And this is yet another example of the
+application of Mean Shift.
+We see quite a few variation there in the
+color, the sky, the letters here and so
+on.
+So, for this particular segmentation, the.
+Feature vector contain the three RGB
+components of, of, of
+the color image and the two components
+with a special location.
+So, it was a fifth-dimensional feature
+space, to which Mean Shift was applied.
+Another one of the current approaches, the
+modern
+approaches toward segmentation is based on
+Graph Cut.
+So the idea here is that, an image can be
+represented as a graph.
+So, the pixels in an image are vertices of
+the graph.
+Then if I consider two pixels, then
+there's
+a corresponding edge that connects the two
+pixels and
+the similarity gives rise to a weight or a
+course, or a course that weights these two
+pixels.
+So you have two pixels, an edge in between
+and a similarity based.
+On, on some metric will give me the cost.
+So after a graph is build based on an
+image, Graph Cut is what the name implies.
+I want to cut, create a cut in this graph,
+so
+that as shown in the example here one cut
+will separate.
+The whole graph into two pieces,
+the foreground and background for example
+pieces.
+So the question is which edges should we
+cut and the intuition tells us that we
+should cut the edges that have low cost,
+when the cost expresses similarity.
+So the low similarity edges should be
+removed.
+And therefore, the, the similar pixel
+should be in different
+segments while the similar ones should be
+in the same segment.
+What the minimum cut or the st-minimum cut
+problem is taking its name actually,
+S stands for source and T stands for
+termination but it can be called the S, S.
+Mincut problem as well.
+So here we see a toy example, two
+vertices, a source and
+the sink and the associated costs
+connecting source sink and the two
+vertices.
+So the idea of the st-cut is to divide the
+nodes between source and sink.
+So one possibility would be this one like
+V1 belongs to
+source, V2 belongs to sink and then we see
+the associated
+cost if we cut here, that's the, the red
+vertices if
+we cut here the associated cost should be
+equal to 16.
+So we add the cost of this vertex, so it's
+a five here,
+it's a two for this one and it's a nine
+for this one.
+If we consider the alternative
+configuration where V2 belongs to
+the source and V1 to the sink, then we see
+that the cost if we cut along these edges
+is
+this two plus one plus four is equal to
+seven.
+So this is a smaller cost so for this
+particular toy example, that's the cut
+that should be chosen.
+But in general this is not the way,
+exactly the way when to find the minimum
+cut but instead we solve the, so called,
+maximum flow problem.
+This is a dual problem because one can
+prove, one has proven,
+people have proven that the min-cut and
+the max-flow problems are equivalent.
+So solving the one gives you the solution
+for the other.
+So the idea of the maximum flow is to
+flow, to
+push the maximum flow through the network
+and see what is the.
+The, the number for this maximum flow.
+So for this toy example we can,
+there's the augment, augmented path based
+algorithm.
+So if I look at this configuration again
+then we see
+that we can push a flow of two and a flow
+of five.
+Of these links in red.
+So clearly, I can push a flow of two from
+source to the sink and if I do
+so, the flow increases by two and then the
+remaining capacity of this edge is two
+minus two, zero.
+While, the remaining capacity of this edge
+after the flow of two is pushed
+will be five minus two equals three and
+that's what these values are here.
+So then I look for another path that will
+allow the maximum flow
+and this is this path, so I can push a
+flow of nine
+here, push a flow of four through this
+edge and clearly I can
+only push a flow of four because this here
+is providing the constraint.
+So if I do so, the remaining flow is five
+here,
+zero here and they have increased the
+total flow by four.
+If
+they get an additional path, well, yes,
+and this is this path.
+I can push as much as five from here, one
+and three.
+The minimum is one so I can push a flow of
+one through there and I increase the total
+flow by one and
+here the remaining capacity is zero, so
+this is the resulting
+situation and clearly no more flow can be
+pushed from the network.
+So based on this, then this is the
+resulting cut.
+So this the way these problems solved
+through the maximum flow outgoing that I
+just.
+Illustrated here in a toy example.
+[SOUND] So, applying the minimum cut
+algorithm to this
+cameraman image, we obtain the
+segmentation here.
+It's clearly not extremely satisfying for
+this particular implementation.
+However these algorithms, the graph
+[UNKNOWN] algorithms, have all
+kind of other advantages that can be
+explored and exploited.
+But they simply wanted to demonstrate that
+this high level,
+the the Min Cut algorithm which I assume
+it's rather intuitive.
+At least based on its principal.
+Welcome to the end of week 11, one more
+week to go.
+It's hard to believe that we are reaching
+the end of the class.
+We look this week at the interesting
+and active topic of emerging video
+segmentation.
+We covered some of the basic approaches,
+but there are really so many more
+techniques in the literature and
+techniques which
+are used in practice on a daily basis.
+I believe the material covered during this
+week
+provided you with enough information and
+tools, to be
+able to understand other techniques in the
+literature and
+also decide which might be the most
+appropriate one.
+For an application we are interested in.
+Some of the techniques, such as X
+detection are
+easier to understand than others, such as
+Graph Cuts.
+Sometimes, a complicated approach results
+in improved performance,
+but this may not always be the case.
+Very often, simple techniques and ideas
+win.
+It is however a problem with no ground
+truth
+and therefore there is always room for
+another method.
+Next week we'll talk about some of the
+recent developments
+in image processing, which are based on
+the concept of sparsity.
+So see you next week, the last week of
+classes.
+

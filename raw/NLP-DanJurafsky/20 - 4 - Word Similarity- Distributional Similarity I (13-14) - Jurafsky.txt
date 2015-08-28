@@ -1,0 +1,302 @@
+Alright, let's turn to the second
+important method for computing word
+similarity: distributional similarity. Now,
+thesauri have problems for computing
+similarity. We don't always have a
+thesaurus for a particular language, and
+even when we do, thesauri have a problem
+with recall. So, words are missing,
+phrases are missing, connections between
+senses may be missing, and in general
+thesauri don't work as well for verbs or
+adjectives, which have less structured
+hyponymy relations. So for all these
+reasons we often use distributional models
+of meaning, often called vector-space
+models of meaning, and these tend to give
+you higher recall than hand-built
+thesauri, although they might have lower
+precision. The intuition of these
+distributional models of meaning comes
+from early linguistic work. So for
+example, Zellig Harris in 1954 said,
+oculist and eye doctor occur in almost the
+same environments. So if A and B have
+almost identical environments, we say
+they're synonyms. And Firth back in '57
+said you shall know a word by the company
+it keeps. So here's an example. We have a
+bunch of sentences about tesgüino. Nida
+says a bottle of tesgüino's on the table.
+Everybody likes tesgüino. Tesgüino makes
+you drunk. We make tesgüino out of corn.
+So from these context words for a human
+it's very easy to guess that tesgüino means
+some kind of alcoholic beverage. Some kind
+of beer made out of corn. So the intuition
+for an algorithm is two words are similar
+if they are just surrounded by similar words,
+very simple idea. Let's see how to make that 
+work. Remember the term-document matrix
+we saw information retrieval. So
+each cell in the term-document matrix was
+the count of a term T in a document D. So we
+called it the term frequency of T in D.
+And we thought about it, what meant to be a
+document was to be a count vector. So a
+column in this term document matrix. So
+the document As You Like It, the
+Shakespeare play is a count vector over
+lots of words. I'm showing just four words:
+battle, soldier, fool, clown. So As You
+Like It is a count vector.
+So two documents are similar if their vectors
+were similar. So Julius Caesar, high
+counts for battle and soldier, low counts
+for fool and clown. Similarly, Henry the
+Fifth, high counts for battle and soldier,
+low counts for fool and clown. So we, so
+we saw that Julius Caesar and Henry the
+Fifth, if they were a query and a document,
+or two documents, they were
+similar by this vector similarity method.
+And we're just gonna use the same exact
+intuition for deciding if two words are
+similar. So, look at the words in a term
+document matrix. And now a word is a count
+vector. And two words are similar if their
+vectors are similar. So fool has high
+counts in the document As You Like It, and
+the document Twelfth Night. And low
+counts in Julius Caesar and Henry the
+Fifth. Clown has high counts in As You
+Like It and Twelfth Night, and low counts
+in Julius Caesar and Henry the Fifth.
+So we say that fool and clown are similar.
+But probably battle and fool are not similar,
+because battle has high counts here
+and low counts here, but fool has the opposite. 
+It has high counts here and low counts here.
+So the intuition of word similarity, distributional
+word similarity, is instead of using entire
+documents, like we used for information
+retrieval, let's use smaller context. We
+could use a paragraph, or we could use
+just a window of ten words. And now we
+define a word by a vector over these context 
+counts, for whatever this context is.
+So let's suppose we use context of ten
+words to the left, and ten words to the
+right. Here's a sample example I've
+grabbed from the Brown corpus. So here's
+some words. The word apricot, the word
+pineapple, the word digital, and the word
+information. And I've shown you, for each
+of them, just one set of context. Ten
+words before apricot, ten words after
+apricot, from one of the uses of apricot,
+and one, one document in the corpus. And
+here's ten words before and after
+pineapple and so on. So from the various
+documents, examples I have grabbed from
+the Brown corpus, some examples for each
+of these words, looking like these
+examples, I can compute little counts and
+I can build myself the term-context
+matrix. So here's the term-context matrix
+for these four words: apricot, pineapple,
+digital, information. They don't ever
+appear with the word aardvark but the
+words digital and information have the word
+computer within ten words of them,
+twice for digital, and once for
+information, or the word pinch occurs with
+apricot and pineapple, and the word sugar
+occurs with them whereas the word data and
+the word result tend to occur with the
+word digital and the word information.
+Now, again, we say, two words are similar
+in meaning if their context vectors are
+similar. So, apricot has a one for pinch
+and a one for sugar. Pineapple also has a
+one for pinch and a one for sugar, and
+zero for computer and data. So that tells
+us that probably, these words are similar.
+Whereas, digital and information, their counts
+occur in other words, like computer, data, 
+and result. So they're probably similar as well.
+Simple intuition, just like what we saw in 
+information retrieval for comparing documents.
+But now we're comparing words,
+and using a reduced context.
+Now for the term-document matrix 
+for information retrieval, we used tf-idf
+weighting, we didn't use raw counts. 
+We used various kinds of weighting.
+Sometimes tf, sometimes idf, sometimes 
+both. Now for the term-context matrix
+it's very common to use a version of 
+pointwise mutual information
+called Positive Pointwise
+Mutual Information, so let's look at that.
+Pointwise mutual information is an
+information theoretic method that says, do
+events X and Y occur more often than if
+they were independent. So the pointwise
+mutual information between two things, X
+and Y, is the probability of the two
+occurring together, divided by the
+probability of the two, the product of the
+probability of the two independently, and
+we take the log of that. So, you can see
+that, if the two things occur more often
+than you would expect by chance, more
+often than you expect by independence,
+then the numerator will be much higher
+than the denominator. So between two
+words, the pointwise mutual information is
+the log of the probability of the two
+words occurring together, times the
+product of the two words occurring
+independently.
+And positive PMI simply replaces all the 
+negative values with zero.
+So, imagine that we have a matrix F,
+our term-context matrix, we'll call it
+F for frequency, and we've got words labeled 
+by, rows labeled by words, and we have
+columns labeled by contexts, which could be 
+a context word, so we saw for example
+the context word aardvark, or computer or 
+data or pinch or so on, and we're gonna
+take our, here's our counts and each of these, 
+each of these counts is the, is F sub IJ,
+the frequency of row I column J. So, we're 
+going to turn those into probabilities first.
+So we'll say that the probability of a word I 
+and J occurring together, the joint probability
+of a word I and a context J is the
+frequency with which they appear,
+normalized by the sum of all, the frequency
+of all words in all contexts. So we sum
+over the entire matrix. That's the, the
+denominator N. The probability of a
+word, that's a row I<i>, is the count
+of all, all of the, all of the contexts</i>
+that that word occur in. So we sum over
+all possible contexts, and we sum all the
+counts for that word in those contexts,
+normalized by N. And the probability of a
+context is the sum over all words that
+that context occurs in, the c--, those
+counts, again normalized. And we take
+these probabilities, the probability of a
+word and a context occurring together
+times the probability of a wor-, over the
+probability of a word times the
+probability of a context. We take that
+log, and that's our PMI. And our positive
+PMI is, if it's less than zero, we replace
+it with zero. So let's see how that works
+in practice. We've got our, a little, I
+made a simpler little matrix of counts here
+for working through our example, so, the word
+digital occurs in the context computer
+twice, in the context data once, in the
+context result once, and never for pinch
+or sugar. Okay, we saw before.
+And again, our probability of, the joint
+probability of a word and a context, is
+the frequency with which the word occurs
+in the context normalized by the total N,
+the sum over of all counts for all words
+and all contexts. Let's first compute N.
+N is the sum of all these things. Two,
+three, four, ten, eleven, twelve,
+thirteen, fourteen, 15,19. So N is
+nineteen. We've got nineteen. Our, our
+denominators are gonna be nineteen for all
+of our various probabilities. So now, the
+probability, the joint probability of the
+word being information in the context data.
+So word is information, in the context
+data. We've got our F sub IJ is six, and
+our N is nineteen, so we have 6/19th's
+or .32. So that's the joint probability of
+information and data. Now, we need to
+compute the probabilities of words and the
+probabilities of contexts. So the
+probability of a word, we just sum a row
+over all contexts that that word
+can occur in. So the word
+information occurs eleven times. Once in
+this context plus six plus four. So we have
+a total of eleven times over again, N of
+19, or .58. So that's the probability
+of a word. And we do the same thing for
+contexts. We sum over all words that that
+context occurs with over those counts and
+normalize. So for the context data, we
+have a one plus a six. So we have seven
+over nineteen or .37. So if we do
+this computation for all of our examples,
+we'll get this little matrix. Here we have
+the, in here we have the joint
+probabilities, all the joint probabilities.
+Here we have the marginals, the 
+probability of the words, and the
+probability of the contexts. So again here's
+our 0.37 and that's the probability of data.
+And here's our 0.58, that's the probability 
+of the word information. And there's our 0.32. Good.
+So now we're ready to compute PMI.
+Recall that PMI is the log base two 
+of the joint over the two marginals.
+So that's going to be our .32 divided by our 
+.37 times .58. And then we'll take the log
+of that, so that's .58, or .57 using full 
+precision. And we can see here that,
+if we take this log, that we get positive numbers 
+for computer being linked with digital,
+and information with data, and pineapple
+with sugar, and so on.
+And we've replaced any of the time we
+got negative numbers, since this is
+positive PMI, we replaced the negative 
+numbers with zeroes.
+Now the problem with PMI is that it's
+weighted toward infrequent events.
+And there's a a lovely survey paper by
+Turney and Pentel that walks through
+some of the ways that can alleviate this. 
+But it turns out that very simple
+methods like Laplace smoothing can actually 
+help. Let's look at how this works
+with add-two smoothing. So here I've just
+added 2 to all the counts, so we just have
+simple add-two smoothing, and recomputed
+our probability table again with our marginals
+for the context and the word. And now what
+I've shown you here is our positive PMI tables.
+Here's our original table for no smoothing.
+And here we are with add-two smoothing,
+and what you'll notice is that, in the original
+table without smoothing, the link between
+apricot and pineapple and sugar is very high.
+We get a very high PMI despite the fact,
+I don't know if you remember that the counts
+were just one. Whereas data for which
+we had a lot more evidence, counts of
+six and four, the link between information
+and data, or information and result,
+had much lower PMI values.
+Adding two affects the lower counts more 
+than the higher counts, and we can see that
+the larger counts haven't changed very much
+but we've discounted those excessively high
+PMI values, and now we have much more 
+reasonable related numbers for our PMI.
+So that's the first half of our introduction to
+distributional similarity. And we'll turn
+in the second half to how to use cosine
+metrics to actually compute the similarity.

@@ -1,0 +1,372 @@
+
+﻿Now we'll see an application of Gaussian 
+elimination with matrices over GF2, 
+integer factoring. 
+The prime factorization theorem states 
+that for every integer N greater than or 
+equal to 1, there is a unique bag of 
+prime numbers whose product is N. 
+So, for example, the integer 75 is the 
+product of the integers 3, 5 and 5, these 
+are all primes. 
+The integer 126 is the product of 2, 3, 3 
+and 7, and the integer 23 is the product 
+of 23. 
+All the elements in the bag must be 
+prime, so if the number is itself prime, 
+the bag only has that one number in it. 
+Factoring integers is a famous, 
+long-standing problem. 
+Gauss himself pointed out that the 
+problem of distinguishing prime numbers 
+from composite numbers and of resolving 
+the latter into their prime factors. 
+Factoring composite numbers into prime, 
+into, into their prime factors is one of 
+the most important problems. 
+Here's another authority on the same 
+problem. 
+Bill Gates points out that, that it would 
+be a breakthrough to develop an 
+easy way to factor large prime numbers. 
+Well, actually he got that slightly 
+wrong, large composite numbers. 
+What he was speaking of was the role of, of factorization in security. 
+When you go to a website, say a bank, the 
+browser will show you this lock and the, 
+the, the URL has the letters https, the S 
+stands for secure. 
+It's based on something called SSL which 
+is this Secure Sockets Layer. 
+Which in turn is based on RSA, a crypto 
+system, named after its inventors 
+Rivest-Shamir-Adelman. 
+Now, RSA in turn depends on factoring 
+integers being difficult. 
+Testing whether a number is prime turns 
+out to be the easy part. 
+So, here's the one line script, it 
+doesn't get all numbers right but there 
+are a few exceptions. 
+With a few more lines you can get correct 
+answers, even for these special numbers 
+called Carmichael numbers. 
+So, the hard part of factoring is this, 
+given an integer N, find any nontrivial 
+divisor other, that is a divisor other 
+than one and N itself. 
+If you could do that reliably, then you 
+can factor the integer all the way down 
+to prime numbers. 
+Here's a very simple algorithm for 
+factoring an integer. 
+It tries all of the possible div, 
+divisors from 2 to N minus 2, and tests 
+whether N is divisible by each one of 
+them. 
+The first divisor it finds it returns. 
+Well, in fact, if d is a divisor of N, 
+then so is N over d. 
+And the minimum of d, and N over d is 
+less than or equal to the square route of 
+N. 
+Which shows that the algorithm actually 
+need only search between 2 and the square 
+root of N. 
+So, here's the revised version I'm using 
+this procedure intsqrt, which I'll 
+provide. 
+Unfortunately or fortunately for RSA, 
+this algorithm is very slow. 
+If you plugin an integer N that has 30, 
+40,100 digits, its going to take a long, 
+long time to find a divisible. 
+here's a tool that's useful and more 
+sophisticated factoring algorithms. 
+Greatest common divisor gcd, goes long 
+back and it's very fast, very easy to 
+write in Python. 
+It finds the greatest common divisor of 
+two integers, that is the largest of all 
+integers that divides both of the two 
+inputs. 
+So, for example, the gcd of 12 and 16 is 
+4 and the gcd of these two long numbers 
+is this number. 
+You can run this, it'll take very little 
+time to compute this. 
+Here's an approach to trying to factor a 
+large number N. 
+We try to find integers a and b such that 
+a squared minus b squared equals the 
+integer N. 
+And we can factor the left hand side as a 
+minus b times a plus b equals N. 
+So, in this case a minus b and a plus b 
+are evidently divisors of N. 
+Ideally, they're nontrivial divisors 
+well, how do we find a and b? 
+Well we, we choose some integer a that's 
+slight more than square root of N and we 
+check if the square root of a squared 
+minus N is an integer. 
+And if so, we found b. 
+Now, a minus b is a divisor of N and, and 
+there's at least a good chance that it's 
+a non-trivial divisor and if not, repeat 
+with another value for a. 
+Here's an example, start with the integer 
+77. 
+I know you can factor that, but let's see 
+if this, how this method would factor it. 
+We try a equals 9, a squared minus N is a 
+perfect square, its square root is 2. 
+So we let b equal 2, and now a minus b is 7, 
+ that is a divisor of N, so we've 
+successfully factored in using this 
+approach. 
+Let's try another example, N equals 23 
+times 41, we try a equals 31. 
+Look at a squared minus N, that's 18. 
+Okay well, that's not a perfect square. 
+Let's try a equals 32, well then a 
+squared minus N is 81 and that is a 
+perfect square. 
+So, we've succeeded once again. 
+However, when N is very large, it takes a 
+long time to find an integer a that works 
+in this way. 
+So, instead we’ll show how linear algebra 
+can help us synthesize a good a. 
+We're going to change our goal slightly. 
+We're going to try to find integers a and 
+b such that a squared minus b squared is 
+k times N for some integer k. 
+In that case, we factor the left hand 
+side a minus b, times a plus b is k times 
+N. 
+Now, the prime factors of a minus b, 
+together with the prime factors of a plus 
+b, equals the set of prime factors of a 
+together with the set of prime factors of 
+N. 
+So, let's say that the prime factors of N 
+are p and q. 
+Well, if p and q are both 
+factors of a minus b, or are both factors 
+of a plus b. 
+Then, computing the gcd of a minus b with 
+N won't find a nontrivial divisor of N. 
+However, here's an example. 
+Let's say, N is 7 times 11 and k is 2 
+times 3 times 5 times 13. 
+Well, if a minus b is 2 times 7 times 11 
+and a plus b is 3 times 5 times 13 that, 
+that'll work out. 
+Then, when you take the gcd of a minus b 
+with N it's not going to find a 
+non-trivial divisor. 
+It's just going to give you N. 
+So, that didn't quite work, but if, if, 
+if, if p say, is a divisor of a minus b, 
+and q is a divisor of a plus b, or vice 
+versa. 
+Then, in fact the gcd of a minus b with N 
+will find a nontrivial divisor. 
+For example, let's say a minus b is 2 
+times 5 times 11, a plus b is 3 times 7 
+times 13. 
+Well, one of the factors, one of the 
+prime factors of N, is in the 
+factorization of a minus b and one of 
+them is in the factor, factorization of a 
+plus b. 
+So, gcd of a minus b with N, will find 
+you the factor 11. 
+Well, how can we find integers a and b, 
+such that a squared minus b squared is 
+even an integer multiple of N. 
+Well, here's how, here's the strategy. 
+Start by finding say, the first thousand 
+prime numbers. 
+Now, choose a and compute a 
+squared minus N. 
+And we see if a squared minus N can be 
+factored using only these prime numbers. 
+And if not, we throw it away and we 
+choose another a. 
+If it can be, we record a and the 
+factorization of a squared minus N. 
+Remember, the factorization of a squared 
+minus N in this case, consists just of 
+these first, just of a subset of these 
+first thousand primes. 
+We repeat this process about a thousand 
+times. 
+We get a table like this. 
+These are the integers a where we 
+succeeded. 
+We took a squared minus N and found that 
+it could be factored using these first 
+few primes. 
+We tried 52, 53, we tried 54 but that 
+didn't work so, we went to 58, and so on. 
+So, for, for each of these values of a, 
+we have the factorization of a squared 
+minus N. 
+How do we find the integer b? 
+We want to find a subset, say a1 through 
+ak of those values of a. 
+Such that a1 squared minus N times a2 
+squared minus N and so on, is itself a 
+perfect square. 
+So, in this case we can combine the 
+numbers a1 equals 51, a2 equals 67, and 
+a3 equals 71. 
+So, a1 squared minus N times a2 squared 
+minus N times a3 squared minus N is- 
+Well, we know the factorization of a1 
+squared minus N, it's 3 times 5 times 19. 
+We know the factorization of a2 squared 
+minus N. 
+That's 2 times 3 squared times 5 times 23, 
+ and we know the factorization of a3 
+squared minus N that's 2 times 3 times 19 
+times 23. 
+We, we multiply all these primes together 
+and this is the number we get. 
+You notice anything interesting here? 
+All the exponents are even, what that 
+means is that, this number is a perfect 
+square. 
+Here's the square root. 
+Alright, well how do we find, a subset of 
+those a's that will work in this way? 
+A subset of a's such as the corresponding 
+product of a squared minus N is a perfect 
+square. 
+We're going to use linear algebra. 
+We represent each factorization as a 
+vector over GF 2. 
+So, and a factorization that looks like 
+this p1 to the a1, p2 to the a2, up to pk 
+to the ak. 
+Is represented by a vector in which p1 
+maps to either 0 or 1 depending on 
+whether a1 is even or odd. 
+P2 maps to, either 0 or 1 depending on 
+whether, the exponent a2, is even, or 
+odd, and so on. 
+Now, let a be the matrix, who's rows are 
+these, vectors over GF 2. 
+What we want to do is find, a subset, of 
+those factorizations whose product is a 
+perfect square. 
+And that corresponds to a subset of the 
+rows of a, whose sum is the zero vector. 
+We need to find a non-zero vector in the 
+set of vectors used such that u times A 
+equals the zero vector. 
+This is basically, this is the null space 
+of A transpose. 
+Now, how can we guarantee that that there 
+is a non trivial vector in in this space? 
+We just make sure that the number of rows 
+is greater than the rank of the matrix. 
+Since the number of columns is the number 
+of primes that we started with say 1,000. 
+All we have to do is get 1,001 and we're 
+guaranteed that there'll be some 
+non-trivial vector in this set. 
+So, we represent each factorization by 
+the GF 2, by a GF 2 vector, where the 
+values depend on whether the exponents in 
+the factorization are even or odd. 
+So, the factorization 2, 7, 13, all the 
+exponents are 1, therefore odd. 
+So, we represented by the vector where 2 
+maps to 1, 13 maps to 1, 7 maps to 1 and 
+all the other primes map to 0. 
+Similarly, this factorization 3 to 3 
+times 5 times 7 is represented by the 
+vector where 3 maps to 1, because the 
+exponent 3 is odd. 
+5 maps to 1, because the exponent, in 
+this case 1 is odd and 7 maps to 1 
+because the exponent of 7 is 1 which is 
+odd. 
+So, now we have a bunch of GF2 vectors. 
+We build a matrix a, whose rows are these 
+GF 2 vectors. 
+ >> Here are some other fun things to do 
+with Gaussian elimination over GF 2. 
+We can solve Lights Out puzzles, we can 
+attack Python's pseudo-random-number 
+generator. 
+So, if you import the module random, you 
+can use it to generate random bits. 
+But what's the next 32 bits to be 
+generated? 
+You can actually use Gaussian 
+elimination, to predict those bits 
+accurately. 
+And here's another application breaking 
+the simple authentication scheme. 
+You'll recall that the simple authentication 
+scheme works like this. 
+The password is an n vector, x hat over GF 
+2, known only to the computer and the 
+human. 
+The computer authenticates the human by 
+sending challenges that the human has to 
+reply to. 
+So, a computer sends a random n vector a, 
+and the human sends back the dot product 
+of a with the password xhat. 
+And this is repeated until the computer 
+is convinced that the human knows the 
+password. 
+This scheme isn't so secure, if our 
+eavesdropper Eve listens in on the 
+communication, 
+she'll learn a bunch of challenges and 
+the right responses to those challenges. 
+The password is a solution to a matrix 
+vector equation, consisting of the 
+challenges and the responses. 
+And once the rank of the matrix reaches 
+n, the number of bits in the password the 
+solution is unique. 
+So, Eve can use Gaussian elimination to 
+find the password. 
+How can we make this very simple 
+authentication scheme more secure? 
+We introduce mistakes. 
+In each round, the human after receiving 
+the challenge and computing the dot 
+product with the password, rolls a die. 
+If the die comes up six, the human 
+intentionally flips the bit before 
+sending it back to the computer. 
+Now, the computer knows to expect some of 
+the bits to be wrong, so the computer 
+authenticates the human. 
+If the human gets the right answer say, 
+75% of the time. 
+Now let's look at it from the perspective 
+of Eve. 
+Even if she knows that the human is 
+introducing intentional errors, she 
+doesn't know in which rounds the errors 
+are being introduced. 
+So, Eve can't just take the challenges 
+and responses that she observes and plug 
+them into Gaussian elimination, because 
+it will get the wrong answer. 
+In fact, we don't know of any efficient 
+algorithm that will find the password, 
+when the right-hand sides are wrong. 
+So, this scheme in which mistakes are 
+intentionally introduced, could actually 
+be a secure authentication scheme. 
+

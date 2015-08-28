@@ -1,0 +1,574 @@
+So this is the first video of three in
+which we'll mathematically analyze the
+running time of the randomized
+implementation of quicksort. So in
+particular we're gonna prove that the
+average running time of quicksort is big-O
+of n log n. Now this is the first
+randomized algorithm that we've seen in
+the course and therefore, in its analysis
+will be the first time that we're gonna
+need any kind of probability theory. So
+let me just explain upfront what I?d like,
+expect you to know in the following
+analysis. Basically I need you to know the
+first few ingredients of discrete
+probability theory, so I need you to know
+about sample spaces, that is how to model
+all of the different things that could
+happen, all of the ways that random
+choices could resolve themselves. I need
+you to know about random variables,
+functions on sample spaces which take on
+real values, I need you to know about
+expectations that is average values of
+random variables, and Very simple but very
+key property we're going to need in the
+analysis of qucksort is linearity of
+expectation of expectation. So, if you
+haven't seen this before or if you're too
+rusty, definitely you should review this
+stuff before you watch this video. Some
+places you can go to get that necessary
+review, you can look at the probability
+review part one video that's up on the
+course. If you prefer to read something,
+like I said at the beginning of the
+course, I recommend the free online
+lecture notes by Eric Lehman and Tom
+Laten. Mathematics for Computer Science.
+That covers everything we'll need to know
+plus much more. There's also a wiki book
+on dist. Probability with is a perfectly
+fine obviously free-source unless you can
+learn the necessary material. Okay? So
+after you've got that sorta fresh in your
+minds and you're ready to watch the rest
+of this video, and in particular we're
+ready to prove the following theorems
+stated in the previous video. So, the
+quick sort of algorithm with a randomized
+implementation, that is wherein every
+single recursive sub call you pick a pivot
+uniformly at random restated the following
+assertion. But for every single input so
+for a worse case input a ray of length n,
+the average running time of quick sorts.
+With the random pivots. Is O of N login.
+And again, to be clear where the
+randomness is, the randomness is not in
+the data. We make no assumptions about the
+data, as per guiding principles. No matter
+what the input array is, averaging only
+over the randomness in our own code. The
+randomness internal to the algorithm, we
+get a running time of N log N. We saw in
+the past that the best case behavior of
+Quick Sort is N log N. The worst case
+behavior is N squared. So this theorem is
+asserting that, no matter what the input
+array is, the typical behavior of Quick
+Sort is far closer to the best case
+behavior than it is to the worst case
+behavior. Okay so that's what we are going
+to prove, in the next few videos. So let's
+go ahead and get started. So first I'm
+going to set up the necessary notation and
+be clear about exactly what is the sample
+space what is the random variable that we
+care about and so on. So we're gonna fix
+an arbitrary array of length n, that's
+gonna be the input to the quick sort
+algorithm. And we'll be working with this
+fixed but arbitrary input array for the
+remainder of the analysis. Okay, so just
+fix a single input in your mind. Now
+what's the relevant sample space. Well
+recall what a sample space is. It's just
+all the possible outcomes of the
+randomness in the world. So it's all the
+distinct things that could happen. Now
+here the randomness is of our own
+devising, it's just a random pivot
+sequences. The random pivots chosen by
+quick sort. So omega is just a set of all
+possible random pivots that quick sort
+could choose. Now the whole point of this
+theorem proving that the average, average
+running time it puts is sort of small,
+boils down to computing the expectation of
+a single random variable. So here's the
+random variable we're going to care about.
+Four Given pipit sequence, remember that
+random variables are real valued functions
+defined on the sample space. So for a
+given point in the sample space, or pipit
+sequence sigma, we're going to define
+capital C of sigma, as the number of
+comparisons that Quick Sort makes, where
+by comparison I don't mean something like
+within array index in a four loop, that's
+not what I mean by comparison. I mean,
+comparison between two different entries
+of the input array, by comparing the third
+entry in the array against the seventh
+entry in the array to see whether the
+third entry or the seventh entry is
+smaller. Notice that this is indeed a
+random variable that is given knowledge of
+the pivot sequence sigma. The choices of
+all pivots you can think a quick sort at
+that point is just a deterministic
+algorithm, with all of the pivot choice
+predetermined. So the deterministic
+version of quick sort makes some
+deterministic number of comparisons. So,
+if we're given pivot sequence sigma, we're
+just calling C of sigma to be whatever,
+however many comparisons it makes given
+those choices of pivots. Now the, with the
+theorem I've stated it's not about the
+number of comparisons of Quick Sort but
+rather about the running time of Quick
+Sort but really, if you think about it
+kinda only real work that the Quick Sort
+algorithm does is make comparisons between
+two, between pairs of elements in the
+input array. Yes, there's a little bit of
+other book keeping but that's all noise,
+that's all second order stuff. All Quick
+Sort really does is comparisons between
+the pairs of elements in the input array.
+And if you want to know what I mean by
+that a little more formally, dominated by
+comparisons. I mean, that there exists a
+constant c, so that the total number of
+operations of any type that quick sort
+executes is at most a constant factor
+larger than the number of comparisons. So
+let's say that by RT I mean the number of
+primitive operations of any form that
+quick sort uses and for every. Pivot
+sequence sigma. The total number of
+operations is no more than a constant
+times. The total number of comparisons.
+And if you want a proof of this, it's not
+that interesting, so I'm not gonna talk
+about it here. But in the notes posted on
+the website, there is a sketch, of why
+this is true. How you can formally argue
+that there isn't much work beyond just the
+comparisons. But I hope most of you find
+that, to be pretty intuitive. So, given
+this, given the, the running time of Quick
+Sort boils down just to the number of
+comparisons. And we want to prove the
+average running time is N log N. All we
+gotta do, quote unquote, all we have to
+do, is prove that the average number of
+comparisons that Quick Sort makes, is O of
+N log N. And that's what we're gonna do.
+So that's what the, the rest of these
+lectures are about. So that's what we
+gotta prove. We gotta prove that the
+expectation of this random variable C,
+which counts up the number of comparisons
+quicksort makes is for this arbitrary
+input array A of length n, bounded by
+big-O of n log n. So the high order bit of
+this lecture is a decomposition principle.
+We've identified this random variable C,
+the number of comparisons, and it's
+exactly what we care about. It governs the
+average running time of Quick Sort. The
+problem is, it's quite complicated. It's
+very hard to understand what this capital
+C is. It's fluctuating between n log n and
+n squared, and it's hard to know how to
+get a handle on it. So how are we gonna go
+about proving this assertion that the
+expected number of comparisons that
+quicksort makes is on average just O (n
+log n)? At this point we actually have a
+fair amount of experience with
+divide-and-conquer algorithms. We've seen
+a number of examples. And, whenever we had
+to do a running-time analysis of such an
+algorithm, we wrote out a recurrence, we
+applied the master method or, in the worst
+case, we wrote out a recursion tree to
+figure out the solution of that
+recurrence. So you'd be very right to
+expect something similar to happen here.
+But as we probe deeper and we think about
+quicksort, we quickly realize that the
+master method just doesn't apply, or at
+least not in the form that we're used to.
+The problem is twofold. So, first of all,
+the size of the two subproblems is random.
+Right? As we discussed in the last video
+the quality of the pivot is what
+determines how balanced a split we get
+into the two subproblems. It can be as bad
+subproblem size zero and one a size n
+minus one. Or it can be as good as a
+perfectly balanced split into two
+subproblems of equal sizes. But we don't
+know. It's gonna be dependent on our range
+of choice of the pivot. Moreover the
+master at least as we discussed it
+required solved subproblems to have the
+same size. And unless you're extremely
+lucky that's not gonna happen in the
+quicksort algorithm. It is possible to
+develop a theory of recurrence relations
+for randomized algorithms, and to apply it
+to quick sort in particular. But I'm not
+going to go that route for two reasons.
+The first one is its really quite messy.
+It gets pretty technical, to talk about
+solutions to recurrences for randomized
+algorithms, or to think about random
+recursion trees. Both of those get, get
+pretty complicated. The second reason is,
+I really want to introduce you to what I
+call a decomposition principle, by which
+you take a random variable that's
+complicated, but that you care about a
+lot. And decompose it in to simple random
+variables which you don't really care
+about in their own right but which are
+easy to analyze and then you stitch those
+two things together using linearity and
+expectation so that's gonna be the
+workhorse for our analysis of the quick
+store, of the quick-sort algorithm and
+it's gonna come up again a couple of times
+in the rest of the course, for example,
+when we study hashing. So, to explain how
+this decomposition principle applies to
+quicksort in particular, I'm gonna need to
+introduce you to the building blocks,
+simple random variables which will make up
+the complicated random variable that we
+care about, the number of comparisons. So
+here's some notation. Recall that we fixed
+in the background an arbitrary array of
+length N and that's denoted by capital A
+[sound]. And some notation which is
+simple, but also quite important by z sub
+i. What I mean is the ith smallest element
+in the input array capitol A. Also known
+as the ith order statistic. So let me tell
+you what ZI is not, okay. What ZI is not,
+in general, is the element in the
+[inaudible] position of the input unsorted
+array. What ZI is, is it's the element
+which is going to wind up in the
+[inaudible] element of the array, once we
+sort it, okay. So if you fast forward to
+the end of the sorting algorithm, in
+position I, you're gonna find ZI. So let
+me give you an example. So suppose we have
+just a simple array here, unsorted. Were
+the numbers six, eight, ten and two, then.
+Z one, well that's the first smallest. The
+one smallest or just the minimum. So z one
+would be the two z two would be the six z
+three would be the eight and z four would
+be the ten. For this particular input
+array. Okay? So z I is just the
+[inaudible] smallest number, wherever it
+may lie in the original unsorted array
+that's what z I refers to. So we already
+defined the sample space that's just all
+possible choices of pivots, the Quicksort
+might make. I already described one random
+variable with the number of comparison
+that Quicksort makes on a particular
+choice of pivots. Now I am getting
+introduced a family of much simpler random
+variables which count merely the
+comparisons involving a given pair of
+elements in the input way not all elements
+just a given pair. So for a given choice
+of pivots given sigma and given choices of
+I and J. Both of which are between one and
+N. And so we only count things once. I'm
+going to insist that I is less than J
+always. And now here's a definition. My
+XIJ, and this is a random variable, so
+it's a function of the pivots chosen. This
+is going to be the number of times that ZI
+and ZJ are compared in the execution of
+quick sort. Okay, so this is gonna be an
+important definition in our analysis. It's
+important you understand it. So, for
+something like the third smallest element
+and the seventh smallest element, x I j is
+asking, that's when I equals three and j
+equals seven, x three seven is asking how
+many times those two elements get compared
+as quicksort. Proceeds. And this is a
+random variable in the sense that if the
+pivot choices are all predetermined, if we
+think of those being chosen in advance,
+then there's just some fixed deterministic
+number of times, that ZI and ZJ get
+compared. So it's important you understand
+these random variables XIJ. So the next
+quiz is gonna ask, a basic question about
+the range of values that a given XIJ can
+take on. So for this quiz we're
+considering, as usual, so fixed input
+array and now furthermore, fix two
+specific elements of the input array. For
+example, the third smallest element,
+wherever it may lie, and the seventh
+smallest element, wherever it may lie.
+Think about just these pair of two
+elements. What is the range of values that
+the corresponding random variable, Xij,
+can take on? That is, what are the
+different numbers of times that a given
+pair of elements might conceivably get
+compared in the execution of the quick
+sort algorithm? All right so the correct
+answer to this quiz, is the second option.
+This is not a trivial quiz. This is a
+little tricky to see. So the assertion is
+that a given pair of elements, they might
+not be compared at all. They might be
+compared once. And they're not going to
+get compared more than once. Okay? So
+here, what I'm gonna discuss is why it's
+not possible for a given pair of elements
+to be compared twice during the execution
+of quick sort. It'll be clear later on, if
+it's not already clear now, that both zero
+and one are legitimate possibilities. A
+pair of elements might never get compared
+and they might get compared once. And
+we'll, and again, we'll go into more
+detail on that in the next video. So, but
+why is it impossible to be compared twice?
+Well, think about two elements. Say, the
+third element and the seventh element. And
+let's recall how the partition subroutine
+works. Observe that in quick sort, the
+only place in the code where comparisons
+between pairs of the. Input array elements
+happens, it only happens in the partition
+subroutine. So that's where we have to
+drill down. So what are the comparisons
+that get made in the partition subroutine?
+Well. Go back and look at that code. The
+pivot elements is compared to each other
+element in the input array exactly once.
+Okay, so the pivot just hangs out in the
+first entry of the array. We have this for
+loop, this index j, which marches over the
+rest of the array. And for each value of
+j, the j element of the input array gets
+compared to the pivot. Okay. So
+summarizing in an invocation of partition,
+every single comparison involves the pivot
+element, okay. So two elements get
+compared if and only if one is the pivot.
+Alright, so let's go back to the question.
+Why can't a given pair of elements in the
+[inaudible] get compared two or more
+times? Well, think about the first time
+they ever get compared in Quick Sort. It
+must be the case that at that moment,
+we're in a recursive call where either one
+of those two is the pivot element. So it's
+the third smallest element or the seventh
+smallest element. The first time those two
+elements are compared to each other,
+either the third smallest or the seventh
+smallest is currently the pivot, because
+all comparisons involve the pivot element.
+Therefore. What's gonna happen in the
+recursion, well the pitted is excluded
+from both recursive calls. So for example
+if the second smallest element is
+currently the pitted that's not gonna be
+passed on to recursive call which contains
+the third smallest element. Therefore if
+you compared once, one of the elements
+that's pitted and it will never be
+compared again because the pitted will not
+even show up in any future recursive
+calls. Okay, so that's the reason. You
+compared once, one is the pitted, it
+doesn't get passed to the recursion,
+you're done, never seen again. So a random
+variable which can only take on the value
+zero or one is often called an indicator
+random variable, because it's in, just
+indicating whether or not a certain thing
+happens. So, in that terminology, each x I
+j. Is indicating whether or not the ith
+smallest element in the array, and the jth
+smallest element in the array, ever get
+compared. It can't happen more than once.
+It may or may not happen, and Xij is one
+precisely when it happens. So that's the
+event that it's indicating. Having defined
+the building blocks I need, these
+indicator random variables, these X, I,
+Js, now I can introduce you to the
+decomposition principle as applied to
+Quick Sort. So there's a random variable
+that we really care about which is denoted
+capital C, the number of comparisons the
+Quick Sort makes, that's really hard to
+get a handle on in and of itself. But we
+can express C as a sum of indicator random
+variables of these X, I, Js and those, we
+don't care about in their own right,
+they're gonna be much easier to
+understand. So, let me just rewrite the
+definitions of C M E X and J so we're all
+clear on them. So C Recall counts all of
+the comparisons between pairs of input
+elements that [inaudible] whatever makes.
+Whereas an Xij only counts the number and
+its going to be zero or one which compare
+the ith smallest and the jth smallest
+elements in particular. Now since every
+comparison involves precisely one pair of
+elements some I and some j, with I less
+the j. We can write C as the sum of the
+Xij's. So don't get intimidated by this
+fancy double sum. All this is doing is
+it's iterating over all of the ordered
+pairs. So all of the pairs IJ, where I and
+J are both between one and N, and where I
+is strictly less than N. This double sum
+is just a convenient way to do that
+iteration. And, of course, no matter what
+the pivots chosen are, we have this
+equality, okay? The comparisons, are
+somehow split up amongst the various pairs
+of elements, the various I's and J's. Why
+is it useful to express a complicated
+random variable as a sum of simple random
+variables? Well, because an equation like
+this is now right in the wheelhouse of
+linearity of expectation. So let's just go
+ahead and apply that. Remember, and this
+is super, super important, linearity of
+expectation says that the expectation of a
+sum. Equals, the sum, of the expectations,
+and moreover, this is true, whether or not
+the reign of variables are independent
+?Kay and I'm not gonna prove it here, but
+you might wanna think about the fact that
+the X-I-J's are not in fact, independent.
+They were using the fact that we need an
+expectation towards, even for not
+independent reign of variables. And why is
+this interesting, well the left hand side.
+This is complicated, right? This is the,
+this is some crazy number of comparisons
+by some algorithm on some arbitrarily long
+array and it fluctuates between two pretty
+far apart numbers and log in and then
+squared. On the other hand, this does not
+seem as intimidating, given X, I, J it's
+just zero or one, whether or not these two
+guys get compared or not. So that is the
+power of this decomposition approach,
+okay. So it reduces understanding of
+complicated random variable to
+understanding simple random variables. In
+fact, because these are indicator random
+variables, we can even clean up this
+expression some more. So for any given
+xij, being a 01 random variable, if we
+expand the definition of expectation, just
+as an average over the various values
+it's, what is it. It's, well, it's some
+probability it takes on the value zero,
+that's possible. And there's some
+possibility it takes on the value one. And
+of course this zero part we can very
+satisfyingly delete, cancel. And so the
+expected value of a given XIJ is just the
+probability that XIJ equals one. And
+remember, it's an indicator random
+variable. It's one precisely when the I
+smallest and the J smallest, elements get
+compared. So putting it all together. We
+find that what we care about, the average
+value of the number of comparisons made by
+quick sort on this input array. Is this
+double sum, which iterates over all
+ordered pairs. Where each summand is the
+probability that the corresponding x I j
+equals one. That is the probability that z
+I and z j get compared. And this is
+essentially the stopping point for this
+video, for the first part of the analysis.
+So let's call this star and put a nice
+circle around it. So whats gonna happen
+next is that in the second video, for the
+analysis, we're going to drill down on
+this probability. Probability that a
+given, pair of [inaudible] gets compared
+and we're gonna nail it, we're gonna get
+an exact expression as a function of I and
+J, for exactly what this probability is.
+Then in the third video we're going to
+take that exact expression, plug it into
+the sum, and then, evaluate this sum and
+it turns out the sum will evaluate to the
+[inaudible] and login. So that's the plan.
+That's how you apply decomposition in
+terms of 0-1 or indicator random
+variables. Apply linearity of expectation.
+In the next video we'll understand these
+simple random variables, and then we'll
+wrap up in the third video. Before we move
+on to the next part of the analysis, I do
+just want to emphasize that this
+decomposition principle is relevant not
+only for quicksort, but it's relevant for
+the analysis of lots of randomized
+algorithms. And we will see more
+applications, at least one more
+application later in the course. So just
+to kinda really hammer the point home, let
+me spell out the key steps for the general
+decomposition principle. So first you need
+to figure out what is it you care about?
+So in Quick Sort we cared about the number
+of comparisons, we had this lemma that
+said the running time dominated our
+comparisons so we understood what we
+wanted to know - the average value for the
+number of comparisons. The second step is
+to express this random variable y as a sum
+of simpler random variables. Ideally
+indicator or 01 random variables. [sound]
+Now you're in the wheel house of linearity
+of expectation. You just apply it. And you
+find that what it is you care about, the
+average value. Of the random value, of the
+random variable, Y. Is just the sum.
+[sound] the probabilities of various
+events. That, given XL random variable is
+equal to one. And so the upshot is, to
+understand this seemingly very complicated
+left hand side, all you have to do is
+understand something which, in many cases,
+is much simpler. Which is, understand the
+probability of these various events.
+[sound]. In the next video, I'll show you
+exactly how that's done in the case of
+Quick Sort. Where these, where we care
+about the XIJs, the probability that two
+elements gets compared. So let's move on
+and get exact expression for that

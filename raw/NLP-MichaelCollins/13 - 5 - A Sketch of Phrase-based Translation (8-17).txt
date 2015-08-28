@@ -1,0 +1,230 @@
+So in the next segment of the class, 
+we'll talk extensively about what's 
+called the decoding problem in 
+phrase-based models. 
+But first thing, I just want to give you 
+a sketch of how the phrase-based model 
+can be used in translation. 
+So for this, I'm going to use a 
+particular example where we have some 
+German string, and we're going to see 
+that we produce the English translation 
+of this, basically left to right. 
+We're building up the translation left to 
+right on the English side. 
+And as we build up the translation left 
+to right, we're going to incorporate 
+various schools indicating how plausible 
+this particular translation is. 
+And in particular, there're going to be 
+three types of schools. 
+Firstly, a language modeling score. 
+Secondly, a phrase model score, using 
+these parameters t that I showed you 
+earlier. 
+And finally, a distortion model, which I 
+will describe in more detail as we go. 
+So the basic idea in translating this 
+German sentence is going to be to try to 
+find a sequence of phrases where we can 
+translate, at each point, one or more 
+German words into one or more English 
+words, and thereby, build a translation 
+left to right. 
+Okay? 
+So the first step we might say oh, let's 
+translate this word, Heute as today, 
+because I have some phrase or entry, 
+which says that these two things are a 
+possible translation of each other. 
+Now, this particular move, this 
+particular choice is going to have an 
+associated probability or cost. 
+We're going to have some language models 
+scores q. 
+So this is the language model and this is 
+going to allow us to give a prior 
+probability for how likely the English 
+string that we're building. 
+This would typically be a trigram 
+language model, and then we're going to 
+have some translation model scores, which 
+are going to be the t parameters I showed 
+you earlier. 
+And they're going to reflect for example 
+how likely today is to be translated as 
+Heute. 
+And then, finally, we're going to have 
+some [UNKNOWN] parameters, which are 
+going to be what are called distortion 
+parameters and which are going to 
+penalize us from skipping over large 
+sequences of English of German words. 
+they're going to try to enforce the 
+constraint that the word order is in the 
+two languages are somewhat related to 
+each other. 
+We'll talk about about this as we go 
+forward in the class. 
+So I could multiply these q and t 
+parameters together, and I could search 
+over all possible translations, and try 
+to find the maximum translation under 
+this score. 
+But actually, it's a little more 
+convenient to sum the log parameters, 
+we're going to take the sum of log q plus 
+log t, plus, then we'll see this is 
+[UNKNOWN] term. 
+Okay. 
+So this particular move is going to have 
+a language model score. 
+Firstly we have a probability of today 
+under a trigram language model, so this q 
+parameter is going to be a trigram 
+parameter. 
+What's the probability of today given 
+that we have these two star symboles? 
+These are just the same old star symbols 
+we've seen from language models in the 
+very first lecture of this class. 
+Secondly, we have the probability of 
+generating the word Heute, given Today. 
+And finally, this is going to be some 
+cost penalizing the number of words we 
+skip over. 
+Now, because both of these phrases are at 
+very, very start of the sentence, we 
+define the number of words we've skipped 
+over to be 0. 
+[UNKNOWN] is going to be some parameter 
+that's typically negative. 
+It might be minus 2 for example, which is 
+going to penalize cases where we skip 
+over large numbers of words. 
+And this is going to be the only control 
+we have over differing word order of 
+these two languages. 
+It's extremely crude and makes little 
+sense linguistically, but it does give 
+you some control over word order. 
+As I said, we'll talk later in the class 
+about how to improve upon this, but this 
+is how we'll start. 
+So that's the first step to make this 
+translation. 
+So, in the second step of the 
+translation, we might choose the 
+following phrase. 
+So we might see that we have this German 
+sequence of words, translated as we shall 
+be. 
+Sorry, this should be we shall be. 
+And again, we see language model scores, 
+we see phrase model scores, and 
+distortion model scores. 
+So the language model score, again, we're 
+using a trigram language model. 
+We have the probability of we given start 
+today, those are the, the two previous 
+words here. 
+We have the probability of shall, given 
+we in today. 
+And finally, we have the probability of 
+be given we and shall. 
+So one q parameter for each of the 
+English words that we've chosen. 
+On the phrase model side side, we have 
+log of t of this German string, then 
+they're given this English substring 
+given we shall be. 
+And finally, we have a distortion cost. 
+And again, notice in doing this, we 
+haven't skipped over any German words. 
+We've, we've, we've chosen the next 
+phrase completely adjacent to Heute, 
+which is the the, the current 
+translation, that's right, the current 
+translation has translated Heute. 
+And the next phrase is adjacent to this. 
+And so we've skipped over 0 words and so 
+this cost is 0. 
+So here's the next step of the 
+translation. 
+We've decided to use a phrase entry, 
+which says that this word in German, 
+which is seen right here at the end of 
+the sentence corresponds to the word 
+debating in English. 
+And, so, we can make this translation 
+step again building up another word in 
+the English translation. 
+We again have three scores a language 
+model score, phrase-based model score and 
+a distortion model score. 
+The language model score is simply a 
+single term, because we have a single 
+word being generated. 
+The probability of debating, given that 
+the previous two words are shall and be. 
+The phrase model score says what's the 
+probability of this German word, 
+conditioned on the fact that we have the 
+English word debating. 
+And then, finally, we have something more 
+interesting going on in the distortion 
+model here. 
+So remember, that [UNKNOWN] is again 
+going to be some negative value, say 
+minus 2, which is used to discourage long 
+range re-orderings in these models. 
+And we have six here, and that's because 
+I have skipped over one, two, three, 
+four, five, six words, and so, this word 
+incurs a cost of minus 2 times 6. 
+This would be minus 12. 
+So that's a fairly heavy penalty in this 
+case for skipping over several words and 
+this process will continue. 
+So maybe at the next step, we'll choose 
+these three German words to be translated 
+as the re-opening. 
+And again, this is going to have a 
+language model score, a phrase-based 
+model score, and distortion score. 
+And then, finally we would translate, we 
+might translate this German sequence as 
+being the sequence of the Mont Blanc 
+Tunnel. 
+So the final translation is, Today we 
+shall be debating the reopening of the 
+Mont Blanc Tunnel. 
+We've done this using a sequence of 
+phrases. 
+First thing we had today, first thing we 
+had today, then we had, I think, we shall 
+be. 
+And then debating, and then the, the 
+reopening, and of the Mont Blanc Tunnel, 
+and we've basically derived these phrases 
+using our phrasal lexicon. 
+And we've ordered these phrases in some 
+ordering left to right. 
+So that's just a sketch. 
+In the next lecture, we will go into 
+considerable depth of how we actually 
+decode with these translation models, but 
+this is the basic process. 
+a translation is going to involve picking 
+a sequence of phrases like this. 
+Each choice is going to involve a 
+language modeling score, a phrase score, 
+a distortion score. 
+And we're actually going to try to search 
+over the space of all possible 
+translations. 
+We're going to search for the translation 
+with the highest score under the 
+combination of these three parameter 
+types. 
+

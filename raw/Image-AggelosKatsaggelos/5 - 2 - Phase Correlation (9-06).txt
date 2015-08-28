@@ -1,0 +1,229 @@
+Welcome back.
+We cover in this segment the
+motion estimation technique, phase
+correlation, which
+is suitable for estimating the global
+motion an image frame is undergoing.
+It is therefore also referred to as an
+image registration approach.
+The algorithm is rather intuitively clear,
+and it is based on a
+simple property of the Fourier transform
+that we covered in week three.
+So, we see that we make use of
+the important information we covered last
+week right away.
+We describe the property in terms the of
+continuous
+Fourier transform first, but we also
+discuss the actual implementation
+of the algorithm in terms of the discreet
+Fourier transform
+which is the computable transform as we
+know by now.
+So, let us proceed with the segment.
+We will describe, next, some of the most
+commonly encountered methods for
+estimating motion, motion estimation
+methods.
+They are grouped into direct methods, and
+indirect ones.
+With direct methods we compute the optical
+optical flow in the scene.
+They come under different names, phase
+correlation.
+We try to find the shift between two
+frames by estimating the
+phase component that results due to the
+shift in the frequency domain.
+Block matching method, as the name
+implies, you take one block in one
+frame, and try to match it to the most
+appropriate location in another frame.
+Then there are the methods that compute
+the spatial and temporal gradients in the
+scene.
+And they come in, under two names.
+The traditional name here is optical flow
+algorithm.
+It gives us the optical flow equation,
+which I can use to find the motion.
+And then Pel-recursive methods, which also
+estimate the optical flow, but in such
+a way so as to, to allow recursive
+computability of the vector field.
+With indirect methods, I first find the
+features in the two frames and I
+match the features directly which, of
+course,
+will result in an estimation of the
+motion.
+Let us explain the phase correlation
+method with the use of an example.
+Consider the image shown here, noise has
+been added to this
+image and also a translated version of
+this image shown here.
+It should be clear that if I translate the
+first image
+in approximately the diagonal direction, I
+should obtain the second one.
+Let us denote by x n1, n2 the first image,
+and the second one by x n1 minus m1,
+n2 minus m2, the two translations in the
+horizontal and vertical direction.
+Based on what we have learned about the
+Fourier transform, if x omega
+1, omega 2 is a Fourier transform of the
+first image, then the
+Fourier transform of the second one equals
+e to the minus j
+omega 1 m1 into the minus j omega 2 m2 x
+omega 1 omega 2.
+So, the magnitude of the Fourier
+transforms of the two images is the same,
+however I have this linear phase component
+due to the shifts in the spatial domain.
+My objective clearly is to estimate m1 and
+m2.
+If I manage to isolate this phase
+component, this complex exponential.
+And take them back to the spatial domain.
+Then I know that they will give rise to a
+delta at m1, m2.
+So, if I do everything right, I'll obtain
+an image as shown here.
+So, there is indeed a delta here.
+It's approximately at 30, 33, so these are
+the shifts in m1 30 and 2 33.
+So, if I shift the second image by minus
+30, minus 33, I should obtain the first
+image.
+So, let us now look at the algorithmic
+details that will allow us to
+obtain this phase correlation image that
+will give us an estimate of the shifts.
+Let us now look at the algorithmic details
+behind the
+phase correlation method, which is also
+categorized a registration method.
+We are given two frames from a video
+sequence, at times t minus 1 and time t.
+And the first step is to take the discrete
+Fourier transform of these frames shown
+here correspondingly as x t minus 1 and x
+of t, k1, k2.
+Now, in the previous example, I used
+the continuous Fourier transform to
+describe the method.
+But we know by now that the continuous
+Fourier transform is not the computable
+transform, so therefore
+when I need to take an image to
+the frequency domain, I use the discrete
+Fourier transform.
+All, of course, through, it's one of its
+fast implementations, so I use an FFT.
+The modeling assumption is that the one
+frame is shifted with
+respect to the other frame, so the frame
+at times t
+equals the frame at times t minus 1,
+shifted by m1
+in the one direction, and by m2 in the
+other direction.
+These shifts, however, are not linear
+shifts, but
+circular shifts, or modulo n1, modulo n2
+shifts.
+If you recall, one way to understand,
+explain circular shifts, is to take
+an N1 by N2 image, periodically extend it
+by
+N1 in the one direction and period N2 in
+the other direction and then.
+Perform a linear shift, but only keep
+extract the base period,
+the period in one direction between 0 and
+N1 minus 1, and the
+period between 0 and N2 minus 1 in the
+other direction.
+Now, in most cases, the images are not
+related by a
+circular shift, like the example we
+showed, but by a linear shift.
+So to, to, to account for that, we first
+window
+with a two dimensional window both images
+before computing the DFTs.
+There are a number of different windows
+one can use from
+digital signal processing, like the
+triangular
+window, kaiser window and so on.
+So, the reason for this windowing is to
+downweight the
+contribution of the pixels around the
+bounders of the image.
+Since, again, the images are not related,
+necessarily, by circular shifts.
+Then, based on the shifting property of
+the discrete Fourier transform, we know
+that the two images are related in the
+frequency domain, as shown here.
+So the DFT of X of t equals the DFT of X
+of t minus 1, and the shift,
+circular shift in the spacial domain give
+rise to this phase component here.
+Right?
+This linear phase components are
+[INAUDIBLE] by the spectrum,
+so again, the two images have the same
+magnitude
+of the DFTs, but they, the phase of the
+second one I have added this linear, phase
+component.
+So, having computed the DFTs of the two
+frames, the next step is to compute this
+correlation image, C of k1, k2, so it's
+the DFT of
+X of t, times the X of t minus 1 and this
+is the complex conjugate of the
+complex number.
+So, it leaves a magnitude and change.
+And change is the sine of the phase.
+And the denominator, I take the magnitude
+of these two terms.
+So, if I substitute, from the equation
+above, X of t in here.
+Then you'll see that they have X of t
+minus 1 times X of t minus
+1 complex conjugate, which will give me
+the
+magnitude of the DFT times the phase
+component.
+So, in other words, I'm going to get this
+expression.
+And we see here, that the magnitudes
+cancel out,
+and all I'm left with is these complex
+exponential.
+This, this phase component.
+The third step I have to take, is to take
+now this image back to the spatial domain.
+And we do know that, the inverse discreet
+Fourier transform of these complex
+exponentials is just, delta.
+So, this image here is zero everywhere
+except at the pixel with coordinates
+m1 and m2, where the value's equal to 1
+due to the existence of this delta.
+So, the following, these three steps I
+just described would be able
+to see where this delta is located in the
+[UNKNOWN] c n1 and
+2, and obtain an estimate for the shift
+m1, m2 which will
+allow me to register the t minus 1 frame
+back to frame t.
+

@@ -1,0 +1,288 @@
+[SOUND] This lecture is about
+the feedback in the vector space model.
+In this lecture, we continue talking
+about the feedback and text retrieval.
+Particularly we're going to talk about
+feedback in the vector space model.
+As we have discussed before in
+the case of feedback the task of
+a text retrieval system is relearned from
+examples to improve retrieval accuracy.
+We will have positive examples,
+those are the documents that
+are assumed that will be random or
+judged with being random and all
+the documents that are viewed by users.
+We also have negative examples, those
+are documents known to be non-relevant.
+They can also be the documents
+that are escaped by users.
+The general method in
+the vector space model for
+feedback is to modify our query vector.
+Now we want to place the query vector in
+a better position to make that accurate
+and what does that mean exactly?
+Well, if you think about the query vector
+that would mean you would have to do
+something to vector elements.
+And in general that would
+mean we might add new terms.
+We might adjust weights of old terms or
+assign weights to new terms.
+And as a result in general
+the query will have more terms so
+we often call this query expansion.
+The most effective method in the vector
+space model of feedback is called Rocchio
+feedback which was actually
+proposed several decades ago.
+So, the idea is quite simple we illustrate
+this idea by using a two-dimensional
+display of all the documents in
+the collection and also the query vector.
+So, now we can see
+the query vector is here in
+the center and
+these are all of the documents.
+So when we use a query vector and
+use a similarity function to
+find the most similar documents.
+We are basically drawing a circle here and
+then these documents would be
+basically the top-ranked documents.
+And this process of relevant documents,
+right?
+And these are random documents for
+example that's relevant, etc.
+And then these minuses
+are negative documents like this.
+So our goal here is trying
+to move this query vector to some position
+to improve the retrieval accuracy.
+By looking at this diagram
+what do you think where
+should we move the query vector so that
+we can improve the retrieval accuracy.
+Intuitively, where do you want
+to move the query back to?
+If you want to think more
+you can pause the video.
+Now if you think about
+this picture you can realize that
+in order to work well in this case
+you want the query vector to be as close
+to the positive vectors as possible.
+That means, ideally you want to place
+the query vector somewhere here or
+we want to move the query
+vector closer to this point.
+Now, so what exactly at this point?
+Well, if you want these relevant
+documents to be ranked on the top
+you want this to be in the center of
+all of these relevant documents, right?
+Because then if you draw
+a circle around this one
+you get all these relevant documents.
+So that means we can move the query
+back toward the centroid of
+all the relevant document vectors.
+And this is basically the idea of Rocchio,
+of course you then can see that
+the centroid of negative documents.
+And one move away from
+the negative documents.
+Now geometrically we're
+talking about a moving vector
+closer to some other vector and
+away from other vectors.
+Algebraically it just means
+we have this formula.
+Here you can see this is
+original query vector and
+this average basically is the centroid
+vector of relevant documents.
+When we take the average
+over these vectors
+then we're computing
+the centroid of these vectors.
+And similarly this is the average in
+that non-relevant document of vectors so
+it's essentially of now random, documents.
+And we have these three parameters here,
+alpha, beta and gamma.
+They're controlling
+the amount of movement.
+When we add these two vectors together
+we're moving the query at the closer
+to the centroid, alright, so
+when we add them, together.
+When we subtracted this part we kind
+of move the query vector away from that
+centroid so
+this is the main idea of Rocchio Feedback.
+And after we have done this we
+will get a new query vector
+which can use it to store documents.
+This new New query vector will then
+reflect the move of this
+Original query vector toward
+this Relevant centroid vector and
+away from the Non-relevant
+centroid vector, okay?
+So let's take a look at example, right?
+This is the example that we have seen
+earlier only that I in the, the display
+of the actual documents I only showed the
+vector representation of these documents.
+We have five documents here and we have
+true red in the documents here, right?
+They are displayed in red and
+these are the term vectors.
+Now, I just assumed an idea of weights,
+a lot of times we have
+zero weights of course.
+These are negative documents, there
+are two here, there is another one here.
+Now in this Rocchio method we
+first compute the centroid of
+each category and so let's see.
+Look at the centroid of
+the positive document but
+we simply just so it's very easy to see.
+We just add this with this one
+the corresponding element and
+that's down here and take the average.
+And then we're going to add
+the corresponding elements and
+then just take the average, right?
+So we do this for all these.
+In the end, what we have is this one.
+This is the average vector of these two so
+it's a centroid of these two, right?
+Let's also look at the centroid
+of the nested documents.
+This is basically the same we're going to
+take the average of three elements.
+And these are the corresponding
+elements in these three vectors and
+so on and so forth.
+So in the end, that we have this one.
+Now, in the Rocchio feedback
+method we're going to combine all
+these with original query vector,
+which is this.
+So now let's see how we
+combine them together.
+Well, that's basically this, right?
+So we have a parameter outlier controlling
+the original query term weight that's 1.
+And now I've beta to control
+the inference of the positive
+centroid Vector weight that's
+1.5 that comes from here, right?
+So this goes here and
+we also have this negative wait here.
+Conduit by a gamma here and
+this weight has come from of
+course the nective centroid here.
+And we do exactly the same for
+other terms each is for one term.
+And this is our new vector.
+And we're going to use this new query
+vector, this one to run the documents.
+You can imagine what would happen, right?
+Because of the movement that this one or
+the match of these red
+documents much better.
+Because we move this
+vector closer to them and
+it's going to penalize these black
+documents, these non-relevant documents.
+So this is precisely what
+we want from feedback.
+Now of course, if we apply this method in
+practice we will see one potential problem
+and that is the original query has
+only four times that are not zero.
+But after we do queries,
+imagine you can imagine we'll have many
+terms that would have a number of weights.
+So the calculation would
+have to involve more terms.
+In practice,
+we often truncate this vector and
+only retain the terms which
+is the highest weight.
+So let's talk about how we
+use this method in practice.
+I just mentioned that we often truncate
+the vector consider only a small number
+of words that have highest
+weights in the centroid vector.
+This is for efficiency concern.
+I also say that here that a negative
+examples or non-relevant examples
+tend not to be very useful especially
+compared with positive examples.
+Now you can think about the, why.
+One reason is because negative documents
+tend to distract the query in
+all directions so when you take
+the average it doesn't really tell you
+where exactly it should be moving to.
+Whereas, positive documents tend
+to be clustered together and
+they respond to you to
+consistent the direction.
+So that also means that sometimesw we
+don't have those negative examples but
+note that in,
+in some cases in difficult queries where
+most top random results are negative.
+Negative feedback
+afterwards is very useful.
+Another thing is to avoid
+over-fitting that means we have to
+keep relatively high weight
+on the original query terms.
+Why?
+Because the sample that we see in
+feedback is a relatively small sample.
+We don't want to overly
+trust the small sample and
+the original query terms
+are still very important.
+Those terms are typed in by the user and
+the user has decided that those
+terms are most important.
+So in order to prevent the us
+from over-fitting or drifting.
+A type of drift prevent type of
+drifting due to the bias toward the,
+the feedback examples.
+We generally would have to keep a pretty
+high weight on the original terms so
+it is safe to do that.
+And this is especially, true for
+pseudo awareness feedback.
+Now this method can be used for
+both relevance feedback and
+pseudo relevance feedback.
+In the case of pseudo feedback,
+the parameter beta should be set to a,
+a smaller value because
+the random examples are assumed
+to be random there not as reliable
+as your relevance feedback, right?
+In the case of relevance feedback,
+we obviously could use a larger value.
+So, those parameters
+still have to be set and.
+And the ro, Rocchio method is
+usually robust and effective.
+It's, it's still a very popular method for
+feedback.
+[MUSIC]
+

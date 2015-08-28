@@ -1,0 +1,371 @@
+[NOISE] Now we study strategy three:
+First Phrase Mining then Topic Modeling.
+In the previous studies of phrase
+mining and topic modeling.
+Eh, it's almost like we first do
+Topic Modeling, then do Phrase Mining.
+Or doing Topic Modeling and Phrase Mining
+together like the Strategy 1.
+Then this Strategy 3 is we
+first perform Phrase Mining,
+then perform Topic Modeling.
+This was done.
+In my group by Ahmed El-Kishky,
+he got a paper in VLDB 2015,
+called ToPMine.
+This is topical phrase mining,
+that's why I write it this way, okay?
+The philosophy is we first do, phrase
+construction, then do topic modeling.
+'Kay.
+This is different from KERT,
+which first do topic modeling,
+then do phrase mining, okay?
+So let's look at ToPMine Framework.
+The first step is we
+do frequent contiguous
+pattern mining to extract candidate
+phrases and their counts.
+The difference you perceive with
+mark in red is, contiguous pattern.
+KERT, actually does not
+require contiguous pattern.
+That's why, if you want to find
+a phrase like a frequent pattern.
+Then the phrase,
+like a, frequent close pattern or
+a frequens, frequent topic pattern,
+all these were a contribute to the support
+of frequent pattern, so which is nice.
+But on the other hand,
+if the words separate too far away,
+you put them together,
+you will generate some patterns or
+some phrases which are not you know,
+the real phrase.
+So that's why we've found using frequent
+contiguous pattern has some edge.
+So after this,
+we were to agglomerative merging of
+adjacent unigrams to form bag-of-phrases,
+and
+how to do this,
+is guided by significant school testing.
+We are going to get into this soon.
+Okay.
+After we get a bag-of-phrases,
+then we pass this bag-of-phrases
+into PhraseLDA,
+which is the extension of LDA.
+It will constrain all
+the words in a phrase
+to each sharing of the same latent topic.
+Then we generate more meaningful
+phrase based topic models.
+Let's look at, why we want first do,
+phrase mining, then topic modeling.
+In Strategy 2 you probably,
+can't see if we first do topic modeling.
+Suppose knowledge discovery
+are in different topics, and
+support vector are in different topics,
+then you are not going to be able
+to generate knowledge discovery,
+discovery as one topic, and support vector
+machine as another phrase, another topic.
+So there's a constraint, that if the topic
+model happens to put nice phrases
+apart, then such phrases will
+not be able to be generated.
+So our solution is we want to switch
+the order of phrase mining, and
+topic model inference.
+That means we first do phrase mining,
+we may be able to recognize
+knowledge discovery is one phrase,
+least square is another, support vector
+machine is another, classify as another.
+If we can do this in a high quality,
+then we pass to topic modeling you know,
+procedure.
+Where we'll be able to identify knowledge
+discovery as one topic, mark as red.
+Least square as another support vector
+machine, as a sur, as a support topic, and
+classify it as a support topic as well.
+So, to that extent, you may generate
+the better quality phrases and topics.
+This method is way to phrase mining,
+and document segmentation like this.
+Then we do topic model inference
+with phrase constraints.
+Let's look at little detail.
+How to do frequent pattern mining, and
+statistic analysis to generate
+quality phrases, okay?
+So, the interesting thing is when
+the phrase, for example P1, P2,
+could be two words, or
+two phrases, one word one phrase.
+But anyway, these P1, P2,
+whether they should get together,
+together, we do
+the significant score test.
+Okay, we calculate the significant score,
+alpha, 'kay?
+How do we calculate alpha?
+Actually this is the P1 P2 in the corpus
+we first see how frequent they are.
+Okay, then we'll receive P1 P2 naturally,
+what is the chance they
+should get together.
+That means if you just look at P1 and P2,
+how frequent they are in this corpus
+without looking at concrete instances.
+You are going to get some kind of a new,
+or as you can see, the average case, okay?
+Then the kind of re-observation
+minus the expected case,
+you will see how the real
+frequency deviate, or
+they might be substantially frequent
+together than the expected case.
+Then we will normalize it, 'kay?
+That's the reason we can
+calculate this significant score.
+This is the idea you can think about
+this normal distribution based on
+statistics we know if this one is normal
+distribution we get a mu as a mean.
+If your distribution is three
+standard deviations away from mu.
+Okay.
+Then what you got here likely,
+is not by chance.
+It's really, they should get together.
+That's a reason when this
+number deviation way is high,
+the phrase you generate
+should be in high quality.
+Okay?
+[NOISE] So
+let's look at this case for example,
+if you calculate the support vector,
+you find their alpha value is 12.
+Then you should say,
+support vector should be a phrase,
+because they are so closely together.
+Okay?
+But after that, if you calculating your
+complex you find that support vector
+machine getting together
+the alpha value is 8.
+That simply says, not only support
+vector should be a phrase.
+And support vector
+machines getting together.
+It should be a good phrase.
+That's why you will take
+this one as a phrase.
+Okay.
+[SOUND] Then if you look
+at the remaining one.
+Like features that actually you
+find them getting together.
+The alpha value is six, you generate
+features that are I've just won.
+You'll find a Markov blanket
+at getting together is 5.
+You'll put another Markov
+blanket as another phrase.
+And finally, you'll generate
+Markov blanket feature selection,
+as another phrase.
+Then support vector machine for
+the third phrase, 'kay.
+By doing this significant test you may
+get another discovery is one phrase.
+Least squares is another phrase,
+support vector machines is the third one,
+and classifiers the fourth one.
+So that means, instead of you just
+to look at the raw of frequency,
+you see the support vector
+machine as a phrase.
+There are two frequencies 80,
+you put them as a phrase.
+After you put them as a phrase,
+the vector machine.
+Actually if you check them they
+absorb by the support vector machine,
+then their true frequency
+will drop down very quickly.
+And but the support vector, you'll find
+even you consider this true frequency,
+support vector itself,
+may still have 20 as a true frequency.
+Based on this,
+you are going to say finally,
+support vector machine is
+a really good phrase, but
+likely support vector could be
+another independent phrase.
+So, this kind of test we essentially
+call this the collocation mining.
+The colloocation mining means,
+a sequence of words that occur
+more frequently than expected.
+This a collocation.
+For example, if you look at the strong
+tea, you'll see these getting
+together is really collocation, that
+means much more frequent then expected.
+You will not see people say,
+powerful tea, okay, or weak tea, but
+you see the strong tea.
+In the meantime,
+you may see powerful computer,
+but you do not see a strong computer.
+So that means, those words that
+are getting together is not by chance.
+It's much more frequent than expected.
+So we can use many different
+measures to check such collocations.
+For example, like the example we show,
+just showed is a significant score.
+You also can use PMI, use chi square, you
+also T-test,-Z test, or likelihood ratio.
+You'll probably get very similar results.
+Okay?
+Let me use many of such measures can
+be used to guide the agglomerative
+phrase-segmentation algorithm.
+So it's not just because we use
+significant score we get some
+good results.
+So after this, we actually feed
+those phrases we generated in
+extended LDA called Phrase LDA.
+This essentially,
+is doing Constrained Topic Modeling.
+Essentially, the spirit is the same,
+the same generating model for
+phrase LDA, as the original LDA.
+But the major difference is for
+the PhraseLDA,
+we use bag-of-phrases as input
+to do these topic modeling.
+That means we actually we're seeing for
+these plate, you'll probably see.
+There's a chain-graph shows those words in
+the same phrase should be constrained or
+should be chained together
+on the same topic values.
+Based on these constraints, we will be
+able generate high quality phrases and
+also better quality topics
+because you put phrase together
+likely will generate better
+topics than the unigrams.
+We will have a little look to see whether
+it is true we can generate good phrases.
+You probably can see.
+This is one example we took ddrb, we find
+this one topic, you can see this one,
+is one from the information retriever
+web search, this is one topic.
+The other topic is more
+like machine learning,
+features like feature
+selection is other topic.
+Then you will probably see, for
+freeze discovery PDLDA, PDLA.
+Not only it is a quite complicated
+model that take much longer time.
+But also the final results
+generated is reasonably mixed.
+For example, the Topic 1.
+You're going to see there are some search
+things, some machine learning things,
+some other things.
+But if you look at Topic 2,
+you will see there are lots of
+information retrieval things, but
+also there are some machine learning,
+support vector machine
+mixed in this topic.
+So, the topic quality may not
+be generally as high as ToPMine.
+Let's look at some output for experiments.
+[NOISE] Okay, so we conduct
+the experiments on the DBLP abstracts.
+You proceed this ToPMine generated it for
+DBLP abstracts.
+Of course, you can see those unigrams,
+you probably see they're,
+they are not bad quality but
+n-grams actually is much more telling.
+For example you you look at this n-gram,
+the first one genetic algorithm,
+optimization, optimal solution.
+This is very much like
+optimization problems.
+The second one,
+very much like natural language one.
+The third one is more
+like machine learning.
+The fourth one, more like
+a program languages, and software.
+The, the fifth one is very much
+like a data mining, or a data sets.
+'Kay.
+So you probably, can see this is
+a pretty high quality results.
+And it's pretty telling for those phrases.
+Similarly, we conduct experiments on
+Associated Press News, AP News, in 1989.
+What you can see is not
+only the topic model,
+this unigram is pretty interesting and
+a good.
+But also the n-gram is much more telling.
+You proceed, you get energy department,
+the environmental,
+these energy environmental
+things it's here.
+And as a second topic is very
+much like Catholic and Church.
+The third topic is about Middle East.
+The, the fourth topic is President Bush,
+and White House is because this is 1989.
+The fifth one is more like health care,
+'kay.
+People can see the quality of the,
+for the news is very good.
+Even for Yelp this one is a little like
+people just writing reviews on Yelp.
+You may find that the language
+may not be so formal.
+Grammarly you know,
+it can may contain mistakes.
+But you can see, [NOISE] even that we
+still generate a high quality topics like
+the first topics, you will see ice cream,
+iced tea, french toast.
+This is like fast food, Western food.
+And the second one, like, you will see
+this is more like, Chinese food or
+Thai food.
+And, the third one,
+this is very much like a hotels.
+The fifth one is like a grocery stores,
+shopping centers.
+The, the,
+the last one is like Mexican food.
+So, the quality over all, even for Yelp,
+you do this topic modeling general,
+and nice phrases, and
+the topic modern quality is pretty good.
+So that's the ToPMine.
+[MUSIC]
+

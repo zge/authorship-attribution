@@ -1,0 +1,476 @@
+Welcome back.
+We discussed last week that we can design
+more efficient codes by looking at
+longer blocks of the data so that we're
+able to uncover the structure in the data.
+A similar statement can be made when we
+discuss quantization.
+If the data correlated, for example.
+As we'll see in the motivating example
+when we're quantizing
+the data representing the height and
+weight of an individual.
+We benefit if we do not quantize the
+height and the weight
+separately, but instead treat the two
+elements as a two dimensional vector.
+We can therefore, adopt the quantization
+to the distribution of the data.
+There is no need for example to have a
+reconstruction level for people that are
+seven feet tall and weigh 40 pounds,
+simply
+because such people do not appear very
+often.
+We discuss a procedure for designing the
+vector quantizer, similar
+to the Max Lloyd procedure we covered in
+the last segment.
+This is actually referred to as
+generalized Lloyd
+procedure, or LBG, after being the
+[UNKNOWN] procedure.
+Vector quantizers have formed compression
+algorithms on their own, but also
+they can be used as the middle block of
+any compression scheme.
+So let us proceed with this interesting
+topic.
+[BLANK_AUDIO].
+We saw earlier when we discussed loss less
+compression
+that a lot can be gained in compressing
+data
+when you consider blocks of data once,
+since this
+allows us to reveal the structure of the
+data.
+We can do the same with quantization.
+The vector quantization procedure is shown
+in this block diagram.
+It is a rather straight forward procedure.
+Given a one dimensional or a two
+dimensional
+signal, such as an image, a number of
+samples
+or pixels in a small block are considered
+at once and they are grouped into a
+vector.
+So when we deal with images we get
+consider for example
+of two by two or an eight by eight block
+in
+which case we have a four by one vector in
+the
+first case and a 16 by one vector in the
+second case.
+By the way in different context this two
+dimensional sub blocks are also referred
+to as patches.
+Then, during encoding a codebook is used,
+able
+to represent well, vectors that we
+encounter in image.
+Or maybe in any image belonging to a
+specific class of images.
+The distance of the vector to be quantized
+to all the vectors in the codebook is
+found.
+Using for example where you create
+distance metric
+and the one vector in the code book that
+is closest to the vector to be quantized
+is used as the reconstruction value of the
+vector.
+Each vector in the code book has an index.
+And it this index that is used for
+decoding this vector,
+or this is the index that is sent to the
+decoder.
+So if this is lets say that chosen vector,
+this will
+be the index that will be sent over to the
+decoder.
+The coding is actually very straight
+forward
+since it consists of a look up table.
+We look for the vector corresponding to
+this index.
+So this is the index that was sent over,
+and therefore this
+is the vector that will be pulled out to
+reconstruct the encoded vector.
+When I deal with image blocks, then we
+need to turn the vector into a block.
+And this represented by this unblock
+operation.
+Clearly the decoder has the identical
+codebook as the encoder for this to work.
+What are the parameters defining the
+efficiency quantizer or the VQ.
+It is the length of the vector to be
+quantized.
+As well as the length of the codebook.
+How many entries does the codebook have.
+So for example, If we consider patches or
+blocks lets
+say of size N by N and each pixel here is
+represented by B
+bits, and if we assume that the length of
+the code book
+here is capital L and let's say capital L
+is two to the L.
+This means I need L bits to represent all
+the entries in the code book,
+then the efficiency or the performance of
+the compression ratio of this V cube,
+is simply N by times N times B, divided by
+L.
+This could be called the rate also.
+So, let us now further motivate the
+benefit of utilizing vectors as a
+scale for quantization and then discuss
+how to design such a codebook.
+In motivating the use of a vector
+quantizer.
+Suppose we're quantizing a source that
+generates the height and weight of
+individuals.
+Suppose that the weight varies uniformly
+between 40 and 240 pounds
+and similarly the height varies uniformly
+between 40 and 8 inches.
+Suppose we have six base to represent each
+pair of volumes.
+We could use three bits to quantize the
+height and three bits to quantize the
+weight.
+So, the weight is divided into eight equal
+intervals, each of which 25.
+And similarly the height is divided into
+eight equal intervals of width five.
+When we look at the presentation of height
+and weight separately,
+as is shown here, this approach seems to
+make perfect sense.
+But now let's look at this representation
+in two dimensions.
+Nothing here's changed.
+The heights still quantized to the same
+eight values and so are the weights.
+However, we have desolated this space
+uniformly.
+We have quantized values for a person who
+is 80 inches up here and weighs 40 pounds.
+So this a six feet eight inch person that
+weighs 40 pounds and similarly.
+A person who's 40 inches tall and weights
+more than 250 pounds the person up here.
+Obviously these outputs will never be used
+as is the case for many other outputs.
+So a more sensible approach is con, to
+consider
+the quantizer that is shown in the next
+slide.
+So here's a view of the vector quantizer.
+This quantizer has the same number of
+output
+points as the quantizer in the previous
+slide.
+However, the output points across there in
+the area occupied by the input.
+Using this quantizer, we can no longer
+quantize the height and weight.
+Separately we have to consider them as the
+coordinator of a
+point in two dimensions in order to find
+the closest quantizer autopoint.
+So clearly, this method provides a much
+finer quantization of the input.
+We see with this example that the
+structure that
+was uncovered in the data is that they are
+correlated.
+However, the vector quantizer is more
+efficient than the
+scalar quantizer when the source output
+values are not correlated.
+The reason is that when we look at longer
+and longer
+sequences of source outputs, we have more
+flexibility in terms of design.
+We can now match the design of the
+quantizer to the source characteristics.
+Let us look at the toy VQ example.
+Here is the codebook that we have
+designed.
+It has four entries and each entry is a
+two dimensional vector.
+I is the index corresponding to the
+corresponding Y of I vector.
+Here's the signal we would like to
+quantize using this codebook, since the
+vectors to
+the codebook are two-dimensional, we are
+going
+to group two samples of the signal
+together.
+So with respect to the first vector 0,1 we
+find
+its distance from all four Y1 to Y4
+vectors so.
+The distance 0,1 from the first vector is
+0 minus
+0 squared plus 0 minus 1 squared equals to
+1.
+The distance, let's say from the fourth
+vector is 1 minus 0
+squared plus four minus one squared, one
+plus nine equals ten.
+So if we find the four distances, we see
+that the distance to, vector Y1 is the
+smallest one and therefore this vector,
+zero one
+is going to be represented by, the index
+one.
+We do the same for the second vector to
+three, and we find that it's closest to
+the
+vector y three in the code book, therefore
+we
+transmit index three and for the last
+vector to zero.
+We find that its closest to vector Y2,
+therefore,
+we'll transmit its index which is equal to
+2.
+So now, at decoding, we're going to
+reconstruct the input
+signal by the vectors corresponding to
+indices 1, 3,
+and 2, or in other words, this is the
+decoding signal.
+And if I find the difference between the
+original and decoded, this is the
+quantization error.
+So, this is the simple operation of a
+vector quantizer.
+Assuming of course that the codebook has
+been designed appropriately.
+And this is now the topical look
+into how to efficiently design an
+appropriate codebook.
+The story when designing a vector
+quantizer, which really means designing
+the codebook.
+Is very similar to the case of scalar
+quantization.
+We saw when we started scalar quantization
+that we
+can design a uniform quantizer, but the
+optimal quantizer in
+terms of minimizing the variance of the
+quantization error is
+a non-uniform quantizer but matches the
+PDF of the data.
+That is, we perform fine, fine
+quantization for the highly probably
+values
+of the intensity input values, and forced
+quantization for the less probable ones.
+When we derive the Max Lloyd optimal
+scalar quantizer, we were
+able to exactly solve for the decision
+boundaries and the construction levels.
+Now let's look at this concepts when we
+deal with VQ.
+Let's look at the two dimensional VQK
+since it's easier to describe and
+visualize.
+We can always build the two-dimensional
+uniform VQ as shown here.
+The data have intensity values however,
+has an underlying distribution.
+We're showing the height weight example
+that the data
+a lie along the diagonal, that is the
+correlated.
+So in general we're going to tessellate
+the two dimensional plane, non-uniformly,
+as shown here.
+Actually, we are not interested in finding
+exactly the boundaries
+here of which partition of which region,
+but in stead we
+are interested in finding a representative
+vector this one of this
+whole region and this is indeed the
+centroid of this region.
+So during encoding, if Y is the centroid
+of this region.
+And we're given a vector X that would like
+to quantize, we simply
+find the distance from this vector X from
+all the centroids.
+In the end is in the code book and we
+assign X to the closest ce-, centroid.
+So, in this particular case, the
+constructed value
+of X is going to be Y of I.
+So, let us now see how can partition the
+space, as shown here.
+Or more specifically, how we can find the
+centroids of these regions.
+We'll discuss now a VQ design technique
+that carries the
+name of generalized Lloyd or LBG
+algorithm, Linda Buso Gray.
+We'll start with a set of training images
+and also with an initial codebook.
+Based on this initial code book we
+partition the space into clusters.
+R of I using this nearest neighbor
+condition.
+That is all the vectors close to Y of I,
+which is one of
+entries of the code book, form the cluster
+of R of I.
+Then, for these form clusters, we find the
+centroids of these partitions.
+We then, check and see if the energy with
+respect to the previous step the energy of
+the
+initial distortion, the distortion has
+been reduced below a
+threshold we stopped otherwise we go back
+to step two.
+So at convergence we are going to have a
+code book
+of size N this is a parameter we set ahead
+of time.
+And, we are going to have this centroid
+which will
+be the entries to this code book of size
+N.
+Some general comments here is that clearly
+the image to be encoded
+should not be in the training set,
+otherwise we are cheating a bit.
+The nature of the VQ is sensitive to
+the initial codebook and the image being
+encoded.
+And then in general, this algorithm will
+result in a local minimum.
+And by and large, there's no global,
+global ultima codebook design technique.
+We demonstrate here the steps of the
+codebook
+design algorithm we discussed in the
+previous slide.
+Here are the training samples, each of
+these squares represents a two-dimensional
+training vector.
+We're interested in designing four-level
+vector quantizer.
+We start with the initial codebook
+vectors.
+There four of those.
+And we apply the nearest neighbor
+condition.
+So we find the training vector that are
+closest to each of the initial codebook
+vectors.
+Based on that, we obtain this partitioning
+of the space.
+So, for each of these partitions, lets say
+this partition here
+we are now going to find the centroid of
+this region.
+By the way, if the underline distribution
+is uniform then the
+centroid is just the average of the
+vectors belonging to a partition.
+If the PDF is known, then it's taken into
+account in finding the centroid.
+So, again, these are the training vectors.
+And these are the new centroids for these
+four regions.
+We apply again the nearest neighbor
+condition.
+And we obtain this partitioning of the
+space.
+So the initial codebook vectors move
+according to these vectors.
+For each of these partitions again, such
+as
+this one, we are going to find the
+centroid
+and these are the four new centroids.
+And applying again the nearest neighbor
+condition.
+This is the resulting tessellation of the
+space.
+These are the resulting partitions and the
+initial codebook
+vectors have moved according to the
+vectors indicated here.
+So we proceed taking these steps until
+convergence.
+Until the difference of the destruction
+error rather is below a threshold.
+Let us look at some simple VQ examples.
+Here are two cases, the size of the patch
+is two by two therefore it's a four by one
+vector quantizer and the size of the
+codebook it 32 is case A and 16 in case B.
+If you look at the compression ratio for
+case B, we
+have again 2 by 2 patches times eight bits
+per a pixel
+and I need four bits to represent the 16
+different entries in this
+particular case, therefore I have a
+compression ratio eight to one.
+Here are four cases where the size of the
+patch now
+is four by four, therefore it's a 16 by
+one vector quantizer.
+The size of the codebook varies from 256
+down to 32.
+It goes without saying that.
+Why the size of the patch is constant if
+the
+size of the dictionary decreases, the
+quality decreases as well.
+So what is the compression ratio for k's f
+here?
+I have four by four pixels in each vector,
+times eight bits per pixel, and.
+I need five bits to represent the 32
+different entries of the codebook.
+So this is approximately 25 to 1, the
+compression ratio.
+And finally we have two cases here where
+the size of the patch has, increased.
+Is an 8 by 8 patch or 16 by 1 vector
+and the two size of the codebook's are 256
+and 128 vectors.
+So the compression for case H here is
+eight
+by eight the size of the patch times eight
+bits per pixel and i need seven bits to
+represent the increase to two to seventh
+equals 128.
+And therefore this greater than 64 to one.
+So we see that in case H we have actually
+the largest compression ratio
+for all cases considered and but the
+quality is clearly the last one we see
+this annoying blocking artifacts since we
+don't
+have enough patches to, I'm sorry enough
+code vectors in the code book to
+describe all possible variation shows in
+the patches.
+[BLANK_AUDIO]
+

@@ -1,0 +1,194 @@
+with mergesort is a good opportunity to
+take a look at the intrinsic difficulty in
+the sorting problem, now that is called
+complexiting and we'll look at that next.
+The idea of complexity is it's a frame
+work for studying the efficiency of all
+the algorithms for solving a particular
+problem. That's called Computational
+Complexity. And in order to do this
+sensibly, we need what's called a model of
+computation. The operations that the
+algorithms are allowed to perform. For
+sorting that's kind of straight forward,
+what we're going to do is have a cost
+model where we count the comparisons. Now
+in framing of the difficulty of problems
+were only two things. One is an, what's
+called an upper bound which is a cost
+guarantee that's provided by some
+algorithm for solving the problem. That's
+an upper bound and how difficult it is to
+solve the problem. We have an algorithm
+that can solve it it's the least that
+easy. And then we also look for a lower
+bound which is a limit on the cost
+guarantee of all algorithms. No algorithm
+can do better. Now, what we seek ideally
+is what's called an optimal algorithm
+where we prove that the upper bound and
+the lower bound are the same. That's an
+algorithm that's, that we know that has
+the best possible cost guarantee. That's
+the idea for solving any problem. So, for
+sorting, let's look at what each of these
+are. The model of computation is what's
+called a decision tree, tree. And what
+that mans is that all we can use is
+compare, that's the only way we can access
+the data. So, our cost model is the number
+compares. Mergesort provides, provides an
+upper bound, that's an algorithm that's
+guaranteed to get the sort done in time
+proportional to N log N. And what we'll
+look at now is the lower bound. There's a
+trivial lower bound which says you have to
+look at all the data, that's N and we'll
+look at a better lower bound and see that
+mergesort is optimal. So, here's the basic
+idea for proving a lower bound for
+sorting. Let's say, we ha ve three
+different items, a, b and c. Whatever
+algorithm we have is going to, first, do a
+comparison between two of the items. Let's
+say, there a and b. And then there's two
+cases. Either it's yes or it's not yes,
+let's, let's say, they're distinct. And
+there will be some code between the
+compares but either way then there is
+going to be a different compare. If it's
+less than b, maybe the next compare is b
+against c. And if you find that b is less
+than c and a is less than b, then you know
+that they're in the, any algorithm that
+does that knows that the items are in the
+order a, b, c. If b less than c goes the
+other way, then it takes another
+comparison to determine the order. In this
+case, if c is less than b and a is less
+than c then those three compares show that
+the order has to be a, c, b and if c is
+less than a, then it's going to be c, a,
+b, those three compares that c is less
+than a, c less than b and a is less than
+b. The only possibility is c, a, b. In
+continuing on the right perhaps the next
+compare is a less than c and maybe if c is
+less than a, then another compare, b less
+than c. So, in this case, if you go from
+top to bottom in the tree with three
+compares at most you can determine the
+ordering of the three different items. The
+idea of the lower bound generalizes this
+argument to figure out a number of
+compares that you need for a minimum to
+determine the ordering among N items. Now,
+the height of the tree, as I just
+mentioned, is the worst case number of
+compares. Out of all the orderings the one
+that's further stand in the tree that's
+the worst case and so the algorithm, no
+matter what the input is, the tree tells
+us a bound, the number of compares taken
+by the algorithm. And there's got to be at
+least one leaf for each possible ordering.
+If there's some ordering that is not
+appear in a tree corresponding the
+particular algorithm then that algorithm
+hasn't can't sort, can't, can't tell the
+difference between two different
+orderings. So, the lower bound as a
+proposition, that uses the decision tree
+like that to prove that any compare base
+sorting algorithm has to use at least log
+base two (N) factorial compares in the
+worst case. And by Stirling's
+approximation, we know that log base
+two(N) factorial is proportional to N log
+based 2N. And then the proof is
+generalizes what I talked about on the
+decision tree on the last side, slide. We
+assume that the array consist of N
+distinct values there's a position created
+that describes the performance of any
+algorithm to compare sequence done by any
+algorithm to determine the N factorial
+different orderings. So, this three has to
+have at least N factorial leaves and if
+the three of height h, it has utmost two^h
+leaves. The only, the, the tree that has
+the most leaves of height h is totally
+complete and that one has two^h leaves.
+And those observations give us the lower
+bound. Two^h has to be greater than or
+equal to the number of leaves. And the
+number of leaves has to be greater or
+equal to N factorial so that implies the
+height of the tree has to be greater than
+or equal to log base two(N) factorial
+which is proportional to N log N by
+Stirling's formula. That's a lower bound
+on the complexity of sorting. So, we knew
+that the upper bound was N log,
+proportional to N log N and we just proved
+that the lower bound is proportional to N
+log N and that means that mergesort is an
+optimal algorithm. That's the first goal
+of algorithm design is to try and find
+optimal algorithms for the problems that
+we need to solve. Now, you have to take
+these results in context. Really what we
+proved is that mergesort is optimal with
+respect to number of compares but we
+already know that it's not optimal with
+respect to space usage. Mergesort uses
+twice as extra space proportional to the
+size of the array it has to sort. And
+simple algorithms like insertions or dump,
+they've they don't use any extra space at
+all. So , what we want to take from these
+theoretical results is, is a guide when
+we're looking at implementations and
+trying to solve practical problems. In
+this example what it tells us, what theory
+tells us is don't try to design a sorting
+algorithm that guarantees to use
+substantially for your compares than merge
+sort. Say, one-half N log N compares. Is
+there a method that use one-half N log N
+compares? The lower bound says, no. And
+that's a very useful thing because
+otherwise, we might try to define such an
+algorithm. On the other hand, maybe there
+is an algorithm that uses N log N compares
+and also uses optimal space. It's optimal
+with respect to both space and time. And
+that's what we're going to look at soon.
+The other thing is that the lower bound is
+for the particular model of computation
+being studied. In this case, compares. It
+might not hold if the algorithm has more
+information about the keys, for example,
+if it's known that the input is almost
+ordered, we saw that insertion sort can be
+linear time for files that are almost
+ordered. Or it's something about the
+distribution of key values if there are a
+lot of equal keys we can get sorted, get
+it sorted faster than, N log N. And maybe
+the way the keys are represented. We'll
+look at different methods that take
+advantage of such properties. So,
+partially ordered arrays we may not need N
+log N compares. Duplicate keys, we may not
+need N log N compares, we're going to look
+at the method that I guess that down in
+linear time and a lot of situations. And
+later on, we'll look at digital properties
+of keys where we can use digital character
+compares instead of whole key compares and
+got a faster sort for certain practical
+applications. Computational complexity is
+very useful way to help us understand
+properties of algorithm and help guide our
+design decisions.

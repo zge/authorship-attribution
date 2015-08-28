@@ -1,0 +1,305 @@
+So let's now talk about what makes a 
+dependency structure well formed. 
+That is how do we define the set of 
+possible dependency structures for a 
+given sentence. 
+And we're going to focus on two 
+constraints which will be important. 
+So the first constraint is that these 
+directed arks form a directed tree with 
+this root symbol at the root of the tree. 
+So this basically means that if I pick 
+any word in the sentence, for example 
+movie, there's going to be a directed 
+path from the root to that word. 
+So in this case the path is first this 
+arc root saw. 
+And then this arc sort of moving. 
+So every one of these words is connected 
+to the root through a directed path. 
+And this structure in addition forms a 
+tree which means for example there are no 
+cycles in these paths. 
+We have no cycles like this. 
+The second constrain which we'll come 
+back to in some detail in a second is 
+that there are no crossing dependencies 
+in these structures. 
+So crossing dependencies would look like 
+the following. 
+I have a structure like this, say this is 
+the root, and these are the four words in 
+the sentence. 
+you can see that these two dependencies 
+actually cross. 
+And so in this definition I'm going to 
+use in this lecture, we're going to rule 
+out these kind of structures. 
+I'll talk more about this in a second. 
+So if we come back to this simple 
+example, John saw Mary. 
+There are actually one, two, three, four, 
+five possible dependency structures in 
+this case. 
+Five structures that satisfy those two 
+constraints that I just showed you. 
+The correct one is here but of course 
+there are these [SOUND] four incorrect 
+structures for this particular sentence. 
+So the parsing problem is essentially 
+going to correspond to searching though 
+these different possible structures. 
+In finding the one which is most likely 
+or more, most plausible under some model. 
+Let me just talk a little bit more about 
+these crossing dependencies. 
+So what I've shown you here is a 
+dependencies pause structure which does 
+have one of these crossing dependencies. 
+So notice here we have a crossing 
+dependency. 
+Structures which allow these crossing 
+dependencies are often referred to as 
+non-projected structures. 
+And they an, can actually be useful in 
+some scenarios and depending on the 
+language and the constructions involved 
+you can actually see these kind of 
+non-projective structures. 
+Here's an example from English, where 
+arguably the correct dependency pause 
+certainly does have a crossing 
+dependency. 
+For the purposes of this lecture, we're 
+going to assume that these structures are 
+not allowed so they're not on the space 
+of possible dependency structures for a 
+particular sentence. 
+And that's a pretty good approximately 
+for a language like English. 
+Right a the very end of the lecture, I'll 
+talk a little bit more about extensions. 
+To these models which do allow structures 
+of this case. 
+But for now assume these structures are 
+[INAUDIBLE]. 
+So there's been considerable interest 
+over the last few year, years in 
+dependency parsing, you'll you'll see 
+later in this lecture it, it has certain 
+advantages in terms of efficiency and 
+simplicity. 
+but let me talk a little bit about 
+resources. 
+So, in 2006, a conference called CoNLL 
+had, what was called a shared task. 
+Basically, a friendly competition between 
+different groups, where they released 
+dependency parsing datasets for actually, 
+12 languages. 
+So Arabic, Chinese, Czech, Danish, Dutch, 
+German, Japanese, Portuguese, Slovene, 
+Spanish, Swedish, Turkish. 
+And 19 different groups developed 
+dependency parsing systems and compared 
+the results on these data sets. 
+A very similar setup was seen in CoNLL 
+2007. 
+the protocol described in today's lecture 
+is largely based on a PhD thesis by Ryan 
+McDonald. 
+Which introduced a global linear models 
+for dependency policy and showed that 
+these models were very successful. 
+We'll be treating this problem as a 
+supervised learning task. 
+So we'll assume we have trainings 
+examples consisting of sentences. 
+Paired with dependency structures. 
+So this is what each training sample 
+would look like. 
+And so there's a question of where do we 
+get these resources from? 
+Where do we get these dependency banks 
+from? 
+So there's a couple of ways that these 
+datasets arise. 
+For some languages, a famous example 
+being Czech, people have actually 
+hand-constructed dependency banks. 
+So they have annotated large quantities 
+of data, again maybe thousands or tens of 
+thousands of sentences. 
+Where each sentence is annotated with 
+it's outline dependency structure. 
+So you can think of this as an ana, 
+analog to a tree bank. 
+We had seen for example, the Penn Wall 
+Street Journal tree bank, where people 
+had annotated constituency trees. 
+In some cases, for various languages, 
+rather than annotating these kinds of 
+constituency trees, they directly 
+annotated these dependency structures. 
+Now for other languages where these 
+dependency banks are directly available, 
+we may have these constituent, or tree 
+banks, like the Penn Wall Street Journal 
+tree bank. 
+And you hopefully won't be suprised that 
+it is actually fairly straightforward to 
+extract dependency structures from tree 
+banks. 
+The [UNKNOWN] PCFG's that I showed you 
+earlier in this course opened up a direct 
+link between these constituency 
+structures and the dependency structures 
+we're considering in this lecture. 
+So let me talk a little bit more about 
+that. 
+So here is a constituent based tree, 
+something like the kind of tree you would 
+find in the Pen Wall Street Journal 
+treebank. 
+And I think this is an example that we 
+saw earlier in the core, course. 
+And we've lexicalized this tree in the 
+way I described in the lectures on 
+lexicalized context free grammars. 
+So each non-terminal has an associated 
+head word. 
+For example, this NP has president or 
+this VP has was. 
+Or, sorry this is missing, this sh-, this 
+s should also have was. 
+This m p has she, this s bar has that. 
+So, in the same way as I showed you. 
+Earlier in the course, when we looked at 
+lexicalized PCFG's, we had these rules 
+that propagated head words up through 
+these context-free trees. 
+So, that was a step, this lexicalization 
+step was used in deriving lexicalized 
+PCFG's. 
+But it also opens up the chance of taking 
+these tree structures. 
+And converting them, to dependency 
+structures. 
+So remember each dependency can be 
+represented as a, pair, h, m. 
+Where h is the index of a head word, and 
+m is the index of a modifier word. 
+And so in this particular case, this 
+example tree is going to be converted to 
+the following set of dependencies. 
+Let me give you an example. 
+So with this rule as told goes to M P 
+Hillary, V P told, we can extract the 
+dependency we're told is the is the head, 
+and Hilliary is the modifier. 
+So that gives me this dependency here two 
+one. 
+we have a directed arch from told to 
+Hillary. 
+Similarly if we look at this rule here, 
+we have told as the head and Clinton as 
+the modifier. 
+And so we have an arch two, three. 
+So of these words one, two, three, four, 
+five, six, seven, I have an arch two, 
+three. 
+From told to Clinton and similarly I have 
+an arch from told to that two four, 
+because I have that also as a modified 
+told. 
+And we can similarly go through the 
+entire tree pulling out all dependencies. 
+Right at the top of this tree, we have 
+told as the root of the entire sentence. 
+And because of that, we have an arch zero 
+two. 
+Root goes to told. 
+So to summarize. 
+The main point of this slide, was that, 
+if we have a tree bank, that is a set of 
+sentences with annotated, context-free 
+trees, we can convert this into a 
+so-called dependency bank. 
+And this step is through lexicalization. 
+Exactly the, the, the the step of 
+lexicalization we saw, within the context 
+of lexicalized PCFG's. 
+And once we've done this, we have 
+training and test data for the dependency 
+pausing problem. 
+So one very interesting property of 
+dependency parsing, and a compelling 
+reason for taking dependency parsing very 
+seriously, is the efficiency with which 
+we can find these dependency parsing 
+structures. 
+So, when we looked at probabilistic 
+context free grammars. 
+We saw, this dynamic programming 
+algorithm, the CKY algorithm. 
+And it had a runtime which was cubic in 
+the length of the sentence and also cubic 
+in the number of non-terminals in the 
+grammar. 
+So N might, for example, be 20 or 30 or 
+40, the number of non-terminals might be 
+depending on how you define it, 10 or 20, 
+or 50. 
+Again, some reasonably large number. 
+And this is quite challenging. 
+This is actually a pretty large number. 
+And you can see that this G cubed term 
+can certainly lead to problems in terms 
+of efficiency. 
+Lexicalized PCFG parsing is at least 
+under the methods we saw. 
+And to the 5th where n is the length of 
+the sentence. 
+And again cubic in the number of 
+non-terminals in the grammer. 
+So this is really getting very expensive. 
+Algorithms were unlabeled dependency 
+parsing, the gain are generally based on 
+dynamic programming. 
+We're not going to see these in detail 
+because that they're fairly complex and 
+it will take some time to go over them. 
+I post the references. 
+But there are some rather beautiful 
+algorithms for dynamic programming. 
+over dependently, a, posing structures. 
+In particular due to Jason Eisner, I'll 
+post the papers. 
+Remarkably these algorithms are cubic. 
+In, in the length of the sentence. 
+But have no dependence on the size of the 
+grammar. 
+In fact, in some sense dependency 
+grammars don't really have non-terminals, 
+so they don't really have these G terms. 
+So there might be a small constant in 
+front of this N cubed, to maybe a factor 
+of eight, or something like this. 
+But a constant that is way, way smaller 
+than G cubed. 
+And that actually means that these 
+dependency parsing algorithms, are, in 
+practice extremely efficient. 
+And that is a major. 
+reason for like I said, taking the 
+dependency parsing very seriously. 
+So it has two properties which I think 
+are very beneficial. 
+So they're very efficient parsing. 
+Secondly they are very useful 
+representations. 
+[SOUND] So, if we can recover these kind 
+of dependency structures, they're useful 
+in many applications in natural image 
+processing. 
+

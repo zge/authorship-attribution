@@ -1,0 +1,267 @@
+Okay. Let me tell you a little bit more
+about how TF-IDF scores and the cosine
+similarity measure get used together in
+a ranked IR retrieval system. I'm
+not going to get a lot into the details of
+making these systems practical and
+efficient, but at least give you a little
+bit more of a sense. So the first thing
+that you might already started to notice
+is that TF-IDF weighting isn't really
+one thing, there's really a family of
+measures. Let's just look at that in a
+little bit more detail. So first of all,
+you have the term frequency and what you
+do with the term frequency. And you could
+just have the natural term frequency, but
+we suggested that that is usually muted
+by something like log weighting. And that's
+indeed the most common thing to do. But
+it's not the only method that's being
+used. There have been a bunch of other
+methods that have been suggested for
+normalizing term frequency. And if we move
+on to the document frequency, we can not
+use document frequency weighting at all. We
+could use this kind of log inverse
+document frequency weighting, which is
+again, extremely common. But again, there
+are other things that people have tried
+out doing. So if we put these two things
+together we have TF-IDF weighting, giving us
+a vector. But, well we may well want to
+normalize those vectors in some way to
+have better similarity computations. And
+so we discussed using the cosine length
+normalization and it turns out that it has
+some advantages and some disadvantages, so
+again there are other things people have
+tried including both of these and other
+ones that have came up more recently so
+things like pivoted length
+normalization. So in general, we have a
+kind of a broad menu of choices. And so,
+at the beginning here of each column, I've
+given some letter names to these choices.
+These were choices, these were choices
+that were developed in the context of the
+SMART information retrieval system which
+is a very famous, pioneering information
+retrieval system that was developed at
+Cornell by Jerry Sultan who was really
+the father of a lot of modern information
+retrieval. And so this is, these choices
+could be given names by giving letters
+from these. So if you were using the
+system that we've mainly been talking
+about, that would be coming out as LTC for
+logarithm, logarithmic IDF and cosine
+weighting. And so it, this kind of weighting
+it then turns out can be used both for
+queries and documents differently, and so
+let's go through a little bit how that all
+comes out. We can have different weightings
+for queries versus documents. And if we
+follow this SMART notation, the standard
+way that they represented things is by
+these six letters with the dot in the
+middle, where there is document weighting
+scheme followed by the query weighting
+scheme. And there are various variants,
+but one that was quite standard coming
+out of the SMART work in the 1990s was
+this one. So we'll just mention this one
+in a little bit more detail. If we do the
+query part of it first what we find out is
+that, so there's log query normalization.
+Now this is actually, only
+makes a difference if you have long
+queries which might mention words multiple
+times. If, really, you have short queries,
+and no word is mentioned more than once,
+that you're just going to be getting a
+weight of one for words that appear, and
+zero for words that don't appear. There's
+then IDF weighting of the query terms, and
+cosine normalization. The treatment for
+the documents is the same except there's
+actually no IDF normalization of the
+documents. And that's something that you
+might want to think about for a moment. Is
+that a bad idea? There's some reasons to
+want to do that. One of them is well,
+you've already put in an IDF factor for
+the same words in the query, cause remember
+that you're only going to get non-zero
+scores for words that occur in both the
+query and the document. And that there are
+some advantages in terms of efficiency, of
+compressing indices if you're not putting
+IDF in there. Let's take this weighting
+scheme and again go through a concrete
+example. So, we 're just gonna be working
+out the score for precisely one document
+against one query using this weighting
+scheme, but we'll do it in great depth.
+Okay, so our document is car insurance,
+auto insurance. It's a bit of a fake
+document but we wanted something short,
+and then the query is best car insurance.
+So if we go to the query first, best car
+insurance, these are its raw weights, and
+so then we're gonna scale those with
+logarithmic scaling but since each word
+only occurred once, it stays one. We then get
+the document of frequency of each of those
+words which we map onto an inverse
+document frequencies. So, the rarer words
+like insurance are getting the highest
+weighting there. We then multiply this
+column by this column, which ends up
+looking just like the document frequency
+score, except for the word that didn't
+occur. And then we turn that into a unit
+vector with cosine normalization and so
+this our final representation of the query
+vector. We then move to the document. So
+the document has some term frequencies
+that aren't just zero one. So, we reduce
+those with term frequency weightings so that
+they look like that. In this case there is
+no IDF component on the document, so the
+weights go to being exactly the same just
+coming from term frequency. And then we
+again do cosine normalization, which gives
+us this as our final document vector.
+Okay, so then to work out the score for
+this document, for this query. We're then
+working out the cosine similarity, which
+is simply the dot product of these two
+length normalized vectors. And so that's
+then this vector here. Where only the
+bottom two components are non-zero. So we
+add those up and the overall score is 0.8.
+So the document is a good match for the
+query. Though, I mean, do remember when
+you're looking at cosine similarities,
+that because of the fact that the cosine
+kind of is sort of flat up the top here.
+You know, flat descending. It means that
+you tend to get, for fairly similar
+documents, that cosine scores are sort of
+biased fairly high. So it's more important
+to remember the ordering than the precise
+values. Okay. But that shows you how we
+evaluated that document. And then we'd
+want to evaluate a bunch of other
+documents and then we'd want to rank
+according to their cosine similarity
+scores. A little exercise you might like
+to do based on this example is, well if
+you know what the IDF scores are here and
+the document frequencies you should actually be
+able to work out what is the number of
+documents being used as a basis of this
+example. Okay, now let's go through how we
+can work out cosine scores in a vector
+space retrieval system for a document
+collection. This is the rough kind of
+algorithm that we're going to want to use.
+So what we're gonna assume here is that
+the query is a typical short web-like
+query. So we're only going to be thinking
+of the words as either occurring or not
+occurring in the query. And also, we're
+gonna skip one other step then. We're not
+actually going to do any length
+normalization of the query. And part of
+the reason of that is when you have a
+situation like this, length
+normalization of the query is actually
+unnecessary because the query vector has
+some length and for whatever it is, the
+effective length normalization would just
+be a rescaling that applies to all query
+document calculations and wouldn't change
+the final result. Okay. So given that
+background, what do we do? So we start off
+by having a scores array for all
+documents, which we set to zero. And
+so we're going to accumulate in here the
+score of a document for different query
+terms. And so these scores are often also
+referred to as accumulators. Okay and then
+we're also going to have another array for
+the lengths of the different documents.
+And so then what we do is go through each
+term in the query, and we say, well. The
+query term is actually just going to be
+one. And then we fetch the postings
+list for that query. So then, for each
+document in the postings list, the term
+has a frequency in that document and we
+may then want to scale that by doing
+something like log weighting or something
+like that and to give us our document weight
+for the term. And then we are doing
+the components for the dot product here and
+summing them into the scores array. So in.
+essence we're kind of, the outer iteration
+here is for each query term, and we're
+working out the components of the cosine
+score for each query term and accumulating
+it in this scores array. But we haven't
+actually done any length normalization of
+the documents either yet. So then, the
+next step is to work out the length of
+each document, and then divide these
+scores by the length of the document. So
+this then does the length normalization
+for different document sizes. So given the
+assumptions I mentioned at the beginning
+of, the query vector is one zero and we
+don't need to length normalize it, we
+have something that is now ordered the
+same as a length normalized cosine
+similarity score for the documents. And so
+then for our ranking, what we just wanted
+to return is the some number K of
+documents, their ID's or a representation
+of them, that has the highest
+value for scores. Now if you think about
+it a little, this isn't quite yet a
+practical algorithm. So that if our
+document collection is huge, we wouldn't
+actually want to build an array which has
+a cell for every document. Say that we
+might have, you know, twenty billion
+documents or something like that. And so
+systems use methods to work out which are
+likely documents, and only have
+accumulators for those documents. And
+similarly at the end it's not a good way
+to find the most relevant documents by
+simply doing a linear scan of this scores
+array. And so there are more efficient
+data structures to do that. But I hope
+that that's given you a general idea of
+how we can build cosine similarity scoring
+into a ranked retrieval engine. So to
+summarize, the essence of what we've
+covered for vector space retrieval is the
+following steps. That the query is
+represented as a TF-IDF vector. The
+document is also weighted as a TF-IDF. The
+document is also represented as TF-IDF
+vector. And then, to score a pair of a
+query and a document, we're working out
+cosine similarity scores, which we
+straightforwardly use to rank the
+documents with. And then what we'll do in
+the first instance is return some top K's.
+For example, the top ten documents
+according to this score to the user as
+their initial results. And if they ask for
+more, we can then show them more. Okay, so
+that's the general idea of how we can
+start to build a TF-IDF ranked retrieval system.

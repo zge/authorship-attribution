@@ -1,0 +1,358 @@
+So, in this video, we'll go over the
+basics behind implementing binary search
+trees. We are not going to focus on the
+balance aspect in this video that will be
+discussed in later videos and we are going
+to talk about things which are true for
+binary search trees on general, balanced
+or otherwise. But let's just recall, you
+know, why are we doing this, you know,
+what is the raison d'être of this data
+structure, the balance version of the
+binary search tree and basically, its a
+dynamic version of a sorted array. So,
+that's pretty much everything you can do
+on a sorted array, maybe in slightly more
+expensive time. They are still
+really fast but in addition to this
+dynamic, it accommodates insertions and
+deletions. So, remember, if you want to
+keep a sorted array data structure, every
+time you insert, every time you delete,
+you're probably going to wind up paying a
+linear factor which is way too
+expensive in most applications. By
+contrast with the search tree, a balanced
+version, you can insert and delete a
+logarithmic time in the number of keys in
+the tree. And moreover, you can do stuff
+like search in logarithmic time, no more
+expensive than binary search on a sorted
+array and also you can sort of say the
+selection problem in the special cases,
+the minimum or maximum. Okay, it's not
+constant time like in a sorted array but
+still logarithmic pretty good and in
+addition, you can print out all of the
+keys from smallest to largest and in
+linear time, constant time per element
+just like you could with the linear scan
+through a sorted array. So, that's what
+they're good for. Everything a sorted
+array can do more or less plus insertions
+and deletions everything in logarithmic
+time. So, how are search trees organized?
+And again, what I'm going to say in the
+rest of this video is true both for
+balanced and unbalanced search trees.
+We're going to worry about the balancing
+aspect in the later videos. Alright, so,
+let me tell you the key ingredients in a
+binary search tree. Let me also just draw
+a simple cartoon example in the upper
+right part of the slide. So, this one to
+one correspondence between nodes of the
+tree and keys that are being stored. And
+as usual in our data structure discussions
+we're going to act as if the only thing
+that we care about, the only thing that
+exists at each node is this key when
+generally, this associated data that you
+really care about. So, each node in the
+tree will generally contain both the key
+plus a pointer to some data structure that
+has more information. Maybe the key is the
+employee ID number, and then there's a
+pointer to lots of other information about
+that employee. Now, in addition to the
+nodes, you have to have links amongst the
+nodes and there's a lot of different ways
+to do the exact implementation of the
+pointers that connect the node of the tree
+together but the video I'm just going to
+keep is straightforward as possible and
+we're just going to assume that in each
+node, there's three pointers. One to a
+left child, another one to the right child
+and then the third pointer which points to
+the parent. Now, of course, some of these
+pointers can be null and in fact in the
+five node binary search tree I've drawn on
+the right for each of the five nodes, at
+least one of these three pointers is null.
+So, for example, for the node with key one
+it has a null left child pointer, there was
+no left child. It's the right child
+pointer going to point to the node with
+key two and the parent pointer was going
+to a node that has key three. Similarly
+three is going to have a null parent pointer
+and the root node in this case, three is a
+unique node but has a null parent pointer.
+Here the node with key value three, of
+course, has a left child pointer points to
+one and has a right child pointer that
+points to five. Now, here is the most
+fundamental property of search trees.
+Let's just go ahead and call it the Search
+Tree Property. So, the search tree
+property asserts the following condition
+at every single node of the search tree.
+If the node has some key value then all of
+the keys stored in the left subtree should
+be less than that key. And similarly, all
+of the keys stored in the right subtree
+should be bigger than that key. So, if we
+have some node who's stored key value is x
+and this is somewhere, you know, say deep
+in the middle of the tree so upward we
+think of as being toward the root. And
+then if we think about all the nodes that
+are reachable, after following the left
+child pointer from x, that's the left
+subtree. And similarly, the right subtree
+being everything reachable via the right
+child pointer from x, it should be the
+case that all keys in the left subtree are
+less than x and all keys in the right
+subtree are bigger than x. And again, I
+want to emphasize this property holds not
+just to the root but at every single node
+in the tree. I've defined the search to a
+property assuming that all of the keys are
+distinct, that's why I wrote strictly less
+than in the left sub tree and strictly
+bigger than in the right subtree. But
+search trees can easily accommodate
+duplicate keys as well. We just have to
+have some convention about how you handle
+ties. So, for example, you could say that
+everything in the left subtree is less
+than or equal to the key at that node and
+then everything in the right subtree
+should be strictly bigger than that node.
+That works fine as well. So, if this is
+the first time you've ever heard of the
+search tree property, maybe at first blush
+it seems a little arbitrary. It seems like
+I pulled it out of thin air but actually,
+you would have reversed engineer this property
+if you sat down and thought about what
+property would make search really easy in
+a data structure. The point is, the search
+tree property tells you exactly where to
+look for some given key. So, looking ahead
+a little bit, stealing my fire from a
+slide to come, suppose you were looking
+for say, a key 23, and you started the
+root and the root is seventeen. The point
+of the search tree property is you know
+where 23 has to be. If the root is
+seventeen, you're looking to 23, if it's
+in the tree, no way is it in the left
+subtree, it's got to be in the right
+subtree. So, you can just follow the right
+child pointer and forget about the left
+subtree for the rest of the search. This
+is very much in the spirit of binary
+search where you start in the middle of
+the array and again, you compare what
+you're looking for to what's in the middle
+and either way, you can recurse on one of
+the two sides forgetting forevermore about
+the other half of the array and that's
+exactly the point of the search tree
+property. We're going to have to search
+from root on down, the search tree
+property guarantees we have a unique
+direction to go next and we never have to
+worry about any of the stuff that we don't
+see. We can also draw a very loose analogy
+with our discussion of heaps and may
+recall heaps were also logically, we
+thought of them as a tree even though they
+are implemented as an array. And heaps
+have some heap property and if you go back
+to review the heap property, you'll find
+that this is not the same thing as the
+search three property. These are two
+different properties and that's going to
+trying to make different things easy. Back
+when we talk about heaps, the property was
+that this is for the extract min version.
+Parents always have to be smaller than
+their children. That's different than the
+search tree property which says stuff to the
+left, that's smaller than you, stuff to
+the right is bigger than you. And heaps,
+we have the heap property so that
+identifying the minimum value was trivial.
+It was guaranteed to be at the root. Heaps
+are designed so that you can find the
+minimum easily. Search trees are, are
+defined so that you can search easily
+that's why, you have this different search
+tree property. If you want to get smaller,
+you go left. If you want to get bigger you
+go right. One point that's important to
+understand early, and this will be
+particularly relevant once we did, once we
+try to enforce balancing in our subsequent
+videos is that, for a given set of keys,
+you can have a lot of different search
+trees. On the previous slide , I drew one
+search tree containing the key values one,
+two, three, four, five. Let me redraw that
+exact same search tree here. If you stare
+to this tree a little while you'll agree
+that in fact that every single node of
+this tree, all of the things in the left
+subtree are smaller, all of the things in
+the right subtree are bigger. However, let
+me show you another valid binary search
+tree with the exact same sets of keys. So,
+in the second search three, the root is
+five, the maximum value. And everybody has
+no right children, only the left children
+are populated and that goes five, four,
+three, two, one in descending order. If
+you check here again, it has the property
+that at every node, everything in the left
+subtree is smaller. Everything in the
+right subtree, in this case, empty, is
+bigger. So, extrapolating from these two
+cartoon examples, we surmised that for
+a given set of n keys, search trees that
+contain these keys could vary in height
+anywhere from the best case scenario of a
+perfectly balance binary tree which just
+going to have logarithmic height to the
+worst case of one of these link list like
+chain which is going to be linear in the
+number of keys n. And so just to remind
+you the height of a search tree which is
+also sometimes called the depth is just
+the longest number of hops it ever take to
+get to from a root to a leaf. So, in the
+first search tree, here the height is two
+and then the second search tree, the
+height is four. If the search tree is
+perfectly arranged with the number of
+nodes essentially doubling at every level,
+then the depth is you're going to run out
+of nodes around the depth of log2n. And in
+general, if you have a chain of n keys
+that that's going to be n - 1 but we'll
+just call it n amongst friends. So, now
+that we understand the basic structure of
+binary search trees, we can actually talk
+about how to implement all of the
+operations that they support. So, as we go
+through most of the supported operations
+one at a time, I'm just going to give you
+a really high level description. It should
+be enough for you to code up on
+implementation if you want or as usual, if
+you want more details or actual working
+code, you can check on the web or in one
+of the number of good programming or
+algorithms textbooks. So, let's start with
+really the primary operation which is
+search. Searching, we've really already
+discussed how it's done when we discuss
+the search tree property. Again, the
+search tree property makes it obvious how
+to look for something in a search tree.
+Pretty much you just follow your nose
+you have no other choice. So, you started
+the root, it's the obvious place to start.
+If you're lucky, the root is what you are
+looking for and then you stop and then you
+return to root. More likely, the root is
+either bigger than or less than the key
+that you're looking for. Now, if the key
+is smaller, the key you are looking for is
+smaller than the key of the root, where
+you're going to look? Well, the search
+tree property says, if it's in the tree,
+it's got to be in the left subtree so you
+follow the left sub child pointer. If the
+key you're looking for is bigger than the
+key at the root, where is it got to be?
+Got to be in the right subtree. So, you're
+just going to recurse on the right
+subtree. So, in this example, if you're
+searching for, say the key two, obviously
+you're going to go left from the root. If
+you're searching for the key four,
+obviously you're going to go right from
+the root. So, how can the search
+terminate? Well, it can terminate in one
+of two ways. First of all, you might find
+what you're looking for so in this
+example, if you search for four, you're
+going to traverse to right child pointer
+then a left child pointer and then boom,
+you're at the four and you return
+successfully. The other way the search can
+terminate is with a null pointer. So, in
+this example, suppose you were looking for
+a node with key six, what would happen?
+Well, you start at the root, three is too
+small so you go to the right. You get to
+five, five is still too small cuz you're
+looking for six so you try to go right but
+the right child pointer is null. And that
+means six is not in the tree. If there was
+anywhere in the tree, it had to be to the
+right of the three, it had to be to the
+right of the five but you tried it and you
+ran on the pointers so the six isn't
+there. And you return correctly with an
+unsuccessful search. Next, let's discuss
+the insert operation which really is just
+a simple piggy backing on the search that
+we just described. So, for simplicity the
+first think about the case where there are
+no duplicate keys. The first thing to do
+on this insertion is search for the key k.
+Now, because there are no duplicates, this
+search will not succeed. This key k is not
+yet in the tree. So, for example, in the
+picture on the right, we might think about
+trying to insert the key six. What's going
+to happen when we search for six, we
+follow a right child pointer. We go from
+three to five and then we try to spot
+another one and make it stuck. There's a
+null pointer going to the right of five.
+Then when this unsuccessful search
+terminates at a null pointer, we just rewire
+that pointer to point to a node with this
+new key k. So, if you want to permit
+duplicates from the data structure, you
+got to tweak the code and insert a little
+bit but really barely at all. You just
+need some convention for handling the case
+when you do in counter the key that we are
+about to insert. So, for example, if the
+current note has the key equal to the one
+you're inserting, you could have the
+convention that you always continue on the
+left subtree and then you continue the
+search as usual again, eventually
+terminating at a null pointer and you stick
+the new inserted node you rewire to null
+pointer to point to it. One good exercise
+for you to think through which I'm not
+going to say more about here is that when
+you insert a new node, you retain the
+search tree property. That is if you start
+with the search tree, you start within
+tree where at every node stuff to the left
+is smaller, the stuff to the right is
+bigger. You insert something and you
+follow this procedure. You will still have
+the search tree property after this new
+node has been inserted. That's something
+for you to think through.

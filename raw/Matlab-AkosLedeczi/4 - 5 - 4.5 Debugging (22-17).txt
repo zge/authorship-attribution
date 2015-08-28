@@ -1,0 +1,556 @@
+[MUSIC]
+A sad fact of life is that it's
+easy to make mistakes when writing.
+Human's are pretty good at
+filling in the blanks, so
+when we read a story we can understand it
+even if it has typos or missing words,
+grammatical errors and such.
+When you're writing instructions for
+a computer, you have to be very precise.
+And your grammar must be 100% correct.
+A happier fact of life is this.
+The easiest programming errors
+to make are syntax errors.
+And they're also the easiest
+ones to find and fix.
+It's easy to forget a comma or a square
+bracket for example, but when you do
+MATLAB will complain with one of those
+red error messages and you can fix it.
+Semantic errors are more problematic.
+You'll remember that these happen
+when you, what you wrote is legal but
+it doesn't do what you meant for it to do.
+Sometimes MATLAB can catch
+these semantic errors.
+For example,
+suppose you have a ten element vector.
+You want the last element, but
+you ask for the value of the 11th one.
+MATLAB will stop you with an error
+message and you can fix your program.
+What if you ask for the last element
+when you meant to ask for the first one?
+Well, your program may run just fine,
+every time.
+And give the wrong answer every time.
+In cases like that, the results will
+usually be consistently suspicious.
+And you're likely to realize
+that something's wrong.
+Finding the source of
+the problems may be difficult,
+but knowing that there is a problem
+is a big step towards solving it.
+Some semantic errors may cause
+problems only occasionally though.
+That typically happens when only a certain
+combination of inputs triggers the error.
+This is the hardest case of all.
+First off, you may not notice the problem
+and second, it's hard to find the cause.
+For that reason,
+it's very important to test your
+program with a wide variety of inputs.
+In fact, you should think hard about the
+possible problem cases for your program.
+And you should test all
+the ones you can think of.
+If one of these cases causes an error,
+then you need to find it and correct it.
+Many times however,
+finding it can be surprisingly difficult.
+Fortunately, MATLAB can help you
+with a tool called the debugger.
+The name bug is synonymous with
+error in computer programming.
+It comes from the early days of computers
+when an actual insect caused a problem
+in one of the first computers.
+The name stuck, and
+now any tool that helps you remove
+errors is called a debugger.
+So let's see MATLAB's debugger.
+And if we want to use the debugger we
+gotta have some bugs, you know, to debug.
+So let's practice making some errors.
+You remember what happens when we do that?
+We'll start with a few intentional
+syntax errors to refresh our memory.
+Wow, that's a lot of red text, but
+it should be familiar red text.
+We made the same mistake in lesson one
+when we first introduced the concept of
+syntax and syntax errors, and naturally,
+we saw the same exact error message.
+MATLAB is nothing if not predictable.
+It's telling us that we
+messed up the assignment.
+Of course, you know by now that it
+should have been x equals 1 and
+not the other way around.
+So how about this error?
+[NOISE] Little less red here.
+Undefined function ramd.
+Again, MATLAB is not shy about
+telling us that we've fouled up.
+It can't find a function named ramd,
+because we didn't make a function named
+ramd, and
+it knows darn well it didn't make one.
+So of course we got our hand slapped.
+Well hey, we just misspelled rand.
+Aren't you smart enough to
+figure that out MATLAB?
+because a matter of fact,
+sometimes it is smart enough.
+For instance, suppose we just
+typed an extra d in the name.
+[SOUND] MATLAB yells at us in red.
+Then quickly calms down and politely
+asks us in black if we meant rand.
+Why yes thank you,
+that's exactly what we meant.
+And all we have to do is hit return and
+the function that it
+guessed we wants runs.
+Let's make an error that's
+a bit more serious.
+[NOISE]
+Okay
+we've got y.
+Let's look at the sixth element.
+What happened here?
+Well, we created a five element vector and
+then tried to access its sixth element.
+There's no such thing,
+so MATLAB let us know.
+It's important to realize that this was
+not a syntax error like the previous ones.
+Y of x is a perfectly
+legal MATLAB expression.
+When MATLAB tried to execute it,
+it realized that in the given context it
+was illegal from a semantic point of view.
+This is called a runtime error.
+Because MATLAB can catch it only
+when it tries to execute it.
+We should be happy when we see this red
+stuff, even though I'm usually not.
+Because it means that an error that we
+made was caught before it could do any
+serious damage to the output, or, you
+know, to people who depend on that output.
+Now, I've spotted a bug and once we
+know where it is we can eliminate it.
+Sometimes, it MATLAB is happy most of
+the time when we run our program, but
+on some input combinations it
+runs into a runtime error.
+We maybe thinking our program is
+perfect and everything is rosy and
+then out of the blue.
+MATLAB hits us with an error message.
+That's always discouraging, but again, we
+can be thankful that it caught a problem.
+Unfortunately though,
+as we pointed out before,
+many bugs are such that MATLAB will
+never know that there is an error.
+It simply executes
+the statements we provided.
+And gives us the wrong answer.
+The best we can hope for
+in that situation is perhaps we can
+tell the result is not what we expected.
+Then we need to figure
+out where we messed up.
+Both of these latter errors
+can be very hard to find, and
+if we don't find them,
+we're doomed to failure.
+And that's when the debugger can
+be our only hope of salvation.
+Let me sound over blunt.
+It's not.
+Let's consider this simple function.
+It roughly mimics the behavior
+of the built-in randi function.
+In fact, it uses randi,
+as you can see here.
+It's supposed to return an n by m matrix
+of random integers, right here in x.
+And print out the last
+number on the last row.
+It uses f print f to do that.
+The last number on the last row.
+So it's an, it's an n by n matrix.
+That's element n by n.
+Yeah, that looks right.
+But let's try it.
+[NOISE] Now it looks
+pretty good.
+It's three by three.
+They look random.
+Last element on the last row is three.
+The only thing I'm noticing here, is that
+we only get integers three and smaller.
+Wonder why that is?
+Let's try with different input.
+Well, we're in trouble right there.
+Index exceeds matrix dimensions.
+Error in rand rand_int line three,
+fprintf.
+So, by the way, the first thing to
+notice is that these are live links.
+If I click on this line three,
+it takes me to line three.
+Well, what do you need that for?
+I mean, it's obvious these
+lines are numbered here.
+Well, the advantage of that is if
+you have a really long function,
+then it'll take you right to that point
+and you don't have to scroll around.
+When I'm looking at it, I know the error
+is here, I know I've got an n by m matrix.
+How can this not be legal?
+How am I exceeding,
+it'd be nice to see what the size of x is.
+It was three by three right?
+But there's no x here,
+because the work space doesn't
+have the local variables in it.
+It just has the variables
+in the command window.
+Well, I'm at a loss.
+It's time to use the debugger.
+The most important feature
+of any debugger is
+the ability to put break
+points in your program.
+You use a break point to mark a line in
+your code that you want the debugger to
+stop executing the code at.
+It's called a break point,
+because it breaks the flow of
+execution at a chosen point.
+To create a break point, you simply click
+in the gray area between the line number
+and the given line on one of these dashes.
+Let's do that on line three.
+The red circle indicates
+the location of the break point.
+And sort of like a red stop sign,
+we're going to stop right there.
+It'll stop before this line is executed,
+and we want that,
+because that's where the arrow was.
+And you can have more
+than one break point,
+you can have one on any
+line where there's a dash.
+On line two, for instance.
+There.
+I think that might be
+a better place to stop, so
+let's get rid of the one on line three.
+We don't need that one.
+To remove it,
+simply click on the red circle.
+It's gone.
+Okay, let's go back to the command
+window and call our function again.
+Call it the same way we did last time.
+The function begins to run,
+then it stops and
+there's this little green
+arrow next to our break point.
+What happened is that the debugger
+paused the execution of our function
+just as the code pointed out by the green
+arrow was about to be executed.
+Now, I have several options, we could
+simply continue running the function by
+clicking the continue button up here,
+up here on the toolbar or
+by hitting the F5 key on the keyboard.
+Instead, let's execute just the current
+statement by clicking the step button
+right here, or
+you can do that by hitting the F10 button.
+So, I'm going to click that, and
+watch the arrow advance, there.
+And something happened over here.
+X showed up.
+Wait a minute, m, n, and x,
+these are local variables.
+We've never seen local
+variables in a work space.
+Well, this is a great
+thing about the debugger.
+When you're stopped inside the function,
+the work space that's shown over here is
+not the command window work space, but the
+work space of the function that's acting.
+This is the work space of rand_int.
+These are the local variables in rand_int.
+Let's see.
+Now that we're looking at this,
+x is not a three by two matrix at all.
+It's a two by two matrix.
+So, wait a minute.
+We just gave it three and two.
+Oh, and note the handy little yellow
+windows that the debugger pops up to show
+us the value of variables
+that we hover the mouse over.
+And we know that randi makes
+a three by two matrix in that case.
+Doesn't it?
+Okay, maybe it's time to
+look at how randi works.
+We can do that with the help function.
+But before we do that, notice this blue
+two down here in the command window.
+That number and
+x equals randi of n comma m told us
+the line at which the function was stopped
+by the break, and the code on that line.
+The blue color in the underline
+right here mean that this is
+a live link that will take us to
+that line when we click on it.
+And, more importantly,
+notice that the prompt has a k
+before the two greater than signs.
+That k means that you can do things with
+a keyboard while a function is active.
+Yes, the function's active,
+but were controlling it.
+It's like a person in a hypnotic
+trance who does what we tell it to do.
+Ordinarily, while a function is running,
+you can't communicate through the keyboard
+with it or with MATLAB in general.
+But you wouldn't realize that,
+because the function is over so fast.
+You will realize it, though, if you have a
+function that runs long enough to give you
+a chance to hit a few
+keys before it returns.
+When you do that, you'll see the
+characters that you type in the command
+window down here, but they'll be ignored.
+Except for one magic combination.
+You remember what that is?
+That's the magic combination that will
+stop the function cold, it's Ctrl+C.
+Everything else will be ignored.
+Anyway, this k always appears in
+the prompt when the function is stopped at
+a break point, and when it's there, we can
+use the keyboard to make things happen.
+For example,
+we can look at the value of one of the
+variables in the function's work space.
+Let's look at oh, I don't know, say m.
+Well we knew it's value was two.
+But it's fun to look at it.
+You know what's more fun?
+You can change it to make it pi.
+Now m is equal to pi,
+and I want to emphasize that I'm
+talking about the m in rand_int.
+The input argument that was set to
+two when the function was called
+has been changed to pi.
+And look over here.
+There it is, pi.
+Remember, this is the work space
+of the active function here.
+Of course, if we continue this function
+by hitting, say, the continue button or
+the step button, pi is the value
+that will be used right here
+inside fprintf when it is executed,
+and we will get a new error saying that
+an index has to be a positive integer.
+That would be no help, but
+peeking at variables like this or
+changing them can sometimes help
+you figure out what the problem is.
+For example, if we looked at x, we'd
+have seen that it's two by two instead
+of three by two as we expected it to be.
+We already saw that in the work space
+window, but it's more obvious now.
+Okay, Let's refocus here,
+we were going to get help on randi.
+Let's do that.
+Lets scroll up to the beginning.
+There.
+Randi, pseudo-random integers from
+a uniform discrete distribution.
+R = randi,
+iMax comma n returns an n by n matrix.
+There's the problem right there.
+The arguments aren't
+the size of the matrix.
+Right, we put, what did we put?
+Three by two.
+That means the maximum value is a three.
+That's what we saw.
+And the matrix is two by two,
+which is what we saw.
+There it is.
+Maximum value of three.
+Okay, there's our problem.
+We didn't know what randi was doing.
+Okay, let's fix our
+little broken function.
+First, we need to quit the debugger.
+We can quit it either by typing dbquit,
+that's for debugger quit,
+or by clicking the Quit Debugging
+button up here, this red thing.
+I'm going to click that button.
+And watch the green arrow when I click it.
+Okay?
+Four, three, two, one, click.
+There.
+Green arrow disappears.
+And down in the command window,
+we've got our normal prompt back,
+you know the one with no k.
+Now, here's how we're
+going to fix our function.
+We're going to change x equals randi
+of n m to x equals randi of 10 and n.
+Note that this break point
+turned grey when I did that.
+This is MATLAB's way of indicating
+that the break points are inactive and
+you need to save your function
+before running it again.
+They'll all turn grey
+whenever you change the file.
+And they'll only turn back red
+when you save the file, and
+it's got no syntax errors in it.
+Well, I don't think there's
+a syntax error here.
+So, I'm going to click the little
+blue diskette over here
+to save the file, right here.
+And you'll see the break
+point turn red again.
+Here we go.
+There.
+Well, I can almost hear you complaining
+about the way we fixed this function.
+Because the change we made will mean that
+we've arbitrarily limited the range of
+pseudo-integers to go to 10.
+Good point.
+We can think about whether that's
+a serious problem, and if it is, how we
+might fix it, but in the mean time, let
+just call that a feature of our function.
+Okay.
+Ready to see whether it works now?
+Well, we'll leave that up to you.
+Try it.
+Try it with several different inputs.
+If it is working, then we can say,
+thank you debugger.
+If it's not working, then you'll
+know how to find the bug and fix it.
+And then you can thank the debugger.
+As you might guess, MATLAB has extensive
+documentation on its debugger.
+You can get a good start on that by typing
+debugging into the little query box here.
+[NOISE] And then coming down here and
+choosing Debugging,
+Diagnose Problems with MATLAB programs.
+And you get lots of information
+right here, examples and so on.
+Well, that's it for the debugger for now.
+But when we start writing more
+complicated programs in later lessons,
+more bugs will inevitably
+appear in our code,
+and you'll have more chances
+to practice with the debugger.
+And as you write more and more code,
+you'll get more and more practice.
+More than you might expect,
+and that brings us to today's
+message about life as a programmer.
+After you finish this course and
+begin to write more sophisticated programs
+on your own, or with collaborators,
+whether it be for fun, for
+another course, or for your employer,
+you'll find that most of the time you
+spend on programming is debugging time.
+In fact, it's worse than that.
+Only a small fraction of programming
+time is spent typing what we
+think is correct code.
+The great majority of time is spent
+finding and removing the errors that we
+made while we were typing what
+we thought was correct code.
+Now, for
+the most important part of the message.
+Programming is a very humbling experience.
+It shows us,
+as well as any exercise I've ever seen,
+just how imperfect we humans are.
+Wait, did I say humbling experience?
+Make that humiliating experience.
+And that can be very discouraging, too.
+In fact, if you don't get discouraged,
+then either a,
+you aren't writing serious programs,
+or b, you aren't human.
+If you are human, and you can endure
+the humiliation of making 99 errors
+before you get one thing right,
+then you should make a good programmer.
+And you won't have many competitors.
+Because most people will give
+up after a mere ten errors.
+I'm convinced that this single factor is
+the reason that programmers are paid so
+much money.
+Everyone else gets discouraged and quits.
+But hang in there, because programming
+is also an exhilarating experience.
+When you finally get a big
+program working, and
+it works its way through inputs that it's
+never seen before, making decisions and
+doing calculations that it would take
+a thousand people a thousand years to do,
+and when it carries out all those
+billions of calculations flawlessly and
+spits out the answers, you'll forget all
+the hours of humiliation that preceded it.
+And when you get there, it's a feeling
+that is amazingly wonderful.
+It's, well,
+you just have to experience it for
+yourself to know what I'm talking about.
+If you do,
+then this course was worthwhile, and
+frankly most of the credit must go to,
+well, can you guess?
+Right, thank you debugger.
+And with that thank you,
+we'll end lesson four.
+[MUSIC]
+

@@ -1,0 +1,197 @@
+If our symbols table's really going to be
+dynamic, we need to be able to delete key
+valued pairs from the table. As we'll see,
+all symbol table implementations have,
+lead to complications when we try to do
+this operation. Binary search trace is our
+first example. So we need to fill in this
+one table. What's, what's the cost of
+deletion in a binary search tree? How are
+we going to really do that? Well let's
+take a look at a very lazy approach which
+we set up for in our basic conventions for
+simple tables. What we can do to remove a
+node with a give key is just mark it with
+a tombstone. Say, well, we'll leave the
+key in the tree to guide searches, but we
+won't, count it as being in the symbol
+table. And actually you can, make some
+progress with this kind of method. Leaving
+tombstone throughout the tree. And, make
+sure that you keep, as long as there
+aren't too many deletions, you can keep
+the search costs, and deletion and insert
+costs to be logarithmic. But it definitely
+becomes, inconvenient to manage large
+numbers of tombstones in highly dynamic
+situations with large numbers of keys and
+values. Eventually you're going to get an
+overload of memory and you're going to
+have to rebuild the thing or clean out the
+tombstones in some way so we need to look
+for a better way. This is a general method
+that people often use on all different
+types of implementations, but in modern
+systems it's rather unsatisfactory. Also
+got a simpler problem. What about deleting
+the minimum? Well actually, that's maybe
+not too difficult to delete the minimum in
+a binary search tree. Again, we just go to
+the left until we get a null left link.
+And then, what we can do is just return
+that node's right link then that old node,
+nobody's pointing to it, so it's available
+for garbage collection. And then we use
+our usual trick of returning the link that
+we went down to update the other links
+after the recursive calls. And also we
+have to update the counts, something
+happened down below and we used that code
+to update the counts, in a co nsistent
+way, so this code implements deleting, not
+too bad at all. If x. Left null, return x
+right. Otherwise x left = delete min x
+left. And then when you're done with that,
+it fix the count so maybe a node got
+deleted down there, but always, the
+invariant is that the count of the node is
+one + size of the left and right. And then
+return x and fix the links and the counts
+on the way up. That's a fine
+implementation for delete min, and it also
+works for delete max. And that's the basis
+for a general method for deleting nodes
+from BSTs known as Hibberd deletion. So,
+that's the second case, the first case for
+Hibberd deletion is what we want to do to
+delete a, a node with key K, is we search
+for the node that contains the key, and
+the easiest case is that node has no
+children. So to, to delete a node that has
+no children just return null. And then go
+back up to update the counts as usual,
+that's the easy case. The next most
+difficult case is like the delete min case
+we find a node T that contains our key, so
+like deleting R in this tree, it only has
+one child. Just go ahead and return the
+link to that child and that updates the
+link and everything works fine and then
+the node that the leads that available for
+garbage collection that nobody's pointing
+to it. And then again update all the
+accounts after the recursive calls. Zero
+children no problem one child no problem.
+The problem is what happens when there is
+two children. So say we want to delete
+node E in this tree. We have only one
+link, and we can get rid of the node but
+we have only one link pointing to it. But
+we have two links pointing down from it.
+So what are we going to do with those two
+links? Well the Hibbard deletion mechanism
+which is pretty old. 50 years ago, it was
+proposed. Says, go ahead and find the next
+smallest node in the right subtree of that
+tree. So in the case that's H and what's
+that node? Well it's the minimum in T's
+right sub tree. And we know how to delete
+the minimum. So we just find that minimum
+node and, in this case it's H, and we put
+that node in T spot and then delete the
+minimum. So, find the H that's the
+minimum, hang on to it, and then delete
+the minimum NT sub tree and then, so we
+take the E, replace it with the H, delete
+the H, and then everything is fine. It is
+still a BST. So we, essentially we are
+finding a node that has only one link,
+deleting that node, and then replacing the
+node that we need to delete with that one.
+That's Hibbard deletion. It's a little bit
+asymmetric. Why are we using the successor
+and not the predecessor? No real reason.
+And it's not really satisfactory because
+of that, and we'll come back to this but
+it works. So this is the code for Hibbard
+deletion. So we search for the key. If
+it's got no right child, we're fine. We
+just return, x out left, and that handles
+both cases zero and one. If it does have a
+right child, then we do this, find the
+minimum, on the right. Delete min on the
+right and then fix the links and then
+update our count that covers all cases. So
+actually not that much code, it's
+complicated but not particularly more
+complicated than other code we have seen
+like rank and floor and ceiling and that
+implements Hibbard deletion. So now we
+have a fully dynamic symbol table where we
+can insert and delete. The number of nodes
+that we have in the tree as always
+proportion to the number of key value
+pairs in the symbol table. And the problem
+is, and this was quite a surprise when it
+was first discovered actually many years
+after Hibbard proposed the algorithm is
+this lack of symmetry that tends to lead
+to difficulties. And here we are just
+inserting the leading alternating insert
+and delete a random key. So that maybe
+well models a situation, practical
+situation. And as you watch it go for
+awhile. You can see that this thing about
+going to the right and taking the
+successor all the time. The tree's
+becoming much less balanced than it was.
+And, this seems to be a, a problem. We
+can't be having, supposedly having a
+dynamic situation, that is going to, allow
+support of lots of different inserts and
+de letes. And in the end, win up with a
+less balanced tree. What's worse, if you,
+so how you are going to fix it? At the end
+researches show that after, sufficiently
+long sequence of random inserts and
+deletes, the height of the tree becomes
+square root of N not lg N. Square root of
+N is usually bigger than lg N. It might
+make difference between acceptable and
+unacceptable performance in real
+applications. Then what's worse is you try
+to fix it by say randomly choosing between
+the left and the right, that doesn't work,
+it still becomes square root of N. And
+that's a very long standing open problem
+to find a natural, simple, efficient
+delete for binary search trees. That's
+another one like merging in place, that
+you think there ought to be another easy
+way to do it, but in 50 years no one's
+really discovered one. Now we're going to
+look at something pretty close in the next
+lecture, but here's the situation that
+we're left with. We have a binary search
+tree algorithm, which is fine in that
+gives us lg N performance for search and
+insert, in a situation where we can think
+that these things are happening randomly.
+But we're kind of stuck if we allowed
+delete. In fact everything regenerates to
+square root of N, and we also have a
+problem with, with the worst case if the
+keys happen to have some order in them our
+trees are not going to be balanced at all.
+And that's going to make the difference
+between acceptable and not acceptable
+performance. What we're going to look at
+next time, called a red black minor search
+tree, will guarantee logarithmic
+performance for all operations. So that's
+extremely significant and much better then
+binary search trees but the delete
+operation for binary search trees shows us
+the kind of complexity that we can
+encounter with working with these kinds of
+data structures.
